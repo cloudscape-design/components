@@ -12,7 +12,7 @@ import {
 import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
-import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.css.js';
+import tooltipStyles from '../../../../../lib/components/tooltip/styles.css.js';
 
 beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;

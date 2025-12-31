@@ -3,12 +3,11 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
-import StatusIndicator from '../../../../../lib/components/status-indicator';
-import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../../../lib/components/test-utils/dom';
+import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
+import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
 
-import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
-import styles from '../../../../../lib/components/popover/styles.selectors.js';
+import styles from '../../../lib/components/popover/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
 
 class TooltipInternalWrapper extends PopoverWrapper {
   findTooltip(): ElementWrapper | null {
@@ -25,14 +24,13 @@ class TooltipInternalWrapper extends PopoverWrapper {
   }
 }
 
-const dummyRef = { current: null };
 function renderTooltip(props: Partial<TooltipProps>) {
   const { container } = render(
     <Tooltip
-      trackRef={dummyRef}
+      getTrack={props.getTrack ?? (() => null)}
       trackKey={props.trackKey}
-      value={props.value ?? ''}
-      onDismiss={props.onDismiss ?? (() => {})}
+      content={props.content ?? ''}
+      onEscape={props.onEscape}
     />
   );
   return new TooltipInternalWrapper(container);
@@ -40,56 +38,55 @@ function renderTooltip(props: Partial<TooltipProps>) {
 
 describe('Tooltip', () => {
   it('renders text correctly', () => {
-    const wrapper = renderTooltip({ value: 'Value' });
+    const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Value');
   });
 
-  it('renders node correctly', () => {
-    const wrapper = renderTooltip({ value: <StatusIndicator type="success">Success</StatusIndicator> });
-    const statusIndicatorWrapper = createWrapper(wrapper.findContent()!.getElement()).findStatusIndicator()!;
+  it('renders text content correctly', () => {
+    const wrapper = renderTooltip({ content: 'Success message' });
 
-    expect(statusIndicatorWrapper.getElement()).toHaveTextContent('Success');
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Success message');
   });
 
   it('renders arrow', () => {
-    const wrapper = renderTooltip({ value: 'Value' });
+    const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findArrow()).not.toBeNull();
   });
 
   it('does not render a header', () => {
-    const wrapper = renderTooltip({ value: 'Value' });
+    const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findHeader()).toBeNull();
   });
 
   it('trackKey is set correctly for strings', () => {
-    const wrapper = renderTooltip({ value: 'Value' });
+    const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
   });
 
   it('trackKey is set correctly for explicit value', () => {
-    const trackKey = 'test-track-key';
-    const wrapper = renderTooltip({ value: 'Value', trackKey });
+    const trackKey = 'test-id';
+    const wrapper = renderTooltip({ content: 'Value', trackKey });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
   });
 
-  it('calls onDismiss when an Escape keypress is detected anywhere', () => {
-    const onDismiss = jest.fn();
+  it('calls onEscape when an Escape keypress is detected anywhere', () => {
+    const onEscape = jest.fn();
     const keydownEvent = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
     jest.spyOn(keydownEvent, 'stopPropagation');
 
-    renderTooltip({ value: 'Value', onDismiss });
-    expect(onDismiss).not.toHaveBeenCalled();
+    renderTooltip({ content: 'Value', onEscape });
+    expect(onEscape).not.toHaveBeenCalled();
 
     act(() => {
       // Dispatch the exect event instance so that we can spy stopPropagation on it.
       document.body.dispatchEvent(keydownEvent);
     });
     expect(keydownEvent.stopPropagation).toHaveBeenCalled();
-    expect(onDismiss).toHaveBeenCalled();
+    expect(onEscape).toHaveBeenCalled();
   });
 });

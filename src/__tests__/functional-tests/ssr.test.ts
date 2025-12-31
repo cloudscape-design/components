@@ -35,8 +35,8 @@ for (const componentName of getAllComponents().filter(component => vrOnlyCompone
     const { default: Component } = requireComponent(componentName);
     const props = getRequiredPropsForComponent(componentName);
     const content = renderToStaticMarkup(React.createElement(Component, props, 'test content'));
-    if (componentName === 'modal') {
-      // modal uses portal API which does not work on server and returns an empty content
+    if (componentName === 'modal' || componentName === 'tooltip') {
+      // modal and tooltip use portal API which does not work on server and returns an empty content
       expect(content.length).toEqual(0);
     } else {
       expect(content.length).toBeGreaterThan(0);

@@ -175,7 +175,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.findTrigger().keydown(KeyCode.down);
         const dropdown = wrapper.findDropdown({ expandToViewport });
         expect(dropdown.findOption(1)!.findDisabledReason()!.getElement()).toHaveTextContent('disabled reason');
-        window.dispatchEvent(new Event('scroll'));
+        fireEvent.scroll(dropdown.findOptionsContainer()!.getElement());
         await waitFor(() => {
           expect(dropdown.findOption(1)!.findDisabledReason()).toBe(null);
         });
