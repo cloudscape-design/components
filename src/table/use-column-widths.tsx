@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
@@ -92,47 +92,50 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
-  const setCell = (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
+  const setCell = useCallback((sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
     const ref = sticky ? stickyCellsRef : cellsRef;
     if (node) {
       ref.current.set(columnId, node);
     } else {
       ref.current.delete(columnId);
     }
-  };
+  }, []);
 
-  const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
-    const column = columnById.get(columnId);
-    if (!column) {
-      return {};
-    }
-
-    if (sticky) {
-      return {
-        width:
-          cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
-          (columnWidths?.get(column.id) ?? column.width),
-      };
-    }
-
-    if (resizableColumns && columnWidths) {
-      const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
-      const totalWidth = visibleColumns.reduce(
-        (sum, { id }) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH),
-        0
-      );
-      if (isLastColumn && containerWidthRef.current > totalWidth) {
-        return { width: 'auto', minWidth: column?.minWidth };
-      } else {
-        return { width: columnWidths.get(column.id), minWidth: column?.minWidth };
+  const getColumnStyles = useCallback(
+    (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
+      const column = columnById.get(columnId);
+      if (!column) {
+        return {};
       }
-    }
-    return {
-      width: column.width,
-      minWidth: column.minWidth,
-      maxWidth: !resizableColumns ? column.maxWidth : undefined,
-    };
-  };
+
+      if (sticky) {
+        return {
+          width:
+            cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
+            (columnWidths?.get(column.id) ?? column.width),
+        };
+      }
+
+      if (resizableColumns && columnWidths) {
+        const isLastColumn = column.id === visibleColumns[visibleColumns.length - 1]?.id;
+        const totalWidth = visibleColumns.reduce(
+          (sum, { id }) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH),
+          0
+        );
+        if (isLastColumn && containerWidthRef.current > totalWidth) {
+          return { width: 'auto', minWidth: column?.minWidth };
+        } else {
+          return { width: columnWidths.get(column.id), minWidth: column?.minWidth };
+        }
+      }
+      return {
+        width: column.width,
+        minWidth: column.minWidth,
+        maxWidth: !resizableColumns ? column.maxWidth : undefined,
+      };
+    },
+    [columnById, columnWidths, resizableColumns, visibleColumns]
+  );
 
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
@@ -195,12 +198,25 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function updateColumn(columnId: PropertyKey, newWidth: number) {
-    setColumnWidths(columnWidths => updateWidths(columnById, columnWidths ?? new Map(), newWidth, columnId));
-  }
+  const updateColumn = useCallback(
+    (columnId: PropertyKey, newWidth: number) => {
+      setColumnWidths(columnWidths => updateWidths(columnById, columnWidths ?? new Map(), newWidth, columnId));
+    },
+    [columnById]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      getColumnStyles,
+      columnWidths: columnWidths ?? new Map<PropertyKey, number>(),
+      updateColumn,
+      setCell,
+    }),
+    [getColumnStyles, columnWidths, updateColumn, setCell]
+  );
 
   return (
-    <WidthsContext.Provider value={{ getColumnStyles, columnWidths: columnWidths ?? new Map(), updateColumn, setCell }}>
+    <WidthsContext.Provider value={contextValue}>
       {children}
     </WidthsContext.Provider>
   );
