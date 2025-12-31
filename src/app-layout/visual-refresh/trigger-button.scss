@@ -5,7 +5,6 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin trigger-selected-styles {
   background: awsui.$color-background-layout-toggle-selected-default;
@@ -69,7 +68,7 @@ handleSplitPanelMaxWidth function in the context.
   pointer-events: auto;
   position: relative;
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(3px);
   }
 
