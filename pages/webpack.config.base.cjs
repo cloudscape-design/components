@@ -13,7 +13,10 @@ const isLocal = !process.env.CI;
 const noop = () => ({ apply: () => {} });
 
 const replaceModule = (from, to) =>
-  new NormalModuleReplacementPlugin(from, resource => (resource.request = resource.request.replace(from, to)));
+  new NormalModuleReplacementPlugin(from, resource => {
+    console.log(`Replacing module: ${resource.request} -> ${resource.request.replace(from, to)}`);
+    resource.request = resource.request.replace(from, to);
+  });
 
 module.exports = ({
   outputPath = 'pages/lib/static/',
@@ -23,6 +26,7 @@ module.exports = ({
   globalStylesIndex = 'index',
   moduleReplacements,
   react18,
+  sharedUtilsPath = '../lib/dev-pages/pages/shared-utils',
 } = {}) => {
   const mode = process.env.NODE_ENV;
   return {
@@ -42,6 +46,11 @@ module.exports = ({
         // The NormalModuleReplacementPlugin does not work there
         // https://github.com/webpack-contrib/sass-loader/issues/489
         '~design-tokens': designTokensPath,
+        // '@cloudscape-design/build-tools/src/test-pages-util': (() => {
+        //   const resolved = path.resolve(__dirname, 'lib/dev-pages/pages/shared-utils');
+        //   console.log(`Alias resolved: @cloudscape-design/build-tools/src/test-pages-util -> ${resolved}`);
+        //   return resolved;
+        // })(),
         ...(react18
           ? {
               '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
@@ -61,15 +70,22 @@ module.exports = ({
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          include: path.resolve(__dirname),
+          include: [
+            path.resolve(__dirname),
+            path.resolve(__dirname, '../', 'lib', 'dev-pages', 'pages', 'shared-utils'),
+          ],
           exclude: /__tests__/,
           options: {
             compilerOptions: {
+              rootDir: path.resolve(__dirname, '../'),
               baseUrl: '.',
               paths: {
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
+                '@cloudscape-design/build-tools/src/test-pages-util': [
+                  path.resolve(__dirname, '../', 'lib', 'dev-pages', 'pages', 'shared-utils'),
+                ],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
@@ -151,8 +167,42 @@ module.exports = ({
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
       }),
-      replaceModule(/~components/, componentsPath),
-      replaceModule(/~design-tokens/, designTokensPath),
+      replaceModule(
+        /~components/,
+        (() => {
+          const resolved = componentsPath;
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: ~components`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
+      ),
+      replaceModule(
+        /~design-tokens/,
+        (() => {
+          const resolved = designTokensPath;
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: ~design-tokens`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
+      ),
+      replaceModule(
+        /@cloudscape-design\/build-tools\/src\/test-pages-util/,
+        (() => {
+          const resolved = path.resolve(__dirname, sharedUtilsPath);
+          console.log(`\n=== MODULE REPLACEMENT ===`);
+          console.log(`Pattern: @cloudscape-design/build-tools/src/test-pages-util`);
+          console.log(`Resolved to: ${resolved}`);
+          console.log(`Directory exists: ${require('fs').existsSync(resolved)}`);
+          console.log(`=========================\n`);
+          return resolved;
+        })()
+      ),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)
         : noop,

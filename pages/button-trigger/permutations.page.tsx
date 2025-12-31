@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Box from '~components/box';
 import ButtonTrigger, { ButtonTriggerProps } from '~components/internal/components/button-trigger';
 import Option from '~components/internal/components/option';
 import { OptionDefinition } from '~components/internal/components/option/interfaces';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const option1: OptionDefinition = {

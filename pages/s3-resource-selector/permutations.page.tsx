@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Alert from '~components/alert';
 import S3ResourceSelector, { S3ResourceSelectorProps } from '~components/s3-resource-selector';
 
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './data/i18n-strings';
 import { fetchBuckets, fetchObjects, fetchVersions } from './data/request';

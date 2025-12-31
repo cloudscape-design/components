@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Box from '~components/box';
 import Button from '~components/button';
 import Icon from '~components/icon';
 import Link from '~components/link';
 import Popover from '~components/popover';
 import { StepsProps } from '~components/steps';
-
-import createPermutations from '../utils/permutations';
 
 const initialSteps: ReadonlyArray<StepsProps.Step> = [
   {

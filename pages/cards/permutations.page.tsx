@@ -3,14 +3,15 @@
 import React from 'react';
 import range from 'lodash/range';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import { Link } from '~components';
 import Box from '~components/box';
 import Button from '~components/button';
 import Cards, { CardsProps } from '~components/cards/index';
 import Header from '~components/header';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 interface Item {

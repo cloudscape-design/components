@@ -3,11 +3,12 @@
 
 import React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import TokenList, { TokenListProps } from '~components/internal/components/token-list';
 import FilteringToken, { FilteringTokenProps } from '~components/property-filter/filtering-token';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const token1 = {

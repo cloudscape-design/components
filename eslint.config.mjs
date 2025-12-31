@@ -14,7 +14,7 @@ import globals from 'globals';
 import path from 'node:path';
 import tsEslint from 'typescript-eslint';
 
-import cloudscapeCommonRules from '@cloudscape-design/build-tools/eslint/index.js';
+import cloudscapeCommonRules from '@cloudscape-design/build-tools/src/eslint/index.js';
 
 import cloudscapeComponentsRules from './build-tools/eslint/index.js';
 
@@ -48,7 +48,7 @@ export default tsEslint.config(
     plugins: {
       'simple-import-sort': simpleImportSortPlugin,
       '@cloudscape-design/components': cloudscapeComponentsRules,
-      '@cloudscape-design/build-tools': cloudscapeCommonRules,
+      'git-build-tools': cloudscapeCommonRules,
       unicorn: unicornPlugin,
       header: headerPlugin,
     },
@@ -64,7 +64,7 @@ export default tsEslint.config(
       'react/no-unstable-nested-components': ['error', { allowAsProps: true }],
       'react/prop-types': 'off',
       'react/jsx-boolean-value': ['error', 'always'],
-      '@cloudscape-design/build-tools/react-server-components-directive': 'error',
+      'git-build-tools/react-server-components-directive': 'error',
       '@cloudscape-design/components/ban-files': [
         'error',
         [

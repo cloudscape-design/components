@@ -3,13 +3,14 @@
 
 import * as React from 'react';
 
+import { createPermutations } from '@cloudscape-design/build-tools/src/test-pages-util';
+import { PermutationsView } from '@cloudscape-design/build-tools/src/test-pages-util';
+
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 
 import { PermutationsPage } from '../app/templates';
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 
 const intervals = [
   ['2021-08-01', '2021-08-31'],
