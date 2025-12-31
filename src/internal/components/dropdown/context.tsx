@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
@@ -14,7 +14,8 @@ export interface DropdownContextProviderProps {
 }
 
 export function DropdownContextProvider({ children, position = 'bottom-right' }: DropdownContextProviderProps) {
-  return <DropdownContext.Provider value={{ position }}>{children}</DropdownContext.Provider>;
+  const value = useMemo(() => ({ position }), [position]);
+  return <DropdownContext.Provider value={value}>{children}</DropdownContext.Provider>;
 }
 
 export function useDropdownContext() {
