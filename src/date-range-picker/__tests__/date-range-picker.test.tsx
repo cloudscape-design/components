@@ -259,6 +259,7 @@ describe('Date range picker', () => {
       });
 
       test('produces the value even if validation does not catch an incomplete range', () => {
+        Mockdate.set(new Date('2026-01-01T12:30:20'));
         wrapper.openDropdown();
 
         changeMode(wrapper, 'absolute');
@@ -267,13 +268,14 @@ describe('Date range picker', () => {
         wrapper.findDropdown()!.findApplyButton().click();
 
         const dayObjectProperties = { endDate: 'T23:59:59+00:00', type: 'absolute' };
-        const monthObjectProperties = { endDate: '', startDate: '2025-09', type: 'absolute' };
+        const monthObjectProperties = { endDate: '', startDate: '2026-09', type: 'absolute' };
 
         expect(onChangeSpy).toHaveBeenCalledWith(
           expect.objectContaining({
             value: expect.objectContaining(granularity === 'day' ? dayObjectProperties : monthObjectProperties),
           })
         );
+        Mockdate.reset();
       });
 
       test('should not fire onChange if the date is invalid', () => {
