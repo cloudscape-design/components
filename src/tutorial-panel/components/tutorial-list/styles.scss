@@ -17,6 +17,16 @@
   margin-inline: 0;
 }
 
+.tutorial-header-region {
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .tutorial-box {
   @include styles.styles-reset;
   list-style: none;
