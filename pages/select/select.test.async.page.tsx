@@ -22,7 +22,8 @@ interface ExtendedWindow extends Window {
   __pendingRequests: Array<PendingRequest>;
 }
 declare const window: ExtendedWindow;
-const pendingRequests: Array<PendingRequest> = (window.__pendingRequests = []);
+// Guard for SSR - only initialize on client
+const pendingRequests: Array<PendingRequest> = typeof window !== 'undefined' ? (window.__pendingRequests = []) : [];
 
 const ITEMS_PER_PAGE = 25;
 const MAX_PAGES = 3;

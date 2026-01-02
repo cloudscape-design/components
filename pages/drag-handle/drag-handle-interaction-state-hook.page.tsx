@@ -136,7 +136,11 @@ const TestBoardItemButton: React.FC = () => {
             </p>
           </Box>
         </Container>
-        {renderInPortal ? <div>{createPortal(buttonComp, document.body)}</div> : buttonComp}
+        {renderInPortal ? (
+          <div>{typeof document !== 'undefined' && createPortal(buttonComp, document.body)}</div>
+        ) : (
+          buttonComp
+        )}
       </SpaceBetween>
     </>
   );
