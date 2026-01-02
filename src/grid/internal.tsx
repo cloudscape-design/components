@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 import clsx, { ClassValue } from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -11,6 +10,7 @@ import { Breakpoint, matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
+import flattenChildren from '../internal/vendor/react-keyed-flatten-children';
 import { GridProps } from './interfaces';
 
 import styles from './styles.css.js';
