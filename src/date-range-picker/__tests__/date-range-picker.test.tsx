@@ -259,6 +259,7 @@ describe('Date range picker', () => {
       });
 
       test('produces the value even if validation does not catch an incomplete range', () => {
+        Mockdate.set(new Date('2025-09-01T12:30:20'));
         wrapper.openDropdown();
 
         changeMode(wrapper, 'absolute');
@@ -274,6 +275,7 @@ describe('Date range picker', () => {
             value: expect.objectContaining(granularity === 'day' ? dayObjectProperties : monthObjectProperties),
           })
         );
+        Mockdate.reset();
       });
 
       test('should not fire onChange if the date is invalid', () => {
