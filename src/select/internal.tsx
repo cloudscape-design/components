@@ -235,6 +235,9 @@ const InternalSelect = React.forwardRef(
 
     const dropdownProps = getDropdownProps();
 
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
     return (
       <div
         {...baseProps}
@@ -260,6 +263,8 @@ const InternalSelect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          // Forces dropdown position recalculation when new options are loaded
+          contentKey={hasOptions.current.toString()}
         >
           <ListComponent
             listBottom={
