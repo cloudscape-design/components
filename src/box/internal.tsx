@@ -7,6 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { BoxProps } from './interfaces';
+import { getSpacingStyles } from './spacing-styles';
 
 import styles from './styles.css.js';
 
@@ -29,16 +30,12 @@ export default function InternalBox({
   ...props
 }: InternalBoxProps) {
   const baseProps = getBaseProps(props);
-  const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
-  const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
 
   const className = clsx(
     baseProps.className,
     styles.root,
     styles.box,
     styles[`${variant.replace(/^awsui-/, '')}-variant`],
-    marginsClassNamesSuffices.map(suffix => styles[`m-${suffix}`]),
-    paddingsClassNamesSuffices.map(suffix => styles[`p-${suffix}`]),
     styles[`d-${display}`],
     styles[`f-${float}`],
     styles[`color-${color || 'default'}`],
@@ -46,6 +43,8 @@ export default function InternalBox({
     styles[`font-weight-${fontWeight || 'default'}`],
     styles[`t-${textAlign}`]
   );
+
+  const spacingStyles = getSpacingStyles({ margin, padding });
 
   // allow auto-focusing of h1 boxes from flashbar
   const tabindex = variant === 'h1' ? -1 : undefined;
@@ -58,20 +57,13 @@ export default function InternalBox({
       tabIndex={tabindex}
       nativeAttributes={nativeAttributes}
       className={className}
+      style={spacingStyles}
       ref={__internalRootRef}
     >
       {children}
     </WithNativeAttributes>
   );
 }
-
-const getClassNamesSuffixes = (value: BoxProps.SpacingSize | BoxProps.Spacing) => {
-  if (typeof value === 'string') {
-    return [value];
-  }
-  const sides = ['top', 'right', 'bottom', 'left', 'horizontal', 'vertical'] as const;
-  return sides.filter(side => !!value[side]).map(side => `${side}-${value[side]}`);
-};
 
 const getTag = (variant: BoxProps.Variant, tagOverride: BoxProps['tagOverride']) => {
   if (tagOverride) {
