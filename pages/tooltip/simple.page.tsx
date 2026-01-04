@@ -26,16 +26,8 @@ export default function TooltipSimple() {
   const rightRef = useRef<HTMLDivElement>(null);
 
   // Common use cases
-  const [showIconEdit, setShowIconEdit] = useState(false);
-  const [showIconDelete, setShowIconDelete] = useState(false);
-  const [showIconSettings, setShowIconSettings] = useState(false);
-  const [showDisabled, setShowDisabled] = useState(false);
   const [showTruncated, setShowTruncated] = useState(false);
 
-  const iconEditRef = useRef<HTMLDivElement>(null);
-  const iconDeleteRef = useRef<HTMLDivElement>(null);
-  const iconSettingsRef = useRef<HTMLDivElement>(null);
-  const disabledRef = useRef<HTMLDivElement>(null);
   const truncatedRef = useRef<HTMLDivElement>(null);
 
   // Interactive content
@@ -49,15 +41,15 @@ export default function TooltipSimple() {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   // Hidden descriptions for Content Length Variations
-  const { targetProps: shortTargetProps, descriptionEl: shortDescriptionEl } = useHiddenDescription('Short');
+  const { targetProps: shortTargetProps, descriptionEl: shortDescriptionEl } = useHiddenDescription('Lorem');
   const { targetProps: mediumTargetProps, descriptionEl: mediumDescriptionEl } = useHiddenDescription(
-    'This is a medium length tooltip that provides more information than the short one but is not as detailed as the longer versions.'
+    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.'
   );
   const { targetProps: longTargetProps, descriptionEl: longDescriptionEl } = useHiddenDescription(
-    'This is a longer tooltip that provides comprehensive information about the feature or action. It includes multiple sentences and detailed explanations to help users understand exactly what will happen when they interact with this element.'
+    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
   );
   const { targetProps: veryLongTargetProps, descriptionEl: veryLongDescriptionEl } = useHiddenDescription(
-    'This is a very long tooltip that contains extensive information and will likely wrap to multiple lines depending on the available space. It demonstrates how tooltips handle longer content and provides a comprehensive explanation of the feature, including detailed instructions, warnings, and additional context that users might need to make informed decisions about their actions.'
+    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.'
   );
 
   // Hidden description for Interactive Position Control (updates with position)
@@ -158,7 +150,7 @@ export default function TooltipSimple() {
                 {shortDescriptionEl}
                 {showTop && (
                   <Tooltip
-                    content="Short"
+                    content="Lorem"
                     getTrack={() => topRef.current}
                     position="top"
                     onEscape={() => setShowTop(false)}
@@ -186,7 +178,7 @@ export default function TooltipSimple() {
                 {mediumDescriptionEl}
                 {showBottom && (
                   <Tooltip
-                    content="This is a medium length tooltip with more content"
+                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
                     getTrack={() => bottomRef.current}
                     position="bottom"
                     onEscape={() => setShowBottom(false)}
@@ -214,7 +206,7 @@ export default function TooltipSimple() {
                 {longDescriptionEl}
                 {showLeft && (
                   <Tooltip
-                    content="This is a longer tooltip..."
+                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                     getTrack={() => leftRef.current}
                     position="left"
                     onEscape={() => setShowLeft(false)}
@@ -244,7 +236,7 @@ export default function TooltipSimple() {
                 {veryLongDescriptionEl}
                 {showRight && (
                   <Tooltip
-                    content="This is a very long tooltip with substantial content that demonstrates how the tooltip component handles longer text. It includes multiple sentences to show text wrapping behavior and ensure the tooltip remains readable with extended content. This helps test various edge cases related to tooltip sizing and positioning."
+                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
                     getTrack={() => rightRef.current}
                     position="right"
                     onEscape={() => setShowRight(false)}
@@ -253,112 +245,6 @@ export default function TooltipSimple() {
                 )}
               </div>
             </SpaceBetween>
-          </section>
-
-          <section>
-            <h3>Icon-Only Buttons</h3>
-            <SpaceBetween direction="horizontal" size="xs">
-              <div
-                ref={iconEditRef}
-                onMouseEnter={() => setShowIconEdit(true)}
-                onMouseLeave={() => setShowIconEdit(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="icon"
-                  iconName="edit"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowIconEdit(true),
-                    onBlur: () => setShowIconEdit(false),
-                  }}
-                />
-                {showIconEdit && (
-                  <Tooltip
-                    content="Edit"
-                    getTrack={() => iconEditRef.current}
-                    position="top"
-                    onEscape={() => setShowIconEdit(false)}
-                    trackKey="icon-edit"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={iconDeleteRef}
-                onMouseEnter={() => setShowIconDelete(true)}
-                onMouseLeave={() => setShowIconDelete(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="icon"
-                  iconName="remove"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowIconDelete(true),
-                    onBlur: () => setShowIconDelete(false),
-                  }}
-                />
-                {showIconDelete && (
-                  <Tooltip
-                    content="Delete"
-                    getTrack={() => iconDeleteRef.current}
-                    position="top"
-                    onEscape={() => setShowIconDelete(false)}
-                    trackKey="icon-delete"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={iconSettingsRef}
-                onMouseEnter={() => setShowIconSettings(true)}
-                onMouseLeave={() => setShowIconSettings(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="icon"
-                  iconName="settings"
-                  nativeButtonAttributes={{
-                    onFocus: () => setShowIconSettings(true),
-                    onBlur: () => setShowIconSettings(false),
-                  }}
-                />
-                {showIconSettings && (
-                  <Tooltip
-                    content="Settings"
-                    getTrack={() => iconSettingsRef.current}
-                    position="top"
-                    onEscape={() => setShowIconSettings(false)}
-                    trackKey="icon-settings"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </section>
-
-          <section>
-            <h3>Disabled Button</h3>
-            <div
-              ref={disabledRef}
-              onMouseEnter={() => setShowDisabled(true)}
-              onMouseLeave={() => setShowDisabled(false)}
-              onFocus={() => setShowDisabled(true)}
-              onBlur={() => setShowDisabled(false)}
-              tabIndex={0}
-              style={{ display: 'inline-block' }}
-            >
-              <Button disabled={true} iconName="upload">
-                Save
-              </Button>
-              {showDisabled && (
-                <Tooltip
-                  content="No changes to save"
-                  getTrack={() => disabledRef.current}
-                  position="top"
-                  onEscape={() => setShowDisabled(false)}
-                  trackKey="disabled"
-                />
-              )}
-            </div>
           </section>
 
           <section>
