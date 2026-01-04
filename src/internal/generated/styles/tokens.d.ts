@@ -62,13 +62,29 @@ export const colorChartsThresholdPositive: string;
 export const colorChartsThresholdInfo: string;
 export const colorChartsThresholdNeutral: string;
 
-// Spacing
-export const spaceXs: string;
-export const spaceXxs: string;
+// Spacing - horizontal (inline direction, does not scale)
+export const spaceNone: string;
 export const spaceXxxs: string;
+export const spaceXxs: string;
+export const spaceXs: string;
+export const spaceS: string;
+export const spaceM: string;
+export const spaceL: string;
+export const spaceXl: string;
+export const spaceXxl: string;
+export const spaceXxxl: string;
+
+// Spacing - vertical (block direction, scales in compact mode)
+export const spaceScaledNone: string;
+export const spaceScaledXxxs: string;
 export const spaceScaledXxs: string;
 export const spaceScaledXs: string;
 export const spaceScaledS: string;
+export const spaceScaledM: string;
+export const spaceScaledL: string;
+export const spaceScaledXl: string;
+export const spaceScaledXxl: string;
+export const spaceScaledXxxl: string;
 
 // Line height
 export const lineHeightBodyM: string;

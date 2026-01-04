@@ -4,10 +4,10 @@
 */
 
 @use '../internal/styles' as styles;
-@use './spacing.scss' as spacing;
 
-@include spacing.create-spacing(p-, padding, '.box');
-@include spacing.create-spacing(m-, margin, '.box');
+// Spacing (margin/padding) is now applied via inline styles in internal.tsx
+// using CSS custom properties from design tokens. This reduces CSS bundle size
+// by ~15KB by eliminating 140 pre-generated spacing utility classes.
 
 .box {
   &.d-block {

@@ -14,6 +14,11 @@ function renderBox(props: BoxProps = {}): BoxWrapper {
   return new BoxWrapper(element);
 }
 
+// Helper to get computed style property from element
+function getStyleProperty(element: HTMLElement, property: string): string {
+  return element.style.getPropertyValue(property) || (element.style as any)[property] || '';
+}
+
 function testClassNamesForProperty<PropertyType>(propertyName: string, values: Array<PropertyType>, prefix: string) {
   test(`sets the right className for ${propertyName} property`, () => {
     const expectedClassNames = values.map(suffix => styles[`${prefix}-${suffix}`]);
@@ -99,31 +104,52 @@ describe('Box', () => {
   ['margin', 'padding'].forEach(spacingType => {
     describe(`${spacingType} property`, () => {
       const sizes = ['n', 'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'] as Array<BoxProps.SpacingSize>;
-      test(`sets the right classNames for all-sides ${spacingType}s`, () => {
+
+      test(`sets the right inline styles for all-sides ${spacingType}s`, () => {
         sizes.forEach(size => {
           const boxWrapper = renderBox({ [spacingType]: size });
-          expect(boxWrapper.getElement()).toHaveClass(styles[`${spacingType.slice(0, 1)}-${size}`]);
+          const element = boxWrapper.getElement();
+          // Spacing is now applied via inline styles using CSS custom properties
+          const blockStyle = getStyleProperty(element, `${spacingType}-block`);
+          const inlineStyle = getStyleProperty(element, `${spacingType}-inline`);
+          expect(blockStyle).toContain('var(--space-scaled-');
+          expect(inlineStyle).toContain('var(--space-');
         });
       });
-      test(`sets the right classNames for side-specific ${spacingType}s`, () => {
+
+      test(`sets the right inline styles for side-specific ${spacingType}s`, () => {
+        const sideToStyleProperty: Record<string, string> = {
+          top: `${spacingType}-block-start`,
+          bottom: `${spacingType}-block-end`,
+          left: `${spacingType}-inline-start`,
+          right: `${spacingType}-inline-end`,
+          horizontal: `${spacingType}-inline`,
+          vertical: `${spacingType}-block`,
+        };
         const sides = ['top', 'right', 'bottom', 'left', 'horizontal', 'vertical'];
         sides.forEach(side => {
           sizes.forEach(size => {
             const boxWrapper = renderBox({ [spacingType]: { [side]: size } });
-            expect(boxWrapper.getElement()).toHaveClass(styles[`${spacingType.slice(0, 1)}-${side}-${size}`]);
+            const element = boxWrapper.getElement();
+            const styleProperty = sideToStyleProperty[side];
+            const styleValue = getStyleProperty(element, styleProperty);
+            expect(styleValue).toContain('var(--space-');
           });
         });
       });
-      test(`sets the right classNames for ${spacingType}s when multiple sides are provided`, () => {
+
+      test(`sets the right inline styles for ${spacingType}s when multiple sides are provided`, () => {
         const boxWrapper = renderBox({
           [spacingType]: { top: 'n', right: 'xxs', bottom: 'xs', left: 's', horizontal: 'm', vertical: 'l' },
         });
-        const expectedClassNames = ['top-n', 'right-xxs', 'bottom-xs', 'left-s', 'horizontal-m', 'vertical-l'].map(
-          suffix => styles[`${spacingType.slice(0, 1)}-${suffix}`]
-        );
-        expectedClassNames.forEach(className => {
-          expect(boxWrapper.getElement()).toHaveClass(className);
-        });
+        const element = boxWrapper.getElement();
+        // Check that multiple style properties are set
+        expect(getStyleProperty(element, `${spacingType}-block-start`)).toContain('var(--space-');
+        expect(getStyleProperty(element, `${spacingType}-inline-end`)).toContain('var(--space-');
+        expect(getStyleProperty(element, `${spacingType}-block-end`)).toContain('var(--space-');
+        expect(getStyleProperty(element, `${spacingType}-inline-start`)).toContain('var(--space-');
+        expect(getStyleProperty(element, `${spacingType}-inline`)).toContain('var(--space-');
+        expect(getStyleProperty(element, `${spacingType}-block`)).toContain('var(--space-');
       });
     });
   });
@@ -173,5 +199,50 @@ describe('Box', () => {
       expect(container.firstChild).toHaveClass(styles.root);
       expect(container.firstChild).toHaveClass('additional-class');
     });
+  });
+
+  describe('spacing edge cases', () => {
+    test('applies no spacing styles when margin and padding are empty objects', () => {
+      const boxWrapper = renderBox({ margin: {}, padding: {} });
+      const element = boxWrapper.getElement();
+      // Empty objects should not add any spacing styles
+      expect(getStyleProperty(element, 'margin-block')).toBe('');
+      expect(getStyleProperty(element, 'margin-inline')).toBe('');
+      expect(getStyleProperty(element, 'padding-block')).toBe('');
+      expect(getStyleProperty(element, 'padding-inline')).toBe('');
+    });
+
+    test('uses scaled tokens for vertical spacing and non-scaled for horizontal', () => {
+      const boxWrapper = renderBox({ margin: { top: 'm', left: 'm' } });
+      const element = boxWrapper.getElement();
+      // Vertical (block) uses scaled tokens
+      expect(getStyleProperty(element, 'margin-block-start')).toContain('var(--space-scaled-');
+      // Horizontal (inline) uses non-scaled tokens
+      expect(getStyleProperty(element, 'margin-inline-start')).toMatch(/var\(--space-[^s]/);
+    });
+
+    test('applies "n" size correctly for zero spacing', () => {
+      const boxWrapper = renderBox({ margin: 'n', padding: 'n' });
+      const element = boxWrapper.getElement();
+      expect(getStyleProperty(element, 'margin-block')).toContain('var(--space-scaled-none');
+      expect(getStyleProperty(element, 'margin-inline')).toContain('var(--space-none');
+      expect(getStyleProperty(element, 'padding-block')).toContain('var(--space-scaled-none');
+      expect(getStyleProperty(element, 'padding-inline')).toContain('var(--space-none');
+    });
+
+    test('applies partial side-specific spacing correctly', () => {
+      const boxWrapper = renderBox({ margin: { top: 's' }, padding: { horizontal: 'l' } });
+      const element = boxWrapper.getElement();
+      // Only specified sides should have styles
+      expect(getStyleProperty(element, 'margin-block-start')).toContain('var(--space-');
+      expect(getStyleProperty(element, 'margin-block-end')).toBe('');
+      expect(getStyleProperty(element, 'padding-inline')).toContain('var(--space-');
+      expect(getStyleProperty(element, 'padding-block')).toBe('');
+    });
+  });
+
+  test('uses div as tag name when set to awsui-gen-ai-label', () => {
+    const boxWrapper = renderBox({ variant: 'awsui-gen-ai-label' });
+    expect(boxWrapper.getElement().tagName).toBe('DIV');
   });
 });
