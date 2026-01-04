@@ -42,6 +42,52 @@ export namespace TooltipProps {
 }
 
 /**
+ * A utility hook for creating accessible descriptions for tooltips.
+ *
+ * This hook provides a way to add hidden descriptions to elements that work with screen readers
+ * while also supporting visual tooltips for sighted users. It creates a unique ID and returns
+ * props to connect an element to its description via aria-describedby.
+ *
+ * @param description - The description text to be announced by screen readers
+ *
+ * @returns An object with the following properties:
+ * - `targetProps`: Props to spread onto the target element (contains aria-describedby)
+ * - `descriptionEl`: A hidden span element containing the description text
+ * - `descriptionId`: The unique ID used for the description
+ *
+ * @example
+ * ```tsx
+ * import Tooltip, { useHiddenDescription } from '@cloudscape-design/components/tooltip';
+ *
+ * function MyComponent() {
+ *   const [show, setShow] = useState(false);
+ *   const { targetProps, descriptionEl } = useHiddenDescription(
+ *     'This button saves your changes'
+ *   );
+ *
+ *   return (
+ *     <div>
+ *       <button
+ *         {...targetProps}
+ *         onMouseEnter={() => setShow(true)}
+ *         onFocus={() => setShow(true)}
+ *       >
+ *         Save
+ *       </button>
+ *       {descriptionEl}
+ *       {show && <Tooltip content="This button saves your changes" />}
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
+export declare function useHiddenDescription(description?: string): {
+  targetProps: { 'aria-describedby'?: string };
+  descriptionEl: React.ReactElement | null;
+  descriptionId: string;
+};
+
+/**
  * Internal tooltip props - includes props not exposed in public API.
  * @internal
  */
