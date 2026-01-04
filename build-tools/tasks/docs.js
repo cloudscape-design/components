@@ -12,6 +12,7 @@ module.exports = function docs() {
     extraExports: {
       FileDropzone: ['useFilesDragging'],
       TagEditor: ['getTagsDiff'],
+      Tooltip: ['useHiddenDescription'],
     },
   });
   writeTestUtilsDocumentation({
