@@ -34,25 +34,13 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
-  const tooltipId = React.useMemo(() => {
-    return trackKey ? `tooltip-${trackKey}` : generateTooltipId();
-  }, [trackKey]);
+  const tooltipId = React.useMemo(() => generateTooltipId(), []);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
     const element = getTrack();
     trackRef.current = element;
-    // Add aria-describedby to the tracked element for accessibility
-    if (element && element.nodeType === Node.ELEMENT_NODE) {
-      element.setAttribute('aria-describedby', tooltipId);
-    }
-    return () => {
-      // Clean up aria-describedby when tooltip unmounts
-      if (element && element.nodeType === Node.ELEMENT_NODE) {
-        element.removeAttribute('aria-describedby');
-      }
-    };
-  }, [getTrack, tooltipId]);
+  }, [getTrack]);
 
   if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
     trackKey = content;

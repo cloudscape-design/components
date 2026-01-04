@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import ButtonGroup from '~components/button-group';
@@ -16,18 +15,25 @@ import SegmentedControl from '~components/segmented-control';
 import Select, { SelectProps } from '~components/select';
 import Slider from '~components/slider';
 import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 import Tabs from '~components/tabs';
 import Token from '~components/token';
-import Tooltip from '~components/tooltip';
+import Tooltip, { useHiddenDescription } from '~components/tooltip';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function InternalTooltipExamples() {
   return (
-    <>
-      <Box padding="l">
+    <article>
+      <h1>Tooltip Component Integration</h1>
+      <p>
+        Examples showing how tooltips enhance various components with contextual help, disabled state explanations, and
+        overflow content. Components demonstrated: Button, Select, Multiselect, Token, FileTokenGroup, SegmentedControl,
+        BreadcrumbGroup, Slider, Calendar, DateRangePicker, and Tabs.
+      </p>
+
+      <ScreenshotArea>
         <SpaceBetween size="l">
-          <Header variant="h1">Tooltip</Header>
           <TruncatedTextExample />
           <FileInputItemExample />
           <ButtonExample />
@@ -42,8 +48,8 @@ export default function InternalTooltipExamples() {
           <DateRangePickerExample />
           <TabsExample />
         </SpaceBetween>
-      </Box>
-    </>
+      </ScreenshotArea>
+    </article>
   );
 }
 
@@ -55,6 +61,16 @@ function TruncatedTextExample() {
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
 
+  const { targetProps: targetProps1, descriptionEl: descriptionEl1 } = useHiddenDescription(
+    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor'
+  );
+  const { targetProps: targetProps2, descriptionEl: descriptionEl2 } = useHiddenDescription(
+    'Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip'
+  );
+  const { targetProps: targetProps3, descriptionEl: descriptionEl3 } = useHiddenDescription(
+    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore'
+  );
+
   return (
     <Container header={<Header variant="h2">Truncated Text with Overflow Tooltips</Header>}>
       <ScreenshotArea>
@@ -63,23 +79,25 @@ function TruncatedTextExample() {
             ref={ref1}
             onMouseEnter={() => setShow1(true)}
             onMouseLeave={() => setShow1(false)}
-            style={{ maxWidth: '200px' }}
+            onFocus={() => setShow1(true)}
+            onBlur={() => setShow1(false)}
+            tabIndex={0}
+            style={{
+              maxWidth: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              padding: '8px',
+              border: '1px solid',
+              borderRadius: '4px',
+            }}
+            {...targetProps1}
           >
-            <div
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                padding: '8px',
-                background: '#f0f0f0',
-                borderRadius: '4px',
-              }}
-            >
-              this-is-a-example-filename-document-final-v2.pdf
-            </div>
+            {descriptionEl1}
+            <span>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor</span>
             {show1 && (
               <Tooltip
-                content=" this-is-a-example-filename-document-final-v2.pdf"
+                content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor"
                 getTrack={() => ref1.current}
                 onEscape={() => setShow1(false)}
                 trackKey="file1"
@@ -91,23 +109,25 @@ function TruncatedTextExample() {
             ref={ref2}
             onMouseEnter={() => setShow2(true)}
             onMouseLeave={() => setShow2(false)}
-            style={{ maxWidth: '200px' }}
+            onFocus={() => setShow2(true)}
+            onBlur={() => setShow2(false)}
+            tabIndex={0}
+            style={{
+              maxWidth: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              padding: '8px',
+              border: '1px solid',
+              borderRadius: '4px',
+            }}
+            {...targetProps2}
           >
-            <div
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                padding: '8px',
-                background: '#f0f0f0',
-                borderRadius: '4px',
-              }}
-            >
-              arn:aws:s3:::my-bucket-name/path/to/resource
-            </div>
+            {descriptionEl2}
+            <span>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip</span>
             {show2 && (
               <Tooltip
-                content="arn:aws:s3:::my-bucket-name/path/to/resource"
+                content="Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip"
                 getTrack={() => ref2.current}
                 onEscape={() => setShow2(false)}
                 trackKey="arn"
@@ -119,23 +139,25 @@ function TruncatedTextExample() {
             ref={ref3}
             onMouseEnter={() => setShow3(true)}
             onMouseLeave={() => setShow3(false)}
-            style={{ maxWidth: '200px' }}
+            onFocus={() => setShow3(true)}
+            onBlur={() => setShow3(false)}
+            tabIndex={0}
+            style={{
+              maxWidth: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              padding: '8px',
+              border: '1px solid',
+              borderRadius: '4px',
+            }}
+            {...targetProps3}
           >
-            <div
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                padding: '8px',
-                background: '#f0f0f0',
-                borderRadius: '4px',
-              }}
-            >
-              user@example-company-domain-name.com
-            </div>
+            {descriptionEl3}
+            <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</span>
             {show3 && (
               <Tooltip
-                content="user@example-company-domain-name.com"
+                content="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore"
                 getTrack={() => ref3.current}
                 onEscape={() => setShow3(false)}
                 trackKey="email"
@@ -150,14 +172,20 @@ function TruncatedTextExample() {
 
 function FileInputItemExample() {
   return (
-    <Container header={<Header variant="h2">ButtonGroup - FileInputItem (Internal Tooltips)</Header>}>
+    <Container header={<Header variant="h2">ButtonGroup with Copy Feedback</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="m">
           <ButtonGroup
             variant="icon"
             ariaLabel="File actions"
             items={[
-              { type: 'icon-button', id: 'copy', text: 'Copy', iconName: 'copy' },
+              {
+                type: 'icon-button',
+                id: 'copy',
+                text: 'Copy',
+                iconName: 'copy',
+                popoverFeedback: <StatusIndicator type="success">Copied!</StatusIndicator>,
+              },
               { type: 'icon-button', id: 'cut', text: 'Cut', iconName: 'file' },
               {
                 type: 'icon-file-input',
@@ -268,19 +296,19 @@ function TokenExample() {
             <div style={{ maxWidth: '200px' }}>
               <Token
                 variant="inline"
-                label="Very long label that will be truncated and show a tooltip on hover or focus"
+                label="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod"
                 dismissLabel="Remove token"
                 onDismiss={() => {}}
-                tooltipContent="Very long label that will be truncated and show a tooltip on hover or focus"
+                tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod"
               />
             </div>
             <div style={{ maxWidth: '180px' }}>
               <Token
                 variant="inline"
-                label="Another extremely long token label that demonstrates the overflow tooltip functionality when text exceeds container width"
+                label="Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip"
                 dismissLabel="Remove token"
                 onDismiss={() => {}}
-                tooltipContent="Another extremely long token label that demonstrates the overflow tooltip functionality when text exceeds container width"
+                tooltipContent="Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip"
               />
             </div>
           </SpaceBetween>
@@ -295,21 +323,21 @@ function FileTokenGroupExample() {
     {
       file: new File(
         ['content'],
-        'my-extremely-long-document-name-final-version-reviewed-approved-ready-for-production-deployment.pdf',
+        'lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt.pdf',
         { type: 'application/pdf' }
       ),
     },
     {
       file: new File(
         ['content'],
-        'very-long-filename-that-will-definitely-be-truncated-and-show-a-tooltip-when-you-hover-over-it-with-your-mouse-or-keyboard.docx',
+        'ut-enim-ad-minim-veniam-quis-nostrud-exercitation-ullamco-laboris-nisi-ut-aliquip-ex-ea-commodo.docx',
         { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }
       ),
     },
     {
       file: new File(
         ['content'],
-        'another-extremely-long-filename-that-demonstrates-tooltip-behavior-with-overflow-ellipsis-and-full-text-display-on-hover.xlsx',
+        'duis-aute-irure-dolor-in-reprehenderit-in-voluptate-velit-esse-cillum-dolore-eu-fugiat-nulla.xlsx',
         { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
       ),
     },
