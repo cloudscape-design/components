@@ -18,8 +18,6 @@
   box-shadow: var(#{custom-props.$styleBoxShadowDefault});
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
-  position: relative;
-  text-decoration: none;
   padding-block: map.get($variant, 'padding');
   padding-inline: map.get($variant, 'padding');
   font-weight: map.get($variant, 'font-weight');
@@ -29,7 +27,6 @@
     border-color: var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'));
     color: var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color'));
     box-shadow: var(#{custom-props.$styleBoxShadowHover});
-    text-decoration: none;
   }
 
   &:active {
@@ -44,7 +41,6 @@
     border-color: var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'));
     color: var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'));
     box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
-    text-decoration: none;
     cursor: auto;
   }
 }
@@ -69,6 +65,7 @@
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  position: relative;
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
