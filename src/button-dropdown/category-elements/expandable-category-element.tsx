@@ -13,7 +13,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from '../analytics-metadata/interfaces.js';
-import { CategoryProps } from '../interfaces';
+import { ButtonDropdownProps, CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 import Tooltip from '../tooltip.js';
 import { getMenuItemProps } from '../utils/menu-item';
@@ -34,6 +34,7 @@ const ExpandableCategoryElement = ({
   expandToViewport,
   variant,
   position,
+  renderItem,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -63,11 +64,25 @@ const ExpandableCategoryElement = ({
 
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
+
+  const renderResult =
+    renderItem?.({
+      item: {
+        type: 'group',
+        element: item as ButtonDropdownProps.ItemGroup,
+        disabled: !!disabled,
+        highlighted: !!isHighlighted,
+        expanded: expanded,
+        expandDirection: 'horizontal',
+      },
+    }) ?? null;
+
   const trigger = item.text && (
     <span
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
+        [styles['no-content-styling']]: !!renderResult,
         [styles['is-focused']]: isKeyboardHighlighted,
         [styles['visual-refresh']]: isVisualRefresh,
       })}
@@ -91,15 +106,21 @@ const ExpandableCategoryElement = ({
             } as GeneratedAnalyticsMetadataButtonDropdownExpand | GeneratedAnalyticsMetadataButtonDropdownCollapse)
       )}
     >
-      {(item.iconName || item.iconUrl || item.iconSvg) && (
-        <span className={styles['icon-wrapper']}>
-          <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
-        </span>
+      {renderResult ? (
+        renderResult
+      ) : (
+        <>
+          {(item.iconName || item.iconUrl || item.iconSvg) && (
+            <span className={styles['icon-wrapper']}>
+              <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+            </span>
+          )}
+          {item.text}
+          <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
+            <InternalIcon name="caret-down-filled" />
+          </span>
+        </>
       )}
-      {item.text}
-      <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
-        <InternalIcon name="caret-down-filled" />
-      </span>
     </span>
   );
 
@@ -142,6 +163,7 @@ const ExpandableCategoryElement = ({
               highlightItem={highlightItem}
               variant={variant}
               position={position}
+              renderItem={renderItem}
             />
           </ul>
         )}
