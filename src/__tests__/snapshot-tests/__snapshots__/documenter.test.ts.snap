@@ -6301,6 +6301,22 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
+      "inlineType": {
+        "name": "ButtonDropdownProps.ButtonDropdownItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: ButtonDropdownProps.ButtonDropdownItem; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": true,
+      "type": "ButtonDropdownProps.ButtonDropdownItemRenderer",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
