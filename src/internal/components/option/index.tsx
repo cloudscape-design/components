@@ -35,11 +35,20 @@ const Option = ({
   labelContainerRef,
   labelRef,
   labelId,
+  customContent,
   ...restProps
 }: OptionProps) => {
   if (!option) {
     return null;
   }
+  if (customContent) {
+    return (
+      <div data-value={option.value} className={clsx(styles.option)}>
+        <div className={clsx(styles['custom-content'])}>{customContent}</div>
+      </div>
+    );
+  }
+
   const { disabled } = option;
   const baseProps = getBaseProps(restProps);
   const SpanOrDivTag = option.labelContent ? 'div' : 'span';
@@ -55,7 +64,6 @@ const Option = ({
       validateStringValue(tag, `filteringTags[${index}]`);
     });
   }
-
   const className = clsx(
     styles.option,
     disabled && styles.disabled,

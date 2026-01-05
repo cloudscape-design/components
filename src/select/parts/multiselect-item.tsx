@@ -7,19 +7,71 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import Option from '../../internal/components/option';
-import { OptionDefinition } from '../../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
 import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { ItemProps } from './item';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import { ItemParentProps, ItemProps } from './item';
 
 import styles from './styles.css.js';
-interface MultiselectItemProps extends ItemProps {
+interface MultiselectItemProps extends ItemProps<MultiselectProps.MultiselectOptionItemRenderer> {
   indeterminate?: boolean;
+  parentProps?: MultiselectItemParentProps;
 }
+
+export interface MultiselectItemParentProps extends ItemParentProps {
+  indeterminate: boolean;
+  highlighted: boolean;
+  selected: boolean;
+}
+const toMultiselectOptionGroupItem = (
+  props: MultiselectItemParentProps
+): MultiselectProps.MultiselectOptionGroupItem => {
+  return {
+    type: 'group',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionGroup,
+    indeterminate: props.indeterminate ?? false,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+  };
+};
+const toMultiselectOptionItem = (props: {
+  index: number;
+  virtualIndex?: number;
+  option: DropdownOption;
+  disabled: boolean;
+  selected: boolean;
+  highlighted: boolean;
+  parentProps?: MultiselectItemParentProps;
+}): MultiselectProps.MultiselectOptionItem => {
+  return {
+    type: 'item',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionDefinition,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+    parent: props.parentProps
+      ? toMultiselectOptionGroupItem({
+          index: props.parentProps?.index,
+          virtualIndex: props.parentProps?.virtualIndex,
+          option: props.parentProps?.option,
+          disabled: props.disabled,
+          highlighted: props.parentProps?.highlighted ?? false,
+          indeterminate: props.parentProps?.indeterminate ?? false,
+          selected: props.parentProps?.selected ?? false,
+        })
+      : null,
+  };
+};
 
 const MultiSelectItem = (
   {
+    index,
+    virtualIndex,
     option,
     highlighted,
     selected,
@@ -36,6 +88,8 @@ const MultiSelectItem = (
     highlightType,
     withScrollbar,
     sticky,
+    renderOption,
+    parentProps,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -59,8 +113,52 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
+
+  const getMultiselectItemProps = (option: DropdownOption): MultiselectProps.MultiselectItem => {
+    if (option.type === 'parent') {
+      return toMultiselectOptionGroupItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        indeterminate: indeterminate ?? false,
+      });
+    } else if (option.type === 'select-all') {
+      return {
+        type: 'select-all',
+        option: option.option as OptionDefinition,
+        indeterminate: indeterminate ?? false,
+        selected: !!selected,
+        highlighted: !!highlighted,
+      };
+    } else {
+      return toMultiselectOptionItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: !!selected,
+        parentProps: parentProps,
+      });
+    }
+  };
+
+  const renderOptionWrapper = (option: DropdownOption) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    return renderOption({ item: getMultiselectItemProps(option), filterText: filteringValue });
+  };
+
+  const renderResult = renderOptionWrapper(option);
+
   return (
     <SelectableItem
+      disableContentStyling={!!renderResult}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
@@ -86,7 +184,7 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {hasCheckbox && (
+        {!renderResult && hasCheckbox && (
           <div className={styles.checkbox}>
             <CheckboxIcon
               checked={selected}
@@ -96,6 +194,7 @@ const MultiSelectItem = (
           </div>
         )}
         <Option
+          customContent={renderResult}
           option={{ ...wrappedOption, disabled }}
           highlightedOption={highlighted}
           selectedOption={selected}
@@ -103,7 +202,7 @@ const MultiSelectItem = (
           isGroupOption={isParent}
         />
       </div>
-      {isDisabledWithReason && (
+      {!renderResult && isDisabledWithReason && (
         <>
           {descriptionEl}
           {highlighted && canShowTooltip && (

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -17819,6 +17819,26 @@ For more information, see the
       "type": "SelectProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "MultiselectProps.MultiselectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: MultiselectProps.MultiselectItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "MultiselectProps.MultiselectOptionItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
@@ -23368,6 +23388,26 @@ For more information, see the
       "name": "renderHighlightedAriaLive",
       "optional": true,
       "type": "SelectProps.ContainingOptionAndGroupString",
+    },
+    {
+      "description": "Specifies a render function to render custom options in the dropdown menu or trigger.",
+      "inlineType": {
+        "name": "SelectProps.SelectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: SelectProps.SelectItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SelectProps.SelectOptionItemRenderer",
     },
     {
       "description": "Specifies the localized string that describes an option as being selected.
@@ -32431,6 +32471,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {
@@ -43451,6 +43492,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {

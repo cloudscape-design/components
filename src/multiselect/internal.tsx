@@ -60,6 +60,7 @@ const InternalMultiselect = React.forwardRef(
       __internalRootRef,
       autoFocus,
       enableSelectAll,
+      renderOption,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -179,6 +180,7 @@ const InternalMultiselect = React.forwardRef(
           contentKey={hasOptions.current.toString()}
         >
           <ListComponent
+            renderOption={renderOption}
             listBottom={
               !dropdownStatus.isSticky ? (
                 <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />

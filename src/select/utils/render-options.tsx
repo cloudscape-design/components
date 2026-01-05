@@ -6,8 +6,10 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
-import Item from '../parts/item';
-import MultiselectItem from '../parts/multiselect-item';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import { SelectProps } from '../interfaces';
+import Item, { ItemParentProps } from '../parts/item';
+import MultiselectItem, { MultiselectItemParentProps } from '../parts/multiselect-item';
 import OptionGroup from '../parts/option-group';
 import { getItemProps } from './get-item-props';
 
@@ -26,6 +28,7 @@ interface RenderOptionProps {
   withScrollbar: boolean;
   firstOptionSticky?: boolean;
   stickyOptionRef?: React.Ref<HTMLDivElement>;
+  renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
 export const renderOptions = ({
@@ -43,6 +46,7 @@ export const renderOptions = ({
   withScrollbar,
   firstOptionSticky,
   stickyOptionRef,
+  renderOption,
 }: RenderOptionProps) => {
   const getNestedItemProps = ({ index, option }: NestedDropdownOption) => {
     const virtualItem = virtualItems && virtualItems[index];
@@ -56,7 +60,7 @@ export const renderOptions = ({
     });
   };
 
-  const renderListItem = (props: any, index: number) => {
+  const renderListItem = (props: any, index: number, parentProps?: ItemParentProps | MultiselectItemParentProps) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
 
@@ -67,6 +71,8 @@ export const renderOptions = ({
 
     return (
       <ListItem
+        index={index}
+        virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}
         {...props}
         virtualPosition={virtualItem && virtualItem.start}
@@ -78,6 +84,8 @@ export const renderOptions = ({
         highlightType={highlightType.type}
         withScrollbar={withScrollbar}
         sticky={isSticky}
+        renderOption={renderOption}
+        parentProps={parentProps}
       />
     );
   };
@@ -99,7 +107,17 @@ export const renderOptions = ({
         >
           {renderListItem(props, index)}
           {children.map(child => (
-            <React.Fragment key={child.index}>{renderListItem(getNestedItemProps(child), child.index)}</React.Fragment>
+            <React.Fragment key={child.index}>
+              {renderListItem(getNestedItemProps(child), child.index, {
+                option: nestedDropdownOption.option,
+                disabled: nestedDropdownOption.option.disabled ?? false,
+                index: index,
+                virtualIndex: virtualItems?.[index]?.index ?? undefined,
+                highlighted: props.highlighted ?? false,
+                selected: props.selected ?? false,
+                indeterminate: props.indeterminate ?? false,
+              })}
+            </React.Fragment>
           ))}
         </OptionGroup>
       );
