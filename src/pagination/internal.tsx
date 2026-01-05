@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -8,12 +8,17 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
+import { BaseChangeDetail } from '../input/interfaces';
+import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalPopover from '../popover/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
 import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
@@ -24,9 +29,14 @@ const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',
   paginationLabel: '',
   previousPageLabel: '',
+  jumpToPageButton: '',
   pageLabel: pageNumber => `${pageNumber}`,
 };
 
+const defaultI18nStrings: Required<PaginationProps.I18nStrings> = {
+  jumpToPageLabel: 'Page',
+  jumpToPageError: 'Page out of range. Showing last available page.',
+};
 interface PageButtonProps {
   className?: string;
   ariaLabel: string;
@@ -99,23 +109,46 @@ function PageNumber({ pageIndex, ...rest }: PageButtonProps) {
   );
 }
 
-type InternalPaginationProps = PaginationProps & InternalBaseComponentProps;
+type InternalPaginationProps = PaginationProps &
+  InternalBaseComponentProps & {
+    jumpToPageRef?: React.Ref<PaginationProps.JumpToPageRef>;
+  };
 export default function InternalPagination({
   openEnd,
   currentPageIndex,
   ariaLabels,
+  i18nStrings,
   pagesCount,
   disabled,
   onChange,
   onNextPageClick,
   onPreviousPageClick,
   __internalRootRef,
+  jumpToPage,
+  jumpToPageRef,
   ...rest
 }: InternalPaginationProps) {
   const baseProps = getBaseProps(rest);
   const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
+  const [jumpToPageValue, setJumpToPageValue] = useState(currentPageIndex?.toString());
+  const prevLoadingRef = React.useRef(jumpToPage?.loading);
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const i18n = useInternalI18n('pagination');
+
+  // Expose setError function via ref
+  React.useImperativeHandle(jumpToPageRef, () => ({
+    setError: (error: boolean) => setHasError(error),
+  }));
+
+  // Sync input with currentPageIndex after loading completes
+  React.useEffect(() => {
+    if (prevLoadingRef.current && !jumpToPage?.loading) {
+      setJumpToPageValue(String(currentPageIndex));
+    }
+    prevLoadingRef.current = jumpToPage?.loading;
+  }, [jumpToPage?.loading, currentPageIndex]);
 
   const paginationLabel = ariaLabels?.paginationLabel;
   const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
@@ -124,6 +157,9 @@ export default function InternalPagination({
   const pageNumberLabelFn =
     i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
     defaultAriaLabels.pageLabel;
+  const jumpToPageLabel = i18nStrings?.jumpToPageLabel ?? defaultI18nStrings.jumpToPageLabel;
+  const jumpToPageButtonLabel = ariaLabels?.jumpToPageButton ?? defaultAriaLabels.jumpToPageButton;
+  const jumpToPageError = i18nStrings?.jumpToPageError ?? defaultI18nStrings.jumpToPageError;
 
   function handlePrevPageClick(requestedPageIndex: number) {
     handlePageClick(requestedPageIndex);
@@ -142,8 +178,56 @@ export default function InternalPagination({
   }
 
   function handlePageClick(requestedPageIndex: number) {
+    setJumpToPageValue(String(requestedPageIndex));
+    setHasError(false); // Clear error on successful navigation
     fireNonCancelableEvent(onChange, { currentPageIndex: requestedPageIndex });
   }
+
+  function handleJumpToPageClick(requestedPageIndex: number) {
+    if (requestedPageIndex < 1) {
+      // Out of range lower bound - navigate to first page
+      setJumpToPageValue('1');
+      setHasError(false);
+      fireNonCancelableEvent(onChange, { currentPageIndex: 1 });
+      return;
+    }
+
+    if (openEnd) {
+      // Open-end: always navigate, parent will handle async loading
+      handlePageClick(requestedPageIndex);
+    } else {
+      // Closed-end: validate range
+      if (requestedPageIndex >= 1 && requestedPageIndex <= pagesCount) {
+        handlePageClick(requestedPageIndex);
+      } else {
+        // Out of range - set error and navigate to last page
+        setHasError(true);
+        setJumpToPageValue(String(pagesCount));
+        fireNonCancelableEvent(onChange, { currentPageIndex: pagesCount });
+      }
+    }
+  }
+
+  // Auto-clear error when user types in the input
+  const handleInputChange = (e: NonCancelableCustomEvent<BaseChangeDetail>) => {
+    setJumpToPageValue(e.detail.value);
+    if (hasError) {
+      setHasError(false);
+    }
+  };
+
+  // Show popover when error appears
+  React.useEffect(() => {
+    if (hasError) {
+      // For open-end, wait until loading completes
+      if (openEnd && jumpToPage?.loading) {
+        return;
+      }
+      setPopoverVisible(true);
+    } else {
+      setPopoverVisible(false);
+    }
+  }, [hasError, jumpToPage?.loading, openEnd]);
 
   const previousButtonDisabled = disabled || currentPageIndex === 1;
   const nextButtonDisabled = disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount));
@@ -153,6 +237,20 @@ export default function InternalPagination({
     tableComponentContext.paginationRef.current.totalPageCount = pagesCount;
     tableComponentContext.paginationRef.current.openEnd = openEnd;
   }
+
+  const renderJumpToPageButton = () => {
+    return (
+      <InternalButton
+        iconName="arrow-right"
+        variant="icon"
+        loading={jumpToPage?.loading}
+        ariaLabel={jumpToPageButtonLabel ?? defaultAriaLabels.jumpToPageButton}
+        onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
+        disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
+      />
+    );
+  };
+
   return (
     <ul
       aria-label={paginationLabel}
@@ -220,6 +318,42 @@ export default function InternalPagination({
       >
         <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
       </PageButton>
+      {jumpToPage && (
+        <div className={styles['jump-to-page']}>
+          <InternalSpaceBetween size="xxs" direction="horizontal" alignItems="end">
+            <div className={styles['jump-to-page-input']}>
+              <InternalInput
+                type="number"
+                value={jumpToPageValue}
+                __inlineLabelText={jumpToPageLabel}
+                min={1}
+                max={!openEnd ? pagesCount : undefined}
+                onChange={handleInputChange}
+                onKeyDown={e => {
+                  if (e.detail.keyCode === 13 && jumpToPageValue && Number(jumpToPageValue) !== currentPageIndex) {
+                    handleJumpToPageClick(Number(jumpToPageValue));
+                  }
+                }}
+              />
+            </div>
+            {hasError ? (
+              <InternalPopover
+                size="medium"
+                dismissButton={false}
+                visible={popoverVisible}
+                content={jumpToPageError ?? defaultI18nStrings.jumpToPageError}
+                position="bottom"
+                triggerType="custom"
+                onVisibleChange={({ detail }) => setPopoverVisible(detail.visible)}
+              >
+                {renderJumpToPageButton()}
+              </InternalPopover>
+            ) : (
+              renderJumpToPageButton()
+            )}
+          </InternalSpaceBetween>
+        </div>
+      )}
     </ul>
   );
 }
