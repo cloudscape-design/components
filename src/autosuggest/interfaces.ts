@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -56,6 +56,14 @@ export interface AutosuggestProps
    * on your own.
    **/
   options?: AutosuggestProps.Options;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -153,6 +161,31 @@ export namespace AutosuggestProps {
   export interface ContainingOptionAndGroupString {
     (option: Option, group?: OptionGroup): string;
   }
+
+  export interface AutosuggestOptionItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+    parent: AutosuggestOptionGroupItem | null;
+  }
+  export interface AutosuggestOptionGroupItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    disabled: boolean;
+  }
+  export interface AutosuggestUseEnteredItem {
+    type: 'use-entered';
+    option: Option;
+  }
+  export type AutosuggestItem = AutosuggestOptionItem | AutosuggestOptionGroupItem | AutosuggestUseEnteredItem;
+  export type AutosuggestOptionItemRenderer = (props: {
+    item: AutosuggestItem;
+    filterText?: string;
+  }) => ReactNode | null;
 
   export interface Ref {
     /**
