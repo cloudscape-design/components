@@ -18,7 +18,7 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import Tabs from '~components/tabs';
 import Token from '~components/token';
-import Tooltip, { useHiddenDescription } from '~components/tooltip';
+import Tooltip from '~components/tooltip';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -61,16 +61,6 @@ function TruncatedTextExample() {
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
 
-  const { targetProps: targetProps1, descriptionEl: descriptionEl1 } = useHiddenDescription(
-    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor'
-  );
-  const { targetProps: targetProps2, descriptionEl: descriptionEl2 } = useHiddenDescription(
-    'Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip'
-  );
-  const { targetProps: targetProps3, descriptionEl: descriptionEl3 } = useHiddenDescription(
-    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore'
-  );
-
   return (
     <Container header={<Header variant="h2">Truncated Text with Overflow Tooltips</Header>}>
       <ScreenshotArea>
@@ -91,9 +81,7 @@ function TruncatedTextExample() {
               border: '1px solid',
               borderRadius: '4px',
             }}
-            {...targetProps1}
           >
-            {descriptionEl1}
             <span>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor</span>
             {show1 && (
               <Tooltip
@@ -121,9 +109,7 @@ function TruncatedTextExample() {
               border: '1px solid',
               borderRadius: '4px',
             }}
-            {...targetProps2}
           >
-            {descriptionEl2}
             <span>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip</span>
             {show2 && (
               <Tooltip
@@ -151,9 +137,7 @@ function TruncatedTextExample() {
               border: '1px solid',
               borderRadius: '4px',
             }}
-            {...targetProps3}
           >
-            {descriptionEl3}
             <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</span>
             {show3 && (
               <Tooltip

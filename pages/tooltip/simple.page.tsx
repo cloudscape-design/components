@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import Button from '~components/button';
 import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
-import Tooltip, { useHiddenDescription } from '~components/tooltip';
+import Tooltip from '~components/tooltip';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -27,58 +27,22 @@ export default function TooltipSimple() {
 
   // Common use cases
   const [showTruncated, setShowTruncated] = useState(false);
-
-  const truncatedRef = useRef<HTMLDivElement>(null);
+  const truncatedRef = useRef<HTMLButtonElement>(null);
 
   // Interactive content
   const [showLink, setShowLink] = useState(false);
   const [showCode, setShowCode] = useState(false);
-  const linkRef = useRef<HTMLDivElement>(null);
-  const codeRef = useRef<HTMLDivElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const codeRef = useRef<HTMLButtonElement>(null);
 
   // Password input
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  // Hidden descriptions for Content Length Variations
-  const { targetProps: shortTargetProps, descriptionEl: shortDescriptionEl } = useHiddenDescription('Lorem');
-  const { targetProps: mediumTargetProps, descriptionEl: mediumDescriptionEl } = useHiddenDescription(
-    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.'
-  );
-  const { targetProps: longTargetProps, descriptionEl: longDescriptionEl } = useHiddenDescription(
-    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-  );
-  const { targetProps: veryLongTargetProps, descriptionEl: veryLongDescriptionEl } = useHiddenDescription(
-    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  );
-
-  // Hidden description for Interactive Position Control (updates with position)
-  const interactiveTooltipContent = `Tooltip positioned on ${interactivePosition}`;
-  const { targetProps: interactiveTargetProps, descriptionEl: interactiveDescriptionEl } =
-    useHiddenDescription(interactiveTooltipContent);
-
-  // Hidden description for Truncated Text
-  const { targetProps: truncatedTargetProps, descriptionEl: truncatedDescriptionEl } = useHiddenDescription(
-    'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt'
-  );
-
-  // Hidden descriptions for Interactive & Formatted Content
-  const { targetProps: linkTargetProps, descriptionEl: linkDescriptionEl } = useHiddenDescription(
-    'AWS Documentation - Click to view complete API reference - Last updated: Today'
-  );
-  const { targetProps: codeTargetProps, descriptionEl: codeDescriptionEl } = useHiddenDescription(
-    "const AWS = require('aws-sdk'); AWS.config.update({ region: 'us-west-2' });"
-  );
-
-  // Hidden description for Password Input
-  const { targetProps: passwordTargetProps, descriptionEl: passwordDescriptionEl } = useHiddenDescription(
-    'Password Rules: Minimum of 8 characters, Include at least one lowercase letter, one uppercase letter, one number and one special character, Unique to this website'
-  );
-
   return (
     <article>
       <h1>Tooltip Examples</h1>
-      <p>Interactive tooltip demonstrations with positioning, content variations, and accessibility features</p>
+      <p>Interactive tooltip demonstrations with positioning and content variations</p>
 
       <ScreenshotArea>
         <SpaceBetween size="l">
@@ -106,15 +70,17 @@ export default function TooltipSimple() {
                 <Button
                   variant="primary"
                   nativeButtonAttributes={{
+                    'aria-describedby': 'interactive-description',
                     onFocus: () => setShowInteractive(true),
                     onBlur: () => setShowInteractive(false),
-                    ...interactiveTargetProps,
                   }}
                   data-testid="hover-button"
                 >
                   Hover
                 </Button>
-                {interactiveDescriptionEl}
+                <span id="interactive-description" hidden={true}>
+                  {`Tooltip positioned on ${interactivePosition}`}
+                </span>
                 {showInteractive && (
                   <Tooltip
                     content={`Tooltip positioned on ${interactivePosition}`}
@@ -140,14 +106,16 @@ export default function TooltipSimple() {
                 <Button
                   variant="primary"
                   nativeButtonAttributes={{
+                    'aria-describedby': 'short-description',
                     onFocus: () => setShowTop(true),
                     onBlur: () => setShowTop(false),
-                    ...shortTargetProps,
                   }}
                 >
                   Short
                 </Button>
-                {shortDescriptionEl}
+                <span id="short-description" hidden={true}>
+                  Lorem
+                </span>
                 {showTop && (
                   <Tooltip
                     content="Lorem"
@@ -168,14 +136,16 @@ export default function TooltipSimple() {
                 <Button
                   variant="primary"
                   nativeButtonAttributes={{
+                    'aria-describedby': 'medium-description',
                     onFocus: () => setShowBottom(true),
                     onBlur: () => setShowBottom(false),
-                    ...mediumTargetProps,
                   }}
                 >
                   Medium
                 </Button>
-                {mediumDescriptionEl}
+                <span id="medium-description" hidden={true}>
+                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.
+                </span>
                 {showBottom && (
                   <Tooltip
                     content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
@@ -196,14 +166,18 @@ export default function TooltipSimple() {
                 <Button
                   variant="primary"
                   nativeButtonAttributes={{
+                    'aria-describedby': 'long-description',
                     onFocus: () => setShowLeft(true),
                     onBlur: () => setShowLeft(false),
-                    ...longTargetProps,
                   }}
                 >
                   Long
                 </Button>
-                {longDescriptionEl}
+                <span id="long-description" hidden={true}>
+                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat.
+                </span>
                 {showLeft && (
                   <Tooltip
                     content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -219,21 +193,25 @@ export default function TooltipSimple() {
                 ref={rightRef}
                 onMouseEnter={() => setShowRight(true)}
                 onMouseLeave={() => setShowRight(false)}
-                onFocus={() => setShowRight(true)}
-                onBlur={() => setShowRight(false)}
                 style={{ display: 'inline-block' }}
               >
                 <Button
                   variant="primary"
                   nativeButtonAttributes={{
+                    'aria-describedby': 'very-long-description',
                     onFocus: () => setShowRight(true),
                     onBlur: () => setShowRight(false),
-                    ...veryLongTargetProps,
                   }}
                 >
                   Very Long
                 </Button>
-                {veryLongDescriptionEl}
+                <span id="very-long-description" hidden={true}>
+                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia
+                  deserunt mollit anim id est laborum.
+                </span>
                 {showRight && (
                   <Tooltip
                     content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -249,62 +227,62 @@ export default function TooltipSimple() {
 
           <section>
             <h3>Truncated Text</h3>
-            <div
+            <button
               ref={truncatedRef}
               onMouseEnter={() => setShowTruncated(true)}
               onMouseLeave={() => setShowTruncated(false)}
-              style={{ maxWidth: '200px' }}
-              tabIndex={0}
               onFocus={() => setShowTruncated(true)}
               onBlur={() => setShowTruncated(false)}
-              {...truncatedTargetProps}
+              aria-describedby="truncated-description"
+              style={{
+                maxWidth: '200px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                padding: '8px',
+                border: '1px solid',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                background: 'transparent',
+                textAlign: 'left',
+              }}
             >
-              {truncatedDescriptionEl}
-              <div
-                style={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  padding: '8px',
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
-              >
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
-              </div>
-              {showTruncated && (
-                <Tooltip
-                  content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt"
-                  getTrack={() => truncatedRef.current}
-                  position="top"
-                  onEscape={() => setShowTruncated(false)}
-                  trackKey="truncated"
-                />
-              )}
-            </div>
+              Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+            </button>
+            <span id="truncated-description" hidden={true}>
+              Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+            </span>
+            {showTruncated && (
+              <Tooltip
+                content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt"
+                getTrack={() => truncatedRef.current}
+                position="top"
+                onEscape={() => setShowTruncated(false)}
+                trackKey="truncated"
+              />
+            )}
           </section>
 
           <section>
             <h3>Interactive & Formatted Content</h3>
             <SpaceBetween direction="horizontal" size="l">
-              <div
-                ref={linkRef}
-                onMouseEnter={() => setShowLink(true)}
-                onMouseLeave={() => setShowLink(false)}
-                style={{ display: 'inline-block' }}
-              >
-                {linkDescriptionEl}
+              <div style={{ display: 'inline-block' }}>
                 <a
+                  ref={linkRef}
                   href="#"
                   onFocus={() => setShowLink(true)}
                   onBlur={() => setShowLink(false)}
+                  onMouseEnter={() => setShowLink(true)}
+                  onMouseLeave={() => setShowLink(false)}
+                  aria-describedby="link-description"
                   style={{ color: '#0073bb', textDecoration: 'underline', cursor: 'pointer' }}
                   onClick={e => e.preventDefault()}
-                  {...linkTargetProps}
                 >
                   Documentation Link
                 </a>
+                <span id="link-description" hidden={true}>
+                  AWS Documentation - Click to view complete API reference - Last updated: Today
+                </span>
                 {showLink && (
                   <Tooltip
                     content={
@@ -324,27 +302,27 @@ export default function TooltipSimple() {
                 )}
               </div>
 
-              <div
-                ref={codeRef}
-                onMouseEnter={() => setShowCode(true)}
-                onMouseLeave={() => setShowCode(false)}
-                onFocus={() => setShowCode(true)}
-                onBlur={() => setShowCode(false)}
-                tabIndex={0}
-                style={{ display: 'inline-block' }}
-                {...codeTargetProps}
-              >
-                {codeDescriptionEl}
-                <span
+              <div style={{ display: 'inline-block' }}>
+                <button
+                  ref={codeRef}
+                  onMouseEnter={() => setShowCode(true)}
+                  onMouseLeave={() => setShowCode(false)}
+                  onFocus={() => setShowCode(true)}
+                  onBlur={() => setShowCode(false)}
+                  aria-describedby="code-description"
                   style={{
                     padding: '4px 8px',
                     border: '1px solid',
                     borderRadius: '4px',
                     fontFamily: 'monospace',
                     cursor: 'pointer',
+                    background: 'transparent',
                   }}
                 >
                   aws.config.region
+                </button>
+                <span id="code-description" hidden={true}>
+                  {`const AWS = require('aws-sdk'); AWS.config.update({ region: 'us-west-2' });`}
                 </span>
                 {showCode && (
                   <Tooltip
@@ -375,12 +353,8 @@ export default function TooltipSimple() {
           </section>
 
           <section>
-            <h3>ARIA Described-by Example</h3>
-            <div
-              style={{ display: 'inline-block' }}
-              onMouseEnter={() => setShowPassword(true)}
-              onMouseLeave={() => setShowPassword(false)}
-            >
+            <h3>Password Input Example</h3>
+            <div style={{ display: 'inline-block' }}>
               <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
                 Password:
               </label>
@@ -389,6 +363,7 @@ export default function TooltipSimple() {
                 id="password-input"
                 type="password"
                 placeholder="Enter password"
+                aria-describedby="password-description"
                 style={{
                   padding: '8px',
                   border: '1px solid #ccc',
@@ -396,10 +371,13 @@ export default function TooltipSimple() {
                 }}
                 onFocus={() => setShowPassword(true)}
                 onBlur={() => setShowPassword(false)}
-                {...passwordTargetProps}
+                onMouseEnter={() => setShowPassword(true)}
+                onMouseLeave={() => setShowPassword(false)}
               />
-              {passwordDescriptionEl}
-
+              <span id="password-description" hidden={true}>
+                Password Rules: Minimum of 8 characters, Include at least one lowercase letter, one uppercase letter,
+                one number and one special character, Unique to this website
+              </span>
               {showPassword && (
                 <Tooltip
                   content={

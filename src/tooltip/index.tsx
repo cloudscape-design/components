@@ -8,9 +8,8 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { TooltipProps } from './interfaces';
 import InternalTooltip from './internal';
-import { useHiddenDescription } from './use-hidden-description';
 
-export { TooltipProps, useHiddenDescription };
+export { TooltipProps };
 
 const Tooltip = ({ position = 'top', ...rest }: TooltipProps) => {
   const baseComponentProps = useBaseComponent('Tooltip', {
