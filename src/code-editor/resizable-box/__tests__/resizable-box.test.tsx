@@ -7,7 +7,7 @@ import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-ed
 import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events-mock';
 
 import dragHandleStyles from '../../../../lib/components/internal/components/drag-handle/styles.css.js';
-import dragHandleWrapperStyles from '../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
+import dragHandleTestStyles from '../../../../lib/components/internal/components/drag-handle-wrapper/test-classes/styles.css.js';
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 
 const defaultProps: ResizeBoxProps = {
@@ -26,9 +26,7 @@ function findHandle() {
 }
 
 function findDirectionButton(direction: 'block-start' | 'block-end') {
-  return document.querySelector(
-    `.${dragHandleWrapperStyles[`direction-button-wrapper-${direction}`]} .${dragHandleWrapperStyles['direction-button']}`
-  )!;
+  return document.querySelector(`.${dragHandleTestStyles[`direction-button-${direction}`]}`)!;
 }
 
 beforeAll(() => {
