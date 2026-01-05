@@ -96,8 +96,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_expandable_16mm3",
     "awsui_highlighted_93a1u",
     "awsui_item-element_93a1u",
+    "awsui_label-tag_93a1u",
+    "awsui_secondary-text_93a1u",
     "awsui_split-trigger_sne0l",
     "awsui_test-utils-button-trigger_sne0l",
+    "awsui_text_wxf7i",
     "awsui_title_sne0l",
   ],
   "button-group": [

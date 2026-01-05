@@ -9,7 +9,31 @@ import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
+import testClasses from '../../../button-dropdown/test-classes/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+
+export class ButtonDropdownItemWrapper extends ComponentWrapper {
+  /**
+   * Finds the text of a dropdown item.
+   */
+  findText(): ElementWrapper | null {
+    return this.findByClassName(testClasses.text);
+  }
+
+  /**
+   * Finds the secondary text of a dropdown item.
+   */
+  findSecondaryText(): ElementWrapper | null {
+    return this.findByClassName(itemStyles['secondary-text']);
+  }
+
+  /**
+   * Finds the label tag of a dropdown item.
+   */
+  findLabelTag(): ElementWrapper | null {
+    return this.findByClassName(itemStyles['label-tag']);
+  }
+}
 
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
@@ -41,9 +65,10 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
-  findItemById(id: string): ElementWrapper | null {
+  findItemById(id: string): ButtonDropdownItemWrapper | null {
     const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
-    return this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
+    const item = this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
+    return item ? new ButtonDropdownItemWrapper(item.getElement()) : null;
   }
 
   /**
@@ -79,9 +104,11 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
-  findHighlightedItem(): ElementWrapper | null {
+  findHighlightedItem(): ButtonDropdownItemWrapper | null {
     const highlightedItemSelector = `.${itemStyles['item-element']}.${itemStyles.highlighted}`;
-    return this.findOpenDropdown()?.find(highlightedItemSelector) || this.find(highlightedItemSelector);
+    const item = this.findOpenDropdown()?.find(highlightedItemSelector) || this.find(highlightedItemSelector);
+
+    return item ? new ButtonDropdownItemWrapper(item.getElement()) : null;
   }
 
   /**
@@ -89,8 +116,12 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
    */
-  findItems(): Array<ElementWrapper> {
-    return this.findOpenDropdown()?.findAll(`.${itemStyles['item-element']}`) || [];
+  findItems(): Array<ButtonDropdownItemWrapper> {
+    return (
+      this.findOpenDropdown()
+        ?.findAll(`.${itemStyles['item-element']}`)
+        .map(item => new ButtonDropdownItemWrapper(item.getElement())) || []
+    );
   }
 
   /**
