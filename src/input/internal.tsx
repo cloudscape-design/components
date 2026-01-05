@@ -52,6 +52,7 @@ export interface InternalInputProps
   __inheritFormFieldProps?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
+  __inlineLabelText?: string;
 }
 
 function InternalInput(
@@ -93,6 +94,7 @@ function InternalInput(
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
+    __inlineLabelText,
     style,
     ...rest
   }: InternalInputProps,
@@ -196,6 +198,18 @@ function InternalInput(
     },
   };
 
+  const renderMainInput = () => (
+    <WithNativeAttributes
+      {...attributes}
+      tag="input"
+      componentName="Input"
+      nativeAttributes={nativeInputAttributes}
+      skipWarnings={__skipNativeAttributesWarnings}
+      ref={mergedRef}
+      style={getInputStyles(style)}
+    />
+  );
+
   return (
     <div
       {...baseProps}
@@ -211,15 +225,16 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled || readOnly ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <WithNativeAttributes
-        {...attributes}
-        tag="input"
-        componentName="Input"
-        nativeAttributes={nativeInputAttributes}
-        skipWarnings={__skipNativeAttributesWarnings}
-        ref={mergedRef}
-        style={getInputStyles(style)}
-      />
+      {__inlineLabelText ? (
+        <div className={styles['inline-label-wrapper']}>
+          <label htmlFor={controlId} className={styles['inline-label']}>
+            {__inlineLabelText}
+          </label>
+          <div className={styles['inline-label-trigger-wrapper']}>{renderMainInput()}</div>
+        </div>
+      ) : (
+        renderMainInput()
+      )}
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}
