@@ -20,6 +20,7 @@ const VirtualList = ({
   highlightText,
   listBottom,
   screenReaderContent,
+  renderOption,
 }: ListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   // update component, when it gets wider or narrower to reposition items
@@ -65,6 +66,9 @@ const VirtualList = ({
 
         return (
           <AutosuggestOption
+            index={index}
+            virtualIndex={index}
+            renderOption={renderOption}
             key={index}
             ref={measureRef}
             highlightText={highlightText}
