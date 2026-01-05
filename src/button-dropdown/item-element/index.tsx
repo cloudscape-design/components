@@ -13,7 +13,7 @@ import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
+import { ButtonDropdownProps, InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -35,6 +35,7 @@ const ItemElement = ({
   analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
   linkStyle,
+  renderItem,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -87,7 +88,13 @@ const ItemElement = ({
             }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
-      <MenuItem item={item} disabled={disabled} highlighted={highlighted} linkStyle={linkStyle} />
+      <MenuItem
+        item={item}
+        disabled={disabled}
+        highlighted={highlighted}
+        linkStyle={linkStyle}
+        renderItem={renderItem}
+      />
     </li>
   );
 };
@@ -97,9 +104,10 @@ interface MenuItemProps {
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
 }
 
-function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
+function MenuItem({ item, disabled, highlighted, linkStyle, renderItem }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
   const isCurrentBreadcrumb = !isCheckbox && item.isCurrentBreadcrumb;
@@ -110,12 +118,39 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
     }
   }, [highlighted]);
 
+  let itemProps: { item: ButtonDropdownProps.ButtonDropdownItem };
+
+  if (item.itemType === 'checkbox') {
+    itemProps = {
+      item: {
+        type: 'checkbox',
+        element: item as ButtonDropdownProps.CheckboxItem,
+        disabled: !!disabled,
+        highlighted: highlighted,
+        selected: item.checked,
+      },
+    };
+  } else {
+    itemProps = {
+      item: {
+        type: 'action',
+        element: item as ButtonDropdownProps.Item,
+        disabled: !!disabled,
+        highlighted: !!highlighted,
+        selected: false,
+      },
+    };
+  }
+
+  const renderResult = renderItem?.(itemProps) ?? null;
+
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     'aria-label': item.ariaLabel,
     className: clsx(
       styles['menu-item'],
+      !!renderResult && styles['no-content-padding'],
       analyticsLabels['menu-item'],
       linkStyle && styles['link-style'],
       linkStyle && highlighted && styles['link-style-highlighted'],
@@ -140,11 +175,11 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
     >
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? renderResult : <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />}
     </a>
   ) : (
     <span {...menuItemProps}>
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? renderResult : <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />}
     </span>
   );
 

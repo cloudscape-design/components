@@ -28,6 +28,7 @@ export default function ItemsList({
   analyticsMetadataTransformer,
   position,
   linkStyle,
+  renderItem,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -50,6 +51,7 @@ export default function ItemsList({
           position={`${position ? `${position},` : ''}${index + 1}`}
           analyticsMetadataTransformer={analyticsMetadataTransformer}
           linkStyle={linkStyle}
+          renderItem={renderItem}
         />
       );
     }
@@ -70,6 +72,7 @@ export default function ItemsList({
             disabled={item.disabled ?? false}
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
+            renderItem={renderItem}
           />
         ) : (
           <ExpandableCategoryElement
@@ -87,6 +90,7 @@ export default function ItemsList({
             expandToViewport={expandToViewport}
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
+            renderItem={renderItem}
           />
         )
       ) : null;
@@ -106,6 +110,7 @@ export default function ItemsList({
         disabled={item.disabled ?? false}
         variant={variant}
         position={`${position ? `${position},` : ''}${index + 1}`}
+        renderItem={renderItem}
       />
     );
   });
