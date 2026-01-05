@@ -3557,6 +3557,26 @@ For more information, see the
       "type": "AutosuggestProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "AutosuggestProps.AutosuggestOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: AutosuggestProps.AutosuggestItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AutosuggestProps.AutosuggestOptionItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).",
