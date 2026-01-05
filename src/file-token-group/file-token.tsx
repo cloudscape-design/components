@@ -137,6 +137,9 @@ function InternalFileToken({
               <div
                 onMouseOver={() => setShowTooltip(true)}
                 onMouseOut={() => setShowTooltip(false)}
+                onFocus={() => setShowTooltip(true)}
+                onBlur={() => setShowTooltip(false)}
+                tabIndex={0}
                 ref={fileNameContainerRef}
               >
                 <InternalBox
