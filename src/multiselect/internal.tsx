@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -149,6 +149,9 @@ const InternalMultiselect = React.forwardRef(
     const dropdownProps = multiselectProps.getDropdownProps();
     const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
 
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
     return (
       <div
         {...baseProps}
@@ -172,6 +175,8 @@ const InternalMultiselect = React.forwardRef(
           }
           expandToViewport={expandToViewport}
           stretchBeyondTriggerWidth={true}
+          // Forces dropdown position recalculation when new options are loaded
+          contentKey={hasOptions.current.toString()}
         >
           <ListComponent
             listBottom={
