@@ -300,13 +300,7 @@ describe('URL sanitization', () => {
       const wrapper = createWrapper(container).findTutorialPanel()!;
       const headerRegion = wrapper.find('[role="region"]')!.getElement();
       expect(headerRegion).toHaveAttribute('tabIndex', '-1');
-      expect(headerRegion).toHaveAttribute('role', 'region');
-      expect(headerRegion).toHaveAttribute('aria-labelledby');
-
-      const ariaLabelledBy = headerRegion.getAttribute('aria-labelledby');
-      const headingElement = wrapper.find(`#${ariaLabelledBy}`)!.getElement();
-      expect(headingElement).toBeInTheDocument();
-      expect(headingElement.textContent).toBe(i18nStrings.tutorialListTitle);
+      expect(headerRegion).toHaveAccessibleName(i18nStrings.tutorialListTitle);
     });
 
     test('focus returns to header when exiting tutorial', () => {
