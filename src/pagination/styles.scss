@@ -13,6 +13,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   box-sizing: border-box;
+  align-items: center;
   //reset base styles for ul
   padding-inline-start: 0;
   margin-block: 0;
@@ -75,6 +76,20 @@
   }
   &.button-disabled {
     color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.jump-to-page {
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  margin-inline-start: awsui.$space-xs;
+  padding-inline-start: awsui.$space-xs;
+  padding-inline-start: 15px;
+
+  &-input {
+    max-inline-size: 87px;
+    margin-block-start: -0.6em;
+    overflow: visible;
   }
 }
 
