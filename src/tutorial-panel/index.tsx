@@ -32,8 +32,11 @@ export default function TutorialPanel({
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
 
-  // should focus on the header (on exiting tutorial, we have to know and
-  // focus on header for accessiblity reasons)
+  // When exiting a tutorial, we need to return focus to the header for accessibility.
+  // We cannot directly call ref.current.focus() in handleExitTutorial because at that point
+  // the TutorialDetailView is still rendered and TutorialList (which contains the header) hasn't
+  // been rendered yet. Instead, we use shouldFocusRef to coordinate: handleExitTutorial sets it to true,
+  // and then headerCallbackRef focuses the header once it's actually available in the DOM.
   const shouldFocusRef = useRef(false);
   const headerId = useUniqueId('tutorial-header-');
 
