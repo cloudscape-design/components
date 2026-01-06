@@ -5,8 +5,8 @@ import React, { useEffect, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import AutosuggestOption from './autosuggest-option';
-import { AutosuggestItem } from './interfaces';
+import AutosuggestOption, { AutosuggestItemParentProps } from './autosuggest-option';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { AutosuggestItemsState } from './options-controller';
 
 import styles from './styles.css.js';
@@ -20,6 +20,7 @@ export interface ListProps {
   highlightText: string;
   listBottom?: React.ReactNode;
   screenReaderContent?: string;
+  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
 }
 
 export const getOptionProps = (
@@ -48,6 +49,7 @@ const PlainList = ({
   highlightText,
   listBottom,
   screenReaderContent,
+  renderOption,
 }: ListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -58,6 +60,8 @@ const PlainList = ({
       scrollElementIntoView(item);
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex]);
+
+  let lastGroupIndex = -1;
 
   return (
     <OptionsList {...menuProps} onLoadMore={handleLoadMore} open={true} ref={listRef}>
@@ -71,8 +75,27 @@ const PlainList = ({
           hasDropdownStatus
         );
 
+        let parentProps: AutosuggestItemParentProps | undefined = undefined;
+        if (item.type === 'parent') {
+          lastGroupIndex = index;
+        } else if (lastGroupIndex !== -1 && !!item.parent) {
+          parentProps = {
+            index: lastGroupIndex,
+            disabled: !!item.parent.disabled,
+            option: {
+              ...item.parent,
+              disabled: !!item.parent.disabled,
+              option: item.parent,
+              type: 'parent',
+            },
+          };
+        }
+
         return (
           <AutosuggestOption
+            index={index}
+            parentProps={parentProps}
+            renderOption={renderOption}
             highlightText={highlightText}
             option={item}
             highlighted={item === autosuggestItemsState.highlightedOption}
