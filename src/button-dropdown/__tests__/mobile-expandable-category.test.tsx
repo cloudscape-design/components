@@ -111,8 +111,6 @@ describe('MobileExpandableCategoryElement icon rendering', () => {
     expect(customHeader).not.toBeNull();
     expect(customHeader).toHaveTextContent('Custom Mobile Group: Custom Group (collapsed)');
 
-    // Verify that default icon and text are not rendered when custom content is used
-    expect(wrapper.getElement().textContent).not.toContain('Custom Group');
     expect(wrapper.getElement().textContent).toContain('Custom Mobile Group: Custom Group (collapsed)');
   });
 });
