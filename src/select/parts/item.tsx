@@ -121,7 +121,6 @@ const Item = (
                 getTrack={() => internalRef.current}
                 content={disabledReason!}
                 position="right"
-                __onDismissOnScroll={() => setCanShowTooltip(false)}
                 onEscape={() => setCanShowTooltip(false)}
               />
             )}

@@ -64,10 +64,6 @@ export default function InternalTooltip({
     };
   }, [onEscape]);
 
-  // const handleDismissOnScroll = React.useCallback(() => {
-  //   fireNonCancelableEvent(__onDismissOnScroll);
-  // }, [__onDismissOnScroll]);
-
   return (
     <Portal>
       <div
