@@ -75,7 +75,7 @@ const VirtualListOpen = forwardRef(
             });
           } else {
             // Fix for AWSUI-61506. Defer scroll to next frame to ensure
-            // virtual items are measured after re-render.  When called from
+            // virtual items are measured after re-render. When called from
             // parent's useEffect, measurements may not be ready yet.
             requestAnimationFrame(() => scrollToIndex(index));
           }
