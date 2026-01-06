@@ -113,11 +113,17 @@ function InternalToken({
       aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
       aria-disabled={!!disabled}
       role={role ?? 'group'}
-      onFocus={() => {
-        setShowTooltip(true);
+      onFocus={e => {
+        // Only show tooltip if focus is coming from outside the token
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setShowTooltip(true);
+        }
       }}
-      onBlur={() => {
-        setShowTooltip(false);
+      onBlur={e => {
+        // Only hide tooltip if focus is moving outside the token
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setShowTooltip(false);
+        }
       }}
       onMouseEnter={() => {
         setShowTooltip(true);

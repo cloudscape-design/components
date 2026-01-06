@@ -27,17 +27,17 @@ export default function TooltipSimple() {
 
   // Common use cases
   const [showTruncated, setShowTruncated] = useState(false);
-  const truncatedRef = useRef<HTMLButtonElement>(null);
+  const truncatedRef = useRef<HTMLDivElement>(null);
 
   // Interactive content
   const [showLink, setShowLink] = useState(false);
   const [showCode, setShowCode] = useState(false);
-  const linkRef = useRef<HTMLAnchorElement>(null);
-  const codeRef = useRef<HTMLButtonElement>(null);
+  const linkRef = useRef<HTMLDivElement>(null);
+  const codeRef = useRef<HTMLDivElement>(null);
 
   // Password input
   const [showPassword, setShowPassword] = useState(false);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLDivElement>(null);
 
   return (
     <article>
@@ -227,53 +227,59 @@ export default function TooltipSimple() {
 
           <section>
             <h3>Truncated Text</h3>
-            <button
+            <div
               ref={truncatedRef}
               onMouseEnter={() => setShowTruncated(true)}
               onMouseLeave={() => setShowTruncated(false)}
-              onFocus={() => setShowTruncated(true)}
-              onBlur={() => setShowTruncated(false)}
-              aria-describedby="truncated-description"
-              style={{
-                maxWidth: '200px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                padding: '8px',
-                border: '1px solid',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                background: 'transparent',
-                textAlign: 'left',
-              }}
+              style={{ display: 'inline-block' }}
             >
-              Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
-            </button>
-            <span id="truncated-description" hidden={true}>
-              Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
-            </span>
-            {showTruncated && (
-              <Tooltip
-                content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt"
-                getTrack={() => truncatedRef.current}
-                position="top"
-                onEscape={() => setShowTruncated(false)}
-                trackKey="truncated"
-              />
-            )}
+              <button
+                onFocus={() => setShowTruncated(true)}
+                onBlur={() => setShowTruncated(false)}
+                aria-describedby="truncated-description"
+                style={{
+                  maxWidth: '200px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  padding: '8px',
+                  border: '1px solid',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  textAlign: 'left',
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+              </button>
+              <span id="truncated-description" hidden={true}>
+                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+              </span>
+              {showTruncated && (
+                <Tooltip
+                  content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt"
+                  getTrack={() => truncatedRef.current}
+                  position="top"
+                  onEscape={() => setShowTruncated(false)}
+                  trackKey="truncated"
+                />
+              )}
+            </div>
           </section>
 
           <section>
             <h3>Interactive & Formatted Content</h3>
             <SpaceBetween direction="horizontal" size="l">
-              <div style={{ display: 'inline-block' }}>
+              <div
+                ref={linkRef}
+                onMouseEnter={() => setShowLink(true)}
+                onMouseLeave={() => setShowLink(false)}
+                style={{ display: 'inline-block' }}
+              >
                 <a
-                  ref={linkRef}
                   href="#"
                   onFocus={() => setShowLink(true)}
                   onBlur={() => setShowLink(false)}
-                  onMouseEnter={() => setShowLink(true)}
-                  onMouseLeave={() => setShowLink(false)}
                   aria-describedby="link-description"
                   style={{ color: '#0073bb', textDecoration: 'underline', cursor: 'pointer' }}
                   onClick={e => e.preventDefault()}
@@ -302,11 +308,13 @@ export default function TooltipSimple() {
                 )}
               </div>
 
-              <div style={{ display: 'inline-block' }}>
+              <div
+                ref={codeRef}
+                onMouseEnter={() => setShowCode(true)}
+                onMouseLeave={() => setShowCode(false)}
+                style={{ display: 'inline-block' }}
+              >
                 <button
-                  ref={codeRef}
-                  onMouseEnter={() => setShowCode(true)}
-                  onMouseLeave={() => setShowCode(false)}
                   onFocus={() => setShowCode(true)}
                   onBlur={() => setShowCode(false)}
                   aria-describedby="code-description"
@@ -354,12 +362,16 @@ export default function TooltipSimple() {
 
           <section>
             <h3>Password Input Example</h3>
-            <div style={{ display: 'inline-block' }}>
+            <div
+              ref={passwordRef}
+              onMouseEnter={() => setShowPassword(true)}
+              onMouseLeave={() => setShowPassword(false)}
+              style={{ display: 'inline-block' }}
+            >
               <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
                 Password:
               </label>
               <input
-                ref={passwordRef}
                 id="password-input"
                 type="password"
                 placeholder="Enter password"
@@ -371,8 +383,6 @@ export default function TooltipSimple() {
                 }}
                 onFocus={() => setShowPassword(true)}
                 onBlur={() => setShowPassword(false)}
-                onMouseEnter={() => setShowPassword(true)}
-                onMouseLeave={() => setShowPassword(false)}
               />
               <span id="password-description" hidden={true}>
                 Password Rules: Minimum of 8 characters, Include at least one lowercase letter, one uppercase letter,
