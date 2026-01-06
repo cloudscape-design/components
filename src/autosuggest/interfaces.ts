@@ -249,4 +249,5 @@ export namespace AutosuggestProps {
 export type AutosuggestItem = (AutosuggestProps.Option | AutosuggestProps.OptionGroup) & {
   type?: 'parent' | 'child' | 'use-entered';
   option: OptionDefinition | OptionGroup;
+  parent?: OptionGroup;
 };
