@@ -3,8 +3,16 @@
 import MockDate from 'mockdate';
 
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from '../utils';
-// Helper function to create Date objects from YYYY-MM-DD strings
-const createDate = (dateString: string) => new Date(dateString);
+
+// Helper function to create Date objects from YYYY-MM-DD strings in local time
+const createDate = (dateString: string) => {
+  const parts = dateString.split('-').map(Number);
+  // Handle both YYYY-MM-DD and YYYY-MM formats
+  if (parts.length === 2) {
+    return new Date(parts[0], parts[1] - 1, 1);
+  }
+  return new Date(parts[0], parts[1] - 1, parts[2] || 1);
+};
 describe('findDateToFocus', () => {
   beforeEach(() => {
     MockDate.set(new Date('2023-06-15'));
