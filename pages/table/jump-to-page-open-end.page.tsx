@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-import Pagination from '~components/pagination';
+import Pagination, { PaginationProps } from '~components/pagination';
 import Table from '~components/table';
 
 import { generateItems, Instance } from './generate-data';
@@ -13,10 +13,10 @@ const TOTAL_ITEMS = 100; // Simulated server-side total
 export default function JumpToPageOpenEndExample() {
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [loadedPages, setLoadedPages] = useState<Record<number, Instance[]>>({ 1: generateItems(10) });
-  const [jumpToPageError, setJumpToPageError] = useState(false);
   const [jumpToPageIsLoading, setJumpToPageIsLoading] = useState(false);
   const [maxKnownPage, setMaxKnownPage] = useState(1);
   const [openEnd, setOpenEnd] = useState(true);
+  const jumpToPageRef = useRef<PaginationProps.JumpToPageRef>(null);
 
   const currentItems = loadedPages[currentPageIndex] || [];
 
@@ -56,6 +56,7 @@ export default function JumpToPageOpenEndExample() {
       items={currentItems}
       pagination={
         <Pagination
+          ref={jumpToPageRef}
           currentPageIndex={currentPageIndex}
           pagesCount={maxKnownPage}
           openEnd={openEnd}
@@ -64,7 +65,6 @@ export default function JumpToPageOpenEndExample() {
             // If page already loaded, just navigate
             if (loadedPages[requestedPage]) {
               setCurrentPageIndex(requestedPage);
-              setJumpToPageError(false);
               return;
             }
             // Otherwise, load the page
@@ -74,14 +74,13 @@ export default function JumpToPageOpenEndExample() {
                 setLoadedPages(prev => ({ ...prev, [requestedPage]: items }));
                 setCurrentPageIndex(requestedPage);
                 setMaxKnownPage(Math.max(maxKnownPage, requestedPage));
-                setJumpToPageError(false);
                 setJumpToPageIsLoading(false);
               })
               .catch((error: { message: string; maxPage?: number }) => {
                 const newMaxPage = error.maxPage || maxKnownPage;
                 setMaxKnownPage(newMaxPage);
                 setOpenEnd(false);
-                setJumpToPageError(true);
+                jumpToPageRef.current?.setError(true);
                 // Load all pages from current to max
                 const pagesToLoad = [];
                 for (let i = 1; i <= newMaxPage; i++) {
@@ -126,13 +125,12 @@ export default function JumpToPageOpenEndExample() {
                 }
                 // Reset to current page (undo the navigation that already happened)
                 setCurrentPageIndex(currentPageIndex);
-                setJumpToPageError(true);
+                jumpToPageRef.current?.setError(true);
                 setJumpToPageIsLoading(false);
               });
           }}
           jumpToPage={{
-            isLoading: jumpToPageIsLoading,
-            hasError: jumpToPageError,
+            loading: jumpToPageIsLoading,
           }}
         />
       }
