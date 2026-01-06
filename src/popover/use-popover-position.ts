@@ -28,6 +28,7 @@ export default function usePopoverPosition({
   keepPosition,
   hideOnOverscroll,
   minVisibleBlockSize,
+  maxHeight,
 }: {
   popoverRef: React.RefObject<HTMLDivElement | null>;
   bodyRef: React.RefObject<HTMLDivElement | null>;
@@ -41,6 +42,7 @@ export default function usePopoverPosition({
   keepPosition?: boolean;
   hideOnOverscroll?: boolean;
   minVisibleBlockSize?: number;
+  maxHeight?: number;
 }) {
   const previousInternalPositionRef = useRef<InternalPosition | null>(null);
   const [popoverStyle, setPopoverStyle] = useState<Partial<Offset>>({});
@@ -111,6 +113,13 @@ export default function usePopoverPosition({
         blockSize: contentRect.blockSize + 2 * bodyBorderWidth,
       };
 
+      // Apply maxHeight constraint to the bounding box used for position calculation
+      const constrainedBoundingBox = {
+        inlineSize: contentBoundingBox.inlineSize,
+        blockSize:
+          maxHeight !== undefined ? Math.min(contentBoundingBox.blockSize, maxHeight) : contentBoundingBox.blockSize,
+      };
+
       // When keepPosition is true and the recalculation was triggered by a resize of the popover content,
       // we maintain the previously defined internal position,
       // but we still call calculatePosition to know if the popover should be scrollable.
@@ -127,7 +136,7 @@ export default function usePopoverPosition({
         fixedInternalPosition,
         trigger: trackRect,
         arrow: arrowRect,
-        body: contentBoundingBox,
+        body: constrainedBoundingBox,
         container: boundaryRect,
         viewport: viewportRect,
         renderWithPortal,
@@ -148,9 +157,12 @@ export default function usePopoverPosition({
 
       // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
       if (scrollable) {
-        body.style.maxBlockSize = rect.blockSize + 'px';
+        const effectiveMaxHeight = maxHeight !== undefined ? maxHeight : rect.blockSize;
+        body.style.maxBlockSize = effectiveMaxHeight + 'px';
         body.style.overflowX = 'hidden';
         body.style.overflowY = 'auto';
+      } else if (maxHeight !== undefined) {
+        body.style.maxBlockSize = maxHeight + 'px';
       }
 
       // Remember the internal position in case we want to keep it later.
@@ -216,6 +228,7 @@ export default function usePopoverPosition({
       allowScrollToFit,
       hideOnOverscroll,
       minVisibleBlockSize,
+      maxHeight,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };

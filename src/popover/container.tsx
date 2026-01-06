@@ -45,6 +45,8 @@ interface PopoverContainerProps {
   hideOnOverscroll?: boolean;
   hoverArea?: boolean;
   className?: string;
+  // Maximum height of the popover body in pixels.
+  maxHeight?: number;
 }
 
 export default function PopoverContainer({
@@ -66,6 +68,7 @@ export default function PopoverContainer({
   hideOnOverscroll,
   hoverArea,
   className,
+  maxHeight,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -99,6 +102,7 @@ export default function PopoverContainer({
       keepPosition,
       hideOnOverscroll,
       minVisibleBlockSize,
+      maxHeight,
     });
 
   // Recalculate position when properties change.
