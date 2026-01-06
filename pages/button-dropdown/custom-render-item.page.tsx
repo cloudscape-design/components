@@ -74,7 +74,9 @@ export default function ButtonDropdownPage() {
             width: '100%',
           }}
         >
-          <span>{item.element.text}</span>
+          <span>
+            {item.index}. {item.option.text}
+          </span>
           <div
             style={{
               transform: item.expanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -90,15 +92,55 @@ export default function ButtonDropdownPage() {
         </div>
       );
     } else if (item.type === 'checkbox') {
-      return <div style={{ padding: '4px 8px' }}>{item.element.text}</div>;
+      return (
+        <div style={{ padding: '4px 8px' }}>
+          {item.index}. {item.option.text}
+        </div>
+      );
     } else {
-      return <div style={{ padding: '4px 8px' }}>{item.element.text}</div>;
+      return (
+        <div
+          style={{
+            padding: '4px 4px 4px 8px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          <span
+            style={{
+              color: item.disabled ? '#999' : 'inherit',
+            }}
+          >
+            {item.parent
+              ? item.parent.index + '.' + item.index + '. ' + item.option.text
+              : item.index + '. ' + item.option.text}
+          </span>
+          {item.option.id === 'connect' || item.option.id === 'hibernate' ? (
+            <div
+              style={{
+                background: '#ff9900',
+                borderRadius: '4px',
+                color: '#252f3e',
+                fontStyle: 'italic',
+                fontSize: '10px',
+                fontWeight: 'bold',
+                paddingInline: '3px',
+              }}
+            >
+              NEW
+            </div>
+          ) : null}
+        </div>
+      );
     }
   };
   return (
     <SimplePage title="Button Dropdown with custom render option" screenshotArea={{}}>
       <ButtonDropdown id="ButtonDropdown3" items={withExpandedGroups} expandableGroups={true} renderItem={renderItem}>
-        With nested options
+        Button Action
       </ButtonDropdown>
     </SimplePage>
   );

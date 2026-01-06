@@ -116,7 +116,7 @@ function ButtonDropdownComponent({ variant }: { variant: 'normal' | 'nested' | '
             width: '100%',
           }}
         >
-          <span>{item.element.text}</span>
+          <span>{item.option.text}</span>
           <div
             style={{
               transform: item.expanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -134,12 +134,12 @@ function ButtonDropdownComponent({ variant }: { variant: 'normal' | 'nested' | '
     } else if (item.type === 'checkbox') {
       return (
         <div style={{ padding: '4px 8px' }}>
-          {item.selected ? <Icon name="check" /> : ''}
-          {item.element.text}
+          {item.checked ? <Icon name="check" /> : ''}
+          {item.option.text}
         </div>
       );
     } else {
-      return <div style={{ padding: '4px 8px' }}>{item.element.text}</div>;
+      return <div style={{ padding: '4px 8px' }}>{item.option.text}</div>;
     }
   };
 

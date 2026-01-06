@@ -18,6 +18,12 @@
   margin-block-start: calc(-1 * #{awsui.$border-width-dropdown});
   cursor: pointer;
 
+  &.no-content-styling {
+    padding-block: 0;
+    padding-inline: 0;
+    color: awsui.$color-text-dropdown-item-default;
+  }
+
   &.disabled {
     cursor: default;
     color: awsui.$color-text-dropdown-item-disabled;
@@ -63,10 +69,10 @@
   color: inherit;
   text-decoration: none;
 
-  &.no-content-padding {
+  &.no-content-styling {
     padding-block: 0;
     padding-inline: 0;
-    color: inherit;
+    color: awsui.$color-text-dropdown-item-default;
   }
 
   &.link-style {
@@ -93,7 +99,7 @@
   .has-category-header > .item-tooltip-wrapper > &,
   .has-category-header:not(.has-checkmark) > span > & {
     padding-inline-start: calc(#{awsui.$space-xs} + #{awsui.$space-l});
-    &.no-content-padding {
+    &.no-content-styling {
       padding-inline-start: 0;
       color: inherit;
     }

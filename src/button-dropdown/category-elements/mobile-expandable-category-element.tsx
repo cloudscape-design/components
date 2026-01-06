@@ -17,6 +17,7 @@ import { getMenuItemProps } from '../utils/menu-item.js';
 import styles from './styles.css.js';
 
 const MobileExpandableCategoryElement = ({
+  index,
   item,
   onItemActivate,
   onGroupToggle,
@@ -56,17 +57,16 @@ const MobileExpandableCategoryElement = ({
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
 
-  const renderResult =
-    renderItem?.({
-      item: {
-        type: 'group',
-        element: item as ButtonDropdownProps.ItemGroup,
-        disabled: !!disabled,
-        highlighted: !!isHighlighted,
-        expanded: expanded,
-        expandDirection: 'vertical',
-      },
-    }) ?? null;
+  const groupProps: ButtonDropdownProps.ButtonDropdownGroupItem = {
+    index: index ?? 0,
+    type: 'group',
+    option: item as ButtonDropdownProps.ItemGroup,
+    disabled: !!disabled,
+    highlighted: !!isHighlighted,
+    expanded: expanded,
+    expandDirection: 'vertical',
+  };
+  const renderResult = renderItem?.({ item: groupProps }) ?? null;
 
   const trigger = item.text && (
     <span
@@ -150,6 +150,7 @@ const MobileExpandableCategoryElement = ({
               variant={variant}
               position={position}
               renderItem={renderItem}
+              parentProps={groupProps}
             />
           </ul>
         )}

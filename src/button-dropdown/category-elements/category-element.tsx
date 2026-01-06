@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 
 const CategoryElement = ({
   item,
+  index,
   onItemActivate,
   onGroupToggle,
   targetItem,
@@ -24,17 +25,16 @@ const CategoryElement = ({
   position,
   renderItem,
 }: CategoryProps) => {
-  const renderResult =
-    renderItem?.({
-      item: {
-        type: 'group',
-        element: item as ButtonDropdownProps.ItemGroup,
-        disabled: !!disabled,
-        highlighted: !!isHighlighted,
-        expanded: true,
-        expandDirection: 'vertical',
-      },
-    }) ?? null;
+  const groupProps: ButtonDropdownProps.ButtonDropdownGroupItem = {
+    type: 'group',
+    index: index ?? 0,
+    option: item as ButtonDropdownProps.ItemGroup,
+    disabled: !!disabled,
+    highlighted: !!isHighlighted,
+    expanded: true,
+    expandDirection: 'vertical',
+  };
+  const renderResult = renderItem?.({ item: groupProps }) ?? null;
 
   // Hide the category title element from screen readers because it will be
   // provided as an ARIA label.
@@ -79,6 +79,7 @@ const CategoryElement = ({
             variant={variant}
             position={position}
             renderItem={renderItem}
+            parentProps={groupProps}
           />
         )}
       </ul>
