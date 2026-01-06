@@ -6301,6 +6301,7 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
       "inlineType": {
         "name": "ButtonDropdownProps.ButtonDropdownItemRenderer",
         "parameters": [
@@ -6314,6 +6315,9 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "renderItem",
       "optional": true,
+      "systemTags": [
+        "core",
+      ],
       "type": "ButtonDropdownProps.ButtonDropdownItemRenderer",
     },
     {
