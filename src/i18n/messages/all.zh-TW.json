@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "所有頁面中的第 {pageNumber} 頁",
     "ariaLabels.previousPageLabel": "上一頁"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",
+    "i18nStrings.resizeHandleTooltipText": "拖曳或選取以調整大小"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "值",
     "i18nStrings.detailsPercentage": "百分比",

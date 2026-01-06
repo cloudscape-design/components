@@ -68,6 +68,7 @@ const InternalSelect = React.forwardRef(
       autoFocus,
       __inFilteringToken,
       __internalRootRef,
+      renderOption,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -122,6 +123,7 @@ const InternalSelect = React.forwardRef(
       highlightOption,
       selectOption,
       announceSelected,
+      focusActiveRef,
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
@@ -163,6 +165,7 @@ const InternalSelect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        renderOption={renderOption}
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
@@ -197,7 +200,10 @@ const InternalSelect = React.forwardRef(
       noMatch,
       filteringResultsText: filteredText,
       errorIconAriaLabel,
-      onRecoveryClick: handleRecoveryClick,
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        focusActiveRef();
+      },
       hasRecoveryCallback: !!onLoadItems,
     });
 
@@ -231,6 +237,9 @@ const InternalSelect = React.forwardRef(
 
     const dropdownProps = getDropdownProps();
 
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
     return (
       <div
         {...baseProps}
@@ -256,6 +265,8 @@ const InternalSelect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
+          // Forces dropdown position recalculation when new options are loaded
+          contentKey={hasOptions.current.toString()}
         >
           <ListComponent
             listBottom={
@@ -263,6 +274,7 @@ const InternalSelect = React.forwardRef(
                 <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
+            renderOption={renderOption}
             menuProps={menuProps}
             getOptionProps={getOptionProps}
             filteredOptions={filteredOptions}

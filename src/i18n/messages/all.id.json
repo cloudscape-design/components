@@ -242,6 +242,10 @@
     "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
     "ariaLabels.previousPageLabel": "Halaman sebelumnya"
   },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",
+    "i18nStrings.resizeHandleTooltipText": "Seret atau pilih untuk mengubah ukuran"
+  },
   "pie-chart": {
     "i18nStrings.detailsValue": "Nilai",
     "i18nStrings.detailsPercentage": "Persentase",

@@ -51,10 +51,10 @@ type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig)
 
 export interface AlertFlashContentApiPublic {
   registerContentReplacer(config: AlertFlashContentConfig): void;
+  clearRegisteredReplacerForTesting(): void;
 }
 
 export interface AlertFlashContentApiInternal {
-  clearRegisteredReplacer(): void;
   onContentRegistered(listener: AlertFlashContentRegistrationListener): () => void;
   initialCheck(context: AlertFlashContentInitialContext): boolean;
 }
@@ -89,7 +89,7 @@ export class AlertFlashContentController {
     this.#scheduleUpdate();
   };
 
-  clearRegisteredReplacer = () => {
+  clearRegisteredReplacerForTesting = () => {
     this.#provider = undefined;
   };
 
@@ -117,11 +117,11 @@ export class AlertFlashContentController {
 
   installPublic(api: Partial<AlertFlashContentApiPublic> = {}): AlertFlashContentApiPublic {
     api.registerContentReplacer ??= this.registerContentReplacer;
+    api.clearRegisteredReplacerForTesting ??= this.clearRegisteredReplacerForTesting;
     return api as AlertFlashContentApiPublic;
   }
 
   installInternal(internalApi: Partial<AlertFlashContentApiInternal> = {}): AlertFlashContentApiInternal {
-    internalApi.clearRegisteredReplacer ??= this.clearRegisteredReplacer;
     internalApi.onContentRegistered ??= this.onContentRegistered;
     internalApi.initialCheck ??= this.initialCheck;
     return internalApi as AlertFlashContentApiInternal;
