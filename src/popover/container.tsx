@@ -43,8 +43,6 @@ interface PopoverContainerProps {
   allowVerticalOverflow?: boolean;
   // Whether the popover should be hidden when the trigger is scrolled away.
   hideOnOverscroll?: boolean;
-  // Callback fired when the popover detects it has been scrolled away (overscrolled).
-  onOverscroll?: () => void;
   hoverArea?: boolean;
   className?: string;
 }
@@ -66,7 +64,6 @@ export default function PopoverContainer({
   allowScrollToFit,
   allowVerticalOverflow,
   hideOnOverscroll,
-  onOverscroll,
   hoverArea,
   className,
 }: PopoverContainerProps) {
@@ -103,15 +100,6 @@ export default function PopoverContainer({
       hideOnOverscroll,
       minVisibleBlockSize,
     });
-
-  // Call onOverscroll callback when isOverscrolling becomes true
-  const prevIsOverscrolling = useRef(false);
-  useLayoutEffect(() => {
-    if (isOverscrolling && !prevIsOverscrolling.current && onOverscroll) {
-      onOverscroll();
-    }
-    prevIsOverscrolling.current = isOverscrolling;
-  }, [isOverscrolling, onOverscroll]);
 
   // Recalculate position when properties change.
   useLayoutEffect(() => {

@@ -23,7 +23,6 @@ export default function InternalTooltip({
   getTrack,
   trackKey,
   position = 'top',
-  __onDismissOnScroll,
   onEscape,
   __internalRootRef,
   ...restProps
@@ -65,9 +64,9 @@ export default function InternalTooltip({
     };
   }, [onEscape]);
 
-  const handleDismissOnScroll = React.useCallback(() => {
-    fireNonCancelableEvent(__onDismissOnScroll);
-  }, [__onDismissOnScroll]);
+  // const handleDismissOnScroll = React.useCallback(() => {
+  //   fireNonCancelableEvent(__onDismissOnScroll);
+  // }, [__onDismissOnScroll]);
 
   return (
     <Portal>
@@ -89,7 +88,6 @@ export default function InternalTooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={true}
-              onOverscroll={handleDismissOnScroll}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}
