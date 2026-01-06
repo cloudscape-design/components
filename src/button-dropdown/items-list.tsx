@@ -29,6 +29,7 @@ export default function ItemsList({
   position,
   linkStyle,
   renderItem,
+  parentProps,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -39,6 +40,7 @@ export default function ItemsList({
       return (
         <ItemElement
           key={index}
+          index={index}
           item={item}
           onItemActivate={onItemActivate}
           disabled={item.disabled ?? categoryDisabled}
@@ -52,6 +54,7 @@ export default function ItemsList({
           analyticsMetadataTransformer={analyticsMetadataTransformer}
           linkStyle={linkStyle}
           renderItem={renderItem}
+          parentProps={parentProps}
         />
       );
     }
@@ -60,6 +63,7 @@ export default function ItemsList({
         isMobile ? (
           <MobileExpandableCategoryElement
             key={index}
+            index={index}
             item={item}
             onItemActivate={onItemActivate}
             onGroupToggle={onGroupToggle}
@@ -77,6 +81,7 @@ export default function ItemsList({
         ) : (
           <ExpandableCategoryElement
             key={index}
+            index={index}
             item={item}
             onItemActivate={onItemActivate}
             onGroupToggle={onGroupToggle}
@@ -98,6 +103,7 @@ export default function ItemsList({
     return (
       <CategoryElement
         key={index}
+        index={index}
         item={item}
         onItemActivate={onItemActivate}
         onGroupToggle={onGroupToggle}
