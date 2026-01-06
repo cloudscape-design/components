@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -12,6 +12,7 @@ import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { throttle } from '../../internal/utils/throttle';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 
@@ -30,6 +31,7 @@ interface ResizerProps {
   isBorderless: boolean;
 }
 
+const RESIZE_THROTTLE = 25;
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
@@ -168,21 +170,22 @@ export function Resizer({
     [minWidth, onWidthUpdate, updateTrackerPosition]
   );
 
-  const resizeColumn = useCallback(
-    (offset: number) => {
-      const elements = getResizerElements(resizerToggleRef.current);
-      if (!elements) {
-        return;
-      }
+  const resizeColumn = useMemo(
+    () =>
+      throttle((offset: number) => {
+        const elements = getResizerElements(resizerToggleRef.current);
+        if (!elements) {
+          return;
+        }
 
-      const { insetInlineStart: inlineStartEdge } = getLogicalBoundingClientRect(elements.scrollParent);
-      if (offset > inlineStartEdge) {
-        const cellLeft = getLogicalBoundingClientRect(elements.header).insetInlineStart;
-        const newWidth = offset - cellLeft;
-        // callbacks must be the last calls in the handler, because they may cause an extra update
-        updateColumnWidth(newWidth);
-      }
-    },
+        const { insetInlineStart: inlineStartEdge } = getLogicalBoundingClientRect(elements.scrollParent);
+        if (offset > inlineStartEdge) {
+          const cellLeft = getLogicalBoundingClientRect(elements.header).insetInlineStart;
+          const newWidth = offset - cellLeft;
+          // callbacks must be the last calls in the handler, because they may cause an extra update
+          updateColumnWidth(newWidth);
+        }
+      }, RESIZE_THROTTLE),
     [updateColumnWidth]
   );
 
