@@ -27,9 +27,18 @@ interface DirectionButtonProps {
   state: DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
+  forcedPosition: null | 'top' | 'bottom';
+  forcedIndex: number;
 }
 
-export default function DirectionButton({ direction, state, show, onClick }: DirectionButtonProps) {
+export default function DirectionButton({
+  direction,
+  state,
+  show,
+  onClick,
+  forcedPosition,
+  forcedIndex,
+}: DirectionButtonProps) {
   return (
     <Transition in={show}>
       {(transitionState, ref) => (
@@ -40,7 +49,9 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
           ref={ref}
           className={clsx(
             styles['direction-button-wrapper'],
-            styles[`direction-button-wrapper-${direction}`],
+            !forcedPosition && styles[`direction-button-wrapper-${direction}`],
+            forcedPosition && styles['direction-button-wrapper-forced'],
+            forcedPosition && styles[`direction-button-wrapper-forced-${forcedPosition}-${forcedIndex}`],
             transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
             styles[`direction-button-wrapper-motion-${transitionState}`]
           )}
