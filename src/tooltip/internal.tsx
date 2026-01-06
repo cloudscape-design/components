@@ -18,10 +18,6 @@ import styles from './styles.css.js';
 
 type InternalTooltipComponentProps = InternalTooltipProps & InternalBaseComponentProps;
 
-// Generate unique ID for older React versions
-let tooltipIdCounter = 0;
-const generateTooltipId = () => `tooltip-${++tooltipIdCounter}`;
-
 export default function InternalTooltip({
   content,
   getTrack,
@@ -34,7 +30,6 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
-  const tooltipId = React.useMemo(() => generateTooltipId(), []);
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -81,7 +76,6 @@ export default function InternalTooltip({
         className={clsx(styles.root, baseProps.className)}
         data-testid={trackKey}
         ref={__internalRootRef}
-        id={tooltipId}
         role="tooltip"
       >
         <Transition in={true}>
