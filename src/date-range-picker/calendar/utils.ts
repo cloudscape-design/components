@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addMonths, addYears, isSameMonth, isSameYear, startOfMonth, startOfYear } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { parseDate } from '../../internal/utils/date-time';
 import { DateRangePickerProps } from '../interfaces';
@@ -11,11 +11,11 @@ export function findDateToFocus(
   baseDate: Date,
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction
 ) {
-  if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
+  if (selected && isDateEnabled(selected) && dayjs(selected).isSame(baseDate, 'month')) {
     return selected;
   }
   const today = new Date();
-  if (isDateEnabled(today) && isSameMonth(today, baseDate)) {
+  if (isDateEnabled(today) && dayjs(today).isSame(baseDate, 'month')) {
     return today;
   }
   if (isDateEnabled(baseDate)) {
@@ -29,12 +29,12 @@ export function findMonthToFocus(
   baseDate: Date,
   isMonthEnabled: DateRangePickerProps.IsDateEnabledFunction
 ) {
-  if (selected && isMonthEnabled(selected) && isSameYear(selected, baseDate)) {
+  if (selected && isMonthEnabled(selected) && dayjs(selected).isSame(baseDate, 'year')) {
     return selected;
   }
 
   const today = new Date();
-  if (isMonthEnabled(today) && isSameYear(today, baseDate)) {
+  if (isMonthEnabled(today) && dayjs(today).isSame(baseDate, 'year')) {
     return today;
   }
   if (isMonthEnabled(baseDate)) {
@@ -47,28 +47,28 @@ export function findMonthToDisplay(value: DateRangePickerProps.PendingAbsoluteVa
   if (value.start.date) {
     const startDate = parseDate(value.start.date);
     if (isSingleGrid) {
-      return startOfMonth(startDate);
+      return dayjs(startDate).startOf('month').toDate();
     }
-    return startOfMonth(addMonths(startDate, 1));
+    return dayjs(startDate).add(1, 'month').startOf('month').toDate();
   }
   if (value.end.date) {
-    return startOfMonth(parseDate(value.end.date));
+    return dayjs(parseDate(value.end.date)).startOf('month').toDate();
   }
-  return startOfMonth(Date.now());
+  return dayjs(Date.now()).startOf('month').toDate();
 }
 
 export function findYearToDisplay(value: DateRangePickerProps.PendingAbsoluteValue, isSingleGrid: boolean) {
   if (value.start.date) {
     const startDate = parseDate(value.start.date);
     if (isSingleGrid) {
-      return startOfYear(startDate);
+      return dayjs(startDate).startOf('year').toDate();
     }
-    return startOfYear(addYears(startDate, 1));
+    return dayjs(startDate).add(1, 'year').startOf('year').toDate();
   }
   if (value.end.date) {
-    return startOfYear(parseDate(value.end.date));
+    return dayjs(parseDate(value.end.date)).startOf('year').toDate();
   }
-  return startOfYear(Date.now());
+  return dayjs(Date.now()).startOf('year').toDate();
 }
 
 export const generateI18NFallbackKey = (isMonthPicker: boolean, isDateOnly: boolean) => {

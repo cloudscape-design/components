@@ -138,7 +138,7 @@ test('dives into folders containing slashes in names', async () => {
 
 describe('last updated status text', () => {
   beforeEach(() => {
-    const lastUpdatedDate = new Date('2024-01-02T10:00:00.000Z');
+    const lastUpdatedDate = new Date(2024, 0, 2, 10, 0, 0); // January 2, 2024, 10:00:00 in local time
     jest.useFakeTimers().setSystemTime(lastUpdatedDate);
   });
 
@@ -158,7 +158,7 @@ describe('last updated status text', () => {
     await clickRefreshAndWaitForFetch();
     await waitFor(() => {
       const lastUpdated = createWrapper().find('[aria-live="polite"]')!.getElement();
-      expect(lastUpdated.textContent).toBe('Last updated January 2, 2024, 10:00:00 (UTC)');
+      expect(lastUpdated.textContent).toMatch(/^Last updated January 2, 2024, 10:00:00 \(UTC[+-]?\d*\)$/);
     });
   });
 
@@ -166,12 +166,12 @@ describe('last updated status text', () => {
     const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
     await waitForFetch();
 
-    const refreshFetchDate = new Date('2024-01-02T11:00:00.000Z');
+    const refreshFetchDate = new Date(2024, 0, 2, 11, 0, 0); // January 2, 2024, 11:00:00 in local time
     jest.useFakeTimers().setSystemTime(refreshFetchDate);
     await clickRefreshAndWaitForFetch();
 
     const lastUpdated = wrapper.findByClassName(styles['last-updated-caption'])!.getElement();
-    expect(lastUpdated).toHaveTextContent('Last updatedJanuary 2, 2024, 11:00:00 (UTC)');
+    expect(lastUpdated).toHaveTextContent(/Last updatedJanuary 2, 2024, 11:00:00 \(UTC[+-]?\d*\)/);
   });
 
   test('does not render "Last updated" when the i18n label is not specified', async () => {

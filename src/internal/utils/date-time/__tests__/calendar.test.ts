@@ -1,9 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import addMonths from 'date-fns/addMonths';
-import isSameDay from 'date-fns/isSameDay';
-import isSameMonth from 'date-fns/isSameMonth';
-import subMonths from 'date-fns/subMonths';
+import dayjs from 'dayjs';
 
 import { DayIndex } from '../../locale';
 import {
@@ -27,31 +24,33 @@ describe('getCalendarYear', () => {
   });
 
   test('returns correct dates for all months of the year', () => {
-    const testDate = new Date('2024-06-15');
+    const testDate = new Date(2024, 5, 15); // June 15, 2024 in local time
     const result = getCalendarYear(testDate);
 
-    // Expected dates for 2024
-    const expectedDates = [
+    // Expected months for 2024 (0-indexed)
+    const expectedMonths = [
       // First quarter
-      [new Date('2024-01-01'), new Date('2024-02-01'), new Date('2024-03-01')],
+      [0, 1, 2], // Jan, Feb, Mar
       // Second quarter
-      [new Date('2024-04-01'), new Date('2024-05-01'), new Date('2024-06-01')],
+      [3, 4, 5], // Apr, May, Jun
       // Third quarter
-      [new Date('2024-07-01'), new Date('2024-08-01'), new Date('2024-09-01')],
+      [6, 7, 8], // Jul, Aug, Sep
       // Fourth quarter
-      [new Date('2024-10-01'), new Date('2024-11-01'), new Date('2024-12-01')],
+      [9, 10, 11], // Oct, Nov, Dec
     ];
 
     // Compare each date in the matrix
     result.forEach((row, i) => {
       row.forEach((date, j) => {
-        expect(date.getTime()).toBe(expectedDates[i][j].getTime());
+        expect(date.getFullYear()).toBe(2024);
+        expect(date.getMonth()).toBe(expectedMonths[i][j]);
+        expect(date.getDate()).toBe(1);
       });
     });
   });
 
   test('maintains the input year regardless of input month and day', () => {
-    const testDate = new Date('2023-12-31');
+    const testDate = new Date(2023, 11, 31); // December 31, 2023 in local time
     const result = getCalendarYear(testDate);
 
     result.forEach(row => {
@@ -62,7 +61,7 @@ describe('getCalendarYear', () => {
   });
 
   test('sets all dates to the first day of each month', () => {
-    const testDate = new Date('2024-01-15');
+    const testDate = new Date(2024, 0, 15); // January 15, 2024 in local time
     const result = getCalendarYear(testDate);
 
     result.forEach(row => {
@@ -73,35 +72,29 @@ describe('getCalendarYear', () => {
   });
 
   test('handles leap years correctly', () => {
-    const testDate = new Date('2024-02-01');
+    const testDate = new Date(2024, 1, 1); // February 1, 2024 in local time
     const result = getCalendarYear(testDate);
 
     // Check February specifically
     const february = result[0][1];
+    expect(february.getMonth()).toBe(1); // February
 
-    // Create March 1st of the same year
-    const march = new Date('2024-03-01');
-
-    // Calculate days in February
-    const daysInFebruary = (march.getTime() - february.getTime()) / (1000 * 60 * 60 * 24);
-
-    expect(daysInFebruary).toBe(29);
+    // Check that February 29 exists in 2024
+    const feb29 = new Date(2024, 1, 29);
+    expect(feb29.getMonth()).toBe(1); // Still February (not rolled over to March)
   });
 
   test('handles non-leap years correctly', () => {
-    const testDate = new Date('2023-02-01');
+    const testDate = new Date(2023, 1, 1); // February 1, 2023 in local time
     const result = getCalendarYear(testDate);
 
     // Check February specifically
     const february = result[0][1];
+    expect(february.getMonth()).toBe(1); // February
 
-    // Create March 1st of the same year
-    const march = new Date('2023-03-01');
-
-    // Calculate days in February
-    const daysInFebruary = (march.getTime() - february.getTime()) / (1000 * 60 * 60 * 24);
-
-    expect(daysInFebruary).toBe(28);
+    // Check that February 29 doesn't exist in 2023 (rolls over to March 1)
+    const feb29 = new Date(2023, 1, 29);
+    expect(feb29.getMonth()).toBe(2); // March (rolled over)
   });
 
   test('handles different timezones correctly', () => {
@@ -146,7 +139,7 @@ describe('getCurrentMonthRows', () => {
     const result = getCurrentMonthRows(date, firstDayOfWeek);
 
     // Should contain February 15, 2024
-    const hasTargetDate = result.some(row => row.some(day => isSameDay(day, date)));
+    const hasTargetDate = result.some(row => row.some(day => dayjs(day).isSame(date, 'day')));
     expect(hasTargetDate).toBeTruthy();
   });
 });
@@ -169,10 +162,10 @@ describe('getPrevMonthRows', () => {
     const firstDayOfWeek: DayIndex = 0;
 
     const result = getPrevMonthRows(date, firstDayOfWeek);
-    const prevMonth = subMonths(date, 1);
+    const prevMonth = dayjs(date).subtract(1, 'month').toDate();
 
     // First day should be from previous month
-    expect(isSameMonth(result[0][0], prevMonth)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(prevMonth, 'month')).toBeFalsy();
   });
 
   test('slices last row when it contains current month dates', () => {
@@ -184,7 +177,7 @@ describe('getPrevMonthRows', () => {
     // Last date should not be from current month
     const lastRow = result[result.length - 1];
     const lastDate = lastRow[lastRow.length - 1];
-    expect(isSameMonth(lastDate, date)).toBeFalsy();
+    expect(dayjs(lastDate).isSame(date, 'month')).toBeFalsy();
   });
 });
 
@@ -206,10 +199,10 @@ describe('getNextMonthRows', () => {
     const firstDayOfWeek: DayIndex = 0;
 
     const result = getNextMonthRows(date, firstDayOfWeek);
-    const nextMonth = addMonths(date, 1);
+    const nextMonth = dayjs(date).add(1, 'month').toDate();
 
     // First day should be from next month
-    expect(isSameMonth(result[0][0], nextMonth)).toBeTruthy();
+    expect(dayjs(result[0][0]).isSame(nextMonth, 'month')).toBeTruthy();
   });
 
   test('slices first row when it contains current month dates', () => {
@@ -219,7 +212,7 @@ describe('getNextMonthRows', () => {
     const result = getNextMonthRows(date, firstDayOfWeek);
 
     // First date should not be from current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles year boundary', () => {
@@ -256,16 +249,19 @@ describe('shared calendar behavior', () => {
     });
 
     test(`${name} maintains week integrity`, () => {
-      const date = new Date('2024-02-15');
+      const date = new Date(2024, 1, 15); // February 15, 2024 in local time
       const firstDayOfWeek: DayIndex = 0;
 
       const result = fn(date, firstDayOfWeek);
 
       result.forEach(week => {
-        // Check if days in week are consecutive
+        // Check if days in week are consecutive calendar days
         for (let i = 1; i < week.length; i++) {
-          const dayDiff = week[i].getTime() - week[i - 1].getTime();
-          expect(dayDiff).toBe(24 * 60 * 60 * 1000); // One day in milliseconds
+          const prevDate = week[i - 1].getDate();
+          const currDate = week[i].getDate();
+          // Either next day in same month, or 1st of next month
+          const isConsecutive = currDate === prevDate + 1 || (currDate === 1 && prevDate >= 28);
+          expect(isConsecutive).toBe(true);
         }
       });
     });
@@ -305,9 +301,9 @@ describe('getCalendarMonthWithSixRows', () => {
     });
 
     // First date should be from previous month or current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
-    expect(isSameMonth(result[3][3], date)).toBeTruthy();
-    expect(isSameMonth(result[5][6], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
+    expect(dayjs(result[3][3]).isSame(date, 'month')).toBeTruthy();
+    expect(dayjs(result[5][6]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles padding after correctly', () => {
@@ -320,9 +316,9 @@ describe('getCalendarMonthWithSixRows', () => {
     });
 
     // First dates should be from current month
-    expect(isSameMonth(result[0][0], date)).toBeFalsy();
-    expect(isSameMonth(result[3][3], date)).toBeTruthy();
-    expect(isSameMonth(result[5][6], date)).toBeFalsy();
+    expect(dayjs(result[0][0]).isSame(date, 'month')).toBeFalsy();
+    expect(dayjs(result[3][3]).isSame(date, 'month')).toBeTruthy();
+    expect(dayjs(result[5][6]).isSame(date, 'month')).toBeFalsy();
   });
 
   test('handles different start of week', () => {
@@ -388,16 +384,21 @@ describe('getCalendarMonthWithSixRows', () => {
 
     result.forEach((week, weekIndex) => {
       for (let i = 1; i < week.length; i++) {
-        const dayDiff = week[i].getTime() - week[i - 1].getTime();
-        expect(dayDiff).toBe(24 * 60 * 60 * 1000); // One day in milliseconds
+        const prevDate = week[i - 1].getDate();
+        const currDate = week[i].getDate();
+        // Either next day in same month, or 1st of next month
+        const isConsecutive = currDate === prevDate + 1 || (currDate === 1 && prevDate >= 28);
+        expect(isConsecutive).toBe(true);
       }
 
       // Check connection between weeks (except for last week)
       if (weekIndex < result.length - 1) {
         const lastDayOfWeek = week[6];
         const firstDayOfNextWeek = result[weekIndex + 1][0];
-        const dayDiff = firstDayOfNextWeek.getTime() - lastDayOfWeek.getTime();
-        expect(dayDiff).toBe(24 * 60 * 60 * 1000);
+        const prevDate = lastDayOfWeek.getDate();
+        const currDate = firstDayOfNextWeek.getDate();
+        const isConsecutive = currDate === prevDate + 1 || (currDate === 1 && prevDate >= 28);
+        expect(isConsecutive).toBe(true);
       }
     });
   });

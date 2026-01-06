@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { addMonths, isAfter, isBefore, isSameDay, isSameMonth, isSameYear, subMonths } from 'date-fns';
+import dayjs from 'dayjs';
 import { getCalendarMonth } from 'mnth';
 
 import { DayIndex } from '../locale';
@@ -68,9 +68,9 @@ export class MonthCalendar {
       }
       switch (padDates) {
         case 'before':
-          return isSameMonth(date, baseDate) || isBefore(date, baseDate);
+          return dayjs(date).isSame(baseDate, 'month') || dayjs(date).isBefore(baseDate);
         case 'after':
-          return isSameMonth(date, baseDate) || isAfter(date, baseDate);
+          return dayjs(date).isSame(baseDate, 'month') || dayjs(date).isAfter(baseDate);
       }
     };
 
@@ -87,7 +87,7 @@ export class MonthCalendar {
       if (!week) {
         return undefined;
       }
-      if (!isSameMonth(week[0], baseDate) && !isSameMonth(week[week.length - 1], baseDate)) {
+      if (!dayjs(week[0]).isSame(baseDate, 'month') && !dayjs(week[week.length - 1]).isSame(baseDate, 'month')) {
         return undefined;
       }
       return (getWeekTestIndex(weekIndex - 1) ?? 0) + 1;
@@ -100,7 +100,10 @@ export class MonthCalendar {
       for (let dayIndex = 0; dayIndex < daysOfWeek.length; dayIndex++) {
         const date = daysOfWeek[dayIndex];
         const isVisible = isDateVisible(weekIndex, dayIndex);
-        const isSelected = !!(selection && (isSameDay(date, selection[0]) || isSameDay(date, selection[1])));
+        const isSelected = !!(
+          selection &&
+          (dayjs(date).isSame(selection[0], 'day') || dayjs(date).isSame(selection[1], 'day'))
+        );
         const isInRange = isDateInRange(weekIndex, dayIndex);
         const isTop = isVisible && !isDateVisible(weekIndex - 1, dayIndex);
         const isBottom = isVisible && !isDateVisible(weekIndex + 1, dayIndex);
@@ -149,7 +152,7 @@ export class YearCalendar {
       if (!month) {
         return false;
       }
-      return isSameYear(month, baseDate);
+      return dayjs(month).isSame(baseDate, 'year');
     };
 
     for (let quarterIndex = 0; quarterIndex < allCalendarMonths.length; quarterIndex++) {
@@ -159,7 +162,10 @@ export class YearCalendar {
       for (let monthIndex = 0; monthIndex < monthsOfQuarter.length; monthIndex++) {
         const month = monthsOfQuarter[monthIndex];
         const isVisible = isMonthVisible(quarterIndex, monthIndex);
-        const isSelected = !!(selection && (isSameMonth(month, selection[0]) || isSameMonth(month, selection[1])));
+        const isSelected = !!(
+          selection &&
+          (dayjs(month).isSame(selection[0], 'month') || dayjs(month).isSame(selection[1], 'month'))
+        );
         const isInRange = isMonthInRange(quarterIndex, monthIndex);
         const isTop = isVisible && !isMonthVisible(quarterIndex - 1, monthIndex);
         const isBottom = isVisible && !isMonthVisible(quarterIndex + 1, monthIndex);
@@ -199,25 +205,27 @@ export function getCalendarMonthWithSixRows(
 }
 
 function checkDateIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) {
-  if (!dateOne || !dateTwo || isSameDay(dateOne, dateTwo)) {
+  if (!dateOne || !dateTwo || dayjs(dateOne).isSame(dateTwo, 'day')) {
     return false;
   }
 
   const inRange =
-    (isAfter(date, dateOne) && isBefore(date, dateTwo)) || (isAfter(date, dateTwo) && isBefore(date, dateOne));
+    (dayjs(date).isAfter(dateOne) && dayjs(date).isBefore(dateTwo)) ||
+    (dayjs(date).isAfter(dateTwo) && dayjs(date).isBefore(dateOne));
 
-  return inRange || isSameDay(date, dateOne) || isSameDay(date, dateTwo);
+  return inRange || dayjs(date).isSame(dateOne, 'day') || dayjs(date).isSame(dateTwo, 'day');
 }
 
 function checkMonthIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) {
-  if (!dateOne || !dateTwo || isSameMonth(dateOne, dateTwo)) {
+  if (!dateOne || !dateTwo || dayjs(dateOne).isSame(dateTwo, 'month')) {
     return false;
   }
 
   const inRange =
-    (isAfter(date, dateOne) && isBefore(date, dateTwo)) || (isAfter(date, dateTwo) && isBefore(date, dateOne));
+    (dayjs(date).isAfter(dateOne) && dayjs(date).isBefore(dateTwo)) ||
+    (dayjs(date).isAfter(dateTwo) && dayjs(date).isBefore(dateOne));
 
-  return inRange || isSameMonth(date, dateOne) || isSameMonth(date, dateTwo);
+  return inRange || dayjs(date).isSame(dateOne, 'month') || dayjs(date).isSame(dateTwo, 'month');
 }
 
 export function getCurrentMonthRows(date: Date, firstDayOfWeek: DayIndex) {
@@ -225,13 +233,13 @@ export function getCurrentMonthRows(date: Date, firstDayOfWeek: DayIndex) {
 }
 
 export function getPrevMonthRows(date: Date, firstDayOfWeek: DayIndex) {
-  const rows = getCalendarMonth(subMonths(date, 1), { firstDayOfWeek });
+  const rows = getCalendarMonth(dayjs(date).subtract(1, 'month').toDate(), { firstDayOfWeek });
   const lastDay = rows[rows.length - 1][rows[rows.length - 1].length - 1];
-  return !isSameMonth(date, lastDay) ? rows : rows.slice(0, -1);
+  return !dayjs(date).isSame(lastDay, 'month') ? rows : rows.slice(0, -1);
 }
 
 export function getNextMonthRows(date: Date, firstDayOfWeek: DayIndex) {
-  const rows = getCalendarMonth(addMonths(date, 1), { firstDayOfWeek });
+  const rows = getCalendarMonth(dayjs(date).add(1, 'month').toDate(), { firstDayOfWeek });
   const firstDay = rows[0][0];
-  return !isSameMonth(date, firstDay) ? rows : rows.slice(1);
+  return !dayjs(date).isSame(firstDay, 'month') ? rows : rows.slice(1);
 }

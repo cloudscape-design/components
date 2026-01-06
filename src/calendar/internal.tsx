@@ -3,7 +3,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { addMonths, addYears, isSameDay, isSameMonth, isSameYear } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -71,9 +71,13 @@ export default function Calendar({
     ? getBaseMonth(displayedDate, isDateEnabled)
     : getBaseDay(displayedDate, isDateEnabled);
 
-  const isSameDate = isMonthPicker ? isSameMonth : isSameDay;
-  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
-  const isCurrentPage = (date: Date) => isMonthPicker || isSameMonth(date, baseDate);
+  const isSameDate = isMonthPicker
+    ? (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month')
+    : (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'day');
+  const isSamePage = isMonthPicker
+    ? (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'year')
+    : (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month');
+  const isCurrentPage = (date: Date) => isMonthPicker || dayjs(date).isSame(baseDate, 'month');
 
   const { previousButtonLabel, nextButtonLabel, renderDate, renderDateAnnouncement, renderHeaderText } =
     useCalendarLabels({
@@ -111,7 +115,9 @@ export default function Calendar({
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
   const onHeaderChangePageHandler = (amount: number) => {
-    const movePage = isMonthPicker ? addYears : addMonths;
+    const movePage = isMonthPicker
+      ? (date: Date, amt: number) => dayjs(date).add(amt, 'year').toDate()
+      : (date: Date, amt: number) => dayjs(date).add(amt, 'month').toDate();
     const newDate = movePage(baseDate, amount);
     onChangePageHandler(newDate);
   };

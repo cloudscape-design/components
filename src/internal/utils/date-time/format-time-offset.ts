@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { padLeftZeros } from '../strings';
+import { parseTimezoneOffset } from './parse-timezone-offset';
 
 /**
  * Formats timezone offset values used in for APIs, maintaining backward compatibility. Always
@@ -51,7 +52,7 @@ export function formatTimeOffsetLocalized(isoDate: string, offsetInMinutes?: num
 }
 
 function defaultToLocal(isoDate: string, offsetInMinutes?: number) {
-  return offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
+  return offsetInMinutes ?? parseTimezoneOffset(isoDate);
 }
 
 function getMinutesAndHours(minutes: number) {
