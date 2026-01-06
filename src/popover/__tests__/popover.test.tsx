@@ -45,6 +45,12 @@ class PopoverInternalWrapper extends PopoverWrapper {
     }
     return this.findByClassName(styles.body);
   }
+  findContainerBody({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {
+    if (renderWithPortal) {
+      return createWrapper().findByClassName(styles['container-body']);
+    }
+    return this.findByClassName(styles['container-body']);
+  }
 }
 
 function renderPopover(props: PopoverProps & { ref?: React.Ref<PopoverProps.Ref> }) {
@@ -465,4 +471,22 @@ test('does not add portal to the body unless visible', () => {
   unmount();
 
   expect(document.querySelectorAll('body > div')).toHaveLength(1);
+});
+
+describe('maxHeight prop', () => {
+  it('applies maxHeight style when maxHeight is specified', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Content', maxHeight: 100 });
+    wrapper.findTrigger().click();
+    const body = wrapper.findContainerBody()!.getElement();
+    expect(body.style.overflowY).toBe('auto');
+    expect(body.style.overflowX).toBe('hidden');
+  });
+
+  it('works with portal rendering', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Content', maxHeight: 100, renderWithPortal: true });
+    wrapper.findTrigger().click();
+    const body = wrapper.findContainerBody({ renderWithPortal: true })!.getElement();
+    expect(body.style.overflowY).toBe('auto');
+    expect(body.style.overflowX).toBe('hidden');
+  });
 });
