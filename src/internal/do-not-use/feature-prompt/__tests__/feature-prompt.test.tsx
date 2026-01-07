@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import FeaturePrompt, { FeaturePromptProps } from '../../../../../lib/components/internal/do-not-use/feature-prompt';
+import { fireNonCancelableEvent } from '../../../../../lib/components/internal/events';
 import FeaturePromptWrapper from '../../../../../lib/components/test-utils/dom/internal/feature-prompt';
 
 function renderComponent(jsx: React.ReactElement) {
@@ -14,9 +15,13 @@ function renderComponent(jsx: React.ReactElement) {
   return { wrapper, ...rest };
 }
 
-const TestComponent = () => {
+const TestComponent = ({ onDismiss }: { onDismiss?: FeaturePromptProps['onDismiss'] }) => {
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  featurePromptRef.current?.onDismiss(() => {
+    fireNonCancelableEvent(onDismiss);
+  });
 
   return (
     <div>
@@ -29,11 +34,20 @@ const TestComponent = () => {
       >
         trigger the feature prompt
       </button>
+      <button
+        data-testid="dismiss-button"
+        onClick={() => {
+          featurePromptRef.current?.dismiss();
+        }}
+      >
+        dismiss the feature prompt
+      </button>
       <FeaturePrompt
         ref={featurePromptRef}
         position="left"
         header={<div>header</div>}
         content={<div>content</div>}
+        onDismiss={onDismiss}
         getTrack={() => trackRef.current}
         trackKey="track-element"
       />
@@ -64,6 +78,45 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('content');
 
     fireEvent.blur(wrapper.findContent()!.getElement());
+    expect(wrapper.findContent()).toBeFalsy();
+  });
+
+  test('should call component onDismiss when dismissed via close button', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    wrapper.findDismissButton()!.click();
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.findContent()).toBeFalsy();
+  });
+
+  test('should call component onDismiss when dismissed via blur', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    fireEvent.blur(wrapper.findContent()!.getElement());
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.findContent()).toBeFalsy();
+  });
+
+  test('should call component onDismiss when dismissed programmatically', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    getByTestId('dismiss-button').click();
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
     expect(wrapper.findContent()).toBeFalsy();
   });
 });
