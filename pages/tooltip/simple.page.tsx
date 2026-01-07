@@ -135,6 +135,7 @@ export default function TooltipSimple() {
               >
                 <Button
                   variant="primary"
+                  data-testid="medium-length-button"
                   nativeButtonAttributes={{
                     'aria-describedby': 'medium-description',
                     onFocus: () => setShowBottom(true),
@@ -234,6 +235,7 @@ export default function TooltipSimple() {
               style={{ display: 'inline-block' }}
             >
               <button
+                data-testid="truncated-text-button"
                 onFocus={() => setShowTruncated(true)}
                 onBlur={() => setShowTruncated(false)}
                 aria-describedby="truncated-description"
