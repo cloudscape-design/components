@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
+
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
@@ -26,23 +28,21 @@ export default function TutorialPanel({
   ...restProps
 }: TutorialPanelProps) {
   const { __internalRootRef } = useBaseComponent('TutorialPanel');
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
 
   function handleExitTutorial(event: NonCancelableCustomEvent<TutorialPanelProps.TutorialDetail>) {
     context.onExitTutorial(event);
-    __internalRootRef.current?.focus();
+    panelRef.current?.focus();
   }
+
+  const mergedRef = useMergeRefs(panelRef, __internalRootRef);
 
   return (
     <>
-      <div
-        {...baseProps}
-        className={clsx(baseProps.className, styles['tutorial-panel'])}
-        ref={__internalRootRef}
-        tabIndex={-1}
-      >
+      <div {...baseProps} className={clsx(baseProps.className, styles['tutorial-panel'])} ref={mergedRef} tabIndex={-1}>
         {context.currentTutorial ? (
           <TutorialDetailView
             i18nStrings={i18nStrings}
