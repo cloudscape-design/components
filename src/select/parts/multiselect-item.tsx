@@ -10,8 +10,8 @@ import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import SelectableItem from '../../internal/components/selectable-item';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import Tooltip from '../../tooltip/internal.js';
 import { MultiselectProps } from '../../multiselect/interfaces';
+import Tooltip from '../../tooltip/internal.js';
 import { ItemParentProps, ItemProps } from './item';
 
 import styles from './styles.css.js';
