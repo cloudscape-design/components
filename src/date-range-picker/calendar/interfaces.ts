@@ -28,6 +28,8 @@ export type RangeCalendarI18nStrings = Pick<
   | 'isoMonthConstraintText'
   | 'slashedMonthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
+  | 'datePlaceholder'
+  | 'timePlaceholder'
 >;
 
 export interface DateRangePickerCalendarProps
