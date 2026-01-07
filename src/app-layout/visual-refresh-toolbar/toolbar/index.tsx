@@ -14,6 +14,7 @@ import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
 import { ToolbarSlot } from '../skeleton/slots';
 import { ToolbarBreadcrumbsSection, ToolbarContainer } from '../skeleton/toolbar-container';
+import { FeatureNotificationsProps } from '../state/use-feature-notifications';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
@@ -66,6 +67,7 @@ export interface ToolbarProps {
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
+  featureNotificationsProps?: FeatureNotificationsProps;
 }
 
 export function AppLayoutToolbarImplementation({
@@ -73,6 +75,7 @@ export function AppLayoutToolbarImplementation({
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
   toolbarProps = {},
+  featureNotificationsProps,
 }: AppLayoutToolbarImplementationProps) {
   const {
     breadcrumbs,
@@ -249,6 +252,7 @@ export function AppLayoutToolbarImplementation({
               bottomDrawers={bottomDrawers}
               onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
               activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
+              featureNotificationsProps={featureNotificationsProps}
             />
           </div>
         )}

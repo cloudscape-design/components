@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "Error inesperado. No se pudo mostrar el contenido",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
     "i18nStrings.refreshActionText": "Actualizar página"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lanzamientos de características",
+    "i18nStrings.viewAll": "Ver todos los lanzamientos de características"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",

@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "Mese di fine",
     "i18nStrings.endDateLabel": "Data di fine",
     "i18nStrings.endTimeLabel": "Ora di fine",
+    "i18nStrings.datePlaceholder": "GG/MM/AAAA",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
     "i18nStrings.slashedDateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, utilizza il formato 24 ore.",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "Errore imprevisto, impossibile visualizzare il contenuto",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.} other {Aggiorna la pagina per riprovare.}}",
     "i18nStrings.refreshActionText": "Aggiorna pagina"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Ultime versioni delle funzionalità",
+    "i18nStrings.viewAll": "Visualizza tutte le versioni delle funzionalità"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",

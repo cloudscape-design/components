@@ -154,6 +154,10 @@ Map {
         "toolbar": 0,
       },
     },
+    "featureNotificationsProps": {
+      "drawerId": undefined,
+      "renderLatestFeaturePrompt": [Function],
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -1003,6 +1007,10 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featureNotificationsProps": {
+      "drawerId": undefined,
+      "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
       "activeDrawerId": null,

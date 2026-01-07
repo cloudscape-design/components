@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "終了月",
     "i18nStrings.endDateLabel": "終了日",
     "i18nStrings.endTimeLabel": "終了時刻",
+    "i18nStrings.datePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",
     "i18nStrings.slashedDateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "予期しないエラー、コンテンツを表示できませんでした",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {更新してもう一度お試しください。この問題は現在追跡中ですが、<Feedback>詳しい情報はこちら</Feedback>で共有できます。} other {更新してもう一度お試しください。}}",
     "i18nStrings.refreshActionText": "ページを更新"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新機能リリース",
+    "i18nStrings.viewAll": "すべての機能リリースを表示"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",

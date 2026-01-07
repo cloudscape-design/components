@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
+    "i18nStrings.datePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.timePlaceholder": "sa: dk: sn",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
     "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "Beklenmeyen hata, içerik gösterilemedi",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Yeniden denemek için yenileyin. Bu sorunu takip ediyoruz ancak <Feedback>buradan daha fazla bilgi</Feedback> paylaşabilirsiniz.} other {Yeniden denemek için yenileyin.}}",
     "i18nStrings.refreshActionText": "Sayfayı yenile"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "En son özellik sürümleri",
+    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",

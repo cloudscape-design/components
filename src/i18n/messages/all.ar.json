@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "نهاية الشهر",
     "i18nStrings.endDateLabel": "تاريخ الانتهاء",
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
     "i18nStrings.dateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "خطأ غير متوقع، فشل عرض المحتوى",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {حدِّث الصفحة للمحاولة مرة أخرى. نحن نتتبع هذه المشكلة، ولكن يمكنك مشاركة <Feedback>المزيد من المعلومات هنا</Feedback>.} other {حدِّث الصفحة للمحاولة مرة أخرى.}}",
     "i18nStrings.refreshActionText": "تحديث الصفحة"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "أحدث إصدارات الميزات",
+    "i18nStrings.viewAll": "عرض جميع إصدارات الميزات"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",

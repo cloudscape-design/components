@@ -110,7 +110,11 @@ function TriggerButton(
     setShowTooltip(false);
   };
 
-  const handlePointerEnter = () => {
+  const handlePointerEnter = (event: React.MouseEvent) => {
+    const suppressedTooltip = event.currentTarget.querySelector('button')?.dataset?.awsuiSuppressTooltip === 'true';
+    if (suppressedTooltip) {
+      return;
+    }
     setSupressTooltip(false);
     setShowTooltip(true);
   };
@@ -205,7 +209,7 @@ function TriggerButton(
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => handlePointerEnter(),
+        onPointerEnter: event => handlePointerEnter(event),
         onPointerLeave: () => handleBlur(true),
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
