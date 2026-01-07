@@ -4,7 +4,7 @@
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
@@ -29,6 +29,7 @@ export default function TutorialPanel({
 }: TutorialPanelProps) {
   const { __internalRootRef } = useBaseComponent('TutorialPanel');
   const panelRef = useRef<HTMLDivElement>(null);
+  const headingId = useUniqueId();
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
@@ -42,7 +43,16 @@ export default function TutorialPanel({
 
   return (
     <>
-      <div {...baseProps} className={clsx(baseProps.className, styles['tutorial-panel'])} ref={mergedRef} tabIndex={-1}>
+      <div
+        {...baseProps}
+        className={clsx(baseProps.className, styles['tutorial-panel'])}
+        ref={mergedRef}
+        tabIndex={-1}
+        {...(!context.currentTutorial && {
+          role: 'region',
+          'aria-labelledby': headingId,
+        })}
+      >
         {context.currentTutorial ? (
           <TutorialDetailView
             i18nStrings={i18nStrings}
@@ -58,6 +68,7 @@ export default function TutorialPanel({
             loading={loading}
             onStartTutorial={context.onStartTutorial}
             downloadUrl={downloadUrl}
+            headingId={headingId}
           />
         )}
       </div>
