@@ -48,6 +48,8 @@ export default function TutorialPanel({
         className={clsx(baseProps.className, styles['tutorial-panel'])}
         ref={mergedRef}
         tabIndex={-1}
+        // Adding attributes conditionally since we don't want to point to
+        // a non existent header in the aria-labelledby
         {...(!context.currentTutorial && {
           role: 'region',
           'aria-labelledby': headingId,
