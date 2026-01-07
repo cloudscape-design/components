@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { hotspotContext } from '../annotation-context/context';
 import { getBaseProps } from '../internal/base-component';
+import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import TutorialDetailView from './components/tutorial-detail-view';
@@ -29,14 +30,24 @@ export default function TutorialPanel({
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
 
+  function handleExitTutorial(event: NonCancelableCustomEvent<TutorialPanelProps.TutorialDetail>) {
+    context.onExitTutorial(event);
+    __internalRootRef.current?.focus();
+  }
+
   return (
     <>
-      <div {...baseProps} className={clsx(baseProps.className, styles['tutorial-panel'])} ref={__internalRootRef}>
+      <div
+        {...baseProps}
+        className={clsx(baseProps.className, styles['tutorial-panel'])}
+        ref={__internalRootRef}
+        tabIndex={-1}
+      >
         {context.currentTutorial ? (
           <TutorialDetailView
             i18nStrings={i18nStrings}
             tutorial={context.currentTutorial}
-            onExitTutorial={context.onExitTutorial}
+            onExitTutorial={handleExitTutorial}
             currentStepIndex={context.currentStepIndex}
             onFeedbackClick={onFeedbackClick}
           />

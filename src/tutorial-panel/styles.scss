@@ -5,10 +5,18 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .tutorial-panel {
-  @include styles.styles-reset;
   padding-block-start: 0;
   padding-block-end: awsui.$space-m;
   padding-inline: awsui.$space-l;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+  @include styles.styles-reset;
 }
