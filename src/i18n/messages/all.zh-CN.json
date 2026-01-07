@@ -240,7 +240,10 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",
     "ariaLabels.pageLabel": "所有页面中的第 {pageNumber} 页",
-    "ariaLabels.previousPageLabel": "上一页"
+    "ariaLabels.previousPageLabel": "上一页",
+    "ariaLabels.jumpToPageButtonLabel": "跳转到页面",
+    "i18nStrings.jumpToPageInputLabel": "页面",
+    "i18nStrings.jumpToPageError": "页面超出范围。显示最后一个可用页面。"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板大小调整手柄",
