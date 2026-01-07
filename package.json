@@ -170,12 +170,12 @@
     {
       "path": "lib/components/internal/plugins/index.js",
       "brotli": false,
-      "limit": "15 kB"
+      "limit": "16 kB"
     },
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "1150 kB",
+      "limit": "1250 kB",
       "ignore": "react-dom"
     }
   ],

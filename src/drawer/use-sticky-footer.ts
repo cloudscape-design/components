@@ -21,7 +21,7 @@ export function useStickyFooter({
 
   const checkStickyState = throttle(
     useCallback(() => {
-      if (!drawerRef.current || !footerRef.current) {
+      if (!drawerRef?.current || !footerRef?.current) {
         return;
       }
 

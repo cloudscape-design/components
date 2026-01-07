@@ -2,4 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 export * from './widget/interfaces';
 export { isAppLayoutReady, whenAppLayoutReady } from './widget/core';
-export { registerLeftDrawer, registerBottomDrawer, updateDrawer } from './widget/index';
+export {
+  registerLeftDrawer,
+  registerBottomDrawer,
+  registerFeatureNotifications,
+  updateDrawer,
+  showFeaturePromptIfPossible,
+} from './widget/index';

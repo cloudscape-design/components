@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { ButtonGroupProps } from '../../button-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { FeaturePromptProps } from '../../internal/do-not-use/feature-prompt';
 import { NonCancelableEventHandler } from '../../internal/events';
+import { FeatureNotificationsPayload } from '../../internal/plugins/widget/interfaces';
 import { SomeOptional } from '../../internal/types';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -106,6 +108,8 @@ export interface AppLayoutWidgetizedState extends AppLayoutInternals {
   bottomDrawersFocusControl: FocusControlState;
   onActiveBottomDrawerResize: ({ id, size }: { id: string; size: number }) => void;
   bottomDrawers: ReadonlyArray<InternalDrawer>;
+  featurePromptRef?: RefObject<FeaturePromptProps.Ref>;
+  featureNotificationsData?: FeatureNotificationsPayload<unknown> | null;
 }
 
 // New widget interface
