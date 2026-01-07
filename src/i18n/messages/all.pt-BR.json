@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "Mês de término",
     "i18nStrings.endDateLabel": "Data de término",
     "i18nStrings.endTimeLabel": "Horário de término",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para data, use AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "Erro inesperado, falha na exibição do conteúdo",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.} other {Atualize para tentar novamente.}}",
     "i18nStrings.refreshActionText": "Atualizar página"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lançamentos de atributos",
+    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",

@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "結束月份",
     "i18nStrings.endDateLabel": "結束日期",
     "i18nStrings.endTimeLabel": "結束時間",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
     "i18nStrings.dateConstraintText": "對於日期，請使用 YYYY/MM/DD。",
     "i18nStrings.slashedDateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "意外錯誤，內容無法顯示",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {重新整理以再試一次。我們正在追蹤此問題，但您可以在此處分享<Feedback>更多資訊</Feedback>。} other {重新整理以再試一次。}}",
     "i18nStrings.refreshActionText": "重新整理頁面"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新功能發布",
+    "i18nStrings.viewAll": "檢視所有功能發布"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "顯示較少",
