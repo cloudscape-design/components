@@ -80,11 +80,5 @@ export namespace FeaturePromptProps {
      * Shows the prompt and focuses its close button.
      */
     show(): void;
-
-    /**
-     * Called when a user closes the modal by using the close icon button,
-     * clicking outside the modal, shifting focus out of the modal or pressing ESC.
-     */
-    onDismiss(callback: () => void | undefined): void;
   }
 }

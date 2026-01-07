@@ -53,11 +53,6 @@ function InternalFeaturePrompt(
       setShow(true);
       fireNonCancelableEvent(onShow);
     },
-    onDismiss: (callback?: () => void) => {
-      if (callback) {
-        onDismissCallbackRef.current = callback;
-      }
-    },
   }));
 
   return (
