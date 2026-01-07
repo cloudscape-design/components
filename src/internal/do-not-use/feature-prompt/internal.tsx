@@ -46,6 +46,8 @@ function InternalFeaturePrompt(
   useImperativeHandle(ref, () => ({
     dismiss: () => {
       setShow(false);
+      fireNonCancelableEvent(onDismiss);
+      onDismissCallbackRef?.current?.();
     },
     show: () => {
       setShow(true);
