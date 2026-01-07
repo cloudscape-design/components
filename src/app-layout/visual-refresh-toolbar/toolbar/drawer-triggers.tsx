@@ -12,6 +12,7 @@ import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { InternalDrawer } from '../interfaces';
+import { FeatureNotificationsProps } from '../state/use-feature-notifications';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -50,6 +51,8 @@ interface DrawerTriggersProps {
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
   disabled: boolean;
+
+  featureNotificationsProps?: FeatureNotificationsProps;
 }
 
 export function DrawerTriggers({
@@ -74,6 +77,7 @@ export function DrawerTriggers({
   onActiveGlobalBottomDrawerChange,
   bottomDrawersFocusRef,
   bottomDrawers,
+  featureNotificationsProps,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -81,6 +85,7 @@ export function DrawerTriggers({
   const previousActiveGlobalBottomDrawerId = useRef(activeGlobalBottomDrawerId);
   const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
+  const featureNotificationTriggerRef = useRef<HTMLButtonElement>(null);
   if (!drawers.length && !globalDrawers.length && !bottomDrawers?.length && !splitPanelToggleProps) {
     return null;
   }
@@ -142,6 +147,7 @@ export function DrawerTriggers({
       ref={triggersContainerRef}
       role="region"
     >
+      {featureNotificationsProps?.renderLatestFeaturePrompt?.({ triggerRef: featureNotificationTriggerRef })}
       <div
         className={styles['drawers-trigger-content']}
         aria-label={ariaLabels?.drawers}
@@ -180,6 +186,7 @@ export function DrawerTriggers({
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
           const selected = !expandedDrawerId && item.id === activeDrawerId;
+          const isFeatureNotificationsDrawer = featureNotificationsProps?.drawerId === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -200,7 +207,13 @@ export function DrawerTriggers({
                 }
                 onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
               }}
-              ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
+              ref={
+                item.id === previousActiveLocalDrawerId.current
+                  ? drawersFocusRef
+                  : isFeatureNotificationsDrawer
+                    ? featureNotificationTriggerRef
+                    : null
+              }
               selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}

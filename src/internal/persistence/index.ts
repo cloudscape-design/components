@@ -4,12 +4,20 @@
 
 import { AlertProps } from '../../alert/interfaces';
 import { FlashbarProps } from '../../flashbar/interfaces';
+import { FeatureNotificationsPersistenceConfig } from '../plugins/widget/interfaces';
 
 interface PersistenceFunction {
   persistFlashbarDismiss?: (persistenceConfig: FlashbarProps.PersistenceConfig) => Promise<void>;
   retrieveFlashbarDismiss?: (persistenceConfig: FlashbarProps.PersistenceConfig) => Promise<boolean>;
   persistAlertDismiss?: (persistenceConfig: AlertProps.PersistenceConfig) => Promise<void>;
   retrieveAlertDismiss?: (persistenceConfig: AlertProps.PersistenceConfig) => Promise<boolean>;
+  persistFeatureNotifications?: (
+    persistenceConfig: FeatureNotificationsPersistenceConfig,
+    value: Record<string, string>
+  ) => Promise<void>;
+  retrieveFeatureNotifications?: (
+    persistenceConfig: FeatureNotificationsPersistenceConfig
+  ) => Promise<Record<string, string>>;
 }
 
 export function setPersistenceFunctionsForTesting(functions: PersistenceFunction) {
@@ -24,6 +32,12 @@ export function setPersistenceFunctionsForTesting(functions: PersistenceFunction
   }
   if (functions.retrieveAlertDismiss) {
     retrieveAlertDismiss = functions.retrieveAlertDismiss;
+  }
+  if (functions.persistFeatureNotifications) {
+    persistFeatureNotifications = functions.persistFeatureNotifications;
+  }
+  if (functions.retrieveFeatureNotifications) {
+    retrieveFeatureNotifications = functions.retrieveFeatureNotifications;
   }
 }
 
@@ -57,4 +71,22 @@ export let retrieveAlertDismiss = async function (
   persistenceConfig: AlertProps.PersistenceConfig
 ): Promise<boolean> {
   return Promise.resolve(false);
+};
+
+// eslint-disable-next-line require-await
+export let persistFeatureNotifications = async function (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  persistenceConfig: FeatureNotificationsPersistenceConfig,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  value: Record<string, string>
+): Promise<void> {
+  return Promise.resolve();
+};
+
+// eslint-disable-next-line require-await
+export let retrieveFeatureNotifications = async function (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  persistenceConfig: FeatureNotificationsPersistenceConfig
+): Promise<Record<string, string>> {
+  return Promise.resolve({});
 };

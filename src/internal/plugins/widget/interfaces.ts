@@ -54,7 +54,36 @@ export interface DrawerPayload {
   position?: 'side' | 'bottom';
 }
 
+type Destructor = () => void;
+export type MountContentPart<T> = (container: HTMLElement, data: T) => Destructor | void;
+
+export interface Feature<T> {
+  id: string;
+  header: T;
+  content: T;
+  contentCategory?: T;
+  releaseDate: Date;
+}
+
+export interface FeatureNotificationsPersistenceConfig {
+  uniqueKey: string;
+}
+
+export interface FeatureNotificationsPayload<T> {
+  id: string;
+  suppressFeaturePrompt?: boolean;
+  features: Array<Feature<T>>;
+  mountItem?: MountContentPart<T>;
+  featuresPageLink?: string;
+  filterFeatures?: (item: Feature<T>) => boolean;
+  persistenceConfig?: FeatureNotificationsPersistenceConfig;
+}
+
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
+export type RegisterFeatureNotificationsMessage<T> = Message<
+  'registerFeatureNotifications',
+  FeatureNotificationsPayload<T>
+>;
 export type UpdateDrawerConfigMessage = Message<
   'updateDrawerConfig',
   Pick<DrawerPayload, 'id'> &
@@ -67,15 +96,20 @@ export type ExpandDrawerMessage = Message<'expandDrawer', { id: string }>;
 export interface ExitExpandedModeMessage {
   type: 'exitExpandedMode';
 }
+export interface ShowFeaturePromptIfPossible {
+  type: 'showFeaturePromptIfPossible';
+}
 
-export type AppLayoutUpdateMessage =
+export type AppLayoutUpdateMessage<T = unknown> =
   | UpdateDrawerConfigMessage
   | OpenDrawerMessage
   | CloseDrawerMessage
   | ResizeDrawerMessage
   | ExpandDrawerMessage
-  | ExitExpandedModeMessage;
+  | ExitExpandedModeMessage
+  | RegisterFeatureNotificationsMessage<T>
+  | ShowFeaturePromptIfPossible;
 
-export type InitialMessage = RegisterDrawerMessage;
+export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
 
-export type WidgetMessage = InitialMessage | AppLayoutUpdateMessage;
+export type WidgetMessage<T = unknown> = InitialMessage<T> | AppLayoutUpdateMessage<T>;
