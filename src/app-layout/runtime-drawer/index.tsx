@@ -10,7 +10,7 @@ import {
   DrawerStateChangeParams,
 } from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { DrawerPayload as RuntimeAiDrawerConfig, Feature } from '../../internal/plugins/widget/interfaces';
+import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/widget/interfaces';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
@@ -19,7 +19,6 @@ import styles from './styles.css.js';
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   position?: 'side' | 'bottom';
-  __features?: Array<Feature<unknown>>;
 }
 
 export interface DrawersLayout {
