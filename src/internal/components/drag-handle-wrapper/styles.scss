@@ -89,16 +89,16 @@ $direction-button-offset: awsui.$space-static-xxs;
   inset-block-start: calc(-4 * $direction-button-wrapper-size);
 }
 .direction-button-wrapper-forced-bottom-0 {
-  inset-block-start: calc(1 * $direction-button-wrapper-size - 50%);
+  inset-block-start: calc(1 * $direction-button-wrapper-size);
 }
 .direction-button-wrapper-forced-bottom-1 {
-  inset-block-start: calc(2 * $direction-button-wrapper-size - 50%);
+  inset-block-start: calc(2 * $direction-button-wrapper-size);
 }
 .direction-button-wrapper-forced-bottom-2 {
-  inset-block-start: calc(3 * $direction-button-wrapper-size - 50%);
+  inset-block-start: calc(3 * $direction-button-wrapper-size);
 }
 .direction-button-wrapper-forced-bottom-3 {
-  inset-block-start: calc(4 * $direction-button-wrapper-size - 50%);
+  inset-block-start: calc(4 * $direction-button-wrapper-size);
 }
 
 .direction-button {
