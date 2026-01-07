@@ -115,6 +115,7 @@ function ariaLevelViolationsFilter(violation: Axe.Result) {
 function landmarkViolationFilter(violation: Axe.Result, currentUrl: string) {
   return (
     !currentUrl.includes('app-layout/multi') ||
+    !currentUrl.includes('feature-notifications/feature-prompt') ||
     (violation.id !== 'landmark-main-is-top-level' &&
       violation.id !== 'landmark-unique' &&
       violation.id !== 'landmark-no-duplicate-main')

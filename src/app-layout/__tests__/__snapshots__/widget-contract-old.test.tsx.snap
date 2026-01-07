@@ -154,6 +154,10 @@ Map {
         "toolbar": 0,
       },
     },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
+    },
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -1002,6 +1006,10 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
       "activeDrawerId": null,
@@ -2052,6 +2060,10 @@ Map {
         "notifications": 0,
         "toolbar": 0,
       },
+    },
+    "featureNotificationsProps": {
+      "drawer": null,
+      "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
       "activeDrawerId": "security",
