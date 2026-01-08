@@ -9757,7 +9757,44 @@ Note that the secondary header will not have a high-contrast treatement, even if
 exports[`Components definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
 {
   "dashCaseName": "copy-to-clipboard",
-  "events": [],
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the copy operation fails.
+The event \`detail\` contains the text that failed to copy.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopyFailureDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopyFailureDetail",
+      "name": "onCopyFailure",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the text is successfully copied to the clipboard.
+The event \`detail\` contains the text that was copied.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopySuccessDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopySuccessDetail",
+      "name": "onCopySuccess",
+    },
+  ],
   "functions": [],
   "name": "CopyToClipboard",
   "properties": [
