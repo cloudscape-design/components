@@ -152,5 +152,15 @@ const customCssPropertiesList = [
   'progressBarBorderRadius',
   'progressBarHeight',
   'progressValueBackgroundColor',
+  'styleSliderTrackBackgroundColor',
+  'styleSliderRangeBackgroundDefault',
+  'styleSliderRangeBackgroundActive',
+  'styleSliderHandleBackgroundDefault',
+  'styleSliderHandleBackgroundHover',
+  'styleSliderHandleBackgroundActive',
+  'styleSliderHandleBorderRadius',
+  'styleSliderTickBackgroundDefault',
+  'styleSliderTickBackgroundFilled',
+  'styleSliderTickBackgroundActive',
 ];
 module.exports = customCssPropertiesList;
