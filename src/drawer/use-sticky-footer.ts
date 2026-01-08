@@ -43,12 +43,7 @@ export function useStickyFooter({
     STICKY_STATE_CHECK_THROTTLE_DELAY
   );
 
-  const getParentElement = useCallback(() => {
-    return drawerRef.current?.parentElement ?? null;
-  }, [drawerRef]);
-
-  useResizeObserver(getParentElement, checkStickyState);
-  useResizeObserver(() => drawerRef.current, checkStickyState);
+  useResizeObserver(() => drawerRef.current?.parentElement ?? null, checkStickyState);
 
   return { isSticky };
 }
