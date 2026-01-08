@@ -283,7 +283,7 @@ export default function TooltipSimple() {
                   onFocus={() => setShowLink(true)}
                   onBlur={() => setShowLink(false)}
                   aria-describedby="link-description"
-                  style={{ color: '#0073bb', textDecoration: 'underline', cursor: 'pointer' }}
+                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
                   onClick={e => e.preventDefault()}
                 >
                   Documentation Link

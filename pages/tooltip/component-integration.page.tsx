@@ -197,7 +197,13 @@ function ButtonExample() {
           <Button variant="normal" disabled={true} disabledReason="Insufficient permissions to perform this action">
             Normal disabled
           </Button>
-          <Button variant="icon" iconName="settings" disabled={true} disabledReason="Settings are locked" />
+          <Button
+            variant="icon"
+            iconName="settings"
+            disabled={true}
+            disabledReason="Settings are locked"
+            ariaLabel="Settings"
+          />
         </SpaceBetween>
       </ScreenshotArea>
     </Container>
@@ -409,27 +415,35 @@ function SliderExample() {
     <Container header={<Header variant="h2">Slider (Value Tooltip)</Header>}>
       <ScreenshotArea>
         <SpaceBetween size="l">
-          <Slider
-            value={value1}
-            onChange={({ detail }) => setValue1(detail.value)}
-            min={0}
-            max={100}
-            step={5}
-            referenceValues={[25, 50, 75]}
-            valueFormatter={value => `${value}%`}
-            i18nStrings={{
-              valueTextRange: (previousValue, value, nextValue) =>
-                `Value: ${value}% (between ${previousValue} and ${nextValue})`,
-            }}
-          />
-          <Slider
-            value={value2}
-            onChange={({ detail }) => setValue2(detail.value)}
-            min={0}
-            max={1000}
-            step={50}
-            valueFormatter={value => `$${value.toFixed(2)}`}
-          />
+          <div>
+            <div style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Percentage Value</div>
+            <Slider
+              value={value1}
+              onChange={({ detail }) => setValue1(detail.value)}
+              min={0}
+              max={100}
+              step={5}
+              referenceValues={[25, 50, 75]}
+              valueFormatter={value => `${value}%`}
+              ariaLabel="Percentage Value"
+              i18nStrings={{
+                valueTextRange: (previousValue, value, nextValue) =>
+                  `Value: ${value}% (between ${previousValue} and ${nextValue})`,
+              }}
+            />
+          </div>
+          <div>
+            <div style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Price Value</div>
+            <Slider
+              value={value2}
+              onChange={({ detail }) => setValue2(detail.value)}
+              min={0}
+              max={1000}
+              step={50}
+              valueFormatter={value => `$${value.toFixed(2)}`}
+              ariaLabel="Price Value"
+            />
+          </div>
         </SpaceBetween>
       </ScreenshotArea>
     </Container>
@@ -462,6 +476,11 @@ function CalendarExample() {
               return 'Maintenance scheduled';
             }
             return '';
+          }}
+          i18nStrings={{
+            todayAriaLabel: 'Today',
+            nextMonthAriaLabel: 'Next month',
+            previousMonthAriaLabel: 'Previous month',
           }}
         />
       </ScreenshotArea>
