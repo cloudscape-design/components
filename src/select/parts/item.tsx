@@ -12,8 +12,8 @@ import Option from '../../internal/components/option';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
+import Tooltip from '../../tooltip/internal.js';
 import { SelectProps } from '../interfaces';
 
 import styles from './styles.css.js';
@@ -202,9 +202,9 @@ const Item = (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
                 getTrack={() => internalRef.current}
-                value={disabledReason!}
+                content={disabledReason!}
                 position="right"
-                onDismiss={() => setCanShowTooltip(false)}
+                onEscape={() => setCanShowTooltip(false)}
               />
             )}
           </>
