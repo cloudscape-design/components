@@ -6,7 +6,7 @@ import { SliderProps } from './interfaces';
 
 export function getSliderStyles(style: SliderProps['style']) {
   if (SYSTEM !== 'core') {
-    return undefined;
+    return {};
   }
 
   return {
