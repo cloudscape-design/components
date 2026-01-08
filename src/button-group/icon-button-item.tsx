@@ -62,7 +62,7 @@ const IconButtonItem = forwardRef(
         </InternalButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            trackRef={containerRef}
+            getTrack={() => containerRef.current}
             trackKey={item.id}
             value={
               (showFeedback && <InternalLiveRegion tagName="span">{item.popoverFeedback}</InternalLiveRegion>) ||

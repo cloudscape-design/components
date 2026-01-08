@@ -49,7 +49,7 @@ const MenuDropdownItem = React.forwardRef(
           <div ref={containerRef} {...(item.disabled ? {} : getAnalyticsMetadataAttribute({ detail: { position } }))}>
             {!isOpen && showTooltip && !item.disabled && !item.loading && (
               <Tooltip
-                trackRef={containerRef}
+                getTrack={() => containerRef.current}
                 trackKey={item.id}
                 value={item.text}
                 className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}

@@ -70,7 +70,7 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
           {showTooltip && (
             <Tooltip
               className={testutilStyles['disabled-reason-tooltip']}
-              trackRef={ref}
+              getTrack={() => ref.current}
               value={disabledReason!}
               onDismiss={() => setShowTooltip(false)}
             />

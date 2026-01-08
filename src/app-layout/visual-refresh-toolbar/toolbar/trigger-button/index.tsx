@@ -241,7 +241,7 @@ function TriggerButton(
       {badge && <div className={styles.dot} />}
       {tooltipVisible && (
         <Tooltip
-          trackRef={containerRef}
+          getTrack={() => containerRef.current}
           value={tooltipValue}
           className={testutilStyles['trigger-tooltip']}
           onDismiss={() => {

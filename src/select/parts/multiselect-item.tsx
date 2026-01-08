@@ -208,10 +208,9 @@ const MultiSelectItem = (
           {highlighted && canShowTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
-              trackRef={internalRef}
+              getTrack={() => internalRef.current}
               value={disabledReason!}
               position="right"
-              hideOnOverscroll={true}
               onDismiss={() => setCanShowTooltip(false)}
             />
           )}

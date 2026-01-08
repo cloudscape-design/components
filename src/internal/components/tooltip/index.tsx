@@ -14,25 +14,27 @@ import styles from './styles.css.js';
 
 export interface TooltipProps {
   value: React.ReactNode;
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
+  /**
+   * Function that returns the element to track for positioning the tooltip.
+   * Can return null if the element is not yet mounted or available.
+   */
+  getTrack: () => null | HTMLElement | SVGElement;
   trackKey?: string | number;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
   size?: PopoverProps['size'];
-  hideOnOverscroll?: boolean;
   onDismiss?: () => void;
 }
 
 export default function Tooltip({
   value,
-  trackRef,
+  getTrack,
   trackKey,
   className,
   contentAttributes = {},
   position = 'top',
   size = 'small',
-  hideOnOverscroll,
   onDismiss,
 }: TooltipProps) {
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
@@ -69,14 +71,14 @@ export default function Tooltip({
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              trackRef={trackRef}
+              getTrack={getTrack}
               trackKey={trackKey}
               size={size}
               fixedWidth={false}
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
-              hideOnOverscroll={hideOnOverscroll}
+              hideOnOverscroll={true}
               className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>

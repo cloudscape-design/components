@@ -69,7 +69,7 @@ const IconToggleButtonItem = forwardRef(
         </InternalToggleButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            trackRef={containerRef}
+            getTrack={() => containerRef.current}
             trackKey={item.id}
             value={
               (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text

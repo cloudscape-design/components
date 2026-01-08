@@ -47,7 +47,12 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
     >
       {children}
       {showTooltip && (
-        <Tooltip trackRef={textRef} value={item.text} size="medium" onDismiss={() => setShowTooltip(false)} />
+        <Tooltip
+          getTrack={() => textRef.current}
+          value={item.text}
+          size="medium"
+          onDismiss={() => setShowTooltip(false)}
+        />
       )}
     </Item>
   );

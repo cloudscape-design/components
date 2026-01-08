@@ -91,7 +91,7 @@ export const Segment = React.forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={buttonRef}
+                getTrack={() => buttonRef.current}
                 value={disabledReason!}
                 onDismiss={() => setShowTooltip(false)}
               />

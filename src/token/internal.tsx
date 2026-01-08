@@ -158,7 +158,7 @@ function InternalToken({
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           data-testid="token-tooltip"
-          trackRef={labelContainerRef}
+          getTrack={() => labelContainerRef.current}
           value={
             <LiveRegion>
               <span data-testid="tooltip-live-region-content">{tooltipContent}</span>

@@ -137,7 +137,7 @@ export default function InternalSlider({
         {showTooltip && (
           <Tooltip
             value={valueFormatter ? valueFormatter(sliderValue) : sliderValue}
-            trackRef={handleRef}
+            getTrack={() => handleRef.current}
             onDismiss={() => setShowTooltip(false)}
           />
         )}

@@ -47,7 +47,7 @@ const FileInputItem = forwardRef(
         />
         {canShowTooltip && (
           <Tooltip
-            trackRef={containerRef}
+            getTrack={() => containerRef.current}
             trackKey={item.id}
             value={item.text}
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
