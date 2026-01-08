@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -73,8 +73,9 @@ function InternalFileToken({
   const showWarning = warningText && !errorText;
   const containerRef = useRef<HTMLDivElement>(null);
   const fileNameRef = useRef<HTMLSpanElement>(null);
-  const fileNameContainerRef = useRef<HTMLDivElement>(null);
+  const fileNameContainerRef = useRef<HTMLButtonElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
 
   const getDismissLabel = (fileIndex: number) => {
     return i18nStrings?.removeFileAriaLabel?.(fileIndex);
@@ -89,6 +90,19 @@ function InternalFileToken({
     }
     return false;
   }
+
+  useEffect(() => {
+    const checkTruncation = () => {
+      setIsTruncated(isEllipsisActive());
+    };
+
+    // Check immediately after mount
+    checkTruncation();
+
+    // Check on window resize
+    window.addEventListener('resize', checkTruncation);
+    return () => window.removeEventListener('resize', checkTruncation);
+  }, [file.name, showFileSize, showFileLastModified, showFileThumbnail, alignment]);
 
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
@@ -134,23 +148,25 @@ function InternalFileToken({
             })}
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
-              <div
+              <button
+                className={styles['file-name-button']}
                 onMouseOver={() => setShowTooltip(true)}
                 onMouseOut={() => setShowTooltip(false)}
                 onFocus={() => setShowTooltip(true)}
                 onBlur={() => setShowTooltip(false)}
-                tabIndex={0}
+                tabIndex={isTruncated ? 0 : -1}
                 ref={fileNameContainerRef}
+                aria-label={isTruncated ? file.name : undefined}
               >
                 <InternalBox
                   fontWeight="normal"
                   className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
-                    [testUtilStyles['ellipsis-active']]: isEllipsisActive(),
+                    [testUtilStyles['ellipsis-active']]: isTruncated,
                   })}
                 >
                   <span ref={fileNameRef}>{file.name}</span>
                 </InternalBox>
-              </div>
+              </button>
 
               {showFileSize && file.size ? (
                 <InternalBox
@@ -186,7 +202,7 @@ function InternalFileToken({
           {warningText}
         </FormFieldWarning>
       )}
-      {showTooltip && isEllipsisActive() && (
+      {showTooltip && isTruncated && (
         <Tooltip
           trackRef={containerRef}
           trackKey={file.name}
