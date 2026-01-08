@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSliderStyles handles all possible style configurations 1`] = `
+{
+  "--awsui-style-slider-handle-background-active-u0omxt": undefined,
+  "--awsui-style-slider-handle-background-default-u0omxt": undefined,
+  "--awsui-style-slider-handle-background-hover-u0omxt": undefined,
+  "--awsui-style-slider-handle-border-radius-u0omxt": undefined,
+  "--awsui-style-slider-range-background-active-u0omxt": undefined,
+  "--awsui-style-slider-range-background-default-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-active-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-default-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-filled-u0omxt": undefined,
+  "--awsui-style-slider-track-background-color-u0omxt": undefined,
+}
+`;
+
+exports[`getSliderStyles handles all possible style configurations 2`] = `
+{
+  "--awsui-style-slider-handle-background-active-u0omxt": undefined,
+  "--awsui-style-slider-handle-background-default-u0omxt": undefined,
+  "--awsui-style-slider-handle-background-hover-u0omxt": undefined,
+  "--awsui-style-slider-handle-border-radius-u0omxt": undefined,
+  "--awsui-style-slider-range-background-active-u0omxt": undefined,
+  "--awsui-style-slider-range-background-default-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-active-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-default-u0omxt": undefined,
+  "--awsui-style-slider-tick-background-filled-u0omxt": undefined,
+  "--awsui-style-slider-track-background-color-u0omxt": undefined,
+}
+`;
+
+exports[`getSliderStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-style-slider-handle-background-active-u0omxt": "#1d4ed8",
+  "--awsui-style-slider-handle-background-default-u0omxt": "#3b82f6",
+  "--awsui-style-slider-handle-background-hover-u0omxt": "#2563eb",
+  "--awsui-style-slider-handle-border-radius-u0omxt": "50%",
+  "--awsui-style-slider-range-background-active-u0omxt": "#2563eb",
+  "--awsui-style-slider-range-background-default-u0omxt": "#3b82f6",
+  "--awsui-style-slider-tick-background-active-u0omxt": "#2563eb",
+  "--awsui-style-slider-tick-background-default-u0omxt": "#dbeafe",
+  "--awsui-style-slider-tick-background-filled-u0omxt": "#3b82f6",
+  "--awsui-style-slider-track-background-color-u0omxt": "#dbeafe",
+}
+`;
