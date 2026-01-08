@@ -1,10 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react';
+
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { MINIMUM_SCROLLABLE_SPACE, useStickyFooter } from '../../../lib/components/drawer/use-sticky-footer';
 import { renderHook } from '../../__tests__/render-hook';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: jest.fn(),
+}));
 
 function createElementWithHeight(tag: string, height = 0) {
   const element = document.createElement(tag);
@@ -41,14 +49,21 @@ describe('useStickyFooter', () => {
   });
 
   test('returns isSticky false when there is not enough scrollable space', () => {
+    const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+      callbacks.push(cb);
+    });
+
     footerElement = createElementWithHeight('div', 300);
 
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
 
-    rerender({});
+    act(() => {
+      callbacks.forEach(cb => cb({} as ContainerQueryEntry));
+    });
 
     // Drawer: 400px, Footer: 300px → Scrollable: 100px (< 148px)
     expect(result.current.isSticky).toBe(false);
@@ -85,40 +100,24 @@ describe('useStickyFooter', () => {
     expect(result.current.isSticky).toBe(true);
   });
 
-  test('registers and removes resize event listener', () => {
-    const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
-    const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+  test('updates sticky state when parent element resizes', () => {
+    const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+      callbacks.push(cb);
+    });
 
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { unmount } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
-
-    expect(addEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function));
-
-    unmount();
-
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function));
-  });
-
-  test('updates sticky state on resize', () => {
-    const drawerRef = { current: drawerElement };
-    const footerRef = { current: footerElement };
-
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
-
-    rerender({});
-
+    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
     expect(result.current.isSticky).toBe(true);
 
-    // Change parent height to reduce scrollable space
     jest.spyOn(parentElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 200 }) as DOMRect);
 
-    fireEvent.resize(window);
+    act(() => {
+      callbacks.forEach(cb => cb({} as ContainerQueryEntry));
+    });
 
-    rerender({});
-
-    // Effective: 200px, Footer: 100px → Scrollable: 100px (< 148px)
     expect(result.current.isSticky).toBe(false);
   });
 
@@ -138,15 +137,22 @@ describe('useStickyFooter', () => {
   });
 
   test('handles one pixel below threshold', () => {
+    const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+      callbacks.push(cb);
+    });
+
     const footerHeight = 400 - MINIMUM_SCROLLABLE_SPACE + 1;
     footerElement = createElementWithHeight('div', footerHeight);
 
     const drawerRef = { current: drawerElement };
     const footerRef = { current: footerElement };
 
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
+    const { result } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
 
-    rerender({});
+    act(() => {
+      callbacks.forEach(cb => cb({} as ContainerQueryEntry));
+    });
 
     // Drawer: 400px, Footer: 253px → Scrollable: 147px (< 148px)
     expect(result.current.isSticky).toBe(false);
@@ -183,30 +189,6 @@ describe('useStickyFooter', () => {
 
     rerender({});
 
-    expect(result.current.isSticky).toBe(true);
-  });
-
-  test('updates state when properties change', () => {
-    const drawerRef = { current: drawerElement };
-    const footerRef = { current: footerElement };
-
-    const { result, rerender } = renderHook(() => useStickyFooter({ drawerRef, footerRef }));
-
-    rerender({});
-    expect(result.current.isSticky).toBe(true);
-
-    jest.spyOn(footerElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 300 }) as DOMRect);
-
-    fireEvent.resize(window);
-
-    rerender({});
-    expect(result.current.isSticky).toBe(false);
-
-    jest.spyOn(footerElement, 'getBoundingClientRect').mockImplementation(() => ({ height: 50 }) as DOMRect);
-
-    fireEvent.resize(window);
-
-    rerender({});
     expect(result.current.isSticky).toBe(true);
   });
 
