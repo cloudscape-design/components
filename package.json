@@ -41,7 +41,7 @@
     "date-fns": "^2.25.0",
     "intl-messageformat": "^10.3.1",
     "mnth": "^2.0.0",
-    "react-keyed-flatten-children": "^2.2.1",
+    "react-is": ">=16.8.0",
     "react-transition-group": "^4.4.2",
     "tslib": "^2.4.0",
     "weekstart": "^1.1.0"
@@ -75,6 +75,7 @@
     "@types/node": "^20.17.14",
     "@types/react": "^16.14.20",
     "@types/react-dom": "^16.9.14",
+    "@types/react-is": "^19.2.0",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.2",
     "@types/react-test-renderer": "^16.9.12",
