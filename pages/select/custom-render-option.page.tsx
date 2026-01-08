@@ -54,6 +54,7 @@ export default function SelectPage() {
       title="Select with custom item renderer"
       screenshotArea={{
         style: {
+          padding: 10,
           paddingBlockEnd: 550,
         },
       }}
