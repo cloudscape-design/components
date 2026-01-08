@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Box } from '~components';
 import Slider, { SliderProps } from '~components/slider';
 
 import createPermutations from '../utils/permutations';
@@ -82,9 +83,9 @@ export default function SliderStylePermutations() {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <div style={{ width: '400px', padding: '20px' }}>
+            <Box>
               <Slider {...permutation} value={50} step={10} tickMarks={true} ariaLabel="Styled slider" />
-            </div>
+            </Box>
           )}
         />
       </ScreenshotArea>
