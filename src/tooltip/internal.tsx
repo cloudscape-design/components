@@ -22,6 +22,7 @@ export default function InternalTooltip({
   content,
   getTrack,
   trackKey,
+  className,
   position = 'top',
   onEscape,
   __internalRootRef,
@@ -35,7 +36,6 @@ export default function InternalTooltip({
     const element = getTrack();
     trackRef.current = element;
   }, [getTrack]);
-
   if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
     trackKey = content;
   }
@@ -76,7 +76,7 @@ export default function InternalTooltip({
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              trackRef={trackRef}
+              getTrack={getTrack}
               trackKey={trackKey}
               size="medium"
               fixedWidth={false}
@@ -84,6 +84,7 @@ export default function InternalTooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={true}
+              className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}
