@@ -47,7 +47,14 @@ export default function SelectPage() {
   };
 
   return (
-    <SimplePage title="Multiselect with custom item renderer" screenshotArea={{}}>
+    <SimplePage
+      title="Multiselect with custom item renderer"
+      screenshotArea={{
+        style: {
+          paddingBlockEnd: 550,
+        },
+      }}
+    >
       <div style={{ inlineSize: '400px' }}>
         <Multiselect
           enableSelectAll={true}
