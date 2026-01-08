@@ -89,6 +89,19 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findContent()).toBeFalsy();
   });
 
+  test('should call component onDismiss when dismissed programmatically', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    getByTestId('dismiss-button').click();
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.findContent()).toBeFalsy();
+  });
+
   test('should call component onDismiss when dismissed via blur', () => {
     const onDismissMock = jest.fn();
     const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
