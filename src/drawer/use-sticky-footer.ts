@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { RefObject, useCallback, useState } from 'react';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { throttle } from '../internal/utils/throttle';
 
@@ -41,15 +43,12 @@ export function useStickyFooter({
     STICKY_STATE_CHECK_THROTTLE_DELAY
   );
 
-  useLayoutEffect(() => {
-    window.addEventListener('resize', checkStickyState);
-    checkStickyState();
+  const getParentElement = useCallback(() => {
+    return drawerRef.current?.parentElement ?? null;
+  }, [drawerRef]);
 
-    return () => {
-      window.removeEventListener('resize', checkStickyState);
-      checkStickyState.cancel();
-    };
-  }, [checkStickyState]);
+  useResizeObserver(getParentElement, checkStickyState);
+  useResizeObserver(() => drawerRef.current, checkStickyState);
 
   return { isSticky };
 }
