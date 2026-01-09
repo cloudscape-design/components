@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -6299,6 +6299,26 @@ We do not support using this attribute to apply custom styling.",
         "core",
       ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.ButtonDropdownItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: ButtonDropdownProps.ButtonDropdownItem; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonDropdownProps.ButtonDropdownItemRenderer",
     },
     {
       "defaultValue": "'normal'",

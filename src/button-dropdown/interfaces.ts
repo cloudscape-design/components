@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
@@ -62,6 +62,14 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
+   */
+  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
+
   /**
    * Determines whether the button dropdown is disabled. Users cannot interact with the control if it's disabled.
    */
@@ -163,6 +171,38 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
+
+  export interface ButtonDropdownActionItem {
+    type: 'action';
+    index: number;
+    option: Item;
+    highlighted: boolean;
+    disabled: boolean;
+    parent: ButtonDropdownGroupItem | null;
+  }
+  export interface ButtonDropdownCheckboxItem {
+    type: 'checkbox';
+    index: number;
+    option: CheckboxItem;
+    disabled: boolean;
+    highlighted: boolean;
+    checked: boolean;
+    parent: ButtonDropdownGroupItem | null;
+  }
+  export interface ButtonDropdownGroupItem {
+    type: 'group';
+    index: number;
+    option: ItemGroup;
+    disabled: boolean;
+    highlighted: boolean;
+    expanded: boolean;
+    expandDirection: 'vertical' | 'horizontal';
+  }
+
+  export type ButtonDropdownItem = ButtonDropdownActionItem | ButtonDropdownCheckboxItem | ButtonDropdownGroupItem;
+  export type ButtonDropdownItemRenderer = (props: {
+    item: ButtonDropdownProps.ButtonDropdownItem;
+  }) => ReactNode | null;
 
   export interface MainAction {
     text?: string;
@@ -266,6 +306,7 @@ export type ItemActivate = (
 ) => void;
 
 export interface CategoryProps extends HighlightProps {
+  index?: number;
   item: ButtonDropdownProps.ItemGroup;
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
@@ -274,6 +315,7 @@ export interface CategoryProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
   position?: string;
+  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -289,6 +331,8 @@ export interface ItemListProps extends HighlightProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
+  parentProps?: ButtonDropdownProps.ButtonDropdownGroupItem;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -296,6 +340,7 @@ export interface LinkItem extends ButtonDropdownProps.Item {
 }
 
 export interface ItemProps {
+  index?: number;
   item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem | LinkItem;
   disabled: boolean;
   highlighted: boolean;
@@ -308,6 +353,8 @@ export interface ItemProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
+  parentProps?: ButtonDropdownProps.ButtonDropdownGroupItem;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {
