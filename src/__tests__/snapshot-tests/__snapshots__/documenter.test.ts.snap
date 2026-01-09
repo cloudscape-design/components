@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -24222,6 +24222,147 @@ being included in a form submission. A read-only control is still focusable.",
       "name": "step",
       "optional": true,
       "type": "number",
+    },
+    {
+      "inlineType": {
+        "name": "SliderProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "handle",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; hover?: string | undefined; active?: string | undefined; } | undefined; borderRadius?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: { default?: string | undefined; active?: string | undefined; } | undefined; }",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; active?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; active?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "range",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; active?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; filled?: string | undefined; active?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "filled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; filled?: string | undefined; active?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "tick",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; filled?: string | undefined; active?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "track",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SliderProps.Style",
     },
     {
       "description": "Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.",
