@@ -23,6 +23,7 @@ type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
     disableInnerPadding?: boolean;
+    value?: string;
   };
 
 function InternalToken({
@@ -43,6 +44,7 @@ function InternalToken({
   // Internal
   role,
   disableInnerPadding,
+  value,
 
   // Base
   __internalRootRef,
@@ -126,6 +128,7 @@ function InternalToken({
         setShowTooltip(false);
       }}
       tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
+      data-token-value={value}
     >
       <div
         className={clsx(

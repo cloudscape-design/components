@@ -177,6 +177,8 @@ const Dropdown = ({
   dropdownContentRole,
   ariaLabelledby,
   ariaDescribedby,
+  forcePosition,
+  forceMobile = false,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
@@ -236,7 +238,7 @@ const Dropdown = ({
         position,
         dropdownElement: target,
         triggerRect: triggerBox,
-        isMobile,
+        isMobile: forceMobile || isMobile,
       });
       // Keep track of the initial dropdown position and direction.
       // Dropdown direction doesn't need to change as the user scrolls, just needs to stay attached to the trigger.
@@ -328,7 +330,8 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            stretchBeyondTriggerWidth
+            stretchBeyondTriggerWidth,
+            forcePosition
           ),
           dropdownRef.current,
           verticalContainerRef.current
@@ -389,7 +392,7 @@ const Dropdown = ({
           position: fixedPosition.current,
           dropdownElement: dropdownRef.current,
           triggerRect: getLogicalBoundingClientRect(triggerRef.current),
-          isMobile,
+          isMobile: forceMobile || isMobile,
         });
       }
     };
@@ -402,7 +405,7 @@ const Dropdown = ({
     return () => {
       controller.abort();
     };
-  }, [open, expandToViewport, isMobile]);
+  }, [open, expandToViewport, isMobile, forceMobile]);
 
   const referrerId = useUniqueId();
 
