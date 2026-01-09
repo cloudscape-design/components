@@ -16,6 +16,7 @@ interface UseVirtualProps<Item> {
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
   firstItemSticky?: boolean;
+  itemOverlap?: number;
 }
 
 interface RowVirtualizer {
@@ -41,6 +42,7 @@ export function useVirtual<Item extends object>({
   parentRef,
   estimateSize,
   firstItemSticky,
+  itemOverlap = 0,
 }: UseVirtualProps<Item>): RowVirtualizer {
   const rowVirtualizer = useVirtualDefault({
     size: items.length,
@@ -61,22 +63,41 @@ export function useVirtual<Item extends object>({
 
   const virtualItems = useMemo(
     () =>
-      rowVirtualizer.virtualItems.map(virtualItem => ({
-        ...virtualItem,
-        measureRef: (node: null | HTMLElement) => {
-          const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
-          if (mountedCount < MAX_ITEM_MOUNTS) {
-            virtualItem.measureRef(node);
-            measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
-          }
-        },
-      })),
-    [items, rowVirtualizer.virtualItems]
+      rowVirtualizer.virtualItems.map((virtualItem, index) => {
+        let adjustedStart: number;
+
+        if (firstItemSticky && virtualItem.index === 0) {
+          adjustedStart = virtualItem.start + 1;
+        } else if (firstItemSticky) {
+          adjustedStart = virtualItem.start + 2 - index * itemOverlap;
+        } else {
+          adjustedStart = virtualItem.start - index * itemOverlap;
+        }
+
+        return {
+          ...virtualItem,
+          start: adjustedStart,
+          measureRef: (node: null | HTMLElement) => {
+            const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
+            if (mountedCount < MAX_ITEM_MOUNTS) {
+              virtualItem.measureRef(node);
+              measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
+            }
+          },
+        };
+      }),
+    [items, rowVirtualizer.virtualItems, firstItemSticky, itemOverlap]
   );
+
+  // Adjust totalSize to account for 1px overlap per item When firstItemSticky
+  // is enabled, the sticky item is shifted down by 1 and other items are shifted down by (index + 2)
+  const firstItemSize = virtualItems[0]?.size ?? 0;
+  let adjustedTotalSize = rowVirtualizer.totalSize - items.length * itemOverlap;
+  adjustedTotalSize = firstItemSticky ? adjustedTotalSize - firstItemSize + 2 : adjustedTotalSize;
 
   return {
     virtualItems,
-    totalSize: rowVirtualizer.totalSize,
+    totalSize: adjustedTotalSize,
     scrollToIndex: rowVirtualizer.scrollToIndex,
   };
 }
