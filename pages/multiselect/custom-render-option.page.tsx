@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import { Multiselect, MultiselectProps } from '~components';
+import { Button, Multiselect, MultiselectProps } from '~components';
 import { SelectProps } from '~components/select';
 
 import { SimplePage } from '../app/templates';
@@ -33,6 +33,7 @@ const options: SelectProps.Options = [
 ];
 
 export default function SelectPage() {
+  const [virtualScroll, setVirtualScroll] = React.useState(false);
   const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>([]);
   const renderOptionItem: MultiselectProps.MultiselectOptionItemRenderer = ({ item }) => {
     if (item.type === 'select-all') {
@@ -47,14 +48,32 @@ export default function SelectPage() {
   };
 
   return (
-    <SimplePage title="Multiselect with custom item renderer" screenshotArea={{}}>
-      <div style={{ inlineSize: '400px' }}>
+    <SimplePage
+      title="Multiselect with custom item renderer"
+      settings={
+        <Button
+          data-testid="toggle-virtual-scroll"
+          onClick={() => {
+            setVirtualScroll(prevValue => !prevValue);
+          }}
+        >
+          {virtualScroll ? 'Disable' : 'Enable'} Virtual Scroll
+        </Button>
+      }
+      screenshotArea={{
+        style: {
+          padding: 10,
+        },
+      }}
+    >
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
         <Multiselect
+          virtualScroll={virtualScroll}
           enableSelectAll={true}
           i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
           filteringType={'auto'}
           renderOption={renderOptionItem}
-          placeholder="Choose option"
+          placeholder={'Choose option ' + (virtualScroll ? '(virtual)' : '')}
           selectedOptions={selectedOptions}
           onChange={event => {
             setSelectedOptions(event.detail.selectedOptions);

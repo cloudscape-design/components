@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import { Button } from '~components';
 import Select, { SelectProps } from '~components/select';
 
 import { SimplePage } from '../app/templates';
@@ -37,6 +38,7 @@ const options: SelectProps.Options = [
 ];
 
 export default function SelectPage() {
+  const [virtualScroll, setVirtualScroll] = React.useState(false);
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
   const renderOption: SelectProps.SelectOptionItemRenderer = ({ item }) => {
     if (item.type === 'trigger') {
@@ -50,12 +52,30 @@ export default function SelectPage() {
   };
 
   return (
-    <SimplePage title="Select with custom item renderer" screenshotArea={{}}>
-      <div style={{ inlineSize: '400px' }}>
+    <SimplePage
+      title="Select with custom item renderer"
+      settings={
+        <Button
+          data-testid="toggle-virtual-scroll"
+          onClick={() => {
+            setVirtualScroll(prevValue => !prevValue);
+          }}
+        >
+          {virtualScroll ? 'Disable' : 'Enable'} Virtual Scroll
+        </Button>
+      }
+      screenshotArea={{
+        style: {
+          padding: 10,
+        },
+      }}
+    >
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
         <Select
+          virtualScroll={virtualScroll}
           filteringType="auto"
           renderOption={renderOption}
-          placeholder="Choose option"
+          placeholder={'Choose option ' + (virtualScroll ? '(virtual)' : '')}
           selectedOption={selectedOption}
           onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
           options={options}
