@@ -29445,6 +29445,79 @@ user from modifying the value. A read-only control is still focusable.",
 }
 `;
 
+exports[`Components definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "dashCaseName": "tooltip",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Callback fired when the user presses the Escape key while the tooltip is visible.",
+      "name": "onEscape",
+    },
+  ],
+  "functions": [],
+  "name": "Tooltip",
+  "properties": [
+    {
+      "description": "Function that returns the element to track for positioning the tooltip.
+Can return null if the element is not yet mounted or available.",
+      "inlineType": {
+        "name": "() => HTMLElement | SVGElement | null",
+        "parameters": [],
+        "returnType": "HTMLElement | SVGElement | null",
+        "type": "function",
+      },
+      "name": "getTrack",
+      "optional": false,
+      "type": "() => HTMLElement | SVGElement | null",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Position of the tooltip relative to the tracked element.",
+      "inlineType": {
+        "name": "PopoverProps.Position",
+        "type": "union",
+        "values": [
+          "left",
+          "top",
+          "bottom",
+          "right",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Unique identifier for the tooltip instance. Changing this value will cause the tooltip
+to recalculate its position, similar to how React's key prop works.
+If not provided and content is a string or number, it will be used as key.
+For complex content (elements, fragments), you should provide an explicit trackKey.",
+      "inlineType": {
+        "name": "string | number",
+        "type": "union",
+        "values": [
+          "string",
+          "number",
+        ],
+      },
+      "name": "trackKey",
+      "optional": true,
+      "type": "string | number",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content to display in the tooltip.
+Accepts any valid React node including strings, numbers, elements, and fragments.",
+      "isDefault": false,
+      "name": "content",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for top-navigation matches the snapshot: top-navigation 1`] = `
 {
   "dashCaseName": "top-navigation",
@@ -41258,6 +41331,26 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findIdentityLink",
           "parameters": [],
           "returnType": {
@@ -49694,6 +49787,21 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
         },
       ],
       "name": "TokenGroupWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
     },
     {
       "methods": [

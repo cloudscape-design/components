@@ -92,6 +92,7 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
+import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TutorialPanelWrapper from './tutorial-panel';
@@ -181,6 +182,7 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenWrapper };
 export { TokenGroupWrapper };
+export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TutorialPanelWrapper };
@@ -1767,6 +1769,25 @@ findTokenGroup(selector?: string): TokenGroupWrapper | null;
  */
 findAllTokenGroups(selector?: string): Array<TokenGroupWrapper>;
 /**
+ * Returns the wrapper of the first Tooltip that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Tooltip.
+ * If no matching Tooltip is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TooltipWrapper | null}
+ */
+findTooltip(selector?: string): TooltipWrapper | null;
+
+/**
+ * Returns an array of Tooltip wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tooltips inside the current wrapper.
+ * If no matching Tooltip is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TooltipWrapper>}
+ */
+findAllTooltips(selector?: string): Array<TooltipWrapper>;
+/**
  * Returns the wrapper of the first TopNavigation that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TopNavigation.
  * If no matching TopNavigation is found, returns \`null\`.
@@ -2925,6 +2946,19 @@ ElementWrapper.prototype.findTokenGroup = function(selector) {
 ElementWrapper.prototype.findAllTokenGroups = function(selector) {
   return this.findAllComponents(TokenGroupWrapper, selector);
 };
+ElementWrapper.prototype.findTooltip = function(selector) {
+  let rootSelector = \`.\${TooltipWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TooltipWrapper && TooltipWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TooltipWrapper.rootSelector}, .\${TooltipWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TooltipWrapper);
+};
+
+ElementWrapper.prototype.findAllTooltips = function(selector) {
+  return this.findAllComponents(TooltipWrapper, selector);
+};
 ElementWrapper.prototype.findTopNavigation = function(selector) {
   let rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
   if("legacyRootSelector" in TopNavigationWrapper && TopNavigationWrapper.legacyRootSelector){
@@ -3080,6 +3114,7 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
+import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TutorialPanelWrapper from './tutorial-panel';
@@ -3169,6 +3204,7 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenWrapper };
 export { TokenGroupWrapper };
+export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TutorialPanelWrapper };
@@ -4589,6 +4625,23 @@ findTokenGroup(selector?: string): TokenGroupWrapper;
  */
 findAllTokenGroups(selector?: string): MultiElementWrapper<TokenGroupWrapper>;
 /**
+ * Returns a wrapper that matches the Tooltips with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Tooltips.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TooltipWrapper}
+ */
+findTooltip(selector?: string): TooltipWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Tooltips with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Tooltips.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<TooltipWrapper>}
+ */
+findAllTooltips(selector?: string): MultiElementWrapper<TooltipWrapper>;
+/**
  * Returns a wrapper that matches the TopNavigations with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TopNavigations.
  *
@@ -5738,6 +5791,19 @@ ElementWrapper.prototype.findTokenGroup = function(selector) {
 
 ElementWrapper.prototype.findAllTokenGroups = function(selector) {
   return this.findAllComponents(TokenGroupWrapper, selector);
+};
+ElementWrapper.prototype.findTooltip = function(selector) {
+  let rootSelector = \`.\${TooltipWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TooltipWrapper && TooltipWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TooltipWrapper.rootSelector}, .\${TooltipWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TooltipWrapper);
+};
+
+ElementWrapper.prototype.findAllTooltips = function(selector) {
+  return this.findAllComponents(TooltipWrapper, selector);
 };
 ElementWrapper.prototype.findTopNavigation = function(selector) {
   let rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
