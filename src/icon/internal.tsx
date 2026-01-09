@@ -76,7 +76,7 @@ const InternalIcon = ({
   );
 
   // Possible infinite loop is not a concern here because line
-  // height and font size should not change without an external state update.
+  // height should not change without an external state update.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (!contextualSize || !iconRef.current) {
