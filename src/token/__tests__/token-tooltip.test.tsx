@@ -204,4 +204,34 @@ describe('Token Tooltip behavior', () => {
     expect(liveRegionContent).toBeInTheDocument();
     expect(liveRegionContent).toHaveTextContent('Accessible tooltip content');
   });
+
+  test('hides tooltip when Escape key is pressed', () => {
+    const { container } = render(
+      <Token
+        variant="inline"
+        label="Very long text that should be truncated"
+        tooltipContent="Very long text that should be truncated"
+      />
+    );
+
+    const wrapper = createWrapper(container).findToken()!;
+    const tokenElement = wrapper.getElement();
+    const labelElement = wrapper.findLabel().getElement();
+
+    mockEllipsisActive(labelElement, true);
+    triggerResizeObserver(labelElement);
+
+    // Show tooltip
+    fireEvent.mouseEnter(tokenElement);
+    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
+
+    // Press Escape key
+    act(() => {
+      const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+      document.body.dispatchEvent(escapeEvent);
+    });
+
+    // Tooltip should be hidden
+    expect(screen.queryByTestId('tooltip-live-region-content')).not.toBeInTheDocument();
+  });
 });

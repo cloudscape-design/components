@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
+import TooltipWrapper from '../../../lib/components/test-utils/dom/tooltip';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
@@ -295,5 +296,70 @@ describe('Tooltip', () => {
     expect(parent).not.toContainElement(tooltip?.getElement() ?? null);
     // But tooltip should exist in the document
     expect(tooltip).not.toBeNull();
+  });
+
+  describe('TooltipWrapper test utils', () => {
+    it('findContent() returns the tooltip content element', () => {
+      render(<Tooltip content="Test content" getTrack={() => null} trackKey="test-utils-content" />);
+
+      const tooltipWrapper = TooltipWrapper.findByTrackKey('test-utils-content');
+      expect(tooltipWrapper).not.toBeNull();
+
+      const content = tooltipWrapper!.findContent();
+      expect(content).not.toBeNull();
+      expect(content!.getElement()).toHaveTextContent('Test content');
+    });
+
+    it('findByTrackKey() finds tooltip by trackKey attribute', () => {
+      render(<Tooltip content="Findable tooltip" getTrack={() => null} trackKey="unique-track-key" />);
+
+      const tooltipWrapper = TooltipWrapper.findByTrackKey('unique-track-key');
+      expect(tooltipWrapper).not.toBeNull();
+      expect(tooltipWrapper!.getElement()).toHaveAttribute('data-testid', 'unique-track-key');
+    });
+
+    it('findByTrackKey() returns null when tooltip not found', () => {
+      render(<Tooltip content="Some tooltip" getTrack={() => null} trackKey="existing-tooltip" />);
+
+      const tooltipWrapper = TooltipWrapper.findByTrackKey('non-existent-key');
+      expect(tooltipWrapper).toBeNull();
+    });
+
+    it('findByTrackKey() can distinguish between multiple tooltips', () => {
+      render(
+        <>
+          <Tooltip content="First tooltip" getTrack={() => null} trackKey="tooltip-1" />
+          <Tooltip content="Second tooltip" getTrack={() => null} trackKey="tooltip-2" />
+        </>
+      );
+
+      const tooltip1 = TooltipWrapper.findByTrackKey('tooltip-1');
+      const tooltip2 = TooltipWrapper.findByTrackKey('tooltip-2');
+
+      expect(tooltip1).not.toBeNull();
+      expect(tooltip2).not.toBeNull();
+      expect(tooltip1!.findContent()!.getElement()).toHaveTextContent('First tooltip');
+      expect(tooltip2!.findContent()!.getElement()).toHaveTextContent('Second tooltip');
+    });
+
+    it('findContent() works with complex content', () => {
+      render(
+        <Tooltip
+          content={
+            <div>
+              <strong>Bold</strong> text
+            </div>
+          }
+          getTrack={() => null}
+          trackKey="complex-wrapper"
+        />
+      );
+
+      const tooltipWrapper = TooltipWrapper.findByTrackKey('complex-wrapper');
+      const content = tooltipWrapper!.findContent();
+
+      expect(content).not.toBeNull();
+      expect(content!.getElement().querySelector('strong')).toHaveTextContent('Bold');
+    });
   });
 });
