@@ -73,7 +73,7 @@ export default function SelectPage() {
           i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
           filteringType={'auto'}
           renderOption={renderOptionItem}
-          placeholder="Choose option"
+          placeholder={'Choose option ' + (virtualScroll ? '(virtual)' : '')}
           selectedOptions={selectedOptions}
           onChange={event => {
             setSelectedOptions(event.detail.selectedOptions);
