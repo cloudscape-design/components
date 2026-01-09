@@ -9,6 +9,7 @@ import InternalButton from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ToggleButtonProps } from './interfaces';
+import { getToggleButtonStyles } from './style';
 import { getToggleIcon } from './util';
 
 import styles from './styles.css.js';
@@ -28,6 +29,7 @@ export const InternalToggleButton = React.forwardRef(
       onChange,
       className,
       analyticsAction = 'click',
+      style,
       ...rest
     }: ToggleButtonProps & { __title?: string; analyticsAction?: string },
     ref: React.Ref<ToggleButtonProps.Ref>
@@ -46,6 +48,8 @@ export const InternalToggleButton = React.forwardRef(
       }
     }
 
+    const { nativeButtonStyles } = getToggleButtonStyles(style);
+
     return (
       <InternalButton
         className={clsx(className, styles[`variant-${variant}`], { [styles.pressed]: pressed })}
@@ -62,7 +66,11 @@ export const InternalToggleButton = React.forwardRef(
         }}
         {...rest}
         ref={ref}
-        nativeButtonAttributes={nativeButtonAttributes}
+        style={style}
+        nativeButtonAttributes={{
+          ...nativeButtonAttributes,
+          style: { ...nativeButtonAttributes?.style, ...nativeButtonStyles },
+        }}
         analyticsAction={analyticsAction}
       />
     );
