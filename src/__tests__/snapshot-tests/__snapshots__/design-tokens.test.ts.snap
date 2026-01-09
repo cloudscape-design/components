@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Design tokens artifacts Design tokens JSON for classic matches the snapshot: classic 1`] = `
 {
@@ -2677,8 +2677,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -5357,8 +5357,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -8037,8 +8037,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -10717,8 +10717,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -13397,8 +13397,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -16077,8 +16077,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -18757,8 +18757,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "space-tree-view-indentation": {
       "$description": "The indentation of tree view items.",
       "$value": {
-        "comfortable": "20px",
-        "compact": "20px",
+        "comfortable": "24px",
+        "compact": "24px",
       },
     },
   },
@@ -21442,8 +21442,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -24122,8 +24122,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -26802,8 +26802,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -29482,8 +29482,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -32162,8 +32162,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -34842,8 +34842,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -37522,8 +37522,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -40202,8 +40202,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -42882,8 +42882,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "space-tree-view-indentation": {
       "$description": "The indentation of tree view items.",
       "$value": {
-        "comfortable": "20px",
-        "compact": "20px",
+        "comfortable": "24px",
+        "compact": "24px",
       },
     },
   },

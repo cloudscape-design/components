@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -26,6 +27,8 @@ export default function InternalCopyToClipboard({
   popoverRenderWithPortal,
   disabled,
   disabledReason,
+  onCopySuccess,
+  onCopyFailure,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -54,6 +57,7 @@ export default function InternalCopyToClipboard({
       // The clipboard API is not available in insecure contexts.
       setStatus('error');
       setStatusText(copyErrorText);
+      fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       return;
     }
 
@@ -62,10 +66,12 @@ export default function InternalCopyToClipboard({
       .then(() => {
         setStatus('success');
         setStatusText(copySuccessText);
+        fireNonCancelableEvent(onCopySuccess, { text: textToCopy });
       })
       .catch(() => {
         setStatus('error');
         setStatusText(copyErrorText);
+        fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       });
   };
 

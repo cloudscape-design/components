@@ -1,18 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
-import { DragHandleWrapperProps } from './interfaces';
+import { Direction, DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
 import testUtilsStyles from './test-classes/styles.css.js';
+
+// The UAP buttons are forced to top/bottom position if the handle is close to the screen edge.
+const FORCED_POSITION_PROXIMITY_PX = 50;
+// Approximate UAP button size with margins to decide forced direction.
+const UAP_BUTTON_SIZE_PX = 40;
+const DIRECTIONS_ORDER: Direction[] = ['block-end', 'block-start', 'inline-end', 'inline-start'];
 
 export default function DragHandleWrapper({
   directions,
@@ -157,7 +164,7 @@ export default function DragHandleWrapper({
       setUncontrolledShowButtons(false);
     } else if (triggerMode === 'keyboard-activate' && (event.key === 'Enter' || event.key === ' ')) {
       // toggle buttons when Enter or space is pressed in 'keyboard-activate' triggerMode
-      setUncontrolledShowButtons(prevshowButtons => !prevshowButtons);
+      setUncontrolledShowButtons(prevShowButtons => !prevShowButtons);
     } else if (
       event.key !== 'Alt' &&
       event.key !== 'Control' &&
@@ -172,6 +179,28 @@ export default function DragHandleWrapper({
   };
 
   const showButtons = triggerMode === 'controlled' ? controlledShowButtons : uncontrolledShowButtons;
+
+  const [forcedPosition, setForcedPosition] = useState<null | 'top' | 'bottom'>(null);
+  const directionsOrder = forcedPosition === 'bottom' ? [...DIRECTIONS_ORDER].reverse() : DIRECTIONS_ORDER;
+  const visibleDirections = directionsOrder.filter(dir => directions[dir]);
+
+  useLayoutEffect(() => {
+    if (showButtons && dragHandleRef.current) {
+      const rect = getLogicalBoundingClientRect(dragHandleRef.current);
+      const conflicts = {
+        'block-start': rect.insetBlockStart < FORCED_POSITION_PROXIMITY_PX,
+        'block-end': window.innerHeight - rect.insetBlockEnd < FORCED_POSITION_PROXIMITY_PX,
+        'inline-start': rect.insetInlineStart < FORCED_POSITION_PROXIMITY_PX,
+        'inline-end': window.innerWidth - rect.insetInlineEnd < FORCED_POSITION_PROXIMITY_PX,
+      };
+      if (visibleDirections.some(direction => conflicts[direction])) {
+        const hasEnoughSpaceAbove = rect.insetBlockStart > visibleDirections.length * UAP_BUTTON_SIZE_PX;
+        setForcedPosition(hasEnoughSpaceAbove ? 'top' : 'bottom');
+      } else {
+        setForcedPosition(null);
+      }
+    }
+  }, [showButtons, visibleDirections]);
 
   return (
     <>
@@ -209,37 +238,19 @@ export default function DragHandleWrapper({
       </div>
 
       <PortalOverlay track={dragHandleRef} isDisabled={!showButtons}>
-        {directions['block-start'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="block-start"
-            state={directions['block-start']}
-            onClick={() => onDirectionClick?.('block-start')}
-          />
-        )}
-        {directions['block-end'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="block-end"
-            state={directions['block-end']}
-            onClick={() => onDirectionClick?.('block-end')}
-          />
-        )}
-        {directions['inline-start'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="inline-start"
-            state={directions['inline-start']}
-            onClick={() => onDirectionClick?.('inline-start')}
-          />
-        )}
-        {directions['inline-end'] && (
-          <DirectionButton
-            show={!isDisabled && showButtons}
-            direction="inline-end"
-            state={directions['inline-end']}
-            onClick={() => onDirectionClick?.('inline-end')}
-          />
+        {visibleDirections.map(
+          (direction, index) =>
+            directions[direction] && (
+              <DirectionButton
+                key={direction}
+                show={!isDisabled && showButtons}
+                direction={direction}
+                state={directions[direction]}
+                onClick={() => onDirectionClick?.(direction)}
+                forcedPosition={forcedPosition}
+                forcedIndex={index}
+              />
+            )
         )}
       </PortalOverlay>
     </>
