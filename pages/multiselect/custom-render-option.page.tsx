@@ -52,6 +52,7 @@ export default function SelectPage() {
       title="Multiselect with custom item renderer"
       settings={
         <Button
+          data-testid="toggle-virtual-scroll"
           onClick={() => {
             setVirtualScroll(prevValue => !prevValue);
           }}
@@ -62,11 +63,10 @@ export default function SelectPage() {
       screenshotArea={{
         style: {
           padding: 10,
-          paddingBlockEnd: 550,
         },
       }}
     >
-      <div style={{ inlineSize: '400px' }}>
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
         <Multiselect
           virtualScroll={virtualScroll}
           enableSelectAll={true}

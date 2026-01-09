@@ -56,6 +56,7 @@ export default function SelectPage() {
       title="Select with custom item renderer"
       settings={
         <Button
+          data-testid="toggle-virtual-scroll"
           onClick={() => {
             setVirtualScroll(prevValue => !prevValue);
           }}
@@ -66,16 +67,15 @@ export default function SelectPage() {
       screenshotArea={{
         style: {
           padding: 10,
-          paddingBlockEnd: 550,
         },
       }}
     >
-      <div style={{ inlineSize: '400px' }}>
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
         <Select
           virtualScroll={virtualScroll}
           filteringType="auto"
           renderOption={renderOption}
-          placeholder="Choose option"
+          placeholder={'Choose option ' + (virtualScroll ? '(virtual)' : '')}
           selectedOption={selectedOption}
           onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
           options={options}
