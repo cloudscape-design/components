@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/forms/mixins' as forms;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin placeholder {
@@ -204,34 +205,14 @@
   /* used in test-utils */
 }
 
-$inlineLabel-border-radius: 2px;
-
 .inline-label-trigger-wrapper {
-  margin-block-start: -7px;
+  @include forms.inline-label-trigger-wrapper;
 }
 
 .inline-label-wrapper {
-  margin-block-start: calc(awsui.$space-scaled-xs * -1);
+  @include forms.inline-label-wrapper;
 }
 
 .inline-label {
-  background: linear-gradient(to bottom, awsui.$color-background-layout-main, awsui.$color-background-input-default);
-  border-start-start-radius: $inlineLabel-border-radius;
-  border-start-end-radius: $inlineLabel-border-radius;
-  border-end-start-radius: $inlineLabel-border-radius;
-  border-end-end-radius: $inlineLabel-border-radius;
-  box-sizing: border-box;
-  display: inline-block;
-  color: awsui.$color-text-form-label;
-  font-weight: awsui.$font-display-label-weight;
-  font-size: awsui.$font-size-body-s;
-  line-height: 14px;
-  letter-spacing: awsui.$letter-spacing-body-s;
-  position: relative;
-  inset-inline-start: calc(awsui.$border-width-field + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
-  margin-block-start: awsui.$space-scaled-xs;
-  padding-block-end: 2px;
-  padding-inline: awsui.$space-scaled-xxs;
-  max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
-  z-index: 1;
+  @include forms.inline-label;
 }

@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 import Pagination, { PaginationProps } from '~components/pagination';
 import Table from '~components/table';
 
@@ -10,13 +12,13 @@ import { generateItems, Instance } from './generate-data';
 const PAGE_SIZE = 10;
 const TOTAL_ITEMS = 100; // Simulated server-side total
 
-export default function JumpToPageOpenEndExample() {
+function JumpToPageOpenEndContent() {
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
   const [loadedPages, setLoadedPages] = useState<Record<number, Instance[]>>({ 1: generateItems(10) });
   const [jumpToPageIsLoading, setJumpToPageIsLoading] = useState(false);
   const [maxKnownPage, setMaxKnownPage] = useState(1);
   const [openEnd, setOpenEnd] = useState(true);
-  const jumpToPageRef = useRef<PaginationProps.JumpToPageRef>(null);
+  const jumpToPageRef = useRef<PaginationProps.Ref>(null);
 
   const currentItems = loadedPages[currentPageIndex] || [];
 
@@ -135,5 +137,13 @@ export default function JumpToPageOpenEndExample() {
         />
       }
     />
+  );
+}
+
+export default function JumpToPageOpenEndExample() {
+  return (
+    <I18nProvider messages={[messages]} locale="en">
+      <JumpToPageOpenEndContent />
+    </I18nProvider>
   );
 }
