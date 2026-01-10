@@ -140,7 +140,7 @@ function InternalPopover(
     const onDocumentClick = () => {
       // Dismiss popover unless there was a click inside within the last animation frame.
       if (clickFrameId.current === null) {
-        setVisible(false);
+        updateVisible(false);
       }
     };
 
@@ -149,7 +149,7 @@ function InternalPopover(
     return () => {
       document.removeEventListener('mousedown', onDocumentClick);
     };
-  }, []);
+  }, [updateVisible]);
 
   const popoverClasses = usePortalModeClasses(triggerRef, { resetVisualContext: true });
 

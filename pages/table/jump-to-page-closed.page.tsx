@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 
 import { CollectionPreferences } from '~components';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 import Pagination from '~components/pagination';
 import Table from '~components/table';
 
@@ -11,7 +13,7 @@ import { generateItems, Instance } from './generate-data';
 const allItems = generateItems(100);
 const PAGE_SIZE = 10;
 
-export default function JumpToPageClosedExample() {
+function JumpToPageClosedContent() {
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
 
   const totalPages = Math.ceil(allItems.length / PAGE_SIZE);
@@ -95,5 +97,13 @@ export default function JumpToPageClosedExample() {
         />
       }
     />
+  );
+}
+
+export default function JumpToPageClosedExample() {
+  return (
+    <I18nProvider messages={[messages]} locale="en">
+      <JumpToPageClosedContent />
+    </I18nProvider>
   );
 }

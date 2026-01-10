@@ -56,7 +56,7 @@ export default class PaginationWrapper extends ComponentWrapper {
   /**
    * Returns the error popover for jump to page.
    */
-  findPopover(): PopoverWrapper | null {
+  findJumpToPagePopover(): PopoverWrapper | null {
     return this.findComponent(`.${PopoverWrapper.rootSelector}`, PopoverWrapper);
   }
 
