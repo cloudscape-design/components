@@ -196,8 +196,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
-    "i18nStrings.isoDatePlaceholder": never;
-    "i18nStrings.slashedDatePlaceholder": never;
+    "i18nStrings.datePlaceholder": never;
     "i18nStrings.timePlaceholder": never;
     "i18nStrings.dateTimeConstraintText": never;
     "i18nStrings.dateConstraintText": never;
@@ -226,12 +225,15 @@ export interface I18nFormatArgTypes {
     "i18nStrings.loadingText": never;
   }
   "error-boundary": {
-    "i18nStrings.headerText"?: never;
-    "i18nStrings.descriptionText"?: {
-      hasFeedback: boolean;
-      Feedback: (chunks: React.ReactNode[]) => React.ReactNode; 
-    };
-    "i18nStrings.refreshActionText"?: never;
+    "i18nStrings.headerText": never;
+    "i18nStrings.descriptionText": {
+      "hasFeedback": string;
+    }
+    "i18nStrings.refreshActionText": never;
+  }
+  "features-notification-drawer": {
+    "i18nStrings.title": never;
+    "i18nStrings.viewAll": never;
   }
   "file-token-group": {
     "i18nStrings.limitShowFewer": never;
