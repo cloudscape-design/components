@@ -13,13 +13,13 @@ import InternalPagination from './internal';
 
 export { PaginationProps };
 
-const Pagination = React.forwardRef<PaginationProps.JumpToPageRef, PaginationProps>((props, ref) => {
+const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>((props, ref) => {
   const baseComponentProps = useBaseComponent('Pagination', { props: { openEnd: props.openEnd } });
   return (
     <InternalPagination
       {...props}
       {...baseComponentProps}
-      jumpToPageRef={ref}
+      ref={ref}
       {...getAnalyticsMetadataAttribute({
         component: {
           name: 'awsui.Pagination',

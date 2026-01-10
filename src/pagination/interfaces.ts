@@ -105,7 +105,7 @@ export namespace PaginationProps {
     loading?: boolean;
   }
 
-  export interface JumpToPageRef {
+  export interface Ref {
     /**
      * Set error state for jump to page. Component will auto-clear when user types or navigates.
      */
