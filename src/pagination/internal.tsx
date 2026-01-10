@@ -34,7 +34,7 @@ const defaultAriaLabels: Required<PaginationProps.Labels> = {
 };
 
 const defaultI18nStrings: Required<PaginationProps.I18nStrings> = {
-  jumpToPageLabel: 'Page',
+  jumpToPageLabel: '',
   jumpToPageError: '',
 };
 
