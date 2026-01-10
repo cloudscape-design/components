@@ -430,7 +430,7 @@ describe('jump to page', () => {
 
   describe('error handling via ref', () => {
     test('should show error popover when setError is called', () => {
-      const ref = React.createRef<PaginationProps.JumpToPageRef>();
+      const ref = React.createRef<PaginationProps.Ref>();
       const { wrapper, rerender } = renderPagination(
         <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />
       );
@@ -439,11 +439,11 @@ describe('jump to page', () => {
       rerender(<Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
 
       // Error popover should be visible
-      expect(wrapper.findPopover()).not.toBeNull();
+      expect(wrapper.findJumpToPagePopover()).not.toBeNull();
     });
 
     test('should clear error when user types in input', () => {
-      const ref = React.createRef<PaginationProps.JumpToPageRef>();
+      const ref = React.createRef<PaginationProps.Ref>();
       const { wrapper, rerender } = renderPagination(
         <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />
       );
@@ -454,11 +454,11 @@ describe('jump to page', () => {
       wrapper.findJumpToPageInput()!.setInputValue('5');
 
       // Error should be cleared - popover should not be visible
-      expect(wrapper.findPopover()).toBeNull();
+      expect(wrapper.findJumpToPagePopover()).toBeNull();
     });
 
     test('should clear error when user navigates successfully', () => {
-      const ref = React.createRef<PaginationProps.JumpToPageRef>();
+      const ref = React.createRef<PaginationProps.Ref>();
       const onChange = jest.fn();
       const { wrapper, rerender } = renderPagination(
         <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />
@@ -471,7 +471,7 @@ describe('jump to page', () => {
 
       expect(onChange).toHaveBeenCalled();
       // Error should be cleared
-      expect(wrapper.findPopover()).toBeNull();
+      expect(wrapper.findJumpToPagePopover()).toBeNull();
     });
   });
 

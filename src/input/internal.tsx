@@ -198,7 +198,7 @@ function InternalInput(
     },
   };
 
-  const renderMainInput = () => (
+  const mainInput = (
     <WithNativeAttributes
       {...attributes}
       tag="input"
@@ -230,10 +230,10 @@ function InternalInput(
           <label htmlFor={controlId} className={styles['inline-label']}>
             {__inlineLabelText}
           </label>
-          <div className={styles['inline-label-trigger-wrapper']}>{renderMainInput()}</div>
+          <div className={styles['inline-label-trigger-wrapper']}>{mainInput}</div>
         </div>
       ) : (
-        renderMainInput()
+        mainInput
       )}
       {__rightIcon && (
         <span
