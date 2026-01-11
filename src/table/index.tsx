@@ -11,9 +11,13 @@ import { CollectionPreferencesMetadata } from '../internal/context/collection-pr
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
+import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { getSortingColumnId } from './header-cell/utils';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalTable, { InternalTableAsSubstep } from './internal';
+import { getItemKey } from './utils';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { TableProps };
 const Table = React.forwardRef(
@@ -34,6 +38,15 @@ const Table = React.forwardRef(
       (props.visibleColumns && props.visibleColumns.length < props.columnDefinitions.length) ||
       props.columnDisplay?.some(col => !col.visible);
     const hasStickyColumns = !!props.stickyColumns?.first || !!props.stickyColumns?.last;
+
+    // Process expandable rows to get allItems (including expanded children)
+    const { allItems } = useExpandableTableProps({
+      items,
+      expandableRows: props.expandableRows,
+      trackBy: props.trackBy,
+      ariaLabels: props.ariaLabels,
+    });
+
     const baseComponentProps = useBaseComponent(
       'Table',
       {
@@ -83,6 +96,41 @@ const Table = React.forwardRef(
         variant,
       },
     };
+
+    const columns = props.columnDefinitions.map((colDef, colIndex) => {
+      const headerPosition = colIndex + (props.selectionType ? 2 : 1);
+
+      return {
+        selector: `thead th:nth-child(${headerPosition}) .${analyticsSelectors['header-cell-text']}`,
+        root: 'self' as const,
+      };
+    });
+
+    analyticsComponentMetadata.properties.columnsLabel = columns;
+
+    if (props.trackBy && selectedItems.length > 0) {
+      analyticsComponentMetadata.properties.selectedItems = selectedItems.map(
+        (item, index) => `${getItemKey(props.trackBy, item, index)}`
+      );
+
+      const selectedItemsLabel = selectedItems.map((item, itemIndex) => {
+        const rowIndexInItems = allItems.findIndex(
+          i => getItemKey(props.trackBy, i, allItems.indexOf(i)) === getItemKey(props.trackBy, item, itemIndex)
+        );
+        const rowNumber = rowIndexInItems + 1; // CSS nth-child is 1-based
+
+        return props.columnDefinitions.map((colDef, colIndex) => {
+          const cellPosition = colIndex + (props.selectionType ? 2 : 1);
+
+          return {
+            selector: `tbody tr:nth-child(${rowNumber}) > :nth-child(${cellPosition}) .${analyticsSelectors['body-cell-content']}`,
+            root: 'self' as const,
+          };
+        });
+      });
+
+      analyticsComponentMetadata.properties.selectedItemsLabel = selectedItemsLabel;
+    }
 
     const sortingColumnId = getSortingColumnId(props.columnDefinitions, props.sortingColumn);
     if (sortingColumnId) {
