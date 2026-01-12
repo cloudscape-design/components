@@ -159,8 +159,5 @@ const customCssPropertiesList = [
   'styleSliderHandleBackgroundHover',
   'styleSliderHandleBackgroundActive',
   'styleSliderHandleBorderRadius',
-  'styleSliderTickBackgroundDefault',
-  'styleSliderTickBackgroundFilled',
-  'styleSliderTickBackgroundActive',
 ];
 module.exports = customCssPropertiesList;

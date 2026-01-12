@@ -118,12 +118,5 @@ export namespace SliderProps {
       };
       borderRadius?: string;
     };
-    tick?: {
-      backgroundColor?: {
-        default?: string;
-        filled?: string;
-        active?: string;
-      };
-    };
   }
 }

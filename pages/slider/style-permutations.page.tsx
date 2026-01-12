@@ -28,13 +28,6 @@ const style1 = {
     },
     borderRadius: '50%',
   },
-  tick: {
-    backgroundColor: {
-      default: 'light-dark(#dbeafe, #1e3a8a)',
-      filled: 'light-dark(#3b82f6, #60a5fa)',
-      active: 'light-dark(#2563eb, #3b82f6)',
-    },
-  },
 };
 
 // Orange theme with square handle
@@ -55,13 +48,6 @@ const style2 = {
       active: 'light-dark(#c2410c, #ea580c)',
     },
     borderRadius: '4px',
-  },
-  tick: {
-    backgroundColor: {
-      default: 'light-dark(#fed7aa, #7c2d12)',
-      filled: 'light-dark(#f97316, #fb923c)',
-      active: 'light-dark(#ea580c, #f97316)',
-    },
   },
 };
 

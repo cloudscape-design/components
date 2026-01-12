@@ -17,8 +17,5 @@ export function getSliderStyles(style: SliderProps['style']) {
     [customCssProps.styleSliderHandleBackgroundHover]: style?.handle?.backgroundColor?.hover,
     [customCssProps.styleSliderHandleBackgroundActive]: style?.handle?.backgroundColor?.active,
     [customCssProps.styleSliderHandleBorderRadius]: style?.handle?.borderRadius,
-    [customCssProps.styleSliderTickBackgroundDefault]: style?.tick?.backgroundColor?.default,
-    [customCssProps.styleSliderTickBackgroundFilled]: style?.tick?.backgroundColor?.filled,
-    [customCssProps.styleSliderTickBackgroundActive]: style?.tick?.backgroundColor?.active,
   };
 }
