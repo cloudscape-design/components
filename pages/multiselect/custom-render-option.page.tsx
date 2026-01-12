@@ -60,7 +60,7 @@ export default function SelectPage() {
       title="Multiselect with custom item renderer"
       settings={
         <Toggle
-          checked={urlParams.virtualScroll === true}
+          checked={!!urlParams.virtualScroll}
           onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
         >
           Virtual Scroll
