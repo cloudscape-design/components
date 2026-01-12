@@ -19,19 +19,17 @@ type InternalIconProps = IconProps &
     badge?: boolean;
   };
 
-function iconSizeMap(height: number | null, fontSize?: number | null) {
+function iconSizeMap(height: number | null) {
   if (height === null) {
     // This is the best guess for the contextual height while server rendering.
     return 'normal';
   }
 
-  // Only display medium size icon when both line-height >= 24px AND font-size >= 20px
-  // This prevents icons from becoming medium size inappropriately
   if (height >= 50) {
     return 'large';
   } else if (height >= 36) {
     return 'big';
-  } else if (height >= 24 && fontSize !== null && fontSize !== undefined && fontSize >= 20) {
+  } else if (height >= 24) {
     return 'medium';
   } else if (height <= 16) {
     return 'small';
@@ -58,9 +56,8 @@ const InternalIcon = ({
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
-  const [parentFontSize, setParentFontSize] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
+  const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
@@ -76,18 +73,15 @@ const InternalIcon = ({
   );
 
   // Possible infinite loop is not a concern here because line
-  // height and font size should not change without an external state update.
+  // height should not change without an external state update.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (!contextualSize || !iconRef.current) {
       return;
     }
-    const computedStyle = getComputedStyle(iconRef.current);
-    const { lineHeight, fontSize } = computedStyle;
+    const { lineHeight } = getComputedStyle(iconRef.current);
     const newParentHeight = parseInt(lineHeight, 10);
-    const newParentFontSize = parseInt(fontSize, 10);
     setParentHeight(newParentHeight);
-    setParentFontSize(newParentFontSize);
   });
 
   const mergedRef = useMergeRefs(iconRef, __internalRootRef);
