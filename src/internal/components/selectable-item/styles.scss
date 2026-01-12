@@ -6,6 +6,43 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+// When using virtual scrolling, use box-shadows to mimic changing border width
+// and set the actual border to a fixed width to prevent jumping behaviour when
+// hovering selectable items
+$virtual-border-offset: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+$virtual-border-offset-double: calc(2 * #{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+
+@mixin virtual-border-padding {
+  border-width: awsui.$border-divider-list-width;
+  padding-block: 0;
+  padding-inline: 0;
+  > .selectable-item-content {
+    padding-block: calc(#{styles.$option-padding-vertical} + #{$virtual-border-offset});
+    padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+  }
+}
+
+@mixin virtual-highlighted-shadow {
+  box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-hover;
+  &.is-keyboard {
+    box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-focused;
+  }
+}
+
+@mixin virtual-selected-shadow {
+  box-shadow: inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected;
+  &.highlighted {
+    box-shadow:
+      inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+      inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-hover;
+    &.is-keyboard {
+      box-shadow:
+        inset 0 0 0 $virtual-border-offset awsui.$color-border-dropdown-item-selected,
+        inset 0 0 0 $virtual-border-offset-double awsui.$color-border-dropdown-item-focused;
+    }
+  }
+}
+
 // Outer borders of adjacent cells overlap and we want selected option border
 // to take precedence over the other ones, hence negative margins and z-indices
 .selectable-item {
@@ -199,6 +236,25 @@
     // Stay on top of the other options when they are scrolled up
     z-index: 4;
 
+    // Apply fixed border width to sticky items when there are virtual siblings (virtual scroll is enabled)
+    &:has(~ .virtual) {
+      &.highlighted:not(.selected) {
+        @include virtual-border-padding;
+        margin-block-end: calc(
+          #{awsui.$border-item-width} - #{awsui.$border-divider-list-width} - #{$virtual-border-offset}
+        );
+        @include virtual-highlighted-shadow;
+      }
+
+      &.selected {
+        @include virtual-border-padding;
+        margin-block-end: calc(
+          #{awsui.$border-item-width} - #{awsui.$border-divider-list-width} - #{$virtual-border-offset}
+        );
+        @include virtual-selected-shadow;
+      }
+    }
+
     &:not(.highlighted):not(.selected) {
       // Prevent covering the list border despite the higher z-index
       border-inline-start-width: awsui.$border-item-width;
@@ -252,6 +308,65 @@
     box-sizing: border-box;
     &:first-of-type:not(.selected, .highlighted) {
       border-block-start-color: awsui.$color-border-dropdown-item-top;
+    }
+
+    &.parent:not(.interactiveGroups) {
+      border-block-start-width: awsui.$border-divider-list-width;
+      border-block-start-color: awsui.$color-border-dropdown-group;
+      padding-block: 0;
+      padding-inline: 0;
+      > .selectable-item-content {
+        padding-block: awsui.$space-xs;
+        padding-inline: awsui.$space-xs;
+      }
+    }
+
+    &.parent.interactiveGroups:not(.highlighted):not(.selected) {
+      border-block-start-color: awsui.$color-border-dropdown-group;
+    }
+
+    &.highlighted:not(.selected) {
+      @include virtual-border-padding;
+      @include virtual-highlighted-shadow;
+    }
+
+    &.selected {
+      @include virtual-border-padding;
+      @include virtual-selected-shadow;
+    }
+
+    &.selected.child > .selectable-item-content {
+      padding-inline-start: calc(#{awsui.$space-xxl} + #{$virtual-border-offset});
+    }
+
+    &.selected.pad-bottom > .selectable-item-content {
+      padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs} + #{$virtual-border-offset});
+    }
+
+    &.highlighted:not(.selected).child > .selectable-item-content {
+      padding-inline-start: calc(#{awsui.$space-xxl} + #{$virtual-border-offset});
+    }
+
+    &.highlighted:not(.selected).pad-bottom > .selectable-item-content {
+      padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs} + #{$virtual-border-offset});
+    }
+
+    &.parent.interactiveGroups.selected > .selectable-item-content,
+    &.parent.interactiveGroups.highlighted:not(.selected) > .selectable-item-content {
+      padding-block: calc(#{styles.$group-option-padding-vertical} + #{$virtual-border-offset});
+      padding-inline: calc(#{styles.$control-padding-horizontal} + #{$virtual-border-offset});
+    }
+
+    &.sticky {
+      &.highlighted:not(.selected) {
+        @include virtual-border-padding;
+        @include virtual-highlighted-shadow;
+      }
+
+      &.selected {
+        @include virtual-border-padding;
+        @include virtual-selected-shadow;
+      }
     }
   }
 }

@@ -75,7 +75,7 @@ export const renderOptions = ({
         virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}
         {...props}
-        virtualPosition={virtualItem && virtualItem.start}
+        virtualPosition={virtualItem?.start}
         ref={isSticky && stickyOptionRef ? stickyOptionRef : virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
