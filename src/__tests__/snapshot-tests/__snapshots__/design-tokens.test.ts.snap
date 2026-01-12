@@ -479,35 +479,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#879596",
@@ -3194,35 +3194,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#879596",
@@ -5909,35 +5909,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#879596",
@@ -8624,35 +8624,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#879596",
@@ -11339,35 +11339,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#0a4a74",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#879596",
@@ -14054,35 +14054,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#44b9d6",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#44b9d6",
             "light": "#44b9d6",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#687078",
             "light": "#687078",
@@ -16769,35 +16769,35 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-background-slider-handle-active": {
-      "$description": "The background color of the slider handle (thumb) when pressed or active.",
+      "$description": "The background color of the slider handle in active state.",
       "$value": {
         "dark": "#44b9d6",
         "light": "#0a4a74",
       },
     },
     "color-background-slider-handle-default": {
-      "$description": "The default background color of the slider handle (thumb).",
+      "$description": "The default background color of the slider handle.",
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
       },
     },
     "color-background-slider-range-active": {
-      "$description": "The background color of the filled slider range when pressed or active.",
+      "$description": "The background color of the slider range in active state.",
       "$value": {
         "dark": "#44b9d6",
         "light": "#0a4a74",
       },
     },
     "color-background-slider-range-default": {
-      "$description": "The background color of the filled slider range.",
+      "$description": "The default background color of the slider range.",
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
       },
     },
     "color-background-slider-track-default": {
-      "$description": "The background color of the unfilled slider track.",
+      "$description": "The default background color of the slider track.",
       "$value": {
         "dark": "#687078",
         "light": "#879596",
@@ -19489,35 +19489,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
@@ -22204,35 +22204,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#656871",
@@ -24919,35 +24919,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
@@ -27634,35 +27634,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
@@ -30349,35 +30349,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
@@ -33064,35 +33064,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#004a9e",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
@@ -35779,35 +35779,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#656871",
@@ -38494,35 +38494,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-background-slider-handle-active": {
-          "$description": "The background color of the slider handle (thumb) when pressed or active.",
+          "$description": "The background color of the slider handle in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-handle-default": {
-          "$description": "The default background color of the slider handle (thumb).",
+          "$description": "The default background color of the slider handle.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-range-active": {
-          "$description": "The background color of the filled slider range when pressed or active.",
+          "$description": "The background color of the slider range in active state.",
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
           },
         },
         "color-background-slider-range-default": {
-          "$description": "The background color of the filled slider range.",
+          "$description": "The default background color of the slider range.",
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
           },
         },
         "color-background-slider-track-default": {
-          "$description": "The background color of the unfilled slider track.",
+          "$description": "The default background color of the slider track.",
           "$value": {
             "dark": "#656871",
             "light": "#656871",
@@ -41209,35 +41209,35 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-background-slider-handle-active": {
-      "$description": "The background color of the slider handle (thumb) when pressed or active.",
+      "$description": "The background color of the slider handle in active state.",
       "$value": {
         "dark": "#75cfff",
         "light": "#004a9e",
       },
     },
     "color-background-slider-handle-default": {
-      "$description": "The default background color of the slider handle (thumb).",
+      "$description": "The default background color of the slider handle.",
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
       },
     },
     "color-background-slider-range-active": {
-      "$description": "The background color of the filled slider range when pressed or active.",
+      "$description": "The background color of the slider range in active state.",
       "$value": {
         "dark": "#75cfff",
         "light": "#004a9e",
       },
     },
     "color-background-slider-range-default": {
-      "$description": "The background color of the filled slider range.",
+      "$description": "The default background color of the slider range.",
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
       },
     },
     "color-background-slider-track-default": {
-      "$description": "The background color of the unfilled slider track.",
+      "$description": "The default background color of the slider track.",
       "$value": {
         "dark": "#656871",
         "light": "#8c8c94",
