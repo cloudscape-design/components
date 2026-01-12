@@ -3,9 +3,10 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Button } from '~components';
+import { Toggle } from '~components';
 import Select, { SelectProps } from '~components/select';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
 const lotsOfOptions = [...Array(50).keys()].map(n => {
@@ -36,9 +37,15 @@ const options: SelectProps.Options = [
   ...lotsOfOptions,
   { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
 ];
+type PageContext = React.Context<
+  AppContextType<{
+    virtualScroll?: boolean;
+  }>
+>;
 
 export default function SelectPage() {
-  const [virtualScroll, setVirtualScroll] = React.useState(false);
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const virtualScroll = urlParams.virtualScroll ?? false;
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
   const renderOption: SelectProps.SelectOptionItemRenderer = ({ item }) => {
     if (item.type === 'trigger') {
@@ -55,14 +62,12 @@ export default function SelectPage() {
     <SimplePage
       title="Select with custom item renderer"
       settings={
-        <Button
-          data-testid="toggle-virtual-scroll"
-          onClick={() => {
-            setVirtualScroll(prevValue => !prevValue);
-          }}
+        <Toggle
+          checked={urlParams.virtualScroll === true}
+          onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
         >
-          {virtualScroll ? 'Disable' : 'Enable'} Virtual Scroll
-        </Button>
+          Virtual Scroll
+        </Toggle>
       }
       screenshotArea={{
         style: {

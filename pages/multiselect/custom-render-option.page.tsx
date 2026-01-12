@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import { Button, Multiselect, MultiselectProps } from '~components';
+import { Multiselect, MultiselectProps, Toggle } from '~components';
 import { SelectProps } from '~components/select';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { i18nStrings } from './constants';
 const lotsOfOptions: SelectProps.Options = [...Array(50)].map((_, index) => ({
@@ -31,9 +32,16 @@ const options: SelectProps.Options = [
   ...lotsOfOptions,
   { label: 'Last option', disabled: false, disabledReason: 'disabled reason' },
 ];
+type PageContext = React.Context<
+  AppContextType<{
+    virtualScroll?: boolean;
+  }>
+>;
 
 export default function SelectPage() {
-  const [virtualScroll, setVirtualScroll] = React.useState(false);
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const virtualScroll = urlParams.virtualScroll ?? false;
+
   const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>([]);
   const renderOptionItem: MultiselectProps.MultiselectOptionItemRenderer = ({ item }) => {
     if (item.type === 'select-all') {
@@ -51,14 +59,12 @@ export default function SelectPage() {
     <SimplePage
       title="Multiselect with custom item renderer"
       settings={
-        <Button
-          data-testid="toggle-virtual-scroll"
-          onClick={() => {
-            setVirtualScroll(prevValue => !prevValue);
-          }}
+        <Toggle
+          checked={urlParams.virtualScroll === true}
+          onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
         >
-          {virtualScroll ? 'Disable' : 'Enable'} Virtual Scroll
-        </Button>
+          Virtual Scroll
+        </Toggle>
       }
       screenshotArea={{
         style: {
