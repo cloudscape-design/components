@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
+import React, { forwardRef, isValidElement } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -9,6 +8,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import flattenChildren from '../internal/vendor/react-keyed-flatten-children';
 import { SpaceBetweenProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -52,7 +52,7 @@ const InternalSpaceBetween = forwardRef(
         ref={mergedRef}
       >
         {flattenedChildren.map(child => {
-          const key = typeof child === 'object' ? child.key : undefined;
+          const key = isValidElement(child) ? child.key : undefined;
 
           return (
             <div key={key} className={styles.child}>
