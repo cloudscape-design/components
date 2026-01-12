@@ -75,8 +75,8 @@ export default function SelectPage() {
           virtualScroll={virtualScroll}
           filteringType="auto"
           renderOption={renderOption}
-          placeholder={'Choose option ' + (virtualScroll ? '(virtual)' : '')}
           selectedOption={selectedOption}
+          placeholder={`Choose option ${virtualScroll ? '(virtual)' : ''}`}
           onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
           options={options}
           triggerVariant="option"
