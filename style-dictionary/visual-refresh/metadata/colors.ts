@@ -232,6 +232,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBackgroundSliderHandleDefault: {
+    description: 'The default background color of the slider handle (thumb).',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderHandleActive: {
+    description: 'The background color of the slider handle (thumb) when pressed or active.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeDefault: {
+    description: 'The background color of the filled slider range.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeActive: {
+    description: 'The background color of the filled slider range when pressed or active.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderTrackDefault: {
+    description: 'The background color of the unfilled slider track.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundStatusError: {
     description: 'The background color of an item in error state. For example: error alerts.',
     public: true,
