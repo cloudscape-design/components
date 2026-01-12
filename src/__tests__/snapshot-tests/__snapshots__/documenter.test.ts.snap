@@ -24303,43 +24303,6 @@ being included in a form submission. A read-only control is still focusable.",
           },
           {
             "inlineType": {
-              "name": "object",
-              "properties": [
-                {
-                  "inlineType": {
-                    "name": "{ default?: string | undefined; filled?: string | undefined; active?: string | undefined; }",
-                    "properties": [
-                      {
-                        "name": "active",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "default",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "filled",
-                        "optional": true,
-                        "type": "string",
-                      },
-                    ],
-                    "type": "object",
-                  },
-                  "name": "backgroundColor",
-                  "optional": true,
-                  "type": "{ default?: string | undefined; filled?: string | undefined; active?: string | undefined; }",
-                },
-              ],
-              "type": "object",
-            },
-            "name": "tick",
-            "optional": true,
-            "type": "{ backgroundColor?: { default?: string | undefined; filled?: string | undefined; active?: string | undefined; } | undefined; }",
-          },
-          {
-            "inlineType": {
               "name": "{ backgroundColor?: string | undefined; }",
               "properties": [
                 {
