@@ -65,7 +65,6 @@ export function useVirtual<Item extends object>({
     () =>
       rowVirtualizer.virtualItems.map((virtualItem, index) => {
         let adjustedStart: number;
-
         if (firstItemSticky && virtualItem.index !== 0) {
           adjustedStart = virtualItem.start + 1 - index * itemOverlap;
         } else {
@@ -87,9 +86,17 @@ export function useVirtual<Item extends object>({
     [items, rowVirtualizer.virtualItems, firstItemSticky, itemOverlap]
   );
 
-  // Adjust totalSize to account for `itemOverlap` overlap
+  // Adjust totalSize to account for applied itemOverlap. Since adjustedStart
+  // uses the render index (not virtualItem.index) for overlap calculation, we
+  // must use the maximum render index to determine the total overlap reduction.
+  // The last rendered item has render index (virtualItems.length - 1), so the
+  // total overlap applied is (virtualItems.length - 1) * itemOverlap.
+
   const firstItemSize = virtualItems[0]?.size ?? 0;
-  let adjustedTotalSize = rowVirtualizer.totalSize - items.length * itemOverlap;
+  const maxRenderIndex = virtualItems.length - 1;
+  const totalOverlapReduction = maxRenderIndex >= 0 ? maxRenderIndex * itemOverlap : 0;
+
+  let adjustedTotalSize = rowVirtualizer.totalSize - totalOverlapReduction;
   adjustedTotalSize = firstItemSticky ? adjustedTotalSize - firstItemSize : adjustedTotalSize;
 
   return {
