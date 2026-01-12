@@ -14,6 +14,7 @@ import { HighlightType } from '../../internal/components/options-list/utils/use-
 import SelectableItem from '../../internal/components/selectable-item';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import Tooltip from '../../tooltip/internal.js';
+import { SelectProps } from '../interfaces.js';
 
 import styles from './styles.css.js';
 
