@@ -71,6 +71,7 @@ const getMetadataContexts = (
             disabled: disabled ? 'true' : 'false',
             selectedOptionsCount: `${selectedOptionsCount}`,
             selectedOptionsValues: selectedOptions.map(option => option.value) as Array<string>,
+            selectedOptionsLabels: selectedOptions.map(option => option.label ?? option.value) as Array<string>,
           },
         },
       },
