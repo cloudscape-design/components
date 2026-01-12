@@ -348,6 +348,136 @@ describe('keyboard interactions', () => {
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
 
+  test('does not select option on enter keydown if part of IME composition', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper, container } = renderAutosuggest(
+      <Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />
+    );
+    const input = container.querySelector('input')!;
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('selects option on enter keydown when not composing', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
+    );
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  });
+
+  test('does not select option on enter when composition ends immediately before keydown', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper, container } = renderAutosuggest(
+      <Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />
+    );
+    const input = container.querySelector('input')!;
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+
+    jest.restoreAllMocks();
+  });
+
+  test('selects option on enter after composition flag is cleared', () => {
+    const mockRaf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
+      callback(performance.now());
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper, container } = renderAutosuggest(
+      <Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />
+    );
+    const input = container.querySelector('input')!;
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+
+    mockRaf.mockRestore();
+  });
+
+  test('blocks enter during rapid sequential composition events', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper, container } = renderAutosuggest(
+      <Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />
+    );
+    const input = container.querySelector('input')!;
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: 'ㄱ' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+
+    jest.restoreAllMocks();
+  });
+
+  test('does not select option when enter pressed to complete character composition', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper, container } = renderAutosuggest(
+      <Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />
+    );
+    const input = container.querySelector('input')!;
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+
+    jest.restoreAllMocks();
+  });
+
   test('closes dropdown and clears input on esc', () => {
     const onChange = jest.fn();
     const { wrapper, rerender } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" onChange={onChange} />);
