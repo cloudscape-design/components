@@ -30,6 +30,7 @@ const pluralizationMap = {
   Drawer: 'Drawers',
   ErrorBoundary: 'ErrorBoundaries',
   ExpandableSection: 'ExpandableSections',
+  FeaturePrompt: 'FeaturePrompts',
   FileDropzone: 'FileDropzones',
   FileInput: 'FileInputs',
   FileTokenGroup: 'FileTokenGroups',

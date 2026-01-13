@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
+import { IconProps } from '../../icon/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
@@ -114,7 +115,7 @@ export const mapRuntimeConfigToDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
 } => {
-  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+  const { trigger, mountContent, unmountContent, __content, ...runtimeDrawer } = runtimeConfig;
 
   return {
     ...runtimeDrawer,
@@ -124,9 +125,12 @@ export const mapRuntimeConfigToDrawer = (
           ...(trigger.iconSvg && {
             iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
           }),
+          ...(trigger.__iconName && {
+            iconName: trigger.__iconName as IconProps.Name,
+          }),
         }
       : undefined,
-    content: (
+    content: __content ?? (
       <RuntimeDrawerWrapper
         key={runtimeDrawer.id}
         mountContent={mountContent}
