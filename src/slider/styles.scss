@@ -34,7 +34,7 @@
   }
 
   &-track {
-    background-color: awsui.$color-background-slider-track;
+    background-color: awsui.$color-background-slider-track-default;
     inline-size: calc(100% + mixins.$thumb-size);
     block-size: 2px;
     cursor: pointer;
@@ -51,7 +51,7 @@
   }
 
   &-range {
-    background-color: awsui.$color-background-slider-handle-default;
+    background-color: awsui.$color-background-slider-range-default;
     block-size: 4px;
     inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-size);
 
@@ -64,7 +64,7 @@
     }
 
     &.active {
-      background-color: awsui.$color-background-slider-handle-active;
+      background-color: awsui.$color-background-slider-range-active;
     }
 
     &.error-active {
@@ -169,7 +169,7 @@
   inline-size: awsui.$space-xxxs;
   padding-inline: 0;
   padding-block: 0;
-  background: awsui.$color-background-slider-track;
+  background: awsui.$color-background-slider-track-default;
   inset-block-start: -4px;
 
   &.middle {
@@ -180,7 +180,7 @@
   }
 
   &.filled {
-    background: awsui.$color-background-slider-handle-default;
+    background: awsui.$color-background-slider-range-default;
 
     &.readonly:not(.disabled) {
       background: awsui.$color-foreground-control-read-only;
@@ -188,7 +188,7 @@
   }
 
   &.active {
-    background: awsui.$color-background-slider-handle-active;
+    background: awsui.$color-background-slider-range-active;
   }
 
   &.error {
