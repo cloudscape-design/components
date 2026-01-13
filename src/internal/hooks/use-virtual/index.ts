@@ -64,10 +64,21 @@ export function useVirtual<Item extends object>({
   const virtualItems = useMemo(
     () =>
       rowVirtualizer.virtualItems.map((virtualItem, index) => {
+        // IMPORTANT: Two different indices are used here:
+        // - virtualItem.index: The item's position in the FULL data array (e.g., item 450 of 1000 total items)
+        // - index: The item's position in the CURRENTLY RENDERED virtualItems array (always starts at 0, 1, 2...)
+        // For overlap calculations, we use 'index' (render position) not
+        // 'virtualItem.index' (data position) because overlap should be based
+        // on how many items are rendered it in the viewport, not the item's
+        // position in the complete dataset.
+
         let adjustedStart: number;
         if (firstItemSticky && virtualItem.index !== 0) {
+          // Sticky item already overlaps the subsequent item, so we must shift
+          // all items down +1 to account for that overlap
           adjustedStart = virtualItem.start + 1 - index * itemOverlap;
         } else {
+          // Apply overlap offset based on render position
           adjustedStart = virtualItem.start - index * itemOverlap;
         }
 
