@@ -34,7 +34,10 @@
   }
 
   &-track {
-    background-color: var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-track-default);
+    background-color: var(
+      #{custom-props.$styleSliderTrackBackgroundColor},
+      awsui.$color-background-slider-track-default
+    );
     inline-size: calc(100% + mixins.$thumb-size);
     block-size: 2px;
     cursor: pointer;

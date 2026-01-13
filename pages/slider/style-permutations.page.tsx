@@ -51,12 +51,13 @@ const style2 = {
   },
 };
 
-const permutations = createPermutations<SliderProps>([
+const permutations = createPermutations<SliderProps & { label: string }>([
   {
     min: [0],
     max: [100],
     hideFillLine: [false, true],
     style: [style1, style2],
+    label: ['Style permutation'],
   },
 ]);
 
@@ -68,8 +69,11 @@ export default function SliderStylePermutations() {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
+          render={(permutation, index) => (
             <Box>
+              <label htmlFor={`label-${index}`}>
+                {permutation.label} {index}
+              </label>
               <Slider {...permutation} value={50} step={10} tickMarks={true} ariaLabel="Styled slider" />
             </Box>
           )}
