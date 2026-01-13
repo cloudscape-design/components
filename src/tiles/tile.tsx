@@ -67,7 +67,7 @@ export const Tile = React.forwardRef(
             disabled={item.disabled}
             controlId={item.controlId}
             readOnly={readOnly}
-            className={analyticsSelectors['radio-button']}
+            className={clsx(analyticsSelectors['radio-button'], selected && analyticsSelectors.selected)}
           >
             {item.label}
           </RadioButton>
