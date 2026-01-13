@@ -167,8 +167,8 @@ const defaultProps: Record<string, Record<string, any>> = {
     steps: [],
   },
   tooltip: {
-    content: 'Tooltip content',
-    getTrack: () => document.createElement('div'),
+    content: null,
+    getTrack: () => null,
   },
 };
 

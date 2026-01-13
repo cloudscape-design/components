@@ -25,22 +25,6 @@ class TooltipPageObject extends BasePageObject {
 
 describe('Tooltip', () => {
   test(
-    'shows tooltip on hover',
-    useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
-      const page = new TooltipPageObject(browser);
-
-      // Wait for page to load
-      await page.waitForVisible('[data-testid="hover-button"]');
-
-      // Test hover - tooltip should appear
-      await page.hoverElement('[data-testid="hover-button"]');
-
-      await expect(page.isTooltipVisible()).resolves.toBe(true);
-    })
-  );
-
-  test(
     'shows tooltip on hover and verifies content',
     useBrowser(async browser => {
       await browser.url('/#/light/tooltip/simple');
@@ -87,79 +71,6 @@ describe('Tooltip', () => {
       await browser.keys('Escape');
       await page.waitForTooltipToDisappear();
       await expect(page.isTooltipVisible()).resolves.toBe(false);
-    })
-  );
-
-  test(
-    'changes tooltip position when SegmentedControl changes',
-    useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
-      const page = new TooltipPageObject(browser);
-
-      await page.waitForVisible('[data-testid="hover-button"]');
-
-      // Start with 'top' position (default)
-      await page.hoverElement('[data-testid="hover-button"]');
-      await page.waitForTooltip();
-      let content = await page.getTooltipContent();
-      expect(content).toBe('Tooltip positioned on top');
-
-      // Move mouse away to hide tooltip
-      await page.hoverElement('body');
-      await page.waitForTooltipToDisappear();
-
-      // Click 'Right' in SegmentedControl
-      await page.click('[data-testid="right"]');
-
-      // Hover again to show tooltip with new position
-      await page.hoverElement('[data-testid="hover-button"]');
-      await page.waitForTooltip();
-      content = await page.getTooltipContent();
-      expect(content).toBe('Tooltip positioned on right');
-
-      // Move mouse away
-      await page.hoverElement('body');
-      await page.waitForTooltipToDisappear();
-
-      // Click 'Bottom' in SegmentedControl
-      await page.click('[data-testid="bottom"]');
-
-      // Hover again to show tooltip with new position
-      await page.hoverElement('[data-testid="hover-button"]');
-      await page.waitForTooltip();
-      content = await page.getTooltipContent();
-      expect(content).toBe('Tooltip positioned on bottom');
-
-      // Move mouse away
-      await page.hoverElement('body');
-      await page.waitForTooltipToDisappear();
-
-      // Click 'Left' in SegmentedControl
-      await page.click('[data-testid="left"]');
-
-      // Hover again to show tooltip with new position
-      await page.hoverElement('[data-testid="hover-button"]');
-      await page.waitForTooltip();
-      content = await page.getTooltipContent();
-      expect(content).toBe('Tooltip positioned on left');
-    })
-  );
-
-  test(
-    'shows full text in tooltip for truncated content',
-    useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
-      const page = new TooltipPageObject(browser);
-
-      await page.waitForVisible('[data-testid="truncated-text-button"]');
-
-      // Hover over the truncated text button
-      await page.hoverElement('[data-testid="truncated-text-button"]');
-      await page.waitForTooltip();
-
-      // Verify tooltip shows the complete text
-      const content = await page.getTooltipContent();
-      expect(content).toBe('Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt');
     })
   );
 

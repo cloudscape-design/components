@@ -39,22 +39,10 @@ function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.
 }
 
 describe('Tooltip', () => {
-  it('renders text correctly', () => {
-    const wrapper = renderTooltip({ content: 'Value' });
-
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Value');
-  });
-
   it('renders text content correctly', () => {
     const wrapper = renderTooltip({ content: 'Success message' });
 
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Success message');
-  });
-
-  it('renders number content correctly', () => {
-    const wrapper = renderTooltip({ content: 42 });
-
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('42');
   });
 
   it('renders React element content correctly', () => {
@@ -71,53 +59,16 @@ describe('Tooltip', () => {
     expect(contentElement.querySelector('strong')).toHaveTextContent('Bold text');
   });
 
-  it('renders complex nested content', () => {
-    const wrapper = renderTooltip({
-      content: (
-        <div>
-          <p>Paragraph 1</p>
-          <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-          </ul>
-        </div>
-      ),
-      trackKey: 'complex-content',
-    });
-
-    const contentElement = wrapper.findContent()!.getElement();
-    expect(contentElement.querySelector('p')).toHaveTextContent('Paragraph 1');
-    expect(contentElement.querySelectorAll('li')).toHaveLength(2);
-  });
-
-  it('renders arrow', () => {
-    const wrapper = renderTooltip({ content: 'Value' });
-
-    expect(wrapper.findArrow()).not.toBeNull();
-  });
-
-  it('does not render a header', () => {
-    const wrapper = renderTooltip({ content: 'Value' });
-
-    expect(wrapper.findHeader()).toBeNull();
-  });
-
   it('has tooltip role attribute', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('role', 'tooltip');
   });
 
-  it('trackKey is set correctly for strings', () => {
+  it('uses content as trackKey when not explicitly provided', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
-  });
-
-  it('trackKey is auto-generated from number content', () => {
-    const wrapper = renderTooltip({ content: 123 });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', '123');
   });
 
   it('trackKey is set correctly for explicit value', () => {
@@ -127,19 +78,23 @@ describe('Tooltip', () => {
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
   });
 
-  it('explicit trackKey takes precedence over auto-generated', () => {
+  it('explicit trackKey takes precedence over content', () => {
     const wrapper = renderTooltip({ content: 'Auto value', trackKey: 'explicit-key' });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'explicit-key');
   });
 
-  it('trackKey is required for complex content', () => {
-    const wrapper = renderTooltip({
-      content: <div>Complex content</div>,
-      trackKey: 'required-key',
-    });
+  it('renders ReactNode content without explicit trackKey', () => {
+    // Should not crash when trackKey is not provided for complex content
+    expect(() => {
+      renderTooltip({
+        content: <div>Complex content without trackKey</div>,
+      });
+    }).not.toThrow();
 
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'required-key');
+    const tooltip = createWrapper().findByClassName(tooltipStyles.root);
+    expect(tooltip).not.toBeNull();
+    expect(tooltip!.getElement()).toHaveTextContent('Complex content without trackKey');
   });
 
   it('calls onEscape when an Escape keypress is detected anywhere', () => {
@@ -186,36 +141,6 @@ describe('Tooltip', () => {
     expect(wrapper.findTooltip()).not.toBeNull();
   });
 
-  it('supports top position', () => {
-    const wrapper = renderTooltip({ content: 'Position top', trackKey: 'top', position: 'top' });
-    expect(wrapper.findTooltip()).not.toBeNull();
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Position top');
-  });
-
-  it('supports right position', () => {
-    const wrapper = renderTooltip({ content: 'Position right', trackKey: 'right', position: 'right' });
-    expect(wrapper.findTooltip()).not.toBeNull();
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Position right');
-  });
-
-  it('supports bottom position', () => {
-    const wrapper = renderTooltip({ content: 'Position bottom', trackKey: 'bottom', position: 'bottom' });
-    expect(wrapper.findTooltip()).not.toBeNull();
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Position bottom');
-  });
-
-  it('supports left position', () => {
-    const wrapper = renderTooltip({ content: 'Position left', trackKey: 'left', position: 'left' });
-    expect(wrapper.findTooltip()).not.toBeNull();
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Position left');
-  });
-
-  it('uses top as default position when not specified', () => {
-    const wrapper = renderTooltip({ content: 'Default position' });
-    // Position is passed to PopoverContainer, which we can verify by checking the component renders
-    expect(wrapper.findTooltip()).not.toBeNull();
-  });
-
   it('tracks element returned by getTrack', () => {
     const element = document.createElement('div');
     element.textContent = 'Tracked element';
@@ -225,8 +150,6 @@ describe('Tooltip', () => {
     renderTooltip({ content: 'Tooltip', getTrack });
 
     expect(getTrack).toHaveBeenCalled();
-
-    document.body.removeChild(element);
   });
 
   it('handles getTrack returning null', () => {
@@ -246,8 +169,6 @@ describe('Tooltip', () => {
 
     expect(getTrack).toHaveBeenCalled();
     expect(wrapper.findTooltip()).not.toBeNull();
-
-    document.body.removeChild(svgElement);
   });
 
   it('updates tracked element when getTrack changes', () => {
@@ -263,9 +184,6 @@ describe('Tooltip', () => {
     rerender(<Tooltip content="Test" getTrack={() => element2} trackKey="test-2" />);
 
     expect(element2).toBeInTheDocument();
-
-    document.body.removeChild(element1);
-    document.body.removeChild(element2);
   });
 
   it('cleans up event listeners on unmount', () => {

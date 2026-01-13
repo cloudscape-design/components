@@ -1,422 +1,401 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import Button from '~components/button';
+import FormField from '~components/form-field';
 import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
 import Tooltip from '~components/tooltip';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { AppContextType } from '../app/app-context';
+import AppContext from '../app/app-context';
+import { SimplePage } from '../app/templates';
+
+type PageContext = React.Context<
+  AppContextType<{
+    position?: 'top' | 'right' | 'bottom' | 'left';
+  }>
+>;
 
 export default function TooltipSimple() {
-  // Interactive Position Control
-  const [showInteractive, setShowInteractive] = useState(false);
-  const [interactivePosition, setInteractivePosition] = useState<'top' | 'right' | 'bottom' | 'left'>('top');
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const interactivePosition = urlParams.position ?? 'top';
+
+  const [activeTooltip, setActiveTooltip] = useState<
+    null | 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password'
+  >(null);
+
   const interactiveRef = useRef<HTMLDivElement>(null);
-
-  const [showTop, setShowTop] = useState(false);
-  const [showBottom, setShowBottom] = useState(false);
-  const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(false);
-
-  const topRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const leftRef = useRef<HTMLDivElement>(null);
-  const rightRef = useRef<HTMLDivElement>(null);
-
-  // Common use cases
-  const [showTruncated, setShowTruncated] = useState(false);
-  const truncatedRef = useRef<HTMLDivElement>(null);
-
-  // Interactive content
-  const [showLink, setShowLink] = useState(false);
-  const [showCode, setShowCode] = useState(false);
   const linkRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
-
-  // Password input
-  const [showPassword, setShowPassword] = useState(false);
-  const passwordRef = useRef<HTMLDivElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   return (
-    <article>
-      <h1>Tooltip Examples</h1>
-      <p>Interactive tooltip demonstrations with positioning and content variations</p>
-
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          <section>
-            <h2>Interactive Position Control</h2>
-            <SpaceBetween direction="horizontal" size="l" alignItems="center">
-              <SegmentedControl
-                selectedId={interactivePosition}
-                onChange={({ detail }) =>
-                  setInteractivePosition(detail.selectedId as 'top' | 'right' | 'bottom' | 'left')
-                }
-                options={[
-                  { id: 'top', text: 'Top' },
-                  { id: 'right', text: 'Right' },
-                  { id: 'bottom', text: 'Bottom' },
-                  { id: 'left', text: 'Left' },
-                ]}
-              />
-              <div
-                ref={interactiveRef}
-                onMouseEnter={() => setShowInteractive(true)}
-                onMouseLeave={() => setShowInteractive(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    'aria-describedby': 'interactive-description',
-                    onFocus: () => setShowInteractive(true),
-                    onBlur: () => setShowInteractive(false),
-                  }}
-                  data-testid="hover-button"
-                >
-                  Hover
-                </Button>
-                <span id="interactive-description" hidden={true}>
-                  {`Tooltip positioned on ${interactivePosition}`}
-                </span>
-                {showInteractive && (
-                  <Tooltip
-                    content={`Tooltip positioned on ${interactivePosition}`}
-                    getTrack={() => interactiveRef.current}
-                    position={interactivePosition}
-                    onEscape={() => setShowInteractive(false)}
-                    trackKey={`position-${interactivePosition}`}
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </section>
-
-          <section>
-            <h2>Content Length Variations</h2>
-            <SpaceBetween direction="horizontal" size="l">
-              <div
-                ref={topRef}
-                onMouseEnter={() => setShowTop(true)}
-                onMouseLeave={() => setShowTop(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    'aria-describedby': 'short-description',
-                    onFocus: () => setShowTop(true),
-                    onBlur: () => setShowTop(false),
-                  }}
-                >
-                  Short
-                </Button>
-                <span id="short-description" hidden={true}>
-                  Lorem
-                </span>
-                {showTop && (
-                  <Tooltip
-                    content="Lorem"
-                    getTrack={() => topRef.current}
-                    position="top"
-                    onEscape={() => setShowTop(false)}
-                    trackKey="top"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={bottomRef}
-                onMouseEnter={() => setShowBottom(true)}
-                onMouseLeave={() => setShowBottom(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  data-testid="medium-length-button"
-                  nativeButtonAttributes={{
-                    'aria-describedby': 'medium-description',
-                    onFocus: () => setShowBottom(true),
-                    onBlur: () => setShowBottom(false),
-                  }}
-                >
-                  Medium
-                </Button>
-                <span id="medium-description" hidden={true}>
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.
-                </span>
-                {showBottom && (
-                  <Tooltip
-                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
-                    getTrack={() => bottomRef.current}
-                    position="bottom"
-                    onEscape={() => setShowBottom(false)}
-                    trackKey="bottom"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={leftRef}
-                onMouseEnter={() => setShowLeft(true)}
-                onMouseLeave={() => setShowLeft(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    'aria-describedby': 'long-description',
-                    onFocus: () => setShowLeft(true),
-                    onBlur: () => setShowLeft(false),
-                  }}
-                >
-                  Long
-                </Button>
-                <span id="long-description" hidden={true}>
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat.
-                </span>
-                {showLeft && (
-                  <Tooltip
-                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                    getTrack={() => leftRef.current}
-                    position="left"
-                    onEscape={() => setShowLeft(false)}
-                    trackKey="left"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={rightRef}
-                onMouseEnter={() => setShowRight(true)}
-                onMouseLeave={() => setShowRight(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <Button
-                  variant="primary"
-                  nativeButtonAttributes={{
-                    'aria-describedby': 'very-long-description',
-                    onFocus: () => setShowRight(true),
-                    onBlur: () => setShowRight(false),
-                  }}
-                >
-                  Very Long
-                </Button>
-                <span id="very-long-description" hidden={true}>
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia
-                  deserunt mollit anim id est laborum.
-                </span>
-                {showRight && (
-                  <Tooltip
-                    content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    getTrack={() => rightRef.current}
-                    position="right"
-                    onEscape={() => setShowRight(false)}
-                    trackKey="right"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </section>
-
-          <section>
-            <h3>Truncated Text</h3>
+    <SimplePage
+      title="Tooltip Examples"
+      subtitle="Interactive tooltip demonstrations with positioning and content variations"
+      screenshotArea={{}}
+      settings={
+        <FormField label="Tooltip position">
+          <SpaceBetween direction="horizontal" size="l" alignItems="center">
+            <SegmentedControl
+              selectedId={interactivePosition}
+              onChange={({ detail }) =>
+                setUrlParams({ position: detail.selectedId as 'top' | 'right' | 'bottom' | 'left' })
+              }
+              options={[
+                { id: 'top', text: 'Top' },
+                { id: 'right', text: 'Right' },
+                { id: 'bottom', text: 'Bottom' },
+                { id: 'left', text: 'Left' },
+              ]}
+            />
             <div
-              ref={truncatedRef}
-              onMouseEnter={() => setShowTruncated(true)}
-              onMouseLeave={() => setShowTruncated(false)}
-              style={{ display: 'inline-block' }}
+              ref={interactiveRef}
+              onMouseEnter={() => setActiveTooltip('interactive')}
+              onMouseLeave={() => setActiveTooltip(null)}
             >
-              <button
-                data-testid="truncated-text-button"
-                onFocus={() => setShowTruncated(true)}
-                onBlur={() => setShowTruncated(false)}
-                aria-describedby="truncated-description"
-                style={{
-                  maxWidth: '200px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  padding: '8px',
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  background: 'transparent',
-                  textAlign: 'left',
+              <Button
+                nativeButtonAttributes={{
+                  'aria-describedby': 'interactive-description',
+                  onFocus: () => setActiveTooltip('interactive'),
+                  onBlur: () => setActiveTooltip(null),
                 }}
+                data-testid="hover-button"
               >
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
-              </button>
-              <span id="truncated-description" hidden={true}>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+                Hover
+              </Button>
+              <span id="interactive-description" hidden={true}>
+                {`Tooltip positioned on ${interactivePosition}`}
               </span>
-              {showTruncated && (
+              {activeTooltip === 'interactive' && (
                 <Tooltip
-                  content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt"
-                  getTrack={() => truncatedRef.current}
-                  position="top"
-                  onEscape={() => setShowTruncated(false)}
-                  trackKey="truncated"
+                  content={`Tooltip positioned on ${interactivePosition}`}
+                  getTrack={() => interactiveRef.current}
+                  position={interactivePosition}
+                  onEscape={() => setActiveTooltip(null)}
+                  trackKey={`position-${interactivePosition}`}
                 />
               )}
             </div>
-          </section>
-
-          <section>
-            <h3>Interactive & Formatted Content</h3>
-            <SpaceBetween direction="horizontal" size="l">
-              <div
-                ref={linkRef}
-                onMouseEnter={() => setShowLink(true)}
-                onMouseLeave={() => setShowLink(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <a
-                  href="#"
-                  onFocus={() => setShowLink(true)}
-                  onBlur={() => setShowLink(false)}
-                  aria-describedby="link-description"
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={e => e.preventDefault()}
-                >
-                  Documentation Link
-                </a>
-                <span id="link-description" hidden={true}>
-                  AWS Documentation - Click to view complete API reference - Last updated: Today
-                </span>
-                {showLink && (
-                  <Tooltip
-                    content={
-                      <div>
-                        <strong>AWS Documentation</strong>
-                        <br />
-                        Click to view complete API reference
-                        <br />
-                        Last updated: Today
-                      </div>
-                    }
-                    getTrack={() => linkRef.current}
-                    position="top"
-                    onEscape={() => setShowLink(false)}
-                    trackKey="link-tooltip"
-                  />
-                )}
-              </div>
-
-              <div
-                ref={codeRef}
-                onMouseEnter={() => setShowCode(true)}
-                onMouseLeave={() => setShowCode(false)}
-                style={{ display: 'inline-block' }}
-              >
-                <button
-                  onFocus={() => setShowCode(true)}
-                  onBlur={() => setShowCode(false)}
-                  aria-describedby="code-description"
-                  style={{
-                    padding: '4px 8px',
-                    border: '1px solid',
-                    borderRadius: '4px',
-                    fontFamily: 'monospace',
-                    cursor: 'pointer',
-                    background: 'transparent',
-                  }}
-                >
-                  aws.config.region
-                </button>
-                <span id="code-description" hidden={true}>
-                  {`const AWS = require('aws-sdk'); AWS.config.update({ region: 'us-west-2' });`}
-                </span>
-                {showCode && (
-                  <Tooltip
-                    content={
-                      <div>
-                        <code
-                          style={{
-                            display: 'block',
-                            padding: '8px',
-                            background: '#232f3e',
-                            color: '#fff',
-                            borderRadius: '4px',
-                            fontSize: '12px',
-                          }}
-                        >
-                          {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
-                        </code>
-                      </div>
-                    }
-                    getTrack={() => codeRef.current}
-                    position="bottom"
-                    onEscape={() => setShowCode(false)}
-                    trackKey="code-tooltip"
-                  />
-                )}
-              </div>
-            </SpaceBetween>
-          </section>
-
-          <section>
-            <h3>Password Input Example</h3>
-            <div
-              ref={passwordRef}
-              onMouseEnter={() => setShowPassword(true)}
-              onMouseLeave={() => setShowPassword(false)}
-              style={{ display: 'inline-block' }}
-            >
-              <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
-                Password:
-              </label>
-              <input
-                id="password-input"
-                type="password"
-                placeholder="Enter password"
-                aria-describedby="password-description"
-                style={{
-                  padding: '8px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                }}
-                onFocus={() => setShowPassword(true)}
-                onBlur={() => setShowPassword(false)}
-              />
-              <span id="password-description" hidden={true}>
-                Password Rules: Minimum of 8 characters, Include at least one lowercase letter, one uppercase letter,
-                one number and one special character, Unique to this website
-              </span>
-              {showPassword && (
-                <Tooltip
-                  content={
-                    <div>
-                      <p>
-                        <strong>Password Rules:</strong>
-                      </p>
-                      <ul style={{ margin: 0, paddingLeft: '16px' }}>
-                        <li>Minimum of 8 characters</li>
-                        <li>
-                          Include at least one lowercase letter, one uppercase letter, one number and one special
-                          character
-                        </li>
-                        <li>Unique to this website</li>
-                      </ul>
-                    </div>
-                  }
-                  getTrack={() => passwordRef.current}
-                  position="bottom"
-                  onEscape={() => setShowPassword(false)}
-                  trackKey="password-rules"
-                />
-              )}
-            </div>
-          </section>
+          </SpaceBetween>
+        </FormField>
+      }
+    >
+      <SpaceBetween size="l">
+        <SpaceBetween direction="horizontal" size="l">
+          <ButtonWithTooltip
+            tooltipId="top"
+            buttonText="Short"
+            tooltipContent="Lorem"
+            position="top"
+            activeTooltip={activeTooltip}
+            onActivate={setActiveTooltip}
+            onDeactivate={() => setActiveTooltip(null)}
+          />
+          <ButtonWithTooltip
+            tooltipId="bottom"
+            buttonText="Medium"
+            tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+            position="bottom"
+            activeTooltip={activeTooltip}
+            onActivate={setActiveTooltip}
+            onDeactivate={() => setActiveTooltip(null)}
+            testId="medium-length-button"
+          />
+          <ButtonWithTooltip
+            tooltipId="left"
+            buttonText="Long"
+            tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+            position="left"
+            activeTooltip={activeTooltip}
+            onActivate={setActiveTooltip}
+            onDeactivate={() => setActiveTooltip(null)}
+          />
+          <ButtonWithTooltip
+            tooltipId="right"
+            buttonText="Very Long"
+            tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
+            position="right"
+            activeTooltip={activeTooltip}
+            onActivate={setActiveTooltip}
+            onDeactivate={() => setActiveTooltip(null)}
+          />
         </SpaceBetween>
-      </ScreenshotArea>
-    </article>
+
+        <TruncatedTextExample />
+
+        <SpaceBetween direction="horizontal" size="l">
+          <div ref={linkRef} onMouseEnter={() => setActiveTooltip('link')} onMouseLeave={() => setActiveTooltip(null)}>
+            <a
+              href="#"
+              onFocus={() => setActiveTooltip('link')}
+              onBlur={() => setActiveTooltip(null)}
+              aria-describedby="link-description"
+              style={{ textDecoration: 'underline', cursor: 'pointer' }}
+              onClick={e => e.preventDefault()}
+            >
+              Documentation Link
+            </a>
+            <span id="link-description" hidden={true}>
+              AWS Documentation - Click to view complete API reference - Last updated: Today
+            </span>
+            {activeTooltip === 'link' && (
+              <Tooltip
+                content={
+                  <div>
+                    <strong>AWS Documentation</strong>
+                    <br />
+                    Click to view complete API reference
+                    <br />
+                    Last updated: Today
+                  </div>
+                }
+                getTrack={() => linkRef.current}
+                position="top"
+                onEscape={() => setActiveTooltip(null)}
+                trackKey="link-tooltip"
+              />
+            )}
+          </div>
+
+          <div ref={codeRef} onMouseEnter={() => setActiveTooltip('code')} onMouseLeave={() => setActiveTooltip(null)}>
+            <button
+              onFocus={() => setActiveTooltip('code')}
+              onBlur={() => setActiveTooltip(null)}
+              aria-describedby="code-description"
+              style={{
+                padding: '4px 8px',
+                border: '1px solid',
+                borderRadius: '4px',
+                fontFamily: 'monospace',
+                cursor: 'pointer',
+                background: 'transparent',
+              }}
+            >
+              aws.config.region
+            </button>
+            <span id="code-description" hidden={true}>
+              {`const AWS = require('aws-sdk'); AWS.config.update({ region: 'us-west-2' });`}
+            </span>
+            {activeTooltip === 'code' && (
+              <Tooltip
+                content={
+                  <div>
+                    <code
+                      style={{
+                        display: 'block',
+                        padding: '8px',
+                        background: '#232f3e',
+                        color: '#fff',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
+                    </code>
+                  </div>
+                }
+                getTrack={() => codeRef.current}
+                position="bottom"
+                onEscape={() => setActiveTooltip(null)}
+                trackKey="code-tooltip"
+              />
+            )}
+          </div>
+        </SpaceBetween>
+
+        <div onMouseEnter={() => setActiveTooltip('password')} onMouseLeave={() => setActiveTooltip(null)}>
+          <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
+            Password:
+          </label>
+          <input
+            ref={passwordRef}
+            id="password-input"
+            type="password"
+            placeholder="Enter password"
+            aria-describedby="password-description"
+            style={{
+              padding: '8px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+            }}
+            onFocus={() => setActiveTooltip('password')}
+            onBlur={() => setActiveTooltip(null)}
+          />
+          <span id="password-description" hidden={true}>
+            Password Rules: Minimum of 8 characters. Include at least one lowercase letter, one uppercase letter, one
+            number and one special character. Unique to this website.
+          </span>
+          {activeTooltip === 'password' && (
+            <Tooltip
+              content={
+                <div>
+                  <strong>Password Rules:</strong>
+                  <br />• Minimum of 8 characters
+                  <br />• Include at least one lowercase letter, one uppercase letter, one number and one special
+                  character
+                  <br />• Unique to this website
+                </div>
+              }
+              getTrack={() => passwordRef.current}
+              position="bottom"
+              onEscape={() => setActiveTooltip(null)}
+              trackKey="password-rules"
+            />
+          )}
+        </div>
+      </SpaceBetween>
+    </SimplePage>
+  );
+}
+
+interface ButtonWithTooltipProps {
+  tooltipId: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password';
+  buttonText: string;
+  tooltipContent: React.ReactNode;
+  position?: 'top' | 'right' | 'bottom' | 'left';
+  activeTooltip: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password' | null;
+  onActivate: (id: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password') => void;
+  onDeactivate: () => void;
+  testId?: string;
+}
+
+function ButtonWithTooltip({
+  tooltipId,
+  buttonText,
+  tooltipContent,
+  position = 'top',
+  activeTooltip,
+  onActivate,
+  onDeactivate,
+  testId,
+}: ButtonWithTooltipProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const contentText = typeof tooltipContent === 'string' ? tooltipContent : '';
+
+  return (
+    <div ref={ref} onMouseEnter={() => onActivate(tooltipId)} onMouseLeave={onDeactivate}>
+      <Button
+        nativeButtonAttributes={{
+          'aria-describedby': `${tooltipId}-description`,
+          onFocus: () => onActivate(tooltipId),
+          onBlur: onDeactivate,
+        }}
+        data-testid={testId}
+      >
+        {buttonText}
+      </Button>
+      <span id={`${tooltipId}-description`} hidden={true}>
+        {contentText}
+      </span>
+      {activeTooltip === tooltipId && (
+        <Tooltip
+          content={tooltipContent}
+          getTrack={() => ref.current}
+          position={position}
+          onEscape={onDeactivate}
+          trackKey={tooltipId}
+        />
+      )}
+    </div>
+  );
+}
+
+function TruncatedTextExample() {
+  const ref1 = useRef<HTMLDivElement>(null);
+  const ref2 = useRef<HTMLDivElement>(null);
+  const ref3 = useRef<HTMLDivElement>(null);
+  const [show1, setShow1] = useState(false);
+  const [show2, setShow2] = useState(false);
+  const [show3, setShow3] = useState(false);
+
+  return (
+    <SpaceBetween size="s">
+      <div
+        ref={ref1}
+        onMouseEnter={() => setShow1(true)}
+        onMouseLeave={() => setShow1(false)}
+        onFocus={() => setShow1(true)}
+        onBlur={() => setShow1(false)}
+        tabIndex={0}
+        style={{
+          maxWidth: '200px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          padding: '8px',
+          border: '1px solid',
+          borderRadius: '4px',
+        }}
+      >
+        <span>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor</span>
+        {show1 && (
+          <Tooltip
+            content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor"
+            getTrack={() => ref1.current}
+            onEscape={() => setShow1(false)}
+            trackKey="file1"
+          />
+        )}
+      </div>
+
+      <div
+        ref={ref2}
+        onMouseEnter={() => setShow2(true)}
+        onMouseLeave={() => setShow2(false)}
+        onFocus={() => setShow2(true)}
+        onBlur={() => setShow2(false)}
+        tabIndex={0}
+        style={{
+          maxWidth: '200px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          padding: '8px',
+          border: '1px solid',
+          borderRadius: '4px',
+        }}
+      >
+        <span>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip</span>
+        {show2 && (
+          <Tooltip
+            content="Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip"
+            getTrack={() => ref2.current}
+            onEscape={() => setShow2(false)}
+            trackKey="arn"
+          />
+        )}
+      </div>
+
+      <div
+        ref={ref3}
+        onMouseEnter={() => setShow3(true)}
+        onMouseLeave={() => setShow3(false)}
+        onFocus={() => setShow3(true)}
+        onBlur={() => setShow3(false)}
+        tabIndex={0}
+        style={{
+          maxWidth: '200px',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          padding: '8px',
+          border: '1px solid',
+          borderRadius: '4px',
+        }}
+      >
+        <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</span>
+        {show3 && (
+          <Tooltip
+            content="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore"
+            getTrack={() => ref3.current}
+            onEscape={() => setShow3(false)}
+            trackKey="email"
+          />
+        )}
+      </div>
+    </SpaceBetween>
   );
 }
