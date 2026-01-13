@@ -26,13 +26,6 @@ const allStyles = {
     },
     borderRadius: '50%',
   },
-  tick: {
-    backgroundColor: {
-      default: '#dbeafe',
-      filled: '#3b82f6',
-      active: '#2563eb',
-    },
-  },
 };
 
 describe('getSliderStyles', () => {
