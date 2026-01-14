@@ -58,6 +58,31 @@ const permutations = createPermutations<SliderProps & { label: string }>([
     hideFillLine: [false, true],
     style: [style1, style2],
     label: ['Style permutation'],
+    disabled: [false],
+  },
+  {
+    min: [0],
+    max: [100],
+    hideFillLine: [false],
+    style: [style1, style2],
+    label: ['Style permutation disabled'],
+    disabled: [true],
+  },
+  {
+    min: [0],
+    max: [100],
+    hideFillLine: [false],
+    style: [style1, style2],
+    label: ['Style permutation warning'],
+    warning: [true],
+  },
+  {
+    min: [0],
+    max: [100],
+    hideFillLine: [false],
+    style: [style1, style2],
+    label: ['Style permutation invalid'],
+    invalid: [true],
   },
 ]);
 
