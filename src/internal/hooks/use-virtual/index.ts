@@ -16,7 +16,6 @@ interface UseVirtualProps<Item> {
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
   firstItemSticky?: boolean;
-  itemOverlap?: number;
 }
 
 interface RowVirtualizer {
@@ -42,7 +41,6 @@ export function useVirtual<Item extends object>({
   parentRef,
   estimateSize,
   firstItemSticky,
-  itemOverlap = 0,
 }: UseVirtualProps<Item>): RowVirtualizer {
   const rowVirtualizer = useVirtualDefault({
     size: items.length,
@@ -63,20 +61,10 @@ export function useVirtual<Item extends object>({
 
   const virtualItems = useMemo(
     () =>
-      rowVirtualizer.virtualItems.map((virtualItem, index) => {
-        // IMPORTANT: Two different indices are used here:
-        // - virtualItem.index: The item's position in the FULL data array (e.g., item 450 of 1000 total items)
-        // - index: The item's position in the CURRENTLY RENDERED virtualItems array (always starts at 0, 1, 2...)
-        // For overlap calculations, we use 'index' (render position) not
-        // 'virtualItem.index' (data position) because overlap should be based
-        // on how many items are rendered it in the viewport, not the item's
-        // position in the complete dataset.
-
-        const adjustedStart = virtualItem.start - index * itemOverlap;
-
+      rowVirtualizer.virtualItems.map(virtualItem => {
         return {
           ...virtualItem,
-          start: adjustedStart,
+          start: virtualItem.start,
           measureRef: (node: null | HTMLElement) => {
             const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
             if (mountedCount < MAX_ITEM_MOUNTS) {
@@ -86,21 +74,12 @@ export function useVirtual<Item extends object>({
           },
         };
       }),
-    [items, rowVirtualizer.virtualItems, itemOverlap]
+    [items, rowVirtualizer.virtualItems]
   );
 
-  // Adjust totalSize to account for applied itemOverlap. Since adjustedStart
-  // uses the render index (not virtualItem.index) for overlap calculation, we
-  // must use the maximum render index to determine the total overlap reduction.
-  // The last rendered item has render index (virtualItems.length - 1), so the
-  // total overlap applied is (virtualItems.length - 1) * itemOverlap.
-
+  // If first item is sticky, substract that item's size from the total size
   const firstItemSize = virtualItems[0]?.size ?? 0;
-  const maxRenderIndex = virtualItems.length - 1;
-  const totalOverlapReduction = maxRenderIndex >= 0 ? maxRenderIndex * itemOverlap : 0;
-
-  let adjustedTotalSize = rowVirtualizer.totalSize - totalOverlapReduction;
-  adjustedTotalSize = firstItemSticky ? adjustedTotalSize - firstItemSize : adjustedTotalSize;
+  const adjustedTotalSize = firstItemSticky ? rowVirtualizer.totalSize - firstItemSize : rowVirtualizer.totalSize;
 
   return {
     virtualItems,
