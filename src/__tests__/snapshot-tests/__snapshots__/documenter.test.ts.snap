@@ -29518,6 +29518,9 @@ Accepts any valid React node including strings, numbers, elements, and fragments
     },
   ],
   "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
