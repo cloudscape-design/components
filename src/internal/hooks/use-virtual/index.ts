@@ -72,15 +72,7 @@ export function useVirtual<Item extends object>({
         // on how many items are rendered it in the viewport, not the item's
         // position in the complete dataset.
 
-        let adjustedStart: number;
-        if (firstItemSticky && virtualItem.index !== 0) {
-          // Sticky item already overlaps the subsequent item, so we must shift
-          // all items down +1 to account for that overlap
-          adjustedStart = virtualItem.start + 1 - index * itemOverlap;
-        } else {
-          // Apply overlap offset based on render position
-          adjustedStart = virtualItem.start - index * itemOverlap;
-        }
+        const adjustedStart = virtualItem.start - index * itemOverlap;
 
         return {
           ...virtualItem,
@@ -94,7 +86,7 @@ export function useVirtual<Item extends object>({
           },
         };
       }),
-    [items, rowVirtualizer.virtualItems, firstItemSticky, itemOverlap]
+    [items, rowVirtualizer.virtualItems, itemOverlap]
   );
 
   // Adjust totalSize to account for applied itemOverlap. Since adjustedStart

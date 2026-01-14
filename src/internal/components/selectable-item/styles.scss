@@ -203,6 +203,12 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     }
   }
 
+  // Remove top divider from the first item after a sticky item to avoid double borders.
+  // Exclude highlighted/selected states to preserve their box-shadow styling.
+  &.sticky + &:not(.sticky):not(.highlighted):not(.selected) {
+    box-shadow: inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
+  }
+
   &.sticky {
     position: sticky;
     inset-block-start: 0;
@@ -213,11 +219,10 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     // Stay on top of the other options when they are scrolled up
     z-index: 4;
 
-    &:has(~ .virtual) {
-      &.highlighted:not(.selected),
-      &.selected {
-        margin-block-end: 0;
-      }
+    // Keep padding consistent to prevent visual shift on hover
+    padding-inline: 0;
+    > .selectable-item-content {
+      padding-inline: styles.$control-padding-horizontal;
     }
 
     &:not(.highlighted):not(.selected) {
@@ -226,10 +231,6 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
         inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-default,
         inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default,
         inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container;
-      padding-inline: 0;
-      > .selectable-item-content {
-        padding-inline: styles.$control-padding-horizontal;
-      }
 
       &:not(.with-scrollbar) {
         box-shadow:
