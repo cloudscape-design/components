@@ -117,7 +117,6 @@ exports[`test-utils selectors 1`] = `
   ],
   "cards": [
     "awsui_card-header-inner_p8a6i",
-    "awsui_card-selected_p8a6i",
     "awsui_card_p8a6i",
     "awsui_empty_p8a6i",
     "awsui_loading_p8a6i",
@@ -357,6 +356,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "internal": [
     "awsui_actions_x6dl3",
+    "awsui_active_1xxz5",
     "awsui_application_1fcus",
     "awsui_axis-label--x_f0fot",
     "awsui_axis-label--y_f0fot",
@@ -381,6 +381,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_filtering-match-highlight_1p2cx",
     "awsui_footer_dgs8z",
     "awsui_has-background_15o6u",
+    "awsui_header-inner_1xxz5",
     "awsui_header_dgs8z",
     "awsui_highlighted_15o6u",
     "awsui_icon_x6dl3",
@@ -405,6 +406,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1om0h",
     "awsui_root_1qprf",
     "awsui_root_1t44z",
+    "awsui_root_1xxz5",
     "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_screenreader-content_15o6u",
