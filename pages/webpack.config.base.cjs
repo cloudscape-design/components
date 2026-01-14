@@ -70,6 +70,7 @@ module.exports = ({
                 '~components': [componentsPath],
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
+                '@cloudscape-design/build-tools/dev-pages-utils': ['./shared-auto-build-tools'],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
                 ...(react18
                   ? {
@@ -153,6 +154,7 @@ module.exports = ({
       }),
       replaceModule(/~components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
+      replaceModule(/@cloudscape-design\/build-tools\/dev-pages-utils/, '../shared-auto-build-tools'),
       globalStylesPath
         ? replaceModule(/@cloudscape-design\/global-styles\/index\.css/, `${globalStylesPath}/${globalStylesIndex}.css`)
         : noop,
