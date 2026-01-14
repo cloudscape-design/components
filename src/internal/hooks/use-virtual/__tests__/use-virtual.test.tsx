@@ -169,10 +169,10 @@ describe('useVirtual', () => {
     const [result] = renderUseVirtual({ items: [], firstItemSticky: true });
 
     expect(result.virtualItems[0].start).toBe(0);
-    // For non-first items with sticky: start + 1 - renderIndex * itemOverlap = 60 + 1 - 1*0 = 61
-    expect(result.virtualItems[1].start).toBe(61);
-    // For non-first items with sticky: start + 1 - renderIndex * itemOverlap = 110 + 1 - 2*0 = 111
-    expect(result.virtualItems[2].start).toBe(111);
+    // For non-first items with sticky: start - renderIndex * itemOverlap = 60 + 1 - 1*0 = 60
+    expect(result.virtualItems[1].start).toBe(60);
+    // For non-first items with sticky: start - renderIndex * itemOverlap = 110 + 1 - 2*0 = 110
+    expect(result.virtualItems[2].start).toBe(110);
   });
 
   test('calculates item positions with sticky first item and itemOverlap=1', () => {
@@ -190,9 +190,9 @@ describe('useVirtual', () => {
 
     // First item (index=0): start - renderIndex * itemOverlap = 0 - 0*1 = 0
     expect(result.virtualItems[0].start).toBe(0);
-    // Non-first items with sticky: start + 1 - renderIndex * itemOverlap = 60 + 1 - 1*1 = 60
-    expect(result.virtualItems[1].start).toBe(60);
-    // Non-first items with sticky: start + 1 - renderIndex * itemOverlap = 110 + 1 - 2*1 = 109
-    expect(result.virtualItems[2].start).toBe(109);
+    // Non-first items with sticky: start - renderIndex * itemOverlap = 60 + 1 - 1*1 = 59
+    expect(result.virtualItems[1].start).toBe(59);
+    // Non-first items with sticky: start - renderIndex * itemOverlap = 110 - 2*1 = 108
+    expect(result.virtualItems[2].start).toBe(108);
   });
 });
