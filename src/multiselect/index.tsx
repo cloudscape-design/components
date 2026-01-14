@@ -57,7 +57,7 @@ const Multiselect = React.forwardRef(
         selectedOptionsValues: selectedOptions
           .filter(option => option.value !== undefined)
           .map(option => `${option.value}`),
-        selectedOptionsLabels: selectedOptions
+        selectedOptions: selectedOptions
           .filter(option => option.value !== undefined)
           // fallback on value when label's undefined because in the dropdown if there's no label
           // the value will be shown.

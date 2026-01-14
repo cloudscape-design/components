@@ -26,6 +26,6 @@ export interface GeneratedAnalyticsMetadataMultiselectComponent {
     disabled: string;
     selectedOptionsCount: string;
     selectedOptionsValues: Array<string>;
-    selectedOptionsLabels: Array<string>;
+    selectedOptions: Array<string>;
   };
 }
