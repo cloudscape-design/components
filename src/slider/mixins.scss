@@ -40,8 +40,8 @@ $border-radius-slider-thumb: 50%;
   block-size: 20px;
   inline-size: 20px;
   box-shadow:
-    0px 0 0 var(#{custom-props.$styleFocusRingBorderWidth}, 2px)
-      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-background-slider-handle-ring),
+    0px 0 0 2px awsui.$color-background-slider-handle-ring,
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-background-slider-handle-ring),
     0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
   background: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
 
