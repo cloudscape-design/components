@@ -89,6 +89,7 @@
     @include styles.font-heading-m;
     &-inner {
       /* Used in test utils */
+      padding-block-start: 4px;
     }
   }
   &-selected {
