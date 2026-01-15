@@ -220,7 +220,7 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     z-index: 4;
 
     // Keep padding consistent to prevent visual shift on hover
-    padding-inline: 0;
+    padding-inline: awsui.$border-item-width;
     > .selectable-item-content {
       padding-inline: styles.$control-padding-horizontal;
     }
