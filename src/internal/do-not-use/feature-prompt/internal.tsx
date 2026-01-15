@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useImperativeHandle, useRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
@@ -10,6 +9,7 @@ import Arrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { getBaseProps } from '../../base-component';
+import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { SomeRequired } from '../../types';
@@ -41,13 +41,11 @@ function InternalFeaturePrompt(
   const [show, setShow] = useState(false);
 
   const popoverBodyRef = useRef<HTMLDivElement | null>(null);
-  const onDismissCallbackRef = useRef<() => void | null>();
 
   useImperativeHandle(ref, () => ({
     dismiss: () => {
       setShow(false);
       fireNonCancelableEvent(onDismiss);
-      onDismissCallbackRef?.current?.();
     },
     show: () => {
       setShow(true);
@@ -56,41 +54,45 @@ function InternalFeaturePrompt(
   }));
 
   return (
-    <span {...baseProps} className={clsx(styles.root)} ref={__internalRootRef}>
+    <span {...baseProps} className={styles.root} ref={__internalRootRef}>
       {show && (
         <Portal>
-          <PopoverContainer
-            size={size}
-            fixedWidth={false}
-            position={position}
-            getTrack={getTrack}
-            trackKey={trackKey}
-            variant="annotation"
-            arrow={position => <Arrow position={position} variant="info" />}
-            zIndex={7000}
-            renderWithPortal={true}
-          >
-            <PopoverBody
-              ref={popoverBodyRef}
-              dismissButton={true}
-              dismissAriaLabel={i18nStrings?.dismissAriaLabel}
-              header={header}
-              onDismiss={() => {
-                setShow(false);
-                fireNonCancelableEvent(onDismiss);
-                onDismissCallbackRef?.current?.();
-              }}
+          <ResetContextsForModal>
+            <PopoverContainer
+              size={size}
+              fixedWidth={false}
+              position={position}
+              getTrack={getTrack}
+              trackKey={trackKey}
               variant="annotation"
-              overflowVisible="content"
-              onBlur={() => {
-                setShow(false);
-                fireNonCancelableEvent(onDismiss);
-                onDismissCallbackRef?.current?.();
-              }}
+              arrow={position => <Arrow position={position} variant="info" />}
+              zIndex={7000}
+              renderWithPortal={true}
             >
-              {content}
-            </PopoverBody>
-          </PopoverContainer>
+              <PopoverBody
+                ref={popoverBodyRef}
+                dismissButton={true}
+                dismissAriaLabel={i18nStrings?.dismissAriaLabel}
+                header={header}
+                onDismiss={() => {
+                  setShow(false);
+                  fireNonCancelableEvent(onDismiss);
+                }}
+                variant="annotation"
+                overflowVisible="content"
+                onBlur={event => {
+                  const relatedTarget = event.relatedTarget;
+                  if (relatedTarget && popoverBodyRef.current?.contains(relatedTarget)) {
+                    return;
+                  }
+                  setShow(false);
+                  fireNonCancelableEvent(onDismiss);
+                }}
+              >
+                {content}
+              </PopoverBody>
+            </PopoverContainer>
+          </ResetContextsForModal>
         </Portal>
       )}
     </span>

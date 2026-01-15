@@ -16,7 +16,7 @@ const FeaturePrompt = React.forwardRef(
     { size = 'medium', position = 'top', ...rest }: FeaturePromptProps,
     ref: React.Ref<FeaturePromptProps.Ref>
   ): JSX.Element => {
-    const baseComponentProps = useBaseComponent('FeaturePromptProps', { props: { size, position } });
+    const baseComponentProps = useBaseComponent('FeaturePrompt', { props: { size, position } });
 
     const externalProps = getExternalProps(rest);
     return (

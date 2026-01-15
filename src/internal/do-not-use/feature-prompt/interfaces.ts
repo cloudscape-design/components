@@ -11,8 +11,8 @@ export interface FeaturePromptProps {
   onShow?: NonCancelableEventHandler<null>;
 
   /**
-   * Called when a user closes the modal by using the close icon button,
-   * clicking outside the modal, shifting focus out of the modal or pressing ESC.
+   * Called when a user closes the prompt by using the close icon button,
+   * clicking outside the prompt, shifting focus out of the prompt or pressing ESC.
    */
   onDismiss?: NonCancelableEventHandler<null>;
 
@@ -55,7 +55,7 @@ export interface FeaturePromptProps {
    * Unique identifier for the tracked element. Used for tracking position changes
    * when using getTrack.
    */
-  trackKey: string | number;
+  trackKey?: string | number;
 }
 
 export namespace FeaturePromptProps {
@@ -70,8 +70,6 @@ export namespace FeaturePromptProps {
   }
   export interface Ref {
     /**
-     * Dismisses the prompt without focusing the trigger, because a trigger is not a part of this component.
-     *
      * Use only if an element other than the trigger needs to be focused after dismissing the prompt.
      */
     dismiss(): void;

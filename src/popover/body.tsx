@@ -19,7 +19,7 @@ export interface PopoverBodyProps {
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
   onDismiss: (() => void) | undefined;
-  onBlur?: (() => void) | undefined;
+  onBlur?: (event: React.FocusEvent) => void;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;

@@ -52,14 +52,9 @@ export default function () {
           </Box>
         }
         getTrack={() => document.querySelector('#settings-icon')}
-        trackKey="settings-icon"
       />
       <AppLayout
         ariaLabels={labels}
-        analyticsMetadata={{
-          flowType: 'home',
-          instanceIdentifier: 'demo-page',
-        }}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}

@@ -114,4 +114,40 @@ describe('FeaturePrompt', () => {
     expect(onDismissMock).toHaveBeenCalledTimes(1);
     expect(wrapper.findContent()).toBeFalsy();
   });
+
+  test('should not dismiss when blur relatedTarget is within popover body', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    const popoverBody = wrapper.findContent()!.getElement();
+    const dismissButton = wrapper.findDismissButton()!.getElement();
+
+    fireEvent.blur(popoverBody, {
+      relatedTarget: dismissButton,
+    });
+
+    expect(onDismissMock).not.toHaveBeenCalled();
+    expect(wrapper.findContent()).toBeTruthy();
+  });
+
+  test('should dismiss when blur relatedTarget is outside popover body', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    const popoverBody = wrapper.findContent()!.getElement();
+    const triggerButton = getByTestId('trigger-button');
+
+    fireEvent.blur(popoverBody, {
+      relatedTarget: triggerButton,
+    });
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.findContent()).toBeFalsy();
+  });
 });
