@@ -21,12 +21,7 @@ import { SimplePage } from '../app/templates';
 
 export default function InternalTooltipExamples() {
   return (
-    <SimplePage
-      title="Tooltip component integration"
-      subtitle="Examples showing how tooltips enhance various components with contextual help, disabled state explanations, and overflow content. Components demonstrated: Button, Select, Multiselect, Token, FileTokenGroup, SegmentedControl, BreadcrumbGroup, Slider, Calendar, DateRangePicker, and Tabs."
-      screenshotArea={{}}
-      i18n={{}}
-    >
+    <SimplePage title="Tooltip component integration" screenshotArea={{}} i18n={{}}>
       <SpaceBetween size="l">
         <FileInputItemExample />
         <ButtonExample />
