@@ -244,10 +244,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "الصفحة التالية",
     "ariaLabels.pageLabel": "صفحة رقم {pageNumber} من إجمالي عدد الصفحات",
-    "ariaLabels.previousPageLabel": "الصفحة السابقة",
-    "ariaLabels.jumpToPageButtonLabel": "الانتقال إلى الصفحة",
-    "i18nStrings.jumpToPageInputLabel": "صفحة",
-    "i18nStrings.jumpToPageError": "الصفحة خارج نطاق الوصول. جارٍ عرض آخر صفحة متاحة."
+    "ariaLabels.previousPageLabel": "الصفحة السابقة"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "مقبض تغيير حجم اللوحة",

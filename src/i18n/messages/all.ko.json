@@ -244,10 +244,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "다음 페이지",
     "ariaLabels.pageLabel": "전체 페이지 중 {pageNumber}페이지",
-    "ariaLabels.previousPageLabel": "이전 페이지",
-    "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
-    "i18nStrings.jumpToPageInputLabel": "페이지",
-    "i18nStrings.jumpToPageError": "페이지가 범위를 벗어났습니다. 마지막으로 사용 가능한 페이지를 표시합니다."
+    "ariaLabels.previousPageLabel": "이전 페이지"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",

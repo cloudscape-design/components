@@ -244,10 +244,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Sonraki sayfa",
     "ariaLabels.pageLabel": "Sayfa {pageNumber}/tüm sayfalar",
-    "ariaLabels.previousPageLabel": "Önceki sayfa",
-    "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
-    "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor."
+    "ariaLabels.previousPageLabel": "Önceki sayfa"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",

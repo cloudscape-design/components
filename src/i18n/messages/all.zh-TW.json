@@ -244,10 +244,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "下一頁",
     "ariaLabels.pageLabel": "所有頁面中的第 {pageNumber} 頁",
-    "ariaLabels.previousPageLabel": "上一頁",
-    "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
-    "i18nStrings.jumpToPageInputLabel": "頁面",
-    "i18nStrings.jumpToPageError": "頁面超出範圍。顯示最後一個可用頁面。"
+    "ariaLabels.previousPageLabel": "上一頁"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板調整大小控點",
