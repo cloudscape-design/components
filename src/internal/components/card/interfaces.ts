@@ -50,7 +50,9 @@ export interface InternalCardProps extends BaseComponentProps {
 
   tagName?: 'li' | 'div';
 
-  metadataAttributes: Record<string, string | undefined>;
+  disableContentPaddings?: boolean;
 
-  innerMetadataAttributes: Record<string, string | undefined>;
+  metadataAttributes?: Record<string, string | undefined>;
+
+  innerMetadataAttributes?: Record<string, string | undefined>;
 }
