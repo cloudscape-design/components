@@ -99,10 +99,6 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     }
   }
 
-  &.sticky > .selectable-item-content {
-    padding-inline: styles.$control-padding-horizontal;
-  }
-
   &.disabled > .selectable-item-content {
     color: awsui.$color-text-dropdown-item-disabled;
   }
@@ -229,6 +225,15 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
 
     // Keep padding consistent to prevent visual shift on hover
     padding-inline: awsui.$border-item-width;
+
+    &.highlighted,
+    &.selected {
+      padding-inline: awsui.$border-item-width;
+    }
+    // stylelint-disable-next-line no-descending-specificity
+    > .selectable-item-content {
+      padding-inline: styles.$control-padding-horizontal;
+    }
 
     &:not(.highlighted):not(.selected) {
       // Prevent covering the list border despite the higher z-index
