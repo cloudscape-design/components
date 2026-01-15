@@ -47,13 +47,13 @@ function Test({
   );
 }
 
-function renderUseVirtual(options: { items: TestItem[]; firstItemSticky?: boolean; itemOverlap?: number }) {
+function renderUseVirtual(options: { items: TestItem[]; firstItemSticky?: boolean }) {
   let hookResult: ReturnType<typeof useVirtual<TestItem>>;
   const { rerender } = render(<Test onResult={r => (hookResult = r)} {...options} />);
   return [
     hookResult!,
     {
-      rerender: (newOptions: { items: TestItem[]; firstItemSticky?: boolean; itemOverlap?: number }) =>
+      rerender: (newOptions: { items: TestItem[]; firstItemSticky?: boolean }) =>
         rerender(<Test onResult={r => (hookResult = r)} {...newOptions} />),
     },
   ] as const;
@@ -67,25 +67,7 @@ describe('useVirtual', () => {
     jest.clearAllMocks();
   });
 
-  test('computes totalSize with itemOverlap=1', () => {
-    // Mock react-virtual to return 3 items with size 50 each, total 150
-    mockUseVirtual.mockReturnValue({
-      virtualItems: [
-        { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
-        { index: 1, size: 50, start: 50, end: 100, measureRef: mockMeasureRef },
-        { index: 2, size: 50, start: 100, end: 150, measureRef: mockMeasureRef },
-      ],
-      totalSize: 150,
-      scrollToIndex: mockScrollToIndex,
-    });
-
-    const [result] = renderUseVirtual({ items: [], itemOverlap: 1 });
-
-    // totalSize = 150 - (maxRenderIndex * itemOverlap) = 150 - ((3-1) * 1) = 148
-    expect(result.totalSize).toBe(148);
-  });
-
-  test('computes totalSize with itemOverlap=0', () => {
+  test('computes totalSize', () => {
     mockUseVirtual.mockReturnValue({
       virtualItems: [
         { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
@@ -98,7 +80,6 @@ describe('useVirtual', () => {
 
     const [result] = renderUseVirtual({ items: [] });
 
-    // totalSize = 150 - (3 items * 0 overlap) = 150
     expect(result.totalSize).toBe(150);
   });
 
@@ -113,86 +94,9 @@ describe('useVirtual', () => {
       scrollToIndex: mockScrollToIndex,
     });
 
-    const [result] = renderUseVirtual({ items: [], firstItemSticky: true, itemOverlap: 1 });
-
-    // totalSize = 160 - (maxRenderIndex * itemOverlap) - firstItemSize = 160 - ((3-1) * 1) - 60 = 98
-    expect(result.totalSize).toBe(98);
-  });
-
-  test('calculates item positions omitting itemOverlap', () => {
-    mockUseVirtual.mockReturnValue({
-      virtualItems: [
-        { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
-        { index: 1, size: 50, start: 50, end: 100, measureRef: mockMeasureRef },
-        { index: 2, size: 50, start: 100, end: 150, measureRef: mockMeasureRef },
-      ],
-      totalSize: 150,
-      scrollToIndex: mockScrollToIndex,
-    });
-
-    const [result] = renderUseVirtual({ items: [] });
-
-    expect(result.virtualItems[0].start).toBe(0);
-    expect(result.virtualItems[1].start).toBe(50);
-    expect(result.virtualItems[2].start).toBe(100);
-  });
-
-  test('calculates item positions with itemOverlap=1', () => {
-    mockUseVirtual.mockReturnValue({
-      virtualItems: [
-        { index: 0, size: 50, start: 0, end: 50, measureRef: mockMeasureRef },
-        { index: 1, size: 50, start: 50, end: 100, measureRef: mockMeasureRef },
-        { index: 2, size: 50, start: 100, end: 150, measureRef: mockMeasureRef },
-      ],
-      totalSize: 150,
-      scrollToIndex: mockScrollToIndex,
-    });
-
-    const [result] = renderUseVirtual({ items: [], itemOverlap: 1 });
-
-    expect(result.virtualItems[0].start).toBe(0);
-    expect(result.virtualItems[1].start).toBe(49);
-    expect(result.virtualItems[2].start).toBe(98);
-  });
-
-  test('calculates item positions with sticky first item and itemOverlap=0', () => {
-    mockUseVirtual.mockReturnValue({
-      virtualItems: [
-        { index: 0, size: 60, start: 0, end: 60, measureRef: mockMeasureRef },
-        { index: 1, size: 50, start: 60, end: 110, measureRef: mockMeasureRef },
-        { index: 2, size: 50, start: 110, end: 160, measureRef: mockMeasureRef },
-      ],
-      totalSize: 160,
-      scrollToIndex: mockScrollToIndex,
-    });
-
     const [result] = renderUseVirtual({ items: [], firstItemSticky: true });
 
-    expect(result.virtualItems[0].start).toBe(0);
-    // For non-first items with sticky: start - renderIndex * itemOverlap = 60 + 1 - 1*0 = 60
-    expect(result.virtualItems[1].start).toBe(60);
-    // For non-first items with sticky: start - renderIndex * itemOverlap = 110 + 1 - 2*0 = 110
-    expect(result.virtualItems[2].start).toBe(110);
-  });
-
-  test('calculates item positions with sticky first item and itemOverlap=1', () => {
-    mockUseVirtual.mockReturnValue({
-      virtualItems: [
-        { index: 0, size: 60, start: 0, end: 60, measureRef: mockMeasureRef },
-        { index: 1, size: 50, start: 60, end: 110, measureRef: mockMeasureRef },
-        { index: 2, size: 50, start: 110, end: 160, measureRef: mockMeasureRef },
-      ],
-      totalSize: 160,
-      scrollToIndex: mockScrollToIndex,
-    });
-
-    const [result] = renderUseVirtual({ items: [], firstItemSticky: true, itemOverlap: 1 });
-
-    // First item (index=0): start - renderIndex * itemOverlap = 0 - 0*1 = 0
-    expect(result.virtualItems[0].start).toBe(0);
-    // Non-first items with sticky: start - renderIndex * itemOverlap = 60 + 1 - 1*1 = 59
-    expect(result.virtualItems[1].start).toBe(59);
-    // Non-first items with sticky: start - renderIndex * itemOverlap = 110 - 2*1 = 108
-    expect(result.virtualItems[2].start).toBe(108);
+    // totalSize = 160 - firstItemSize = 160 - 60 = 100
+    expect(result.totalSize).toBe(100);
   });
 });
