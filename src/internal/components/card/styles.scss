@@ -72,11 +72,20 @@
 }
 
 .header {
-  @include styles.font-heading-m;
+  @include styles.font-heading-s;
+  padding-block-start: 8px;
+  padding-inline: awsui.$space-card-horizontal;
+  display: flex;
   &-inner {
+    padding-block-start: 4px;
     inline-size: 100%;
     display: inline-block;
   }
+}
+
+.body:not(.no-padding) {
+  padding-block-end: awsui.$space-card-vertical;
+  padding-inline: awsui.$space-card-horizontal;
 }
 
 .with-action {
@@ -93,4 +102,8 @@
       border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
     }
   }
+}
+
+.action {
+  flex-shrink: 0;
 }

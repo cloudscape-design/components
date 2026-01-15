@@ -20,6 +20,7 @@ export default function Card({
   onFocus,
   role,
   tagName: TagName = 'div',
+  disableContentPaddings,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
@@ -42,7 +43,7 @@ export default function Card({
           <div className={styles['header-inner']}>{header}</div>
           {action && <div className={styles.action}>{action}</div>}
         </div>
-        {children}
+        <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
       </div>
     </TagName>
   );
