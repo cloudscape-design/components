@@ -196,8 +196,6 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
-    "i18nStrings.datePlaceholder": never;
-    "i18nStrings.timePlaceholder": never;
     "i18nStrings.dateTimeConstraintText": never;
     "i18nStrings.dateConstraintText": never;
     "i18nStrings.slashedDateTimeConstraintText": never;
@@ -225,15 +223,12 @@ export interface I18nFormatArgTypes {
     "i18nStrings.loadingText": never;
   }
   "error-boundary": {
-    "i18nStrings.headerText": never;
-    "i18nStrings.descriptionText": {
-      "hasFeedback": string;
-    }
-    "i18nStrings.refreshActionText": never;
-  }
-  "features-notification-drawer": {
-    "i18nStrings.title": never;
-    "i18nStrings.viewAll": never;
+    "i18nStrings.headerText"?: never;
+    "i18nStrings.descriptionText"?: {
+      hasFeedback: boolean;
+      Feedback: (chunks: React.ReactNode[]) => React.ReactNode; 
+    };
+    "i18nStrings.refreshActionText"?: never;
   }
   "file-token-group": {
     "i18nStrings.limitShowFewer": never;
@@ -320,9 +315,6 @@ export interface I18nFormatArgTypes {
       "pageNumber": string | number;
     }
     "ariaLabels.previousPageLabel": never;
-    "ariaLabels.jumpToPageButtonLabel": never;
-    "i18nStrings.jumpToPageInputLabel": never;
-    "i18nStrings.jumpToPageError": never;
   }
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": never;

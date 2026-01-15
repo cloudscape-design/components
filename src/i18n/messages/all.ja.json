@@ -240,10 +240,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "次のページ",
     "ariaLabels.pageLabel": "全ページ中 {pageNumber} ページ",
-    "ariaLabels.previousPageLabel": "前のページ",
-    "ariaLabels.jumpToPageButtonLabel": "ページに移動",
-    "i18nStrings.jumpToPageInputLabel": "ページ",
-    "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。"
+    "ariaLabels.previousPageLabel": "前のページ"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",

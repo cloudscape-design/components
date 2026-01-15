@@ -240,10 +240,7 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Pagina successiva",
     "ariaLabels.pageLabel": "Pagina {pageNumber} di tutte le pagine",
-    "ariaLabels.previousPageLabel": "Pagina precedente",
-    "ariaLabels.jumpToPageButtonLabel": "Vai alla pagina",
-    "i18nStrings.jumpToPageInputLabel": "Pagina",
-    "i18nStrings.jumpToPageError": "Pagina fuori intervallo. Mostra l'ultima pagina disponibile."
+    "ariaLabels.previousPageLabel": "Pagina precedente"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Maniglia di ridimensionamento del pannello",
