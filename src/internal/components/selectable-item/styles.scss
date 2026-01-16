@@ -14,7 +14,6 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
 $divider-w: awsui.$border-divider-list-width;
 $neg-divider-w: calc(-1 * #{$divider-w});
 
-// Utilities
 @mixin logical-radius($radius) {
   border-start-start-radius: $radius;
   border-start-end-radius: $radius;
