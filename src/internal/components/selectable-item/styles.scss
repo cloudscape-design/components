@@ -6,24 +6,60 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
-// Use box-shadows instead of borders to prevent jumping behaviour when hovering selectable items
+// Box-shadow spread values for simulating borders without layout shifts
 $border-offset: awsui.$border-item-width;
 $border-offset-double: calc(2 * #{awsui.$border-item-width});
 
-@mixin divider {
+// Divider widths (and negative) for reuse
+$divider-w: awsui.$border-divider-list-width;
+$neg-divider-w: calc(-1 * #{$divider-w});
+
+// Utilities
+@mixin logical-radius($radius) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}
+
+@function add-offset($value, $offset: $border-offset) {
+  @return calc(#{$value} + #{$offset});
+}
+
+@mixin content-pad($block, $inline) {
+  padding-block: $block;
+  padding-inline: $inline;
+}
+
+@mixin option-content-pad($v, $h) {
+  > .selectable-item-content {
+    padding-block: $v;
+    padding-inline: $h;
+  }
+}
+
+@mixin option-content-pad-with-offset($v, $h, $offset: $border-offset) {
+  > .selectable-item-content {
+    padding-block: add-offset($v, $offset);
+    padding-inline: add-offset($h, $offset);
+  }
+}
+
+@mixin divider-shadow($top-color, $bottom-color) {
   box-shadow:
-    inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-default,
-    inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
+    inset 0 $divider-w 0 0 $top-color,
+    inset 0 $neg-divider-w 0 0 $bottom-color;
+}
+
+@mixin divider {
+  @include divider-shadow(awsui.$color-border-dropdown-item-default, awsui.$color-border-dropdown-item-default);
 }
 
 @mixin border-padding {
   border-width: 0;
   padding-block: 0;
   padding-inline: 0;
-  > .selectable-item-content {
-    padding-block: calc(#{styles.$option-padding-vertical} + #{$border-offset});
-    padding-inline: calc(#{styles.$control-padding-horizontal} + #{$border-offset});
-  }
+  @include option-content-pad-with-offset(styles.$option-padding-vertical, styles.$control-padding-horizontal);
 }
 
 @mixin highlighted-shadow {
@@ -60,27 +96,25 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
   background-color: awsui.$color-background-dropdown-item-default;
   color: awsui.$color-text-dropdown-item-default;
 
-  padding-block: awsui.$border-item-width;
-  padding-inline: awsui.$border-item-width;
+  @include content-pad(awsui.$border-item-width, awsui.$border-item-width);
 
-  // For custom styles and background on the selectable-item-content, the content should not clip through the selectable-item borders.
+  // For custom styles and background on the selectable-item-content, the
+  // content should not clip through the selectable-item borders.
   overflow: hidden;
 
   @include divider;
   &.parent.interactiveGroups:not(.highlighted):not(.selected) {
+    // kept explicitly to preserve cascade/overrides
     @include divider;
   }
 
-  > .selectable-item-content {
-    padding-block: styles.$option-padding-vertical;
-    padding-inline: styles.$control-padding-horizontal;
-  }
+  @include option-content-pad(styles.$option-padding-vertical, styles.$control-padding-horizontal);
 
   &.pad-bottom {
     padding-block-end: awsui.$border-item-width;
-    box-shadow: inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-default;
+    box-shadow: inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-default;
     > .selectable-item-content {
-      padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+      padding-block-end: add-offset(styles.$option-padding-vertical, awsui.$space-xxxs);
     }
   }
 
@@ -106,13 +140,10 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
   &.highlighted,
   &.selected {
     color: awsui.$color-text-dropdown-item-highlighted;
-    border-start-start-radius: awsui.$border-radius-item;
-    border-start-end-radius: awsui.$border-radius-item;
-    border-end-start-radius: awsui.$border-radius-item;
-    border-end-end-radius: awsui.$border-radius-item;
+    @include logical-radius(awsui.$border-radius-item);
     @include border-padding;
     &.child > .selectable-item-content {
-      padding-inline-start: calc(#{awsui.$space-xxl} + #{$border-offset});
+      padding-inline-start: add-offset(awsui.$space-xxl);
     }
     &.pad-bottom > .selectable-item-content {
       padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs} + #{$border-offset});
@@ -164,14 +195,10 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
       }
     }
     &:not(.interactiveGroups) {
-      box-shadow:
-        inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-group,
-        inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
-      padding-block: 0;
-      padding-inline: 0;
+      @include divider-shadow(awsui.$color-border-dropdown-group, awsui.$color-border-dropdown-item-default);
+      @include content-pad(0, 0);
       &:not(:has(> .selectable-item-content)) {
-        padding-block: awsui.$border-item-width;
-        padding-inline: awsui.$border-item-width;
+        @include content-pad(awsui.$border-item-width, awsui.$border-item-width);
       }
 
       > .selectable-item-content {
@@ -193,31 +220,30 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
       &.selected {
         @include border-padding;
         > .selectable-item-content {
-          padding-block: calc(#{styles.$group-option-padding-vertical} + #{$border-offset});
-          padding-inline: calc(#{styles.$control-padding-horizontal} + #{$border-offset});
+          padding-block: add-offset(styles.$group-option-padding-vertical);
+          padding-inline: add-offset(styles.$control-padding-horizontal);
         }
       }
     }
   }
 
-  // Remove top divider from the first item after a sticky item to avoid double borders.
-  // Exclude highlighted/selected states to preserve their box-shadow styling.
-  &:not(.disabled):not(.parent) {
-    cursor: pointer;
-  }
+  // Remove top divider from the first item after a sticky item to avoid double
+  // borders. Exclude highlighted/selected states to preserve their box-shadow.
+  &:not(.disabled):not(.parent),
   &.interactiveGroups:not(.disabled) {
     cursor: pointer;
   }
 
   &.sticky + &:not(.sticky):not(.highlighted):not(.selected) {
-    box-shadow: inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
+    box-shadow: inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default;
   }
 
   &.sticky {
     position: sticky;
     inset-block-start: 0;
 
-    // Push the next option down to prevent its border in highlighted or selected state from being partially covered by the sticky option
+    // Push the next option down to prevent its border in highlighted or
+    // selected state from being partially covered by the sticky option
     margin-block-end: awsui.$border-item-width;
 
     // Stay on top of the other options when they are scrolled up
@@ -238,14 +264,14 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     &:not(.highlighted):not(.selected) {
       // Prevent covering the list border despite the higher z-index
       box-shadow:
-        inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-default,
-        inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default,
+        inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-default,
+        inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
         inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container;
 
       &:not(.with-scrollbar) {
         box-shadow:
-          inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-default,
-          inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default,
+          inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-default,
+          inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
           inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container,
           inset calc(-1 * #{awsui.$border-item-width}) 0 0 0 awsui.$color-border-dropdown-container;
       }
@@ -259,13 +285,13 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
       }
       &.after-header {
         box-shadow:
-          inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-background-dropdown-item-default,
-          inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default,
+          inset 0 $divider-w 0 0 awsui.$color-background-dropdown-item-default,
+          inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
           inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container;
         &:not(.with-scrollbar) {
           box-shadow:
-            inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-background-dropdown-item-default,
-            inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default,
+            inset 0 $divider-w 0 0 awsui.$color-background-dropdown-item-default,
+            inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
             inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container,
             inset calc(-1 * #{awsui.$border-item-width}) 0 0 0 awsui.$color-border-dropdown-container;
         }
@@ -286,15 +312,15 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
     box-sizing: border-box;
     &:first-of-type:not(.selected, .highlighted) {
       box-shadow:
-        inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-item-top,
-        inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
+        inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-top,
+        inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default;
     }
 
     // Adds top border between option group and previous element
     &.parent:not(.interactiveGroups) {
       box-shadow:
-        inset 0 awsui.$border-divider-list-width 0 0 awsui.$color-border-dropdown-group,
-        inset 0 calc(-1 * #{awsui.$border-divider-list-width}) 0 0 awsui.$color-border-dropdown-item-default;
+        inset 0 $divider-w 0 0 awsui.$color-border-dropdown-group,
+        inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default;
     }
   }
 }
@@ -308,7 +334,7 @@ $border-offset-double: calc(2 * #{awsui.$border-item-width});
   inset-inline-start: 0;
 
   .selectable-item.virtual > & {
-    block-size: calc(100% - $border-offset);
+    block-size: calc(100% - #{$border-offset});
   }
 }
 
