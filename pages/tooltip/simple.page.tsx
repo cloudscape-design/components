@@ -30,6 +30,30 @@ export default function TooltipSimple() {
   const linkRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [isInteractingWithTooltip, setIsInteractingWithTooltip] = useState(false);
+
+  const handleFocusTooltip = (id: typeof activeTooltip) => {
+    setActiveTooltip(id);
+  };
+
+  const handleBlurTooltip = () => {
+    // Only close if not currently interacting with tooltip
+    if (!isInteractingWithTooltip) {
+      setActiveTooltip(null);
+    }
+  };
+
+  const handleMouseEnterTooltip = (id: typeof activeTooltip) => {
+    setActiveTooltip(id);
+  };
+
+  const handleTooltipMouseDown = () => {
+    setIsInteractingWithTooltip(true);
+  };
+
+  const handleTooltipMouseUp = () => {
+    setIsInteractingWithTooltip(false);
+  };
 
   return (
     <SimplePage
@@ -53,14 +77,14 @@ export default function TooltipSimple() {
             />
             <div
               ref={interactiveRef}
-              onMouseEnter={() => setActiveTooltip('interactive')}
+              onMouseEnter={() => handleMouseEnterTooltip('interactive')}
               onMouseLeave={() => setActiveTooltip(null)}
             >
               <Button
                 nativeButtonAttributes={{
                   'aria-describedby': 'interactive-description',
-                  onFocus: () => setActiveTooltip('interactive'),
-                  onBlur: () => setActiveTooltip(null),
+                  onFocus: () => handleFocusTooltip('interactive'),
+                  onBlur: handleBlurTooltip,
                 }}
                 data-testid="hover-button"
               >
@@ -70,13 +94,15 @@ export default function TooltipSimple() {
                 {`Tooltip positioned on ${interactivePosition}`}
               </span>
               {activeTooltip === 'interactive' && (
-                <Tooltip
-                  content={`Tooltip positioned on ${interactivePosition}`}
-                  getTrack={() => interactiveRef.current}
-                  position={interactivePosition}
-                  onEscape={() => setActiveTooltip(null)}
-                  trackKey={`position-${interactivePosition}`}
-                />
+                <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
+                  <Tooltip
+                    content={`Tooltip positioned on ${interactivePosition}`}
+                    getTrack={() => interactiveRef.current}
+                    position={interactivePosition}
+                    onEscape={() => setActiveTooltip(null)}
+                    trackKey={`position-${interactivePosition}`}
+                  />
+                </div>
               )}
             </div>
           </SpaceBetween>
@@ -127,11 +153,15 @@ export default function TooltipSimple() {
         <TruncatedTextExample />
 
         <SpaceBetween direction="horizontal" size="l">
-          <div ref={linkRef} onMouseEnter={() => setActiveTooltip('link')} onMouseLeave={() => setActiveTooltip(null)}>
+          <div
+            ref={linkRef}
+            onMouseEnter={() => handleMouseEnterTooltip('link')}
+            onMouseLeave={() => setActiveTooltip(null)}
+          >
             <a
               href="#"
-              onFocus={() => setActiveTooltip('link')}
-              onBlur={() => setActiveTooltip(null)}
+              onFocus={() => handleFocusTooltip('link')}
+              onBlur={handleBlurTooltip}
               aria-describedby="link-description"
               style={{ textDecoration: 'underline', cursor: 'pointer' }}
               onClick={e => e.preventDefault()}
@@ -142,28 +172,34 @@ export default function TooltipSimple() {
               AWS Documentation - Click to view complete API reference - Last updated: Today
             </span>
             {activeTooltip === 'link' && (
-              <Tooltip
-                content={
-                  <div>
-                    <strong>AWS Documentation</strong>
-                    <br />
-                    Click to view complete API reference
-                    <br />
-                    Last updated: Today
-                  </div>
-                }
-                getTrack={() => linkRef.current}
-                position="top"
-                onEscape={() => setActiveTooltip(null)}
-                trackKey="link-tooltip"
-              />
+              <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
+                <Tooltip
+                  content={
+                    <div>
+                      <strong>AWS Documentation</strong>
+                      <br />
+                      Click to view complete API reference
+                      <br />
+                      Last updated: Today
+                    </div>
+                  }
+                  getTrack={() => linkRef.current}
+                  position="top"
+                  onEscape={() => setActiveTooltip(null)}
+                  trackKey="link-tooltip"
+                />
+              </div>
             )}
           </div>
 
-          <div ref={codeRef} onMouseEnter={() => setActiveTooltip('code')} onMouseLeave={() => setActiveTooltip(null)}>
+          <div
+            ref={codeRef}
+            onMouseEnter={() => handleMouseEnterTooltip('code')}
+            onMouseLeave={() => setActiveTooltip(null)}
+          >
             <button
-              onFocus={() => setActiveTooltip('code')}
-              onBlur={() => setActiveTooltip(null)}
+              onFocus={() => handleFocusTooltip('code')}
+              onBlur={handleBlurTooltip}
               aria-describedby="code-description"
               style={{
                 padding: '4px 8px',
@@ -180,33 +216,35 @@ export default function TooltipSimple() {
               {`const AWS = require('aws-sdk'); AWS.config.update({ region: 'us-west-2' });`}
             </span>
             {activeTooltip === 'code' && (
-              <Tooltip
-                content={
-                  <div>
-                    <code
-                      style={{
-                        display: 'block',
-                        padding: '8px',
-                        background: '#232f3e',
-                        color: '#fff',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                      }}
-                    >
-                      {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
-                    </code>
-                  </div>
-                }
-                getTrack={() => codeRef.current}
-                position="bottom"
-                onEscape={() => setActiveTooltip(null)}
-                trackKey="code-tooltip"
-              />
+              <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
+                <Tooltip
+                  content={
+                    <div>
+                      <code
+                        style={{
+                          display: 'block',
+                          padding: '8px',
+                          background: '#232f3e',
+                          color: '#fff',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
+                      </code>
+                    </div>
+                  }
+                  getTrack={() => codeRef.current}
+                  position="bottom"
+                  onEscape={() => setActiveTooltip(null)}
+                  trackKey="code-tooltip"
+                />
+              </div>
             )}
           </div>
         </SpaceBetween>
 
-        <div onMouseEnter={() => setActiveTooltip('password')} onMouseLeave={() => setActiveTooltip(null)}>
+        <div onMouseEnter={() => handleMouseEnterTooltip('password')} onMouseLeave={() => setActiveTooltip(null)}>
           <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
             Password:
           </label>
@@ -221,29 +259,31 @@ export default function TooltipSimple() {
               border: '1px solid #ccc',
               borderRadius: '4px',
             }}
-            onFocus={() => setActiveTooltip('password')}
-            onBlur={() => setActiveTooltip(null)}
+            onFocus={() => handleFocusTooltip('password')}
+            onBlur={handleBlurTooltip}
           />
           <span id="password-description" hidden={true}>
             Password Rules: Minimum of 8 characters. Include at least one lowercase letter, one uppercase letter, one
             number and one special character. Unique to this website.
           </span>
           {activeTooltip === 'password' && (
-            <Tooltip
-              content={
-                <div>
-                  <strong>Password Rules:</strong>
-                  <br />• Minimum of 8 characters
-                  <br />• Include at least one lowercase letter, one uppercase letter, one number and one special
-                  character
-                  <br />• Unique to this website
-                </div>
-              }
-              getTrack={() => passwordRef.current}
-              position="bottom"
-              onEscape={() => setActiveTooltip(null)}
-              trackKey="password-rules"
-            />
+            <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
+              <Tooltip
+                content={
+                  <div>
+                    <strong>Password Rules:</strong>
+                    <br />• Minimum of 8 characters
+                    <br />• Include at least one lowercase letter, one uppercase letter, one number and one special
+                    character
+                    <br />• Unique to this website
+                  </div>
+                }
+                getTrack={() => passwordRef.current}
+                position="bottom"
+                onEscape={() => setActiveTooltip(null)}
+                trackKey="password-rules"
+              />
+            </div>
           )}
         </div>
       </SpaceBetween>
@@ -273,15 +313,38 @@ function ButtonWithTooltip({
   testId,
 }: ButtonWithTooltipProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isInteracting, setIsInteracting] = useState(false);
   const contentText = typeof tooltipContent === 'string' ? tooltipContent : '';
 
+  const handleFocus = () => {
+    onActivate(tooltipId);
+  };
+
+  const handleBlur = () => {
+    if (!isInteracting) {
+      onDeactivate();
+    }
+  };
+
+  const handleMouseEnter = () => {
+    onActivate(tooltipId);
+  };
+
+  const handleTooltipMouseDown = () => {
+    setIsInteracting(true);
+  };
+
+  const handleTooltipMouseUp = () => {
+    setIsInteracting(false);
+  };
+
   return (
-    <div ref={ref} onMouseEnter={() => onActivate(tooltipId)} onMouseLeave={onDeactivate}>
+    <div ref={ref} onMouseEnter={handleMouseEnter} onMouseLeave={onDeactivate}>
       <Button
         nativeButtonAttributes={{
           'aria-describedby': `${tooltipId}-description`,
-          onFocus: () => onActivate(tooltipId),
-          onBlur: onDeactivate,
+          onFocus: handleFocus,
+          onBlur: handleBlur,
         }}
         data-testid={testId}
       >
@@ -291,13 +354,15 @@ function ButtonWithTooltip({
         {contentText}
       </span>
       {activeTooltip === tooltipId && (
-        <Tooltip
-          content={tooltipContent}
-          getTrack={() => ref.current}
-          position={position}
-          onEscape={onDeactivate}
-          trackKey={tooltipId}
-        />
+        <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
+          <Tooltip
+            content={tooltipContent}
+            getTrack={() => ref.current}
+            position={position}
+            onEscape={onDeactivate}
+            trackKey={tooltipId}
+          />
+        </div>
       )}
     </div>
   );
