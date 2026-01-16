@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { createPermutations, PermutationsView } from '@cloudscape-design/build-tools/lib/dev-pages-utils';
+
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import ExpandableSection from '~components/expandable-section';
 import Link from '~components/link';
 
-import createPermutations from '../utils/permutations';
-import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common';
 
@@ -111,7 +111,10 @@ export default function AlertScenario() {
     <article>
       <h1>Alert permutations</h1>
       <ScreenshotArea>
-        <PermutationsView permutations={permutations} render={permutation => <Alert {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={(permutation: AlertProps) => <Alert {...permutation} />}
+        />
       </ScreenshotArea>
     </article>
   );
