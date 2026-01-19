@@ -492,6 +492,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -504,6 +532,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -3207,6 +3263,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -3219,6 +3303,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -5922,6 +6034,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -5934,6 +6074,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -8637,6 +8805,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -8649,6 +8845,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -11352,6 +11576,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -11364,6 +11616,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -14067,6 +14347,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#00a1c9",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -14079,6 +14387,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -16782,6 +17118,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#0073bb",
       },
     },
+    "color-background-slider-handle-error-active": {
+      "$description": "The background color of the slider handle in error state when active.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-handle-error-default": {
+      "$description": "The default background color of the slider handle in error state.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-handle-warning-active": {
+      "$description": "The background color of the slider handle in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
+    "color-background-slider-handle-warning-default": {
+      "$description": "The default background color of the slider handle in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
     "color-background-slider-range-active": {
       "$description": "The background color of the slider range in active state.",
       "$value": {
@@ -16794,6 +17158,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-background-slider-range-error-active": {
+      "$description": "The background color of the slider range in error state when active.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-range-error-default": {
+      "$description": "The default background color of the slider range in error state.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-range-warning-active": {
+      "$description": "The background color of the slider range in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
+    "color-background-slider-range-warning-default": {
+      "$description": "The default background color of the slider range in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
       },
     },
     "color-background-slider-track-default": {
@@ -19502,6 +19894,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -19514,6 +19934,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -22217,6 +22665,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -22229,6 +22705,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -24932,6 +25436,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -24944,6 +25476,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -27647,6 +28207,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -27659,6 +28247,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -30362,6 +30978,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -30374,6 +31018,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -33077,6 +33749,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -33089,6 +33789,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -35792,6 +36520,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -35804,6 +36560,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -38507,6 +39291,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -38519,6 +39331,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -41222,6 +42062,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#006ce0",
       },
     },
+    "color-background-slider-handle-error-active": {
+      "$description": "The background color of the slider handle in error state when active.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-handle-error-default": {
+      "$description": "The default background color of the slider handle in error state.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-handle-warning-active": {
+      "$description": "The background color of the slider handle in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
+    "color-background-slider-handle-warning-default": {
+      "$description": "The default background color of the slider handle in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
     "color-background-slider-range-active": {
       "$description": "The background color of the slider range in active state.",
       "$value": {
@@ -41234,6 +42102,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-background-slider-range-error-active": {
+      "$description": "The background color of the slider range in error state when active.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-range-error-default": {
+      "$description": "The default background color of the slider range in error state.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-range-warning-active": {
+      "$description": "The background color of the slider range in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
+    "color-background-slider-range-warning-default": {
+      "$description": "The default background color of the slider range in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
       },
     },
     "color-background-slider-track-default": {
