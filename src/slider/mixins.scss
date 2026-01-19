@@ -83,41 +83,57 @@ $border-radius-slider-thumb: 50%;
 @mixin error-thumb-focus-styles {
   background-color: var(
     #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-error-pressed
+    awsui.$color-background-slider-handle-error-active
   );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-error-pressed);
+  border-color: var(
+    #{custom-props.$styleSliderHandleBackgroundActive},
+    awsui.$color-background-slider-handle-error-active
+  );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-error-pressed);
+    0 0 0 4px
+      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active);
 }
 
 @mixin warning-thumb-focus-styles {
   background-color: var(
     #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-warning-pressed
+    awsui.$color-background-slider-handle-warning-active
   );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-warning-pressed);
+  border-color: var(
+    #{custom-props.$styleSliderHandleBackgroundActive},
+    awsui.$color-background-slider-handle-warning-active
+  );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-warning-pressed);
+    0 0 0 4px
+      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active);
 }
 
 @mixin error-thumb-hover-styles {
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
+  background-color: var(
+    #{custom-props.$styleSliderHandleBackgroundDefault},
+    awsui.$color-background-slider-handle-error-active
+  );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
+    0 0 0 4px
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active);
 }
 
 @mixin warning-thumb-hover-styles {
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
+  background-color: var(
+    #{custom-props.$styleSliderHandleBackgroundDefault},
+    awsui.$color-background-slider-handle-warning-active
+  );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
+    0 0 0 4px
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active);
 }
