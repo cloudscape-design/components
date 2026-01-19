@@ -31,7 +31,7 @@ export default function AutosuggestPage() {
   const [value, setValue] = useState('');
   const ref = useRef<AutosuggestProps.Ref>(null);
 
-  const renderOption: AutosuggestProps.AutosuggestOptionItemRenderer = ({ item }) => {
+  const renderOption: AutosuggestProps.ItemRenderer = ({ item }) => {
     if (item.type === 'use-entered') {
       return <div>Use-Entered: {item.option.value}</div>;
     } else if (item.type === 'group') {
@@ -54,8 +54,6 @@ export default function AutosuggestPage() {
         ariaLabel={'simple autosuggest'}
         selectedAriaLabel="Selected"
         empty={empty}
-        finishedText="Finished"
-        filteringResultsText={matchesCount => `${matchesCount} items`}
       />
     </SimplePage>
   );

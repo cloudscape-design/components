@@ -26,11 +26,11 @@ interface AutosuggestOptionProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaSetsize?: number;
   ariaPosinset?: number;
-  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
-  parentProps?: AutosuggestItemParentProps;
+  renderOption?: AutosuggestProps.ItemRenderer;
+  parentProps?: AutosuggestRenderItemParentProps;
 }
 
-export interface AutosuggestItemParentProps {
+export interface AutosuggestRenderItemParentProps {
   index: number;
   virtualIndex?: number;
   option: AutosuggestItem;
@@ -38,8 +38,8 @@ export interface AutosuggestItemParentProps {
 }
 
 const toAutosuggestOptionGroupItem = (
-  props: AutosuggestItemParentProps
-): AutosuggestProps.AutosuggestOptionGroupItem => {
+  props: AutosuggestRenderItemParentProps
+): AutosuggestProps.OptionGroupRenderItem => {
   return {
     type: 'group',
     index: props.virtualIndex ?? props.index,
@@ -55,8 +55,8 @@ const toAutosuggestOptionItem = (props: {
   disabled: boolean;
   selected: boolean;
   highlighted: boolean;
-  parentProps?: AutosuggestItemParentProps;
-}): AutosuggestProps.AutosuggestOptionItem => {
+  parentProps?: AutosuggestRenderItemParentProps;
+}): AutosuggestProps.OptionRenderItem => {
   return {
     type: 'item',
     index: props.virtualIndex ?? props.index,
@@ -75,9 +75,7 @@ const toAutosuggestOptionItem = (props: {
   };
 };
 
-const toAutosuggestUseEnteredItem = (props: {
-  option: AutosuggestItem;
-}): AutosuggestProps.AutosuggestUseEnteredItem => {
+const toAutosuggestUseEnteredItem = (props: { option: AutosuggestItem }): AutosuggestProps.UseEnteredRenderItem => {
   return {
     type: 'use-entered',
     option: props.option.option as OptionDefinition,

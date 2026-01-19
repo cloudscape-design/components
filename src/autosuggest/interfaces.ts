@@ -62,7 +62,7 @@ export interface AutosuggestProps
    *
    * @awsuiSystem core
    */
-  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
+  renderOption?: AutosuggestProps.ItemRenderer;
 
   /**
    * Determines how filtering is applied to the list of `options`:
@@ -162,30 +162,27 @@ export namespace AutosuggestProps {
     (option: Option, group?: OptionGroup): string;
   }
 
-  export interface AutosuggestOptionItem {
+  export interface OptionRenderItem {
     type: 'item';
     index: number;
     option: Option;
     disabled: boolean;
     highlighted: boolean;
     selected: boolean;
-    parent: AutosuggestOptionGroupItem | null;
+    parent: OptionGroupRenderItem | null;
   }
-  export interface AutosuggestOptionGroupItem {
+  export interface OptionGroupRenderItem {
     type: 'group';
     index: number;
     option: OptionGroup;
     disabled: boolean;
   }
-  export interface AutosuggestUseEnteredItem {
+  export interface UseEnteredRenderItem {
     type: 'use-entered';
     option: Option;
   }
-  export type AutosuggestItem = AutosuggestOptionItem | AutosuggestOptionGroupItem | AutosuggestUseEnteredItem;
-  export type AutosuggestOptionItemRenderer = (props: {
-    item: AutosuggestItem;
-    filterText?: string;
-  }) => ReactNode | null;
+  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | UseEnteredRenderItem;
+  export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;
 
   export interface Ref {
     /**
