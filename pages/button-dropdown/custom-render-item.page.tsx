@@ -62,7 +62,7 @@ const withExpandedGroups: ButtonDropdownProps['items'] = [
 ];
 
 export default function ButtonDropdownPage() {
-  const renderItem: ButtonDropdownProps.ButtonDropdownItemRenderer = ({ item }) => {
+  const renderItem: ButtonDropdownProps.ItemRenderer = ({ item }) => {
     if (item.type === 'group') {
       return (
         <div

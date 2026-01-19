@@ -109,8 +109,8 @@ interface MenuItemProps {
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
-  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
-  parentProps?: ButtonDropdownProps.ButtonDropdownGroupItem;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
 function MenuItem({ index, item, disabled, highlighted, linkStyle, renderItem, parentProps }: MenuItemProps) {
@@ -124,7 +124,7 @@ function MenuItem({ index, item, disabled, highlighted, linkStyle, renderItem, p
     }
   }, [highlighted]);
 
-  let itemProps: { item: ButtonDropdownProps.ButtonDropdownItem };
+  let itemProps: { item: ButtonDropdownProps.RenderItem };
 
   if (isCheckbox) {
     itemProps = {

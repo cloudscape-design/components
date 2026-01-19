@@ -104,7 +104,7 @@ function ButtonDropdownComponent({ variant }: { variant: 'normal' | 'nested' | '
         break;
     }
   }, []);
-  const renderItem: ButtonDropdownProps.ButtonDropdownItemRenderer = ({ item }) => {
+  const renderItem: ButtonDropdownProps.ItemRenderer = ({ item }) => {
     if (item.type === 'group') {
       return (
         <div
