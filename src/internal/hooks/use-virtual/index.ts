@@ -61,19 +61,17 @@ export function useVirtual<Item extends object>({
 
   const virtualItems = useMemo(
     () =>
-      rowVirtualizer.virtualItems.map(virtualItem => {
-        return {
-          ...virtualItem,
-          start: virtualItem.start,
-          measureRef: (node: null | HTMLElement) => {
-            const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
-            if (mountedCount < MAX_ITEM_MOUNTS) {
-              virtualItem.measureRef(node);
-              measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
-            }
-          },
-        };
-      }),
+      rowVirtualizer.virtualItems.map(virtualItem => ({
+        ...virtualItem,
+        start: virtualItem.start,
+        measureRef: (node: null | HTMLElement) => {
+          const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
+          if (mountedCount < MAX_ITEM_MOUNTS) {
+            virtualItem.measureRef(node);
+            measuresCache.current.set(items[virtualItem.index], mountedCount + 1);
+          }
+        },
+      })),
     [items, rowVirtualizer.virtualItems]
   );
 

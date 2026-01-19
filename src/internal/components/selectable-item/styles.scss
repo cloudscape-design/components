@@ -265,14 +265,14 @@ $neg-divider-w: calc(-1 * #{$divider-w});
       box-shadow:
         inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-default,
         inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
-        inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container;
+        inset awsui.$border-width-popover 0 0 0 awsui.$color-border-dropdown-container;
 
       &:not(.with-scrollbar) {
         box-shadow:
           inset 0 $divider-w 0 0 awsui.$color-border-dropdown-item-default,
           inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
-          inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container,
-          inset calc(-1 * #{awsui.$border-item-width}) 0 0 0 awsui.$color-border-dropdown-container;
+          inset awsui.$border-width-popover 0 0 0 awsui.$color-border-dropdown-container,
+          inset calc(-1 * #{awsui.$border-width-popover}) 0 0 0 awsui.$color-border-dropdown-container;
       }
 
       // Only display top border when not being rendered after the filter
@@ -286,13 +286,13 @@ $neg-divider-w: calc(-1 * #{$divider-w});
         box-shadow:
           inset 0 $divider-w 0 0 awsui.$color-background-dropdown-item-default,
           inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
-          inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container;
+          inset awsui.$border-width-popover 0 0 0 awsui.$color-border-dropdown-container;
         &:not(.with-scrollbar) {
           box-shadow:
             inset 0 $divider-w 0 0 awsui.$color-background-dropdown-item-default,
             inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default,
-            inset awsui.$border-item-width 0 0 0 awsui.$color-border-dropdown-container,
-            inset calc(-1 * #{awsui.$border-item-width}) 0 0 0 awsui.$color-border-dropdown-container;
+            inset awsui.$border-width-popover 0 0 0 awsui.$color-border-dropdown-container,
+            inset calc(-1 * #{awsui.$border-width-popover}) 0 0 0 awsui.$color-border-dropdown-container;
         }
       }
     }
