@@ -25,7 +25,7 @@ const CategoryElement = ({
   position,
   renderItem,
 }: CategoryProps) => {
-  const groupProps: ButtonDropdownProps.ButtonDropdownGroupItem = {
+  const groupProps: ButtonDropdownProps.GroupRenderItem = {
     type: 'group',
     index: index ?? 0,
     option: item as ButtonDropdownProps.ItemGroup,

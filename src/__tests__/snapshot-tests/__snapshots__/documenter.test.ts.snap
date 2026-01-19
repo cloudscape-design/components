@@ -6303,11 +6303,11 @@ We do not support using this attribute to apply custom styling.",
     {
       "description": "Specifies a render function to render custom options in the dropdown menu.",
       "inlineType": {
-        "name": "ButtonDropdownProps.ButtonDropdownItemRenderer",
+        "name": "ButtonDropdownProps.ItemRenderer",
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: ButtonDropdownProps.ButtonDropdownItem; }",
+            "type": "{ item: ButtonDropdownProps.RenderItem; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -6318,7 +6318,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "ButtonDropdownProps.ButtonDropdownItemRenderer",
+      "type": "ButtonDropdownProps.ItemRenderer",
     },
     {
       "defaultValue": "'normal'",

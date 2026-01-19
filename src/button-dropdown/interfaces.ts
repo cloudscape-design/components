@@ -68,7 +68,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * @awsuiSystem core
    */
-  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
 
   /**
    * Determines whether the button dropdown is disabled. Users cannot interact with the control if it's disabled.
@@ -172,24 +172,24 @@ export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
 
-  export interface ButtonDropdownActionItem {
+  export interface ActionRenderItem {
     type: 'action';
     index: number;
     option: Item;
     highlighted: boolean;
     disabled: boolean;
-    parent: ButtonDropdownGroupItem | null;
+    parent: GroupRenderItem | null;
   }
-  export interface ButtonDropdownCheckboxItem {
+  export interface CheckboxRenderItem {
     type: 'checkbox';
     index: number;
     option: CheckboxItem;
     disabled: boolean;
     highlighted: boolean;
     checked: boolean;
-    parent: ButtonDropdownGroupItem | null;
+    parent: GroupRenderItem | null;
   }
-  export interface ButtonDropdownGroupItem {
+  export interface GroupRenderItem {
     type: 'group';
     index: number;
     option: ItemGroup;
@@ -199,10 +199,8 @@ export namespace ButtonDropdownProps {
     expandDirection: 'vertical' | 'horizontal';
   }
 
-  export type ButtonDropdownItem = ButtonDropdownActionItem | ButtonDropdownCheckboxItem | ButtonDropdownGroupItem;
-  export type ButtonDropdownItemRenderer = (props: {
-    item: ButtonDropdownProps.ButtonDropdownItem;
-  }) => ReactNode | null;
+  export type RenderItem = ActionRenderItem | CheckboxRenderItem | GroupRenderItem;
+  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem }) => ReactNode | null;
 
   export interface MainAction {
     text?: string;
@@ -315,7 +313,7 @@ export interface CategoryProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
   position?: string;
-  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -331,8 +329,8 @@ export interface ItemListProps extends HighlightProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
-  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
-  parentProps?: ButtonDropdownProps.ButtonDropdownGroupItem;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -353,8 +351,8 @@ export interface ItemProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
-  renderItem?: ButtonDropdownProps.ButtonDropdownItemRenderer;
-  parentProps?: ButtonDropdownProps.ButtonDropdownGroupItem;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

@@ -57,7 +57,7 @@ const MobileExpandableCategoryElement = ({
   const isDisabledWithReason = !!item.disabledReason && item.disabled;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
 
-  const groupProps: ButtonDropdownProps.ButtonDropdownGroupItem = {
+  const groupProps: ButtonDropdownProps.GroupRenderItem = {
     index: index ?? 0,
     type: 'group',
     option: item as ButtonDropdownProps.ItemGroup,
