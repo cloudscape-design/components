@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import AutosuggestOption, { AutosuggestItemParentProps } from './autosuggest-option';
+import AutosuggestOption, { AutosuggestRenderItemParentProps } from './autosuggest-option';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { AutosuggestItemsState } from './options-controller';
 
@@ -20,7 +20,7 @@ export interface ListProps {
   highlightText: string;
   listBottom?: React.ReactNode;
   screenReaderContent?: string;
-  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
+  renderOption?: AutosuggestProps.ItemRenderer;
 }
 
 export const getOptionProps = (
@@ -75,7 +75,7 @@ const PlainList = ({
           hasDropdownStatus
         );
 
-        let parentProps: AutosuggestItemParentProps | undefined = undefined;
+        let parentProps: AutosuggestRenderItemParentProps | undefined = undefined;
         if (item.type === 'parent') {
           lastGroupIndex = index;
         } else if (lastGroupIndex !== -1 && !!item.parent) {

@@ -21,7 +21,7 @@ interface AutosuggestOptionsListProps
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
   ariaDescribedby?: string;
-  renderOption?: AutosuggestProps.AutosuggestOptionItemRenderer;
+  renderOption?: AutosuggestProps.ItemRenderer;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {

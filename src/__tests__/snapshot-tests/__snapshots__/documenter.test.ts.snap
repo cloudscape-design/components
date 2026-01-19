@@ -3559,11 +3559,11 @@ For more information, see the
     {
       "description": "Specifies a render function to render custom options in the dropdown menu.",
       "inlineType": {
-        "name": "AutosuggestProps.AutosuggestOptionItemRenderer",
+        "name": "AutosuggestProps.ItemRenderer",
         "parameters": [
           {
             "name": "props",
-            "type": "{ item: AutosuggestProps.AutosuggestItem; filterText?: string | undefined; }",
+            "type": "{ item: AutosuggestProps.RenderItem; filterText?: string | undefined; }",
           },
         ],
         "returnType": "React.ReactNode",
@@ -3574,7 +3574,7 @@ For more information, see the
       "systemTags": [
         "core",
       ],
-      "type": "AutosuggestProps.AutosuggestOptionItemRenderer",
+      "type": "AutosuggestProps.ItemRenderer",
     },
     {
       "description": "Specifies the localized string that describes an option as being selected.
