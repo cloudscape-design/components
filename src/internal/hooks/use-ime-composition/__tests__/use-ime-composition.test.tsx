@@ -1,41 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
-import { act, render } from '@testing-library/react';
+import { useRef } from 'react';
+import { act } from '@testing-library/react';
 
 import { renderHook } from '../../../../__tests__/render-hook';
 import { useIMEComposition } from '../index';
-
-interface Ref {
-  getIsComposing: () => boolean;
-  triggerCompositionStart: () => void;
-  triggerCompositionEnd: (data?: string) => void;
-  getInputElement: () => HTMLInputElement | null;
-}
-
-const Component = React.forwardRef((props, ref: React.Ref<Ref>) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { isComposing } = useIMEComposition(inputRef);
-
-  useImperativeHandle(ref, () => ({
-    getIsComposing: () => isComposing(),
-    triggerCompositionStart: () => {
-      const input = inputRef.current;
-      if (input) {
-        input.dispatchEvent(new CompositionEvent('compositionstart'));
-      }
-    },
-    triggerCompositionEnd: (data = 'test') => {
-      const input = inputRef.current;
-      if (input) {
-        input.dispatchEvent(new CompositionEvent('compositionend', { data }));
-      }
-    },
-    getInputElement: () => inputRef.current,
-  }));
-
-  return <input ref={inputRef} data-testid="test-input" />;
-});
 
 describe('useIMEComposition', () => {
   let rafCallback: FrameRequestCallback | null = null;
@@ -85,13 +54,17 @@ describe('useIMEComposition', () => {
   });
 
   test('returns false after requestAnimationFrame callback executes', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
 
-    ref.current!.triggerCompositionStart();
-    ref.current!.triggerCompositionEnd('가');
+    const { hook, inputElement } = result.current;
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
 
-    expect(ref.current!.getIsComposing()).toBe(true);
+    expect(hook.isComposing()).toBe(true);
 
     // Execute the requestAnimationFrame callback
     act(() => {
@@ -100,22 +73,27 @@ describe('useIMEComposition', () => {
       }
     });
 
-    expect(ref.current!.getIsComposing()).toBe(false);
+    expect(hook.isComposing()).toBe(false);
   });
 
   test('handles multiple composition cycles correctly', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
+
+    const { hook, inputElement } = result.current;
 
     // First composition
-    ref.current!.triggerCompositionStart();
-    ref.current!.triggerCompositionEnd('ㄱ');
-    expect(ref.current!.getIsComposing()).toBe(true);
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: 'ㄱ' }));
+    expect(hook.isComposing()).toBe(true);
 
     // Second composition before first is cleared
-    ref.current!.triggerCompositionStart();
-    ref.current!.triggerCompositionEnd('가');
-    expect(ref.current!.getIsComposing()).toBe(true);
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    expect(hook.isComposing()).toBe(true);
 
     // Clear all pending callbacks
     act(() => {
@@ -124,52 +102,47 @@ describe('useIMEComposition', () => {
       }
     });
 
-    expect(ref.current!.getIsComposing()).toBe(false);
+    expect(hook.isComposing()).toBe(false);
   });
 
   test('handles composition start without composition end', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
 
-    ref.current!.triggerCompositionStart();
-    expect(ref.current!.getIsComposing()).toBe(true);
+    const { hook, inputElement } = result.current;
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    expect(hook.isComposing()).toBe(true);
 
     // Simulate user navigating away or canceling composition
     // Flag should remain true until explicitly ended
-    expect(ref.current!.getIsComposing()).toBe(true);
+    expect(hook.isComposing()).toBe(true);
   });
 
   test('works correctly when input element is null', () => {
-    const NullRefComponent = React.forwardRef((props, ref: React.Ref<Ref>) => {
+    const { result } = renderHook(() => {
       const inputRef = useRef<HTMLInputElement>(null);
-      const { isComposing } = useIMEComposition(inputRef);
-
-      useImperativeHandle(ref, () => ({
-        getIsComposing: () => isComposing(),
-        triggerCompositionStart: () => {}, // No-op since ref is null
-        triggerCompositionEnd: () => {}, // No-op since ref is null
-        getInputElement: () => inputRef.current,
-      }));
-
-      return <div>No input element</div>;
+      return useIMEComposition(inputRef);
     });
 
-    const ref = React.createRef<Ref>();
-
     expect(() => {
-      render(<NullRefComponent ref={ref} />);
+      result.current.isComposing();
     }).not.toThrow();
 
-    expect(ref.current!.getIsComposing()).toBe(false);
-    expect(ref.current!.getInputElement()).toBe(null);
+    expect(result.current.isComposing()).toBe(false);
   });
 
   test('properly cleans up event listeners on unmount', () => {
-    const ref = React.createRef<Ref>();
     const addEventListenerSpy = jest.spyOn(HTMLInputElement.prototype, 'addEventListener');
     const removeEventListenerSpy = jest.spyOn(HTMLInputElement.prototype, 'removeEventListener');
 
-    const { unmount } = render(<Component ref={ref} />);
+    const { unmount } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
 
     expect(addEventListenerSpy).toHaveBeenCalledWith('compositionstart', expect.any(Function));
     expect(addEventListenerSpy).toHaveBeenCalledWith('compositionend', expect.any(Function));
@@ -184,15 +157,20 @@ describe('useIMEComposition', () => {
   });
 
   test('handles Korean IME character formation sequence', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
+
+    const { hook, inputElement } = result.current;
 
     // Simulate IME typing 가 (ㄱ + ㅏ = 가)
-    ref.current!.triggerCompositionStart();
-    expect(ref.current!.getIsComposing()).toBe(true);
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    expect(hook.isComposing()).toBe(true);
 
-    ref.current!.triggerCompositionEnd('가');
-    expect(ref.current!.getIsComposing()).toBe(true);
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    expect(hook.isComposing()).toBe(true);
 
     // After requestAnimationFrame, should be cleared
     act(() => {
@@ -201,6 +179,6 @@ describe('useIMEComposition', () => {
       }
     });
 
-    expect(ref.current!.getIsComposing()).toBe(false);
+    expect(hook.isComposing()).toBe(false);
   });
 });
