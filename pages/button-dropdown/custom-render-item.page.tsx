@@ -45,6 +45,7 @@ const itemsWithGroups: ButtonDropdownProps['items'] = [
       {
         id: 'checked-option',
         text: 'Option Checkbox',
+        itemType: 'checkbox',
         checked: true,
       },
       {
