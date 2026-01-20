@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { addMonths, addYears, isAfter, isBefore, isSameMonth, isSameYear, max, min } from 'date-fns';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 
 import { CalendarProps } from '../../../calendar/interfaces';
 import {
@@ -30,8 +30,14 @@ import { SelectGridProps } from './interfaces';
 import testutilStyles from '../../test-classes/styles.css.js';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: CalendarProps.Granularity) {
-  const isSame = granularity === 'day' ? isSameMonth : isSameYear;
-  const add = granularity === 'day' ? addMonths : addYears;
+  const isSame =
+    granularity === 'day'
+      ? (d1: Date, d2: Date) => dayjs(d1).isSame(d2, 'month')
+      : (d1: Date, d2: Date) => dayjs(d1).isSame(d2, 'year');
+  const add =
+    granularity === 'day'
+      ? (date: Date, amt: number) => dayjs(date).add(amt, 'month').toDate()
+      : (date: Date, amt: number) => dayjs(date).add(amt, 'year').toDate();
   if (isSingleGrid) {
     return isSame(date, baseDate);
   }
@@ -69,7 +75,13 @@ export const Grids = ({
 
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
-  const addPages = !isMonthPicker ? addMonths : addYears;
+  const addPages = useMemo(
+    () =>
+      !isMonthPicker
+        ? (date: Date, amount: number) => dayjs(date).add(amount, 'month').toDate()
+        : (date: Date, amount: number) => dayjs(date).add(amount, 'year').toDate(),
+    [isMonthPicker]
+  );
   const getBase = !isMonthPicker ? getBaseDay : getBaseMonth;
   const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
   const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
@@ -89,7 +101,7 @@ export const Grids = ({
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid, granularity)) {
-      const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
+      const direction = dayjs(focusedDate).isAfter(baseDate) ? -1 : 1;
 
       const newPage = !isSingleGrid && direction === -1 ? addPages(baseDate, -1) : baseDate;
       const nearestBaseDate = getBase(newPage, isDateFocusable);
@@ -131,7 +143,7 @@ export const Grids = ({
     const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid, granularity);
 
     if (!updatedDateIsVisible) {
-      const newPageIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
+      const newPageIsOnLeftSide = !isSingleGrid && dayjs(updatedFocusDate).isBefore(baseDate);
       onPageChange(newPageIsOnLeftSide ? addPages(updatedFocusDate, 1) : updatedFocusDate);
     }
     onFocusedDateChange(updatedFocusDate);
@@ -163,8 +175,8 @@ export const Grids = ({
   const isRangeVisible = (selectedStartDate && selectedEndDate) || gridHasFocus;
 
   const rangeEnds: Date[] = [selectedStartDate ?? focusedDate, selectedEndDate ?? focusedDate].filter(hasValue);
-  const rangeStartDate = min(rangeEnds);
-  const rangeEndDate = max(rangeEnds);
+  const rangeStartDate = rangeEnds.reduce((min, date) => (dayjs(date).isBefore(min) ? date : min));
+  const rangeEndDate = rangeEnds.reduce((max, date) => (dayjs(date).isAfter(max) ? date : max));
   const pageUnit = isMonthPicker ? 'year' : 'month';
 
   const sharedGridProps = {

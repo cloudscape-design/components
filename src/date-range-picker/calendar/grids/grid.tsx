@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { isLastDayOfMonth, isSameDay, isSameMonth, isSameYear, isThisMonth, isToday } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { useInternalI18n } from '../../../i18n/context';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
@@ -28,21 +28,21 @@ interface DatePickerUtils {
 
 const dayUtils: DatePickerUtils = {
   getItemKey: (rowIndex, rowItemIndex) => `${rowIndex}:${rowItemIndex}`,
-  isSameItem: (date1: Date, date2: Date) => isSameDay(date1, date2),
-  isSamePage: (date1: Date, date2: Date) => isSameMonth(date1, date2),
-  checkIfCurrentDay: date => isToday(date),
+  isSameItem: (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'day'),
+  isSamePage: (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month'),
+  checkIfCurrentDay: date => dayjs(date).isSame(dayjs(), 'day'),
   checkIfCurrentMonth: () => false,
-  checkIfCurrent: date => isToday(date),
+  checkIfCurrent: date => dayjs(date).isSame(dayjs(), 'day'),
   getPageName: () => 'month',
 };
 
 const monthUtils: DatePickerUtils = {
   getItemKey: (rowIndex, rowItemIndex) => `Month ${rowIndex * 3 + rowItemIndex + 1}`,
-  isSameItem: (date1: Date, date2: Date) => isSameMonth(date1, date2),
-  isSamePage: (date1: Date, date2: Date) => isSameYear(date1, date2),
+  isSameItem: (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month'),
+  isSamePage: (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'year'),
   checkIfCurrentDay: () => false,
-  checkIfCurrentMonth: date => isThisMonth(date),
-  checkIfCurrent: date => isThisMonth(date),
+  checkIfCurrentMonth: date => dayjs(date).isSame(dayjs(), 'month'),
+  checkIfCurrent: date => dayjs(date).isSame(dayjs(), 'month'),
   getPageName: () => 'year',
 };
 
@@ -193,8 +193,8 @@ export function Grid({
                   const isFocusable = isFocused && (isEnabled || isDisabledWithReason);
 
                   const baseClasses = {
-                    [testutilStyles['calendar-date']]: !isMonthPicker && isSameMonth(date, baseDate),
-                    [testutilStyles['calendar-month']]: isMonthPicker && isSameYear(date, baseDate),
+                    [testutilStyles['calendar-date']]: !isMonthPicker && dayjs(date).isSame(baseDate, 'month'),
+                    [testutilStyles['calendar-month']]: isMonthPicker && dayjs(date).isSame(baseDate, 'year'),
                     [styles.day]: !isMonthPicker,
                     [styles.month]: isMonthPicker,
                     [styles['grid-cell']]: true,
@@ -208,7 +208,8 @@ export function Grid({
                         key={itemKey}
                         ref={isFocused ? focusedDateRef : undefined}
                         className={clsx(baseClasses, {
-                          [styles[`last-day-of-month`]]: !isMonthPicker && isLastDayOfMonth(date),
+                          [styles[`last-day-of-month`]]:
+                            !isMonthPicker && dayjs(date).date() === dayjs(date).daysInMonth(),
                           [styles[`last-month-of-year`]]: isMonthPicker && date.getMonth() === 11,
                         })}
                       />
@@ -230,9 +231,9 @@ export function Grid({
                   });
 
                   if (currentAnnouncement) {
-                    if (isMonthPicker && isThisMonth(date)) {
+                    if (isMonthPicker && dayjs(date).isSame(dayjs(), 'month')) {
                       announcement += `. ${currentAnnouncement}`;
-                    } else if (!isMonthPicker && isToday(date)) {
+                    } else if (!isMonthPicker && dayjs(date).isSame(dayjs(), 'day')) {
                       announcement += `. ${currentAnnouncement}`;
                     }
                   }
