@@ -62,7 +62,7 @@ const MobileExpandableCategoryElement = ({
     type: 'group',
     option: item as ButtonDropdownProps.ItemGroup,
     disabled: !!disabled,
-    highlighted: !!isHighlighted,
+    highlighted: !!highlighted,
     expanded: expanded,
     expandDirection: 'vertical',
   };
