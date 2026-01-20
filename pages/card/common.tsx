@@ -9,7 +9,7 @@ export function CardPage({ title, children }: { title: string; children: ReactNo
   return (
     <article>
       <h1>{title}</h1>
-      <div style={{ width: 600 }}>
+      <div style={{ maxWidth: 600 }}>
         <ScreenshotArea>{children}</ScreenshotArea>
       </div>
     </article>
