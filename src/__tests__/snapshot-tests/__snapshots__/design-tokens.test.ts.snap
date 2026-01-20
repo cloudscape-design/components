@@ -450,34 +450,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "rgba(255, 255, 255, 0.7)",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -520,6 +492,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -532,6 +532,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -3193,34 +3221,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "rgba(255, 255, 255, 0.7)",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -3263,6 +3263,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -3275,6 +3303,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -5936,34 +5992,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "rgba(255, 255, 255, 0.7)",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -6006,6 +6034,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -6018,6 +6074,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -8679,34 +8763,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "rgba(255, 255, 255, 0.7)",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -8749,6 +8805,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -8761,6 +8845,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -11422,34 +11534,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(0, 0, 0, 0.1)",
-            "light": "rgba(0, 0, 0, 0.1)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -11492,6 +11576,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -11504,6 +11616,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#d13212",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#906806",
           },
         },
         "color-background-slider-track-default": {
@@ -14165,34 +14305,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#21252c",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#414750",
-            "light": "#414750",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -14235,6 +14347,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#00a1c9",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -14247,6 +14387,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff5d64",
+            "light": "#ff5d64",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -16908,34 +17076,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
-    "color-background-progress-bar-content-default": {
-      "$description": "The default background color of the progress bar fill.",
-      "$value": {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
-      },
-    },
-    "color-background-progress-bar-content-in-flash": {
-      "$description": "The background color of the progress bar fill when used in a flash component.",
-      "$value": {
-        "dark": "#fafafa",
-        "light": "rgba(255, 255, 255, 0.7)",
-      },
-    },
-    "color-background-progress-bar-layout-default": {
-      "$description": "The default background color of the progress bar layout.",
-      "$value": {
-        "dark": "#414750",
-        "light": "#eaeded",
-      },
-    },
-    "color-background-progress-bar-layout-in-flash": {
-      "$description": "The background color of the progress bar layout when used in a flash component.",
-      "$value": {
-        "dark": "rgba(255, 255, 255, 0.25)",
-        "light": "rgba(255, 255, 255, 0.25)",
-      },
-    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -16978,6 +17118,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#0073bb",
       },
     },
+    "color-background-slider-handle-error-active": {
+      "$description": "The background color of the slider handle in error state when active.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-handle-error-default": {
+      "$description": "The default background color of the slider handle in error state.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-handle-warning-active": {
+      "$description": "The background color of the slider handle in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
+    "color-background-slider-handle-warning-default": {
+      "$description": "The default background color of the slider handle in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
     "color-background-slider-range-active": {
       "$description": "The background color of the slider range in active state.",
       "$value": {
@@ -16990,6 +17158,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-background-slider-range-error-active": {
+      "$description": "The background color of the slider range in error state when active.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-range-error-default": {
+      "$description": "The default background color of the slider range in error state.",
+      "$value": {
+        "dark": "#ff5d64",
+        "light": "#d13212",
+      },
+    },
+    "color-background-slider-range-warning-active": {
+      "$description": "The background color of the slider range in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
+      },
+    },
+    "color-background-slider-range-warning-default": {
+      "$description": "The default background color of the slider range in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#906806",
       },
     },
     "color-background-slider-track-default": {
@@ -19656,34 +19852,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -19726,6 +19894,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -19738,6 +19934,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -22399,34 +22623,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -22469,6 +22665,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -22481,6 +22705,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -25142,34 +25394,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -25212,6 +25436,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -25224,6 +25476,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -27885,34 +28165,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -27955,6 +28207,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -27967,6 +28247,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -30628,34 +30936,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -30698,6 +30978,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -30710,6 +31018,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -33371,34 +33707,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(0, 0, 0, 0.1)",
-            "light": "rgba(0, 0, 0, 0.1)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -33441,6 +33749,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -33453,6 +33789,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#db0000",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#855900",
           },
         },
         "color-background-slider-track-default": {
@@ -36114,34 +36478,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -36184,6 +36520,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -36196,6 +36560,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -38857,34 +39249,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-progress-bar-content-default": {
-          "$description": "The default background color of the progress bar fill.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-background-progress-bar-content-in-flash": {
-          "$description": "The background color of the progress bar fill when used in a flash component.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
-          },
-        },
-        "color-background-progress-bar-layout-default": {
-          "$description": "The default background color of the progress bar layout.",
-          "$value": {
-            "dark": "#333843",
-            "light": "#333843",
-          },
-        },
-        "color-background-progress-bar-layout-in-flash": {
-          "$description": "The background color of the progress bar layout when used in a flash component.",
-          "$value": {
-            "dark": "rgba(255, 255, 255, 0.25)",
-            "light": "rgba(255, 255, 255, 0.25)",
-          },
-        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -38927,6 +39291,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-background-slider-handle-error-active": {
+          "$description": "The background color of the slider handle in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-error-default": {
+          "$description": "The default background color of the slider handle in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-handle-warning-active": {
+          "$description": "The background color of the slider handle in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-handle-warning-default": {
+          "$description": "The default background color of the slider handle in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
         "color-background-slider-range-active": {
           "$description": "The background color of the slider range in active state.",
           "$value": {
@@ -38939,6 +39331,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#42b4ff",
             "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-error-active": {
+          "$description": "The background color of the slider range in error state when active.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-error-default": {
+          "$description": "The default background color of the slider range in error state.",
+          "$value": {
+            "dark": "#ff7a7a",
+            "light": "#ff7a7a",
+          },
+        },
+        "color-background-slider-range-warning-active": {
+          "$description": "The background color of the slider range in warning state when active.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
+          },
+        },
+        "color-background-slider-range-warning-default": {
+          "$description": "The default background color of the slider range in warning state.",
+          "$value": {
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-background-slider-track-default": {
@@ -41600,34 +42020,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ffffff",
       },
     },
-    "color-background-progress-bar-content-default": {
-      "$description": "The default background color of the progress bar fill.",
-      "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
-      },
-    },
-    "color-background-progress-bar-content-in-flash": {
-      "$description": "The background color of the progress bar fill when used in a flash component.",
-      "$value": {
-        "dark": "#ffffff",
-        "light": "#ffffff",
-      },
-    },
-    "color-background-progress-bar-layout-default": {
-      "$description": "The default background color of the progress bar layout.",
-      "$value": {
-        "dark": "#333843",
-        "light": "#ebebf0",
-      },
-    },
-    "color-background-progress-bar-layout-in-flash": {
-      "$description": "The background color of the progress bar layout when used in a flash component.",
-      "$value": {
-        "dark": "rgba(255, 255, 255, 0.25)",
-        "light": "rgba(255, 255, 255, 0.25)",
-      },
-    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -41670,6 +42062,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#006ce0",
       },
     },
+    "color-background-slider-handle-error-active": {
+      "$description": "The background color of the slider handle in error state when active.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-handle-error-default": {
+      "$description": "The default background color of the slider handle in error state.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-handle-warning-active": {
+      "$description": "The background color of the slider handle in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
+    "color-background-slider-handle-warning-default": {
+      "$description": "The default background color of the slider handle in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
     "color-background-slider-range-active": {
       "$description": "The background color of the slider range in active state.",
       "$value": {
@@ -41682,6 +42102,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-background-slider-range-error-active": {
+      "$description": "The background color of the slider range in error state when active.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-range-error-default": {
+      "$description": "The default background color of the slider range in error state.",
+      "$value": {
+        "dark": "#ff7a7a",
+        "light": "#db0000",
+      },
+    },
+    "color-background-slider-range-warning-active": {
+      "$description": "The background color of the slider range in warning state when active.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
+      },
+    },
+    "color-background-slider-range-warning-default": {
+      "$description": "The default background color of the slider range in warning state.",
+      "$value": {
+        "dark": "#fbd332",
+        "light": "#855900",
       },
     },
     "color-background-slider-track-default": {
