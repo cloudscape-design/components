@@ -86,9 +86,16 @@
   }
 }
 
-.body:not(.no-padding) {
-  padding-block-end: awsui.$space-card-vertical;
-  padding-inline: awsui.$space-card-horizontal;
+.body {
+  &:not(.no-padding) {
+    padding-block-end: awsui.$space-card-vertical;
+    padding-inline: awsui.$space-card-horizontal;
+  }
+  &.no-padding {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+    overflow: scroll;
+  }
 }
 
 .with-actions {
