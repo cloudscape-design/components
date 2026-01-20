@@ -43,8 +43,6 @@ export default function ButtonsScenario() {
               width: '100%',
               height: '100%',
               display: 'block',
-              borderBottomLeftRadius: 16,
-              borderBottomRightRadius: 16,
             }}
             src={image}
           />
