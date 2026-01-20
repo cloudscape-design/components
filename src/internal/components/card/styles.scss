@@ -88,7 +88,7 @@
   padding-inline: awsui.$space-card-horizontal;
 }
 
-.with-action {
+.with-actions {
   > .card-inner > .card-header {
     inline-size: 90%;
   }
@@ -104,7 +104,7 @@
   }
 }
 
-.action {
+.actions {
   flex-shrink: 0;
 }
 

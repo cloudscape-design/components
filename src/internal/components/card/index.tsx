@@ -9,7 +9,7 @@ import { InternalCardProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function Card({
-  action,
+  actions,
   active,
   children,
   className,
@@ -28,7 +28,7 @@ export default function Card({
   return (
     <TagName
       className={clsx(className, styles.root, {
-        [styles['with-action']]: !!action,
+        [styles['with-actions']]: !!actions,
         [styles.active]: active,
       })}
       onFocus={onFocus}
@@ -43,7 +43,7 @@ export default function Card({
         <div className={styles.header}>
           <div className={styles['header-top-row']}>
             <div className={styles['header-inner']}>{header}</div>
-            {action && <div className={styles.action}>{action}</div>}
+            {actions && <div className={styles.actions}>{actions}</div>}
           </div>
           {description && <div className={styles.description}>{description}</div>}
         </div>
