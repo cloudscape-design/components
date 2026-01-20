@@ -9,7 +9,7 @@ export interface InternalCardProps extends BaseComponentProps {
    * Specifies an action for the card.
    * It is recommended to use a button with inline-icon variant.
    */
-  action?: React.ReactNode;
+  actions?: React.ReactNode;
 
   /**
    * Specifies whether the card is in active state.
