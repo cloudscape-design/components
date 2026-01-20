@@ -15,4 +15,3 @@ vendor/generated-*.txt
 .vscode
 # System
 .DS_Store
-shared/

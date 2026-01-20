@@ -20,6 +20,7 @@ const {
   integ,
   motion,
   copyFiles,
+  copyBuildTools,
   themeableSource,
   bundleVendorFiles,
   sizeLimit,
@@ -27,7 +28,15 @@ const {
 
 const quickBuild = series(
   clean,
-  parallel(packageJSON, generateI18nMessages, generateEnvironment, generateIcons, generateIndexFile, copyFiles),
+  parallel(
+    packageJSON,
+    generateI18nMessages,
+    generateEnvironment,
+    generateIcons,
+    generateIndexFile,
+    copyFiles,
+    copyBuildTools
+  ),
   parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils),
   bundleVendorFiles
 );
