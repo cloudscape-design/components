@@ -104,10 +104,33 @@ describe('ButtonDropdown renderItem', () => {
 
   test('reflects highlighted state', () => {
     const renderItem = jest.fn(props => <div>{props.item.highlighted ? 'highlighted' : 'normal'}</div>);
-    const wrapper = renderButtonDropdown({ items: [{ id: 'first', text: 'First' }], renderItem });
+    const wrapper = renderButtonDropdown({
+      items: [
+        { id: 'first', text: 'First' },
+        { id: 'second', text: 'Second' },
+      ],
+      renderItem,
+    });
     wrapper.openDropdown();
+
+    // Initially, item should not be highlighted
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          highlighted: false,
+        }),
+      })
+    );
+
+    // After keyboard navigation, item should be highlighted
     wrapper.keydown(KeyCode.down);
-    expect(wrapper.getElement().textContent).toContain('highlighted');
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          highlighted: true,
+        }),
+      })
+    );
   });
 
   test('reflects disabled state', () => {
@@ -398,7 +421,7 @@ describe('ButtonDropdown renderItem', () => {
 
   test('renders expandable groups with custom render', () => {
     const renderItem = jest.fn(props => (
-      <div data-testid={`custom-${props.item.option.id || 'group'}`}>
+      <div>
         {props.item.type === 'group' &&
           `Expandable Group: ${props.item.option.text} (${props.item.expanded ? 'expanded' : 'collapsed'})`}
         {props.item.type === 'action' && `Action: ${props.item.option.text}`}
@@ -422,7 +445,19 @@ describe('ButtonDropdown renderItem', () => {
         item: expect.objectContaining({
           type: 'group',
           option: expect.objectContaining({ id: 'expandable-group' }),
-          expanded: expect.any(Boolean),
+          expanded: false,
+        }),
+      })
+    );
+
+    // Verify expandable group is rendered with expanded=true
+    wrapper.findExpandableCategoryById('expandable-group')!.click();
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          type: 'group',
+          option: expect.objectContaining({ id: 'expandable-group' }),
+          expanded: true,
         }),
       })
     );
@@ -472,5 +507,32 @@ describe('ButtonDropdown renderItem', () => {
         }),
       })
     );
+  });
+
+  test('defaults to normal style when renderItem returns null', () => {
+    const renderItem = jest.fn(props => (
+      <div data-testid={`item-${props.item.index}`}>
+        Item {props.item.index}: {props.item.option.text}
+      </div>
+    ));
+    const wrapper = renderButtonDropdown({
+      items: defaultItems,
+      renderItem,
+      expandableGroups: true,
+    });
+    wrapper.openDropdown();
+
+    // Verify renderItem was called but returned null
+    expect(renderItem).toHaveBeenCalled();
+
+    // Verify that the default content is rendered when renderItem returns null
+    const actionItem = wrapper.findItemById('action1')!;
+    expect(actionItem.getElement()).toHaveTextContent('Action 1');
+
+    const checkboxItem = wrapper.findItemById('checkbox1')!;
+    expect(checkboxItem.getElement()).toHaveTextContent('Checkbox 1');
+
+    const group = wrapper.findExpandableCategoryById('group1')!;
+    expect(group.getElement()).toHaveTextContent('Group 1');
   });
 });
