@@ -510,11 +510,7 @@ describe('ButtonDropdown renderItem', () => {
   });
 
   test('defaults to normal style when renderItem returns null', () => {
-    const renderItem = jest.fn(props => (
-      <div data-testid={`item-${props.item.index}`}>
-        Item {props.item.index}: {props.item.option.text}
-      </div>
-    ));
+    const renderItem = jest.fn(() => null);
     const wrapper = renderButtonDropdown({
       items: defaultItems,
       renderItem,
