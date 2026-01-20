@@ -37,13 +37,14 @@ export default function ButtonsScenario() {
           }
           disableContentPaddings={true}
         >
-          <img
+          <div
             style={{
+              backgroundImage: `url(${image})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
               width: '100%',
-              height: '100%',
-              display: 'block',
+              height: 300,
             }}
-            src={image}
           />
         </Card>
       </CardPage>
