@@ -72,10 +72,13 @@
 }
 
 .header {
-  @include styles.font-heading-s;
   padding-block-start: 8px;
+  padding-block-end: 4px;
   padding-inline: awsui.$space-card-horizontal;
-  display: flex;
+  &-top-row {
+    @include styles.font-heading-s;
+    display: flex;
+  }
   &-inner {
     padding-block-start: 4px;
     inline-size: 100%;
@@ -106,4 +109,8 @@
 
 .action {
   flex-shrink: 0;
+}
+
+.description {
+  color: awsui.$color-text-heading-secondary;
 }
