@@ -101,7 +101,6 @@
     padding-inline-start: calc(#{awsui.$space-xs} + #{awsui.$space-l});
     &.no-content-styling {
       padding-inline-start: 0;
-      color: inherit;
     }
   }
   /* stylelint-enable selector-max-type */
