@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import { Toggle } from '~components';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
 const itemsWithGroups: ButtonDropdownProps['items'] = [
@@ -60,7 +62,16 @@ const itemsWithGroups: ButtonDropdownProps['items'] = [
   },
 ];
 
+type PageContext = React.Context<
+  AppContextType<{
+    expandableGroups?: boolean;
+  }>
+>;
+
 export default function ButtonDropdownPage() {
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const expandableGroups = urlParams.expandableGroups ?? false;
+
   const renderItem: ButtonDropdownProps.ItemRenderer = ({ item }) => {
     if (item.type === 'group') {
       return <div>Group: {item.option.text}</div>;
@@ -70,29 +81,28 @@ export default function ButtonDropdownPage() {
       return <div>Item: {item.option.text}</div>;
     }
   };
+
   return (
     <SimplePage
       title="Button Dropdown with custom item renderer"
+      settings={
+        <Toggle
+          checked={!!urlParams.expandableGroups}
+          onChange={({ detail }) => setUrlParams({ expandableGroups: detail.checked })}
+        >
+          Expandable Groups
+        </Toggle>
+      }
       screenshotArea={{
         style: {
           padding: 10,
         },
       }}
     >
-      {/* Add 300px gap to open dropdown */}
-      <div
-        style={{ maxInlineSize: '400px', blockSize: '650px', display: 'flex', flexDirection: 'column', gap: '220px' }}
-      >
-        <div>
-          <ButtonDropdown items={itemsWithGroups} renderItem={renderItem}>
-            Default Groups
-          </ButtonDropdown>
-        </div>
-        <div>
-          <ButtonDropdown items={itemsWithGroups} expandableGroups={true} renderItem={renderItem}>
-            Expandable Groups
-          </ButtonDropdown>
-        </div>
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
+        <ButtonDropdown items={itemsWithGroups} expandableGroups={expandableGroups} renderItem={renderItem}>
+          Expandable Groups
+        </ButtonDropdown>
       </div>
     </SimplePage>
   );
