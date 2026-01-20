@@ -11,11 +11,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function ButtonsScenario() {
   return (
     <article>
-      <h1>Preview</h1>
+      <h1>Image preview</h1>
       <ScreenshotArea>
         <Card
           header="image-title.jpg"
-          //   description="Metadata about file - 4GB"
+          description="Metadata about file - 4GB"
           action={
             <ButtonGroup
               onItemClick={() => null}
@@ -38,7 +38,16 @@ export default function ButtonsScenario() {
           }
           disableContentPaddings={true}
         >
-          <img style={{ width: '100%', height: '100%', display: 'block' }} src={image} />
+          <img
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'block',
+              borderBottomLeftRadius: 16,
+              borderBottomRightRadius: 16,
+            }}
+            src={image}
+          />
         </Card>
       </ScreenshotArea>
     </article>

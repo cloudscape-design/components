@@ -34,6 +34,11 @@ export interface InternalCardProps extends BaseComponentProps {
   header?: React.ReactNode;
 
   /**
+   * Supplementary text below the heading.
+   */
+  description?: React.ReactNode;
+
+  /**
    * Icon which will be displayed at the top of the card,
    * inline at the start of the content.
    */

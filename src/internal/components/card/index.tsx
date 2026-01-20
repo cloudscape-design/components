@@ -14,6 +14,7 @@ export default function Card({
   children,
   className,
   header,
+  description,
   innerMetadataAttributes,
   metadataAttributes,
   onClick,
@@ -40,8 +41,11 @@ export default function Card({
         onClick={onClick}
       >
         <div className={styles.header}>
-          <div className={styles['header-inner']}>{header}</div>
-          {action && <div className={styles.action}>{action}</div>}
+          <div className={styles['header-top-row']}>
+            <div className={styles['header-inner']}>{header}</div>
+            {action && <div className={styles.action}>{action}</div>}
+          </div>
+          {description && <div className={styles.description}>{description}</div>}
         </div>
         <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
       </div>
