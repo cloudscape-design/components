@@ -45,7 +45,10 @@ const CategoryElement = ({
     >
       {item.text && (
         <p
-          className={clsx(styles.header, renderResult && styles['no-content-styling'], { [styles.disabled]: disabled })}
+          className={clsx(styles.header, {
+            [styles.disabled]: disabled,
+            [styles['no-content-styling']]: !!renderResult,
+          })}
           aria-hidden="true"
         >
           {renderResult ? (
