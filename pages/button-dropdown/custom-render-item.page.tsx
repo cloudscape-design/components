@@ -78,13 +78,20 @@ export default function ButtonDropdownPage() {
         },
       }}
     >
-      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
-        <ButtonDropdown items={itemsWithGroups} renderItem={renderItem}>
-          Default Groups
-        </ButtonDropdown>
-        <ButtonDropdown items={itemsWithGroups} expandableGroups={true} renderItem={renderItem}>
-          Expandable Groups
-        </ButtonDropdown>
+      {/* Add 300px gap to open dropdown */}
+      <div
+        style={{ maxInlineSize: '400px', blockSize: '650px', display: 'flex', flexDirection: 'column', gap: '220px' }}
+      >
+        <div>
+          <ButtonDropdown items={itemsWithGroups} renderItem={renderItem}>
+            Default Groups
+          </ButtonDropdown>
+        </div>
+        <div>
+          <ButtonDropdown items={itemsWithGroups} expandableGroups={true} renderItem={renderItem}>
+            Expandable Groups
+          </ButtonDropdown>
+        </div>
       </div>
     </SimplePage>
   );
