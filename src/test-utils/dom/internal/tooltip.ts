@@ -5,7 +5,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import createWrapper from '../index.js';
 
 import popoverStyles from '../../../popover/styles.selectors.js';
-import tooltipStyles from '../../../tooltip/styles.selectors.js';
+import tooltipStyles from '../../../tooltip/test-classes/styles.selectors.js';
 
 export default class TooltipWrapper extends ComponentWrapper {
   static rootSelector: string = tooltipStyles.root;

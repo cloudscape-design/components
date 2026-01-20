@@ -6,6 +6,7 @@ import Button from '~components/button';
 import FormField from '~components/form-field';
 import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
 import Tooltip from '~components/tooltip';
 
 import { AppContextType } from '../app/app-context';
@@ -58,7 +59,6 @@ export default function TooltipSimple() {
   return (
     <SimplePage
       title="Tooltip Examples"
-      subtitle="Interactive tooltip demonstrations with positioning and content variations"
       screenshotArea={{}}
       settings={
         <FormField label="Tooltip position">
@@ -100,7 +100,6 @@ export default function TooltipSimple() {
                     getTrack={() => interactiveRef.current}
                     position={interactivePosition}
                     onEscape={() => setActiveTooltip(null)}
-                    trackKey={`position-${interactivePosition}`}
                   />
                 </div>
               )}
@@ -186,7 +185,6 @@ export default function TooltipSimple() {
                   getTrack={() => linkRef.current}
                   position="top"
                   onEscape={() => setActiveTooltip(null)}
-                  trackKey="link-tooltip"
                 />
               </div>
             )}
@@ -237,51 +235,50 @@ export default function TooltipSimple() {
                   getTrack={() => codeRef.current}
                   position="bottom"
                   onEscape={() => setActiveTooltip(null)}
-                  trackKey="code-tooltip"
                 />
               </div>
             )}
           </div>
         </SpaceBetween>
 
-        <div onMouseEnter={() => handleMouseEnterTooltip('password')} onMouseLeave={() => setActiveTooltip(null)}>
+        <div
+          onMouseEnter={() => handleMouseEnterTooltip('password')}
+          onMouseLeave={() => setActiveTooltip(null)}
+          style={{ display: 'inline-block' }}
+        >
           <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
-            Password:
+            Instance ID:
           </label>
           <input
             ref={passwordRef}
             id="password-input"
-            type="password"
-            placeholder="Enter password"
+            type="text"
+            placeholder="i-0123456789abcdef0"
             aria-describedby="password-description"
             style={{
               padding: '8px',
               border: '1px solid #ccc',
               borderRadius: '4px',
+              fontFamily: 'monospace',
             }}
             onFocus={() => handleFocusTooltip('password')}
             onBlur={handleBlurTooltip}
           />
           <span id="password-description" hidden={true}>
-            Password Rules: Minimum of 8 characters. Include at least one lowercase letter, one uppercase letter, one
-            number and one special character. Unique to this website.
+            Running - The unique identifier assigned to this EC2 instance when it was launched.
           </span>
           {activeTooltip === 'password' && (
             <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
               <Tooltip
                 content={
-                  <div>
-                    <strong>Password Rules:</strong>
-                    <br />• Minimum of 8 characters
-                    <br />• Include at least one lowercase letter, one uppercase letter, one number and one special
-                    character
-                    <br />• Unique to this website
-                  </div>
+                  <SpaceBetween size="xxs">
+                    <StatusIndicator type="success">Running</StatusIndicator>
+                    <span>The unique identifier assigned to this EC2 instance when it was launched.</span>
+                  </SpaceBetween>
                 }
                 getTrack={() => passwordRef.current}
                 position="bottom"
                 onEscape={() => setActiveTooltip(null)}
-                trackKey="password-rules"
               />
             </div>
           )}
@@ -355,13 +352,7 @@ function ButtonWithTooltip({
       </span>
       {activeTooltip === tooltipId && (
         <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
-          <Tooltip
-            content={tooltipContent}
-            getTrack={() => ref.current}
-            position={position}
-            onEscape={onDeactivate}
-            trackKey={tooltipId}
-          />
+          <Tooltip content={tooltipContent} getTrack={() => ref.current} position={position} onEscape={onDeactivate} />
         </div>
       )}
     </div>
@@ -369,98 +360,76 @@ function ButtonWithTooltip({
 }
 
 function TruncatedTextExample() {
-  const ref1 = useRef<HTMLDivElement>(null);
-  const ref2 = useRef<HTMLDivElement>(null);
-  const ref3 = useRef<HTMLDivElement>(null);
+  const ref1 = useRef<HTMLSpanElement>(null);
+  const ref2 = useRef<HTMLSpanElement>(null);
+  const ref3 = useRef<HTMLSpanElement>(null);
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
 
+  // Full text content - CSS truncates visually, but screen readers see the full text
+  // No aria-describedby needed since the span contains the full text
+  const text1 = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor';
+  const text2 = 'Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip';
+  const text3 = 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore';
+
+  const truncatedStyle: React.CSSProperties = {
+    display: 'block',
+    maxWidth: '200px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    padding: '8px',
+    border: '1px solid',
+    borderRadius: '4px',
+  };
+
   return (
     <SpaceBetween size="s">
-      <div
+      <span
         ref={ref1}
+        tabIndex={0}
         onMouseEnter={() => setShow1(true)}
         onMouseLeave={() => setShow1(false)}
         onFocus={() => setShow1(true)}
         onBlur={() => setShow1(false)}
-        tabIndex={0}
-        style={{
-          maxWidth: '200px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          padding: '8px',
-          border: '1px solid',
-          borderRadius: '4px',
-        }}
+        style={truncatedStyle}
       >
-        <span>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor</span>
+        {text1}
         {show1 && (
-          <Tooltip
-            content="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor"
-            getTrack={() => ref1.current}
-            onEscape={() => setShow1(false)}
-            trackKey="file1"
-          />
+          <Tooltip content={text1} getTrack={() => ref1.current} position="top" onEscape={() => setShow1(false)} />
         )}
-      </div>
+      </span>
 
-      <div
+      <span
         ref={ref2}
+        tabIndex={0}
         onMouseEnter={() => setShow2(true)}
         onMouseLeave={() => setShow2(false)}
         onFocus={() => setShow2(true)}
         onBlur={() => setShow2(false)}
-        tabIndex={0}
-        style={{
-          maxWidth: '200px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          padding: '8px',
-          border: '1px solid',
-          borderRadius: '4px',
-        }}
+        style={truncatedStyle}
       >
-        <span>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip</span>
+        {text2}
         {show2 && (
-          <Tooltip
-            content="Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip"
-            getTrack={() => ref2.current}
-            onEscape={() => setShow2(false)}
-            trackKey="arn"
-          />
+          <Tooltip content={text2} getTrack={() => ref2.current} position="top" onEscape={() => setShow2(false)} />
         )}
-      </div>
+      </span>
 
-      <div
+      <span
         ref={ref3}
+        tabIndex={0}
         onMouseEnter={() => setShow3(true)}
         onMouseLeave={() => setShow3(false)}
         onFocus={() => setShow3(true)}
         onBlur={() => setShow3(false)}
-        tabIndex={0}
-        style={{
-          maxWidth: '200px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          padding: '8px',
-          border: '1px solid',
-          borderRadius: '4px',
-        }}
+        style={truncatedStyle}
       >
-        <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</span>
+        {text3}
         {show3 && (
-          <Tooltip
-            content="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore"
-            getTrack={() => ref3.current}
-            onEscape={() => setShow3(false)}
-            trackKey="email"
-          />
+          <Tooltip content={text3} getTrack={() => ref3.current} position="top" onEscape={() => setShow3(false)} />
         )}
-      </div>
+      </span>
     </SpaceBetween>
   );
 }

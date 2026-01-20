@@ -15,7 +15,6 @@ import styles from './styles.css.js';
 export interface TooltipProps {
   value: React.ReactNode;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
-  trackKey?: string | number;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
   size?: PopoverProps['size'];
@@ -26,17 +25,12 @@ export interface TooltipProps {
 export default function Tooltip({
   value,
   trackRef,
-  trackKey,
   className,
   position = 'top',
   size = 'small',
   hideOnOverscroll,
   onDismiss,
 }: TooltipProps) {
-  if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
-    trackKey = value;
-  }
-
   useEffect(() => {
     const controller = new AbortController();
     window.addEventListener(
@@ -63,12 +57,11 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} data-testid={trackKey} role="tooltip">
+      <div className={styles.root} role="tooltip">
         <Transition in={true}>
           {() => (
             <PopoverContainer
               trackRef={trackRef}
-              trackKey={trackKey}
               size={size}
               fixedWidth={false}
               position={position}

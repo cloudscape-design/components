@@ -64,7 +64,6 @@ const IconButtonItem = forwardRef(
           <Tooltip
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             getTrack={() => containerRef.current}
-            trackKey={item.id}
             content={
               (showFeedback && <InternalLiveRegion tagName="span">{item.popoverFeedback}</InternalLiveRegion>) ||
               item.text

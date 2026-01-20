@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Token from '../../../lib/components/token';
@@ -73,10 +73,9 @@ describe('Token Tooltip behavior', () => {
 
     fireEvent.mouseEnter(tokenElement);
 
-    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
-    expect(screen.getByTestId('tooltip-live-region-content')).toHaveTextContent(
-      'Very long text that should be truncated'
-    );
+    const tooltip = createWrapper().findTooltip();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip!.getElement()).toHaveTextContent('Very long text that should be truncated');
   });
 
   test('hides tooltip on mouse leave', () => {
@@ -96,10 +95,10 @@ describe('Token Tooltip behavior', () => {
     triggerResizeObserver(labelElement);
 
     fireEvent.mouseEnter(tokenElement);
-    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
+    expect(createWrapper().findTooltip()).not.toBeNull();
 
     fireEvent.mouseLeave(tokenElement);
-    expect(screen.queryByTestId('tooltip-live-region-content')).not.toBeInTheDocument();
+    expect(createWrapper().findTooltip()).toBeNull();
   });
 
   test('shows tooltip on focus when text overflows', () => {
@@ -120,7 +119,7 @@ describe('Token Tooltip behavior', () => {
 
     fireEvent.focus(tokenElement);
 
-    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
+    expect(createWrapper().findTooltip()).not.toBeNull();
   });
 
   test('hides tooltip on blur', () => {
@@ -140,10 +139,10 @@ describe('Token Tooltip behavior', () => {
     triggerResizeObserver(labelElement);
 
     fireEvent.focus(tokenElement);
-    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
+    expect(createWrapper().findTooltip()).not.toBeNull();
 
     fireEvent.blur(tokenElement);
-    expect(screen.queryByTestId('tooltip-live-region-content')).not.toBeInTheDocument();
+    expect(createWrapper().findTooltip()).toBeNull();
   });
 
   test('does not show tooltip when text does not overflow', () => {
@@ -160,7 +159,7 @@ describe('Token Tooltip behavior', () => {
 
     fireEvent.mouseEnter(tokenElement);
 
-    expect(screen.queryByTestId('tooltip-live-region-content')).not.toBeInTheDocument();
+    expect(createWrapper().findTooltip()).toBeNull();
   });
 
   test('sets tabIndex for focusable tokens with tooltips', () => {
@@ -200,9 +199,9 @@ describe('Token Tooltip behavior', () => {
 
     fireEvent.mouseEnter(tokenElement);
 
-    const liveRegionContent = screen.queryByTestId('tooltip-live-region-content');
-    expect(liveRegionContent).toBeInTheDocument();
-    expect(liveRegionContent).toHaveTextContent('Accessible tooltip content');
+    const tooltip = createWrapper().findTooltip();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip!.getElement()).toHaveTextContent('Accessible tooltip content');
   });
 
   test('hides tooltip when Escape key is pressed', () => {
@@ -223,7 +222,7 @@ describe('Token Tooltip behavior', () => {
 
     // Show tooltip
     fireEvent.mouseEnter(tokenElement);
-    expect(screen.queryByTestId('tooltip-live-region-content')).toBeInTheDocument();
+    expect(createWrapper().findTooltip()).not.toBeNull();
 
     // Press Escape key
     act(() => {
@@ -232,6 +231,6 @@ describe('Token Tooltip behavior', () => {
     });
 
     // Tooltip should be hidden
-    expect(screen.queryByTestId('tooltip-live-region-content')).not.toBeInTheDocument();
+    expect(createWrapper().findTooltip()).toBeNull();
   });
 });

@@ -71,7 +71,6 @@ const IconToggleButtonItem = forwardRef(
           <Tooltip
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
             getTrack={() => containerRef.current}
-            trackKey={item.id}
             content={
               (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text
             }

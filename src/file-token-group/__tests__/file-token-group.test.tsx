@@ -10,7 +10,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/file-token-group/styles.css.js';
 import testStyles from '../../../lib/components/file-token-group/test-classes/styles.css.js';
-import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 jest.mock('../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',

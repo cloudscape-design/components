@@ -16,18 +16,6 @@ export interface TooltipProps {
   getTrack: () => null | HTMLElement | SVGElement;
 
   /**
-   * Unique identifier for the tooltip instance. Changing this value will cause the tooltip
-   * to recalculate its position, similar to how React's key prop works.
-   * If not provided and content is a string or number, the content will be used as the key.
-   * Provide an explicit trackKey when the tooltip needs to recalculate its position dynamically,
-   * such as when used with components like Slider.
-   *
-   * The trackKey is also used as the data-testid attribute on the tooltip element,
-   * enabling test utilities to find specific tooltips via TooltipWrapper.findByTrackKey().
-   */
-  trackKey?: string | number;
-
-  /**
    * Determines where the tooltip is displayed when opened, relative to the trigger. If the tooltip doesn't have enough space to open in this direction, it automatically chooses a better direction based on available space.
    */
   position?: TooltipProps.Position;
@@ -45,6 +33,7 @@ export namespace TooltipProps {
 
 /**
  * Internal tooltip props - includes props not exposed in public API.
+ * Note: position defaults to 'top' in both index.tsx and internal.tsx
  */
 export interface InternalTooltipProps extends TooltipProps {
   /**

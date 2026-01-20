@@ -14,14 +14,13 @@ import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
 import { InternalTooltipProps } from './interfaces';
 
-import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 type InternalTooltipComponentProps = InternalTooltipProps & InternalBaseComponentProps;
 
 export default function InternalTooltip({
   content,
   getTrack,
-  trackKey,
   className,
   position = 'top',
   onEscape,
@@ -36,9 +35,6 @@ export default function InternalTooltip({
     const element = getTrack();
     trackRef.current = element;
   }, [getTrack]);
-  if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
-    trackKey = content;
-  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -68,8 +64,7 @@ export default function InternalTooltip({
     <Portal>
       <div
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
-        data-testid={trackKey}
+        className={clsx(testUtilStyles.root, baseProps.className)}
         ref={__internalRootRef}
         role="tooltip"
       >
@@ -77,7 +72,6 @@ export default function InternalTooltip({
           {() => (
             <PopoverContainer
               getTrack={getTrack}
-              trackKey={trackKey}
               size="medium"
               fixedWidth={false}
               position={position}

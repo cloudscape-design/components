@@ -15,7 +15,7 @@ import { PointerEventMock } from '../../../../../lib/components/internal/utils/p
 
 import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
 import testUtilStyles from '../../../../../lib/components/internal/components/drag-handle-wrapper/test-classes/styles.css.js';
-import tooltipStyles from '../../../../../lib/components/tooltip/styles.css.js';
+import tooltipStyles from '../../../../../lib/components/tooltip/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

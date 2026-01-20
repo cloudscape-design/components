@@ -186,7 +186,6 @@ function InternalFileToken({
       {showTooltip && isEllipsisActive() && (
         <Tooltip
           getTrack={() => containerRef.current}
-          trackKey={file.name}
           content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
           onEscape={() => setShowTooltip(false)}
         />

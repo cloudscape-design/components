@@ -7,8 +7,8 @@ import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/co
 import StatusIndicator from '../../../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../../../lib/components/test-utils/dom';
 
-import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
 import styles from '../../../../../lib/components/popover/styles.selectors.js';
+import tooltipStyles from '../../../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 class TooltipInternalWrapper extends PopoverWrapper {
   findTooltip(): ElementWrapper | null {
@@ -28,12 +28,7 @@ class TooltipInternalWrapper extends PopoverWrapper {
 const dummyRef = { current: null };
 function renderTooltip(props: Partial<TooltipProps>) {
   const { container } = render(
-    <Tooltip
-      trackRef={dummyRef}
-      trackKey={props.trackKey}
-      value={props.value ?? ''}
-      onDismiss={props.onDismiss ?? (() => {})}
-    />
+    <Tooltip trackRef={dummyRef} value={props.value ?? ''} onDismiss={props.onDismiss ?? (() => {})} />
   );
   return new TooltipInternalWrapper(container);
 }
@@ -62,19 +57,6 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ value: 'Value' });
 
     expect(wrapper.findHeader()).toBeNull();
-  });
-
-  it('trackKey is set correctly for strings', () => {
-    const wrapper = renderTooltip({ value: 'Value' });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
-  });
-
-  it('trackKey is set correctly for explicit value', () => {
-    const trackKey = 'test-track-key';
-    const wrapper = renderTooltip({ value: 'Value', trackKey });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
   });
 
   it('calls onDismiss when an Escape keypress is detected anywhere', () => {

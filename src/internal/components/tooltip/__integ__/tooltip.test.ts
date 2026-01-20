@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 
-import tooltipStyles from '../../../../../lib/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 test(
   'should not close any wrapping modals when the tooltip detects an Escape keypress',

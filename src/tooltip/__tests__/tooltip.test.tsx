@@ -4,11 +4,10 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
-import TooltipWrapper from '../../../lib/components/test-utils/dom/tooltip';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
-import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 class TooltipInternalWrapper extends PopoverWrapper {
   findTooltip(): ElementWrapper | null {
@@ -29,7 +28,6 @@ function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.
   const { container } = render(
     <Tooltip
       getTrack={props.getTrack ?? (() => null)}
-      trackKey={props.trackKey}
       content={props.content ?? ''}
       onEscape={props.onEscape}
       position={props.position}
@@ -65,36 +63,14 @@ describe('Tooltip', () => {
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('role', 'tooltip');
   });
 
-  it('uses content as trackKey when not explicitly provided', () => {
-    const wrapper = renderTooltip({ content: 'Value' });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'Value');
-  });
-
-  it('trackKey is set correctly for explicit value', () => {
-    const trackKey = 'test-id';
-    const wrapper = renderTooltip({ content: 'Value', trackKey });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
-  });
-
-  it('explicit trackKey takes precedence over content', () => {
-    const wrapper = renderTooltip({ content: 'Auto value', trackKey: 'explicit-key' });
-
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', 'explicit-key');
-  });
-
-  it('renders ReactNode content without explicit trackKey', () => {
-    // Should not crash when trackKey is not provided for complex content
-    expect(() => {
-      renderTooltip({
-        content: <div>Complex content without trackKey</div>,
-      });
-    }).not.toThrow();
+  it('renders ReactNode content correctly', () => {
+    renderTooltip({
+      content: <div>Complex content</div>,
+    });
 
     const tooltip = createWrapper().findByClassName(tooltipStyles.root);
     expect(tooltip).not.toBeNull();
-    expect(tooltip!.getElement()).toHaveTextContent('Complex content without trackKey');
+    expect(tooltip!.getElement()).toHaveTextContent('Complex content');
   });
 
   it('calls onEscape when an Escape keypress is detected anywhere', () => {
@@ -177,11 +153,11 @@ describe('Tooltip', () => {
     document.body.appendChild(element1);
     document.body.appendChild(element2);
 
-    const { rerender } = render(<Tooltip content="Test" getTrack={() => element1} trackKey="test-1" />);
+    const { rerender } = render(<Tooltip content="Test" getTrack={() => element1} />);
 
     expect(element1).toBeInTheDocument();
 
-    rerender(<Tooltip content="Test" getTrack={() => element2} trackKey="test-2" />);
+    rerender(<Tooltip content="Test" getTrack={() => element2} />);
 
     expect(element2).toBeInTheDocument();
   });
@@ -203,7 +179,7 @@ describe('Tooltip', () => {
   it('renders inside a Portal', () => {
     const { container } = render(
       <div data-testid="parent">
-        <Tooltip content="Portaled content" getTrack={() => null} trackKey="portal-test" />
+        <Tooltip content="Portaled content" getTrack={() => null} />
       </div>
     );
 
@@ -214,70 +190,5 @@ describe('Tooltip', () => {
     expect(parent).not.toContainElement(tooltip?.getElement() ?? null);
     // But tooltip should exist in the document
     expect(tooltip).not.toBeNull();
-  });
-
-  describe('TooltipWrapper test utils', () => {
-    it('findContent() returns the tooltip content element', () => {
-      render(<Tooltip content="Test content" getTrack={() => null} trackKey="test-utils-content" />);
-
-      const tooltipWrapper = TooltipWrapper.findByTrackKey('test-utils-content');
-      expect(tooltipWrapper).not.toBeNull();
-
-      const content = tooltipWrapper!.findContent();
-      expect(content).not.toBeNull();
-      expect(content!.getElement()).toHaveTextContent('Test content');
-    });
-
-    it('findByTrackKey() finds tooltip by trackKey attribute', () => {
-      render(<Tooltip content="Findable tooltip" getTrack={() => null} trackKey="unique-track-key" />);
-
-      const tooltipWrapper = TooltipWrapper.findByTrackKey('unique-track-key');
-      expect(tooltipWrapper).not.toBeNull();
-      expect(tooltipWrapper!.getElement()).toHaveAttribute('data-testid', 'unique-track-key');
-    });
-
-    it('findByTrackKey() returns null when tooltip not found', () => {
-      render(<Tooltip content="Some tooltip" getTrack={() => null} trackKey="existing-tooltip" />);
-
-      const tooltipWrapper = TooltipWrapper.findByTrackKey('non-existent-key');
-      expect(tooltipWrapper).toBeNull();
-    });
-
-    it('findByTrackKey() can distinguish between multiple tooltips', () => {
-      render(
-        <>
-          <Tooltip content="First tooltip" getTrack={() => null} trackKey="tooltip-1" />
-          <Tooltip content="Second tooltip" getTrack={() => null} trackKey="tooltip-2" />
-        </>
-      );
-
-      const tooltip1 = TooltipWrapper.findByTrackKey('tooltip-1');
-      const tooltip2 = TooltipWrapper.findByTrackKey('tooltip-2');
-
-      expect(tooltip1).not.toBeNull();
-      expect(tooltip2).not.toBeNull();
-      expect(tooltip1!.findContent()!.getElement()).toHaveTextContent('First tooltip');
-      expect(tooltip2!.findContent()!.getElement()).toHaveTextContent('Second tooltip');
-    });
-
-    it('findContent() works with complex content', () => {
-      render(
-        <Tooltip
-          content={
-            <div>
-              <strong>Bold</strong> text
-            </div>
-          }
-          getTrack={() => null}
-          trackKey="complex-wrapper"
-        />
-      );
-
-      const tooltipWrapper = TooltipWrapper.findByTrackKey('complex-wrapper');
-      const content = tooltipWrapper!.findContent();
-
-      expect(content).not.toBeNull();
-      expect(content!.getElement().querySelector('strong')).toHaveTextContent('Bold');
-    });
   });
 });

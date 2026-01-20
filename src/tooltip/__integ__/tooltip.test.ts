@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import tooltipStyles from '../../../lib/components/tooltip/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/tooltip/test-classes/styles.selectors.js';
 
 class TooltipPageObject extends BasePageObject {
   async waitForTooltip() {
