@@ -111,10 +111,7 @@ export default function AlertScenario() {
     <article>
       <h1>Alert permutations</h1>
       <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={(permutation: AlertProps) => <Alert {...permutation} />}
-        />
+        <PermutationsView permutations={permutations} render={permutation => <Alert {...permutation} />} />
       </ScreenshotArea>
     </article>
   );
