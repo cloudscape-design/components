@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 
 describe('ButtonDropdown renderItem', () => {
   function renderButtonDropdown(props?: Partial<ButtonDropdownProps>) {
