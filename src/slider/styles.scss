@@ -62,11 +62,17 @@
     inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-size);
 
     &.error {
-      background-color: var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-text-status-error);
+      background-color: var(
+        #{custom-props.$styleSliderRangeBackgroundDefault},
+        awsui.$color-background-slider-range-error-default
+      );
     }
 
     &.warning {
-      background-color: var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-text-status-warning);
+      background-color: var(
+        #{custom-props.$styleSliderRangeBackgroundDefault},
+        awsui.$color-background-slider-range-warning-default
+      );
     }
 
     &.active {
@@ -79,14 +85,14 @@
     &.error-active {
       background-color: var(
         #{custom-props.$styleSliderRangeBackgroundActive},
-        awsui.$color-background-slider-error-pressed
+        awsui.$color-background-slider-range-error-active
       );
     }
 
     &.warning-active {
       background-color: var(
         #{custom-props.$styleSliderRangeBackgroundActive},
-        awsui.$color-background-slider-warning-pressed
+        awsui.$color-background-slider-range-warning-active
       );
     }
 
@@ -213,24 +219,30 @@
   }
 
   &.error {
-    background: var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-text-status-error);
+    background: var(
+      #{custom-props.$styleSliderTrackBackgroundColor},
+      awsui.$color-background-slider-range-error-default
+    );
   }
 
   &.warning {
-    background: var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-text-status-warning);
+    background: var(
+      #{custom-props.$styleSliderTrackBackgroundColor},
+      awsui.$color-background-slider-range-warning-default
+    );
   }
 
   &.error-active {
     background-color: var(
       #{custom-props.$styleSliderRangeBackgroundActive},
-      awsui.$color-background-slider-error-pressed
+      awsui.$color-background-slider-range-error-active
     );
   }
 
   &.warning-active {
     background-color: var(
       #{custom-props.$styleSliderRangeBackgroundActive},
-      awsui.$color-background-slider-warning-pressed
+      awsui.$color-background-slider-range-warning-active
     );
   }
 
@@ -330,13 +342,25 @@
 
 .error {
   &::-webkit-slider-thumb {
-    background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
-    border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
+    background-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-error-default
+    );
+    border-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-error-default
+    );
   }
 
   &::-moz-range-thumb {
-    background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
-    border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-error);
+    background-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-error-default
+    );
+    border-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-error-default
+    );
   }
   &:hover::-webkit-slider-thumb {
     @include mixins.error-thumb-hover-styles;
@@ -359,13 +383,25 @@
 
 .warning {
   &::-webkit-slider-thumb {
-    background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
-    border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
+    background-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-warning-default
+    );
+    border-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-warning-default
+    );
   }
 
   &::-moz-range-thumb {
-    background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
-    border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
+    background-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-warning-default
+    );
+    border-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-warning-default
+    );
   }
   &:hover::-webkit-slider-thumb {
     @include mixins.warning-thumb-hover-styles;
