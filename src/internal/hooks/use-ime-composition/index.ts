@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Custom hook to handle IME composition state for preventing IME race conditions when pressing enter to end composition.
@@ -15,16 +15,16 @@ import { useCallback, useEffect, useRef } from 'react';
 export function useIMEComposition(elementRef: React.RefObject<HTMLInputElement>) {
   const wasComposingRef = useRef(false);
 
-  const handleCompositionStart = useCallback(() => {
+  const handleCompositionStart = () => {
     wasComposingRef.current = true;
-  }, []);
+  };
 
-  const handleCompositionEnd = useCallback(() => {
+  const handleCompositionEnd = () => {
     // Keep flag true briefly to catch immediate post-composition Enter events
     requestAnimationFrame(() => {
       wasComposingRef.current = false;
     });
-  }, []);
+  };
 
   useEffect(() => {
     const element = elementRef.current;
@@ -39,9 +39,9 @@ export function useIMEComposition(elementRef: React.RefObject<HTMLInputElement>)
       element.removeEventListener('compositionstart', handleCompositionStart);
       element.removeEventListener('compositionend', handleCompositionEnd);
     };
-  }, [elementRef, handleCompositionStart, handleCompositionEnd]);
+  }, [elementRef]);
 
-  const isComposing = useCallback(() => wasComposingRef.current, []);
+  const isComposing = () => wasComposingRef.current;
 
   return { isComposing };
 }

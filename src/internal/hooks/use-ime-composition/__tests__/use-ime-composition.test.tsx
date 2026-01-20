@@ -3,6 +3,7 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import { act, render } from '@testing-library/react';
 
+import { renderHook } from '../../../../__tests__/render-hook';
 import { useIMEComposition } from '../index';
 
 interface Ref {
@@ -40,6 +41,7 @@ describe('useIMEComposition', () => {
   let rafCallback: FrameRequestCallback | null = null;
 
   beforeEach(() => {
+    jest.restoreAllMocks();
     rafCallback = null;
     jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
       rafCallback = callback;
@@ -47,33 +49,39 @@ describe('useIMEComposition', () => {
     });
   });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   test('returns false when no composition is active', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const inputRef = useRef<HTMLInputElement>(null);
+      return useIMEComposition(inputRef);
+    });
 
-    expect(ref.current!.getIsComposing()).toBe(false);
+    expect(result.current.isComposing()).toBe(false);
   });
 
   test('returns true during active composition', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
 
-    ref.current!.triggerCompositionStart();
-    expect(ref.current!.getIsComposing()).toBe(true);
+    const { hook, inputElement } = result.current;
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    expect(hook.isComposing()).toBe(true);
   });
 
   test('remains true immediately after composition ends', () => {
-    const ref = React.createRef<Ref>();
-    render(<Component ref={ref} />);
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef), inputElement: mockInput };
+    });
 
-    ref.current!.triggerCompositionStart();
-    ref.current!.triggerCompositionEnd('가');
+    const { hook, inputElement } = result.current;
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
 
-    expect(ref.current!.getIsComposing()).toBe(true);
+    expect(hook.isComposing()).toBe(true);
   });
 
   test('returns false after requestAnimationFrame callback executes', () => {
