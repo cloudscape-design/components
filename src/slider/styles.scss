@@ -398,7 +398,10 @@
       #{custom-props.$styleSliderHandleBackgroundDefault},
       awsui.$color-background-slider-handle-warning-default
     );
-    border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-text-status-warning);
+    border-color: var(
+      #{custom-props.$styleSliderHandleBackgroundDefault},
+      awsui.$color-background-slider-handle-warning-default
+    );
   }
   &:hover::-webkit-slider-thumb {
     @include mixins.warning-thumb-hover-styles;
