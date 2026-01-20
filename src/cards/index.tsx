@@ -320,7 +320,7 @@ const CardsList = <T,>({
         };
         return (
           <Card
-            action={
+            actions={
               selectionProps && (
                 <div
                   className={styles['selection-control']}
