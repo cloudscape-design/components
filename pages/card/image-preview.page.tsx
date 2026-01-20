@@ -6,13 +6,12 @@ import ButtonGroup from '~components/button-group';
 import Card from '~components/internal/components/card';
 
 import image from '../container/images/16-9.png';
-import ScreenshotArea from '../utils/screenshot-area';
+import { CardPage } from './common';
 
 export default function ButtonsScenario() {
   return (
     <article>
-      <h1>Image preview</h1>
-      <ScreenshotArea>
+      <CardPage title="Image preview">
         <Card
           header="image-title.jpg"
           description="Metadata about file - 4GB"
@@ -47,7 +46,7 @@ export default function ButtonsScenario() {
             src={image}
           />
         </Card>
-      </ScreenshotArea>
+      </CardPage>
     </article>
   );
 }
