@@ -66,6 +66,43 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * Specifies a render function to render custom options in the dropdown menu.
    *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### action
+   *
+   * - `type` ('action') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (Item) - The original item configuration.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### checkbox
+   *
+   * - `type` ('checkbox') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (CheckboxItem) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `checked` (boolean) - Controls the state of the checkbox item.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's position in the list.
+   * - `option` (ItemGroup) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `expanded` (boolean) - Whether the group is expanded.
+   * - `expandDirection` ('vertical' | 'horizontal') - The direction in which the group expands.
+   *
+   * When providing a custom `renderItem` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default styling will be applied.
+   *
    * @awsuiSystem core
    */
   renderItem?: ButtonDropdownProps.ItemRenderer;

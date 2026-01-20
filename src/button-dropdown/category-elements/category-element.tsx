@@ -25,12 +25,13 @@ const CategoryElement = ({
   position,
   renderItem,
 }: CategoryProps) => {
+  const highlighted = isHighlighted(item);
   const groupProps: ButtonDropdownProps.GroupRenderItem = {
     type: 'group',
     index: index ?? 0,
     option: item as ButtonDropdownProps.ItemGroup,
     disabled: !!disabled,
-    highlighted: !!isHighlighted,
+    highlighted: !!highlighted,
     expanded: true,
     expandDirection: 'vertical',
   };
