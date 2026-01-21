@@ -38,6 +38,7 @@ describe('Autosuggest renderOption', () => {
         const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({ options: defaultOptions, renderOption });
         wrapper.focus();
+
         expect(renderOption).toHaveBeenCalled();
         const elementWrapper = wrapper.findDropdown().findOption(1)!.getElement();
         expect(elementWrapper).not.toBeNull();
@@ -52,6 +53,7 @@ describe('Autosuggest renderOption', () => {
           renderOption,
         });
         wrapper.focus();
+
         expect(renderOption).toHaveBeenCalledWith(
           expect.objectContaining({
             item: expect.objectContaining({
@@ -72,6 +74,7 @@ describe('Autosuggest renderOption', () => {
           renderOption,
         });
         wrapper.focus();
+
         expect(renderOption).toHaveBeenCalledWith(
           expect.objectContaining({
             item: expect.objectContaining({
@@ -115,6 +118,7 @@ describe('Autosuggest renderOption', () => {
         const renderOption = jest.fn(props => <div>{props.item.highlighted ? 'highlighted' : 'normal'}</div>);
         const wrapper = renderAutosuggest({ options: [{ label: 'First', value: '1' }], renderOption });
         wrapper.focus();
+
         wrapper.findNativeInput().keydown(KeyCode.down);
         expect(wrapper.findDropdown().getElement().textContent).toContain('highlighted');
       });
@@ -270,6 +274,40 @@ describe('Autosuggest renderOption', () => {
             item: expect.objectContaining({
               index: 1,
               option: expect.objectContaining({ value: '2' }),
+            }),
+          })
+        );
+      });
+
+      test('maintains group index in item properties', () => {
+        const renderOption = jest.fn(() => <div>Custom</div>);
+
+        const wrapper = renderAutosuggest({
+          options: [
+            { label: 'Group 1', options: [{ label: 'Child 1', value: 'c1' }] },
+            { label: 'Group 2', options: [{ label: 'Child 2', value: 'c2' }] },
+          ],
+          renderOption,
+        });
+        wrapper.focus();
+
+        expect(renderOption).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item: expect.objectContaining({
+              type: 'group',
+              index: 0,
+              option: expect.objectContaining({ label: 'Group 1' }),
+            }),
+          })
+        );
+
+        // Child 1 has index 1
+        expect(renderOption).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item: expect.objectContaining({
+              type: 'group',
+              index: 2,
+              option: expect.objectContaining({ label: 'Group 2' }),
             }),
           })
         );
