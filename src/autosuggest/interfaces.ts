@@ -66,7 +66,7 @@ export interface AutosuggestProps
    * ### item
    *
    * - `type` ('item') - The item type.
-   * - `index` (number) - The item's position relative to its parent.
+   * - `index` (number) - The item's absolute position in the dropdown.
    * - `option` (Option) - The original item configuration.
    * - `disabled` (boolean) - Whether the item is disabled.
    * - `highlighted` (boolean) - Whether the item is currently highlighted.
@@ -76,7 +76,7 @@ export interface AutosuggestProps
    * ### group
    *
    * - `type` ('group') - The item type.
-   * - `index` (number) - The item's position in the list.
+   * - `index` (number) - The item's absolute position in the dropdown.
    * - `option` (OptionGroup) - The original item configuration.
    * - `disabled` (boolean) - Whether the item is disabled.
    *
