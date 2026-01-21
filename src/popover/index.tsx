@@ -24,6 +24,7 @@ const Popover = React.forwardRef(
       dismissButton = true,
       renderWithPortal = false,
       wrapTriggerText = true,
+      maxHeight,
       header,
       ...rest
     }: PopoverProps,
@@ -36,7 +37,7 @@ const Popover = React.forwardRef(
     }
 
     const baseComponentProps = useBaseComponent('Popover', {
-      props: { dismissButton, fixedWidth, position, renderWithPortal, size, triggerType },
+      props: { dismissButton, fixedWidth, maxHeight, position, renderWithPortal, size, triggerType },
     });
     const externalProps = getExternalProps(rest);
 
@@ -51,6 +52,7 @@ const Popover = React.forwardRef(
         dismissButton={dismissButton}
         renderWithPortal={renderWithPortal}
         wrapTriggerText={wrapTriggerText}
+        maxHeight={maxHeight}
         {...externalProps}
         {...baseComponentProps}
       />
