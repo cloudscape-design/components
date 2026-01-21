@@ -67,7 +67,7 @@ $_icon-sizes: (
 
     &.size-#{$name} {
       inline-size: $size;
-      box-sizing: border-box;
+
       &-mapped-height {
         block-size: $supportedLineHeight;
         padding-block: $padding;
@@ -78,7 +78,6 @@ $_icon-sizes: (
       > img {
         inline-size: $size;
         block-size: $size;
-        vertical-align: top;
       }
 
       > svg {
