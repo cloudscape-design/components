@@ -28,15 +28,7 @@ const {
 
 const quickBuild = series(
   clean,
-  parallel(
-    packageJSON,
-    generateI18nMessages,
-    generateEnvironment,
-    generateIcons,
-    generateIndexFile,
-    copyFiles,
-    copyBuildTools
-  ),
+  parallel(packageJSON, generateI18nMessages, generateEnvironment, generateIcons, generateIndexFile, copyFiles),
   parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils),
   bundleVendorFiles
 );
@@ -44,7 +36,7 @@ const quickBuild = series(
 exports.clean = clean;
 exports['quick-build'] = quickBuild;
 exports.i18n = generateI18nMessages;
-exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs, sizeLimit));
+exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs, sizeLimit, copyBuildTools));
 exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
