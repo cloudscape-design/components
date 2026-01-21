@@ -74,7 +74,8 @@
 .header {
   padding-block-start: 8px;
   padding-block-end: 4px;
-  padding-inline: awsui.$space-card-horizontal;
+  padding-inline-start: awsui.$space-card-horizontal;
+  padding-inline-end: calc(#{awsui.$space-card-horizontal} - 4px);
   &-inner {
     @include styles.font-heading-s;
     min-block-size: 32px;
