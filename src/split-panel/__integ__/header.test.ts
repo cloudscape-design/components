@@ -8,7 +8,7 @@ import { viewports } from '../../app-layout/__integ__/constants';
 import { getUrlParams } from '../../app-layout/__integ__/utils';
 
 const wrapper = createWrapper().findAppLayout();
-const url = '#/light/app-layout/split-panel-with-custom-header';
+const url = '#/app-layout/split-panel-with-custom-header';
 
 describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   describe.each(['desktop', 'mobile'] as const)('%s', viewport => {

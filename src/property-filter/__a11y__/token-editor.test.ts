@@ -11,7 +11,7 @@ const popoverWrapper = createWrapper(wrapper.findTokens().get(1).toSelector()).f
 function setupTest(testFn: (page: A11yPageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new A11yPageObject(browser);
-    await browser.url('#/light/property-filter/async-loading.integ?token=property');
+    await browser.url('#/property-filter/async-loading.integ?token=property');
     await page.waitForVisible('main');
     await testFn(page);
   });

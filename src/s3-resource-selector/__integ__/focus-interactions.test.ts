@@ -21,7 +21,7 @@ const getTableLinkSelector = (rowIndex: number) => wrapper.findTable().findBodyC
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/s3-resource-selector/main`);
+    await browser.url(`#/s3-resource-selector/main`);
     await page.waitForVisible(uriInputSelector);
     // set focus for deterministic tab navigation
     await page.click('#focus-start');

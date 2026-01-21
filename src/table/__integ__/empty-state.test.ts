@@ -9,7 +9,7 @@ test(
   'allows tabbing into empty state button when keyboard navigation is active',
   useBrowser(async browser => {
     const wrapper = createWrapper().findTable();
-    await browser.url('#/light/table/empty-state/?enableKeyboardNavigation=true');
+    await browser.url('#/table/empty-state/?enableKeyboardNavigation=true');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findEmptySlot().findButton().toSelector());
 

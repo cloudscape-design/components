@@ -29,7 +29,7 @@ const setupTest = (
       enableKeyboardNavigation: String(enableKeyboardNavigation),
       stickyActions: String(stickyActions),
     });
-    await browser.url(`#/light/table/inline-actions?${query.toString()}`);
+    await browser.url(`#/table/inline-actions?${query.toString()}`);
     await testFn(page);
   });
 };

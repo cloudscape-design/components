@@ -9,7 +9,7 @@ describe('Input', () => {
   const setupTest = (testFn: (page: InputPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new InputPage(browser);
-      await page.visit('#/light/input/input-integ');
+      await page.visit('#/input/input-integ');
       await testFn(page);
     });
   };
@@ -36,7 +36,7 @@ describe('Input', () => {
   test(
     'Clicking on form field label should focus the input',
     useBrowser(async browser => {
-      await browser.url('#/light/input/inputs');
+      await browser.url('#/input/inputs');
       const page = new InputPage(browser);
       const wrapper = createWrapper();
       await page.click(wrapper.findFormField().findLabel().toSelector());

@@ -11,7 +11,7 @@ const preferences = wrapper.findCollectionPreferences();
 test(
   'changes page size on confirm',
   useBrowser(async browser => {
-    await browser.url('#/light/cards/hooks');
+    await browser.url('#/cards/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findItems().toSelector());
     await expect(page.getElementsCount(wrapper.findItems().toSelector())).resolves.toEqual(20);
@@ -28,7 +28,7 @@ test(
 test(
   'does not change page size on cancel',
   useBrowser(async browser => {
-    await browser.url('#/light/cards/hooks');
+    await browser.url('#/cards/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findItems().toSelector());
     await expect(page.getElementsCount(wrapper.findItems().toSelector())).resolves.toEqual(20);
@@ -45,7 +45,7 @@ test(
 test(
   'changes visible sections',
   useBrowser(async browser => {
-    await browser.url('#/light/cards/hooks');
+    await browser.url('#/cards/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findItems().toSelector());
     await expect(page.getElementsCount(wrapper.findItems().get(1).findSections().toSelector())).resolves.toEqual(2);

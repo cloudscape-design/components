@@ -11,7 +11,7 @@ function setup(testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ height: 1000, width: 1000 });
-    await browser.url(`/#/light/multiselect/multiselect.async.example?embedded=true&randomErrors=false`);
+    await browser.url(`/#/multiselect/multiselect.async.example?embedded=true&randomErrors=false`);
     await page.waitForVisible('input[placeholder="Find security group"]');
     await testFn(page);
   });

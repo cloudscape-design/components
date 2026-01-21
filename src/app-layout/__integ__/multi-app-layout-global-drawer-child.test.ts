@@ -18,7 +18,7 @@ describe('Visual refresh toolbar only', () => {
       const page = new BasePageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/multi-layout-global-drawer-child-layout?${new URLSearchParams({
+        `#/app-layout/multi-layout-global-drawer-child-layout?${new URLSearchParams({
           visualRefresh: 'true',
           appLayoutToolbar: 'true',
         }).toString()}`

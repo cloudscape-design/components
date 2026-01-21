@@ -66,7 +66,7 @@ const createSetupTest = (url: string) => (testFn: (page: DateInputPage) => Promi
   });
 };
 
-const setupTest = createSetupTest('#/light/date-input/simple');
+const setupTest = createSetupTest('#/date-input/simple');
 
 describe('Date Input', () => {
   test(

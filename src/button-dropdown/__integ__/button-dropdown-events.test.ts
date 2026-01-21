@@ -9,7 +9,7 @@ import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-pag
 const setupTest = (itemId: string, testFn: (page: ButtonDropdownPage, itemId: string) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownPage('testDropdown', browser);
-    await browser.url('#/light/button-dropdown/events');
+    await browser.url('#/button-dropdown/events');
     await page.waitForVisible(page.getTrigger());
     await expect(page.getDropdownCheckMessage()).resolves.toEqual('');
     await page.openDropdown();
@@ -84,7 +84,7 @@ describe('clicking on a ButtonDropdown item', () => {
       const focusBefore = createWrapper().findButton('[data-testid="focus-before"]');
 
       const page = new BasePageObject(browser);
-      await browser.url('#/light/button-dropdown/main-action');
+      await browser.url('#/button-dropdown/main-action');
       await page.waitForVisible(focusBefore.toSelector());
 
       await page.click(focusBefore.toSelector());

@@ -17,7 +17,7 @@ describe('Multi page layout navigation', () => {
   const setupTest = (testFn: (page: PageObject) => Promise<void>) =>
     useBrowser(async browser => {
       const page = new PageObject(browser);
-      await browser.url('#/light/app-layout-toolbar/multi-layout-with-hidden-instances');
+      await browser.url('#/app-layout-toolbar/multi-layout-with-hidden-instances');
       await testFn(page);
     });
 

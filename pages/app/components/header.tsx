@@ -10,7 +10,7 @@ import ThemeSwitcher from './theme-switcher';
 import styles from './header.scss';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
-  const { mode } = useContext(AppContext);
+  const { urlParams: mode } = useContext(AppContext);
   return (
     <>
       {/* #h selector for compatibility with global navigation */}

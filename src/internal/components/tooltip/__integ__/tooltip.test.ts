@@ -10,7 +10,7 @@ import tooltipStyles from '../../../../../lib/components/internal/components/too
 test(
   'should not close any wrapping modals when the tooltip detects an Escape keypress',
   useBrowser(async browser => {
-    await browser.url('/#/light/modal/with-tooltip');
+    await browser.url('/#/modal/with-tooltip');
     const page = new BasePageObject(browser);
 
     const openButtonSelector = createWrapper().findButton().toSelector();

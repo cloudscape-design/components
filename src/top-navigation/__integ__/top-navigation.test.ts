@@ -16,7 +16,7 @@ class TopNavigationPage extends BasePageObject {
 
 const setupTest = (pageWidth: number, testFn: (page: TopNavigationPage) => Promise<void>) => {
   return useBrowser(async browser => {
-    await browser.url('#/light/top-navigation/integ');
+    await browser.url('#/top-navigation/integ');
     const page = new TopNavigationPage(browser);
     await page.setWindowSize({ width: pageWidth, height: 600 });
     await page.waitForVisible(wrapper.toSelector());

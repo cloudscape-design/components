@@ -18,7 +18,7 @@ Object.keys(wrappers).forEach(componentName => {
     function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
       return useBrowser(async browser => {
         const page = new BasePageObject(browser);
-        await browser.url(`#light/${componentName}/focus-test`);
+        await browser.url(`#${componentName}/focus-test`);
         await testFn(page);
       });
     }

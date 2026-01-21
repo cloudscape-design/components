@@ -17,7 +17,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       const setupTest = (testFn: (page: BasePageObject) => Promise<void>) =>
         useBrowser(async browser => {
           const page = new BasePageObject(browser);
-          await browser.url(`#/light/app-layout/multi-layout-${iframe ? 'iframe' : 'simple'}?${getUrlParams(theme)}`);
+          await browser.url(`#/app-layout/multi-layout-${iframe ? 'iframe' : 'simple'}?${getUrlParams(theme)}`);
           await page.runInsideIframe(iframeId, !!iframe, async () => {
             await page.waitForVisible(secondaryLayout.findContentRegion().toSelector());
           });

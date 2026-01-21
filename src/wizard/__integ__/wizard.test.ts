@@ -24,7 +24,7 @@ class WizardPageObject extends BasePageObject {
 
 function setupTest(testFn: (page: WizardPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('/#/light/wizard/simple?visualRefresh=false');
+    await browser.url('/#/wizard/simple?visualRefresh=false');
     const page = new WizardPageObject(browser);
     await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
     await testFn(page);

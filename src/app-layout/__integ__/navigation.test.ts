@@ -14,7 +14,7 @@ function setupTest(testFn: (page: BasePageObject) => Promise<void>, theme: Theme
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     const params = getUrlParams(theme);
-    await browser.url(`#/light/app-layout/navigation-with-scrollbar?${params}`);
+    await browser.url(`#/app-layout/navigation-with-scrollbar?${params}`);
     await page.waitForVisible(createWrapper().findSideNavigation().toSelector());
     await testFn(page);
   })();

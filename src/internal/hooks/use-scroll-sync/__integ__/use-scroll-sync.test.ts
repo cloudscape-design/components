@@ -20,7 +20,7 @@ describe('use-scroll-sync', () => {
   const setupTest = (testFn: (page: ScrollSyncPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new ScrollSyncPage(browser);
-      await browser.url('#/light/sync-scrolls');
+      await browser.url('#/sync-scrolls');
       await page.waitForVisible('#element1');
       await testFn(page);
     });

@@ -11,7 +11,7 @@ const tabsWrapper = createWrapper().findTabs();
 const setupTest = (visualRefresh = false, testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/tabs/in-app-layout-help-panel/?${visualRefresh ? 'visualRefresh=true' : ''}`);
+    await browser.url(`#/tabs/in-app-layout-help-panel/?${visualRefresh ? 'visualRefresh=true' : ''}`);
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
   });

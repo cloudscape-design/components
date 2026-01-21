@@ -17,9 +17,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>, isVisualRefr
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 600, height: 400 });
-    await browser.url(
-      `#/light/table/sticky-scrollbar?${isVisualRefresh ? 'visualRefresh=true' : 'visualRefresh=false'}`
-    );
+    await browser.url(`#/table/sticky-scrollbar?${isVisualRefresh ? 'visualRefresh=true' : 'visualRefresh=false'}`);
 
     await testFn(page);
   });
@@ -50,9 +48,7 @@ describe('Sticky scrollbar', () => {
         'sticky scrollbar is at the bottom when rendered inside container with fit-height',
         useBrowser(async browser => {
           const page = new BasePageObject(browser);
-          await browser.url(
-            `#/light/table/sticky-scrollbar-in-container?visualRefresh=${visualRefresh}&fitHeight=true`
-          );
+          await browser.url(`#/table/sticky-scrollbar-in-container?visualRefresh=${visualRefresh}&fitHeight=true`);
           const { bottom: containerBottom } = await page.getBoundingBox(containerWrapper.findContent().toSelector());
           const { bottom: scrollbarBottom } = await page.getBoundingBox(scrollbarWrapper.toSelector());
           expect(scrollbarBottom).toBe(containerBottom);

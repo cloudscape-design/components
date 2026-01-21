@@ -88,7 +88,7 @@ class AttributeEditorPage extends BasePageObject {
 const setupTest = (testFn: (page: AttributeEditorPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new AttributeEditorPage(browser);
-    await browser.url('#/light/attribute-editor/simple');
+    await browser.url('#/attribute-editor/simple');
     await page.waitForVisible(attributeEditorWrapper.findAddButton().toSelector());
     await testFn(page);
   });

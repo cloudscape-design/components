@@ -12,7 +12,7 @@ class TogglePage extends BasePageObject {}
 const setupTest = (testFn: (page: TogglePage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TogglePage(browser);
-    await browser.url('#/light/toggle/labels-highlight');
+    await browser.url('#/toggle/labels-highlight');
     await testFn(page);
   });
 };
