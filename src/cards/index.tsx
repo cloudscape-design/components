@@ -12,6 +12,7 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
+import Card from '../internal/card';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -269,7 +270,6 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
   const canClickEntireCard = selectable && entireCardClickable;
-  const isRefresh = useVisualRefresh();
 
   const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
@@ -315,60 +315,62 @@ const CardsList = <T,>({
           },
         };
         return (
-          <li
-            className={clsx(styles.card, {
-              [styles['card-selectable']]: selectable,
-              [styles['card-selected']]: selectable && selected,
-            })}
-            key={key}
-            onFocus={onFocus}
-            {...(focusMarkers && focusMarkers.item)}
-            role={listItemRole}
-            {...getAnalyticsMetadataAttribute({
-              component: {
-                innerContext: {
-                  position: `${index + 1}`,
-                  item: `${key}`,
-                },
-              },
-            })}
-          >
-            <div
-              className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
-              {...(canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {})}
-              onClick={
-                canClickEntireCard
-                  ? event => {
-                      selectionProps?.onChange();
-                      // Manually move focus to the native input (checkbox or radio button)
-                      event.currentTarget.querySelector('input')?.focus();
-                    }
-                  : undefined
-              }
-            >
-              <div className={styles['card-header']}>
-                <div className={clsx(styles['card-header-inner'], analyticsSelectors['card-header'])}>
-                  {cardDefinition.header ? cardDefinition.header(item) : ''}
+          <Card
+            action={
+              selectionProps && (
+                <div
+                  className={styles['selection-control']}
+                  {...(!canClickEntireCard && !disabled
+                    ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
+                    : {})}
+                >
+                  <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
                 </div>
-                {selectionProps && (
-                  <div
-                    className={styles['selection-control']}
-                    {...(!canClickEntireCard && !disabled
-                      ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
-                      : {})}
-                  >
-                    <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
-                  </div>
-                )}
+              )
+            }
+            active={selectable && selected}
+            className={styles.card}
+            header={
+              <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
+                {cardDefinition.header ? cardDefinition.header(item) : ''}
               </div>
-              {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-                <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
-                  {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                  {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
-                </div>
-              ))}
-            </div>
-          </li>
+            }
+            innerMetadataAttributes={
+              entireCardClickable && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
+            }
+            key={index}
+            metadataAttributes={{
+              ...getAnalyticsMetadataAttribute({
+                component: {
+                  innerContext: {
+                    position: `${index + 1}`,
+                    item: `${key}`,
+                  },
+                },
+              }),
+              ...focusMarkers.item,
+              role: listItemRole,
+            }}
+            onClick={
+              canClickEntireCard
+                ? event => {
+                    selectionProps?.onChange();
+                    // Manually move focus to the native input (checkbox or radio button)
+                    event.currentTarget.querySelector('input')?.focus();
+                  }
+                : undefined
+            }
+            onFocus={onFocus}
+            role={listItemRole}
+            TagName="li"
+          >
+            {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
+              <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                {header ? <div className={styles['section-header']}>{header}</div> : ''}
+                {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+              </div>
+            ))}
+          </Card>
         );
       })}
     </ol>
