@@ -212,18 +212,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorBackgroundProgressBarValueInFlash: {
-    description: 'The background color of the progress bar value when used in a flash component.',
-    public: true,
-    themeable: true,
-  },
   colorBackgroundProgressBarDefault: {
     description: 'The default background color of the progress bar.',
-    public: true,
-    themeable: true,
-  },
-  colorBackgroundProgressBarInFlash: {
-    description: 'The background color of the progress bar when used in a flash component.',
     public: true,
     themeable: true,
   },
