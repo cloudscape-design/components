@@ -155,6 +155,16 @@ export interface DropdownProps extends ExpandToViewport {
    * Describedby for the dropdown (recommended when role="dialog")
    */
   ariaDescribedby?: string;
+
+  /**
+   * Force a specific dropdown position
+   */
+  forcePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
+  /**
+   * Force mobile behavior (useful for full-width dropdowns with groups)
+   */
+  forceMobile?: boolean;
 }
 
 export interface ExpandToViewport {

@@ -10,10 +10,9 @@ import InternalPromptInput from './internal';
 
 export { PromptInputProps };
 
-const PromptInput = React.forwardRef(
+const PromptInput = React.forwardRef<PromptInputProps.Ref | HTMLTextAreaElement, PromptInputProps>(
   (
     {
-      autoComplete,
       autoFocus,
       disableBrowserAutocorrect,
       disableActionButton,
@@ -23,13 +22,12 @@ const PromptInput = React.forwardRef(
       minRows = 1,
       maxRows = 3,
       ...props
-    }: PromptInputProps,
-    ref: React.Ref<PromptInputProps.Ref>
+    },
+    ref
   ) => {
     const baseComponentProps = useBaseComponent('PromptInput', {
       props: {
         readOnly,
-        autoComplete,
         autoFocus,
         disableBrowserAutocorrect,
         disableActionButton,
@@ -42,7 +40,6 @@ const PromptInput = React.forwardRef(
     return (
       <InternalPromptInput
         readOnly={readOnly}
-        autoComplete={autoComplete}
         autoFocus={autoFocus}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         disableActionButton={disableActionButton}
