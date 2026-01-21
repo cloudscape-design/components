@@ -60,6 +60,36 @@ export interface AutosuggestProps
   /**
    * Specifies a render function to render custom options in the dropdown menu.
    *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### item
+   *
+   * - `type` ('item') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (Option) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `selected` (boolean) - Whether the item is selected.
+   * - `parent` (OptionGroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's position in the list.
+   * - `option` (OptionGroup) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   *
+   * ### use-entered
+   *
+   * - `type` ('use-entered') - The item type.
+   * - `option` (Option) - The use-entered item configuration.
+   *
+   * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default styling will be applied.
+   *
    * @awsuiSystem core
    */
   renderOption?: AutosuggestProps.ItemRenderer;
