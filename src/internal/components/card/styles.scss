@@ -75,14 +75,9 @@
   padding-block-start: 8px;
   padding-block-end: 4px;
   padding-inline: awsui.$space-card-horizontal;
-  &-top-row {
-    @include styles.font-heading-s;
-    display: flex;
-  }
   &-inner {
-    padding-block-start: 4px;
-    inline-size: 100%;
-    display: inline-block;
+    @include styles.font-heading-s;
+    min-block-size: 32px;
   }
 }
 
@@ -98,9 +93,12 @@
   }
 }
 
-.with-actions {
-  > .card-inner > .card-header {
-    inline-size: 90%;
+.with-actions > .card-inner > .header > .header-top-row {
+  display: flex;
+  > .header-inner {
+    inline-size: 100%;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -120,5 +118,4 @@
 
 .description {
   color: awsui.$color-text-heading-secondary;
-  margin-block-end: 8px;
 }
