@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import Tooltip from '../../../tooltip/internal.js';
+import Tooltip from '../tooltip';
 import DirectionButton from './direction-button';
 import { Direction, DragHandleWrapperProps } from './interfaces';
 import PortalOverlay from './portal-overlay';
@@ -232,11 +232,7 @@ export default function DragHandleWrapper({
           {!isDisabled && !showButtons && showTooltip && tooltipText && (
             // Rendered in a portal but pointerenter/pointerleave events still propagate
             // up the React DOM tree, which is why it's placed in this nested context.
-            <Tooltip
-              getTrack={() => dragHandleRef.current}
-              content={tooltipText}
-              onEscape={() => setShowTooltip(false)}
-            />
+            <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
           )}
         </div>
       </div>
