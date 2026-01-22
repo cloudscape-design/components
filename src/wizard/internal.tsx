@@ -136,6 +136,9 @@ export default function InternalWizard({
     previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings?.previousButton),
     nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings?.nextButton),
     optional: i18n('i18nStrings.optional', rest.i18nStrings?.optional),
+    stepNavigationTitle: rest.i18nStrings?.stepNavigationTitle,
+    stepNavigationDismissAriaLabel: rest.i18nStrings?.stepNavigationDismissAriaLabel,
+    stepNavigationConfirmButton: rest.i18nStrings?.stepNavigationConfirmButton,
   };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {
@@ -201,12 +204,14 @@ export default function InternalWizard({
             i18nStrings={i18nStrings}
             submitButtonText={submitButtonText}
             activeStepIndex={actualActiveStepIndex}
+            farthestStepIndex={farthestStepIndex.current}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}
             customPrimaryActions={customPrimaryActions}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}
+            onStepClick={onStepClick}
             onSkipToClick={onSkipToClick}
             onPrimaryClick={onPrimaryClick}
           />
