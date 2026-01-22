@@ -29,7 +29,7 @@ const Filter = React.forwardRef(({ filteringType, ...filterProps }: FilterProps,
       {...filterProps}
       nativeInputAttributes={{
         'aria-expanded': true,
-        'aria-haspopup': true,
+        'aria-haspopup': 'listbox',
         role: 'combobox',
         autoCorrect: 'off',
         autoCapitalize: 'off',
