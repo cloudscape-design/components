@@ -15,7 +15,7 @@ export default function ButtonsScenario() {
       <CardPage title="Image preview">
         <Card
           header={
-            <>
+            <div style={{ inlineSize: '100%' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>image-title.jpg</div>
                 <ButtonGroup
@@ -38,7 +38,7 @@ export default function ButtonsScenario() {
                 />
               </div>
               <Box color="text-body-secondary">Metadata about file - 4GB</Box>
-            </>
+            </div>
           }
           disableContentPaddings={true}
         >
