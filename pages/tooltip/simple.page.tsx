@@ -110,23 +110,12 @@ export default function TooltipSimple() {
     >
       <SpaceBetween size="l">
         <SpaceBetween direction="horizontal" size="l">
-          <ButtonWithTooltip
-            tooltipId="top"
-            buttonText="Short"
-            tooltipContent="Lorem"
-            position="top"
-            activeTooltip={activeTooltip}
-            onActivate={setActiveTooltip}
-            onDeactivate={() => setActiveTooltip(null)}
-          />
+          <ButtonWithTooltip tooltipId="top" buttonText="Short" tooltipContent="Lorem" position="top" />
           <ButtonWithTooltip
             tooltipId="bottom"
             buttonText="Medium"
             tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
             position="bottom"
-            activeTooltip={activeTooltip}
-            onActivate={setActiveTooltip}
-            onDeactivate={() => setActiveTooltip(null)}
             testId="medium-length-button"
           />
           <ButtonWithTooltip
@@ -134,18 +123,12 @@ export default function TooltipSimple() {
             buttonText="Long"
             tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             position="left"
-            activeTooltip={activeTooltip}
-            onActivate={setActiveTooltip}
-            onDeactivate={() => setActiveTooltip(null)}
           />
           <ButtonWithTooltip
             tooltipId="right"
             buttonText="Very Long"
             tooltipContent="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
             position="right"
-            activeTooltip={activeTooltip}
-            onActivate={setActiveTooltip}
-            onDeactivate={() => setActiveTooltip(null)}
           />
         </SpaceBetween>
 
@@ -289,13 +272,10 @@ export default function TooltipSimple() {
 }
 
 interface ButtonWithTooltipProps {
-  tooltipId: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password';
+  tooltipId: string;
   buttonText: string;
   tooltipContent: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
-  activeTooltip: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password' | null;
-  onActivate: (id: 'interactive' | 'top' | 'bottom' | 'left' | 'right' | 'link' | 'code' | 'password') => void;
-  onDeactivate: () => void;
   testId?: string;
 }
 
@@ -304,43 +284,25 @@ function ButtonWithTooltip({
   buttonText,
   tooltipContent,
   position = 'top',
-  activeTooltip,
-  onActivate,
-  onDeactivate,
   testId,
 }: ButtonWithTooltipProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [isInteracting, setIsInteracting] = useState(false);
   const contentText = typeof tooltipContent === 'string' ? tooltipContent : '';
 
-  const handleFocus = () => {
-    onActivate(tooltipId);
-  };
-
   const handleBlur = () => {
     if (!isInteracting) {
-      onDeactivate();
+      setShowTooltip(false);
     }
   };
 
-  const handleMouseEnter = () => {
-    onActivate(tooltipId);
-  };
-
-  const handleTooltipMouseDown = () => {
-    setIsInteracting(true);
-  };
-
-  const handleTooltipMouseUp = () => {
-    setIsInteracting(false);
-  };
-
   return (
-    <div ref={ref} onMouseEnter={handleMouseEnter} onMouseLeave={onDeactivate}>
+    <div ref={ref} onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
       <Button
         nativeButtonAttributes={{
           'aria-describedby': `${tooltipId}-description`,
-          onFocus: handleFocus,
+          onFocus: () => setShowTooltip(true),
           onBlur: handleBlur,
         }}
         data-testid={testId}
@@ -350,9 +312,14 @@ function ButtonWithTooltip({
       <span id={`${tooltipId}-description`} hidden={true}>
         {contentText}
       </span>
-      {activeTooltip === tooltipId && (
-        <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
-          <Tooltip content={tooltipContent} getTrack={() => ref.current} position={position} onEscape={onDeactivate} />
+      {showTooltip && (
+        <div onMouseDown={() => setIsInteracting(true)} onMouseUp={() => setIsInteracting(false)}>
+          <Tooltip
+            content={tooltipContent}
+            getTrack={() => ref.current}
+            position={position}
+            onEscape={() => setShowTooltip(false)}
+          />
         </div>
       )}
     </div>
@@ -366,6 +333,9 @@ function TruncatedTextExample() {
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
+  const [isInteracting1, setIsInteracting1] = useState(false);
+  const [isInteracting2, setIsInteracting2] = useState(false);
+  const [isInteracting3, setIsInteracting3] = useState(false);
 
   // Full text content - CSS truncates visually, but screen readers see the full text
   // No aria-describedby needed since the span contains the full text
@@ -392,12 +362,14 @@ function TruncatedTextExample() {
         onMouseEnter={() => setShow1(true)}
         onMouseLeave={() => setShow1(false)}
         onFocus={() => setShow1(true)}
-        onBlur={() => setShow1(false)}
+        onBlur={() => !isInteracting1 && setShow1(false)}
         style={truncatedStyle}
       >
         {text1}
         {show1 && (
-          <Tooltip content={text1} getTrack={() => ref1.current} position="top" onEscape={() => setShow1(false)} />
+          <div onMouseDown={() => setIsInteracting1(true)} onMouseUp={() => setIsInteracting1(false)}>
+            <Tooltip content={text1} getTrack={() => ref1.current} position="top" onEscape={() => setShow1(false)} />
+          </div>
         )}
       </span>
 
@@ -407,12 +379,14 @@ function TruncatedTextExample() {
         onMouseEnter={() => setShow2(true)}
         onMouseLeave={() => setShow2(false)}
         onFocus={() => setShow2(true)}
-        onBlur={() => setShow2(false)}
+        onBlur={() => !isInteracting2 && setShow2(false)}
         style={truncatedStyle}
       >
         {text2}
         {show2 && (
-          <Tooltip content={text2} getTrack={() => ref2.current} position="top" onEscape={() => setShow2(false)} />
+          <div onMouseDown={() => setIsInteracting2(true)} onMouseUp={() => setIsInteracting2(false)}>
+            <Tooltip content={text2} getTrack={() => ref2.current} position="top" onEscape={() => setShow2(false)} />
+          </div>
         )}
       </span>
 
@@ -422,12 +396,14 @@ function TruncatedTextExample() {
         onMouseEnter={() => setShow3(true)}
         onMouseLeave={() => setShow3(false)}
         onFocus={() => setShow3(true)}
-        onBlur={() => setShow3(false)}
+        onBlur={() => !isInteracting3 && setShow3(false)}
         style={truncatedStyle}
       >
         {text3}
         {show3 && (
-          <Tooltip content={text3} getTrack={() => ref3.current} position="top" onEscape={() => setShow3(false)} />
+          <div onMouseDown={() => setIsInteracting3(true)} onMouseUp={() => setIsInteracting3(false)}>
+            <Tooltip content={text3} getTrack={() => ref3.current} position="top" onEscape={() => setShow3(false)} />
+          </div>
         )}
       </span>
     </SpaceBetween>
