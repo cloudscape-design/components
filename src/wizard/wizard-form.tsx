@@ -25,12 +25,14 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
+import WizardStepNavigationModal from './wizard-step-navigation-modal';
 
 import styles from './styles.css.js';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
+  farthestStepIndex: number;
   showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
@@ -41,6 +43,7 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onCancelClick: () => void;
   onPreviousClick: () => void;
   onPrimaryClick: () => void;
+  onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
 }
 
@@ -75,6 +78,7 @@ function WizardForm({
   stepHeaderRef,
   steps,
   activeStepIndex,
+  farthestStepIndex,
   showCollapsedSteps,
   i18nStrings,
   submitButtonText,
@@ -85,6 +89,7 @@ function WizardForm({
   onCancelClick,
   onPreviousClick,
   onPrimaryClick,
+  onStepClick,
   onSkipToClick,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
   const rootRef = useRef<HTMLElement>();
@@ -132,7 +137,16 @@ function WizardForm({
     <>
       <WizardFormHeader>
         <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
+          <WizardStepNavigationModal
+            activeStepIndex={activeStepIndex}
+            farthestStepIndex={farthestStepIndex}
+            allowSkipTo={allowSkipTo}
+            i18nStrings={i18nStrings}
+            isLoadingNextStep={isPrimaryLoading}
+            onStepClick={onStepClick}
+            onSkipToClick={onSkipToClick}
+            steps={steps}
+          />
         </div>
         <InternalHeader
           className={styles['form-header-component']}
