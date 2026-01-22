@@ -22,7 +22,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export namespace FileTokenProps {
   export interface I18nStrings {
-    removeFileAriaLabel?: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number, fileName: string) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
@@ -78,7 +78,7 @@ function InternalFileToken({
   const [isTruncated, setIsTruncated] = useState(false);
 
   const getDismissLabel = (fileIndex: number) => {
-    return i18nStrings?.removeFileAriaLabel?.(fileIndex);
+    return i18nStrings?.removeFileAriaLabel?.(fileIndex, file.name);
   };
 
   function isEllipsisActive() {
