@@ -47,7 +47,7 @@ test(
   setupTest({}, async page => {
     const firstButtonDropdown = createWrapper().findButtonDropdown();
     await page.click(firstButtonDropdown.toSelector());
-    await page.click(firstButtonDropdown.findHighlightedItem().toSelector());
+    await page.click(firstButtonDropdown.findHighlightedItem()!.toSelector());
     await expect(page.isFocused(firstButtonDropdown.findNativeButton().toSelector())).resolves.toBe(true);
 
     await page.refreshItems();

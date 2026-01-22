@@ -33,7 +33,7 @@ export default class ButtonDropdownPage extends BasePageObject {
     return this.findButtonDropdown().findNativeButton().toSelector();
   }
   public getItem(itemId: string) {
-    return this.findButtonDropdown().findItemById(itemId).toSelector();
+    return this.findButtonDropdown().findItemById(itemId)!.toSelector();
   }
 
   public getCategoryItem(itemId: string) {
@@ -45,14 +45,14 @@ export default class ButtonDropdownPage extends BasePageObject {
   }
 
   public getItemCount(itemId: string) {
-    return this.getElementsCount(this.findButtonDropdown().findItemById(itemId).toSelector());
+    return this.getElementsCount(this.findButtonDropdown().findItemById(itemId)!.toSelector());
   }
   public getAllItemsCount() {
     return this.getElementsCount(this.findButtonDropdown().findItems().toSelector());
   }
 
   public getHighlightedElementText() {
-    const element = this.findButtonDropdown().findHighlightedItem();
+    const element = this.findButtonDropdown().findHighlightedItem()!;
     return this.getText(element.toSelector());
   }
 

@@ -51,7 +51,7 @@ describe('Button Dropdown - Disabled Reason', () => {
   it(
     'closes on escape',
     setupTest(async page => {
-      await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
+      await page.hoverElement(page.findButtonDropdown().findItemById('connect')!.toSelector());
       await page.waitForVisible(page.findDisabledReason().toSelector());
       expect(await page.getDisabledReason()).toEqual('Instance must be running.');
       await page.keys('Escape');
@@ -64,10 +64,10 @@ describe('Button Dropdown - Disabled Reason', () => {
   it(
     'opens and closes on mouse hover',
     setupTest(async page => {
-      await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
+      await page.hoverElement(page.findButtonDropdown().findItemById('connect')!.toSelector());
       await page.waitForVisible(page.findDisabledReason().toSelector());
       expect(await page.getDisabledReason()).toEqual('Instance must be running.');
-      await page.hoverElement(page.findButtonDropdown().findItemById('manage-state').toSelector());
+      await page.hoverElement(page.findButtonDropdown().findItemById('manage-state')!.toSelector());
       await page.waitForVisible(page.findDisabledReason().toSelector());
       expect(await page.getDisabledReason()).toContain('Instance state must not be pending or stopping.');
       await page.hoverElement(page.findButtonDropdown().findExpandableCategoryById('settings').toSelector());
@@ -81,10 +81,10 @@ describe('Button Dropdown - Disabled Reason', () => {
     it(
       `opens and closes on click when mobile=${mobile}`,
       setupTest(async page => {
-        await page.click(page.findButtonDropdown().findItemById('manage-state').toSelector());
+        await page.click(page.findButtonDropdown().findItemById('manage-state')!.toSelector());
         await page.waitForVisible(page.findDisabledReason().toSelector());
         expect(await page.getDisabledReason()).toContain('Instance state must not be pending or stopping.');
-        await page.click(page.findButtonDropdown().findItemById('connect').toSelector());
+        await page.click(page.findButtonDropdown().findItemById('connect')!.toSelector());
         await page.waitForVisible(page.findDisabledReason().toSelector());
         expect(await page.getDisabledReason()).toEqual('Instance must be running.');
         await page.hoverElement(page.findButtonDropdown().findExpandableCategoryById('settings').toSelector());
@@ -128,7 +128,7 @@ describe('Button Dropdown - Disabled Reason', () => {
       expect(await page.getDisabledReason()).toEqual(
         'Instance must be running and not already be attached to an Auto Scaling Group.'
       );
-      await page.hoverElement(page.findButtonDropdown().findItemById('termination-protection').toSelector());
+      await page.hoverElement(page.findButtonDropdown().findItemById('termination-protection')!.toSelector());
       await page.waitForAssertion(async () =>
         expect(await page.isDisplayed(page.findDisabledReason().toSelector())).toBeFalsy()
       );
@@ -144,7 +144,7 @@ describe('Button Dropdown - Disabled Reason', () => {
           await page.toggleAlignment();
           await page.openDropdown();
         }
-        await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
+        await page.hoverElement(page.findButtonDropdown().findItemById('connect')!.toSelector());
         await page.waitForVisible(page.findDisabledReason().toSelector());
         expect(await page.overlapsDropdown()).toBeFalsy();
         await page.click(page.findButtonDropdown().findExpandableCategoryById('settings').toSelector());

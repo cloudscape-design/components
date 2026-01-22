@@ -44,7 +44,7 @@ test(
     await expect(page.getElementScroll(tableContainer.toSelector())).resolves.toEqual({ top: 0, left: 0 });
 
     await page.click(actionsDropdown.toSelector());
-    await page.click(actionsDropdown.findItemById('connect').toSelector());
+    await page.click(actionsDropdown.findItemById('connect')!.toSelector());
     await expect(page.getElementScroll(tableContainer.toSelector())).resolves.toEqual({ top: 0, left: 0 });
   })
 );
