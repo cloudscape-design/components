@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
+import Box from '~components/box';
 import Button from '~components/button';
 import FormField from '~components/form-field';
 import SegmentedControl from '~components/segmented-control';
@@ -200,20 +201,9 @@ export default function TooltipSimple() {
               <div onMouseDown={handleTooltipMouseDown} onMouseUp={handleTooltipMouseUp}>
                 <Tooltip
                   content={
-                    <div>
-                      <code
-                        style={{
-                          display: 'block',
-                          padding: '8px',
-                          background: '#232f3e',
-                          color: '#fff',
-                          borderRadius: '4px',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
-                      </code>
-                    </div>
+                    <Box variant="awsui-inline-code">
+                      {`const AWS = require('aws-sdk');\nAWS.config.update({\n  region: 'us-west-2'\n});`}
+                    </Box>
                   }
                   getTrack={() => codeRef.current}
                   position="bottom"
