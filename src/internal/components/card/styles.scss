@@ -67,6 +67,13 @@
   }
 }
 
+.header-inner,
+.actions {
+  display: flex;
+  align-items: center;
+  min-block-size: 32px;
+}
+
 .body {
   &:not(.no-padding) {
     padding-block-end: awsui.$space-card-vertical;
