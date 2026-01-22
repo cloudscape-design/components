@@ -28,7 +28,13 @@ class TooltipInternalWrapper extends PopoverWrapper {
 const dummyRef = { current: null };
 function renderTooltip(props: Partial<TooltipProps>) {
   const { container } = render(
-    <Tooltip trackRef={dummyRef} value={props.value ?? ''} onDismiss={props.onDismiss ?? (() => {})} />
+    <Tooltip
+      trackRef={dummyRef}
+      trackKey={props.trackKey}
+      value={props.value ?? ''}
+      contentAttributes={props.contentAttributes}
+      onDismiss={props.onDismiss ?? (() => {})}
+    />
   );
   return new TooltipInternalWrapper(container);
 }
@@ -57,6 +63,12 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ value: 'Value' });
 
     expect(wrapper.findHeader()).toBeNull();
+  });
+
+  it('contentAttributes work as expected', () => {
+    const wrapper = renderTooltip({ value: 'Value', contentAttributes: { 'aria-label': 'test-label' } });
+
+    expect(wrapper.findTooltip()!.getElement()).toHaveAttribute('aria-label', 'test-label');
   });
 
   it('calls onDismiss when an Escape keypress is detected anywhere', () => {
