@@ -75,6 +75,8 @@
   padding-inline-end: calc(#{awsui.$space-card-horizontal} - 4px);
   &-inner {
     @include styles.font-heading-s;
+    display: flex;
+    align-items: center;
     min-block-size: 32px;
   }
 }
@@ -95,8 +97,6 @@
   display: flex;
   > .header-inner {
     inline-size: 100%;
-    display: flex;
-    align-items: center;
   }
 }
 
