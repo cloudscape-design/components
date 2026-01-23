@@ -24,16 +24,10 @@ export default function InternalTooltip({
   className,
   position = 'top',
   onEscape,
-  trackKey,
   __internalRootRef,
   ...restProps
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
-
-  // Generate data-testid for internal testing
-  if (!trackKey && (typeof content === 'string' || typeof content === 'number')) {
-    trackKey = content;
-  }
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
 
   // Update the ref with the current tracked element
@@ -73,7 +67,6 @@ export default function InternalTooltip({
         className={clsx(testUtilStyles.root, baseProps.className)}
         ref={__internalRootRef}
         role="tooltip"
-        data-testid={trackKey}
       >
         <Transition in={true}>
           {() => (

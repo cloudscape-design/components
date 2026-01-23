@@ -214,11 +214,7 @@ export default function TooltipSimple() {
           </div>
         </SpaceBetween>
 
-        <div
-          onMouseEnter={() => handleMouseEnterTooltip('password')}
-          onMouseLeave={() => setActiveTooltip(null)}
-          style={{ display: 'inline-block' }}
-        >
+        <span onMouseEnter={() => handleMouseEnterTooltip('password')} onMouseLeave={() => setActiveTooltip(null)}>
           <label htmlFor="password-input" style={{ display: 'block', marginBottom: '4px' }}>
             Instance ID:
           </label>
@@ -255,7 +251,7 @@ export default function TooltipSimple() {
               />
             </div>
           )}
-        </div>
+        </span>
       </SpaceBetween>
     </SimplePage>
   );

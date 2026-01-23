@@ -40,10 +40,4 @@ export interface InternalTooltipProps extends TooltipProps {
    * Additional CSS class for the tooltip container.
    */
   className?: string;
-
-  /**
-   * Key used to generate data-testid for internal testing.
-   * If not provided and content is a string/number, content will be used as the testid.
-   */
-  trackKey?: string | number;
 }
