@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
