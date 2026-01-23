@@ -3,23 +3,11 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
 
-import styles from '../../../lib/components/popover/styles.selectors.js';
-import tooltipStyles from '../../../lib/components/tooltip/test-classes/styles.selectors.js';
-
-class TooltipInternalWrapper extends PopoverWrapper {
-  findTooltip(): ElementWrapper | null {
-    return createWrapper().findByClassName(tooltipStyles.root);
-  }
-  findContent(): ElementWrapper | null {
-    return createWrapper().findByClassName(styles.content);
-  }
-}
-
 function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.Position }) {
-  const { container } = render(
+  render(
     <Tooltip
       getTrack={props.getTrack ?? (() => null)}
       content={props.content ?? ''}
@@ -27,7 +15,7 @@ function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.
       position={props.position}
     />
   );
-  return new TooltipInternalWrapper(container);
+  return createWrapper().findTooltip()!;
 }
 
 describe('Tooltip', () => {
@@ -54,17 +42,16 @@ describe('Tooltip', () => {
   it('has tooltip role attribute', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
-    expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('role', 'tooltip');
+    expect(wrapper.getElement()).toHaveAttribute('role', 'tooltip');
   });
 
   it('renders ReactNode content correctly', () => {
-    renderTooltip({
+    const wrapper = renderTooltip({
       content: <div>Complex content</div>,
     });
 
-    const tooltip = createWrapper().findByClassName(tooltipStyles.root);
-    expect(tooltip).not.toBeNull();
-    expect(tooltip!.getElement()).toHaveTextContent('Complex content');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper.getElement()).toHaveTextContent('Complex content');
   });
 
   it('calls onEscape when an Escape keypress is detected anywhere', () => {
@@ -108,7 +95,7 @@ describe('Tooltip', () => {
       });
     }).not.toThrow();
 
-    expect(wrapper.findTooltip()).not.toBeNull();
+    expect(wrapper).not.toBeNull();
   });
 
   it('tracks element returned by getTrack', () => {
@@ -127,7 +114,7 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ content: 'Tooltip', getTrack });
 
     expect(getTrack).toHaveBeenCalled();
-    expect(wrapper.findTooltip()).not.toBeNull();
+    expect(wrapper).not.toBeNull();
   });
 
   it('handles getTrack returning SVG element', () => {
@@ -138,7 +125,7 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ content: 'SVG Tooltip', getTrack });
 
     expect(getTrack).toHaveBeenCalled();
-    expect(wrapper.findTooltip()).not.toBeNull();
+    expect(wrapper).not.toBeNull();
   });
 
   it('updates tracked element when getTrack changes', () => {
@@ -178,7 +165,7 @@ describe('Tooltip', () => {
     );
 
     const parent = container.querySelector('[data-testid="parent"]');
-    const tooltip = createWrapper().findByClassName(tooltipStyles.root);
+    const tooltip = createWrapper().findTooltip();
 
     // Tooltip should not be a child of the parent div due to Portal
     expect(parent).not.toContainElement(tooltip?.getElement() ?? null);
