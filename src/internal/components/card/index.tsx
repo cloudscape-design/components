@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalIcon from '../../../icon/internal';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { InternalCardProps } from './interfaces';
 
@@ -21,34 +22,47 @@ export default function Card({
   onFocus,
   role,
   tagName: TagName = 'div',
+  variant = 'default',
   disableContentPaddings,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
+  const hasActions = !!actions || variant === 'action';
+
+  const InnerTagName = variant === 'action' ? 'button' : 'div';
+
   return (
     <TagName
       className={clsx(className, styles.root, {
-        [styles['with-actions']]: !!actions,
-        [styles.active]: active,
+        [styles['with-actions']]: !!hasActions,
       })}
       onFocus={onFocus}
       role={role}
       {...metadataAttributes}
     >
-      <div
-        className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
+      <InnerTagName
+        className={clsx(
+          styles['card-inner'],
+          styles[`variant-${variant}`],
+          isRefresh && styles.refresh,
+          active && [styles.active]
+        )}
         {...innerMetadataAttributes}
         onClick={onClick}
       >
         <div className={styles.header}>
           <div className={styles['header-top-row']}>
             <div className={styles['header-inner']}>{header}</div>
-            {actions && <div className={styles.actions}>{actions}</div>}
+            {hasActions && (
+              <div className={styles.actions}>
+                <div className={styles['actions-inner']}>{actions || <InternalIcon name="angle-right" />}</div>
+              </div>
+            )}
           </div>
           {description && <div className={styles.description}>{description}</div>}
         </div>
         <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
-      </div>
+      </InnerTagName>
     </TagName>
   );
 }

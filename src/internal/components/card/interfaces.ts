@@ -53,11 +53,13 @@ export interface InternalCardProps extends BaseComponentProps {
 
   role?: string;
 
-  tagName?: 'li' | 'div';
+  tagName?: 'li' | 'div' | 'button';
 
   disableContentPaddings?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
 
   innerMetadataAttributes?: Record<string, string | undefined>;
+
+  variant?: 'action' | 'default';
 }

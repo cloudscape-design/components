@@ -5,16 +5,25 @@
 
 @use 'sass:math';
 
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use './motion';
 
 @mixin card-style {
+  @include styles.styles-reset();
+
   border-start-start-radius: awsui.$border-radius-container;
   border-start-end-radius: awsui.$border-radius-container;
   border-end-start-radius: awsui.$border-radius-container;
   border-end-end-radius: awsui.$border-radius-container;
   box-sizing: border-box;
+
+  // Override button styles for action cards
+  padding-inline: 0;
+  border-block: 0 none;
+  border-inline: 0 none;
+  user-select: text;
 
   &::before {
     @include styles.base-pseudo-element;
@@ -39,13 +48,16 @@
     box-shadow: awsui.$shadow-container;
   }
   &.refresh::after {
-    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
-    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid awsui.$border-divider-section-width;
+    border-inline: solid awsui.$border-divider-section-width;
+  }
+  &:not(.variant-action)::after {
+    border-color: awsui.$color-border-divider-default;
   }
 }
 
 .root {
-  @include styles.styles-reset();
+  background-color: transparent;
   display: flex;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -56,16 +68,58 @@
   list-style: none;
 }
 
+.actions-inner {
+  flex-shrink: 0;
+}
+
 .card-inner {
   position: relative;
   background-color: awsui.$color-background-container-content;
-  margin-block-start: 0;
-  margin-block-end: awsui.$space-grid-gutter;
-  margin-inline-start: awsui.$space-grid-gutter;
-  margin-inline-end: 0;
   inline-size: 100%;
   min-inline-size: 0;
   @include card-style;
+  /* stylelint-disable-next-line selector-combinator-disallowed-list */
+  &:not(.active):not(:hover) .actions-inner {
+    color: awsui.$color-border-button-normal-default;
+  }
+  &.active {
+    &::before {
+      border-block: awsui.$border-item-width solid;
+      border-inline: awsui.$border-item-width solid;
+    }
+    &:not(.variant-action) {
+      background-color: awsui.$color-background-item-selected;
+      &::before {
+        border-color: awsui.$color-border-item-selected;
+      }
+    }
+    &.variant-action::before {
+      border-color: awsui.$color-border-button-normal-hover;
+    }
+  }
+  &.variant-action {
+    cursor: pointer;
+
+    &:not(:hover) {
+      &::after {
+        border-color: awsui.$color-border-button-normal-default;
+      }
+    }
+    &:hover::after {
+      border-color: awsui.$color-border-button-normal-hover;
+    }
+    @include focus-visible.when-visible {
+      &::before {
+        border-block-width: 1px;
+        border-inline-width: 1px;
+      }
+      @include styles.focus-highlight(
+        $gutter: 0,
+        $border-radius: awsui.$border-radius-container,
+        $box-shadow: styles.$box-shadow-focused-light
+      );
+    }
+  }
 }
 
 .header {
@@ -102,20 +156,6 @@
   > .header-inner {
     inline-size: 100%;
   }
-}
-
-.active {
-  > .card-inner {
-    background-color: awsui.$color-background-item-selected;
-    &::before {
-      border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
-      border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
-    }
-  }
-}
-
-.actions {
-  flex-shrink: 0;
 }
 
 .description {

@@ -74,7 +74,12 @@
 }
 
 .card {
-  /* Used in test utils */
+  margin-block-start: 0;
+  margin-block-end: awsui.$space-grid-gutter;
+  margin-inline-start: awsui.$space-grid-gutter;
+  margin-inline-end: 0;
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
 .card-header-inner {
