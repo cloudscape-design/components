@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalIcon from '../../../icon/internal';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { InternalCardProps } from './interfaces';
 
@@ -18,8 +19,11 @@ export default function Card({
   metadataAttributes,
   onClick,
   disableContentPaddings,
+  variant = 'default',
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
+
+  const hasActions = !!actions || variant === 'action';
 
   return (
     <div
@@ -38,7 +42,11 @@ export default function Card({
       <div className={styles.header}>
         <div className={styles['header-top-row']}>
           <div className={styles['header-inner']}>{header}</div>
-          {actions && <div className={styles.actions}>{actions}</div>}
+          {hasActions && (
+            <div className={styles.actions}>
+              <div className={styles['actions-inner']}>{actions || <InternalIcon name="angle-right" />}</div>
+            </div>
+          )}
         </div>
         {description && <div className={styles.description}>{description}</div>}
       </div>

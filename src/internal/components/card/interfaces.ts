@@ -52,4 +52,6 @@ export interface InternalCardProps extends BaseComponentProps {
   disableContentPaddings?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
+
+  variant?: 'action' | 'default';
 }
