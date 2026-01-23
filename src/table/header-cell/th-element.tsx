@@ -15,6 +15,7 @@ import { getTableColHeaderRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
 import { SortingStatus } from './utils';
 
+import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
@@ -80,6 +81,7 @@ export function TableThElement({
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
+        analyticsSelectors['body-cell-content'],
         sticky && styles['header-cell-sticky'],
         resizable && styles['header-cell-resizable'],
         stuck && styles['header-cell-stuck'],

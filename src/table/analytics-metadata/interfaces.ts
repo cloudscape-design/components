@@ -55,6 +55,9 @@ export interface GeneratedAnalyticsMetadataTableComponent {
     sortingColumnId?: string;
     sortingDescending?: string;
     variant: string;
+    columnsLabel?: string[] | LabelIdentifier[];
+    selectedItemsLabel?: string | Array<Array<string | LabelIdentifier>>;
+    selectedItems?: string[];
   };
   innerContext?: {
     position: string;
