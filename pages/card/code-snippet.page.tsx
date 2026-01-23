@@ -23,6 +23,7 @@ print(f'New file uploaded: {key} in bucket {bucket}')
 return {'statusCode': 200}"
             copySuccessText="Code copied"
             copyErrorText="Error while copying text"
+            copyButtonAriaLabel="Copy code"
           />
         }
       >
