@@ -69,7 +69,7 @@ const IconToggleButtonItem = forwardRef(
         </InternalToggleButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
-            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+            className={testUtilStyles['button-group-tooltip']}
             getTrack={() => containerRef.current}
             content={
               (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text

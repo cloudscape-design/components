@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { FileInputProps } from '../file-input/interfaces.js';
 import InternalFileInput from '../file-input/internal.js';
@@ -28,7 +27,7 @@ const FileInputItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalFileInput
-          className={clsx(testUtilStyles['button-group-item'])}
+          className={testUtilStyles['button-group-item']}
           ref={ref}
           variant="icon"
           ariaLabel={item.text}
@@ -47,7 +46,7 @@ const FileInputItem = forwardRef(
         />
         {canShowTooltip && (
           <Tooltip
-            className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+            className={testUtilStyles['button-group-tooltip']}
             getTrack={() => containerRef.current}
             content={item.text}
             onEscape={onTooltipDismiss}
