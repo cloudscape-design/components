@@ -22,7 +22,7 @@ describe('Tooltip', () => {
   it('renders text content correctly', () => {
     const wrapper = renderTooltip({ content: 'Success message' });
 
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Success message');
+    expect(wrapper.getElement()).toHaveTextContent('Success message');
   });
 
   it('renders React element content correctly', () => {
@@ -34,9 +34,8 @@ describe('Tooltip', () => {
       ),
     });
 
-    const contentElement = wrapper.findContent()!.getElement();
-    expect(contentElement).toHaveTextContent('Bold text and normal text');
-    expect(contentElement.querySelector('strong')).toHaveTextContent('Bold text');
+    expect(wrapper.getElement()).toHaveTextContent('Bold text and normal text');
+    expect(wrapper.getElement().querySelector('strong')).toHaveTextContent('Bold text');
   });
 
   it('has tooltip role attribute', () => {
