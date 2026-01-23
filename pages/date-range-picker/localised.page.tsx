@@ -22,7 +22,6 @@ const localizedErrors = {
 
 export default function DatePickerScenario() {
   const { props, settings, setSettings } = useDateRangePickerSettings({ hasValue: false });
-
   return (
     <SimplePage
       title="Date range picker: localized"
