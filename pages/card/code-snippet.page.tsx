@@ -27,7 +27,7 @@ return {'statusCode': 200}"
         }
       >
         <Box variant="code">
-          <pre style={{ backgroundColor: '#f8f8f8', borderRadius: 8, margin: 0, padding: 8 }}>
+          <pre style={{ backgroundColor: 'light-dark(#f8f8f8, #ffffff1a)', borderRadius: 8, margin: 0, padding: 8 }}>
             {`def lambda_handler(event, context):
   bucket = event['Records'][0]['s3']['bucket']['name']
   key = event['Records'][0]['s3']['object']['key']
