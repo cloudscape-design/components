@@ -10933,6 +10933,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "datePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "dateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11100,6 +11105,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "startTimeLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "timePlaceholder",
             "optional": true,
             "type": "string",
           },
