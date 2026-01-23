@@ -16,12 +16,6 @@ class TooltipInternalWrapper extends PopoverWrapper {
   findContent(): ElementWrapper | null {
     return createWrapper().findByClassName(styles.content);
   }
-  findArrow(): ElementWrapper | null {
-    return createWrapper().findByClassName(styles.arrow);
-  }
-  findHeader(): ElementWrapper | null {
-    return createWrapper().findByClassName(styles.header);
-  }
 }
 
 function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.Position }) {
