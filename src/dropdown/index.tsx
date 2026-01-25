@@ -11,7 +11,7 @@ import InternalDropdown from './internal';
 export { DropdownProps };
 
 const Dropdown = ({
-  children,
+  content,
   trigger,
   open,
   onDropdownClose,
@@ -25,7 +25,6 @@ const Dropdown = ({
   stretchBeyondTriggerWidth = false,
   expandToViewport = false,
   preferCenter = false,
-  interior = false,
   minWidth,
   scrollable = true,
   loopFocus,
@@ -41,7 +40,6 @@ const Dropdown = ({
   const baseComponentProps = useBaseComponent('Dropdown', {
     props: {
       expandToViewport,
-      interior,
       preferCenter,
       stretchBeyondTriggerWidth,
       stretchHeight,
@@ -68,7 +66,6 @@ const Dropdown = ({
       stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
       expandToViewport={expandToViewport}
       preferCenter={preferCenter}
-      interior={interior}
       minWidth={minWidth}
       scrollable={scrollable}
       loopFocus={loopFocus}
@@ -80,7 +77,7 @@ const Dropdown = ({
       ariaLabelledby={ariaLabelledby}
       ariaDescribedby={ariaDescribedby}
     >
-      {children}
+      {content}
     </InternalDropdown>
   );
 };
