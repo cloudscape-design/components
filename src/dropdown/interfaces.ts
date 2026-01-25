@@ -58,7 +58,7 @@ export interface DropdownProps extends ExpandToViewport {
   /**
    * Dropdown content elements.
    */
-  children?: React.ReactNode;
+  content?: React.ReactNode;
   /**
    * Updating content key triggers dropdown position re-evaluation.
    */
@@ -107,10 +107,6 @@ export interface DropdownProps extends ExpandToViewport {
    */
   preferCenter?: boolean;
 
-  /**
-   * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
-   */
-  interior?: boolean;
   /**
    * Sets the min width of the dropdown (in px)
    */
@@ -168,6 +164,8 @@ export interface ExpandToViewport {
   expandToViewport?: boolean;
 }
 
-export interface InternalDropdownProps extends DropdownProps {
+export interface InternalDropdownProps extends Omit<DropdownProps, 'content' | 'interior'> {
+  children?: React.ReactNode;
+  interior?: boolean;
   onMouseDown?: React.MouseEventHandler;
 }
