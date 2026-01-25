@@ -11525,6 +11525,251 @@ It should contain the only \`h2\` used in the drawer.",
 }
 `;
 
+exports[`Components definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "dashCaseName": "dropdown",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when focus leaves the trigger or dropdown content.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onBlur",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when a user clicks outside of the dropdown content, when it is open.",
+      "name": "onDropdownClose",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus enters the trigger or dropdown content.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocus",
+    },
+  ],
+  "functions": [],
+  "name": "Dropdown",
+  "properties": [
+    {
+      "description": "Describedby for the dropdown (recommended when role="dialog")",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Labelledby for the dropdown (required when role="dialog")",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Updating content key triggers dropdown position re-evaluation.",
+      "name": "contentKey",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "ID for the dropdown content wrapper",
+      "name": "dropdownContentId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "HTML role for the dropdown content wrapper",
+      "name": "dropdownContentRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Dropdown id",
+      "name": "dropdownId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+      "name": "expandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).",
+      "name": "interior",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Whether the dropdown will have a focus loop including trigger, header, content and footer.",
+      "name": "loopFocus",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Sets the min width of the dropdown (in px)",
+      "name": "minWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Open state of the dropdown.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines that the dropdown should preferably be aligned to the center of the trigger
+instead of dropping left or right.",
+      "name": "preferCenter",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Whether the dropdown will have a scrollbar or not",
+      "name": "scrollable",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Whether the dropdown content can grow beyond the width of the trigger.",
+      "name": "stretchBeyondTriggerWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Stretches dropdown to occupy entire height.",
+      "name": "stretchHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Whether the dropdown content should be at least as wide as the trigger.",
+      "name": "stretchToTriggerWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Stretches the trigger to the height of the dropdown container.",
+      "name": "stretchTriggerHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "true",
+      "description": "Stretches dropdown to occupy entire width.",
+      "name": "stretchWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Dropdown content elements.",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "Footer slot fixed at the bottom of the dropdown",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": ""Sticky" header of the dropdown content",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Trigger element.",
+      "isDefault": false,
+      "name": "trigger",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
 {
   "dashCaseName": "error-boundary",
@@ -36673,6 +36918,24 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findAction",
           "parameters": [],
           "returnType": {
@@ -46543,6 +46806,19 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
     },
     {
       "methods": [
