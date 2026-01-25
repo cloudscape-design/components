@@ -6,6 +6,8 @@ type SearchableField = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagField = 'tags' | 'filteringTags';
 
 const searchableFields: SearchableField[] = ['value', 'label', 'description', 'labelTag'];
+const searchableTagFieldsStrict: SearchableTagField[] = ['tags'];
+const searchableTagFieldsNonStrict: SearchableTagField[] = ['tags', 'filteringTags'];
 
 export const matchesString = (value: string | undefined, searchText: string, strictMatching: boolean): boolean => {
   if (!value) {
@@ -15,18 +17,13 @@ export const matchesString = (value: string | undefined, searchText: string, str
   return strictMatching ? index === 0 : index > -1;
 };
 
-const matchesSingleOption = (dropdownOption: DropdownOption, text: string, strictMatching: boolean): boolean => {
-  const searchText = text.toLowerCase();
-
+const matchesSingleOption = (dropdownOption: DropdownOption, searchText: string, strictMatching: boolean): boolean => {
   const option: OptionDefinition = dropdownOption.option;
   const searchStrFields = (attr: SearchableField) => matchesString(option[attr], searchText, strictMatching);
   const searchTagsFields = (attr: SearchableTagField) =>
     option[attr]?.some(value => matchesString(value, searchText, strictMatching));
 
-  const searchableTagFields: SearchableTagField[] = ['tags'];
-  if (!strictMatching) {
-    searchableTagFields.push('filteringTags');
-  }
+  const searchableTagFields = strictMatching ? searchableTagFieldsStrict : searchableTagFieldsNonStrict;
 
   return searchableFields.some(searchStrFields) || searchableTagFields.some(searchTagsFields);
 };
@@ -40,13 +37,14 @@ export const filterOptions = (
     return options;
   }
 
+  const normalizedSearchText = searchText.toLowerCase();
   let currentGroup: DropdownOption | null = null;
   let parentMatched = false;
   return options.reduce<DropdownOption[]>((acc, option) => {
     if (option.type === 'parent') {
       parentMatched = false;
       currentGroup = option;
-      if (matchesSingleOption(option, searchText, strictMatching)) {
+      if (matchesSingleOption(option, normalizedSearchText, strictMatching)) {
         parentMatched = true;
         acc.push(currentGroup);
       }
@@ -58,7 +56,7 @@ export const filterOptions = (
     }
     if (parentMatched) {
       acc.push(option);
-    } else if (matchesSingleOption(option, searchText, strictMatching)) {
+    } else if (matchesSingleOption(option, normalizedSearchText, strictMatching)) {
       if (currentGroup) {
         acc.push(currentGroup);
         currentGroup = null;
