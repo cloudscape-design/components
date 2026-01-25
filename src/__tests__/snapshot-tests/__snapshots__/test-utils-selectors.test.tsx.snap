@@ -250,6 +250,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
+  "dropdown": [
+    "awsui_dropdown_9duf6",
+    "awsui_root_9duf6",
+  ],
   "error-boundary": [
     "awsui_action_11u4a",
     "awsui_description_11u4a",

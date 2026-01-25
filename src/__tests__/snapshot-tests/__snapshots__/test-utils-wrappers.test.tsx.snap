@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Generate test utils ElementWrapper dom ElementWrapper matches the snapshot 1`] = `
 "
@@ -37,6 +37,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
@@ -126,6 +127,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
@@ -721,6 +723,25 @@ findDrawer(selector?: string): DrawerWrapper | null;
  * @returns {Array<DrawerWrapper>}
  */
 findAllDrawers(selector?: string): Array<DrawerWrapper>;
+/**
+ * Returns the wrapper of the first Dropdown that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Dropdown.
+ * If no matching Dropdown is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DropdownWrapper | null}
+ */
+findDropdown(selector?: string): DropdownWrapper | null;
+
+/**
+ * Returns an array of Dropdown wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Dropdowns inside the current wrapper.
+ * If no matching Dropdown is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DropdownWrapper>}
+ */
+findAllDropdowns(selector?: string): Array<DropdownWrapper>;
 /**
  * Returns the wrapper of the first ErrorBoundary that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first ErrorBoundary.
@@ -2210,6 +2231,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findDropdown = function(selector) {
+  let rootSelector = \`.\${DropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DropdownWrapper && DropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DropdownWrapper.rootSelector}, .\${DropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllDropdowns = function(selector) {
+  return this.findAllComponents(DropdownWrapper, selector);
+};
 ElementWrapper.prototype.findErrorBoundary = function(selector) {
   let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
   if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
@@ -3025,6 +3059,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
@@ -3114,6 +3149,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
@@ -3653,6 +3689,23 @@ findDrawer(selector?: string): DrawerWrapper;
  * @returns {MultiElementWrapper<DrawerWrapper>}
  */
 findAllDrawers(selector?: string): MultiElementWrapper<DrawerWrapper>;
+/**
+ * Returns a wrapper that matches the Dropdowns with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Dropdowns.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DropdownWrapper}
+ */
+findDropdown(selector?: string): DropdownWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Dropdowns with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Dropdowns.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<DropdownWrapper>}
+ */
+findAllDropdowns(selector?: string): MultiElementWrapper<DropdownWrapper>;
 /**
  * Returns a wrapper that matches the ErrorBoundaries with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches ErrorBoundaries.
@@ -5023,6 +5076,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
+};
+ElementWrapper.prototype.findDropdown = function(selector) {
+  let rootSelector = \`.\${DropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DropdownWrapper && DropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DropdownWrapper.rootSelector}, .\${DropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllDropdowns = function(selector) {
+  return this.findAllComponents(DropdownWrapper, selector);
 };
 ElementWrapper.prototype.findErrorBoundary = function(selector) {
   let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
