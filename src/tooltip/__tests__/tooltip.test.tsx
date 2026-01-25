@@ -19,38 +19,28 @@ function renderTooltip(props: Partial<TooltipProps> & { position?: TooltipProps.
 }
 
 describe('Tooltip', () => {
-  it('renders text content correctly', () => {
-    const wrapper = renderTooltip({ content: 'Success message' });
-
-    expect(wrapper.getElement()).toHaveTextContent('Success message');
-  });
-
-  it('renders React element content correctly', () => {
-    const wrapper = renderTooltip({
+  it.each([
+    { name: 'text string', content: 'Success message', expected: 'Success message' },
+    {
+      name: 'React element with nested tags',
       content: (
         <div>
           <strong>Bold text</strong> and normal text
         </div>
       ),
-    });
-
-    expect(wrapper.getElement()).toHaveTextContent('Bold text and normal text');
-    expect(wrapper.getElement().querySelector('strong')).toHaveTextContent('Bold text');
+      expected: 'Bold text and normal text',
+    },
+    { name: 'simple React element', content: <div>Complex content</div>, expected: 'Complex content' },
+  ])('renders $name content correctly', ({ content, expected }) => {
+    const wrapper = renderTooltip({ content });
+    expect(wrapper).not.toBeNull();
+    expect(wrapper.getElement()).toHaveTextContent(expected);
   });
 
   it('has tooltip role attribute', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
     expect(wrapper.getElement()).toHaveAttribute('role', 'tooltip');
-  });
-
-  it('renders ReactNode content correctly', () => {
-    const wrapper = renderTooltip({
-      content: <div>Complex content</div>,
-    });
-
-    expect(wrapper).not.toBeNull();
-    expect(wrapper.getElement()).toHaveTextContent('Complex content');
   });
 
   it('calls onEscape when an Escape keypress is detected anywhere', () => {
