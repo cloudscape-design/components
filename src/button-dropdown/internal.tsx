@@ -58,6 +58,7 @@ const InternalButtonDropdown = React.forwardRef(
       position,
       nativeMainActionAttributes,
       nativeTriggerAttributes,
+      renderItem,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -414,6 +415,7 @@ const InternalButtonDropdown = React.forwardRef(
               analyticsMetadataTransformer={analyticsMetadataTransformer}
               linkStyle={linkStyle}
               position={position}
+              renderItem={renderItem}
             />
           </OptionsList>
         </Dropdown>
