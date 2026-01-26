@@ -75,11 +75,11 @@
 
 .card-header-inner {
   /* Used in test utils */
-  padding-block-start: 4px;
 }
 
 .card-header {
   @include styles.font-heading-m;
+  padding-block-start: 8px;
 }
 
 .section {

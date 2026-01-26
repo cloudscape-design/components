@@ -64,8 +64,8 @@
   background-color: awsui.$color-background-container-content;
   margin-block: 0;
   margin-inline: 0;
-  padding-block: awsui.$space-card-vertical;
-  padding-inline: awsui.$space-card-horizontal;
+  padding-block: 0;
+  padding-inline: 0;
   inline-size: 100%;
   min-inline-size: 0;
   @include card-style;
@@ -73,12 +73,10 @@
 
 .header {
   padding-block-start: 8px;
-  padding-block-end: 4px;
   padding-inline-start: awsui.$space-card-horizontal;
   padding-inline-end: calc(#{awsui.$space-card-horizontal} - 4px);
   &-inner {
     @include styles.font-heading-s;
-    min-block-size: 32px;
   }
 }
 
@@ -96,8 +94,10 @@
 
 .with-actions > .card-inner > .header > .header-top-row {
   display: flex;
+  inline-size: 100%;
+  justify-content: space-between;
   > .header-inner {
-    inline-size: 100%;
+    min-block-size: 32px;
     display: flex;
     align-items: center;
   }
@@ -119,4 +119,5 @@
 
 .description {
   color: awsui.$color-text-heading-secondary;
+  margin-block-end: 4px;
 }
