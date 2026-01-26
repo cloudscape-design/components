@@ -53,6 +53,7 @@ function isAppLayoutPage(pageId?: string) {
     'charts.test',
     'error-boundary/demo-async-load',
     'error-boundary/demo-components',
+    'feature-notifications',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

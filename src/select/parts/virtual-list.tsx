@@ -108,12 +108,7 @@ const VirtualListOpen = forwardRef(
     return (
       <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
         {finalOptions}
-        <div
-          aria-hidden="true"
-          key="total-size"
-          className={styles['layout-strut']}
-          style={{ height: totalSize - stickySize }}
-        />
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}

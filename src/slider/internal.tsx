@@ -14,6 +14,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import Tooltip from '../tooltip/internal.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
+import { getSliderStyles } from './styles.js';
 import SliderTickMarks from './tick-marks.js';
 import {
   findLowerAndHigherValues,
@@ -26,7 +27,9 @@ import {
 
 import styles from './styles.css.js';
 
-interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
+interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {
+  style?: SliderProps['style'];
+}
 
 export default function InternalSlider({
   value,
@@ -43,6 +46,7 @@ export default function InternalSlider({
   hideFillLine,
   valueFormatter,
   i18nStrings,
+  style,
   __internalRootRef,
   ...rest
 }: InternalSliderProps) {
@@ -125,7 +129,12 @@ export default function InternalSlider({
   const thumbSize = readOnly ? THUMB_READONLY_SIZE : THUMB_SIZE;
 
   return (
-    <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+    <div
+      {...baseProps}
+      ref={__internalRootRef}
+      className={clsx(baseProps.className, styles.root)}
+      style={getSliderStyles(style)}
+    >
       <div
         onMouseEnter={() => {
           setShowTooltip(true);
