@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSliderStyles handles all possible style configurations 1`] = `
+{
+  "--awsui-style-slider-handle-background-active-4hh3rt": undefined,
+  "--awsui-style-slider-handle-background-default-4hh3rt": undefined,
+  "--awsui-style-slider-handle-background-hover-4hh3rt": undefined,
+  "--awsui-style-slider-handle-border-radius-4hh3rt": undefined,
+  "--awsui-style-slider-range-background-active-4hh3rt": undefined,
+  "--awsui-style-slider-range-background-default-4hh3rt": undefined,
+  "--awsui-style-slider-track-background-color-4hh3rt": undefined,
+}
+`;
+
+exports[`getSliderStyles handles all possible style configurations 2`] = `
+{
+  "--awsui-style-slider-handle-background-active-4hh3rt": undefined,
+  "--awsui-style-slider-handle-background-default-4hh3rt": undefined,
+  "--awsui-style-slider-handle-background-hover-4hh3rt": undefined,
+  "--awsui-style-slider-handle-border-radius-4hh3rt": undefined,
+  "--awsui-style-slider-range-background-active-4hh3rt": undefined,
+  "--awsui-style-slider-range-background-default-4hh3rt": undefined,
+  "--awsui-style-slider-track-background-color-4hh3rt": undefined,
+}
+`;
+
+exports[`getSliderStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-style-slider-handle-background-active-4hh3rt": "#1d4ed8",
+  "--awsui-style-slider-handle-background-default-4hh3rt": "#3b82f6",
+  "--awsui-style-slider-handle-background-hover-4hh3rt": "#2563eb",
+  "--awsui-style-slider-handle-border-radius-4hh3rt": "50%",
+  "--awsui-style-slider-range-background-active-4hh3rt": "#2563eb",
+  "--awsui-style-slider-range-background-default-4hh3rt": "#3b82f6",
+  "--awsui-style-slider-track-background-color-4hh3rt": "#dbeafe",
+}
+`;

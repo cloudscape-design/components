@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import { Multiselect, MultiselectProps } from '~components';
+import { Multiselect, MultiselectProps, Toggle } from '~components';
 import { SelectProps } from '~components/select';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { i18nStrings } from './constants';
 const lotsOfOptions: SelectProps.Options = [...Array(50)].map((_, index) => ({
@@ -31,8 +32,16 @@ const options: SelectProps.Options = [
   ...lotsOfOptions,
   { label: 'Last option', disabled: false, disabledReason: 'disabled reason' },
 ];
+type PageContext = React.Context<
+  AppContextType<{
+    virtualScroll?: boolean;
+  }>
+>;
 
 export default function SelectPage() {
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const virtualScroll = urlParams.virtualScroll ?? false;
+
   const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>([]);
   const renderOptionItem: MultiselectProps.MultiselectOptionItemRenderer = ({ item }) => {
     if (item.type === 'select-all') {
@@ -47,14 +56,30 @@ export default function SelectPage() {
   };
 
   return (
-    <SimplePage title="Multiselect with custom item renderer" screenshotArea={{}}>
-      <div style={{ inlineSize: '400px' }}>
+    <SimplePage
+      title="Multiselect with custom item renderer"
+      settings={
+        <Toggle
+          checked={!!urlParams.virtualScroll}
+          onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
+        >
+          Virtual Scroll
+        </Toggle>
+      }
+      screenshotArea={{
+        style: {
+          padding: 10,
+        },
+      }}
+    >
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
         <Multiselect
+          virtualScroll={virtualScroll}
           enableSelectAll={true}
           i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
           filteringType={'auto'}
           renderOption={renderOptionItem}
-          placeholder="Choose option"
+          placeholder={`Choose option ${virtualScroll ? '(virtual)' : ''}`}
           selectedOptions={selectedOptions}
           onChange={event => {
             setSelectedOptions(event.detail.selectedOptions);

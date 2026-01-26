@@ -18,5 +18,6 @@ export interface GeneratedAnalyticsMetadataSelectComponent {
   properties: {
     disabled: string;
     selectedOptionValue: string;
+    selectedOption: string;
   };
 }

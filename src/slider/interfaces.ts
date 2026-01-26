@@ -82,6 +82,11 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
    * being included in a form submission. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  /**
+   * @awsuiSystem core
+   */
+  style?: SliderProps.Style;
 }
 
 export namespace SliderProps {
@@ -93,5 +98,25 @@ export namespace SliderProps {
       The aria value text displayed when the slider value is between two labeled values.
      */
     valueTextRange: (previousValue: string, value: number, nextValue: string) => string;
+  }
+
+  export interface Style {
+    track?: {
+      backgroundColor?: string;
+    };
+    range?: {
+      backgroundColor?: {
+        default?: string;
+        active?: string;
+      };
+    };
+    handle?: {
+      backgroundColor?: {
+        default?: string;
+        hover?: string;
+        active?: string;
+      };
+      borderRadius?: string;
+    };
   }
 }

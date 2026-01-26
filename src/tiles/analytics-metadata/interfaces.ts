@@ -17,5 +17,6 @@ export interface GeneratedAnalyticsMetadataTilesComponent {
   label: string | LabelIdentifier;
   properties: {
     value: string;
+    valueLabel: string;
   };
 }

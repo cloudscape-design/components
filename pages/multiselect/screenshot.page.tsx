@@ -36,11 +36,11 @@ export default function () {
       <h1>Multiselect for screenshot</h1>
 
       <button id="toggle-virtual" onClick={() => setVirtualScroll(vs => !vs)}>
-        Toggle virtual scroll
+        Toggle virtual scroll: {virtualScroll ? 'on' : 'off'}
       </button>
 
       <button id="toggle-error" onClick={() => setShowError(show => !show)}>
-        Toggle error
+        Toggle error: {showError ? 'on' : 'off'}
       </button>
 
       <ScreenshotArea

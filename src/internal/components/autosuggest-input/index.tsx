@@ -18,6 +18,7 @@ import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { KeyCode } from '../../keycode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
@@ -120,6 +121,8 @@ const AutosuggestInput = React.forwardRef(
       fireNonCancelableEvent(onCloseDropdown, null);
     };
 
+    const { isComposing } = useIMEComposition(inputRef);
+
     useImperativeHandle(ref, () => ({
       focus(options?: AutosuggestInputFocusOptions) {
         if (options?.preventDropdown) {
@@ -180,6 +183,11 @@ const AutosuggestInput = React.forwardRef(
           break;
         }
         case KeyCode.enter: {
+          if (isComposing()) {
+            event.preventDefault();
+            return;
+          }
+
           if (open) {
             if (!onPressEnter?.()) {
               closeDropdown();
