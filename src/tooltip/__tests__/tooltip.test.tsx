@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Tooltip, { TooltipProps } from '../../../lib/components/tooltip';
@@ -64,27 +64,20 @@ describe('Tooltip', () => {
 
     renderTooltip({ content: 'Value', onEscape });
 
-    act(() => {
-      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    });
+    fireEvent.keyDown(document.body, { key: 'Enter' });
     expect(onEscape).not.toHaveBeenCalled();
 
-    act(() => {
-      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
-    });
+    fireEvent.keyDown(document.body, { key: 'Tab' });
     expect(onEscape).not.toHaveBeenCalled();
   });
 
   it('works without onEscape callback', () => {
     const wrapper = renderTooltip({ content: 'Value' });
 
-    expect(() => {
-      act(() => {
-        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-      });
-    }).not.toThrow();
+    fireEvent.keyDown(document.body, { key: 'Escape' });
 
-    expect(wrapper).not.toBeNull();
+    // Verify the component is still rendered after Escape keypress
+    expect(wrapper.getElement()).toBeInTheDocument();
   });
 
   it('tracks element returned by getTrack', () => {
@@ -138,9 +131,7 @@ describe('Tooltip', () => {
 
     unmount();
 
-    act(() => {
-      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-    });
+    fireEvent.keyDown(document.body, { key: 'Escape' });
 
     // After unmount, the event listener should be removed, so onEscape should not be called
     expect(onEscape).not.toHaveBeenCalled();
@@ -160,5 +151,14 @@ describe('Tooltip', () => {
     expect(parent).not.toContainElement(tooltip?.getElement() ?? null);
     // But tooltip should exist in the document
     expect(tooltip).not.toBeNull();
+  });
+
+  it('findContent returns the tooltip content element', () => {
+    const wrapper = renderTooltip({ content: 'Test tooltip content' });
+
+    const content = wrapper.findContent();
+
+    expect(content).not.toBeNull();
+    expect(content!.getElement()).toHaveTextContent('Test tooltip content');
   });
 });
