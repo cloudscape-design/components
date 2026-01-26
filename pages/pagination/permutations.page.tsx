@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 import Pagination, { PaginationProps } from '~components/pagination';
 
 import createPermutations from '../utils/permutations';
@@ -26,16 +28,17 @@ const permutations = createPermutations<PaginationProps>([
     pagesCount: [15],
     openEnd: [true, false],
     ariaLabels: [paginationLabels],
+    jumpToPage: [undefined, { loading: false }, { loading: true }],
   },
 ]);
 
 export default function PaginationPermutations() {
   return (
-    <>
+    <I18nProvider messages={[messages]} locale="en">
       <h1>Pagination permutations</h1>
       <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <Pagination {...permutation} />} />
       </ScreenshotArea>
-    </>
+    </I18nProvider>
   );
 }
