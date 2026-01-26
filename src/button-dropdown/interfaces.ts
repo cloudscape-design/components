@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
@@ -62,6 +62,51 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### action
+   *
+   * - `type` ('action') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (Item) - The original item configuration.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### checkbox
+   *
+   * - `type` ('checkbox') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (CheckboxItem) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `checked` (boolean) - Controls the state of the checkbox item.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's position in the list.
+   * - `option` (ItemGroup) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `expanded` (boolean) - Whether the group is expanded.
+   * - `expandDirection` ('vertical' | 'horizontal') - The direction in which the group expands.
+   *
+   * When providing a custom `renderItem` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default styling will be applied.
+   *
+   * @awsuiSystem core
+   */
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+
   /**
    * Determines whether the button dropdown is disabled. Users cannot interact with the control if it's disabled.
    */
@@ -163,6 +208,36 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
 export namespace ButtonDropdownProps {
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
+
+  export interface ActionRenderItem {
+    type: 'action';
+    index: number;
+    option: Item;
+    highlighted: boolean;
+    disabled: boolean;
+    parent: GroupRenderItem | null;
+  }
+  export interface CheckboxRenderItem {
+    type: 'checkbox';
+    index: number;
+    option: CheckboxItem;
+    disabled: boolean;
+    highlighted: boolean;
+    checked: boolean;
+    parent: GroupRenderItem | null;
+  }
+  export interface GroupRenderItem {
+    type: 'group';
+    index: number;
+    option: ItemGroup;
+    disabled: boolean;
+    highlighted: boolean;
+    expanded: boolean;
+    expandDirection: 'vertical' | 'horizontal';
+  }
+
+  export type RenderItem = ActionRenderItem | CheckboxRenderItem | GroupRenderItem;
+  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem }) => ReactNode | null;
 
   export interface MainAction {
     text?: string;
@@ -266,6 +341,7 @@ export type ItemActivate = (
 ) => void;
 
 export interface CategoryProps extends HighlightProps {
+  index?: number;
   item: ButtonDropdownProps.ItemGroup;
   onGroupToggle: GroupToggle;
   onItemActivate: ItemActivate;
@@ -274,6 +350,7 @@ export interface CategoryProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
   position?: string;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -289,6 +366,8 @@ export interface ItemListProps extends HighlightProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -296,6 +375,7 @@ export interface LinkItem extends ButtonDropdownProps.Item {
 }
 
 export interface ItemProps {
+  index?: number;
   item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem | LinkItem;
   disabled: boolean;
   highlighted: boolean;
@@ -308,6 +388,8 @@ export interface ItemProps {
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {

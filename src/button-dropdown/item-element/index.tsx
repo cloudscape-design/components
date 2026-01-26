@@ -13,7 +13,7 @@ import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
+import { ButtonDropdownProps, InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -24,6 +24,7 @@ import styles from './styles.css.js';
 
 const ItemElement = ({
   position = '1',
+  index,
   item,
   disabled,
   onItemActivate,
@@ -35,6 +36,8 @@ const ItemElement = ({
   analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
   linkStyle,
+  renderItem,
+  parentProps,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -87,19 +90,30 @@ const ItemElement = ({
             }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
-      <MenuItem item={item} disabled={disabled} highlighted={highlighted} linkStyle={linkStyle} />
+      <MenuItem
+        index={index}
+        item={item}
+        disabled={disabled}
+        highlighted={highlighted}
+        linkStyle={linkStyle}
+        renderItem={renderItem}
+        parentProps={parentProps}
+      />
     </li>
   );
 };
 
 interface MenuItemProps {
+  index?: number;
   item: InternalItem | InternalCheckboxItem;
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+  parentProps?: ButtonDropdownProps.GroupRenderItem;
 }
 
-function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
+function MenuItem({ index, item, disabled, highlighted, linkStyle, renderItem, parentProps }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
   const isCurrentBreadcrumb = !isCheckbox && item.isCurrentBreadcrumb;
@@ -110,12 +124,42 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
     }
   }, [highlighted]);
 
+  let itemProps: { item: ButtonDropdownProps.RenderItem };
+
+  if (isCheckbox) {
+    itemProps = {
+      item: {
+        index: index ?? 0,
+        type: 'checkbox',
+        option: item as ButtonDropdownProps.CheckboxItem,
+        disabled: disabled,
+        highlighted: highlighted,
+        checked: item.checked,
+        parent: parentProps ?? null,
+      },
+    };
+  } else {
+    itemProps = {
+      item: {
+        index: index ?? 0,
+        type: 'action',
+        option: item as ButtonDropdownProps.Item,
+        disabled: disabled,
+        highlighted: highlighted,
+        parent: parentProps ?? null,
+      },
+    };
+  }
+
+  const renderResult = renderItem?.(itemProps) ?? null;
+
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     'aria-label': item.ariaLabel,
     className: clsx(
       styles['menu-item'],
+      !!renderResult && styles['no-content-styling'],
       analyticsLabels['menu-item'],
       linkStyle && styles['link-style'],
       linkStyle && highlighted && styles['link-style-highlighted'],
@@ -140,11 +184,11 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
     >
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? renderResult : <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />}
     </a>
   ) : (
     <span {...menuItemProps}>
-      <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />
+      {renderResult ? renderResult : <MenuItemContent item={item} disabled={disabled} highlighted={highlighted} />}
     </span>
   );
 
