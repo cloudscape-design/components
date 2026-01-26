@@ -39,7 +39,9 @@ export default function TooltipSimple() {
   };
 
   const handleBlurTooltip = () => {
-    // Only close if not currently interacting with tooltip
+    // Prevents the tooltip from closing when clicking inside it (e.g., to select text for copying).
+    // Without this check, mousedown on the tooltip triggers a blur on the trigger element,
+    // which would close the tooltip mid-interaction.
     if (!isInteractingWithTooltip) {
       setActiveTooltip(null);
     }
@@ -49,6 +51,8 @@ export default function TooltipSimple() {
     setActiveTooltip(id);
   };
 
+  // Track when user is interacting with tooltip content (e.g., selecting text).
+  // Used to prevent premature tooltip closure on blur events.
   const handleTooltipMouseDown = () => {
     setIsInteractingWithTooltip(true);
   };
