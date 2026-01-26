@@ -5,6 +5,10 @@ import { AutosuggestItem } from '../interfaces';
 type SearchableFields = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagFields = 'tags' | 'filteringTags';
 
+// Pre-allocated arrays to avoid creating new arrays on every matchSingleOption call
+const searchableFields: SearchableFields[] = ['value', 'label', 'description', 'labelTag'];
+const searchableTagFields: SearchableTagFields[] = ['tags', 'filteringTags'];
+
 const isGroup = (option: AutosuggestItem) => 'type' in option && option.type === 'parent';
 
 const popLastGroup = (options: AutosuggestItem[]) => {
@@ -17,11 +21,13 @@ const popLastGroup = (options: AutosuggestItem[]) => {
 };
 
 export const filterOptions = (options: AutosuggestItem[], text: string): AutosuggestItem[] => {
+  // Move toLowerCase outside the loop to avoid repeated calls
+  const searchText = text.toLowerCase();
   const filteredOptions = options.reduce<AutosuggestItem[]>((filteredIn, option) => {
     if (isGroup(option)) {
       popLastGroup(filteredIn);
       filteredIn.push(option);
-    } else if (matchSingleOption(option, text)) {
+    } else if (matchSingleOption(option, searchText)) {
       filteredIn.push(option);
     }
     return filteredIn;
@@ -30,12 +36,7 @@ export const filterOptions = (options: AutosuggestItem[], text: string): Autosug
   return filteredOptions;
 };
 
-const matchSingleOption = (option: AutosuggestItem, text: string): boolean => {
-  const searchableFields: SearchableFields[] = ['value', 'label', 'description', 'labelTag'];
-  const searchableTagFields: SearchableTagFields[] = ['tags', 'filteringTags'];
-
-  const searchText = text.toLowerCase();
-
+const matchSingleOption = (option: AutosuggestItem, searchText: string): boolean => {
   const searchStrFieldsFn = (attr: SearchableFields) => matchString(option[attr], searchText);
   const searchTagsFieldsFn = (attr: SearchableTagFields) => option[attr]?.some(value => matchString(value, searchText));
 
@@ -43,5 +44,5 @@ const matchSingleOption = (option: AutosuggestItem, text: string): boolean => {
 };
 
 const matchString = (value: string | undefined, searchText: string) => {
-  return value && value.toLowerCase().indexOf(searchText) !== -1;
+  return value && value.toLowerCase().includes(searchText);
 };
