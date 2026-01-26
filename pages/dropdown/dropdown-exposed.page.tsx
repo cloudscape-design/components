@@ -36,7 +36,13 @@ export default function DropdownExposedScenario() {
         <div>
           <h2>1. Simple Dropdown Use-Case</h2>
           <div
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '0 20px' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, auto)',
+              justifyContent: 'space-between',
+              alignItems: 'start',
+              padding: '0 20px',
+            }}
           >
             {/* Left Dropdown */}
             <Dropdown
@@ -52,7 +58,8 @@ export default function DropdownExposedScenario() {
               }
               open={leftOpen}
               onDropdownClose={() => setLeftOpen(false)}
-              stretchToTriggerWidth={true}
+              stretchBeyondTriggerWidth={true}
+              preferCenter={true}
             />
 
             {/* Center Dropdown */}
@@ -60,26 +67,36 @@ export default function DropdownExposedScenario() {
               <Dropdown
                 trigger={<Button onClick={() => setCenterOpen(!centerOpen)}>Center Dropdown Test Bla</Button>}
                 content={
-                  <Box padding="m">
-                    <SpaceBetween size="s">
-                      <div>Welcome to the dropdown!</div>
-                      <div>This is simple content inside the dropdown bla bla bkla bl balb lab lab alb alla b</div>
-                      <Button onClick={() => setCenterOpen(false)}>Close</Button>
-                    </SpaceBetween>
-                  </Box>
+                  <div>
+                    <Box padding="m">
+                      <SpaceBetween size="s">
+                        <div>Welcome to the dropdown!</div>
+                        <div>This is simple content inside the dropdown bla bla bkla bl balb lab lab alb alla b</div>
+                        <Button onClick={() => setCenterOpen(false)}>Close</Button>
+                      </SpaceBetween>
+                    </Box>
+                  </div>
                 }
                 open={centerOpen}
                 onDropdownClose={() => setCenterOpen(false)}
-                onBlur={() => setCenterOpen(false)}
-                stretchToTriggerWidth={false}
-                stretchBeyondTriggerWidth={true}
-                preferCenter={true}
+                // stretchBeyondTriggerWidth={true}
+                // stretchWidth={false}
+                // expandToViewport={true}
+                // preferCenter={true}
 
                 // stretchWidth={true}
                 // stretchHeight={true}
                 // stretchToTriggerWidth={true}
                 // stretchBeyondTriggerWidth={false}
                 // preferCenter={false}
+
+                stretchTriggerHeight={false}
+                stretchWidth={false}
+                stretchHeight={false}
+                stretchToTriggerWidth={false}
+                stretchBeyondTriggerWidth={false}
+                expandToViewport={false}
+                preferCenter={false}
               />
             </div>
 
@@ -98,7 +115,6 @@ export default function DropdownExposedScenario() {
                 }
                 open={rightOpen}
                 onDropdownClose={() => setRightOpen(false)}
-                stretchToTriggerWidth={false}
                 stretchBeyondTriggerWidth={true}
                 preferCenter={true}
               />
