@@ -418,6 +418,90 @@
   color: awsui.$color-text-status-inactive;
 }
 
+/* Dropdown variant styles */
+.step-navigation-dropdown-list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: awsui.$space-xs;
+  padding-inline: 0;
+  min-inline-size: 280px;
+  max-inline-size: 400px;
+}
+
+.step-navigation-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: awsui.$space-xs;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-m;
+  cursor: pointer;
+
+  &:hover:not(.step-navigation-dropdown-item-disabled) {
+    background-color: awsui.$color-background-dropdown-item-hover;
+  }
+}
+
+.step-navigation-dropdown-item-active {
+  background-color: awsui.$color-background-dropdown-item-selected;
+}
+
+.step-navigation-dropdown-item-disabled {
+  cursor: default;
+}
+
+.step-navigation-dropdown-circle {
+  flex-shrink: 0;
+  inline-size: 12px;
+  block-size: 12px;
+  margin-block-start: 4px;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  border-block: 2px solid awsui.$color-text-interactive-disabled;
+  border-inline: 2px solid awsui.$color-text-interactive-disabled;
+  background-color: awsui.$color-background-container-content;
+  box-sizing: border-box;
+}
+
+.step-navigation-dropdown-circle-active {
+  border-color: awsui.$color-background-control-checked;
+  background-color: awsui.$color-background-control-checked;
+  box-shadow:
+    0 0 0 2px awsui.$color-background-container-content,
+    0 0 0 4px awsui.$color-background-control-checked;
+}
+
+.step-navigation-dropdown-circle-reachable {
+  border-color: awsui.$color-text-interactive-default;
+}
+
+.step-navigation-dropdown-circle-disabled {
+  border-color: awsui.$color-text-interactive-disabled;
+}
+
+.step-navigation-dropdown-content {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.step-navigation-dropdown-title {
+  @include styles.text-wrapping;
+  font-size: awsui.$font-size-body-m;
+  color: awsui.$color-text-body-default;
+}
+
+.step-navigation-dropdown-title-active {
+  color: awsui.$color-background-control-checked;
+  font-weight: styles.$font-weight-bold;
+}
+
+.step-navigation-dropdown-title-disabled {
+  color: awsui.$color-text-status-inactive;
+}
+
 .form-header-component {
   &-wrapper {
     outline: none;
