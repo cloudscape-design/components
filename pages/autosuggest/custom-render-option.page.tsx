@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { Autosuggest, AutosuggestProps } from '~components';
+import { Autosuggest, AutosuggestProps, Toggle } from '~components';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
 const empty = <span>Nothing found</span>;
@@ -26,7 +27,12 @@ const options = [
     ],
   },
 ];
-const enteredTextLabel = (value: string) => `Use: ${value}`;
+type PageContext = React.Context<
+  AppContextType<{
+    virtualScroll?: boolean;
+  }>
+>;
+
 export default function AutosuggestPage() {
   const [value, setValue] = useState('');
   const ref = useRef<AutosuggestProps.Ref>(null);
@@ -41,20 +47,40 @@ export default function AutosuggestPage() {
     }
     return null;
   };
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const virtualScroll = urlParams.virtualScroll ?? false;
 
   return (
-    <SimplePage title="Autosuggest with custom item renderer" screenshotArea={{}}>
-      <Autosuggest
-        renderOption={renderOption}
-        ref={ref}
-        value={value}
-        options={options}
-        onChange={event => setValue(event.detail.value)}
-        enteredTextLabel={enteredTextLabel}
-        ariaLabel={'simple autosuggest'}
-        selectedAriaLabel="Selected"
-        empty={empty}
-      />
+    <SimplePage
+      title="Autosuggest with custom item renderer"
+      settings={
+        <Toggle
+          checked={!!urlParams.virtualScroll}
+          onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
+        >
+          Virtual Scroll
+        </Toggle>
+      }
+      screenshotArea={{
+        style: {
+          padding: 10,
+        },
+      }}
+    >
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
+        <Autosuggest
+          virtualScroll={virtualScroll}
+          renderOption={renderOption}
+          ref={ref}
+          value={value}
+          options={options}
+          onChange={event => setValue(event.detail.value)}
+          placeholder={`Type... ${virtualScroll ? '(virtual)' : ''}`}
+          ariaLabel={'simple autosuggest'}
+          selectedAriaLabel="Selected"
+          empty={empty}
+        />
+      </div>
     </SimplePage>
   );
 }
