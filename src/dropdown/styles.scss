@@ -116,3 +116,8 @@
 .stretch-trigger-height {
   block-size: 100%;
 }
+
+.trigger-fit-content {
+  display: inline-block;
+  inline-size: fit-content;
+}

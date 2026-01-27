@@ -42,111 +42,149 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
   onLoadItems?: NonCancelableEventHandler<OptionsLoadItemsDetail>;
 }
 
+/**
+ * Sizing strategy for the dropdown content
+ */
+export type DropdownSizingStrategy =
+  | 'fit-content' // Dropdown sizes to its content width
+  | 'match-trigger' // Dropdown matches trigger width exactly
+  | 'min-trigger-width' // Dropdown is at least as wide as trigger but can grow
+  | 'full-width'; // Dropdown takes full available width
+
+/**
+ * Height behavior for the dropdown content
+ */
+export type DropdownHeightStrategy =
+  | 'fit-content' // Height matches content (default)
+  | 'full-height'; // Takes available height
+
+/**
+ * Alignment of the dropdown relative to its trigger
+ */
+export type DropdownAlignment =
+  | 'start' // Aligns to left/right edges (default)
+  | 'center' // Centers dropdown on trigger
+  | 'end'; // Aligns to opposite edge
+
 export interface DropdownProps extends ExpandToViewport {
   /**
-   * Trigger element.
+   * The trigger element that opens/closes the dropdown
    */
   trigger: React.ReactNode;
+
   /**
-   * "Sticky" header of the dropdown content
-   */
-  header?: React.ReactNode;
-  /**
-   * Footer slot fixed at the bottom of the dropdown
-   */
-  footer?: React.ReactNode;
-  /**
-   * Dropdown content elements.
-   */
-  content?: React.ReactNode;
-  /**
-   * Updating content key triggers dropdown position re-evaluation.
-   */
-  contentKey?: string;
-  /**
-   * Open state of the dropdown.
+   * Whether the dropdown is currently open
    */
   open?: boolean;
+
   /**
-   * Called when a user clicks outside of the dropdown content, when it is open.
+   * Called when the dropdown should be closed (e.g., outside click, escape key)
    */
   onDropdownClose?: NonCancelableEventHandler<null>;
-  /**
-   * Dropdown id
-   */
-  dropdownId?: string;
-  /**
-   * Stretches dropdown to occupy entire width.
-   */
-  stretchWidth?: boolean;
-  /**
-   * Stretches dropdown to occupy entire height.
-   */
-  stretchHeight?: boolean;
 
   /**
-   * Stretches the trigger to the height of the dropdown container.
+   * Main content of the dropdown
    */
-  stretchTriggerHeight?: boolean;
+  content?: React.ReactNode;
 
   /**
-   * Whether the dropdown content should be at least as wide as the trigger.
+   * Optional header content that stays fixed at the top of the dropdown
+   */
+  header?: React.ReactNode;
+
+  /**
+   * Optional footer content that can be sticky or scroll with content
+   */
+  footer?: React.ReactNode;
+
+  /**
+   * How the dropdown should size itself relative to its trigger and content.
+   * - `fit-content`: Dropdown sizes to its content width
+   * - `match-trigger`: Dropdown matches trigger width exactly
+   * - `min-trigger-width`: Dropdown is at least as wide as trigger but can grow
+   * - `full-width`: Dropdown takes full available width
    *
-   * @defaultValue true
+   * @defaultValue 'min-trigger-width'
    */
-  stretchToTriggerWidth?: boolean;
+  sizing?: DropdownSizingStrategy;
 
   /**
-   * Whether the dropdown content can grow beyond the width of the trigger.
+   * How the dropdown should handle height.
+   * - `fit-content`: Height matches content (default)
+   * - `full-height`: Takes available height
+   *
+   * @defaultValue 'fit-content'
    */
-  stretchBeyondTriggerWidth?: boolean;
+  height?: DropdownHeightStrategy;
 
   /**
-   * Determines that the dropdown should preferably be aligned to the center of the trigger
-   * instead of dropping left or right.
+   * How to align the dropdown relative to its trigger.
+   * - `start`: Aligns to left/right edges (default)
+   * - `center`: Centers dropdown on trigger
+   * - `end`: Aligns to opposite edge
+   *
+   * @defaultValue 'start'
    */
-  preferCenter?: boolean;
+  alignment?: DropdownAlignment;
 
   /**
-   * Sets the min width of the dropdown (in px)
+   * Whether the trigger element should stretch to match the height of its container.
+   * Useful for components like navigation where consistent height is important.
+   *
+   * @defaultValue false
    */
-  minWidth?: number;
-  /**
-   * Whether the dropdown will have a scrollbar or not
-   */
-  scrollable?: boolean;
+  stretchTrigger?: boolean;
 
   /**
-   * Whether the dropdown will have a focus loop including trigger, header, content and footer.
+   * Whether focus should loop between trigger and dropdown content.
+   * When true, tabbing past the last focusable element in the dropdown will move focus
+   * back to the trigger, and shift+tabbing from the trigger will move to the last
+   * focusable element in the dropdown. This creates a focus trap for accessibility.
+   *
+   * @defaultValue true when expandToViewport=true, false otherwise
    */
   loopFocus?: boolean;
 
   /**
-   * Called when focus enters the trigger or dropdown content.
+   * Unique identifier for the dropdown
    */
-  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
-   * Called when focus leaves the trigger or dropdown content.
-   */
-  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  dropdownId?: string;
 
   /**
    * ID for the dropdown content wrapper
    */
-  dropdownContentId?: string;
+  contentId?: string;
+
   /**
-   * HTML role for the dropdown content wrapper
+   * ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')
    */
-  dropdownContentRole?: string;
+  role?: string;
+
   /**
-   * Labelledby for the dropdown (required when role="dialog")
+   * ARIA labelledby attribute for the dropdown content
    */
   ariaLabelledby?: string;
+
   /**
-   * Describedby for the dropdown (recommended when role="dialog")
+   * ARIA describedby attribute for the dropdown content
    */
   ariaDescribedby?: string;
+
+  /**
+   * Called when focus enters the dropdown or trigger
+   */
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when focus leaves the dropdown or trigger
+   */
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Key that forces dropdown position recalculation when changed.
+   * Useful when dropdown content changes dynamically.
+   */
+  contentKey?: string;
 }
 
 export interface ExpandToViewport {
@@ -164,8 +202,35 @@ export interface ExpandToViewport {
   expandToViewport?: boolean;
 }
 
-export interface InternalDropdownProps extends Omit<DropdownProps, 'content' | 'interior'> {
+/**
+ * Internal props used by the internal dropdown implementation.
+ * These props use the low-level positioning flags.
+ */
+export interface InternalDropdownProps {
+  trigger: React.ReactNode;
   children?: React.ReactNode;
-  interior?: boolean;
+  open?: boolean;
+  onDropdownClose?: NonCancelableEventHandler<null>;
   onMouseDown?: React.MouseEventHandler;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  dropdownId?: string;
+  stretchTriggerHeight?: boolean;
+  stretchWidth?: boolean;
+  stretchHeight?: boolean;
+  stretchToTriggerWidth?: boolean;
+  stretchBeyondTriggerWidth?: boolean;
+  expandToViewport?: boolean;
+  preferCenter?: boolean;
+  interior?: boolean;
+  minWidth?: number;
+  scrollable?: boolean;
+  loopFocus?: boolean;
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  contentKey?: string;
+  dropdownContentId?: string;
+  dropdownContentRole?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }

@@ -18,34 +18,80 @@ const Dropdown = ({
   header,
   footer,
   dropdownId,
-  stretchTriggerHeight = false,
-  stretchWidth = true,
-  stretchHeight = false,
-  stretchToTriggerWidth = true,
-  stretchBeyondTriggerWidth = false,
+  sizing = 'min-trigger-width',
+  height = 'fit-content',
+  alignment = 'start',
+  stretchTrigger = false,
   expandToViewport = false,
-  preferCenter = false,
-  minWidth,
-  scrollable = true,
   loopFocus,
   onFocus,
   onBlur,
   contentKey,
-  dropdownContentId,
-  dropdownContentRole,
+  contentId,
+  role,
   ariaLabelledby,
   ariaDescribedby,
   ...props
 }: DropdownProps) => {
+  // Map sizing strategy to internal props
+  const getSizingProps = () => {
+    switch (sizing) {
+      case 'fit-content':
+        return {
+          stretchWidth: false,
+          stretchToTriggerWidth: false,
+          stretchBeyondTriggerWidth: false,
+          minWidth: undefined,
+        };
+      case 'match-trigger':
+        return {
+          stretchWidth: true,
+          stretchToTriggerWidth: true,
+          stretchBeyondTriggerWidth: false,
+          minWidth: undefined,
+        };
+      case 'min-trigger-width':
+        return {
+          stretchWidth: false,
+          stretchToTriggerWidth: true,
+          stretchBeyondTriggerWidth: true,
+          minWidth: undefined,
+        };
+      case 'full-width':
+        return {
+          stretchWidth: true,
+          stretchToTriggerWidth: false,
+          stretchBeyondTriggerWidth: false,
+          minWidth: undefined,
+        };
+      default:
+        return {
+          stretchWidth: false,
+          stretchToTriggerWidth: true,
+          stretchBeyondTriggerWidth: true,
+          minWidth: undefined,
+        };
+    }
+  };
+
+  // Map height strategy to internal prop
+  const stretchHeight = height === 'full-height';
+
+  // Map alignment to internal prop
+  const preferCenter = alignment === 'center';
+
+  // Compute loopFocus default based on expandToViewport if not explicitly set
+  const computedLoopFocus = loopFocus ?? expandToViewport;
+
+  const sizingProps = getSizingProps();
+
   const baseComponentProps = useBaseComponent('Dropdown', {
     props: {
       expandToViewport,
-      preferCenter,
-      stretchBeyondTriggerWidth,
-      stretchHeight,
-      stretchToTriggerWidth,
-      stretchTriggerHeight,
-      stretchWidth,
+      alignment,
+      sizing,
+      height,
+      stretchTrigger,
     },
   });
 
@@ -59,21 +105,21 @@ const Dropdown = ({
       header={header}
       footer={footer}
       dropdownId={dropdownId}
-      stretchTriggerHeight={stretchTriggerHeight}
-      stretchWidth={stretchWidth}
+      stretchTriggerHeight={stretchTrigger}
+      stretchWidth={sizingProps.stretchWidth}
       stretchHeight={stretchHeight}
-      stretchToTriggerWidth={stretchToTriggerWidth}
-      stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
+      stretchToTriggerWidth={sizingProps.stretchToTriggerWidth}
+      stretchBeyondTriggerWidth={sizingProps.stretchBeyondTriggerWidth}
       expandToViewport={expandToViewport}
       preferCenter={preferCenter}
-      minWidth={minWidth}
-      scrollable={scrollable}
-      loopFocus={loopFocus}
+      interior={false}
+      scrollable={true}
+      loopFocus={computedLoopFocus}
       onFocus={onFocus}
       onBlur={onBlur}
       contentKey={contentKey}
-      dropdownContentId={dropdownContentId}
-      dropdownContentRole={dropdownContentRole}
+      dropdownContentId={contentId}
+      dropdownContentRole={role}
       ariaLabelledby={ariaLabelledby}
       ariaDescribedby={ariaDescribedby}
     >

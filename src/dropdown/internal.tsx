@@ -427,7 +427,14 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
+      <div
+        id={referrerId}
+        className={clsx(
+          stretchTriggerHeight && styles['stretch-trigger-height'],
+          !stretchTriggerHeight && styles['trigger-fit-content']
+        )}
+        ref={triggerRef}
+      >
         {trigger}
       </div>
 
