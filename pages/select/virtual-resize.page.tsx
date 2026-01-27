@@ -24,7 +24,10 @@ const options = [
 export default function () {
   const [selectedOption, setSelectedOption] = useState<SelectProps['selectedOption']>(null);
   const [shrunk, setShrunk] = useState(false);
-  window.__shrinkComponent = setShrunk;
+  // Guard for SSR - only set on client
+  if (typeof window !== 'undefined') {
+    window.__shrinkComponent = setShrunk;
+  }
 
   const style = shrunk ? { width: '100px' } : undefined;
   return (

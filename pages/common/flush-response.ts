@@ -8,6 +8,10 @@ export interface WindowWithFlushResponse extends Window {
 declare const window: WindowWithFlushResponse;
 
 export function enhanceWindow() {
+  // Guard for SSR - only run on client
+  if (typeof window === 'undefined') {
+    return;
+  }
   window.__pendingCallbacks = [];
   window.__flushServerResponse = () => {
     for (const cb of window.__pendingCallbacks) {
