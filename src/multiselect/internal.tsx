@@ -197,6 +197,7 @@ const InternalMultiselect = React.forwardRef(
             screenReaderContent={multiselectProps.announcement}
             highlightType={multiselectProps.highlightType}
             firstOptionSticky={hasFilteredOptions && enableSelectAll}
+            isMultiSelect={true}
           />
         </Dropdown>
 
