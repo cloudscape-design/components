@@ -18,6 +18,7 @@ module.exports = {
   integ: require('./integ'),
   motion: require('./motion'),
   copyFiles: require('./copy-files'),
+  copyBuildTools: require('./copy-build-tools'),
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),
   sizeLimit: require('./size-limit'),
