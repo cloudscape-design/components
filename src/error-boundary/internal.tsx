@@ -8,7 +8,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
 import { ErrorBoundaryFallback } from './fallback';
-import { ErrorBoundaryProps } from './interfaces';
+import { BuiltInErrorBoundaryProps, ErrorBoundaryProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -31,17 +31,18 @@ const ErrorBoundariesContext = createContext<
 });
 
 interface InternalErrorBoundaryProps
-  extends SomeRequired<ErrorBoundaryProps, 'suppressNested'>,
+  extends SomeRequired<ErrorBoundaryProps, 'suppressNested' | 'suppressible'>,
     InternalBaseComponentProps {}
 
 export function InternalErrorBoundary({
   children,
   suppressNested,
+  suppressible,
   __internalRootRef,
   ...props
 }: InternalErrorBoundaryProps) {
   const context = useContext(ErrorBoundariesContext);
-  const thisSuppressed = context.suppressed === true;
+  const thisSuppressed = context.suppressed === true && suppressible;
   const nextSuppressed = suppressNested || thisSuppressed;
 
   const [forcedError, setForcedError] = useState(false);
@@ -69,12 +70,6 @@ export function InternalErrorBoundary({
       )}
     </div>
   );
-}
-
-interface BuiltInErrorBoundaryProps {
-  children: React.ReactNode;
-  wrapper?: (content: React.ReactNode) => React.ReactNode;
-  suppressNested?: boolean;
 }
 
 export function BuiltInErrorBoundary({ wrapper, suppressNested = false, children }: BuiltInErrorBoundaryProps) {

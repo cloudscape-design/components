@@ -31,11 +31,17 @@ export interface ErrorBoundaryProps {
    * error boundaries. These boundaries activate automatically when they detect
    * an ancestor boundary, inheriting configuration from the closest one.
    *
-   * When `suppressNested` is set to `true`, nested built-in or standalone
-   * boundaries are disabled. In this mode, all errors originating from within
-   * the boundary’s content are captured exclusively by this boundary.
+   * When `suppressNested` is set to `true`, nested built-in error boundaries,
+   * or nested standalone error boundaries with `suppressible=true` are disabled,
+   * so the errors propagate further up and are captured by this error boundary.
    */
   suppressNested?: boolean;
+
+  /**
+   * When set to `true`, this error boundary can be suppressed by another error
+   * boundary with `suppressNested=true`, rendered above in the components tree.
+   */
+  suppressible?: boolean;
 
   /**
    * Optional custom renderer for the fallback UI displayed when an error occurs.
@@ -94,4 +100,10 @@ export namespace ErrorBoundaryProps {
     errorInfo: ErrorInfo;
     errorBoundaryId?: string;
   }
+}
+
+export interface BuiltInErrorBoundaryProps {
+  children: React.ReactNode;
+  wrapper?: (content: React.ReactNode) => React.ReactNode;
+  suppressNested?: boolean;
 }
