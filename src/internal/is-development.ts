@@ -4,7 +4,7 @@
 /**
  * Allow use of `process.env.NODE_ENV` specifically.
  *
- * Bundlers like Webpack and Parcel find uses of `process.env.NODE_ENV` and
+ * Bundlers like Vite and Parcel find uses of `process.env.NODE_ENV` and
  * statically replace them with the actual value during the build. When creating
  * production bundles, the use is replaced with the string "production", and
  * dead code checkers (e.g. terser) will then remove our dev-only code from

@@ -8,9 +8,12 @@ export default class ErrorBoundary extends React.Component<any, { errorMessage: 
     this.state = { errorMessage: '' };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error | null | undefined) {
     // Update state so the next render will show the fallback UI.
-    return { errorMessage: error.stack || error.message };
+    if (!error) {
+      return { errorMessage: 'An unknown error occurred' };
+    }
+    return { errorMessage: error.stack || error.message || 'An error occurred' };
   }
 
   render() {

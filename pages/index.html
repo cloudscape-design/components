@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
     <script>
       const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
 
-      const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
+      const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'unsafe-inline' 'self'" };
 
       if (isDevelopment) {
         csp['connect-src'] = `'self' ws://${location.host};`;
@@ -26,7 +26,7 @@
       if (location.hash.includes('file-upload')) {
         csp['img-src'] = 'blob:';
       }
-      
+
       const cspString = Object.entries(csp)
         .map(([key, value]) => `${key} ${value}`)
         .join('; ');
@@ -40,5 +40,6 @@
     <div id="b">
       <div id="app"></div>
     </div>
+    <script type="module" src="./app/index.tsx"></script>
   </body>
 </html>
