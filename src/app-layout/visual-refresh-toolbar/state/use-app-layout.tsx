@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -203,6 +204,10 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
+  const { featureNotificationsProps, featureNotificationsMessageHandler } = useFeatureNotifications({
+    activeDrawersIds: [...activeGlobalDrawersIds, ...(activeDrawer ? [activeDrawer.id] : [])],
+  });
+
   const checkAIDrawerIdExists = (id: string) => {
     return aiDrawer?.id === id;
   };
@@ -237,6 +242,11 @@ export const useAppLayout = (
   useWidgetMessages(hasToolbar, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
+      return;
+    }
+
+    if (message.type === 'registerFeatureNotifications' || message.type === 'showFeaturePromptIfPossible') {
+      featureNotificationsMessageHandler(message);
       return;
     }
 
@@ -619,6 +629,7 @@ export const useAppLayout = (
       onActiveBottomDrawerResize,
       bottomDrawers,
       bottomDrawersFocusControl,
+      featureNotificationsProps,
     },
   };
 };

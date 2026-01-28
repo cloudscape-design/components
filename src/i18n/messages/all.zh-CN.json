@@ -158,6 +158,8 @@
     "i18nStrings.endMonthLabel": "结束月底",
     "i18nStrings.endDateLabel": "结束日期",
     "i18nStrings.endTimeLabel": "结束时间",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
     "i18nStrings.dateConstraintText": "对于日期，使用 YYYY/MM/DD。",
     "i18nStrings.slashedDateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
@@ -179,6 +181,10 @@
     "i18nStrings.headerText": "意外错误，内容无法显示",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {刷新再试一次。我们正在跟踪此问题，但您可以<Feedback>在此处共享更多信息</Feedback>。} other {刷新再试一次。}}",
     "i18nStrings.refreshActionText": "刷新页面"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新功能发布",
+    "i18nStrings.viewAll": "查看所有功能发布"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
