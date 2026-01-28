@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .breadcrumb-group {
   @include styles.styles-reset;
@@ -86,7 +85,7 @@
   display: flex;
   gap: awsui.$space-xxs;
   max-inline-size: 100%;
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
   &:hover {

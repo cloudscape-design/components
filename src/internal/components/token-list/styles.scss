@@ -6,7 +6,6 @@
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
 @use '../../../file-token-group/constants' as constants;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
   gap: awsui.$space-scaled-xs;
@@ -94,7 +93,7 @@
     text-decoration-color: transparent;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
   }
 

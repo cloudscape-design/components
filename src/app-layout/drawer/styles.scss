@@ -4,7 +4,6 @@
 */
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../constants' as constants;
 
 .toggle {

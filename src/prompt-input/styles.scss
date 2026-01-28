@@ -9,7 +9,6 @@
 @use '../internal/styles/foundation/' as foundation;
 @use '../internal/styles/forms/constants' as constants;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
 $invalid-border-offset: constants.$invalid-control-left-padding;
