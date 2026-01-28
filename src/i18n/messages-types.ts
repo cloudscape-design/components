@@ -235,6 +235,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.limitShowMore": never;
     "i18nStrings.removeFileAriaLabel": {
       "fileIndex": string | number;
+      "fileName": string;
     }
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.warningIconAriaLabel": never;
@@ -244,6 +245,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.limitShowMore": never;
     "i18nStrings.removeFileAriaLabel": {
       "fileIndex": string | number;
+      "fileName": string;
     }
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.warningIconAriaLabel": never;

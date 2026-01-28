@@ -243,6 +243,23 @@ describe('Tooltip', () => {
     fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
   });
+
+  test('Should show tooltip on keyboard focus', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+
+    fireEvent.focus(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+
+    fireEvent.blur(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+  });
+
+  test('Should make filename focusable via keyboard', () => {
+    const wrapper = render({ items: [{ file: file3 }] });
+    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+
+    expect(fileNameElement).toHaveAttribute('tabindex', '0');
+  });
 });
 
 describe('Focusing behavior', () => {
@@ -250,14 +267,18 @@ describe('Focusing behavior', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }], limit });
     wrapper.findFileToken(1)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+    // After dismissal, focus moves to the filename container (first focusable element in the token)
+    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+    expect(fileNameElement).toHaveFocus();
   });
 
   test('Focus is dispatched to the previous token when removing the token at the end', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }] });
     wrapper.findFileToken(2)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+    // After dismissal, focus moves to the filename container (first focusable element in the token)
+    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+    expect(fileNameElement).toHaveFocus();
   });
 });
 
