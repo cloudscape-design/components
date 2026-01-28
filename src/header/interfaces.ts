@@ -45,6 +45,6 @@ export interface HeaderProps extends BaseComponentProps {
 }
 
 export namespace HeaderProps {
-  export type Variant = 'h1' | 'h2' | 'h3' | 'awsui-h1-sticky' | 'small';
+  export type Variant = 'h1' | 'h2' | 'h3' | 'awsui-h1-sticky';
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
 }

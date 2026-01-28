@@ -37,7 +37,7 @@ export default function InternalHeader({
   description,
   info,
   __internalRootRef,
-  __disableActionsWrapping = variant === 'small',
+  __disableActionsWrapping,
   __headingTagRef,
   __headingTagTabIndex,
   ...restProps
