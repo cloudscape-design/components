@@ -46,20 +46,7 @@
 
 .root {
   @include styles.styles-reset();
-  display: flex;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
   box-sizing: border-box;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block-start: 0;
-  padding-block-end: awsui.$space-grid-gutter;
-  padding-inline-start: awsui.$space-grid-gutter;
-  padding-inline-end: 0;
-  list-style: none;
-}
-
-.card-inner {
   position: relative;
   background-color: awsui.$color-background-container-content;
   margin-block: 0;
@@ -92,7 +79,7 @@
   }
 }
 
-.with-actions > .card-inner > .header > .header-top-row {
+.with-actions > .header > .header-top-row {
   display: flex;
   inline-size: 100%;
   justify-content: space-between;
@@ -104,12 +91,10 @@
 }
 
 .active {
-  > .card-inner {
-    background-color: awsui.$color-background-item-selected;
-    &::before {
-      border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
-      border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
-    }
+  background-color: awsui.$color-background-item-selected;
+  &::before {
+    border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
+    border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
   }
 }
 

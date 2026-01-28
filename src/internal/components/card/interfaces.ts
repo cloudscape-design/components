@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { FocusEventHandler } from 'react';
+import React from 'react';
 
 import { BaseComponentProps } from '../../base-component';
 
@@ -49,15 +49,7 @@ export interface InternalCardProps extends BaseComponentProps {
    */
   onClick?: React.MouseEventHandler<HTMLElement>;
 
-  onFocus?: FocusEventHandler<HTMLElement>;
-
-  role?: string;
-
-  tagName?: 'li' | 'div';
-
   disableContentPaddings?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
-
-  innerMetadataAttributes?: Record<string, string | undefined>;
 }

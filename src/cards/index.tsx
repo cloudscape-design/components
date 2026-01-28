@@ -319,65 +319,68 @@ const CardsList = <T,>({
           },
         };
         return (
-          <Card
-            actions={
-              selectionProps && (
-                <div
-                  className={styles['selection-control']}
-                  {...(!canClickEntireCard && !disabled
-                    ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
-                    : {})}
-                >
-                  <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
-                </div>
-              )
-            }
-            active={selectable && selected}
-            className={styles.card}
-            header={
-              cardDefinition.header ? (
-                <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
-                  {cardDefinition.header(item)}
-                </div>
-              ) : (
-                ''
-              )
-            }
-            innerMetadataAttributes={
-              canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
-            }
-            key={index}
-            metadataAttributes={{
-              ...getAnalyticsMetadataAttribute({
-                component: {
-                  innerContext: {
-                    position: `${index + 1}`,
-                    item: `${key}`,
-                  },
-                },
-              }),
-              ...focusMarkers.item,
-            }}
-            onClick={
-              canClickEntireCard
-                ? event => {
-                    selectionProps?.onChange();
-                    // Manually move focus to the native input (checkbox or radio button)
-                    event.currentTarget.querySelector('input')?.focus();
-                  }
-                : undefined
-            }
+          <li
+            className={clsx(styles.card, {
+              [styles['card-selectable']]: selectable,
+              [styles['card-selected']]: selectable && selected,
+            })}
+            key={key}
             onFocus={onFocus}
+            {...(focusMarkers && focusMarkers.item)}
             role={listItemRole}
-            tagName="li"
+            {...getAnalyticsMetadataAttribute({
+              component: {
+                innerContext: {
+                  position: `${index + 1}`,
+                  item: `${key}`,
+                },
+              },
+            })}
           >
-            {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-              <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
-                {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
-              </div>
-            ))}
-          </Card>
+            <Card
+              actions={
+                selectionProps && (
+                  <div
+                    className={styles['selection-control']}
+                    {...(!canClickEntireCard && !disabled
+                      ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
+                      : {})}
+                  >
+                    <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+                  </div>
+                )
+              }
+              active={selectable && selected}
+              header={
+                cardDefinition.header ? (
+                  <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
+                    {cardDefinition.header(item)}
+                  </div>
+                ) : (
+                  ''
+                )
+              }
+              metadataAttributes={
+                canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
+              }
+              onClick={
+                canClickEntireCard
+                  ? event => {
+                      selectionProps?.onChange();
+                      // Manually move focus to the native input (checkbox or radio button)
+                      event.currentTarget.querySelector('input')?.focus();
+                    }
+                  : undefined
+              }
+            >
+              {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
+                <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                  {header ? <div className={styles['section-header']}>{header}</div> : ''}
+                  {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+                </div>
+              ))}
+            </Card>
+          </li>
         );
       })}
     </ol>

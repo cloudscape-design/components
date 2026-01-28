@@ -73,13 +73,23 @@
   }
 }
 
-.card-header-inner {
-  /* Used in test utils */
-}
-
-.card-header {
-  @include styles.font-heading-m;
-  padding-block-start: 8px;
+.card {
+  display: flex;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-grid-gutter;
+  padding-inline-start: awsui.$space-grid-gutter;
+  padding-inline-end: 0;
+  list-style: none;
+  &-header {
+    @include styles.font-heading-m;
+    padding-block-start: 8px;
+    &-inner {
+      /* Used in test utils */
+    }
+  }
 }
 
 .section {
