@@ -164,7 +164,7 @@
       "stylelint --fix"
     ],
     "package-lock.json": [
-      "node ./scripts/unlock-package-lock.js"
+      "prepare-package-lock"
     ]
   },
   "size-limit": [
