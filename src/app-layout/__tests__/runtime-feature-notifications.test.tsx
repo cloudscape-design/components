@@ -67,7 +67,7 @@ const mockPersistSeenFeatureNotifications = jest.mocked(persistSeenFeatureNotifi
 beforeEach(() => {
   awsuiWidgetInternal.clearInitialMessages();
   jest.resetAllMocks();
-  mockRetrieveSeenFeatureNotifications.mockResolvedValue([]);
+  mockRetrieveSeenFeatureNotifications.mockResolvedValue({});
   mockPersistSeenFeatureNotifications.mockResolvedValue();
 
   // Mock current date for consistent filtering
@@ -164,7 +164,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
-    mockRetrieveSeenFeatureNotifications.mockResolvedValue(['feature-1']);
+    mockRetrieveSeenFeatureNotifications.mockResolvedValue({ 'feature-1': mockDate2025.toString() });
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
     const { container } = await renderComponent(<AppLayout />);
 
@@ -199,7 +199,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('should not show feature prompt if all feature are seen', async () => {
-    mockRetrieveSeenFeatureNotifications.mockResolvedValue(['feature-1', 'feature-2', 'feature-old']);
+    mockRetrieveSeenFeatureNotifications.mockResolvedValue({
+      'feature-1': mockDate2025.toString(),
+      'feature-2': mockDate2024.toString(),
+      'feature-old': mockDateOld.toString(),
+    });
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, suppressFeaturePrompt: true });
     const { container } = await renderComponent(<AppLayout />);
 

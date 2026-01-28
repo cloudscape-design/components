@@ -3,10 +3,12 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
+import { metrics } from '../../../internal/metrics';
 import { persistSeenFeatureNotifications, retrieveSeenFeatureNotifications } from '../../../internal/persistence';
 import awsuiPlugins from '../../../internal/plugins';
 import { Feature, FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
+
 interface UseFeatureNotificationsProps {
   activeDrawersIds: Array<string>;
 }
@@ -34,30 +36,64 @@ function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
   return pastDate;
 }
 
+function filterOutdatedFeatures(features: Record<string, string>): Record<string, string> {
+  const cutoffDate = subtractDaysFromDate(new Date(), 180);
+
+  return Object.keys(features).reduce((acc, key) => {
+    const featureDate = new Date(features[key]);
+
+    if (featureDate && featureDate >= cutoffDate) {
+      return {
+        ...acc,
+        [key]: features[key],
+      };
+    }
+
+    return acc;
+  }, {});
+}
+
 export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotificationsProps) {
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotificationsPayload<unknown> | null>(
     null
   );
-  const [seenFeatureIds, setSeenFeatureIds] = useState<Set<string>>(new Set());
+  const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
 
   useEffect(() => {
     if (!featureNotificationsData || markAllAsRead) {
       return;
     }
-    const id = featureNotificationsData.id;
-    if (activeDrawersIds.includes(id) && !markAllAsRead) {
-      const allFeaturesIds = [...seenFeatureIds, ...featureNotificationsData.features.map(feature => feature.id)];
-      const uniqueAllFeatureIds = [...new Set(allFeaturesIds)];
-      persistSeenFeatureNotifications(persistenceConfig, uniqueAllFeatureIds).then(() => {
-        awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
-        setMarkAllAsRead(true);
-      });
+    try {
+      const id = featureNotificationsData?.id;
+      if (activeDrawersIds.includes(id) && !markAllAsRead) {
+        const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
+          return {
+            ...acc,
+            [feature.id]: feature.releaseDate.toString(),
+          };
+        }, {});
+        const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
+        const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
+        persistSeenFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
+          awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
+          setMarkAllAsRead(true);
+        });
+      }
       return;
+    } catch (error) {
+      let message = '';
+      if (error instanceof Error) {
+        message = error?.message ?? '';
+      }
+      metrics.sendOpsMetricObject('awsui-widget-feature-notifications-error', {
+        id: featureNotificationsData?.id,
+        message,
+      });
     }
-  }, [featureNotificationsData, activeDrawersIds, markAllAsRead, featurePromptDismissed, seenFeatureIds]);
+  }, [featureNotificationsData, activeDrawersIds, markAllAsRead, featurePromptDismissed, seenFeatures]);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -103,9 +139,8 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
       });
 
       retrieveSeenFeatureNotifications(persistenceConfig).then(seenFeatureNotifications => {
-        const seenFeatureNotificationsSet = new Set(seenFeatureNotifications);
-        setSeenFeatureIds(seenFeatureNotificationsSet);
-        const hasUnseenFeatures = features.some(feature => !seenFeatureNotificationsSet.has(feature.id));
+        setSeenFeatures(seenFeatureNotifications);
+        const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
         if (hasUnseenFeatures) {
           if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
             featurePromptRef.current?.show();
@@ -117,7 +152,6 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     }
 
     if (event.type === 'showFeaturePromptIfPossible') {
-      console.log('showFeaturePromptIfPossible markAllAsRead: ', markAllAsRead);
       if (markAllAsRead) {
         return;
       }
@@ -134,12 +168,11 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     // Features array is already sorted in reverse chronological order (most recent first)
     // Find the first feature that hasn't been seen
     for (const feature of featureNotificationsData.features) {
-      if (!seenFeatureIds.has(feature.id)) {
+      if (!seenFeatures[feature.id]) {
         return feature;
       }
     }
 
-    // No unseen features found
     return null;
   }
 

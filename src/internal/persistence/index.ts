@@ -13,11 +13,11 @@ interface PersistenceFunction {
   retrieveAlertDismiss?: (persistenceConfig: AlertProps.PersistenceConfig) => Promise<boolean>;
   persistSeenFeatureNotifications?: (
     persistenceConfig: FeaturePromptProps.PersistenceConfig,
-    value: Array<string>
+    value: Record<string, string>
   ) => Promise<void>;
   retrieveSeenFeatureNotifications?: (
     persistenceConfig: FeaturePromptProps.PersistenceConfig
-  ) => Promise<Array<string>>;
+  ) => Promise<Record<string, string>>;
 }
 
 export function setPersistenceFunctionsForTesting(functions: PersistenceFunction) {
@@ -78,7 +78,7 @@ export let persistSeenFeatureNotifications = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: FeaturePromptProps.PersistenceConfig,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  value: Array<string>
+  value: Record<string, string>
 ): Promise<void> {
   return Promise.resolve();
 };
@@ -87,6 +87,6 @@ export let persistSeenFeatureNotifications = async function (
 export let retrieveSeenFeatureNotifications = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   persistenceConfig: FeaturePromptProps.PersistenceConfig
-): Promise<Array<string>> {
-  return Promise.resolve([]);
+): Promise<Record<string, string>> {
+  return Promise.resolve({});
 };
