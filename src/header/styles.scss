@@ -19,8 +19,8 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  &.refresh:not(.root-variant-small),
-  &:not(.root-no-actions):not(.root-variant-small) {
+  &.refresh,
+  &:not(.root-no-actions) {
     row-gap: awsui.$space-scaled-xxs;
   }
 
@@ -124,10 +124,6 @@
     padding-inline: 0;
   }
 
-  &-variant-small {
-    flex-shrink: 0;
-  }
-
   .root-has-description > .main > & {
     padding-block-end: 0;
   }
@@ -162,10 +158,6 @@
   &-variant-h2:not(.refresh),
   &-variant-h3:not(.refresh) {
     padding-block-start: awsui.$space-scaled-xs;
-  }
-  &-variant-small {
-    display: flex;
-    justify-content: space-between;
   }
 
   .no-wrap > &:not(.refresh) {
@@ -245,12 +237,6 @@
   }
   &-variant-h3 {
     @include styles.font(heading-m);
-  }
-  &-variant-small {
-    display: flex;
-    align-items: center;
-    min-block-size: 32px;
-    @include styles.font-heading-s;
   }
 }
 
