@@ -31,8 +31,8 @@ export interface ErrorBoundaryProps {
    * error boundaries. These boundaries activate automatically when they detect
    * an ancestor boundary, inheriting configuration from the closest one.
    *
-   * When `suppressNested` is set to `true`, nested built-in error boundaries,
-   * or nested standalone error boundaries with `suppressible=true` are disabled,
+   * When `suppressNested` is set to `true`, nested built-in error boundaries
+   * and nested standalone error boundaries with `suppressible=true` are disabled,
    * so the errors propagate further up and are captured by this error boundary.
    */
   suppressNested?: boolean;
