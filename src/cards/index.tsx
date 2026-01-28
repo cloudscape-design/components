@@ -321,7 +321,6 @@ const CardsList = <T,>({
         return (
           <li
             className={clsx(styles.card, {
-              [styles['card-selectable']]: selectable,
               [styles['card-selected']]: selectable && selected,
             })}
             key={key}
