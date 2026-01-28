@@ -8,6 +8,7 @@ import PaginationWrapper from '../pagination';
 import TextFilterWrapper from '../text-filter';
 
 import styles from '../../../cards/styles.selectors.js';
+import cardStyles from '../../../internal/components/card/styles.selectors.js';
 import tableStyles from '../../../table/styles.selectors.js';
 
 class CardSectionWrapper extends ComponentWrapper {
@@ -31,7 +32,7 @@ class CardWrapper extends ComponentWrapper {
   }
 
   findCardHeader(): ElementWrapper | null {
-    return this.findByClassName(styles['card-header-inner']);
+    return this.find(`:is(.${cardStyles['header-inner']}, .${styles['card-header-inner']})`);
   }
 
   findSelectionArea(): ElementWrapper | null {
