@@ -450,6 +450,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -3163,6 +3177,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#ffffff",
+          },
+        },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-background-segment-active": {
@@ -5880,6 +5908,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -8593,6 +8635,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#ffffff",
+          },
+        },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-background-segment-active": {
@@ -11310,6 +11366,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -14025,6 +14095,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#21252c",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -16738,6 +16822,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#21252c",
         "light": "#ffffff",
+      },
+    },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-background-segment-active": {
@@ -19460,6 +19558,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -22173,6 +22285,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
+          },
+        },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-background-segment-active": {
@@ -24890,6 +25016,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -27603,6 +27743,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#ffffff",
+          },
+        },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-background-segment-active": {
@@ -30320,6 +30474,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -33033,6 +33201,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#ffffff",
+          },
+        },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-background-segment-active": {
@@ -35750,6 +35932,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -38465,6 +38661,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -41178,6 +41388,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1b232d",
         "light": "#ffffff",
+      },
+    },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#333843",
+        "light": "#ebebf0",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-background-segment-active": {

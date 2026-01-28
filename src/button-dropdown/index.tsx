@@ -36,6 +36,7 @@ const ButtonDropdown = React.forwardRef(
       fullWidth,
       nativeMainActionAttributes,
       nativeTriggerAttributes,
+      renderItem,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -61,6 +62,7 @@ const ButtonDropdown = React.forwardRef(
       <InternalButtonDropdown
         {...baseProps}
         {...baseComponentProps}
+        renderItem={renderItem}
         ref={ref}
         items={items}
         variant={variant}
