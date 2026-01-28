@@ -13718,7 +13718,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
         "name": "HeaderProps.Variant",
         "type": "union",
         "values": [
-          "small",
           "h1",
           "h2",
           "h3",
