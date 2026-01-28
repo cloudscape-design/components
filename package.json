@@ -130,7 +130,7 @@
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.89.2",
     "sass-loader": "^12.3.0",
-    "size-limit": "^11.1.6",
+    "size-limit": "^12.0.0",
     "stylelint": "^16.6.1",
     "stylelint-config-recommended-scss": "^14.0.0",
     "stylelint-no-unsupported-browser-features": "^8.0.2",
