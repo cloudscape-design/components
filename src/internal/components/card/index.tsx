@@ -15,40 +15,34 @@ export default function Card({
   className,
   header,
   description,
-  innerMetadataAttributes,
   metadataAttributes,
   onClick,
-  onFocus,
-  role,
-  tagName: TagName = 'div',
   disableContentPaddings,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
   return (
-    <TagName
-      className={clsx(className, styles.root, {
-        [styles['with-actions']]: !!actions,
-        [styles.active]: active,
-      })}
-      onFocus={onFocus}
-      role={role}
+    <div
+      className={clsx(
+        className,
+        styles.root,
+        {
+          [styles['with-actions']]: !!actions,
+          [styles.active]: active,
+        },
+        isRefresh && styles.refresh
+      )}
       {...metadataAttributes}
+      onClick={onClick}
     >
-      <div
-        className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
-        {...innerMetadataAttributes}
-        onClick={onClick}
-      >
-        <div className={styles.header}>
-          <div className={styles['header-top-row']}>
-            <div className={styles['header-inner']}>{header}</div>
-            {actions && <div className={styles.actions}>{actions}</div>}
-          </div>
-          {description && <div className={styles.description}>{description}</div>}
+      <div className={styles.header}>
+        <div className={styles['header-top-row']}>
+          <div className={styles['header-inner']}>{header}</div>
+          {actions && <div className={styles.actions}>{actions}</div>}
         </div>
-        <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
+        {description && <div className={styles.description}>{description}</div>}
       </div>
-    </TagName>
+      <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
+    </div>
   );
 }
