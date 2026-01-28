@@ -78,6 +78,8 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-sizing: border-box;
+  margin-block: 0;
+  margin-inline: 0;
   padding-block-start: 0;
   padding-block-end: awsui.$space-grid-gutter;
   padding-inline-start: awsui.$space-grid-gutter;
@@ -88,7 +90,6 @@
   }
   &-header {
     @include styles.font-heading-m;
-    padding-block-start: 8px;
     &-inner {
       /* Used in test utils */
     }
