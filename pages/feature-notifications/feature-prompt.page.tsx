@@ -15,24 +15,23 @@ import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const readFeaturesStorage: Record<string, Array<string>> = {
-  'feature-notifications': [],
+const readFeaturesStorage: Record<string, Record<string, string>> = {
+  'feature-notifications': {},
 };
 
 setPersistenceFunctionsForTesting({
   persistSeenFeatureNotifications: async function (persistenceConfig, value) {
-    const readFeatures = readFeaturesStorage[persistenceConfig.uniqueKey] ?? [];
     const result = await new Promise<void>(resolve =>
       setTimeout(() => {
-        readFeaturesStorage[persistenceConfig.uniqueKey] = [...readFeatures, ...value];
+        readFeaturesStorage[persistenceConfig.uniqueKey] = value;
         resolve();
       }, 150)
     );
     return result;
   },
   retrieveSeenFeatureNotifications: async function (persistenceConfig) {
-    const result = await new Promise<Array<string>>(resolve =>
-      setTimeout(() => resolve(readFeaturesStorage[persistenceConfig.uniqueKey] ?? []), 150)
+    const result = await new Promise<Record<string, string>>(resolve =>
+      setTimeout(() => resolve(readFeaturesStorage[persistenceConfig.uniqueKey] ?? {}), 150)
     );
     return result;
   },
