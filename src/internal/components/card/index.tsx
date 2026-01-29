@@ -50,6 +50,7 @@ export default function Card({
           icon={icon}
           actions={actions}
           disablePaddings={disableHeaderPaddings}
+          wrapActions={false}
         />
       </div>
       <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
