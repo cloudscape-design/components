@@ -84,11 +84,13 @@
   padding-inline-start: awsui.$space-grid-gutter;
   padding-inline-end: 0;
   list-style: none;
-  &-header-inner {
+  &-header {
     @include styles.font-heading-m;
-    padding-block-start: awsui.$space-scaled-xs;
-    &-selectable {
-      inline-size: 90%;
+    &-inner {
+      padding-block-start: awsui.$space-scaled-xs;
+      &-selectable {
+        inline-size: 90%;
+      }
     }
   }
   &-selected {
