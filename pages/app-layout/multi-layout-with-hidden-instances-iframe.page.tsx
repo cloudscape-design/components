@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
 import BreadcrumbGroup from '~components/breadcrumb-group';
@@ -9,6 +9,7 @@ import ScreenreaderOnly from '~components/internal/components/screenreader-only'
 import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
+import { mount } from '~mount';
 
 import './utils/external-widget';
 import './utils/external-global-left-panel-widget';
@@ -65,6 +66,27 @@ export default function () {
   const [activeHref, setActiveHref] = useState('page1');
   const openPagesHistory = useRef<Set<string>>(new Set([activeHref]));
 
+  useEffect(() => {
+    setTimeout(() => {
+      const pageContent = (
+        <>
+          <ScreenreaderOnly>
+            <h1>Multiple app layouts with iframe</h1>
+          </ScreenreaderOnly>
+          {ROUTES.filter(
+            item => item.navLink.href === activeHref || openPagesHistory.current.has(item.navLink.href)
+          ).map(item => (
+            <div key={item.navLink.href} style={{ display: item.navLink.href !== activeHref ? 'none' : '' }}>
+              <IframeWrapper id={item.navLink.href} AppComponent={item.View} />
+            </div>
+          ))}
+        </>
+      );
+
+      mount(pageContent, document.querySelector('#content')!);
+    }, 200);
+  }, [activeHref]);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -87,20 +109,7 @@ export default function () {
         }
         toolsHide={true}
         disableContentPaddings={true}
-        content={
-          <>
-            <ScreenreaderOnly>
-              <h1>Multiple app layouts with iframe</h1>
-            </ScreenreaderOnly>
-            {ROUTES.filter(
-              item => item.navLink.href === activeHref || openPagesHistory.current.has(item.navLink.href)
-            ).map(item => (
-              <div key={item.navLink.href} style={{ display: item.navLink.href !== activeHref ? 'none' : '' }}>
-                <IframeWrapper id={item.navLink.href} AppComponent={item.View} />
-              </div>
-            ))}
-          </>
-        }
+        content={<div id="content"></div>}
       />
     </ScreenshotArea>
   );

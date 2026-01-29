@@ -18,6 +18,7 @@ import {
 } from '../internal';
 import { isWidgetReady } from '../state/invariants';
 import { ToolbarProps } from '../toolbar';
+import FakeI18n from './fake-i18n';
 import { SkeletonPartProps, SkeletonSlotsAttributes } from './interfaces';
 
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -90,7 +91,11 @@ export const SkeletonLayout = ({
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered ? <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary> : null}
+              {registered ? (
+                <FakeI18n>
+                  <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary>
+                </FakeI18n>
+              ) : null}
             </div>
           </div>
           <AppLayoutBottomContentSlot {...mergedProps} />
