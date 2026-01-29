@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -34,7 +34,7 @@ const defaultAriaLabels: Required<PaginationProps.Labels> = {
 };
 
 const defaultI18nStrings: Required<PaginationProps.I18nStrings> = {
-  jumpToPageLabel: '',
+  jumpToPageLabel: 'Page',
   jumpToPageError: '',
 };
 
@@ -134,10 +134,13 @@ const InternalPagination = React.forwardRef(
     const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
     const [jumpToPageValue, setJumpToPageValue] = useState(currentPageIndex?.toString());
     const prevLoadingRef = React.useRef(jumpToPage?.loading);
+    const jumpToPageInputRef = useRef<HTMLInputElement>(null);
     const [popoverVisible, setPopoverVisible] = useState(false);
     const [hasError, setHasError] = useState(false);
 
     const i18n = useInternalI18n('pagination');
+    const i18nTutorial = useInternalI18n('tutorial-panel');
+    const loadingText = i18nTutorial('i18nStrings.loadingText', 'Loading');
 
     // Expose setError function via ref
     React.useImperativeHandle(ref, () => ({
@@ -190,6 +193,7 @@ const InternalPagination = React.forwardRef(
     function handleJumpToPageClick(requestedPageIndex: number) {
       if (requestedPageIndex < 1) {
         handlePageClick(1);
+        jumpToPageInputRef.current?.focus();
         return;
       }
 
@@ -205,6 +209,7 @@ const InternalPagination = React.forwardRef(
           handlePageClick(pagesCount, true);
         }
       }
+      jumpToPageInputRef.current?.focus();
     }
 
     // Auto-clear error when user types in the input
@@ -242,7 +247,8 @@ const InternalPagination = React.forwardRef(
         iconName="arrow-right"
         variant="icon"
         loading={jumpToPage?.loading}
-        ariaLabel={jumpToPageButtonLabel ?? defaultAriaLabels.jumpToPageButton}
+        loadingText={loadingText}
+        ariaLabel={jumpToPage?.loading ? loadingText : (jumpToPageButtonLabel ?? defaultAriaLabels.jumpToPageButton)}
         onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
         disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
       />
@@ -316,18 +322,21 @@ const InternalPagination = React.forwardRef(
           <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
         </PageButton>
         {jumpToPage && (
-          <div className={styles['jump-to-page']}>
+          <li className={styles['jump-to-page']}>
             <InternalSpaceBetween size="xxs" direction="horizontal" alignItems="end">
               <div className={styles['jump-to-page-input']}>
                 <InternalInput
+                  ref={jumpToPageInputRef}
                   type="number"
                   value={jumpToPageValue}
-                  __inlineLabelText={jumpToPageLabel}
+                  __inlineLabelText={jumpToPageLabel || undefined}
+                  ariaLabel={jumpToPageLabel || undefined}
                   nativeInputAttributes={{
                     min: 1,
                     max: !openEnd ? pagesCount : undefined,
                   }}
                   onChange={handleInputChange}
+                  onBlur={() => setPopoverVisible(false)}
                   onKeyDown={e => {
                     if (e.detail.keyCode === 13 && jumpToPageValue && Number(jumpToPageValue) !== currentPageIndex) {
                       handleJumpToPageClick(Number(jumpToPageValue));
@@ -351,7 +360,7 @@ const InternalPagination = React.forwardRef(
                 jumpToPageButton
               )}
             </InternalSpaceBetween>
-          </div>
+          </li>
         )}
       </ul>
     );
