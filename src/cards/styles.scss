@@ -85,11 +85,9 @@
   padding-inline-start: awsui.$space-grid-gutter;
   padding-inline-end: 0;
   list-style: none;
-  &-header {
+  &-header-inner {
     @include styles.font-heading-m;
-    &-inner {
-      /* Used in test utils */
-    }
+    padding-block-start: awsui.$space-scaled-xs;
   }
   &-selected {
     /* Used in test utils */
