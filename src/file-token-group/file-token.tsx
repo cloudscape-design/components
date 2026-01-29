@@ -73,7 +73,7 @@ function InternalFileToken({
   const showWarning = warningText && !errorText;
   const containerRef = useRef<HTMLDivElement>(null);
   const fileNameRef = useRef<HTMLSpanElement>(null);
-  const fileNameContainerRef = useRef<HTMLButtonElement>(null);
+  const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -148,15 +148,15 @@ function InternalFileToken({
             })}
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
-              <button
+              <div
                 className={styles['file-name-button']}
                 onMouseOver={() => setShowTooltip(true)}
                 onMouseOut={() => setShowTooltip(false)}
                 onFocus={() => setShowTooltip(true)}
                 onBlur={() => setShowTooltip(false)}
+                role={isTruncated ? 'button' : undefined}
                 tabIndex={isTruncated ? 0 : -1}
                 ref={fileNameContainerRef}
-                aria-label={isTruncated ? file.name : undefined}
               >
                 <InternalBox
                   fontWeight="normal"
@@ -166,7 +166,7 @@ function InternalFileToken({
                 >
                   <span ref={fileNameRef}>{file.name}</span>
                 </InternalBox>
-              </button>
+              </div>
 
               {showFileSize && file.size ? (
                 <InternalBox
