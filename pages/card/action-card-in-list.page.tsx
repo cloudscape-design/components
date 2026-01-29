@@ -54,17 +54,18 @@ export default function ButtonsScenario() {
           <Container header={<Header variant="h2">Choose an active session</Header>}>
             <ol style={{ display: 'flex', flexDirection: 'column', gap: 16, margin: 0, padding: 0 }}>
               {accounts.map(({ alias, id, role, email, lastLogin }) => (
-                <Card
-                  tagName="li"
-                  header={alias ? `${alias} (${id})` : `Account ID: ${id}`}
-                  description={[role, email].filter(Boolean).join('/')}
-                  key={id}
-                  variant="action"
-                  active={activeId === id}
-                  onClick={() => setActiveId(id)}
-                >
-                  <Box color="text-body-secondary" fontSize="body-s">{`Logged in ${lastLogin}`}</Box>
-                </Card>
+                <li key={id}>
+                  <Card
+                    header={alias ? `${alias} (${id})` : `Account ID: ${id}`}
+                    description={[role, email].filter(Boolean).join('/')}
+                    key={id}
+                    variant="action"
+                    active={activeId === id}
+                    onClick={() => setActiveId(id)}
+                  >
+                    <Box color="text-body-secondary" fontSize="body-s">{`Logged in ${lastLogin}`}</Box>
+                  </Card>
+                </li>
               ))}
             </ol>
           </Container>

@@ -15,8 +15,8 @@ export default function ButtonsScenario() {
       <ScreenshotArea>
         <Card
           header="image-title.jpg"
-          //   description="Metadata about file - 4GB"
-          action={
+          description="Metadata about file - 4GB"
+          actions={
             <ButtonGroup
               onItemClick={() => null}
               items={[

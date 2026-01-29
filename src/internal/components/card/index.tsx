@@ -30,8 +30,9 @@ export default function Card({
       className={clsx(
         className,
         styles.root,
+        styles[`variant-${variant}`],
         {
-          [styles['with-actions']]: !!actions,
+          [styles['with-actions']]: hasActions,
           [styles.active]: active,
         },
         isRefresh && styles.refresh
