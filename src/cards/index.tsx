@@ -352,7 +352,7 @@ const CardsList = <T,>({
               active={selectable && selected}
               header={
                 cardDefinition.header ? (
-                  <div className={clsx(styles['card-header'], analyticsSelectors['card-header'])}>
+                  <div className={clsx(styles['card-header-inner'], analyticsSelectors['card-header'])}>
                     {cardDefinition.header(item)}
                   </div>
                 ) : (
