@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
+import { CollectionPreferences } from '~components';
 import I18nProvider from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 import Pagination, { PaginationProps } from '~components/pagination';
@@ -56,6 +57,63 @@ function JumpToPageOpenEndContent() {
         { header: 'DNS Name', cell: (item: Instance) => item.dnsName || '-' },
       ]}
       items={currentItems}
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={{
+            pageSize: 10,
+            contentDisplay: [
+              { id: 'variable', visible: true },
+              { id: 'value', visible: true },
+              { id: 'type', visible: true },
+              { id: 'description', visible: true },
+            ],
+          }}
+          pageSizePreference={{
+            title: 'Page size',
+            options: [
+              { value: 10, label: '10 resources' },
+              { value: 20, label: '20 resources' },
+            ],
+          }}
+          wrapLinesPreference={{}}
+          stripedRowsPreference={{}}
+          contentDensityPreference={{}}
+          contentDisplayPreference={{
+            options: [
+              {
+                id: 'variable',
+                label: 'Variable name',
+                alwaysVisible: true,
+              },
+              { id: 'value', label: 'Text value' },
+              { id: 'type', label: 'Type' },
+              { id: 'description', label: 'Description' },
+            ],
+          }}
+          stickyColumnsPreference={{
+            firstColumns: {
+              title: 'Stick first column(s)',
+              description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
+              options: [
+                { label: 'None', value: 0 },
+                { label: 'First column', value: 1 },
+                { label: 'First two columns', value: 2 },
+              ],
+            },
+            lastColumns: {
+              title: 'Stick last column',
+              description: 'Keep the last column visible while horizontally scrolling the table content.',
+              options: [
+                { label: 'None', value: 0 },
+                { label: 'Last column', value: 1 },
+              ],
+            },
+          }}
+        />
+      }
       pagination={
         <Pagination
           ref={jumpToPageRef}
