@@ -96,14 +96,16 @@ export default function ButtonsScenario() {
                 tooltipText="Generative AI assistant"
               />
             </div>
-            <Card
-              header="user-budget.csv"
-              description="1.7 MB"
-              actions={<Button variant="icon" iconName="download" />}
-              icon={<Icon name="file" />}
-              reducedBorderRadius={reducedBorderRadius}
-              reducedPadding={reducedPadding}
-            />
+            <div style={{ minInlineSize: 300 }}>
+              <Card
+                header="user-budget.csv"
+                description="1.7 MB"
+                actions={<Button variant="icon" iconName="download" />}
+                icon={<Icon name="file" />}
+                reducedBorderRadius={reducedBorderRadius}
+                reducedPadding={reducedPadding}
+              />
+            </div>
           </div>
 
           <ChatBubble

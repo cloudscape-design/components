@@ -94,43 +94,45 @@ export default function ButtonsScenario() {
                 tooltipText="Generative AI assistant"
               />
             </div>
-            <Card
-              header="image-title.jpg"
-              description="Metadata about file - 4GB"
-              actions={
-                <ButtonGroup
-                  onItemClick={() => null}
-                  items={[
-                    {
-                      type: 'icon-button',
-                      id: 'download',
-                      iconName: 'download',
-                      text: 'Download',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'expand',
-                      iconName: 'expand',
-                      text: 'Expand',
-                    },
-                  ]}
-                  variant={'icon'}
+            <div style={{ minInlineSize: 500 }}>
+              <Card
+                header="image-title.jpg"
+                description="Metadata about file - 4GB"
+                actions={
+                  <ButtonGroup
+                    onItemClick={() => null}
+                    items={[
+                      {
+                        type: 'icon-button',
+                        id: 'download',
+                        iconName: 'download',
+                        text: 'Download',
+                      },
+                      {
+                        type: 'icon-button',
+                        id: 'expand',
+                        iconName: 'expand',
+                        text: 'Expand',
+                      },
+                    ]}
+                    variant={'icon'}
+                  />
+                }
+                disableContentPaddings={true}
+                reducedBorderRadius={reducedBorderRadius}
+                reducedPadding={reducedPadding}
+              >
+                <div
+                  style={{
+                    backgroundImage: `url(${image})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    width: '100%',
+                    height: 300,
+                  }}
                 />
-              }
-              disableContentPaddings={true}
-              reducedBorderRadius={reducedBorderRadius}
-              reducedPadding={reducedPadding}
-            >
-              <div
-                style={{
-                  backgroundImage: `url(${image})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  width: '100%',
-                  height: 300,
-                }}
-              />
-            </Card>
+              </Card>
+            </div>
           </div>
 
           <ChatBubble

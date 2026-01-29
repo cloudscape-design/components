@@ -17,7 +17,7 @@ export function CardPage({ title, children, settings }: { title: string; childre
           <hr />
         </SpaceBetween>
       )}
-      <div style={{ maxWidth: 600 }}>
+      <div style={{ maxWidth: 1000 }}>
         <ScreenshotArea>{children}</ScreenshotArea>
       </div>
     </article>
