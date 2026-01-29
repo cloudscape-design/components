@@ -88,6 +88,9 @@
   &-header-inner {
     @include styles.font-heading-m;
     padding-block-start: awsui.$space-scaled-xs;
+    &-selectable {
+      inline-size: 90%;
+    }
   }
   &-selected {
     /* Used in test utils */

@@ -337,27 +337,29 @@ const CardsList = <T,>({
             })}
           >
             <Card
-              actions={
-                selectionProps && (
-                  <div
-                    className={styles['selection-control']}
-                    {...(!canClickEntireCard && !disabled
-                      ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
-                      : {})}
-                  >
-                    <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
-                  </div>
-                )
-              }
               active={selectable && selected}
               header={
-                cardDefinition.header ? (
-                  <div className={clsx(styles['card-header-inner'], analyticsSelectors['card-header'])}>
-                    {cardDefinition.header(item)}
+                <div className={styles['card-header']}>
+                  <div
+                    className={clsx(
+                      styles['card-header-inner'],
+                      selectable && styles['card-header-inner-selectable'],
+                      analyticsSelectors['card-header']
+                    )}
+                  >
+                    {cardDefinition.header ? cardDefinition.header(item) : ''}
                   </div>
-                ) : (
-                  ''
-                )
+                  {selectionProps && (
+                    <div
+                      className={styles['selection-control']}
+                      {...(!canClickEntireCard && !disabled
+                        ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
+                        : {})}
+                    >
+                      <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+                    </div>
+                  )}
+                </div>
               }
               metadataAttributes={
                 canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
