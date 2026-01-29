@@ -67,7 +67,7 @@ export interface AutosuggestProps
    *
    * - `type` ('item') - The item type.
    * - `index` (number) - The item's absolute position in the dropdown.
-   * - `option` (Option) - The original item configuration.
+   * - `option` (Option) - The original option configuration.
    * - `disabled` (boolean) - Whether the item is disabled.
    * - `highlighted` (boolean) - Whether the item is currently highlighted.
    * - `selected` (boolean) - Whether the item is selected.
@@ -77,7 +77,7 @@ export interface AutosuggestProps
    *
    * - `type` ('group') - The item type.
    * - `index` (number) - The item's absolute position in the dropdown.
-   * - `option` (OptionGroup) - The original item configuration.
+   * - `option` (OptionGroup) - The original option configuration.
    * - `disabled` (boolean) - Whether the item is disabled.
    *
    * ### use-entered
@@ -88,7 +88,7 @@ export interface AutosuggestProps
    * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
    *
-   * When returning `null`, the default styling will be applied.
+   * When returning `null`, the default rendering will be applied for that item.
    *
    * @awsuiSystem core
    */
@@ -210,6 +210,7 @@ export namespace AutosuggestProps {
   export interface UseEnteredRenderItem {
     type: 'use-entered';
     option: Option;
+    highlighted: boolean;
   }
   export type RenderItem = OptionRenderItem | OptionGroupRenderItem | UseEnteredRenderItem;
   export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;

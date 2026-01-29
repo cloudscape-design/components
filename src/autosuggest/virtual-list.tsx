@@ -6,8 +6,9 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import OptionsList from '../internal/components/options-list';
 import { useVirtual } from '../internal/hooks/use-virtual';
-import AutosuggestOption, { AutosuggestRenderItemParentProps } from './autosuggest-option';
+import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
+import { getParentProps } from './utils/parent-props';
 
 import styles from './styles.css.js';
 
@@ -66,22 +67,8 @@ const VirtualList = ({
           hasDropdownStatus
         );
 
-        let parentProps: AutosuggestRenderItemParentProps | undefined = undefined;
-        if (item.type === 'parent') {
-          lastGroupIndex = index;
-        } else if (lastGroupIndex !== -1 && !!item.parent) {
-          parentProps = {
-            index: lastGroupIndex,
-            virtualIndex: lastGroupIndex,
-            disabled: !!item.parent.disabled,
-            option: {
-              ...item.parent,
-              disabled: !!item.parent.disabled,
-              option: item.parent,
-              type: 'parent',
-            },
-          };
-        }
+        const { parentProps, updatedLastGroupIndex } = getParentProps(item, index, lastGroupIndex, index);
+        lastGroupIndex = updatedLastGroupIndex;
 
         return (
           <AutosuggestOption

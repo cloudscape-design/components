@@ -35,11 +35,10 @@ describe('Autosuggest renderOption', () => {
 
     describe(`${listType} list`, () => {
       test('renders custom option content', () => {
-        const renderOption = jest.fn(() => <div>Custom</div>);
+        const renderOption = () => <div>Custom</div>;
         const wrapper = renderAutosuggest({ options: defaultOptions, renderOption });
         wrapper.focus();
 
-        expect(renderOption).toHaveBeenCalled();
         const elementWrapper = wrapper.findDropdown().findOption(1)!.getElement();
         expect(elementWrapper).not.toBeNull();
         expect(elementWrapper).toHaveTextContent('Custom');
@@ -115,16 +114,20 @@ describe('Autosuggest renderOption', () => {
       });
 
       test('reflects highlighted state', () => {
-        const renderOption = jest.fn(props => <div>{props.item.highlighted ? 'highlighted' : 'normal'}</div>);
+        const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({ options: [{ label: 'First', value: '1' }], renderOption });
         wrapper.focus();
 
         wrapper.findNativeInput().keydown(KeyCode.down);
-        expect(wrapper.findDropdown().getElement().textContent).toContain('highlighted');
+        expect(renderOption).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item: expect.objectContaining({ highlighted: true }),
+          })
+        );
       });
 
       test('reflects selected state', () => {
-        const renderOption = jest.fn(props => <div>{props.item.selected ? 'selected' : 'not-selected'}</div>);
+        const renderOption = jest.fn(() => <div>Custom</div>);
         const option = { label: 'Test', value: '1' };
         const wrapper = renderAutosuggest({
           options: [option],
@@ -140,11 +143,7 @@ describe('Autosuggest renderOption', () => {
       });
 
       test('renders children within groups correctly', () => {
-        const renderOption = jest.fn(props => (
-          <div>
-            {props.item.type}-{props.item.option.label}
-          </div>
-        ));
+        const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({
           options: [{ label: 'Group', options: [{ label: 'Child', value: 'c1' }] }],
           renderOption,
@@ -182,12 +181,13 @@ describe('Autosuggest renderOption', () => {
       });
 
       test('reflects disabled state', () => {
-        const renderOption = jest.fn(props => <div>{props.item.disabled ? 'disabled' : 'enabled'}</div>);
+        const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({
           options: [{ label: 'Test', value: '1', disabled: true }],
           renderOption,
         });
         wrapper.focus();
+
         expect(renderOption).toHaveBeenCalledWith(
           expect.objectContaining({
             item: expect.objectContaining({
@@ -199,7 +199,7 @@ describe('Autosuggest renderOption', () => {
 
       test('allows selection with custom rendered options', () => {
         const onChange = jest.fn();
-        const renderOption = jest.fn(props => <div>{props.item.option.value}</div>);
+        const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({
           options: [
             { label: 'Test', value: '1' },
@@ -336,6 +336,21 @@ describe('Autosuggest renderOption', () => {
             }),
           })
         );
+      });
+
+      test('falls back to default content when renderOption returns null', () => {
+        const renderOption = jest.fn(() => null);
+        const wrapper = renderAutosuggest({
+          options: [{ label: 'Test Option', value: 'test' }],
+          renderOption,
+        });
+        wrapper.focus();
+
+        const optionElement = wrapper.findDropdown().findOption(1)!.getElement();
+        expect(optionElement).not.toBeNull();
+        // Should display the default content (the option label) instead of custom content
+        expect(optionElement).toHaveTextContent('Test Option');
+        expect(renderOption).toHaveBeenCalled();
       });
     });
   }

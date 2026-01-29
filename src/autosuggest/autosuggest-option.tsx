@@ -75,10 +75,14 @@ const toAutosuggestOptionItem = (props: {
   };
 };
 
-const toAutosuggestUseEnteredItem = (props: { option: AutosuggestItem }): AutosuggestProps.UseEnteredRenderItem => {
+const toAutosuggestUseEnteredItem = (props: {
+  option: AutosuggestItem;
+  highlighted: boolean;
+}): AutosuggestProps.UseEnteredRenderItem => {
   return {
     type: 'use-entered',
     option: props.option.option as OptionDefinition,
+    highlighted: props.highlighted,
   };
 };
 
@@ -141,6 +145,7 @@ const AutosuggestOption = (
     } else if (option.type === 'use-entered') {
       return toAutosuggestUseEnteredItem({
         option: option,
+        highlighted: highlighted,
       });
     } else {
       return toAutosuggestOptionItem({

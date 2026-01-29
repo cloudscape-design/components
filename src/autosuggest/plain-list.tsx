@@ -5,9 +5,10 @@ import React, { useEffect, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import AutosuggestOption, { AutosuggestRenderItemParentProps } from './autosuggest-option';
+import AutosuggestOption from './autosuggest-option';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { AutosuggestItemsState } from './options-controller';
+import { getParentProps } from './utils/parent-props';
 
 import styles from './styles.css.js';
 
@@ -75,21 +76,8 @@ const PlainList = ({
           hasDropdownStatus
         );
 
-        let parentProps: AutosuggestRenderItemParentProps | undefined = undefined;
-        if (item.type === 'parent') {
-          lastGroupIndex = index;
-        } else if (lastGroupIndex !== -1 && !!item.parent) {
-          parentProps = {
-            index: lastGroupIndex,
-            disabled: !!item.parent.disabled,
-            option: {
-              ...item.parent,
-              disabled: !!item.parent.disabled,
-              option: item.parent,
-              type: 'parent',
-            },
-          };
-        }
+        const { parentProps, updatedLastGroupIndex } = getParentProps(item, index, lastGroupIndex);
+        lastGroupIndex = updatedLastGroupIndex;
 
         return (
           <AutosuggestOption
