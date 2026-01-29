@@ -1,15 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 
 import ButtonGroup from '~components/button-group';
+import FormField from '~components/form-field';
 import Icon from '~components/icon';
+import Input from '~components/input';
 import Card from '~components/internal/components/card';
 import { InternalCardProps } from '~components/internal/components/card/interfaces';
+import SpaceBetween from '~components/space-between';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+
+type PageContext = React.Context<
+  AppContextType<{
+    containerWidth?: string;
+  }>
+>;
 
 const shortHeader = 'Card Header';
 const longHeader = 'This is a very long card header that might wrap to multiple lines on smaller viewports';
@@ -36,66 +46,56 @@ const icon = <Icon name="settings" />;
 const permutations = createPermutations<InternalCardProps & { width?: number }>([
   // Basic variations
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     actions: [undefined, actions],
   },
   // Header variations
   {
-    width: [300],
     header: [undefined, shortHeader, longHeader],
     children: [shortContent],
   },
   // Description variations
   {
-    width: [300],
     header: [shortHeader],
     description: [undefined, shortDescription, longDescription],
     children: [shortContent],
   },
   // Children variations
   {
-    width: [300],
     header: [shortHeader],
     children: [undefined, shortContent, longContent],
   },
   // Icon variations
   {
-    width: [300],
     header: [shortHeader],
     icon: [undefined, icon],
     children: [shortContent],
   },
   // Padding variations
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     disableContentPaddings: [false, true],
   },
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     disableHeaderPaddings: [false, true],
   },
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     reducedPadding: [false, true],
   },
   // Border radius variations
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     reducedBorderRadius: [false, true],
   },
   // Combined variations
   {
-    width: [300],
     header: [shortHeader],
     description: [shortDescription],
     icon: [icon],
@@ -103,7 +103,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     actions: [actions],
   },
   {
-    width: [300],
     header: [longHeader],
     description: [longDescription],
     children: [longContent],
@@ -111,7 +110,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
   },
   // Reduced styling with content
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     reducedBorderRadius: [true],
@@ -119,7 +117,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
   },
   // No children with actions
   {
-    width: [300],
     header: [shortHeader],
     description: [shortDescription],
     actions: [actions],
@@ -127,7 +124,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
   },
   // Active state
   {
-    width: [300],
     header: [shortHeader],
     children: [shortContent],
     active: [false, true],
@@ -135,18 +131,26 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
 ]);
 
 export default function CardPermutations() {
+  const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
+  const containerWidth = urlParams.containerWidth || '300';
+
   return (
     <>
       <h1>Internal Card permutations</h1>
+      <SpaceBetween size="m">
+        <FormField label="Container width (px)">
+          <Input
+            value={containerWidth}
+            onChange={({ detail }) => setUrlParams({ containerWidth: detail.value })}
+            type="number"
+            inputMode="numeric"
+          />
+        </FormField>
+      </SpaceBetween>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView
-          permutations={permutations}
-          render={({ width, ...permutation }) => (
-            <div style={{ width, padding: 8 }}>
-              <Card {...permutation} />
-            </div>
-          )}
-        />
+        <div style={{ width: parseInt(containerWidth) || 300, padding: 8 }}>
+          <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
+        </div>
       </ScreenshotArea>
     </>
   );
