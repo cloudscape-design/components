@@ -4,10 +4,10 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import InternalStructuredItem from '../structured-item';
 import { InternalCardProps } from './interfaces';
 
 import styles from './styles.css.js';
-import InternalStructuredItem from '../structured-item';
 
 export default function Card({
   actions,
@@ -36,13 +36,14 @@ export default function Card({
           [styles.active]: active,
           [styles['reduced-border-radius']]: reducedBorderRadius,
           [styles['reduced-padding']]: reducedPadding,
+          [styles['no-content']]: !children,
         },
         isRefresh && styles.refresh
       )}
       {...metadataAttributes}
       onClick={onClick}
     >
-      <div className={styles.header}>
+      <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
         <InternalStructuredItem
           content={<div className={styles['header-inner']}>{header}</div>}
           secondaryContent={description && <div className={styles.description}>{description}</div>}

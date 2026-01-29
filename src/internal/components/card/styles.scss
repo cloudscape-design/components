@@ -46,9 +46,6 @@
 
 .root {
   @include styles.styles-reset();
-  display: flex;
-  flex-direction: column;
-  gap: awsui.$space-scaled-xxs;
   box-sizing: border-box;
   position: relative;
   background-color: awsui.$color-background-container-content;
@@ -62,16 +59,20 @@
 }
 
 .header {
-  padding-block-start: awsui.$space-scaled-xs;
-  padding-inline-start: awsui.$space-card-horizontal;
-  padding-inline-end: calc(#{awsui.$space-card-horizontal} - awsui.$space-scaled-xxs);
   &-inner {
     @include styles.font-heading-s;
+  }
+  &:not(.no-padding) {
+    padding-block-start: awsui.$space-scaled-xs;
+    padding-block-end: awsui.$space-scaled-xxs;
+    padding-inline-start: awsui.$space-card-horizontal;
+    padding-inline-end: calc(#{awsui.$space-card-horizontal} - awsui.$space-scaled-xxs);
   }
 }
 
 .body {
   &:not(.no-padding) {
+    padding-block-start: awsui.$space-scaled-xxs;
     padding-block-end: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
   }
@@ -117,6 +118,15 @@
   > .body.no-padding {
     border-end-start-radius: awsui.$space-scaled-xs;
     border-end-end-radius: awsui.$space-scaled-xs;
+  }
+}
+
+.no-content {
+  > .header {
+    padding-block-end: 0;
+  }
+  > .body {
+    padding-block-start: 0;
   }
 }
 
