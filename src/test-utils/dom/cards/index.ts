@@ -31,7 +31,7 @@ class CardWrapper extends ComponentWrapper {
   }
 
   findCardHeader(): ElementWrapper | null {
-    return this.find(styles['card-header-inner']);
+    return this.findByClassName(styles['card-header-inner']);
   }
 
   findSelectionArea(): ElementWrapper | null {
