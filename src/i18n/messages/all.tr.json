@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "En son özellik sürümleri",
-    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin"
+    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin",
+    "ariaLabels.closeButton": "Bildirimleri kapat",
+    "ariaLabels.content": "Özellik bildirimleri",
+    "ariaLabels.triggerButton": "Özellik bildirimlerini göster",
+    "ariaLabels.resizeHandle": "Özellik bildirimlerini yeniden boyutlandır"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",

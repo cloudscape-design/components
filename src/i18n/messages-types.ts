@@ -234,6 +234,10 @@ export interface I18nFormatArgTypes {
   "features-notification-drawer": {
     'i18nStrings.title': never;
     'i18nStrings.viewAll': never;
+    'ariaLabels.closeButton': never;
+    'ariaLabels.content': never;
+    'ariaLabels.triggerButton': never;
+    'ariaLabels.resizeHandle': never;
   };
   "file-token-group": {
     "i18nStrings.limitShowFewer": never;

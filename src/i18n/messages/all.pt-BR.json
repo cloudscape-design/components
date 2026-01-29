@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "Últimos lançamentos de atributos",
-    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos"
+    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos",
+    "ariaLabels.closeButton": "Fechar notificações",
+    "ariaLabels.content": "Notificações de recursos",
+    "ariaLabels.triggerButton": "Mostrar notificações de recursos",
+    "ariaLabels.resizeHandle": "Redimensionar notificações de recursos"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",

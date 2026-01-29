@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "أحدث إصدارات الميزات",
-    "i18nStrings.viewAll": "عرض جميع إصدارات الميزات"
+    "i18nStrings.viewAll": "عرض جميع إصدارات الميزات",
+    "ariaLabels.closeButton": "إغلاق الإشعارات",
+    "ariaLabels.content": "إشعارات الميزات",
+    "ariaLabels.triggerButton": "عرض إشعارات الميزات",
+    "ariaLabels.resizeHandle": "إعادة ضبط حجم إشعارات الميزات"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",

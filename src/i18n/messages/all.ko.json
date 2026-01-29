@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "최신 기능 릴리스",
-    "i18nStrings.viewAll": "모든 기능 릴리스 보기"
+    "i18nStrings.viewAll": "모든 기능 릴리스 보기",
+    "ariaLabels.closeButton": "알림 닫기",
+    "ariaLabels.content": "기능 알림",
+    "ariaLabels.triggerButton": "기능 알림 보기",
+    "ariaLabels.resizeHandle": "크기 조정 기능 알림"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "간단히 표시",

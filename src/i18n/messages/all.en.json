@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "Latest feature releases",
-    "i18nStrings.viewAll": "View all feature releases"
+    "i18nStrings.viewAll": "View all feature releases",
+    "ariaLabels.closeButton": "Close notifications",
+    "ariaLabels.content": "Feature notifications",
+    "ariaLabels.triggerButton": "Show feature notifications",
+    "ariaLabels.resizeHandle": "Resize feature notifications"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",

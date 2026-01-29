@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "Rilis fitur terbaru",
-    "i18nStrings.viewAll": "Lihat semua rilis fitur"
+    "i18nStrings.viewAll": "Lihat semua rilis fitur",
+    "ariaLabels.closeButton": "Tutup notifikasi",
+    "ariaLabels.content": "Notifikasi fitur",
+    "ariaLabels.triggerButton": "Tampilkan notifikasi fitur",
+    "ariaLabels.resizeHandle": "Ubah ukuran notifikasi fitur"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",

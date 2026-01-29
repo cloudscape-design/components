@@ -48,7 +48,7 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
   const i18n = useInternalI18n('features-notification-drawer');
 
   return (
-    <InternalDrawer header={i18n('i18nStrings.title', '')} disableContentPaddings={true}>
+    <InternalDrawer header={i18n('i18nStrings.title', undefined)} disableContentPaddings={true}>
       <Box
         padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}
         className={styles['runtime-feature-notifications-drawer-content']}
@@ -84,7 +84,7 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
 
         {!!featuresPageLink && (
           <Box padding={{ top: 's' }} className={styles['runtime-feature-notifications-footer']}>
-            <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', '')}</Link>
+            <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', undefined)}</Link>
           </Box>
         )}
       </Box>

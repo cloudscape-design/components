@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "Últimos lanzamientos de características",
-    "i18nStrings.viewAll": "Ver todos los lanzamientos de características"
+    "i18nStrings.viewAll": "Ver todos los lanzamientos de características",
+    "ariaLabels.closeButton": "Cerrar notificaciones",
+    "ariaLabels.content": "Notificaciones de características",
+    "ariaLabels.triggerButton": "Mostrar notificaciones de características",
+    "ariaLabels.resizeHandle": "Redimensionar notificaciones de características"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",

@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "Dernières fonctionnalités publiées",
-    "i18nStrings.viewAll": "Voir toutes les fonctionnalités publiées"
+    "i18nStrings.viewAll": "Voir toutes les fonctionnalités publiées",
+    "ariaLabels.closeButton": "Fermer les notifications",
+    "ariaLabels.content": "Notifications de fonctionnalités",
+    "ariaLabels.triggerButton": "Afficher les notifications de fonctionnalités",
+    "ariaLabels.resizeHandle": "Redimensionner les notifications de fonctionnalités"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",

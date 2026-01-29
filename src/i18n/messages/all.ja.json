@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "最新機能リリース",
-    "i18nStrings.viewAll": "すべての機能リリースを表示"
+    "i18nStrings.viewAll": "すべての機能リリースを表示",
+    "ariaLabels.closeButton": "通知を閉じる",
+    "ariaLabels.content": "機能の通知",
+    "ariaLabels.triggerButton": "機能の通知を表示",
+    "ariaLabels.resizeHandle": "機能の通知をリサイズ"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",

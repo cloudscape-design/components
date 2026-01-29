@@ -184,7 +184,11 @@
   },
   "features-notification-drawer": {
     "i18nStrings.title": "最新功能发布",
-    "i18nStrings.viewAll": "查看所有功能发布"
+    "i18nStrings.viewAll": "查看所有功能发布",
+    "ariaLabels.closeButton": "关闭通知",
+    "ariaLabels.content": "功能通知",
+    "ariaLabels.triggerButton": "显示功能通知",
+    "ariaLabels.resizeHandle": "调整功能通知的大小"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
