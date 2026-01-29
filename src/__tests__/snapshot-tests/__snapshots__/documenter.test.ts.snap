@@ -6301,6 +6301,63 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.
+
+The item inside the props has a different shape depending on its type:
+
+
+### action
+
+- \`type\` ('action') - The item type.
+- \`index\` (number) - The item's position relative to its parent.
+- \`option\` (Item) - The original item configuration.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+
+### checkbox
+
+- \`type\` ('checkbox') - The item type.
+- \`index\` (number) - The item's position relative to its parent.
+- \`option\` (CheckboxItem) - The original item configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`checked\` (boolean) - Controls the state of the checkbox item.
+- \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+
+### group
+
+- \`type\` ('group') - The item type.
+- \`index\` (number) - The item's position in the list.
+- \`option\` (ItemGroup) - The original item configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`expanded\` (boolean) - Whether the group is expanded.
+- \`expandDirection\` ('vertical' | 'horizontal') - The direction in which the group expands.
+
+When providing a custom \`renderItem\` implementation, it fully replaces the default visual rendering and content for that item.
+The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+
+When returning \`null\`, the default styling will be applied.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.ItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: ButtonDropdownProps.RenderItem; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonDropdownProps.ItemRenderer",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
@@ -11543,15 +11600,23 @@ Return a React node to fully override the default fallback presentation.",
     },
     {
       "defaultValue": "false",
+      "description": "When set to \`true\`, this error boundary can be suppressed by another error
+boundary with \`suppressNested=true\`, rendered above in the components tree.",
+      "name": "suppressible",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
       "description": "Controls how nested error boundaries behave.
 
 Several components—such as app layout, container, and modal include built-in
 error boundaries. These boundaries activate automatically when they detect
 an ancestor boundary, inheriting configuration from the closest one.
 
-When \`suppressNested\` is set to \`true\`, nested built-in or standalone
-boundaries are disabled. In this mode, all errors originating from within
-the boundary’s content are captured exclusively by this boundary.",
+When \`suppressNested\` is set to \`true\`, nested built-in error boundaries
+and nested standalone error boundaries with \`suppressible=true\` are disabled,
+so the errors propagate further up and are captured by this error boundary.",
       "name": "suppressNested",
       "optional": true,
       "type": "boolean",
@@ -29563,6 +29628,64 @@ user from modifying the value. A read-only control is still focusable.",
 }
 `;
 
+exports[`Components definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "dashCaseName": "tooltip",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Callback fired when the user presses the Escape key while the tooltip is visible.",
+      "name": "onEscape",
+    },
+  ],
+  "functions": [],
+  "name": "Tooltip",
+  "properties": [
+    {
+      "description": "Function that returns the element the tooltip points to.
+Can return null if the element is not yet mounted or available.",
+      "inlineType": {
+        "name": "() => HTMLElement | SVGElement | null",
+        "parameters": [],
+        "returnType": "HTMLElement | SVGElement | null",
+        "type": "function",
+      },
+      "name": "getTrack",
+      "optional": false,
+      "type": "() => HTMLElement | SVGElement | null",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Determines where the tooltip is displayed when opened, relative to the trigger. If the tooltip doesn't have enough space to open in this direction, it automatically chooses a better direction based on available space.",
+      "inlineType": {
+        "name": "PopoverProps.Position",
+        "type": "union",
+        "values": [
+          "left",
+          "top",
+          "bottom",
+          "right",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content to display in the tooltip.",
+      "isDefault": false,
+      "name": "content",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Components definition for top-navigation matches the snapshot: top-navigation 1`] = `
 {
   "dashCaseName": "top-navigation",
@@ -41376,6 +41499,26 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findIdentityLink",
           "parameters": [],
           "returnType": {
@@ -49812,6 +49955,21 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
         },
       ],
       "name": "TokenGroupWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
     },
     {
       "methods": [
