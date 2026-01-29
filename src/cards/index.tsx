@@ -375,7 +375,14 @@ const CardsList = <T,>({
               }
             >
               {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-                <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                <div
+                  key={id || index}
+                  className={clsx(
+                    styles.section,
+                    index === 0 && !!cardDefinition.header && styles['section-after-header']
+                  )}
+                  style={{ width: `${width}%` }}
+                >
                   {header ? <div className={styles['section-header']}>{header}</div> : ''}
                   {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
                 </div>
