@@ -15,6 +15,7 @@ import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableCellRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
 
+import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
@@ -165,7 +166,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
+        <div
+          className={clsx(
+            styles['body-cell-content'],
+            analyticsSelectors['body-cell-content'],
+            wrapLines && styles['body-cell-wrap']
+          )}
+        >
+          {children}
+        </div>
       </Element>
     );
   }
