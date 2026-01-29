@@ -5,10 +5,13 @@ import React, { useContext, useState } from 'react';
 import Avatar from '@cloudscape-design/chat-components/avatar';
 import ChatBubble from '@cloudscape-design/chat-components/chat-bubble';
 
+// import pythonHighlight from '@cloudscape-design/code-view/highlight/python';
 import Box from '~components/box';
+import Button from '~components/button';
 import ButtonGroup from '~components/button-group';
 import Container from '~components/container';
 import Header from '~components/header';
+import Icon from '~components/icon';
 import Card from '~components/internal/components/card';
 import PromptInput from '~components/prompt-input';
 import SpaceBetween from '~components/space-between';
@@ -16,7 +19,6 @@ import Toggle from '~components/toggle';
 import { spaceScaledXs } from '~design-tokens';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import image from '../container/images/16-9.png';
 import { CardPage } from './common';
 
 type PageContext = React.Context<
@@ -35,7 +37,7 @@ export default function ButtonsScenario() {
 
   return (
     <CardPage
-      title="Image preview"
+      title="Code snippet"
       settings={
         <SpaceBetween size="s">
           <Toggle
@@ -82,7 +84,7 @@ export default function ButtonsScenario() {
             avatar={<Avatar ariaLabel="User avatar" iconName="user-profile" />}
             ariaLabel="User message"
           >
-            Create an image of a dog standing in aquamarine water.
+            Show me the simplest Lambda function to log S3 uploads
           </ChatBubble>
 
           <div style={{ display: 'flex', gap: spaceScaledXs }}>
@@ -95,42 +97,13 @@ export default function ButtonsScenario() {
               />
             </div>
             <Card
-              header="image-title.jpg"
-              description="Metadata about file - 4GB"
-              actions={
-                <ButtonGroup
-                  onItemClick={() => null}
-                  items={[
-                    {
-                      type: 'icon-button',
-                      id: 'download',
-                      iconName: 'download',
-                      text: 'Download',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'expand',
-                      iconName: 'expand',
-                      text: 'Expand',
-                    },
-                  ]}
-                  variant={'icon'}
-                />
-              }
-              disableContentPaddings={true}
+              header="user-budget.csv"
+              description="1.7 MB"
+              actions={<Button variant="icon" iconName="download" />}
+              icon={<Icon name="file" />}
               reducedBorderRadius={reducedBorderRadius}
               reducedPadding={reducedPadding}
-            >
-              <div
-                style={{
-                  backgroundImage: `url(${image})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  width: '100%',
-                  height: 300,
-                }}
-              />
-            </Card>
+            />
           </div>
 
           <ChatBubble
@@ -149,7 +122,9 @@ export default function ButtonsScenario() {
               />
             }
           >
-            <Box>Here you go – an image of a dog standing in aquamarine water.</Box>
+            <SpaceBetween size="m">
+              <Box>Here is a a snippet of the simplest Lambda function to log S3 uploads.</Box>
+            </SpaceBetween>
           </ChatBubble>
         </SpaceBetween>
       </Container>

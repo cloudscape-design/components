@@ -50,6 +50,17 @@ export interface InternalCardProps extends BaseComponentProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
 
   disableContentPaddings?: boolean;
+  disableHeaderPaddings?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
+
+  /**
+   * Reduces the border radius to 8px instead of the default value.
+   */
+  reducedBorderRadius?: boolean;
+
+  /**
+   * Reduces the padding to 10px instead of the default value.
+   */
+  reducedPadding?: boolean;
 }
