@@ -85,11 +85,17 @@
   margin-inline-start: awsui.$space-xs;
   padding-inline-start: awsui.$space-xs;
   padding-inline-start: 15px;
+  list-style: none;
 
   &-input {
-    max-inline-size: 87px;
+    inline-size: 87px;
     margin-block-start: -0.6em;
     overflow: visible;
+
+    // stylelint-disable-next-line selector-max-universal
+    > * > * {
+      inline-size: 100%;
+    }
   }
 }
 
