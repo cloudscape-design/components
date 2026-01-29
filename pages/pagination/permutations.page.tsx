@@ -14,6 +14,12 @@ const paginationLabels: PaginationProps.Labels = {
   nextPageLabel: 'Next page',
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => `Page ${pageNumber} of all pages`,
+  jumpToPageButton: 'Go to page',
+};
+
+const paginationI18nStrings: PaginationProps.I18nStrings = {
+  jumpToPageLabel: 'Page',
+  jumpToPageError: 'Enter a valid page number',
 };
 
 const permutations = createPermutations<PaginationProps>([
@@ -28,6 +34,7 @@ const permutations = createPermutations<PaginationProps>([
     pagesCount: [15],
     openEnd: [true, false],
     ariaLabels: [paginationLabels],
+    i18nStrings: [paginationI18nStrings],
     jumpToPage: [undefined, { loading: false }, { loading: true }],
   },
 ]);

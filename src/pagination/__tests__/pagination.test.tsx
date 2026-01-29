@@ -505,5 +505,62 @@ describe('jump to page', () => {
 
       expect(onChange).not.toHaveBeenCalled();
     });
+
+    test('should not submit on Enter when input is empty', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      const input = wrapper.findJumpToPageInput()!.findNativeInput().getElement();
+      wrapper.findJumpToPageInput()!.setInputValue('');
+      fireEvent.keyDown(input, { keyCode: 13, key: 'Enter' });
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('open-end error handling', () => {
+    test('should not show error popover content while loading in open-end mode', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      ref.current?.setError(true);
+      rerender(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      // Popover wrapper exists but content should not be visible while loading
+      const popover = wrapper.findJumpToPagePopover();
+      expect(popover).not.toBeNull();
+      expect(popover!.findContent()).toBeNull();
+    });
+
+    test('should show error popover after loading completes in open-end mode', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      ref.current?.setError(true);
+      rerender(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: false }} />
+      );
+
+      expect(wrapper.findJumpToPagePopover()).not.toBeNull();
+      expect(wrapper.findJumpToPagePopover()!.findContent()).not.toBeNull();
+    });
+
+    test('should sync input value after loading completes', () => {
+      const { wrapper, rerender } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      rerender(<Pagination currentPageIndex={3} pagesCount={5} openEnd={true} jumpToPage={{ loading: false }} />);
+
+      expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(3);
+    });
   });
 });
