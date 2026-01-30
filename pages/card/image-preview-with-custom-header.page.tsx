@@ -39,6 +39,7 @@ export default function CardScenario() {
             <Box color="text-body-secondary">Metadata about file - 4GB</Box>
           </div>
         }
+        disableContentPaddings={true}
       >
         <div
           style={{

@@ -34,6 +34,7 @@ export default function CardScenario() {
             variant={'icon'}
           />
         }
+        disableContentPaddings={true}
       >
         <div
           style={{

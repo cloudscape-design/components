@@ -19,6 +19,8 @@ export default function Card({
   icon,
   metadataAttributes,
   onClick,
+  disableHeaderPaddings,
+  disableContentPaddings,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
@@ -34,16 +36,23 @@ export default function Card({
       {...metadataAttributes}
       onClick={onClick}
     >
-      <div className={clsx(styles.header, !!actions && styles['with-actions'])}>
+      <div
+        className={clsx(
+          styles.header,
+          disableHeaderPaddings && styles['no-padding'],
+          !!actions && styles['with-actions']
+        )}
+      >
         <InternalStructuredItem
           content={<div className={styles['header-inner']}>{header}</div>}
           secondaryContent={description && <div className={styles.description}>{description}</div>}
           icon={icon}
           actions={actions}
+          disablePaddings={disableHeaderPaddings}
           wrapActions={false}
         />
       </div>
-      <div className={clsx(styles.body)}>{children}</div>
+      <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
     </div>
   );
 }

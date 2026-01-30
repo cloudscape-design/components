@@ -38,6 +38,16 @@ export interface InternalCardProps extends BaseComponentProps {
   icon?: React.ReactNode;
 
   /**
+   * Determines whether the card header has padding. If `true`, removes the default padding from the header.
+   */
+  disableHeaderPaddings?: boolean;
+
+  /**
+   * Determines whether the card content has padding. If `true`, removes the default padding from the content area.
+   */
+  disableContentPaddings?: boolean;
+
+  /**
    * Called when the user clicks on the card.
    */
   onClick?: React.MouseEventHandler<HTMLElement>;
