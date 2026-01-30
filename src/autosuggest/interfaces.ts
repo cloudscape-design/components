@@ -80,10 +80,10 @@ export interface AutosuggestProps
    * - `option` (OptionGroup) - The original option configuration.
    * - `disabled` (boolean) - Whether the item is disabled.
    *
-   * ### use-entered
+   * ### entered-text
    *
-   * - `type` ('use-entered') - The item type.
-   * - `option` (Option) - The use-entered item configuration.
+   * - `type` ('entered-text') - The item type.
+   * - `option` (Option) - The entered-text option configuration.
    *
    * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
@@ -207,12 +207,12 @@ export namespace AutosuggestProps {
     option: OptionGroup;
     disabled: boolean;
   }
-  export interface UseEnteredRenderItem {
-    type: 'use-entered';
+  export interface EnteredTextRenderItem {
+    type: 'entered-text';
     option: Option;
     highlighted: boolean;
   }
-  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | UseEnteredRenderItem;
+  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | EnteredTextRenderItem;
   export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;
 
   export interface Ref {

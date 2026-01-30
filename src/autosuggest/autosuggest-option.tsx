@@ -78,9 +78,9 @@ const toAutosuggestOptionItem = (props: {
 const toAutosuggestUseEnteredItem = (props: {
   option: AutosuggestItem;
   highlighted: boolean;
-}): AutosuggestProps.UseEnteredRenderItem => {
+}): AutosuggestProps.EnteredTextRenderItem => {
   return {
-    type: 'use-entered',
+    type: 'entered-text',
     option: props.option.option as OptionDefinition,
     highlighted: props.highlighted,
   };

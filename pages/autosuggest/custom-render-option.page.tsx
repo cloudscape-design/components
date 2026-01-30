@@ -39,8 +39,8 @@ export default function AutosuggestPage() {
 
   const renderOption: AutosuggestProps.ItemRenderer = ({ item }) => {
     console.log(item);
-    if (item.type === 'use-entered') {
-      return <div>Use-Entered: {item.option.value}</div>;
+    if (item.type === 'entered-text') {
+      return <div>Entereted Text: {item.option.value}</div>;
     } else if (item.type === 'group') {
       return <div>Group: {item.option.value}</div>;
     } else if (item.type === 'item') {

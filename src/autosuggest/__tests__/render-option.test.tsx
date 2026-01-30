@@ -85,7 +85,7 @@ describe('Autosuggest renderOption', () => {
         );
       });
 
-      test('receives correct item properties for use-entered option', () => {
+      test('receives correct item properties for entered-text option', () => {
         const renderOption = jest.fn(() => <div>Custom</div>);
         const wrapper = renderAutosuggest({
           options: defaultOptions,
@@ -94,9 +94,9 @@ describe('Autosuggest renderOption', () => {
         });
         wrapper.focus();
 
-        // Find the call for the use-entered option
+        // Find the call for the entered-text option
         const useEnteredCall = renderOption.mock.calls.find(
-          (call: any) => call[0].item.type === 'use-entered'
+          (call: any) => call[0].item.type === 'entered-text'
         ) as any[];
 
         expect(useEnteredCall).toBeDefined();
@@ -104,7 +104,7 @@ describe('Autosuggest renderOption', () => {
           expect.objectContaining({
             filterText: 'test-value',
             item: expect.objectContaining({
-              type: 'use-entered',
+              type: 'entered-text',
               option: expect.objectContaining({
                 value: 'test-value',
               }),
@@ -231,9 +231,9 @@ describe('Autosuggest renderOption', () => {
         );
       });
 
-      test('renders custom content for use-entered option', () => {
+      test('renders custom content for entered-text option', () => {
         const renderOption = jest.fn(props => {
-          if (props.item.type === 'use-entered') {
+          if (props.item.type === 'entered-text') {
             return <div>Use custom: {props.item.option.value}</div>;
           }
           return <div>Regular option</div>;
