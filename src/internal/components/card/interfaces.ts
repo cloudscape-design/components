@@ -17,13 +17,6 @@ export interface InternalCardProps extends BaseComponentProps {
   selected?: boolean;
 
   /**
-   * Optional URL for an image which will be displayed cropped as a background of the card.
-   * When this property is used, a dark gradient is overlayed and the text above defaults to bright colors.
-   * Make sure that any content you place on the card has sufficient contrast with the overlayed image behind.
-   */
-  imageUrl?: string;
-
-  /**
    * Primary content displayed in the card.
    */
   children?: React.ReactNode;
