@@ -45078,7 +45078,12 @@ is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "MultiElementWrapper<CardSectionWrapper> | Array<CardSectionWrapper>",
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "CardSectionWrapper",
+              },
+            ],
           },
         },
         {
@@ -45091,6 +45096,27 @@ is '2-indexed', that is, the first section in a card has an index of \`2\`.",
         },
       ],
       "name": "CardWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSectionHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "CardSectionWrapper",
     },
     {
       "methods": [

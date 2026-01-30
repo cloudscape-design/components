@@ -27,15 +27,7 @@ class CardWrapper extends ComponentWrapper {
    * is '2-indexed', that is, the first section in a card has an index of `2`.
    */
   findSections(): Array<CardSectionWrapper> {
-    const sections = this.findAllByClassName(styles.section);
-    if (sections instanceof Array) {
-      return sections.map(c => new CardSectionWrapper(c.getElement()));
-    }
-    const firstSection = this.findByClassName(styles.section);
-    return [firstSection]
-      .concat(sections)
-      .filter(Boolean)
-      .map(c => new CardSectionWrapper(c!.getElement()));
+    return this.findAllByClassName(styles.section).map(c => new CardSectionWrapper(c.getElement()));
   }
 
   findCardHeader(): ElementWrapper | null {
