@@ -72,6 +72,7 @@
       grid-template-columns: awsui.$space-static-l 1fr;
       grid-template-rows: minmax(awsui.$space-static-l, auto);
       align-items: center;
+      padding-inline: awsui.$space-s;
 
       > .header {
         display: flex;
