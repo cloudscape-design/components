@@ -537,3 +537,93 @@
   display: flex;
   justify-content: flex-end;
 }
+
+/* Expandable step navigation styles */
+.expandable-step-list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.expandable-step-item {
+  display: grid;
+  grid-template-columns: awsui.$space-l 1fr;
+  column-gap: awsui.$space-xs;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.expandable-step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.expandable-step-circle {
+  flex-shrink: 0;
+  inline-size: 12px;
+  block-size: 12px;
+  margin-block-start: 4px;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  box-sizing: border-box;
+}
+
+.expandable-step-circle-active {
+  background-color: awsui.$color-background-control-checked;
+  box-shadow:
+    0 0 0 3px awsui.$color-background-container-content,
+    0 0 0 5px awsui.$color-background-control-checked;
+}
+
+.expandable-step-circle-visited {
+  background-color: awsui.$color-text-interactive-default;
+  border-block: 2px solid awsui.$color-text-interactive-default;
+  border-inline: 2px solid awsui.$color-text-interactive-default;
+}
+
+.expandable-step-circle-next {
+  background-color: awsui.$color-text-interactive-default;
+  border-block: 2px solid awsui.$color-text-interactive-default;
+  border-inline: 2px solid awsui.$color-text-interactive-default;
+}
+
+.expandable-step-circle-unvisited {
+  background-color: awsui.$color-background-container-content;
+  border-block: 2px solid awsui.$color-text-interactive-disabled;
+  border-inline: 2px solid awsui.$color-text-interactive-disabled;
+}
+
+.expandable-step-line {
+  flex-grow: 1;
+  inline-size: 2px;
+  min-block-size: awsui.$space-m;
+  background-color: awsui.$color-border-divider-default;
+  margin-block: awsui.$space-xxs;
+}
+
+.expandable-step-content {
+  display: flex;
+  flex-direction: column;
+  grid-column: 2;
+  padding-block-end: awsui.$space-xs;
+}
+
+.expandable-step-title {
+  font-size: awsui.$font-size-body-m;
+}
+
+.expandable-step-title-active {
+  color: awsui.$color-background-control-checked;
+  font-weight: styles.$font-weight-bold;
+}
+
+.expandable-step-title-unvisited {
+  color: awsui.$color-text-status-inactive;
+}

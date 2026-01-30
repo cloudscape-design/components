@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -69,6 +69,9 @@ export default function InternalWizard({
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
   farthestStepIndex.current = Math.max(farthestStepIndex.current, actualActiveStepIndex);
+
+  // State for expandable step navigation (collapsed by default)
+  const [stepNavigationExpanded, setStepNavigationExpanded] = useState(false);
 
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
@@ -214,6 +217,8 @@ export default function InternalWizard({
             onStepClick={onStepClick}
             onSkipToClick={onSkipToClick}
             onPrimaryClick={onPrimaryClick}
+            stepNavigationExpanded={stepNavigationExpanded}
+            onStepNavigationExpandedChange={setStepNavigationExpanded}
           />
         </div>
       </div>

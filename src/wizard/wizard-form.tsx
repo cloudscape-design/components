@@ -26,11 +26,12 @@ import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
 import WizardStepNavigationDropdown from './wizard-step-navigation-dropdown';
+import WizardStepNavigationExpandable from './wizard-step-navigation-expandable';
 import WizardStepNavigationModal from './wizard-step-navigation-modal';
 
 import styles from './styles.css.js';
 
-export type StepNavigationVariant = 'modal' | 'dropdown' | 'auto';
+export type StepNavigationVariant = 'modal' | 'dropdown' | 'expandable' | 'auto';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -49,6 +50,8 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
   stepNavigationVariant?: StepNavigationVariant;
+  stepNavigationExpanded?: boolean;
+  onStepNavigationExpandedChange?: (expanded: boolean) => void;
 }
 
 export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`;
@@ -96,6 +99,8 @@ function WizardForm({
   onStepClick,
   onSkipToClick,
   stepNavigationVariant = 'auto',
+  stepNavigationExpanded = false,
+  onStepNavigationExpandedChange,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
   const rootRef = useRef<HTMLElement>();
   const ref = useMergeRefs(rootRef, __internalRootRef);
@@ -139,12 +144,8 @@ function WizardForm({
   }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId, funnelStepInfo]);
 
   // Determine which navigation variant to use
-  // 'auto' mode: use modal if i18n strings for it are provided, otherwise use dropdown
-  const hasModalI18nStrings = Boolean(
-    i18nStrings.stepNavigationTitle && i18nStrings.stepNavigationConfirmButton && i18nStrings.cancelButton
-  );
-  const effectiveVariant =
-    stepNavigationVariant === 'auto' ? (hasModalI18nStrings ? 'modal' : 'dropdown') : stepNavigationVariant;
+  // 'auto' mode: default to expandable section for better accessibility
+  const effectiveVariant = stepNavigationVariant === 'auto' ? 'expandable' : stepNavigationVariant;
 
   const stepNavigationProps = {
     activeStepIndex,
@@ -161,7 +162,13 @@ function WizardForm({
     <>
       <WizardFormHeader>
         <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {effectiveVariant === 'modal' ? (
+          {effectiveVariant === 'expandable' ? (
+            <WizardStepNavigationExpandable
+              {...stepNavigationProps}
+              expanded={stepNavigationExpanded}
+              onExpandedChange={onStepNavigationExpandedChange ?? (() => {})}
+            />
+          ) : effectiveVariant === 'modal' ? (
             <WizardStepNavigationModal {...stepNavigationProps} />
           ) : (
             <WizardStepNavigationDropdown {...stepNavigationProps} />
