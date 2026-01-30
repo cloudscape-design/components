@@ -30,6 +30,7 @@ export default function Card({
         className,
         styles.root,
         selected && styles.selected,
+        !header && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
       )}

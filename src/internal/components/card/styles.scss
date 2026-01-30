@@ -53,15 +53,6 @@
   @include card-style;
 }
 
-.no-content {
-  > .header {
-    padding-block-end: 0;
-  }
-  > .body {
-    padding-block-start: 0;
-  }
-}
-
 $button-padding-vertical: styles.$control-padding-vertical;
 $button-padding-horizontal: awsui.$space-xxs;
 
@@ -75,8 +66,8 @@ $button-padding-horizontal: awsui.$space-xxs;
     }
     &.with-actions {
       // Compensate the padding given by the buttons in the actions slot
-      padding-block-start: calc(#{awsui.$space-scaled-s} - $button-padding-vertical);
-      padding-inline-end: calc(#{awsui.$space-card-horizontal} - $button-padding-horizontal);
+      padding-block-start: calc(awsui.$space-scaled-s - $button-padding-vertical);
+      padding-inline-end: calc(awsui.$space-card-horizontal - $button-padding-horizontal);
     }
   }
   &-inner {
@@ -93,6 +84,17 @@ $button-padding-horizontal: awsui.$space-xxs;
   &.no-padding {
     border-end-start-radius: awsui.$border-radius-container;
     border-end-end-radius: awsui.$border-radius-container;
+  }
+}
+
+.no-header,
+.no-content {
+  // No need to preserve the space between header and content when one of them is missing.
+  > .header:not(.no-padding) {
+    padding-block-end: 0;
+  }
+  > .body:not(.no-padding) {
+    padding-block-start: 0;
   }
 }
 
