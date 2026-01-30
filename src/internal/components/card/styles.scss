@@ -101,26 +101,6 @@ $button-padding-horizontal: awsui.$space-xxs;
   }
 }
 
-.reduced-padding {
-  > .header:not(.no-padding) {
-    padding-inline-start: awsui.$space-scaled-s;
-    &:not(.with-actions) {
-      padding-block-start: awsui.$space-scaled-s;
-      padding-inline-end: awsui.$space-scaled-s;
-    }
-    &.with-actions {
-      // Compensate the padding given by the buttons in the actions slot
-      padding-block-start: calc(#{awsui.$space-scaled-xs} - $button-padding-vertical);
-      padding-inline-end: calc(#{awsui.$space-scaled-s} - $button-padding-horizontal);
-    }
-  }
-
-  > .body:not(.no-padding) {
-    padding-block-end: awsui.$space-scaled-s;
-    padding-inline: awsui.$space-scaled-s;
-  }
-}
-
 .active {
   background-color: awsui.$color-background-item-selected;
   &::before {
@@ -131,30 +111,4 @@ $button-padding-horizontal: awsui.$space-xxs;
 
 .description {
   color: awsui.$color-text-heading-secondary;
-}
-
-.reduced-border-radius {
-  border-start-start-radius: awsui.$space-xs;
-  border-start-end-radius: awsui.$space-xs;
-  border-end-start-radius: awsui.$space-xs;
-  border-end-end-radius: awsui.$space-xs;
-
-  &::before {
-    border-start-start-radius: awsui.$space-xs;
-    border-start-end-radius: awsui.$space-xs;
-    border-end-start-radius: awsui.$space-xs;
-    border-end-end-radius: awsui.$space-xs;
-  }
-
-  &::after {
-    border-start-start-radius: awsui.$space-xs;
-    border-start-end-radius: awsui.$space-xs;
-    border-end-start-radius: awsui.$space-xs;
-    border-end-end-radius: awsui.$space-xs;
-  }
-
-  > .body.no-padding {
-    border-end-start-radius: awsui.$space-xs;
-    border-end-end-radius: awsui.$space-xs;
-  }
 }

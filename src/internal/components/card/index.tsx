@@ -21,8 +21,6 @@ export default function Card({
   onClick,
   disableHeaderPaddings,
   disableContentPaddings,
-  reducedBorderRadius,
-  reducedPadding,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
@@ -32,8 +30,6 @@ export default function Card({
         className,
         styles.root,
         active && styles.active,
-        reducedBorderRadius && styles['reduced-border-radius'],
-        reducedPadding && styles['reduced-padding'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
       )}
