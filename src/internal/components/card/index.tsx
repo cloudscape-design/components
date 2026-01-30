@@ -31,19 +31,22 @@ export default function Card({
       className={clsx(
         className,
         styles.root,
-        {
-          [styles['with-actions']]: !!actions,
-          [styles.active]: active,
-          [styles['reduced-border-radius']]: reducedBorderRadius,
-          [styles['reduced-padding']]: reducedPadding,
-          [styles['no-content']]: !children,
-        },
+        active && styles.active,
+        reducedBorderRadius && styles['reduced-border-radius'],
+        reducedPadding && styles['reduced-padding'],
+        !children && styles['no-content'],
         isRefresh && styles.refresh
       )}
       {...metadataAttributes}
       onClick={onClick}
     >
-      <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
+      <div
+        className={clsx(
+          styles.header,
+          disableHeaderPaddings && styles['no-padding'],
+          !!actions && styles['with-actions']
+        )}
+      >
         <InternalStructuredItem
           content={<div className={styles['header-inner']}>{header}</div>}
           secondaryContent={description && <div className={styles.description}>{description}</div>}

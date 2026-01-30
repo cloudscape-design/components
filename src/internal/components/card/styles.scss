@@ -57,15 +57,12 @@
   @include card-style;
 }
 
-.header {
-  &-inner {
-    @include styles.font-heading-s;
+.no-content {
+  > .header {
+    padding-block-end: 0;
   }
-  &:not(.no-padding) {
-    padding-block-start: awsui.$space-scaled-xs;
-    padding-block-end: awsui.$space-scaled-xxs;
-    padding-inline-start: awsui.$space-card-horizontal;
-    padding-inline-end: calc(#{awsui.$space-card-horizontal} - awsui.$space-scaled-xxs);
+  > .body {
+    padding-block-start: 0;
   }
 }
 
@@ -79,6 +76,38 @@
     border-end-start-radius: awsui.$border-radius-container;
     border-end-end-radius: awsui.$border-radius-container;
     overflow: scroll;
+  }
+}
+
+.reduced-padding {
+  > .header {
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-inline-start: awsui.$space-scaled-s;
+    padding-inline-end: awsui.$space-scaled-xs;
+  }
+
+  > .body:not(.no-padding) {
+    padding-block-end: awsui.$space-scaled-s;
+    padding-inline: awsui.$space-scaled-s;
+  }
+}
+
+.header {
+  &-inner {
+    @include styles.font-heading-s;
+  }
+  &:not(.no-padding) {
+    padding-block-end: awsui.$space-scaled-xxs;
+    padding-inline-start: awsui.$space-card-horizontal;
+    &:not(.with-actions) {
+      padding-block-start: awsui.$space-scaled-s;
+      padding-inline-end: awsui.$space-card-horizontal;
+    }
+    &.with-actions {
+      // Compensate the padding given by the buttons in the actions
+      padding-block-start: calc(#{awsui.$space-scaled-s} - awsui.$space-button-vertical);
+      padding-inline-end: calc(#{awsui.$space-card-horizontal} - awsui.$space-button-horizontal);
+    }
   }
 }
 
@@ -117,27 +146,5 @@
   > .body.no-padding {
     border-end-start-radius: awsui.$space-scaled-xs;
     border-end-end-radius: awsui.$space-scaled-xs;
-  }
-}
-
-.no-content {
-  > .header {
-    padding-block-end: 0;
-  }
-  > .body {
-    padding-block-start: 0;
-  }
-}
-
-.reduced-padding {
-  > .header {
-    padding-block-start: awsui.$space-scaled-xxs;
-    padding-inline-start: awsui.$space-scaled-s;
-    padding-inline-end: awsui.$space-scaled-xs;
-  }
-
-  > .body:not(.no-padding) {
-    padding-block-end: awsui.$space-scaled-s;
-    padding-inline: awsui.$space-scaled-s;
   }
 }
