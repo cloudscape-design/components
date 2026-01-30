@@ -39,7 +39,11 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDesc
   return (
     <div className={styles['progress-container']}>
       <progress
-        className={clsx(styles.progress, progressValue >= MAX_VALUE && styles.complete)}
+        className={clsx(
+          styles.progress,
+          progressValue >= MAX_VALUE && styles.complete,
+          isInFlash && styles['progress-in-flash']
+        )}
         max={MAX_VALUE}
         value={progressValue}
         aria-label={ariaLabel}
