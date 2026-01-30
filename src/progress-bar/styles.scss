@@ -14,9 +14,17 @@ $progress-background-color: var(
   #{custom-props.$progressBarBackgroundColor},
   awsui.$color-background-progress-bar-default
 );
+$progress-background-color-in-flash: var(
+  #{custom-props.$progressBarBackgroundColor},
+  awsui.$color-background-progress-bar-in-flash
+);
 $progress-value-background-color: var(
   #{custom-props.$progressValueBackgroundColor},
   awsui.$color-background-progress-bar-value-default
+);
+$progress-value-background-color-in-flash: var(
+  #{custom-props.$progressValueBackgroundColor},
+  awsui.$color-background-progress-bar-value-in-flash
 );
 
 .root {
@@ -128,6 +136,20 @@ $progress-value-background-color: var(
   &::-moz-progress-bar {
     @include general-progress-bar-style;
     background-color: $progress-value-background-color;
+  }
+
+  &.progress-in-flash {
+    background-color: $progress-background-color-in-flash;
+    &::-moz-progress-bar {
+      background-color: $progress-value-background-color-in-flash;
+    }
+
+    &::-webkit-progress-bar {
+      background-color: $progress-background-color-in-flash;
+    }
+    &::-webkit-progress-value {
+      background-color: $progress-value-background-color-in-flash;
+    }
   }
 }
 

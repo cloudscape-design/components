@@ -19328,7 +19328,7 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "defaultValue": "'standalone'",
       "description": "Enables the correct styling of the progress bar in different contexts. You can set it to one of the following:
 
-- \`"flash"\` - Use this variant when using the progress bar within a flash component.
+- \`"flash"\` - Use this variatn when using the progress bar within a flash component.
              Note that the result button isn't displayed when using this variant.
              Use the \`buttonText\` property and the \`onButtonClick\` event listener of the flashbar item instead of the result button provided by the progress bar.
 - \`"key-value"\` - Use this variant when using the progress bar within the key-value pairs pattern.
