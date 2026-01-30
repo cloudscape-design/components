@@ -88,7 +88,7 @@ $button-padding-horizontal: awsui.$space-xxs;
   }
 }
 
-.active {
+.selected {
   background-color: awsui.$color-background-item-selected;
   &::before {
     border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;

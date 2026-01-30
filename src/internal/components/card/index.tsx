@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 
 export default function Card({
   actions,
-  active,
+  selected,
   children,
   className,
   header,
@@ -27,7 +27,7 @@ export default function Card({
       className={clsx(
         className,
         styles.root,
-        active && styles.active,
+        selected && styles.selected,
         !children && styles['no-content'],
         isRefresh && styles.refresh
       )}

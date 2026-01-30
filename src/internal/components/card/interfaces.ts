@@ -14,7 +14,7 @@ export interface InternalCardProps extends BaseComponentProps {
   /**
    * Specifies whether the card is in active state.
    */
-  active?: boolean;
+  selected?: boolean;
 
   /**
    * Optional URL for an image which will be displayed cropped as a background of the card.
