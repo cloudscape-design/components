@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
@@ -6691,9 +6691,16 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     {
       "description": "Determines the general styling of the button dropdown.
 * \`icon\` for icon buttons.",
+      "inlineType": {
+        "name": "ButtonGroupProps.Variant",
+        "type": "union",
+        "values": [
+          "icon",
+        ],
+      },
       "name": "variant",
       "optional": false,
-      "type": ""icon"",
+      "type": "string",
     },
   ],
   "regions": [],
@@ -11959,7 +11966,7 @@ Make sure that you add a listener to this event to update your application state
     },
     {
       "description": "An object containing all the localized strings required by the component:
-* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button. Receives file index and file name.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
 * \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
@@ -12016,11 +12023,15 @@ Make sure that you add a listener to this event to update your application state
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number) => string",
+              "name": "(fileIndex: number, fileName: string) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
+                },
+                {
+                  "name": "fileName",
+                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -12028,7 +12039,7 @@ Make sure that you add a listener to this event to update your application state
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number) => string)",
+            "type": "((fileIndex: number, fileName: string) => string)",
           },
           {
             "name": "warningIconAriaLabel",
@@ -12306,11 +12317,15 @@ is provided by its parent form field component.",
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number) => string",
+              "name": "(fileIndex: number, fileName: string) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
+                },
+                {
+                  "name": "fileName",
+                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -12318,7 +12333,7 @@ is provided by its parent form field component.",
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number) => string)",
+            "type": "((fileIndex: number, fileName: string) => string)",
           },
           {
             "inlineType": {
@@ -25018,9 +25033,16 @@ scroll parent scrolls to reveal the first row of the table.",
         "name": "TableProps.AnalyticsMetadata",
         "properties": [
           {
+            "inlineType": {
+              "name": "view-resource",
+              "type": "union",
+              "values": [
+                "view-resource",
+              ],
+            },
             "name": "flowType",
             "optional": true,
-            "type": ""view-resource"",
+            "type": "string",
           },
           {
             "name": "instanceIdentifier",

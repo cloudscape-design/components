@@ -155,6 +155,7 @@ function InternalFileToken({
                 onFocus={() => setShowTooltip(true)}
                 onBlur={() => setShowTooltip(false)}
                 role={isTruncated ? 'button' : undefined}
+                aria-expanded={isTruncated ? showTooltip : undefined}
                 tabIndex={isTruncated ? 0 : -1}
                 ref={fileNameContainerRef}
               >

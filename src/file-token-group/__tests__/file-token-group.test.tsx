@@ -260,6 +260,19 @@ describe('Tooltip', () => {
 
     expect(fileNameElement).toHaveAttribute('tabindex', '0');
   });
+
+  test('Should toggle aria-expanded when tooltip visibility changes on truncated filenames', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+    const fileNameContainer = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'false');
+  });
 });
 
 describe('Focusing behavior', () => {
