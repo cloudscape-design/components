@@ -68,7 +68,7 @@
 
 .body {
   &:not(.no-padding) {
-    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-start: awsui.$space-xxs;
     padding-block-end: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
   }
@@ -79,35 +79,45 @@
   }
 }
 
-.reduced-padding {
-  > .header {
-    padding-block-start: awsui.$space-scaled-xxs;
-    padding-inline-start: awsui.$space-scaled-s;
-    padding-inline-end: awsui.$space-scaled-xs;
-  }
-
-  > .body:not(.no-padding) {
-    padding-block-end: awsui.$space-scaled-s;
-    padding-inline: awsui.$space-scaled-s;
-  }
-}
+$button-padding-vertical: styles.$control-padding-vertical;
+$button-padding-horizontal: awsui.$space-xxs;
 
 .header {
   &-inner {
     @include styles.font-heading-s;
   }
   &:not(.no-padding) {
-    padding-block-end: awsui.$space-scaled-xxs;
+    padding-block-end: awsui.$space-xxs;
     padding-inline-start: awsui.$space-card-horizontal;
     &:not(.with-actions) {
       padding-block-start: awsui.$space-scaled-s;
       padding-inline-end: awsui.$space-card-horizontal;
     }
     &.with-actions {
-      // Compensate the padding given by the buttons in the actions
-      padding-block-start: calc(#{awsui.$space-scaled-s} - awsui.$space-button-vertical);
-      padding-inline-end: calc(#{awsui.$space-card-horizontal} - awsui.$space-button-horizontal);
+      // Compensate the padding given by the buttons in the actions slot
+      padding-block-start: calc(#{awsui.$space-scaled-s} - $button-padding-vertical);
+      padding-inline-end: calc(#{awsui.$space-card-horizontal} - $button-padding-horizontal);
     }
+  }
+}
+
+.reduced-padding {
+  > .header:not(.no-padding) {
+    padding-inline-start: awsui.$space-scaled-s;
+    &:not(.with-actions) {
+      padding-block-start: awsui.$space-scaled-s;
+      padding-inline-end: awsui.$space-scaled-s;
+    }
+    &.with-actions {
+      // Compensate the padding given by the buttons in the actions slot
+      padding-block-start: calc(#{awsui.$space-scaled-xs} - $button-padding-vertical);
+      padding-inline-end: calc(#{awsui.$space-scaled-s} - $button-padding-horizontal);
+    }
+  }
+
+  > .body:not(.no-padding) {
+    padding-block-end: awsui.$space-scaled-s;
+    padding-inline: awsui.$space-scaled-s;
   }
 }
 
@@ -124,27 +134,27 @@
 }
 
 .reduced-border-radius {
-  border-start-start-radius: awsui.$space-scaled-xs;
-  border-start-end-radius: awsui.$space-scaled-xs;
-  border-end-start-radius: awsui.$space-scaled-xs;
-  border-end-end-radius: awsui.$space-scaled-xs;
+  border-start-start-radius: awsui.$space-xs;
+  border-start-end-radius: awsui.$space-xs;
+  border-end-start-radius: awsui.$space-xs;
+  border-end-end-radius: awsui.$space-xs;
 
   &::before {
-    border-start-start-radius: awsui.$space-scaled-xs;
-    border-start-end-radius: awsui.$space-scaled-xs;
-    border-end-start-radius: awsui.$space-scaled-xs;
-    border-end-end-radius: awsui.$space-scaled-xs;
+    border-start-start-radius: awsui.$space-xs;
+    border-start-end-radius: awsui.$space-xs;
+    border-end-start-radius: awsui.$space-xs;
+    border-end-end-radius: awsui.$space-xs;
   }
 
   &::after {
-    border-start-start-radius: awsui.$space-scaled-xs;
-    border-start-end-radius: awsui.$space-scaled-xs;
-    border-end-start-radius: awsui.$space-scaled-xs;
-    border-end-end-radius: awsui.$space-scaled-xs;
+    border-start-start-radius: awsui.$space-xs;
+    border-start-end-radius: awsui.$space-xs;
+    border-end-start-radius: awsui.$space-xs;
+    border-end-end-radius: awsui.$space-xs;
   }
 
   > .body.no-padding {
-    border-end-start-radius: awsui.$space-scaled-xs;
-    border-end-end-radius: awsui.$space-scaled-xs;
+    border-end-start-radius: awsui.$space-xs;
+    border-end-end-radius: awsui.$space-xs;
   }
 }

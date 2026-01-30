@@ -87,7 +87,7 @@
   &-header {
     @include styles.font-heading-m;
     &-inner {
-      padding-block-start: awsui.$space-scaled-xs;
+      padding-block-start: awsui.$space-xxs;
       &-selectable {
         inline-size: 90%;
       }
@@ -101,8 +101,6 @@
 .section {
   display: inline-block;
   box-sizing: border-box;
-  // only scale bottom padding to reduce padding between sections and after the last section.
-  padding-block-start: awsui.$space-xs;
   padding-block-end: awsui.$space-scaled-xs;
   padding-inline: 0;
   vertical-align: top;
@@ -114,13 +112,15 @@
     /* used in test-utils */
   }
 }
-.section-after-header {
-  padding-block-start: 0;
-}
-.section:last-child {
+
+.section:not(:first-child) {
+  // The space above the first section is already given by the paddings of the card header and the card body.
+  // Only scale bottom padding to reduce padding between sections and after the last section.
   padding-block-start: awsui.$space-xs;
+}
+
+.section:last-child {
   padding-block-end: 0;
-  padding-inline: 0;
 }
 
 .footer-pagination {
