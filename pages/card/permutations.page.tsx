@@ -72,28 +72,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     icon: [undefined, icon],
     children: [shortContent],
   },
-  // Padding variations
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    disableContentPaddings: [false, true],
-  },
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    disableHeaderPaddings: [false, true],
-  },
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    reducedPadding: [false, true],
-  },
-  // Border radius variations
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    reducedBorderRadius: [false, true],
-  },
   // Combined variations
   {
     header: [shortHeader],
@@ -108,13 +86,6 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     children: [longContent],
     actions: [actions],
   },
-  // Reduced styling with content
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    reducedBorderRadius: [true],
-    reducedPadding: [true],
-  },
   // No children with actions
   {
     header: [shortHeader],
@@ -122,11 +93,11 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     actions: [actions],
     children: [undefined],
   },
-  // Active state
+  // Selected state
   {
     header: [shortHeader],
     children: [shortContent],
-    active: [false, true],
+    selected: [true],
   },
 ]);
 
@@ -148,7 +119,7 @@ export default function CardPermutations() {
         </FormField>
       </SpaceBetween>
       <ScreenshotArea disableAnimations={true}>
-        <div style={{ width: parseInt(containerWidth) || 300, padding: 8 }}>
+        <div style={{ width: parseInt(containerWidth), padding: 8 }}>
           <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
         </div>
       </ScreenshotArea>
