@@ -8640,15 +8640,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-progress-bar-default": {
           "$description": "The default background color of the progress bar.",
           "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
           },
         },
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-background-segment-active": {
@@ -11369,15 +11369,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-progress-bar-default": {
           "$description": "The default background color of the progress bar.",
           "$value": {
-            "dark": "#414750",
-            "light": "#eaeded",
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
           },
         },
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-background-segment-active": {
@@ -30477,15 +30477,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-progress-bar-default": {
           "$description": "The default background color of the progress bar.",
           "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
           },
         },
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-background-segment-active": {
@@ -33206,15 +33206,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-progress-bar-default": {
           "$description": "The default background color of the progress bar.",
           "$value": {
-            "dark": "#333843",
-            "light": "#ebebf0",
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
           },
         },
         "color-background-progress-bar-value-default": {
           "$description": "The default background color of the progress bar value.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-segment-active": {
