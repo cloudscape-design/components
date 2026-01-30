@@ -30606,6 +30606,21 @@ Defaults to \`false\`.",
             "type": "((targetStep: WizardProps.Step, targetStepNumber: number) => string)",
           },
           {
+            "name": "stepNavigationConfirmButton",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "stepNavigationDismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "stepNavigationTitle",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "inlineType": {
               "name": "(stepNumber: number) => string",
               "parameters": [
