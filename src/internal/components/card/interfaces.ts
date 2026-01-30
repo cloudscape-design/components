@@ -49,8 +49,5 @@ export interface InternalCardProps extends BaseComponentProps {
    */
   onClick?: React.MouseEventHandler<HTMLElement>;
 
-  disableContentPaddings?: boolean;
-  disableHeaderPaddings?: boolean;
-
   metadataAttributes?: Record<string, string | undefined>;
 }
