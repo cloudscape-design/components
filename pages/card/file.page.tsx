@@ -10,11 +10,11 @@ import { CardPage } from './common';
 
 export default function CardScenario() {
   return (
-    <CardPage title="Code snippet">
+    <CardPage title="File preview">
       <Card
         header="user-budget.csv"
         description="1.7 MB"
-        actions={<Button variant="icon" iconName="download" />}
+        actions={<Button variant="icon" iconName="download" ariaLabel="Download" />}
         icon={<Icon name="file" />}
       />
     </CardPage>

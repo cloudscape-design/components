@@ -8,12 +8,11 @@ import Icon from '~components/icon';
 import Input from '~components/input';
 import Card from '~components/internal/components/card';
 import { InternalCardProps } from '~components/internal/components/card/interfaces';
-import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
+import { CardPage } from './common';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -68,9 +67,9 @@ export default function CardPermutations() {
   const containerWidth = urlParams.containerWidth || '400';
 
   return (
-    <>
-      <h1>Internal Card permutations</h1>
-      <SpaceBetween size="m">
+    <CardPage
+      title="Card permutations"
+      settings={
         <FormField label="Container width (px)">
           <Input
             value={containerWidth}
@@ -79,12 +78,11 @@ export default function CardPermutations() {
             inputMode="numeric"
           />
         </FormField>
-      </SpaceBetween>
-      <ScreenshotArea disableAnimations={true}>
-        <div style={{ width: parseInt(containerWidth), padding: 8 }}>
-          <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
-        </div>
-      </ScreenshotArea>
-    </>
+      }
+    >
+      <div style={{ width: parseInt(containerWidth), padding: 8 }}>
+        <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
+      </div>
+    </CardPage>
   );
 }
