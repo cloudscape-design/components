@@ -198,6 +198,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const shouldRenderDropdownContent =
     autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (!hideEnteredTextOption && !!value);
 
+  const hasItems = useRef(autosuggestItemsState.items.length > 0);
+  hasItems.current = hasItems.current || autosuggestItemsState.items.length > 0;
+
   return (
     <AutosuggestInput
       {...restProps}
@@ -256,6 +259,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           />
         ) : null
       }
+      // Forces dropdown position recalculation when new options are loaded
+      dropdownContentKey={hasItems.current.toString()}
       loopFocus={dropdownStatus.hasRecoveryButton}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}

@@ -293,5 +293,41 @@ describe('URL sanitization', () => {
         'LEARN_MORE_ABOUT_TUTORIA'
       );
     });
+
+    test('focus returns to panel when exiting tutorial', () => {
+      const mockFocus = jest.fn();
+      const tutorials = getTutorials();
+      const originalFocus = HTMLElement.prototype.focus;
+      HTMLElement.prototype.focus = mockFocus;
+
+      const { container, context, rerender } = renderTutorialPanelWithContext(
+        {},
+        {
+          currentTutorial: tutorials[0],
+        }
+      );
+
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      wrapper.findDismissButton()!.click();
+      expect(context.onExitTutorial).toHaveBeenCalledTimes(1);
+      rerender(
+        <HotspotContext.Provider value={{ ...context, currentTutorial: null }}>
+          <TutorialPanel
+            i18nStrings={i18nStrings}
+            downloadUrl="DOWNLOAD_URL"
+            onFeedbackClick={() => {}}
+            tutorials={tutorials}
+          />
+        </HotspotContext.Provider>
+      );
+
+      const wrapperAfterExit = createWrapper(container).findTutorialPanel()!;
+      const panelElement = wrapperAfterExit.getElement();
+
+      expect(mockFocus).toHaveBeenCalledTimes(1);
+      expect(mockFocus.mock.instances[0]).toBe(panelElement);
+
+      HTMLElement.prototype.focus = originalFocus;
+    });
   });
 });

@@ -10,10 +10,18 @@ import InternalSlider from './internal';
 
 export { SliderProps };
 
-export default function Slider({ tickMarks, hideFillLine, ...props }: SliderProps) {
+export default function Slider({ tickMarks, hideFillLine, style, ...props }: SliderProps) {
   const baseComponentProps = useBaseComponent('Slider', {
     props: { tickMarks, hideFillLine, readOnly: props.readOnly },
   });
-  return <InternalSlider tickMarks={tickMarks} hideFillLine={hideFillLine} {...props} {...baseComponentProps} />;
+  return (
+    <InternalSlider
+      tickMarks={tickMarks}
+      hideFillLine={hideFillLine}
+      style={style}
+      {...props}
+      {...baseComponentProps}
+    />
+  );
 }
 applyDisplayName(Slider, 'Slider');

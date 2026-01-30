@@ -24,6 +24,7 @@ const Multiselect = React.forwardRef(
       selectedOptions = [],
       keepOpen = true,
       hideTokens = false,
+      renderOption,
       ...restProps
     }: MultiselectProps,
     ref: React.Ref<MultiselectProps.Ref>
@@ -56,11 +57,17 @@ const Multiselect = React.forwardRef(
         selectedOptionsValues: selectedOptions
           .filter(option => option.value !== undefined)
           .map(option => `${option.value}`),
+        selectedOptions: selectedOptions
+          .filter(option => option.value !== undefined)
+          // fallback on value when label's undefined because in the dropdown if there's no label
+          // the value will be shown.
+          .map(option => `${option.label ?? option.value}`),
       },
     };
 
     return (
       <InternalMultiselect
+        renderOption={renderOption}
         options={options}
         filteringType={filteringType}
         statusType={statusType}

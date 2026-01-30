@@ -23,6 +23,7 @@ const Select = React.forwardRef(
       filteringType = 'none',
       statusType = 'finished',
       triggerVariant = 'label',
+      renderOption,
       ...restProps
     }: SelectProps,
     ref: React.Ref<SelectProps.Ref>
@@ -49,11 +50,14 @@ const Select = React.forwardRef(
       properties: {
         disabled: `${!!externalProps.disabled}`,
         selectedOptionValue: `${externalProps.selectedOption && externalProps.selectedOption.value ? externalProps.selectedOption.value : null}`,
+        // Use label for display if available, fallback to value because that's what gets shown in dropdown when label is not provided
+        selectedOption: `${externalProps.selectedOption?.label ?? externalProps.selectedOption?.value ?? null}`,
       },
     };
 
     return (
       <InternalSelect
+        renderOption={renderOption}
         options={options}
         filteringType={filteringType}
         statusType={statusType}

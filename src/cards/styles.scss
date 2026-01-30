@@ -115,18 +115,19 @@
   display: flex;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  box-sizing: border-box;
   margin-block: 0;
   margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-grid-gutter;
+  padding-inline-start: awsui.$space-grid-gutter;
+  padding-inline-end: 0;
   list-style: none;
   &-inner {
     position: relative;
     background-color: awsui.$color-background-container-content;
-    margin-block-start: 0;
-    margin-block-end: awsui.$space-grid-gutter;
-    margin-inline-start: awsui.$space-grid-gutter;
-    margin-inline-end: 0;
+    margin-block: 0;
+    margin-inline: 0;
     padding-block: awsui.$space-card-vertical;
     padding-inline: awsui.$space-card-horizontal;
     inline-size: 100%;

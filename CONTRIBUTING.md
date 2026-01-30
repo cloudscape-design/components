@@ -175,12 +175,12 @@ Alternatively, you can set the flag inline with the command:
 NODE_OPTIONS='--experimental-vm-modules' npx jest -c jest.integ.config.js src/input/__integ__/input.test.ts
 ```
 
-#### Updating snapshots
+#### Updating all snapshots
 
 When component APIs change, you may need to update test snapshots. Use the `-u` flag to update snapshots:
 
 ```
-npx jest -u snapshot -c jest.unit.config.js
+npx jest -u snapshot -c jest.unit.config.js src/
 ```
 
 ### Run visual regression tests

@@ -4,6 +4,8 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+
 import DragHandleWrapper from '../../../../../lib/components/internal/components/drag-handle-wrapper';
 import {
   Direction,
@@ -12,10 +14,34 @@ import {
 import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
+import testUtilStyles from '../../../../../lib/components/internal/components/drag-handle-wrapper/test-classes/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getLogicalBoundingClientRect: jest.fn(),
+}));
+
+const viewport = { width: 800, height: 600 };
+const size = { inlineSize: 50, blockSize: 50 };
+const position = (inlineStart: number, blockStart: number) => ({
+  ...size,
+  insetInlineStart: inlineStart,
+  insetInlineEnd: inlineStart + size.inlineSize,
+  insetBlockStart: blockStart,
+  insetBlockEnd: blockStart + size.blockSize,
+});
 
 beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;
+});
+
+// We mock window and rect dimensions as if the handle was rendered far from the screen edges to
+// prevent forced position rendering.
+beforeEach(() => {
+  jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height / 2));
+  Object.defineProperty(window, 'innerWidth', { value: viewport.width, writable: true });
+  Object.defineProperty(window, 'innerHeight', { value: viewport.height, writable: true });
 });
 
 afterEach(() => {
@@ -25,15 +51,34 @@ afterEach(() => {
 
 function getDirectionButton(direction: Direction) {
   return document.querySelector<HTMLButtonElement>(
-    `.${styles[`direction-button-wrapper-${direction}`]} .${styles['direction-button']}`
+    `.${styles[`direction-button-wrapper-${direction}`]} .${testUtilStyles[`direction-button-${direction}`]}`
+  );
+}
+
+function getRandomDirectionButton() {
+  const dir = (['block-start', 'block-end', 'inline-start', 'inline-end'] as const)[Math.floor(Math.random() * 4)];
+  return document.querySelector<HTMLButtonElement>(
+    `.${styles[`direction-button-wrapper-${dir}`]} .${testUtilStyles[`direction-button-${dir}`]}`
+  );
+}
+
+function getAnyForcedDirectionButton() {
+  return document.querySelector<HTMLButtonElement>(
+    `.${styles['direction-button-wrapper-forced']} .${testUtilStyles['direction-button']}`
+  );
+}
+
+function getForcedDirectionButton(direction: Direction, forcedPosition: 'top' | 'bottom', forcedIndex: 0 | 1 | 2 | 3) {
+  return document.querySelector<HTMLButtonElement>(
+    `.${styles['direction-button-wrapper-forced']}.${styles[`direction-button-wrapper-forced-${forcedPosition}-${forcedIndex}`]} .${testUtilStyles[`direction-button-${direction}`]}`
   );
 }
 
 // Direction buttons get hidden via transition which doesn't end in JSDOM, so we use
-// the "exiting", "exited" or "hidden" classname instead to verify it's hidden.
+// the "exiting", "exit" or "hidden" classname instead to verify it's hidden.
 const DIRECTION_BUTTON_HIDDEN_CLASSES = [
   styles['direction-button-wrapper-motion-exiting'],
-  styles['direction-button-wrapper-motion-exited'],
+  styles['direction-button-wrapper-motion-exit'],
   styles['direction-button-wrapper-hidden'],
 ];
 
@@ -598,7 +643,7 @@ test("doesn't call onDirectionClick when disabled direction button is pressed", 
   expect(onDirectionClick).not.toHaveBeenCalled();
 });
 
-describe('initialinitialShowButtons property', () => {
+describe('initialShowButtons property', () => {
   test('shows direction buttons initially when initialShowButtons=true', () => {
     renderDragHandle({
       directions: { 'block-start': 'active', 'block-end': 'active' },
@@ -701,5 +746,194 @@ describe('initialinitialShowButtons property', () => {
       expect(getDirectionButton('inline-start')).not.toBeInTheDocument();
       expect(getDirectionButton('inline-end')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('forced position behavior', () => {
+  const allDirections: Partial<DragHandleWrapperProps> = {
+    directions: { 'block-start': 'active', 'block-end': 'active', 'inline-start': 'active', 'inline-end': 'active' },
+    initialShowButtons: true,
+  };
+
+  test('shows UAP buttons normally when rendered with enough distance from the viewport edges', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height / 2));
+
+    renderDragHandle(allDirections);
+
+    expect(getDirectionButton('block-start')).not.toBe(null);
+    expect(getDirectionButton('block-end')).not.toBe(null);
+    expect(getDirectionButton('inline-start')).not.toBe(null);
+    expect(getDirectionButton('inline-end')).not.toBe(null);
+    expect(getAnyForcedDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column under the handle when rendered in the top', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column under the handle when rendered in the top-left', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 25));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column under the handle when rendered in the top-right', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width - 75, 25));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column above the handle when rendered on the left', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, viewport.height / 2));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'top', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'top', 3)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column above the handle when rendered on the right', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width - 75, viewport.height / 2));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'top', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'top', 3)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column above the handle when rendered in the bottom', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height - 75));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'top', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'top', 3)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays partial UAP buttons in one column under the handle when rendered in the top', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
+
+    renderDragHandle({ directions: { 'inline-start': 'active', 'block-start': 'active' }, initialShowButtons: true });
+
+    expect(getForcedDirectionButton('block-start', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays partial UAP buttons in one column above the handle when rendered in the bottom', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height - 75));
+
+    renderDragHandle({ directions: { 'inline-end': 'active', 'block-end': 'active' }, initialShowButtons: true });
+
+    expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'top', 1)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column above the handle when there is enough space', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 100));
+
+    renderDragHandle({ directions: { 'inline-start': 'active', 'block-end': 'active' }, initialShowButtons: true });
+
+    expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'top', 1)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('displays UAP buttons in one column under the handle when there is not enough space above', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 100));
+
+    renderDragHandle(allDirections);
+
+    expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
+    expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-end', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getRandomDirectionButton()).toBe(null);
+  });
+
+  test('does not force column position when there is no conflict on the left', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, viewport.height / 2));
+
+    renderDragHandle({
+      directions: { 'block-start': 'active', 'block-end': 'active', 'inline-end': 'active' },
+      initialShowButtons: true,
+    });
+
+    expect(getAnyForcedDirectionButton()).toBe(null);
+    expect(getDirectionButton('block-start')).not.toBe(null);
+    expect(getDirectionButton('block-end')).not.toBe(null);
+    expect(getDirectionButton('inline-end')).not.toBe(null);
+  });
+
+  test('does not force column position when there is no conflict on the right', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width - 75, viewport.height / 2));
+
+    renderDragHandle({
+      directions: { 'block-start': 'active', 'block-end': 'active', 'inline-start': 'active' },
+      initialShowButtons: true,
+    });
+
+    expect(getAnyForcedDirectionButton()).toBe(null);
+    expect(getDirectionButton('block-start')).not.toBe(null);
+    expect(getDirectionButton('block-end')).not.toBe(null);
+    expect(getDirectionButton('inline-start')).not.toBe(null);
+  });
+
+  test('does not force column position when there is no conflict on the top', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
+
+    renderDragHandle({
+      directions: { 'block-end': 'active', 'inline-start': 'active', 'inline-end': 'active' },
+      initialShowButtons: true,
+    });
+
+    expect(getAnyForcedDirectionButton()).toBe(null);
+    expect(getDirectionButton('block-end')).not.toBe(null);
+    expect(getDirectionButton('inline-start')).not.toBe(null);
+    expect(getDirectionButton('inline-end')).not.toBe(null);
+  });
+
+  test('does not force column position when there is no conflict on the bottom', () => {
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height - 75));
+
+    renderDragHandle({
+      directions: { 'block-start': 'active', 'inline-start': 'active', 'inline-end': 'active' },
+      initialShowButtons: true,
+    });
+
+    expect(getAnyForcedDirectionButton()).toBe(null);
+    expect(getDirectionButton('block-start')).not.toBe(null);
+    expect(getDirectionButton('inline-start')).not.toBe(null);
+    expect(getDirectionButton('inline-end')).not.toBe(null);
   });
 });

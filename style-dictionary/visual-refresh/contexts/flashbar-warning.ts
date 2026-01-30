@@ -22,8 +22,8 @@ const baseTokens: StyleDictionary.ColorsDictionary = {
 
   // Progress bars in flashbars should be using variant="flash" (which uses a white background by default).
   // For the warning state, it should use colorGrey950.
-  colorBackgroundProgressBarContentInFlash: '{colorNeutral950}',
-  colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque10}',
+  colorBackgroundProgressBarValueInFlash: '{colorNeutral950}',
+  colorBackgroundProgressBarInFlash: '{colorGreyOpaque10}',
 
   // Expandable sections
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',

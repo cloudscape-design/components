@@ -28,6 +28,7 @@ interface TutorialListProps {
   onStartTutorial: HotspotContext['onStartTutorial'];
   i18nStrings: TutorialPanelProps['i18nStrings'];
   downloadUrl: TutorialPanelProps['downloadUrl'];
+  headingId?: string;
 }
 
 export default function TutorialList({
@@ -36,6 +37,7 @@ export default function TutorialList({
   loading = false,
   onStartTutorial,
   downloadUrl,
+  headingId,
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
@@ -45,7 +47,12 @@ export default function TutorialList({
     <>
       <InternalSpaceBetween size="s">
         <InternalSpaceBetween size="m">
-          <InternalBox variant="h2" fontSize={isRefresh ? 'heading-m' : 'heading-l'} padding={{ bottom: 'n' }}>
+          <InternalBox
+            variant="h2"
+            fontSize={isRefresh ? 'heading-m' : 'heading-l'}
+            padding={{ bottom: 'n' }}
+            id={headingId}
+          >
             {i18nStrings.tutorialListTitle}
           </InternalBox>
           <InternalBox variant="p" color="text-body-secondary" padding="n">

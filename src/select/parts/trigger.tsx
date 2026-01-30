@@ -29,6 +29,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: 'root' | 'nested';
   selectedOptions?: ReadonlyArray<OptionDefinition>;
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 }
 
 const Trigger = React.forwardRef(
@@ -49,6 +50,7 @@ const Trigger = React.forwardRef(
       placeholder,
       disabled,
       readOnly,
+      renderOption,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -60,6 +62,7 @@ const Trigger = React.forwardRef(
     let ariaLabelledbyIds = joinStrings(ariaLabelledby, triggerContentId);
 
     let triggerContent = null;
+    let hasCustomContent = false;
     if (triggerVariant === 'tokens') {
       if (selectedOptions?.length) {
         triggerContent = (
@@ -96,7 +99,28 @@ const Trigger = React.forwardRef(
         </span>
       );
     } else if (triggerVariant === 'option') {
-      triggerContent = <Option id={triggerContentId} option={{ ...selectedOption, disabled }} triggerVariant={true} />;
+      const triggerCustomContent = renderOption?.({
+        filterText: undefined,
+        item: {
+          type: 'trigger',
+          option: selectedOption,
+        },
+      });
+      if (triggerCustomContent) {
+        hasCustomContent = true;
+        triggerContent = (
+          <Option
+            customContent={triggerCustomContent}
+            id={triggerContentId}
+            option={{ ...selectedOption, disabled }}
+            triggerVariant={true}
+          />
+        );
+      } else {
+        triggerContent = (
+          <Option id={triggerContentId} option={{ ...selectedOption, disabled }} triggerVariant={true} />
+        );
+      }
     } else {
       triggerContent = (
         <span id={triggerContentId} className={styles.trigger}>
@@ -118,6 +142,7 @@ const Trigger = React.forwardRef(
         warning={warning && !invalid}
         inFilteringToken={inFilteringToken}
         inlineTokens={triggerVariant === 'tokens'}
+        hasCustomContent={hasCustomContent}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={ariaLabelledbyIds}
       >

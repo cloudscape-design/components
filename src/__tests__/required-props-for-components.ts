@@ -166,6 +166,10 @@ const defaultProps: Record<string, Record<string, any>> = {
   steps: {
     steps: [],
   },
+  tooltip: {
+    content: null,
+    getTrack: () => null,
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {
