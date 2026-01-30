@@ -49,10 +49,6 @@
   box-sizing: border-box;
   position: relative;
   background-color: awsui.$color-background-container-content;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
   min-inline-size: 0;
   @include card-style;
 }
