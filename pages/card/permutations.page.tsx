@@ -23,13 +23,12 @@ type PageContext = React.Context<
 
 const shortHeader = 'Card Header';
 const longHeader = 'This is a very long card header that might wrap to multiple lines on smaller viewports';
-const shortDescription = 'Short description';
-const longDescription =
-  'This is a much longer description that provides more context and details about the card content. It might span multiple lines depending on the viewport width.';
 
-const shortContent = 'Card content';
+const shortDescription = 'Short description';
+const longDescription = 'This is a long description that provides more context and details about the card content.';
+
 const longContent =
-  'This is longer card content with multiple sentences. It provides more detailed information and might wrap across several lines. The content can include various types of information that users need to see.';
+  'This is long card content with multiple sentences. It provides more detailed information and might wrap across several lines.';
 
 const actions = (
   <ButtonGroup
@@ -44,66 +43,29 @@ const actions = (
 const icon = <Icon name="settings" />;
 
 const permutations = createPermutations<InternalCardProps & { width?: number }>([
-  // Basic variations
+  // Variations of the header region
   {
-    header: [shortHeader],
-    children: [shortContent],
-    actions: [undefined, actions],
-  },
-  // Header variations
-  {
-    header: [undefined, shortHeader, longHeader],
-    children: [shortContent],
-  },
-  // Description variations
-  {
-    header: [shortHeader],
-    description: [undefined, shortDescription, longDescription],
-    children: [shortContent],
-  },
-  // Children variations
-  {
-    header: [shortHeader],
-    children: [undefined, shortContent, longContent],
-  },
-  // Icon variations
-  {
-    header: [shortHeader],
-    icon: [undefined, icon],
-    children: [shortContent],
-  },
-  // Combined variations
-  {
-    header: [shortHeader],
-    description: [shortDescription],
-    icon: [icon],
-    children: [shortContent],
-    actions: [actions],
-  },
-  {
-    header: [longHeader],
-    description: [longDescription],
+    header: [shortHeader, longHeader, undefined],
     children: [longContent],
-    actions: [actions],
+    description: [undefined, longDescription],
+    actions: [undefined, actions],
+    icon: [undefined, icon],
   },
-  // No children with actions
+  // Variations of header + content composition
   {
-    header: [shortHeader],
-    description: [shortDescription],
+    header: [longHeader, undefined],
+    children: [longContent, undefined],
+    description: [shortDescription, undefined],
     actions: [actions],
-    children: [undefined],
-  },
-  // Selected state
-  {
-    header: [shortHeader],
-    children: [shortContent],
-    selected: [true],
+    icon: [icon],
+    disableHeaderPaddings: [false, true],
+    disableContentPaddings: [false, true],
   },
 ]);
 
 export default function CardPermutations() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const containerWidth = urlParams.containerWidth || '300';
+  const containerWidth = urlParams.containerWidth || '400';
 
   return (
     <>
