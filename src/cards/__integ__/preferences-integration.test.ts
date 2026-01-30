@@ -50,10 +50,10 @@ test(
     await page.waitForVisible(wrapper.findItems().toSelector());
     await expect(page.getElementsCount(wrapper.findItems().get(1).findSections().toSelector())).resolves.toEqual(2);
     await expect(
-      page.getText(wrapper.findItems().get(1).findSections().get(2).findSectionHeader().toSelector())
+      page.getText(wrapper.findItems().get(1).findSections().get(1).findSectionHeader().toSelector())
     ).resolves.toEqual('Type');
     await expect(
-      page.getText(wrapper.findItems().get(1).findSections().get(3).findSectionHeader().toSelector())
+      page.getText(wrapper.findItems().get(1).findSections().get(2).findSectionHeader().toSelector())
     ).resolves.toEqual('DNS name');
 
     await page.click(preferences.findTriggerButton().toSelector());
@@ -62,7 +62,7 @@ test(
     await page.click(preferences.findModal().findConfirmButton().toSelector());
     await expect(page.getElementsCount(wrapper.findItems().get(1).findSections().toSelector())).resolves.toEqual(1);
     await expect(
-      page.getText(wrapper.findItems().get(1).findSections().get(2).findSectionHeader().toSelector())
+      page.getText(wrapper.findItems().get(1).findSections().get(1).findSectionHeader().toSelector())
     ).resolves.toEqual('Type');
   })
 );
