@@ -66,9 +66,6 @@ $button-padding-vertical: styles.$control-padding-vertical;
 $button-padding-horizontal: awsui.$space-xxs;
 
 .header {
-  &-inner {
-    @include styles.font-heading-s;
-  }
   &:not(.no-padding) {
     padding-block-end: awsui.$space-xxs;
     padding-inline-start: awsui.$space-card-horizontal;
@@ -81,6 +78,9 @@ $button-padding-horizontal: awsui.$space-xxs;
       padding-block-start: calc(#{awsui.$space-scaled-s} - $button-padding-vertical);
       padding-inline-end: calc(#{awsui.$space-card-horizontal} - $button-padding-horizontal);
     }
+  }
+  &-inner {
+    @include styles.font-heading-s;
   }
 }
 
