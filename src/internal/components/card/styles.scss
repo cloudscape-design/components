@@ -55,18 +55,19 @@
 
 $button-padding-vertical: styles.$control-padding-vertical;
 $button-padding-horizontal: awsui.$space-xxs;
+$padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-vertical);
 
 .header {
   &:not(.no-padding) {
     padding-block-end: awsui.$space-xxs;
     padding-inline-start: awsui.$space-card-horizontal;
     &:not(.with-actions) {
-      padding-block-start: awsui.$space-scaled-s;
+      padding-block-start: $padding-block-start-base;
       padding-inline-end: awsui.$space-card-horizontal;
     }
     &.with-actions {
       // Compensate the padding given by the buttons in the actions slot
-      padding-block-start: calc(awsui.$space-scaled-s - $button-padding-vertical);
+      padding-block-start: calc($padding-block-start-base - $button-padding-vertical);
       padding-inline-end: calc(awsui.$space-card-horizontal - $button-padding-horizontal);
     }
   }
