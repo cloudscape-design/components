@@ -4,23 +4,7 @@ import React from 'react';
 
 import { BaseComponentProps } from '../../base-component';
 
-export interface InternalCardProps extends BaseComponentProps {
-  /**
-   * Specifies an action for the card.
-   * It is recommended to use a button with inline-icon variant.
-   */
-  actions?: React.ReactNode;
-
-  /**
-   * Specifies whether the card is in active state.
-   */
-  selected?: boolean;
-
-  /**
-   * Primary content displayed in the card.
-   */
-  children?: React.ReactNode;
-
+export interface BaseCardProps extends BaseComponentProps {
   /**
    * Heading text.
    */
@@ -32,8 +16,18 @@ export interface InternalCardProps extends BaseComponentProps {
   description?: React.ReactNode;
 
   /**
+   * Specifies actions for the card.
+   */
+  actions?: React.ReactNode;
+
+  /**
+   * Primary content displayed in the card.
+   */
+  children?: React.ReactNode;
+
+  /**
    * Icon which will be displayed at the top of the card,
-   * inline at the start of the content.
+   * aligned with the start of the content.
    */
   icon?: React.ReactNode;
 
@@ -46,11 +40,18 @@ export interface InternalCardProps extends BaseComponentProps {
    * Determines whether the card content has padding. If `true`, removes the default padding from the content area.
    */
   disableContentPaddings?: boolean;
+}
 
+export interface InternalCardProps extends BaseCardProps {
   /**
    * Called when the user clicks on the card.
    */
   onClick?: React.MouseEventHandler<HTMLElement>;
+
+  /**
+   * Specifies whether the card is in active state.
+   */
+  selected?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
 }
