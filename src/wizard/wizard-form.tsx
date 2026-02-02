@@ -25,13 +25,9 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
-import WizardStepNavigationDropdown from './wizard-step-navigation-dropdown';
 import WizardStepNavigationExpandable from './wizard-step-navigation-expandable';
-import WizardStepNavigationModal from './wizard-step-navigation-modal';
 
 import styles from './styles.css.js';
-
-export type StepNavigationVariant = 'modal' | 'dropdown' | 'expandable' | 'auto';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -49,7 +45,6 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onPrimaryClick: () => void;
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
-  stepNavigationVariant?: StepNavigationVariant;
   stepNavigationExpanded?: boolean;
   onStepNavigationExpandedChange?: (expanded: boolean) => void;
 }
@@ -98,7 +93,6 @@ function WizardForm({
   onPrimaryClick,
   onStepClick,
   onSkipToClick,
-  stepNavigationVariant = 'auto',
   stepNavigationExpanded = false,
   onStepNavigationExpandedChange,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
@@ -143,10 +137,6 @@ function WizardForm({
     }
   }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId, funnelStepInfo]);
 
-  // Determine which navigation variant to use
-  // 'auto' mode: default to expandable section for better accessibility
-  const effectiveVariant = stepNavigationVariant === 'auto' ? 'expandable' : stepNavigationVariant;
-
   const stepNavigationProps = {
     activeStepIndex,
     farthestStepIndex,
@@ -162,17 +152,11 @@ function WizardForm({
     <>
       <WizardFormHeader>
         <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {effectiveVariant === 'expandable' ? (
-            <WizardStepNavigationExpandable
-              {...stepNavigationProps}
-              expanded={stepNavigationExpanded}
-              onExpandedChange={onStepNavigationExpandedChange ?? (() => {})}
-            />
-          ) : effectiveVariant === 'modal' ? (
-            <WizardStepNavigationModal {...stepNavigationProps} />
-          ) : (
-            <WizardStepNavigationDropdown {...stepNavigationProps} />
-          )}
+          <WizardStepNavigationExpandable
+            {...stepNavigationProps}
+            expanded={stepNavigationExpanded}
+            onExpandedChange={onStepNavigationExpandedChange ?? (() => {})}
+          />
         </div>
         <InternalHeader
           className={styles['form-header-component']}

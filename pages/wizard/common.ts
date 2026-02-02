@@ -18,12 +18,4 @@ const i18nStrings: WizardProps.I18nStrings = {
   stepsNavigationLabel: 'Steps navigation',
 };
 
-// i18n strings with modal navigation support
-const i18nStringsWithModal: WizardProps.I18nStrings = {
-  ...i18nStrings,
-  stepNavigationTitle: 'Go to step',
-  stepNavigationDismissAriaLabel: 'Close step navigation',
-  stepNavigationConfirmButton: 'Go',
-};
-
-export { i18nStrings, i18nStringsWithModal };
+export { i18nStrings };
