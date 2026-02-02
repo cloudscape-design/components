@@ -9,7 +9,14 @@ import { WizardProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export type StepStatus = 'active' | 'visited' | 'unvisited' | 'next';
+export const StepStatusValues = {
+  Active: 'active',
+  Visited: 'visited',
+  Unvisited: 'unvisited',
+  Next: 'next',
+} as const;
+
+export type StepStatus = (typeof StepStatusValues)[keyof typeof StepStatusValues];
 
 export interface WizardStepListProps {
   activeStepIndex: number;
@@ -31,18 +38,18 @@ export function getStepStatus(
   steps: ReadonlyArray<{ isOptional?: boolean }>
 ): StepStatus {
   if (activeStepIndex === index) {
-    return 'active';
+    return StepStatusValues.Active;
   }
   if (isLoadingNextStep) {
-    return 'unvisited';
+    return StepStatusValues.Unvisited;
   }
   if (farthestStepIndex >= index) {
-    return 'visited';
+    return StepStatusValues.Visited;
   }
   if (allowSkipTo && canSkip(activeStepIndex + 1, index, steps)) {
-    return 'next';
+    return StepStatusValues.Next;
   }
-  return 'unvisited';
+  return StepStatusValues.Unvisited;
 }
 
 export function canSkip(fromIndex: number, toIndex: number, steps: ReadonlyArray<{ isOptional?: boolean }>): boolean {
@@ -64,9 +71,9 @@ export function handleStepNavigation(
   onStepClick: (index: number) => void,
   onSkipToClick: (index: number) => void
 ): void {
-  if (status === 'visited') {
+  if (status === StepStatusValues.Visited) {
     onStepClick(stepIndex);
-  } else if (status === 'next') {
+  } else if (status === StepStatusValues.Next) {
     onSkipToClick(stepIndex);
   }
 }
@@ -85,13 +92,13 @@ export default function WizardStepList({
     <ul className={styles['expandable-step-list']} role="list">
       {steps.map((step, index) => {
         const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
-        const isClickable = status === 'visited' || status === 'next';
+        const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
         const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
         const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
         const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
 
         return (
-          <li key={index} className={clsx(styles['expandable-step-item'], styles[`expandable-step-item-${status}`])}>
+          <li key={index} className={clsx(styles['expandable-step-item'])}>
             <div className={styles['expandable-step-indicator']}>
               <div
                 className={clsx(styles['expandable-step-circle'], styles[`expandable-step-circle-${status}`])}
@@ -104,7 +111,7 @@ export default function WizardStepList({
                 {i18nStrings.stepNumberLabel?.(index + 1)}
                 {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
               </span>
-              {status === 'active' ? (
+              {status === StepStatusValues.Active ? (
                 <span
                   className={clsx(styles['expandable-step-title'], styles['expandable-step-title-active'])}
                   aria-current="step"

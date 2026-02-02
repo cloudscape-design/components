@@ -468,9 +468,6 @@
     "i18nStrings.nextButton": "Next",
     "i18nStrings.optional": "optional",
     "i18nStrings.nextButtonLoadingAnnouncement": "Loading next step",
-    "i18nStrings.submitButtonLoadingAnnouncement": "Submitting form",
-    "i18nStrings.stepNavigationTitle": "Step",
-    "i18nStrings.stepNavigationDismissAriaLabel": "Close step navigation",
-    "i18nStrings.stepNavigationConfirmButton": "Ok"
+    "i18nStrings.submitButtonLoadingAnnouncement": "Submitting form"
   }
 }
