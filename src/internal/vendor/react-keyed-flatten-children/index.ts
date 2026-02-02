@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Vendored from react-keyed-flatten-children@3.2.0 (MIT License)
-// Original source: https://github.com/grrowl/react-keyed-flatten-children
+// Original source: https://github.com/grrowl/react-keyed-flatten-children/tree/120a286144c7fdc76b64daadaeae0df7d255b497
 
 import { Children, cloneElement, isValidElement, ReactElement, ReactNode } from 'react';
 
@@ -40,7 +40,11 @@ function isFragmentWithChildren(node: unknown): node is ReactElement<{ children:
   return isFragment(node);
 }
 
-export default function flattenChildren(children: ReactNode, depth = 0, keys: (string | number)[] = []): ReactNode[] {
+export default function flattenChildren(
+  children: ReactNode,
+  depth: number = 0,
+  keys: (string | number)[] = []
+): ReactNode[] {
   return Children.toArray(children).reduce((acc: ReactNode[], node, nodeIndex) => {
     if (isFragmentWithChildren(node)) {
       acc.push(...flattenChildren(node.props.children, depth + 1, keys.concat(node.key || nodeIndex)));
@@ -50,7 +54,7 @@ export default function flattenChildren(children: ReactNode, depth = 0, keys: (s
           key: keys.concat(String(node.key)).join('.'),
         })
       );
-    } else if (typeof node === 'string' || typeof node === 'number') {
+    } else if (typeof node === 'string' || typeof node === 'number' || typeof node === 'bigint') {
       acc.push(node);
     }
     return acc;
