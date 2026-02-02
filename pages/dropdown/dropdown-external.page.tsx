@@ -17,12 +17,11 @@ export default function DropdownExternalPage() {
   const [open4, setOpen4] = useState(false);
   const [open5, setOpen5] = useState(false);
   const [open6, setOpen6] = useState(false);
-  const [open7, setOpen7] = useState(false);
+  const [open8, setOpen8] = useState(false);
+  const [open9, setOpen9] = useState(false);
   const [open10, setOpen10] = useState(false);
   const [open11, setOpen11] = useState(false);
   const [open12, setOpen12] = useState(false);
-  const [open13, setOpen13] = useState(false);
-  const [open14, setOpen14] = useState(false);
   const [focusEvents, setFocusEvents] = useState<string[]>([]);
   const [closeCount, setCloseCount] = useState(0);
 
@@ -43,7 +42,7 @@ export default function DropdownExternalPage() {
   );
 
   return (
-    <article>
+    <div style={{ padding: '20px' }}>
       <h1>Dropdown External API Demo</h1>
       <p>This page demonstrates the new public API for the Dropdown component.</p>
 
@@ -62,6 +61,7 @@ export default function DropdownExternalPage() {
                   content={
                     <div style={{ padding: '12px' }}>
                       This dropdown is at least as wide as the trigger button, but can grow wider if content needs it.
+                      Default maxWidth is 265px.
                     </div>
                   }
                 />
@@ -76,7 +76,7 @@ export default function DropdownExternalPage() {
                   open={open2}
                   onClose={() => setOpen2(false)}
                   minWidth={300}
-                  content={<div style={{ padding: '12px' }}>Minimum 300px width regardless of trigger size.</div>}
+                  content={<div style={{ padding: '12px' }}>minWidth is 300.</div>}
                 />
               </div>
             </Box>
@@ -91,8 +91,7 @@ export default function DropdownExternalPage() {
                   maxWidth="trigger"
                   content={
                     <div style={{ padding: '12px' }}>
-                      This content cannot exceed the trigger width, so it will wrap if needed. Very long text will wrap
-                      to multiple lines.
+                      This content cannot exceed the trigger width, so it will wrap if needed.
                     </div>
                   }
                 />
@@ -147,20 +146,6 @@ export default function DropdownExternalPage() {
                 />
               </div>
             </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <h3 style={{ marginBottom: '12px' }}>alignment: end</h3>
-              <div style={{ display: 'inline-block' }}>
-                <Dropdown
-                  trigger={<Button onClick={() => setOpen7(!open7)}>End Aligned</Button>}
-                  open={open7}
-                  onClose={() => setOpen7(false)}
-                  alignment="end"
-                  content={sampleContent}
-                  minWidth={200}
-                />
-              </div>
-            </div>
           </div>
         </section>
 
@@ -172,10 +157,10 @@ export default function DropdownExternalPage() {
             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
-                  trigger={<Button onClick={() => setOpen10(!open10)}>Dropdown with Events</Button>}
-                  open={open10}
+                  trigger={<Button onClick={() => setOpen8(!open8)}>Dropdown with Events</Button>}
+                  open={open8}
                   onClose={() => {
-                    setOpen10(false);
+                    setOpen8(false);
                     setCloseCount(prev => prev + 1);
                   }}
                   onFocusIn={event => {
@@ -221,9 +206,9 @@ export default function DropdownExternalPage() {
             <h3>Dropdown with fixed header and footer (scrollable content)</h3>
             <div style={{ display: 'inline-block' }}>
               <Dropdown
-                trigger={<Button onClick={() => setOpen11(!open11)}>With Header & Footer</Button>}
-                open={open11}
-                onClose={() => setOpen11(false)}
+                trigger={<Button onClick={() => setOpen9(!open9)}>With Header & Footer</Button>}
+                open={open9}
+                onClose={() => setOpen9(false)}
                 header={
                   <div style={{ padding: '12px', borderBottom: '1px solid #ccc', fontWeight: 'bold' }}>
                     Fixed Header - Always Visible
@@ -258,9 +243,9 @@ export default function DropdownExternalPage() {
               <div style={{ border: '1px solid #ccc', padding: '12px', maxHeight: '200px', overflow: 'auto' }}>
                 <div style={{ height: '100px' }}>Scroll down...</div>
                 <Dropdown
-                  trigger={<Button onClick={() => setOpen12(!open12)}>Expands to Viewport</Button>}
-                  open={open12}
-                  onClose={() => setOpen12(false)}
+                  trigger={<Button onClick={() => setOpen10(!open10)}>Expands to Viewport</Button>}
+                  open={open10}
+                  onClose={() => setOpen10(false)}
                   expandToViewport={true}
                   content={sampleContent}
                   maxWidth={'trigger'}
@@ -273,9 +258,9 @@ export default function DropdownExternalPage() {
               <h3>loopFocus: true</h3>
               <p style={{ fontSize: '12px', color: '#666' }}>Focus loops between trigger and dropdown content</p>
               <Dropdown
-                trigger={<Button onClick={() => setOpen13(!open13)}>Focus Loop Enabled</Button>}
-                open={open13}
-                onClose={() => setOpen13(false)}
+                trigger={<Button onClick={() => setOpen11(!open11)}>Focus Loop Enabled</Button>}
+                open={open11}
+                onClose={() => setOpen11(false)}
                 loopFocus={true}
                 content={
                   <div style={{ padding: '12px' }}>
@@ -294,10 +279,10 @@ export default function DropdownExternalPage() {
               <p style={{ fontSize: '12px', color: '#666' }}>Closes automatically when focus moves outside</p>
               <div>
                 <Dropdown
-                  trigger={<Button onClick={() => setOpen14(!open14)}>Auto-close Dropdown</Button>}
-                  open={open14}
-                  onClose={() => setOpen14(false)}
-                  onFocusOut={() => setOpen14(false)}
+                  trigger={<Button onClick={() => setOpen12(!open12)}>Auto-close Dropdown</Button>}
+                  open={open12}
+                  onClose={() => setOpen12(false)}
+                  onFocusOut={() => setOpen12(false)}
                   content={
                     <div style={{ padding: '12px' }}>
                       <SpaceBetween size="s">
@@ -317,6 +302,6 @@ export default function DropdownExternalPage() {
       </SpaceBetween>
 
       <div style={{ height: '400px' }} />
-    </article>
+    </div>
   );
 }
