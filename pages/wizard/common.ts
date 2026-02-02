@@ -15,7 +15,6 @@ const i18nStrings: WizardProps.I18nStrings = {
   optional: 'optional',
   nextButtonLoadingAnnouncement: 'Loading next step',
   submitButtonLoadingAnnouncement: 'Submitting form',
-  stepsNavigationLabel: 'Steps navigation',
 };
 
 export { i18nStrings };

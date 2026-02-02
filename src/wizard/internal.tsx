@@ -139,7 +139,6 @@ export default function InternalWizard({
     previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings?.previousButton),
     nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings?.nextButton),
     optional: i18n('i18nStrings.optional', rest.i18nStrings?.optional),
-    stepsNavigationLabel: rest.i18nStrings?.stepsNavigationLabel,
   };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {

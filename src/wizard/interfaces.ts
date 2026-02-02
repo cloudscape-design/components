@@ -170,7 +170,6 @@ export namespace WizardProps {
     optional?: string;
     nextButtonLoadingAnnouncement?: string;
     submitButtonLoadingAnnouncement?: string;
-    stepsNavigationLabel?: string;
   }
 
   export interface NavigateDetail {
