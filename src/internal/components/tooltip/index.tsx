@@ -10,11 +10,17 @@ import PopoverContainer from '../../../popover/container';
 import { PopoverProps } from '../../../popover/interfaces';
 import { Transition } from '../transition';
 
+import testUtilsStyles from '../../../tooltip/test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TooltipProps {
   value: React.ReactNode;
   trackRef: React.RefObject<HTMLElement | SVGElement>;
+  /**
+   * @deprecated This property is only kept for backward compatibility with CloudEditor package.
+   * New implementations should use data-* attributes instead.
+   * TODO: Remove after CloudEditor migrates away from this property.
+   */
   trackKey?: string | number;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
@@ -65,7 +71,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={styles.root} {...contentAttributes} data-testid={trackKey}>
+      <div className={`${styles.root} ${testUtilsStyles.root}`} {...contentAttributes} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
