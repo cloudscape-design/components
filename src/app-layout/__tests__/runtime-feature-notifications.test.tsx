@@ -161,6 +161,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
     expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent('This is the first new feature content');
+    featurePromptWrapper.findDismissButton()!.click();
+    expect(featurePromptWrapper.findContent()).toBeFalsy();
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
