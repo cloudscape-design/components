@@ -4,7 +4,6 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
-import { metrics } from '../../../internal/metrics';
 import { persistSeenFeatureNotifications, retrieveSeenFeatureNotifications } from '../../../internal/persistence';
 import awsuiPlugins from '../../../internal/plugins';
 import { Feature, FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
@@ -68,31 +67,19 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     if (!featureNotificationsData || markAllAsRead) {
       return;
     }
-    try {
-      const id = featureNotificationsData?.id;
-      if (activeDrawersIds.includes(id) && !markAllAsRead) {
-        const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
-          return {
-            ...acc,
-            [feature.id]: feature.releaseDate.toString(),
-          };
-        }, {});
-        const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
-        const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
-        persistSeenFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
-          awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
-          setMarkAllAsRead(true);
-        });
-      }
-      return;
-    } catch (error) {
-      let message = '';
-      if (error instanceof Error) {
-        message = error?.message ?? '';
-      }
-      metrics.sendOpsMetricObject('awsui-widget-feature-notifications-error', {
-        id: featureNotificationsData?.id,
-        message,
+    const id = featureNotificationsData?.id;
+    if (activeDrawersIds.includes(id) && !markAllAsRead) {
+      const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
+        return {
+          ...acc,
+          [feature.id]: feature.releaseDate.toString(),
+        };
+      }, {});
+      const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
+      const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
+      persistSeenFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
+        awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
+        setMarkAllAsRead(true);
       });
     }
   }, [featureNotificationsData, activeDrawersIds, markAllAsRead, featurePromptDismissed, seenFeatures]);
