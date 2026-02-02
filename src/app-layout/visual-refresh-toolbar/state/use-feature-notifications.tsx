@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 
+import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { metrics } from '../../../internal/metrics';
 import { persistSeenFeatureNotifications, retrieveSeenFeatureNotifications } from '../../../internal/persistence';
@@ -54,6 +55,7 @@ function filterOutdatedFeatures(features: Record<string, string>): Record<string
 }
 
 export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotificationsProps) {
+  const i18n = useInternalI18n('features-notification-drawer');
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotificationsPayload<unknown> | null>(
@@ -117,12 +119,11 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
         resizable: true,
         defaultSize: 320,
 
-        // TODO Replace with i18n strings
         ariaLabels: {
-          closeButton: 'Close button',
-          content: 'Content',
-          triggerButton: 'Trigger button',
-          resizeHandle: 'Resize handle',
+          closeButton: i18n('ariaLabels.closeButton', undefined),
+          content: i18n('ariaLabels.content', undefined),
+          triggerButton: i18n('ariaLabels.triggerButton', undefined),
+          resizeHandle: i18n('ariaLabels.resizeHandle', undefined),
         },
 
         trigger: { __iconName: 'suggestions' },
