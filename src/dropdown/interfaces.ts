@@ -42,7 +42,156 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
   onLoadItems?: NonCancelableEventHandler<OptionsLoadItemsDetail>;
 }
 
+/**
+ * Width constraint that can be a pixel value or reference the trigger width
+ */
+export type DropdownWidthConstraint = number | 'trigger';
+
+/**
+ * Height constraint in pixels
+ */
+export type DropdownHeightConstraint = number;
+
+/**
+ * Preferred alignment of the dropdown relative to its trigger.
+ * The dropdown will attempt this alignment first, but will automatically
+ * adjust if there's insufficient space on the preferred side.
+ */
+export type DropdownAlignment = 'start' | 'center' | 'end';
+
+/**
+ * Props for the exposed Dropdown component
+ */
 export interface DropdownProps extends ExpandToViewport {
+  /**
+   * The trigger element that opens/closes the dropdown
+   */
+  trigger: React.ReactNode;
+
+  /**
+   * Whether the dropdown is currently open
+   */
+  open?: boolean;
+
+  /**
+   * Called when the dropdown should be closed (e.g., outside click, escape key)
+   */
+  onClose?: NonCancelableEventHandler<null>;
+
+  /**
+   * Main content of the dropdown
+   */
+  content?: React.ReactNode;
+
+  /**
+   * Optional header content that stays fixed at the top while
+   * scrolling dropdown content
+   */
+  header?: React.ReactNode;
+
+  /**
+   * Optional footer content that stays fixed at the bottom while
+   * scrolling dropdown content.
+   * Typically used to display loading status or action buttons.
+   */
+  footer?: React.ReactNode;
+
+  /**
+   * Minimum width constraint for the dropdown.
+   * - Number: minimum width in pixels
+   * - 'trigger': dropdown will be at least as wide as the trigger
+   * @defaultValue 'trigger'
+   */
+  minWidth?: DropdownWidthConstraint;
+
+  /**
+   * Maximum width constraint for the dropdown.
+   * - Number: maximum width in pixels
+   * - 'trigger': dropdown cannot exceed the trigger width
+   *
+   * If not specified, dropdown can grow up to 465px by default.
+   */
+  maxWidth?: DropdownWidthConstraint;
+
+  /**
+   * Preferred alignment of the dropdown relative to its trigger.
+   * The dropdown will attempt this alignment first, but will automatically
+   * adjust if there's insufficient space on the preferred side.
+   * @defaultValue 'start'
+   */
+  alignment?: DropdownAlignment;
+
+  /**
+   * ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')
+   */
+  role?: string;
+
+  /**
+   * ARIA label for the dropdown content.
+   * Use either this or ariaLabelledby, not both.
+   */
+  ariaLabel?: string;
+
+  /**
+   * ARIA labelledby attribute for the dropdown content.
+   * Use either this or ariaLabel, not both.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * ARIA describedby attribute for the dropdown content
+   */
+  ariaDescribedby?: string;
+
+  /**
+   * Whether focus should loop between trigger and dropdown content.
+   * Creates a focus trap for accessibility when enabled.
+   * @defaultValue true when expandToViewport=true, false otherwise
+   */
+  loopFocus?: boolean;
+
+  /**
+   * Called when any element inside the dropdown content gains focus.
+   * This includes nested interactive elements like buttons, links, or inputs.
+   */
+  onFocusIn?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when focus leaves the dropdown content entirely.
+   */
+  onFocusOut?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Key that forces dropdown position recalculation when changed.
+   * Use when dropdown content changes dynamically.
+   */
+  contentKey?: string;
+}
+
+export interface ExpandToViewport {
+  /**
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * We recommend you use discretion, and don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   *
+   * Note: When expandToViewport is enabled, the dropdown width is determined by its content
+   * rather than the minWidth/maxWidth constraints. Use this property primarily for positioning,
+   * not for width control.
+   */
+  expandToViewport?: boolean;
+}
+
+/**
+ * Internal props used by the internal dropdown implementation.
+ * This maintains the original internal API for backward compatibility.
+ */
+export interface InternalDropdownProps extends ExpandToViewport {
   /**
    * Trigger element.
    */
@@ -56,9 +205,9 @@ export interface DropdownProps extends ExpandToViewport {
    */
   footer?: React.ReactNode;
   /**
-   * Dropdown content elements.
+   * Dropdown content elements (passed as children).
    */
-  content?: React.ReactNode;
+  children?: React.ReactNode;
   /**
    * Updating content key triggers dropdown position re-evaluation.
    */
@@ -147,25 +296,12 @@ export interface DropdownProps extends ExpandToViewport {
    * Describedby for the dropdown (recommended when role="dialog")
    */
   ariaDescribedby?: string;
-}
-
-export interface ExpandToViewport {
   /**
-   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
-   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
-   * [React Portals](https://reactjs.org/docs/portals.html).
-   *
-   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
-   * for example inside table and split view layouts.
-   *
-   * We recommend you use discretion, and don't enable this property unless necessary
-   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   * Whether this is an interior dropdown (flyout)
    */
-  expandToViewport?: boolean;
-}
-
-export interface InternalDropdownProps extends Omit<DropdownProps, 'content' | 'interior'> {
-  children?: React.ReactNode;
   interior?: boolean;
+  /**
+   * Mouse down handler
+   */
   onMouseDown?: React.MouseEventHandler;
 }
