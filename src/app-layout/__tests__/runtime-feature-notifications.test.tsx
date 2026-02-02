@@ -217,6 +217,38 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     });
   });
 
+  test('filters outdated seen features when marking all as read', async () => {
+    const oldSeenFeatureDate = new Date(mockCurrentDate);
+    oldSeenFeatureDate.setDate(oldSeenFeatureDate.getDate() - 200); // More than 180 days ago
+
+    const recentSeenFeatureDate = new Date(mockCurrentDate);
+    recentSeenFeatureDate.setDate(recentSeenFeatureDate.getDate() - 100); // Less than 180 days ago
+
+    const seenFeatures = {
+      'old-seen-feature': oldSeenFeatureDate.toISOString(),
+      'recent-seen-feature': recentSeenFeatureDate.toISOString(),
+      'feature-1': mockDate2025.toISOString(),
+    };
+
+    mockRetrieveSeenFeatureNotifications.mockResolvedValue(seenFeatures);
+
+    awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    await waitFor(() => {
+      expect(mockPersistSeenFeatureNotifications).toHaveBeenCalled();
+    });
+
+    const persistedFeaturesMap = mockPersistSeenFeatureNotifications.mock.calls[0][1];
+
+    expect(persistedFeaturesMap).toHaveProperty('feature-1');
+    expect(persistedFeaturesMap).toHaveProperty('feature-2');
+    expect(persistedFeaturesMap).toHaveProperty('recent-seen-feature');
+    expect(persistedFeaturesMap).not.toHaveProperty('old-seen-feature');
+  });
+
   // test('handles empty features array', () => {
   //   const emptyFeatures: FeatureNotificationsPayload<string> = {
   //     id: 'empty-features',
