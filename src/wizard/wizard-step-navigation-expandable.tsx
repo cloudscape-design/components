@@ -29,11 +29,15 @@ export default function WizardStepNavigationExpandable({
 }: WizardStepNavigationExpandableProps) {
   const [expanded, setExpanded] = useState(true);
   const collapsedStepsLabel = i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length);
+  const headerAriaLabel = collapsedStepsLabel
+    ? `${collapsedStepsLabel} - ${i18nStrings.navigationAriaLabel ?? 'Steps'}`
+    : undefined;
 
   return (
     <InternalExpandableSection
       variant="footer"
       headerText={collapsedStepsLabel}
+      headerAriaLabel={headerAriaLabel}
       expanded={expanded}
       onChange={({ detail }) => setExpanded(detail.expanded)}
     >
