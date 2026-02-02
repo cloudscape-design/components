@@ -70,8 +70,8 @@ export default function InternalWizard({
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
   farthestStepIndex.current = Math.max(farthestStepIndex.current, actualActiveStepIndex);
 
-  // State for expandable step navigation (collapsed by default)
-  const [stepNavigationExpanded, setStepNavigationExpanded] = useState(false);
+  // State for expandable step navigation (expanded by default for accessibility)
+  const [stepNavigationExpanded, setStepNavigationExpanded] = useState(true);
 
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
@@ -142,6 +142,7 @@ export default function InternalWizard({
     stepNavigationTitle: rest.i18nStrings?.stepNavigationTitle,
     stepNavigationDismissAriaLabel: rest.i18nStrings?.stepNavigationDismissAriaLabel,
     stepNavigationConfirmButton: rest.i18nStrings?.stepNavigationConfirmButton,
+    stepsNavigationLabel: rest.i18nStrings?.stepsNavigationLabel,
   };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {

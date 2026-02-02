@@ -173,6 +173,7 @@ export namespace WizardProps {
     stepNavigationTitle?: string;
     stepNavigationDismissAriaLabel?: string;
     stepNavigationConfirmButton?: string;
+    stepsNavigationLabel?: string;
   }
 
   export interface NavigateDetail {

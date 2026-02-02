@@ -543,7 +543,8 @@
   list-style: none;
   margin-block: 0;
   margin-inline: 0;
-  padding-block: 0;
+  padding-block-start: awsui.$space-s;
+  padding-block-end: 0;
   padding-inline: 0;
 }
 
@@ -615,6 +616,11 @@
   padding-block-end: awsui.$space-xs;
 }
 
+.expandable-step-label {
+  font-size: awsui.$font-size-body-s;
+  color: awsui.$color-text-small;
+}
+
 .expandable-step-title {
   font-size: awsui.$font-size-body-m;
 }
@@ -622,6 +628,27 @@
 .expandable-step-title-active {
   color: awsui.$color-background-control-checked;
   font-weight: styles.$font-weight-bold;
+}
+
+.expandable-step-title-clickable {
+  @include styles.styles-reset;
+  background: transparent;
+  border-block: none;
+  border-inline: none;
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: pointer;
+  text-align: start;
+  font-size: inherit;
+  color: awsui.$color-text-body-default;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
 }
 
 .expandable-step-title-unvisited {

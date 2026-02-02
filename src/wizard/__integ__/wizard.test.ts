@@ -116,3 +116,63 @@ describe('Wizard scroll to top upon navigation', () => {
     })
   );
 });
+
+// CSS selectors for reflow tests
+const COLLAPSED_STEPS_SELECTOR = '[class*="collapsed-steps"]:not([class*="hidden"])';
+const EXPANDABLE_HEADER_SELECTOR = '[class*="collapsed-steps"] [class*="header"]';
+
+describe('Wizard WCAG 1.4.10 Reflow', () => {
+  test(
+    'shows expandable step navigation at narrow viewport',
+    useBrowser(async browser => {
+      // Using simple page - expandable navigation is now default behavior at narrow viewports
+      await browser.url('/#/light/wizard/simple');
+      const page = new BasePageObject(browser);
+
+      // Set viewport to 320px (WCAG 1.4.10 requirement - simulates 400% zoom on 1280px viewport)
+      await page.setWindowSize({ width: 320, height: 800 });
+
+      // Wait for the wizard to render
+      await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
+
+      // Verify expandable navigation is visible at narrow viewport
+      await expect(page.isDisplayed(COLLAPSED_STEPS_SELECTOR)).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'expandable navigation shows current step information',
+    useBrowser(async browser => {
+      await browser.url('/#/light/wizard/simple');
+      const page = new BasePageObject(browser);
+
+      // Set viewport to narrow width
+      await page.setWindowSize({ width: 320, height: 800 });
+
+      // Wait for the wizard to render
+      await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
+
+      // Verify header shows step count (e.g., "Step 1 of 3")
+      const headerText = await page.getText(EXPANDABLE_HEADER_SELECTOR);
+      expect(headerText).toMatch(/Step \d+ of \d+/);
+    })
+  );
+
+  test(
+    'no horizontal scrolling at 320px viewport width',
+    useBrowser(async browser => {
+      await browser.url('/#/light/wizard/simple');
+      const page = new BasePageObject(browser);
+
+      // Set viewport to 320px (WCAG 1.4.10 requirement)
+      await page.setWindowSize({ width: 320, height: 800 });
+
+      // Wait for the wizard to render
+      await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
+
+      // Check that document doesn't cause horizontal scrolling
+      const documentWidth = await browser.execute(() => document.documentElement.scrollWidth);
+      expect(documentWidth).toBeLessThanOrEqual(320);
+    })
+  );
+});
