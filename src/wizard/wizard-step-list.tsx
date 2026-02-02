@@ -46,6 +46,10 @@ export function getStepStatus(
 }
 
 export function canSkip(fromIndex: number, toIndex: number, steps: ReadonlyArray<{ isOptional?: boolean }>): boolean {
+  // Can't skip if there are no steps to skip over
+  if (fromIndex >= toIndex) {
+    return false;
+  }
   for (let i = fromIndex; i < toIndex; i++) {
     if (!steps[i].isOptional) {
       return false;
