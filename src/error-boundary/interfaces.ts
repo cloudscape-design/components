@@ -3,7 +3,9 @@
 
 import { ErrorInfo } from 'react';
 
-export interface ErrorBoundaryProps {
+import { BaseComponentProps } from '../internal/base-component';
+
+export interface ErrorBoundaryProps extends BaseComponentProps {
   /**
    * Optional identifier for the error boundary instance.
    *
