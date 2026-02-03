@@ -98,17 +98,20 @@ describe('Wizard narrow viewport navigation', () => {
   test(
     'shows expandable step navigation at narrow viewport',
     useBrowser(async browser => {
-      await browser.url('/#/light/wizard/simple?visualRefresh=true');
       const page = new WizardPageObject(browser);
+      // Set narrow viewport first using page object with object syntax
       await page.setWindowSize({ width: 320, height: 600 });
+      await browser.url('/#/light/wizard/simple?visualRefresh=true');
       await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
 
-      // Expandable collapsed steps section should be visible at narrow viewport
-      const collapsedStepsSelector = wizardWrapper.findByClassName('collapsed-steps').toSelector();
-      await expect(page.isDisplayed(collapsedStepsSelector)).resolves.toBe(true);
+      // Collapsed steps container should exist at narrow viewport
+      // Note: Using attribute selector because CSS class names are hashed in the build output
+      // Using isExisting() because ExpandableSection header has screenreader-only styling when collapsed
+      const collapsedStepsSelector = `${wizardWrapper.toSelector()} [class*="collapsed-steps"]`;
+      await expect(page.isExisting(collapsedStepsSelector)).resolves.toBe(true);
 
-      // Sidebar navigation should be hidden
-      const navigationSelector = wizardWrapper.findByClassName('navigation').toSelector();
+      // Sidebar navigation should be hidden at narrow viewport
+      const navigationSelector = `${wizardWrapper.toSelector()} [class*="navigation"]`;
       await expect(page.isDisplayed(navigationSelector)).resolves.toBe(false);
     })
   );
