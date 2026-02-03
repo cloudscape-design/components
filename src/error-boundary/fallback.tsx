@@ -8,6 +8,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import InternalAlert from '../alert/internal';
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
 import { ErrorBoundaryProps } from './interfaces';
 import { refreshPage } from './utils';
 
@@ -17,7 +18,9 @@ import testUtilStyles from './test-classes/styles.css.js';
 export function ErrorBoundaryFallback({
   i18nStrings = {},
   renderFallback,
+  ...props
 }: Pick<ErrorBoundaryProps, 'renderFallback' | 'i18nStrings'>) {
+  const baseProps = getBaseProps(props);
   const defaultSlots = {
     header: (
       <div className={clsx(styles.header, testUtilStyles.header)}>
@@ -36,7 +39,7 @@ export function ErrorBoundaryFallback({
     ),
   };
   return (
-    <div className={testUtilStyles.fallback}>
+    <div {...baseProps} className={clsx(baseProps.className, testUtilStyles.fallback)}>
       {renderFallback?.(defaultSlots) ?? (
         <InternalAlert type="error" header={defaultSlots.header} action={defaultSlots.action}>
           {defaultSlots.description}

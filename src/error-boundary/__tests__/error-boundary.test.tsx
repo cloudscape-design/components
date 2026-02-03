@@ -17,7 +17,9 @@ jest.mock('../../../lib/components/error-boundary/utils', () => ({
 }));
 
 type RenderProps = Omit<
-  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> },
+  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> } & {
+    [key: `data-${string}`]: string;
+  },
   'children'
 >;
 
@@ -620,6 +622,23 @@ describe('default behaviors', () => {
     renderWithErrorBoundary(<b>{{}}</b>);
     findRefreshAction()!.click();
     expect(refreshPage).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('base props passing to fallback', () => {
+  test('class name is added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { className: 'test' });
+    expect(findBoundary()!.getElement()).toHaveClass('test');
+  });
+
+  test('data-attributes are added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'data-resource-guidance': 'off' });
+    expect(findBoundary()!.getElement().dataset.resourceGuidance).toBe('off');
+  });
+
+  test('other attributes are not added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'aria-label': 'label' } as any);
+    expect(findBoundary()!.getElement()).not.toHaveAttribute('aria-label');
   });
 });
 
