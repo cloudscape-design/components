@@ -119,6 +119,7 @@ function ChartPopover(
   return (
     <div
       {...baseProps}
+      role={!dismissButton ? 'tooltip' : undefined}
       className={clsx(popoverStyles.root, styles.root, baseProps.className)}
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
