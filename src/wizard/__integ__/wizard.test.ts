@@ -94,6 +94,26 @@ describe('Wizard keyboard navigation', () => {
   });
 });
 
+describe('Wizard narrow viewport navigation', () => {
+  test(
+    'shows expandable step navigation at narrow viewport',
+    useBrowser(async browser => {
+      await browser.url('/#/light/wizard/simple?visualRefresh=true');
+      const page = new WizardPageObject(browser);
+      await page.setWindowSize({ width: 320, height: 600 });
+      await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
+
+      // Expandable collapsed steps section should be visible at narrow viewport
+      const collapsedStepsSelector = wizardWrapper.findByClassName('collapsed-steps').toSelector();
+      await expect(page.isDisplayed(collapsedStepsSelector)).resolves.toBe(true);
+
+      // Sidebar navigation should be hidden
+      const navigationSelector = wizardWrapper.findByClassName('navigation').toSelector();
+      await expect(page.isDisplayed(navigationSelector)).resolves.toBe(false);
+    })
+  );
+});
+
 describe('Wizard scroll to top upon navigation', () => {
   test(
     'in window',

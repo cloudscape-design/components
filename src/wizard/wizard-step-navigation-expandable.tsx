@@ -27,7 +27,7 @@ export default function WizardStepNavigationExpandable({
   onSkipToClick,
   steps,
 }: WizardStepNavigationExpandableProps) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const collapsedStepsLabel = i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length);
   const headerAriaLabel = collapsedStepsLabel
     ? `${collapsedStepsLabel} - ${i18nStrings.navigationAriaLabel ?? 'Steps'}`
