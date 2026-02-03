@@ -132,6 +132,39 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(activeDrawerWrapper!.find('a')!.getElement()).toHaveAttribute('href', '/features-page');
   });
 
+  test('registers feature notifications correctly with no mountItem', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
+
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    const activeDrawerWrapper = wrapper.findActiveDrawer()!;
+    const featureItems = activeDrawerWrapper.findList()!.findItems()!;
+
+    expect(activeDrawerWrapper.getElement()).toBeTruthy();
+
+    // We expect 2 out of 3 features to be rendered since the default filter
+    // excludes features older than 90 days, leaving only 2 valid features
+    expect(featureItems).toHaveLength(2);
+
+    // Check content
+    expect(featureItems[0].findContent().getElement()).toHaveTextContent('New Feature 1 Header');
+    expect(featureItems[0].findSecondaryContent()!.getElement()).toHaveTextContent(
+      'This is the first new feature content'
+    );
+    expect(featureItems[0].findSecondaryContent()!.getElement()).toHaveTextContent('Category A');
+    expect(featureItems[0].findSecondaryContent()!.getElement()).toHaveTextContent('2025-01-15');
+
+    expect(featureItems[1].findContent().getElement()).toHaveTextContent('New Feature 2 Header');
+    expect(featureItems[1].findSecondaryContent()!.getElement()).toHaveTextContent(
+      'This is the second new feature content'
+    );
+    expect(featureItems[1].findSecondaryContent()!.getElement()).toHaveTextContent('2024-12-01');
+
+    expect(activeDrawerWrapper!.find('a')!.getElement()).toHaveAttribute('href', '/features-page');
+  });
+
   test('supports custom filterFeatures function', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({
       ...featureNotificationsDefaults,
