@@ -46,8 +46,15 @@ export function getStepStatus(
   if (farthestStepIndex >= index) {
     return StepStatusValues.Visited;
   }
-  if (allowSkipTo && canSkip(activeStepIndex + 1, index, steps)) {
-    return StepStatusValues.Next;
+  if (allowSkipTo && index > activeStepIndex) {
+    // Can we skip to this step? (all steps between current and this one are optional)
+    if (canSkip(activeStepIndex + 1, index, steps)) {
+      return StepStatusValues.Next;
+    }
+    // Immediate next step is also navigable if it's optional
+    if (index === activeStepIndex + 1 && steps[index]?.isOptional) {
+      return StepStatusValues.Next;
+    }
   }
   return StepStatusValues.Unvisited;
 }
