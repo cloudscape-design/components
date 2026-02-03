@@ -4,14 +4,17 @@ import React from 'react';
 
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import OptionComponent from '../internal/components/option';
+import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { getTestOptionIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 import SelectableItem from '../internal/components/selectable-item';
-import { AutosuggestItem } from './interfaces';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
 import styles from './styles.css.js';
 
 interface AutosuggestOptionProps extends BaseComponentProps {
+  index: number;
+  virtualIndex?: number;
   nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
   highlightText: string;
   option: AutosuggestItem;
@@ -23,10 +26,70 @@ interface AutosuggestOptionProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaSetsize?: number;
   ariaPosinset?: number;
+  renderOption?: AutosuggestProps.ItemRenderer;
+  parentProps?: AutosuggestRenderItemParentProps;
 }
+
+export interface AutosuggestRenderItemParentProps {
+  index: number;
+  virtualIndex?: number;
+  option: AutosuggestItem;
+  disabled: boolean;
+}
+
+const toAutosuggestOptionGroupItem = (
+  props: AutosuggestRenderItemParentProps
+): AutosuggestProps.OptionGroupRenderItem => {
+  return {
+    type: 'group',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionGroup,
+    disabled: props.disabled,
+  };
+};
+
+const toAutosuggestOptionItem = (props: {
+  index: number;
+  virtualIndex?: number;
+  option: AutosuggestItem;
+  disabled: boolean;
+  selected: boolean;
+  highlighted: boolean;
+  parentProps?: AutosuggestRenderItemParentProps;
+}): AutosuggestProps.OptionRenderItem => {
+  return {
+    type: 'item',
+    index: props.virtualIndex ?? props.index,
+    option: props.option.option as OptionDefinition,
+    selected: props.selected,
+    highlighted: props.highlighted,
+    disabled: props.disabled,
+    parent: props.parentProps
+      ? toAutosuggestOptionGroupItem({
+          index: props.parentProps.index,
+          virtualIndex: props.parentProps.virtualIndex,
+          option: props.parentProps.option,
+          disabled: props.disabled,
+        })
+      : null,
+  };
+};
+
+const toAutosuggestUseEnteredItem = (props: {
+  option: AutosuggestItem;
+  highlighted: boolean;
+}): AutosuggestProps.EnteredTextRenderItem => {
+  return {
+    type: 'entered-text',
+    option: props.option.option as OptionDefinition,
+    highlighted: props.highlighted,
+  };
+};
 
 const AutosuggestOption = (
   {
+    index,
+    virtualIndex,
     nativeAttributes = {},
     highlightText,
     option,
@@ -38,6 +101,8 @@ const AutosuggestOption = (
     screenReaderContent,
     ariaSetsize,
     ariaPosinset,
+    renderOption,
+    parentProps,
     ...rest
   }: AutosuggestOptionProps,
   ref: React.Ref<HTMLDivElement>
@@ -69,9 +134,45 @@ const AutosuggestOption = (
     );
   }
 
+  const getAutosuggestItemProps = (option: AutosuggestItem) => {
+    if (option.type === 'parent') {
+      return toAutosuggestOptionGroupItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!option.disabled,
+      });
+    } else if (option.type === 'use-entered') {
+      return toAutosuggestUseEnteredItem({
+        option: option,
+        highlighted: highlighted,
+      });
+    } else {
+      return toAutosuggestOptionItem({
+        option: option,
+        index: index,
+        virtualIndex: virtualIndex,
+        disabled: !!option.disabled,
+        highlighted: highlighted,
+        selected: current,
+        parentProps: parentProps,
+      });
+    }
+  };
+
+  const renderOptionWrapper = (option: AutosuggestItem) => {
+    if (!renderOption) {
+      return null;
+    }
+
+    return renderOption({ item: getAutosuggestItemProps(option), filterText: highlightText });
+  };
+  const renderResult = renderOptionWrapper(option);
+
   return (
     <SelectableItem
       {...baseProps}
+      disableContentStyling={!!renderResult}
       className={styles.option}
       ariaSelected={current}
       highlighted={highlighted}
@@ -91,7 +192,7 @@ const AutosuggestOption = (
       highlightType={highlightType.type}
       value={option.value}
     >
-      {optionContent}
+      {!renderResult ? optionContent : renderResult}
     </SelectableItem>
   );
 };

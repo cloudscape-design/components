@@ -680,6 +680,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_dm8gx",
     "awsui_token_dm8gx",
   ],
+  "tooltip": [
+    "awsui_root_1u26h",
+  ],
   "top-navigation": [
     "awsui_hidden_k5dlb",
     "awsui_identity_k5dlb",

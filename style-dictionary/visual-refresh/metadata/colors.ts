@@ -207,6 +207,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundProgressBarValueDefault: {
+    description: 'The default background color of the progress bar value.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundProgressBarDefault: {
+    description: 'The default background color of the progress bar.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundSegmentActive: {
     description: 'The background color of the active segment in a segmented control.',
     public: true,
