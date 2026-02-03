@@ -54,7 +54,10 @@ export default function TreeViewPermuations() {
         checked={urlParams.expandAll ?? false}
         onChange={event => {
           setUrlParams({ expandAll: event.detail.checked });
-          window.location.reload();
+          // Guard for SSR
+          if (typeof window !== 'undefined') {
+            window.location.reload();
+          }
         }}
       >
         Expand all

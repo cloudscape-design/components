@@ -17,13 +17,26 @@ interface ExtendedWindow extends Window {
 }
 declare const window: ExtendedWindow;
 const appendLog = (text: string) => {
+  // Guard for SSR
+  if (typeof window === 'undefined') {
+    return;
+  }
   if (!window.__eventsLog) {
     window.__eventsLog = [];
   }
   window.__eventsLog.push(text);
 };
-const clearLog = () => (window.__eventsLog = []);
-window.__clearEvents = clearLog;
+const clearLog = () => {
+  // Guard for SSR
+  if (typeof window === 'undefined') {
+    return;
+  }
+  window.__eventsLog = [];
+};
+// Guard for SSR - only set on client
+if (typeof window !== 'undefined') {
+  window.__clearEvents = clearLog;
+}
 
 export default function SelectEventsPage() {
   const [selectedOption, setValue] = useState<SelectProps['selectedOption']>(null);

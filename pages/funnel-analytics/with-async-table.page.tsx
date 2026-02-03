@@ -31,7 +31,10 @@ import {
 } from '../table/shared-configs';
 
 const componentMetricsLog: any[] = [];
-(window as any).__awsuiComponentlMetrics__ = componentMetricsLog;
+// Guard for SSR - only set on client
+if (typeof window !== 'undefined') {
+  (window as any).__awsuiComponentlMetrics__ = componentMetricsLog;
+}
 
 setComponentMetrics({
   componentMounted: props => {
