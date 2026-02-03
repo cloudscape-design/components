@@ -80,7 +80,7 @@ export default function CardPermutations() {
         </FormField>
       }
     >
-      <div style={{ width: parseInt(containerWidth), padding: 8 }}>
+      <div style={{ width: parseInt(containerWidth) }}>
         <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
       </div>
     </CardPage>
