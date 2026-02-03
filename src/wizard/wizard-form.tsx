@@ -45,6 +45,8 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onPrimaryClick: () => void;
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
+  isStepNavigationExpanded: boolean;
+  onStepNavigationExpandChange: (expanded: boolean) => void;
 }
 
 export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`;
@@ -91,6 +93,8 @@ function WizardForm({
   onPrimaryClick,
   onStepClick,
   onSkipToClick,
+  isStepNavigationExpanded,
+  onStepNavigationExpandChange,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
   const rootRef = useRef<HTMLElement>();
   const ref = useMergeRefs(rootRef, __internalRootRef);
@@ -142,6 +146,8 @@ function WizardForm({
     onStepClick,
     onSkipToClick,
     steps,
+    expanded: isStepNavigationExpanded,
+    onExpandChange: onStepNavigationExpandChange,
   };
 
   return (

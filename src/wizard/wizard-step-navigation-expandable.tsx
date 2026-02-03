@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import InternalExpandableSection from '../expandable-section/internal';
 import { WizardProps } from './interfaces';
@@ -15,6 +15,8 @@ interface WizardStepNavigationExpandableProps {
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
   steps: ReadonlyArray<WizardProps.Step>;
+  expanded: boolean;
+  onExpandChange: (expanded: boolean) => void;
 }
 
 export default function WizardStepNavigationExpandable({
@@ -26,8 +28,9 @@ export default function WizardStepNavigationExpandable({
   onStepClick,
   onSkipToClick,
   steps,
+  expanded,
+  onExpandChange,
 }: WizardStepNavigationExpandableProps) {
-  const [expanded, setExpanded] = useState(false);
   const collapsedStepsLabel = i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length);
   const headerAriaLabel = collapsedStepsLabel
     ? `${collapsedStepsLabel} - ${i18nStrings.navigationAriaLabel ?? 'Steps'}`
@@ -39,7 +42,7 @@ export default function WizardStepNavigationExpandable({
       headerText={collapsedStepsLabel}
       headerAriaLabel={headerAriaLabel}
       expanded={expanded}
-      onChange={({ detail }) => setExpanded(detail.expanded)}
+      onChange={({ detail }) => onExpandChange(detail.expanded)}
     >
       <nav aria-label={i18nStrings.navigationAriaLabel}>
         <WizardStepList

@@ -303,90 +303,43 @@
   justify-content: flex-end;
 }
 
-/* Expandable step navigation styles */
-.expandable-step-list {
-  list-style: none;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block-start: awsui.$space-s;
-  padding-block-end: 0;
-  padding-inline: 0;
-}
-
+/* Expandable step navigation styles - base classes first for stylelint no-descending-specificity */
 .expandable-step-item {
-  display: grid;
-  grid-template-columns: awsui.$space-l 1fr;
-  column-gap: awsui.$space-xs;
-  padding-block: 0;
-  padding-inline: 0;
-}
-
-.expandable-step-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  grid-column: 1;
-  grid-row: 1 / span 2;
-}
-
-.expandable-step-circle {
-  flex-shrink: 0;
-  inline-size: 12px;
-  block-size: 12px;
-  margin-block-start: 4px;
-  border-start-start-radius: 50%;
-  border-start-end-radius: 50%;
-  border-end-start-radius: 50%;
-  border-end-end-radius: 50%;
-  box-sizing: border-box;
-}
-
-.expandable-step-circle-active {
-  background-color: awsui.$color-background-control-checked;
-  box-shadow:
-    0 0 0 3px awsui.$color-background-container-content,
-    0 0 0 5px awsui.$color-background-control-checked;
-}
-
-.expandable-step-circle-visited {
-  background-color: awsui.$color-text-interactive-default;
-  border-block: 2px solid awsui.$color-text-interactive-default;
-  border-inline: 2px solid awsui.$color-text-interactive-default;
-}
-
-.expandable-step-circle-next {
-  background-color: awsui.$color-text-interactive-default;
-  border-block: 2px solid awsui.$color-text-interactive-default;
-  border-inline: 2px solid awsui.$color-text-interactive-default;
-}
-
-.expandable-step-circle-unvisited {
-  background-color: awsui.$color-background-container-content;
-  border-block: 2px solid awsui.$color-text-interactive-disabled;
-  border-inline: 2px solid awsui.$color-text-interactive-disabled;
-}
-
-.expandable-step-line {
-  flex-grow: 1;
-  inline-size: 2px;
-  min-block-size: awsui.$space-m;
-  background-color: awsui.$color-border-divider-default;
-  margin-block: awsui.$space-xxs;
-}
-
-.expandable-step-content {
-  display: flex;
-  flex-direction: column;
-  grid-column: 2;
-  padding-block-end: awsui.$space-xs;
+  /* used in test-utils */
 }
 
 .expandable-step-label {
   font-size: awsui.$font-size-body-s;
   color: awsui.$color-text-small;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.expandable-step-link {
+  align-items: start;
+  column-gap: awsui.$space-xs;
+  display: grid;
+  font-size: awsui.$font-size-body-m;
+  grid-column: 1 / span 2;
+  grid-row: 2;
+  grid-template-columns: awsui.$space-l 1fr;
+}
+
+.expandable-step-circle {
+  border-start-start-radius: 100%;
+  border-start-end-radius: 100%;
+  border-end-start-radius: 100%;
+  border-end-end-radius: 100%;
+  grid-column: 1;
+  block-size: 10px;
+  justify-self: center;
+  margin-block-start: 6px;
+  inline-size: 10px;
 }
 
 .expandable-step-title {
+  @include styles.text-wrapping;
+  grid-column: 2;
   font-size: awsui.$font-size-body-m;
 }
 
@@ -405,10 +358,10 @@
   cursor: pointer;
   text-align: start;
   font-size: inherit;
-  color: awsui.$color-text-body-default;
+  color: awsui.$color-text-interactive-default;
 
   &:hover {
-    text-decoration: underline;
+    color: awsui.$color-background-control-checked;
   }
 
   @include focus-visible.when-visible {
@@ -418,4 +371,86 @@
 
 .expandable-step-title-unvisited {
   color: awsui.$color-text-status-inactive;
+}
+
+/* Expandable step list - ul/li structure with state overrides */
+.expandable-step-list {
+  list-style: none;
+  position: relative;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block-start: awsui.$space-scaled-xxs;
+  padding-block-end: 0;
+  padding-inline: 0;
+  box-sizing: border-box;
+
+  /* stylelint-disable selector-max-type, no-descending-specificity */
+  > li {
+    display: grid;
+    column-gap: awsui.$space-xs;
+    grid-template-columns: awsui.$space-l 1fr;
+    grid-template-rows: repeat(2, auto);
+    padding-block: 0;
+    padding-inline: 0;
+
+    > hr {
+      background-color: awsui.$color-border-divider-default;
+      border-block: 0;
+      border-inline: 0;
+      grid-column: 1;
+      block-size: 100%;
+      inline-size: awsui.$space-xxxs;
+    }
+  }
+
+  > li:first-child > hr {
+    grid-row: 2 / span 2;
+  }
+
+  > li:not(:first-child) > .expandable-step-label {
+    margin-block-start: awsui.$space-m;
+  }
+
+  > li:last-child > hr {
+    grid-row: 1;
+  }
+
+  > li:only-of-type > hr {
+    display: none;
+  }
+
+  > li:not(:first-child):not(:last-child) > hr {
+    grid-row: 1 / span 3;
+  }
+
+  > li.expandable-step-active > .expandable-step-link {
+    cursor: text;
+  }
+
+  > li.expandable-step-active > .expandable-step-link > .expandable-step-circle {
+    background-color: awsui.$color-background-control-checked;
+    box-shadow:
+      0 0 0 3px awsui.$color-background-container-content,
+      0 0 0 5px awsui.$color-background-control-checked,
+      0 0 0 7px awsui.$color-background-container-content;
+  }
+
+  > li.expandable-step-disabled > .expandable-step-link {
+    cursor: text;
+  }
+
+  > li.expandable-step-disabled > .expandable-step-link > .expandable-step-circle {
+    background-color: awsui.$color-background-container-content;
+    box-shadow:
+      0 0 0 2px awsui.$color-text-interactive-disabled,
+      0 0 0 4px awsui.$color-background-container-content;
+  }
+
+  > li.expandable-step-enabled > .expandable-step-link > .expandable-step-circle {
+    background-color: awsui.$color-text-interactive-default;
+    box-shadow:
+      0 0 0 2px awsui.$color-text-interactive-default,
+      0 0 0 4px awsui.$color-background-container-content;
+  }
+  /* stylelint-enable selector-max-type, no-descending-specificity */
 }

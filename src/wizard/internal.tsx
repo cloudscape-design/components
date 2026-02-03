@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -72,6 +72,8 @@ export default function InternalWizard({
 
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
+
+  const [isStepNavigationExpanded, setIsStepNavigationExpanded] = useState(false);
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
@@ -211,6 +213,8 @@ export default function InternalWizard({
             onStepClick={onStepClick}
             onSkipToClick={onSkipToClick}
             onPrimaryClick={onPrimaryClick}
+            isStepNavigationExpanded={isStepNavigationExpanded}
+            onStepNavigationExpandChange={setIsStepNavigationExpanded}
           />
         </div>
       </div>

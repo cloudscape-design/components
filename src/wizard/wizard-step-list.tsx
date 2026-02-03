@@ -95,29 +95,35 @@ export default function WizardStepList({
   onSkipToClick,
   steps,
 }: WizardStepListProps) {
+  const stateMap: Record<StepStatus, string> = {
+    [StepStatusValues.Active]: 'active',
+    [StepStatusValues.Unvisited]: 'disabled',
+    [StepStatusValues.Visited]: 'enabled',
+    [StepStatusValues.Next]: 'enabled',
+  };
+
   return (
-    <ul className={styles['expandable-step-list']} role="list">
+    <ul className={styles['expandable-step-list']}>
       {steps.map((step, index) => {
         const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
         const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
         const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
         const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
         const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
+        const state = stateMap[status];
 
         return (
-          <li key={index} className={clsx(styles['expandable-step-item'])}>
-            <div className={styles['expandable-step-indicator']}>
-              <div
-                className={clsx(styles['expandable-step-circle'], styles[`expandable-step-circle-${status}`])}
-                aria-hidden="true"
-              />
-              {index < steps.length - 1 && <div className={styles['expandable-step-line']} aria-hidden="true" />}
-            </div>
-            <div className={styles['expandable-step-content']}>
-              <span className={styles['expandable-step-label']}>
-                {i18nStrings.stepNumberLabel?.(index + 1)}
-                {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-              </span>
+          <li key={index} className={clsx(styles['expandable-step-item'], styles[`expandable-step-${state}`])}>
+            <hr />
+
+            <span className={styles['expandable-step-label']}>
+              {i18nStrings.stepNumberLabel?.(index + 1)}
+              {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+            </span>
+
+            <div className={styles['expandable-step-link']}>
+              <div className={styles['expandable-step-circle']} aria-hidden="true" />
+
               {status === StepStatusValues.Active ? (
                 <span
                   className={clsx(styles['expandable-step-title'], styles['expandable-step-title-active'])}
