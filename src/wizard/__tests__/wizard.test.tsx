@@ -8,6 +8,7 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
+import { handleStepNavigation, StepStatusValues } from '../../../lib/components/wizard/wizard-step-list';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
@@ -616,6 +617,24 @@ describe('Custom primary actions', () => {
     expect(wrapper.findPrimaryButton()).not.toBeNull();
     expect(wrapper.findCancelButton()).not.toBeNull();
     expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
+  });
+});
+
+describe('handleStepNavigation', () => {
+  test('calls onStepClick for visited steps', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    handleStepNavigation(2, StepStatusValues.Visited, onStepClick, onSkipToClick);
+    expect(onStepClick).toHaveBeenCalledWith(2);
+    expect(onSkipToClick).not.toHaveBeenCalled();
+  });
+
+  test('calls onSkipToClick for next steps', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    handleStepNavigation(3, StepStatusValues.Next, onStepClick, onSkipToClick);
+    expect(onSkipToClick).toHaveBeenCalledWith(3);
+    expect(onStepClick).not.toHaveBeenCalled();
   });
 });
 
