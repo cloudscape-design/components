@@ -8,7 +8,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import InternalLink from '../link/internal';
 import { getNavigationActionDetail } from './analytics-metadata/utils';
 import { WizardProps } from './interfaces';
-import { getStepStatus, StepStatus, StepStatusValues } from './wizard-step-list';
+import { getStepStatus, handleStepNavigation, StepStatus, StepStatusValues } from './wizard-step-list';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -96,14 +96,7 @@ function NavigationStepVisualRefresh({
   status,
   step,
 }: NavigationStepProps) {
-  function handleStepInteraction() {
-    if (status === StepStatusValues.Visited) {
-      onStepClick(index);
-    }
-    if (status === StepStatusValues.Next) {
-      onSkipToClick(index);
-    }
-  }
+  const handleStepInteraction = () => handleStepNavigation(index, status, onStepClick, onSkipToClick);
 
   const stateMap: Record<StepStatus, string> = {
     [StepStatusValues.Active]: 'active',
