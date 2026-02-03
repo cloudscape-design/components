@@ -95,13 +95,6 @@ export default function WizardStepList({
   onSkipToClick,
   steps,
 }: WizardStepListProps) {
-  const stateMap: Record<StepStatus, string> = {
-    [StepStatusValues.Active]: 'active',
-    [StepStatusValues.Unvisited]: 'disabled',
-    [StepStatusValues.Visited]: 'enabled',
-    [StepStatusValues.Next]: 'enabled',
-  };
-
   return (
     <ul className={styles['expandable-step-list']}>
       {steps.map((step, index) => {
@@ -110,7 +103,12 @@ export default function WizardStepList({
         const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
         const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
         const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
-        const state = stateMap[status];
+        const state = {
+          active: 'active',
+          unvisited: 'disabled',
+          visited: 'enabled',
+          next: 'enabled',
+        }[status];
 
         return (
           <li key={index} className={clsx(styles['expandable-step-item'], styles[`expandable-step-${state}`])}>
