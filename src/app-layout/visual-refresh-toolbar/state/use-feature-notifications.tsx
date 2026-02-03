@@ -134,6 +134,8 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
             featurePromptRef.current?.show();
           }
           awsuiPlugins.appLayout.updateDrawer({ id: payload.id, badge: true });
+        } else {
+          setMarkAllAsRead(true);
         }
       });
       return;
@@ -166,22 +168,16 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
 
   function renderLatestFeaturePrompt({ triggerRef }: RenderLatestFeaturePromptProps) {
     const latestFeature = getLatestUnseenFeature();
-    if (!(triggerRef && featureNotificationsData && latestFeature)) {
+    if (!(triggerRef?.current && featureNotificationsData && latestFeature)) {
       return null;
     }
     return (
       <FeaturePrompt
         ref={featurePromptRef}
         onShow={() => {
-          if (!triggerRef.current) {
-            return;
-          }
           triggerRef.current!.dataset!.awsuiSuppressTooltip = 'true';
         }}
         onDismiss={() => {
-          if (!triggerRef.current) {
-            return;
-          }
           triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
           setFeaturePromptDismissed(true);
         }}
