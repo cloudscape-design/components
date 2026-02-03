@@ -44,6 +44,7 @@ export interface OptionsListProps extends BaseComponentProps {
   decreaseBlockMargin?: boolean;
   embedded?: boolean;
   stickyItemBlockSize?: number | null;
+  isMultiSelect?: boolean;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -78,6 +79,7 @@ const OptionsList = (
     ariaDescribedby,
     embedded,
     stickyItemBlockSize,
+    isMultiSelect,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLDivElement>
@@ -127,6 +129,7 @@ const OptionsList = (
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
+      aria-multiselectable={role === 'listbox' && isMultiSelect ? true : undefined}
     >
       {open && children}
     </Tag>
