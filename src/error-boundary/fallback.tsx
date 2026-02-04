@@ -10,7 +10,7 @@ import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { ErrorBoundaryProps } from './interfaces';
-import { refreshPage } from './utils';
+import { canUseRefresh, refreshPage } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -32,11 +32,11 @@ export function ErrorBoundaryFallback({
         <DefaultDescriptionContent i18nStrings={i18nStrings} />
       </div>
     ),
-    action: (
+    action: canUseRefresh() ? (
       <div className={clsx(styles.action, testUtilStyles.action)}>
         <DefaultActionContent i18nStrings={i18nStrings} />
       </div>
-    ),
+    ) : null,
   };
   return (
     <div {...baseProps} className={clsx(baseProps.className, testUtilStyles.fallback)}>
