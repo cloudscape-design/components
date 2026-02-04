@@ -43,23 +43,6 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
 }
 
 /**
- * Width constraint that can be a pixel value or reference the trigger width
- */
-export type DropdownWidthConstraint = number | 'trigger';
-
-/**
- * Height constraint in pixels
- */
-export type DropdownHeightConstraint = number;
-
-/**
- * Preferred alignment of the dropdown relative to its trigger.
- * The dropdown will attempt this alignment first, but will automatically
- * adjust if there's insufficient space on the preferred side.
- */
-export type DropdownAlignment = 'start' | 'center' | 'end';
-
-/**
  * Props for the exposed Dropdown component
  */
 export interface DropdownProps extends ExpandToViewport {
@@ -74,9 +57,11 @@ export interface DropdownProps extends ExpandToViewport {
   open?: boolean;
 
   /**
-   * Called when the dropdown should be closed (e.g., outside click, escape key)
+   * Called when the user clicks outside the dropdown. The dropdown does not close
+   * automatically - the parent component must update the `open` prop to actually
+   * close the dropdown.
    */
-  onClose?: NonCancelableEventHandler<null>;
+  onDismiss?: NonCancelableEventHandler<null>;
 
   /**
    * Main content of the dropdown
@@ -102,7 +87,7 @@ export interface DropdownProps extends ExpandToViewport {
    * - 'trigger': dropdown will be at least as wide as the trigger
    * @defaultValue 'trigger'
    */
-  minWidth?: DropdownWidthConstraint;
+  minWidth?: DropdownProps.DropdownWidthConstraint;
 
   /**
    * Maximum width constraint for the dropdown.
@@ -111,7 +96,7 @@ export interface DropdownProps extends ExpandToViewport {
    *
    * If not specified, dropdown can grow up to 465px by default.
    */
-  maxWidth?: DropdownWidthConstraint;
+  maxWidth?: DropdownProps.DropdownWidthConstraint;
 
   /**
    * Preferred alignment of the dropdown relative to its trigger.
@@ -119,7 +104,7 @@ export interface DropdownProps extends ExpandToViewport {
    * adjust if there's insufficient space on the preferred side.
    * @defaultValue 'start'
    */
-  alignment?: DropdownAlignment;
+  preferredAlignment?: DropdownProps.DropdownAlignment;
 
   /**
    * ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')
@@ -144,13 +129,6 @@ export interface DropdownProps extends ExpandToViewport {
   ariaDescribedby?: string;
 
   /**
-   * Whether focus should loop between trigger and dropdown content.
-   * Creates a focus trap for accessibility when enabled.
-   * @defaultValue true when expandToViewport=true, false otherwise
-   */
-  loopFocus?: boolean;
-
-  /**
    * Called when any element inside the dropdown content gains focus.
    * This includes nested interactive elements like buttons, links, or inputs.
    */
@@ -166,6 +144,20 @@ export interface DropdownProps extends ExpandToViewport {
    * Use when dropdown content changes dynamically.
    */
   contentKey?: string;
+}
+
+export namespace DropdownProps {
+  /**
+   * Width constraint that can be a pixel value or reference the trigger width
+   */
+  export type DropdownWidthConstraint = number | 'trigger';
+
+  /**
+   * Preferred alignment of the dropdown relative to its trigger.
+   * The dropdown will attempt this alignment first, but will automatically
+   * adjust if there's insufficient space on the preferred side.
+   */
+  export type DropdownAlignment = 'start' | 'center';
 }
 
 export interface ExpandToViewport {

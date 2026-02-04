@@ -16,14 +16,13 @@ const Dropdown = ({
   content,
   trigger,
   open,
-  onClose,
+  onDismiss,
   header,
   footer,
   minWidth = 'trigger',
   maxWidth,
-  alignment = 'start',
+  preferredAlignment: alignment = 'start',
   expandToViewport = false,
-  loopFocus,
   onFocusIn,
   onFocusOut,
   contentKey,
@@ -38,7 +37,7 @@ const Dropdown = ({
       expandToViewport,
       minWidth,
       maxWidth,
-      alignment,
+      preferredAlignment: alignment,
     },
   });
 
@@ -66,9 +65,6 @@ const Dropdown = ({
 
   // Translate alignment to internal preferCenter prop
   const preferCenter = alignment === 'center';
-
-  // Set default loopFocus based on expandToViewport if not explicitly provided
-  const effectiveLoopFocus = loopFocus ?? expandToViewport;
 
   // Wrap content with width constraints
   const hasNumericMinWidth = typeof minWidth === 'number';
@@ -102,7 +98,7 @@ const Dropdown = ({
         {...baseComponentProps}
         trigger={trigger}
         open={open}
-        onDropdownClose={onClose}
+        onDropdownClose={onDismiss}
         header={header}
         footer={footer}
         stretchTriggerHeight={false}
@@ -112,7 +108,7 @@ const Dropdown = ({
         expandToViewport={expandToViewport}
         preferCenter={preferCenter}
         scrollable={true}
-        loopFocus={effectiveLoopFocus}
+        loopFocus={false}
         onFocus={onFocusIn}
         onBlur={onFocusOut}
         contentKey={contentKey}

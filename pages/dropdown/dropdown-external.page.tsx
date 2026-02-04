@@ -17,17 +17,9 @@ export default function DropdownExternalPage() {
   const [open4, setOpen4] = useState(false);
   const [open5, setOpen5] = useState(false);
   const [open6, setOpen6] = useState(false);
-  const [open8, setOpen8] = useState(false);
   const [open9, setOpen9] = useState(false);
   const [open10, setOpen10] = useState(false);
-  const [open11, setOpen11] = useState(false);
   const [open12, setOpen12] = useState(false);
-  const [focusEvents, setFocusEvents] = useState<string[]>([]);
-  const [closeCount, setCloseCount] = useState(0);
-
-  const addFocusEvent = (event: string) => {
-    setFocusEvents(prev => [...prev.slice(-4), event]);
-  };
 
   const sampleContent = (
     <ul className={styles['list-container']}>
@@ -55,9 +47,11 @@ export default function DropdownExternalPage() {
               <h3>minWidth: trigger (default)</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="dialog"
+                  ariaLabel="Width constraint information"
                   trigger={<Button onClick={() => setOpen1(!open1)}>Short</Button>}
                   open={open1}
-                  onClose={() => setOpen1(false)}
+                  onDismiss={() => setOpen1(false)}
                   content={
                     <div style={{ padding: '12px' }}>
                       This dropdown is at least as wide as the trigger button, but can grow wider if content needs it.
@@ -72,9 +66,11 @@ export default function DropdownExternalPage() {
               <h3>minWidth: 300</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="dialog"
+                  ariaLabel="Minimum width example"
                   trigger={<Button onClick={() => setOpen2(!open2)}>Trigger</Button>}
                   open={open2}
-                  onClose={() => setOpen2(false)}
+                  onDismiss={() => setOpen2(false)}
                   minWidth={300}
                   content={<div style={{ padding: '12px' }}>minWidth is 300.</div>}
                 />
@@ -85,9 +81,11 @@ export default function DropdownExternalPage() {
               <h3>maxWidth: trigger</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="dialog"
+                  ariaLabel="Maximum width example"
                   trigger={<Button onClick={() => setOpen3(!open3)}>This is a long trigger</Button>}
                   open={open3}
-                  onClose={() => setOpen3(false)}
+                  onDismiss={() => setOpen3(false)}
                   maxWidth="trigger"
                   content={
                     <div style={{ padding: '12px' }}>
@@ -102,9 +100,11 @@ export default function DropdownExternalPage() {
               <h3>minWidth: 200, maxWidth: 400</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="dialog"
+                  ariaLabel="Combined width constraints example"
                   trigger={<Button onClick={() => setOpen4(!open4)}>Combined</Button>}
                   open={open4}
-                  onClose={() => setOpen4(false)}
+                  onDismiss={() => setOpen4(false)}
                   minWidth={200}
                   maxWidth={400}
                   content={<div style={{ padding: '12px' }}>Width constrained between 200px and 400px.</div>}
@@ -123,10 +123,12 @@ export default function DropdownExternalPage() {
               <h3 style={{ marginBottom: '12px' }}>alignment: start (default)</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="menu"
+                  ariaLabel="Start aligned menu"
                   trigger={<Button onClick={() => setOpen5(!open5)}>Start Aligned</Button>}
                   open={open5}
-                  onClose={() => setOpen5(false)}
-                  alignment="start"
+                  onDismiss={() => setOpen5(false)}
+                  preferredAlignment="start"
                   content={sampleContent}
                   minWidth={300}
                 />
@@ -137,66 +139,18 @@ export default function DropdownExternalPage() {
               <h3 style={{ marginBottom: '12px' }}>alignment: center</h3>
               <div style={{ display: 'inline-block' }}>
                 <Dropdown
+                  role="menu"
+                  ariaLabel="Center aligned menu"
                   trigger={<Button onClick={() => setOpen6(!open6)}>Center Aligned</Button>}
                   open={open6}
-                  onClose={() => setOpen6(false)}
-                  alignment="center"
+                  onDismiss={() => setOpen6(false)}
+                  preferredAlignment="center"
                   content={sampleContent}
                   minWidth={300}
                 />
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Event Handlers */}
-        <section>
-          <h2>Event Handlers</h2>
-          <Box>
-            <h3>onClose, onFocusIn, onFocusOut</h3>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
-              <div style={{ display: 'inline-block' }}>
-                <Dropdown
-                  trigger={<Button onClick={() => setOpen8(!open8)}>Dropdown with Events</Button>}
-                  open={open8}
-                  onClose={() => {
-                    setOpen8(false);
-                    setCloseCount(prev => prev + 1);
-                  }}
-                  onFocusIn={event => {
-                    addFocusEvent(`Focus IN: ${(event.detail.target as HTMLElement).tagName}`);
-                  }}
-                  onFocusOut={event => {
-                    addFocusEvent(`Focus OUT: ${(event.detail.target as HTMLElement).tagName}`);
-                  }}
-                  content={
-                    <div style={{ padding: '12px' }}>
-                      <SpaceBetween size="s">
-                        <input type="text" placeholder="Focusable input" />
-                        <Button>Focusable button</Button>
-                        <a href="#" onClick={e => e.preventDefault()}>
-                          Focusable link
-                        </a>
-                      </SpaceBetween>
-                    </div>
-                  }
-                />
-              </div>
-              <Box variant="awsui-key-label">
-                <div>
-                  <strong>Close count:</strong> {closeCount}
-                </div>
-                <div style={{ marginTop: '8px' }}>
-                  <strong>Recent focus events:</strong>
-                  <ul style={{ margin: '4px 0', paddingLeft: '20px' }}>
-                    {focusEvents.map((event, i) => (
-                      <li key={i}>{event}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Box>
-            </div>
-          </Box>
         </section>
 
         {/* Header and Footer */}
@@ -206,9 +160,11 @@ export default function DropdownExternalPage() {
             <h3>Dropdown with fixed header and footer (scrollable content)</h3>
             <div style={{ display: 'inline-block' }}>
               <Dropdown
+                role="listbox"
+                ariaLabel="Scrollable list with header and footer"
                 trigger={<Button onClick={() => setOpen9(!open9)}>With Header & Footer</Button>}
                 open={open9}
-                onClose={() => setOpen9(false)}
+                onDismiss={() => setOpen9(false)}
                 header={
                   <div style={{ padding: '12px', borderBottom: '1px solid #ccc', fontWeight: 'bold' }}>
                     Fixed Header - Always Visible
@@ -243,9 +199,11 @@ export default function DropdownExternalPage() {
               <div style={{ border: '1px solid #ccc', padding: '12px', maxHeight: '200px', overflow: 'auto' }}>
                 <div style={{ height: '100px' }}>Scroll down...</div>
                 <Dropdown
+                  role="menu"
+                  ariaLabel="Viewport expanded menu"
                   trigger={<Button onClick={() => setOpen10(!open10)}>Expands to Viewport</Button>}
                   open={open10}
-                  onClose={() => setOpen10(false)}
+                  onDismiss={() => setOpen10(false)}
                   expandToViewport={true}
                   content={sampleContent}
                   maxWidth={'trigger'}
@@ -255,33 +213,15 @@ export default function DropdownExternalPage() {
             </Box>
 
             <Box>
-              <h3>loopFocus: true</h3>
-              <p style={{ fontSize: '12px', color: '#666' }}>Focus loops between trigger and dropdown content</p>
-              <Dropdown
-                trigger={<Button onClick={() => setOpen11(!open11)}>Focus Loop Enabled</Button>}
-                open={open11}
-                onClose={() => setOpen11(false)}
-                loopFocus={true}
-                content={
-                  <div style={{ padding: '12px' }}>
-                    <SpaceBetween size="s">
-                      <input type="text" placeholder="First input" />
-                      <input type="text" placeholder="Second input" />
-                      <Button>Focus will loop back to trigger after this</Button>
-                    </SpaceBetween>
-                  </div>
-                }
-              />
-            </Box>
-
-            <Box>
               <h3>Auto-close on blur</h3>
               <p style={{ fontSize: '12px', color: '#666' }}>Closes automatically when focus moves outside</p>
               <div>
                 <Dropdown
+                  role="dialog"
+                  ariaLabel="Auto-close form dialog"
                   trigger={<Button onClick={() => setOpen12(!open12)}>Auto-close Dropdown</Button>}
                   open={open12}
-                  onClose={() => setOpen12(false)}
+                  onDismiss={() => setOpen12(false)}
                   onFocusOut={() => setOpen12(false)}
                   content={
                     <div style={{ padding: '12px' }}>
