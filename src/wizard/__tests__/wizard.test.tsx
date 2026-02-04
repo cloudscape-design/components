@@ -67,7 +67,9 @@ describe('i18nStrings', () => {
         i18nStrings.navigationAriaLabel
       );
 
-      wrapper.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
+      // Only test labels from the desktop navigation (not the expandable collapsed-steps navigation)
+      const desktopNav = wrapper.findByClassName(styles.navigation);
+      desktopNav!.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
         const expectedTitle = i18nStrings.stepNumberLabel!(index + 1);
         const expectedLabel = DEFAULT_STEPS[index].isOptional
           ? `${expectedTitle} - ${i18nStrings.optional}`
