@@ -99,19 +99,18 @@ describe('External Dropdown Component', () => {
         />
       );
       const contentParent = screen.getByTestId('content').parentElement;
-      expect(contentParent).toHaveStyle({ minWidth: '200px', maxWidth: '500px' });
+      expect(contentParent).toHaveStyle({ minInlineSize: '200px', maxInlineSize: '500px' });
     });
 
-    test('accepts "trigger" as minWidth', () => {
+    test('accepts "trigger" as minWidth and maxWidth', () => {
       const { wrapper } = renderDropdown(
-        <Dropdown trigger={<button>Open</button>} open={true} minWidth="trigger" content={<div>Content</div>} />
-      );
-      expect(wrapper.findContent()).toBeTruthy();
-    });
-
-    test('accepts "trigger" as maxWidth', () => {
-      const { wrapper } = renderDropdown(
-        <Dropdown trigger={<button>Open</button>} open={true} maxWidth="trigger" content={<div>Content</div>} />
+        <Dropdown
+          trigger={<button>Open</button>}
+          open={true}
+          minWidth="trigger"
+          maxWidth="trigger"
+          content={<div>Content</div>}
+        />
       );
       expect(wrapper.findContent()).toBeTruthy();
     });
