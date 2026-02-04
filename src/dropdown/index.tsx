@@ -10,6 +10,8 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { DropdownProps } from './interfaces';
 import InternalDropdown from './internal';
 
+import styles from './styles.css.js';
+
 export { DropdownProps } from './interfaces';
 
 const Dropdown = ({
@@ -73,9 +75,9 @@ const Dropdown = ({
     hasNumericMinWidth || hasNumericMaxWidth ? (
       <div
         style={{
-          width: '100%',
-          ...(hasNumericMinWidth && { minWidth: `${minWidth}px` }),
-          ...(hasNumericMaxWidth && { maxWidth: `${maxWidth}px` }),
+          inlineSize: '100%',
+          ...(hasNumericMinWidth && { minInlineSize: `${minWidth}px` }),
+          ...(hasNumericMaxWidth && { maxInlineSize: `${maxWidth}px` }),
         }}
       >
         {content}
@@ -99,8 +101,8 @@ const Dropdown = ({
         trigger={trigger}
         open={open}
         onDropdownClose={onDismiss}
-        header={header}
-        footer={footer}
+        header={header && <div className={styles['dropdown-header']}>{header}</div>}
+        footer={footer && <div className={styles['dropdown-footer']}>{footer}</div>}
         stretchTriggerHeight={false}
         stretchHeight={false}
         {...internalMinWidthProps}

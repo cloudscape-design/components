@@ -11531,7 +11531,15 @@ exports[`Components definition for dropdown matches the snapshot: dropdown 1`] =
   "events": [
     {
       "cancelable": false,
-      "description": "Called when focus leaves the trigger or dropdown content.",
+      "description": "Called when the user clicks outside the dropdown. The dropdown does not close
+automatically - the parent component must update the \`open\` prop to actually
+close the dropdown.",
+      "name": "onDismiss",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when any element inside the dropdown content gains focus.
+This includes nested interactive elements like buttons, links, or inputs.",
       "detailInlineType": {
         "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
         "properties": [
@@ -11565,16 +11573,11 @@ exports[`Components definition for dropdown matches the snapshot: dropdown 1`] =
         "type": "object",
       },
       "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-      "name": "onBlur",
+      "name": "onFocusIn",
     },
     {
       "cancelable": false,
-      "description": "Called when a user clicks outside of the dropdown content, when it is open.",
-      "name": "onDropdownClose",
-    },
-    {
-      "cancelable": false,
-      "description": "Called when focus enters the trigger or dropdown content.",
+      "description": "Called when focus leaves the dropdown content entirely.",
       "detailInlineType": {
         "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
         "properties": [
@@ -11608,45 +11611,36 @@ exports[`Components definition for dropdown matches the snapshot: dropdown 1`] =
         "type": "object",
       },
       "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-      "name": "onFocus",
+      "name": "onFocusOut",
     },
   ],
   "functions": [],
   "name": "Dropdown",
   "properties": [
     {
-      "description": "Describedby for the dropdown (recommended when role="dialog")",
+      "description": "ARIA describedby attribute for the dropdown content",
       "name": "ariaDescribedby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "Labelledby for the dropdown (required when role="dialog")",
+      "description": "ARIA label for the dropdown content.
+Use either this or ariaLabelledby, not both.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "ARIA labelledby attribute for the dropdown content.
+Use either this or ariaLabel, not both.",
       "name": "ariaLabelledby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "Updating content key triggers dropdown position re-evaluation.",
+      "description": "Key that forces dropdown position recalculation when changed.
+Use when dropdown content changes dynamically.",
       "name": "contentKey",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "ID for the dropdown content wrapper",
-      "name": "dropdownContentId",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "HTML role for the dropdown content wrapper",
-      "name": "dropdownContentRole",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Dropdown id",
-      "name": "dropdownId",
       "optional": true,
       "type": "string",
     },
@@ -11660,105 +11654,100 @@ Set this property if the dropdown would otherwise be constrained by a scrollable
 for example inside table and split view layouts.
 
 We recommend you use discretion, and don't enable this property unless necessary
-because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+
+Note: When expandToViewport is enabled, the dropdown width is determined by its content
+rather than the minWidth/maxWidth constraints. Use this property primarily for positioning,
+not for width control.",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
     },
     {
-      "defaultValue": "false",
-      "description": "Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).",
-      "name": "interior",
+      "description": "Maximum width constraint for the dropdown.
+- Number: maximum width in pixels
+- 'trigger': dropdown cannot exceed the trigger width
+
+If not specified, dropdown can grow up to 465px by default.",
+      "inlineType": {
+        "name": "DropdownProps.DropdownWidthConstraint",
+        "type": "union",
+        "values": [
+          "number",
+          ""trigger"",
+        ],
+      },
+      "name": "maxWidth",
       "optional": true,
-      "type": "boolean",
+      "type": "DropdownProps.DropdownWidthConstraint",
     },
     {
-      "description": "Whether the dropdown will have a focus loop including trigger, header, content and footer.",
-      "name": "loopFocus",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Sets the min width of the dropdown (in px)",
+      "defaultValue": "'trigger'",
+      "description": "Minimum width constraint for the dropdown.
+- Number: minimum width in pixels
+- 'trigger': dropdown will be at least as wide as the trigger",
+      "inlineType": {
+        "name": "DropdownProps.DropdownWidthConstraint",
+        "type": "union",
+        "values": [
+          "number",
+          ""trigger"",
+        ],
+      },
       "name": "minWidth",
       "optional": true,
-      "type": "number",
+      "type": "DropdownProps.DropdownWidthConstraint",
     },
     {
-      "description": "Open state of the dropdown.",
+      "description": "Whether the dropdown is currently open",
       "name": "open",
       "optional": true,
       "type": "boolean",
     },
     {
-      "defaultValue": "false",
-      "description": "Determines that the dropdown should preferably be aligned to the center of the trigger
-instead of dropping left or right.",
-      "name": "preferCenter",
+      "description": "Preferred alignment of the dropdown relative to its trigger.
+The dropdown will attempt this alignment first, but will automatically
+adjust if there's insufficient space on the preferred side.",
+      "inlineType": {
+        "name": "DropdownProps.DropdownAlignment",
+        "type": "union",
+        "values": [
+          "center",
+          "start",
+        ],
+      },
+      "name": "preferredAlignment",
       "optional": true,
-      "type": "boolean",
+      "type": "string",
     },
     {
-      "defaultValue": "true",
-      "description": "Whether the dropdown will have a scrollbar or not",
-      "name": "scrollable",
+      "description": "ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')",
+      "name": "role",
       "optional": true,
-      "type": "boolean",
-    },
-    {
-      "defaultValue": "false",
-      "description": "Whether the dropdown content can grow beyond the width of the trigger.",
-      "name": "stretchBeyondTriggerWidth",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "defaultValue": "false",
-      "description": "Stretches dropdown to occupy entire height.",
-      "name": "stretchHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "defaultValue": "true",
-      "description": "Whether the dropdown content should be at least as wide as the trigger.",
-      "name": "stretchToTriggerWidth",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "defaultValue": "false",
-      "description": "Stretches the trigger to the height of the dropdown container.",
-      "name": "stretchTriggerHeight",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "defaultValue": "true",
-      "description": "Stretches dropdown to occupy entire width.",
-      "name": "stretchWidth",
-      "optional": true,
-      "type": "boolean",
+      "type": "string",
     },
   ],
   "regions": [
     {
-      "description": "Dropdown content elements.",
-      "isDefault": true,
-      "name": "children",
+      "description": "Main content of the dropdown",
+      "isDefault": false,
+      "name": "content",
     },
     {
-      "description": "Footer slot fixed at the bottom of the dropdown",
+      "description": "Optional footer content that stays fixed at the bottom while
+scrolling dropdown content.
+Typically used to display loading status or action buttons.",
       "isDefault": false,
       "name": "footer",
     },
     {
-      "description": ""Sticky" header of the dropdown content",
+      "description": "Optional header content that stays fixed at the top while
+scrolling dropdown content",
       "isDefault": false,
       "name": "header",
     },
     {
-      "description": "Trigger element.",
+      "description": "The trigger element that opens/closes the dropdown",
       "isDefault": false,
       "name": "trigger",
     },

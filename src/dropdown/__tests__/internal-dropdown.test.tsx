@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import { calculatePosition } from '../../../lib/components//dropdown/dropdown-fit-handler';
+import { calculatePosition } from '../../../lib/components/dropdown/dropdown-fit-handler';
 import Dropdown from '../../../lib/components/dropdown/internal';
 import DropdownWrapper from '../../../lib/components/test-utils/dom/dropdown';
 
@@ -29,7 +29,7 @@ jest.mock('../../../lib/components/dropdown/dropdown-fit-handler', () => {
   };
 });
 
-describe('Dropdown Component', () => {
+describe('Internal Dropdown Component', () => {
   describe('Properties', () => {
     test('closed by default', () => {
       const [wrapper] = renderDropdown(
