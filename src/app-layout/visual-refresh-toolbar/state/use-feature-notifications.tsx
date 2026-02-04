@@ -99,6 +99,9 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     if (event.type === 'registerFeatureNotifications') {
       const { payload } = event;
       const features = getFeaturesToDisplay(payload);
+      if (features.length === 0) {
+        return;
+      }
       setFeatureNotificationsData({ ...payload, features });
       awsuiPlugins.appLayout.registerDrawer({
         id: payload.id,

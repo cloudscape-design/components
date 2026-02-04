@@ -8,6 +8,7 @@ import {
   persistFeatureNotifications,
   retrieveFeatureNotifications,
 } from '../../../lib/components/internal/persistence';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
 import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
 import { FeatureNotificationsPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
@@ -65,6 +66,7 @@ const mockRetrieveFeatureNotifications = jest.mocked(retrieveFeatureNotification
 const mockPersistFeatureNotifications = jest.mocked(persistFeatureNotifications);
 
 beforeEach(() => {
+  awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
   awsuiWidgetInternal.clearInitialMessages();
   jest.resetAllMocks();
   mockRetrieveFeatureNotifications.mockResolvedValue({});
@@ -284,30 +286,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(persistedFeaturesMap).not.toHaveProperty('old-seen-feature');
   });
 
-  // test('handles empty features array', () => {
-  //   const emptyFeatures: FeatureNotificationsPayload<string> = {
-  //     id: 'empty-features',
-  //     features: [],
-  //     mountItem: (container, data) => {
-  //       container.textContent = data;
-  //     },
-  //   };
-  //
-  //   awsuiWidgetPlugins.registerFeatureNotifications(emptyFeatures);
-  //   const { wrapper } = renderComponent(<AppLayout />);
-  //   expect(wrapper.getElement()).toBeInTheDocument();
-  // });
-  //
-  // test('isAppLayoutReady works correctly with feature notifications', async () => {
-  //   expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
-  //
-  //   awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
-  //
-  //   const { rerender } = renderComponent(<AppLayout />);
-  //   expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(true);
-  //   await expect(awsuiWidgetPlugins.whenAppLayoutReady()).resolves.toBe(undefined);
-  //
-  //   rerender(<></>);
-  //   expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
-  // });
+  test('handles empty features array', async () => {
+    const emptyFeatures: FeatureNotificationsPayload<string> = {
+      id: 'empty-features',
+      features: [],
+      mountItem: (container, data) => {
+        container.textContent = data;
+      },
+    };
+
+    awsuiWidgetPlugins.registerFeatureNotifications(emptyFeatures);
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawerTriggerById('empty-features')).toBeFalsy();
+  });
 });
