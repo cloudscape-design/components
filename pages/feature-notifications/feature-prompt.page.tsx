@@ -20,7 +20,7 @@ const readFeaturesStorage: Record<string, Record<string, string>> = {
 };
 
 setPersistenceFunctionsForTesting({
-  persistSeenFeatureNotifications: async function (persistenceConfig, value) {
+  persistFeatureNotifications: async function (persistenceConfig, value) {
     const result = await new Promise<void>(resolve =>
       setTimeout(() => {
         readFeaturesStorage[persistenceConfig.uniqueKey] = value;
@@ -29,7 +29,7 @@ setPersistenceFunctionsForTesting({
     );
     return result;
   },
-  retrieveSeenFeatureNotifications: async function (persistenceConfig) {
+  retrieveFeatureNotifications: async function (persistenceConfig) {
     const result = await new Promise<Record<string, string>>(resolve =>
       setTimeout(() => resolve(readFeaturesStorage[persistenceConfig.uniqueKey] ?? {}), 150)
     );

@@ -4,7 +4,7 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
-import { persistSeenFeatureNotifications, retrieveSeenFeatureNotifications } from '../../../internal/persistence';
+import { persistFeatureNotifications, retrieveFeatureNotifications } from '../../../internal/persistence';
 import awsuiPlugins from '../../../internal/plugins';
 import { Feature, FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
@@ -77,7 +77,7 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
       }, {});
       const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
       const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
-      persistSeenFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
+      persistFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
         awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
         setMarkAllAsRead(true);
       });
@@ -126,7 +126,7 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
         ),
       });
 
-      retrieveSeenFeatureNotifications(persistenceConfig).then(seenFeatureNotifications => {
+      retrieveFeatureNotifications(persistenceConfig).then(seenFeatureNotifications => {
         setSeenFeatures(seenFeatureNotifications);
         const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
         if (hasUnseenFeatures) {

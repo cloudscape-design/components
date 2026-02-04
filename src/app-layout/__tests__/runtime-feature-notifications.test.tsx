@@ -5,8 +5,8 @@ import { act, render, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import {
-  persistSeenFeatureNotifications,
-  retrieveSeenFeatureNotifications,
+  persistFeatureNotifications,
+  retrieveFeatureNotifications,
 } from '../../../lib/components/internal/persistence';
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
 import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
@@ -57,18 +57,18 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 jest.mock('../../../lib/components/internal/persistence', () => ({
-  retrieveSeenFeatureNotifications: jest.fn(),
-  persistSeenFeatureNotifications: jest.fn(),
+  retrieveFeatureNotifications: jest.fn(),
+  persistFeatureNotifications: jest.fn(),
 }));
 
-const mockRetrieveSeenFeatureNotifications = jest.mocked(retrieveSeenFeatureNotifications);
-const mockPersistSeenFeatureNotifications = jest.mocked(persistSeenFeatureNotifications);
+const mockRetrieveFeatureNotifications = jest.mocked(retrieveFeatureNotifications);
+const mockPersistFeatureNotifications = jest.mocked(persistFeatureNotifications);
 
 beforeEach(() => {
   awsuiWidgetInternal.clearInitialMessages();
   jest.resetAllMocks();
-  mockRetrieveSeenFeatureNotifications.mockResolvedValue({});
-  mockPersistSeenFeatureNotifications.mockResolvedValue();
+  mockRetrieveFeatureNotifications.mockResolvedValue({});
+  mockPersistFeatureNotifications.mockResolvedValue();
 
   // Mock current date for consistent filtering
   jest.useFakeTimers();
@@ -199,7 +199,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
-    mockRetrieveSeenFeatureNotifications.mockResolvedValue({ 'feature-1': mockDate2025.toString() });
+    mockRetrieveFeatureNotifications.mockResolvedValue({ 'feature-1': mockDate2025.toString() });
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
     const { container } = await renderComponent(<AppLayout />);
 
@@ -234,7 +234,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('should not show feature prompt if all feature are seen', async () => {
-    mockRetrieveSeenFeatureNotifications.mockResolvedValue({
+    mockRetrieveFeatureNotifications.mockResolvedValue({
       'feature-1': mockDate2025.toString(),
       'feature-2': mockDate2024.toString(),
       'feature-old': mockDateOld.toString(),
@@ -265,7 +265,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       'feature-1': mockDate2025.toISOString(),
     };
 
-    mockRetrieveSeenFeatureNotifications.mockResolvedValue(seenFeatures);
+    mockRetrieveFeatureNotifications.mockResolvedValue(seenFeatures);
 
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
     const { wrapper } = await renderComponent(<AppLayout />);
@@ -273,10 +273,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
 
     await waitFor(() => {
-      expect(mockPersistSeenFeatureNotifications).toHaveBeenCalled();
+      expect(mockPersistFeatureNotifications).toHaveBeenCalled();
     });
 
-    const persistedFeaturesMap = mockPersistSeenFeatureNotifications.mock.calls[0][1];
+    const persistedFeaturesMap = mockPersistFeatureNotifications.mock.calls[0][1];
 
     expect(persistedFeaturesMap).toHaveProperty('feature-1');
     expect(persistedFeaturesMap).toHaveProperty('feature-2');
