@@ -262,9 +262,6 @@
 
 .collapsed-steps {
   padding-block-start: awsui.$space-scaled-xxs;
-  &-hidden {
-    display: none;
-  }
 }
 
 /* Override fixed sidebar width for expandable navigation */

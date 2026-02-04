@@ -358,6 +358,43 @@ describe('Navigation', () => {
       expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'step' } })
     );
   });
+
+  test('navigates via Enter key on menu step', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
+
+    const link = wrapper.findMenuNavigationLink(1)!.getElement();
+    link.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
+    );
+  });
+
+  test('navigates via Space key on menu step', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
+
+    const link = wrapper.findMenuNavigationLink(1)!.getElement();
+    link.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    link.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', bubbles: true }));
+
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
+    );
+  });
+
+  test('does not navigate on disabled steps via keyboard', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, onNavigate });
+
+    // Step 2 and 3 are disabled (unvisited)
+    const disabledLink = wrapper.findMenuNavigationLink(2)!.getElement();
+    disabledLink.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    disabledLink.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', bubbles: true }));
+
+    expect(onNavigate).not.toHaveBeenCalled();
+  });
 });
 
 describe('Form', () => {

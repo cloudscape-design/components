@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { MutableRefObject, useEffect, useRef } from 'react';
-import clsx from 'clsx';
 
 import { useComponentMetadata, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
@@ -153,9 +152,11 @@ function WizardForm({
   return (
     <>
       <WizardFormHeader>
-        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          <WizardStepNavigationExpandable {...stepNavigationProps} />
-        </div>
+        {showCollapsedSteps && (
+          <div className={styles['collapsed-steps']}>
+            <WizardStepNavigationExpandable {...stepNavigationProps} />
+          </div>
+        )}
         <InternalHeader
           className={styles['form-header-component']}
           variant="h1"
