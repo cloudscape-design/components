@@ -267,6 +267,19 @@
   }
 }
 
+/* Override fixed sidebar width for expandable navigation */
+/* stylelint-disable selector-max-type */
+.navigation.refresh.collapsed-steps-navigation {
+  grid-column: unset;
+  grid-row: unset;
+  padding-block-start: 0;
+
+  > ul.refresh {
+    inline-size: 100%;
+  }
+}
+/* stylelint-enable selector-max-type */
+
 .form-header-component {
   &-wrapper {
     outline: none;
@@ -301,156 +314,4 @@
 .action-buttons {
   display: flex;
   justify-content: flex-end;
-}
-
-/* Expandable step navigation styles - base classes first for stylelint no-descending-specificity */
-.expandable-step-item {
-  /* used in test-utils */
-}
-
-.expandable-step-label {
-  font-size: awsui.$font-size-body-s;
-  color: awsui.$color-text-small;
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.expandable-step-link {
-  align-items: start;
-  column-gap: awsui.$space-xs;
-  display: grid;
-  font-size: awsui.$font-size-body-m;
-  grid-column: 1 / span 2;
-  grid-row: 2;
-  grid-template-columns: awsui.$space-l 1fr;
-}
-
-.expandable-step-circle {
-  border-start-start-radius: 100%;
-  border-start-end-radius: 100%;
-  border-end-start-radius: 100%;
-  border-end-end-radius: 100%;
-  grid-column: 1;
-  block-size: 10px;
-  justify-self: center;
-  margin-block-start: 6px;
-  inline-size: 10px;
-}
-
-.expandable-step-title {
-  @include styles.text-wrapping;
-  grid-column: 2;
-  font-size: awsui.$font-size-body-m;
-}
-
-.expandable-step-title-active {
-  color: awsui.$color-background-control-checked;
-  font-weight: styles.$font-weight-bold;
-}
-
-.expandable-step-title-clickable {
-  @include styles.styles-reset;
-  background: transparent;
-  border-block: none;
-  border-inline: none;
-  padding-block: 0;
-  padding-inline: 0;
-  cursor: pointer;
-  text-align: start;
-  font-size: inherit;
-  color: awsui.$color-text-interactive-default;
-
-  &:hover {
-    color: awsui.$color-background-control-checked;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.link-focus;
-  }
-}
-
-.expandable-step-title-unvisited {
-  color: awsui.$color-text-status-inactive;
-}
-
-/* Expandable step list - ul/li structure with state overrides */
-.expandable-step-list {
-  list-style: none;
-  position: relative;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block-start: awsui.$space-scaled-xxs;
-  padding-block-end: 0;
-  padding-inline: 0;
-  box-sizing: border-box;
-
-  /* stylelint-disable selector-max-type, no-descending-specificity */
-  > li {
-    display: grid;
-    column-gap: awsui.$space-xs;
-    grid-template-columns: awsui.$space-l 1fr;
-    grid-template-rows: repeat(2, auto);
-    padding-block: 0;
-    padding-inline: 0;
-
-    > hr {
-      background-color: awsui.$color-border-divider-default;
-      border-block: 0;
-      border-inline: 0;
-      grid-column: 1;
-      block-size: 100%;
-      inline-size: awsui.$space-xxxs;
-    }
-  }
-
-  > li:first-child > hr {
-    grid-row: 2 / span 2;
-  }
-
-  > li:not(:first-child) > .expandable-step-label {
-    margin-block-start: awsui.$space-m;
-  }
-
-  > li:last-child > hr {
-    grid-row: 1;
-  }
-
-  > li:only-of-type > hr {
-    display: none;
-  }
-
-  > li:not(:first-child):not(:last-child) > hr {
-    grid-row: 1 / span 3;
-  }
-
-  > li.expandable-step-active > .expandable-step-link {
-    cursor: text;
-  }
-
-  > li.expandable-step-active > .expandable-step-link > .expandable-step-circle {
-    background-color: awsui.$color-background-control-checked;
-    box-shadow:
-      0 0 0 3px awsui.$color-background-container-content,
-      0 0 0 5px awsui.$color-background-control-checked,
-      0 0 0 7px awsui.$color-background-container-content;
-  }
-
-  > li.expandable-step-disabled > .expandable-step-link {
-    cursor: text;
-  }
-
-  > li.expandable-step-disabled > .expandable-step-link > .expandable-step-circle {
-    background-color: awsui.$color-background-container-content;
-    box-shadow:
-      0 0 0 2px awsui.$color-text-interactive-disabled,
-      0 0 0 4px awsui.$color-background-container-content;
-  }
-
-  > li.expandable-step-enabled > .expandable-step-link > .expandable-step-circle {
-    background-color: awsui.$color-text-interactive-default;
-    box-shadow:
-      0 0 0 2px awsui.$color-text-interactive-default,
-      0 0 0 4px awsui.$color-background-container-content;
-  }
-  /* stylelint-enable selector-max-type, no-descending-specificity */
 }

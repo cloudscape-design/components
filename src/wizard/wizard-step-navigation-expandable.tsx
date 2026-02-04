@@ -1,10 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
 import InternalExpandableSection from '../expandable-section/internal';
 import { WizardProps } from './interfaces';
 import WizardStepList from './wizard-step-list';
+
+import styles from './styles.css.js';
 
 interface WizardStepNavigationExpandableProps {
   activeStepIndex: number;
@@ -44,7 +47,10 @@ export default function WizardStepNavigationExpandable({
       expanded={expanded}
       onChange={({ detail }) => onExpandChange(detail.expanded)}
     >
-      <nav aria-label={i18nStrings.navigationAriaLabel}>
+      <nav
+        className={clsx(styles.navigation, styles.refresh, styles['collapsed-steps-navigation'])}
+        aria-label={i18nStrings.navigationAriaLabel}
+      >
         <WizardStepList
           activeStepIndex={activeStepIndex}
           farthestStepIndex={farthestStepIndex}

@@ -96,63 +96,111 @@ export default function WizardStepList({
   steps,
 }: WizardStepListProps) {
   return (
-    <ul className={styles['expandable-step-list']}>
-      {steps.map((step, index) => {
-        const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
-        const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
-        const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
-        const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
-        const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
-        const state = {
-          active: 'active',
-          unvisited: 'disabled',
-          visited: 'enabled',
-          next: 'enabled',
-        }[status];
-
-        return (
-          <li key={index} className={clsx(styles['expandable-step-item'], styles[`expandable-step-${state}`])}>
-            <hr />
-
-            <span className={styles['expandable-step-label']}>
-              {i18nStrings.stepNumberLabel?.(index + 1)}
-              {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-            </span>
-
-            <div className={styles['expandable-step-link']}>
-              <div className={styles['expandable-step-circle']} aria-hidden="true" />
-
-              {status === StepStatusValues.Active ? (
-                <span
-                  className={clsx(styles['expandable-step-title'], styles['expandable-step-title-active'])}
-                  aria-current="step"
-                >
-                  {step.title}
-                </span>
-              ) : isClickable ? (
-                <span {...getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`)}>
-                  <button
-                    type="button"
-                    className={clsx(
-                      analyticsSelectors['step-title'],
-                      styles['expandable-step-title'],
-                      styles['expandable-step-title-clickable']
-                    )}
-                    onClick={() => handleStepNavigation(index, status, onStepClick, onSkipToClick)}
-                    aria-label={fullStepLabel}
-                  >
-                    {step.title}
-                  </button>
-                </span>
-              ) : (
-                <span className={clsx(styles['expandable-step-title'], styles['expandable-step-title-unvisited'])}>
-                  {step.title}
-                </span>
-              )}
-            </div>
-          </li>
-        );
-      })}
+    <ul className={styles.refresh}>
+      {steps.map((step, index) => (
+        <WizardStepListItem
+          key={index}
+          index={index}
+          step={step}
+          activeStepIndex={activeStepIndex}
+          farthestStepIndex={farthestStepIndex}
+          allowSkipTo={allowSkipTo}
+          i18nStrings={i18nStrings}
+          isLoadingNextStep={isLoadingNextStep}
+          onStepClick={onStepClick}
+          onSkipToClick={onSkipToClick}
+          steps={steps}
+        />
+      ))}
     </ul>
+  );
+}
+
+interface WizardStepListItemProps {
+  index: number;
+  step: WizardProps.Step;
+  activeStepIndex: number;
+  farthestStepIndex: number;
+  allowSkipTo: boolean;
+  i18nStrings: WizardProps.I18nStrings;
+  isLoadingNextStep: boolean;
+  onStepClick: (stepIndex: number) => void;
+  onSkipToClick: (stepIndex: number) => void;
+  steps: ReadonlyArray<WizardProps.Step>;
+}
+
+function WizardStepListItem({
+  index,
+  step,
+  activeStepIndex,
+  farthestStepIndex,
+  allowSkipTo,
+  i18nStrings,
+  isLoadingNextStep,
+  onStepClick,
+  onSkipToClick,
+  steps,
+}: WizardStepListItemProps) {
+  const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
+  const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
+  const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
+  const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
+  const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
+  const state = {
+    active: 'active',
+    unvisited: 'disabled',
+    visited: 'enabled',
+    next: 'enabled',
+  }[status];
+
+  const handleInteraction = () => handleStepNavigation(index, status, onStepClick, onSkipToClick);
+
+  return (
+    <li className={clsx(styles[`${state}`], styles['navigation-link-item'])}>
+      <hr />
+
+      <span className={clsx(styles.number, styles['navigation-link-label'])}>
+        {i18nStrings.stepNumberLabel?.(index + 1)}
+        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+      </span>
+
+      <a
+        className={clsx(styles['navigation-link'], {
+          [styles['navigation-link-active']]: status === StepStatusValues.Active,
+          [styles['navigation-link-disabled']]: status === StepStatusValues.Unvisited,
+        })}
+        aria-current={status === StepStatusValues.Active ? 'step' : undefined}
+        aria-disabled={status === StepStatusValues.Unvisited ? 'true' : undefined}
+        onClick={event => {
+          event.preventDefault();
+          handleInteraction();
+        }}
+        onKeyDown={event => {
+          if (event.key === ' ' || event.key === 'Enter') {
+            event.preventDefault();
+          }
+          // Enter activates the button on key down instead of key up.
+          if (event.key === 'Enter') {
+            handleInteraction();
+          }
+        }}
+        onKeyUp={event => {
+          // Emulate button behavior, which also fires on space.
+          if (event.key === ' ') {
+            handleInteraction();
+          }
+        }}
+        role="button"
+        tabIndex={isClickable ? 0 : undefined}
+        aria-label={fullStepLabel}
+        {...(status === StepStatusValues.Unvisited
+          ? {}
+          : getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`))}
+      >
+        <div className={styles.circle} />
+
+        <span className={clsx(styles.title, analyticsSelectors['step-title'])}>{step.title}</span>
+      </a>
+    </li>
   );
 }
