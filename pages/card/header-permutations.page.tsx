@@ -7,23 +7,21 @@ import { InternalCardProps } from '~components/internal/components/card/interfac
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { actions, CardPage, icon, longContent, longHeader, shortDescription } from './common';
+import { actions, CardPage, icon, longContent, longDescription, longHeader, shortHeader } from './common';
 
 const permutations = createPermutations<InternalCardProps & { width?: number }>([
   {
-    header: [longHeader, undefined],
-    children: [longContent, undefined],
-    description: [shortDescription, undefined],
-    actions: [actions],
-    icon: [icon],
-    disableHeaderPaddings: [false, true],
-    disableContentPaddings: [false, true],
+    header: [shortHeader, longHeader, undefined],
+    children: [longContent],
+    description: [undefined, longDescription],
+    actions: [undefined, actions],
+    icon: [undefined, icon],
   },
 ]);
 
-export default function CardPermutations() {
+export default function CardHeaderPermutations() {
   return (
-    <CardPage title="Card permutations">
+    <CardPage title="Card header permutations">
       <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
     </CardPage>
   );
