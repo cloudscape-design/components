@@ -4,7 +4,7 @@
 
 import { AlertProps } from '../../alert/interfaces';
 import { FlashbarProps } from '../../flashbar/interfaces';
-import { FeaturePromptProps } from '../do-not-use/feature-prompt';
+import { FeatureNotificationsPersistenceConfig } from '../plugins/widget/interfaces';
 
 interface PersistenceFunction {
   persistFlashbarDismiss?: (persistenceConfig: FlashbarProps.PersistenceConfig) => Promise<void>;
@@ -12,11 +12,11 @@ interface PersistenceFunction {
   persistAlertDismiss?: (persistenceConfig: AlertProps.PersistenceConfig) => Promise<void>;
   retrieveAlertDismiss?: (persistenceConfig: AlertProps.PersistenceConfig) => Promise<boolean>;
   persistFeatureNotifications?: (
-    persistenceConfig: FeaturePromptProps.PersistenceConfig,
+    persistenceConfig: FeatureNotificationsPersistenceConfig,
     value: Record<string, string>
   ) => Promise<void>;
   retrieveFeatureNotifications?: (
-    persistenceConfig: FeaturePromptProps.PersistenceConfig
+    persistenceConfig: FeatureNotificationsPersistenceConfig
   ) => Promise<Record<string, string>>;
 }
 
@@ -76,7 +76,7 @@ export let retrieveAlertDismiss = async function (
 // eslint-disable-next-line require-await
 export let persistFeatureNotifications = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  persistenceConfig: FeaturePromptProps.PersistenceConfig,
+  persistenceConfig: FeatureNotificationsPersistenceConfig,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   value: Record<string, string>
 ): Promise<void> {
@@ -86,7 +86,7 @@ export let persistFeatureNotifications = async function (
 // eslint-disable-next-line require-await
 export let retrieveFeatureNotifications = async function (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  persistenceConfig: FeaturePromptProps.PersistenceConfig
+  persistenceConfig: FeatureNotificationsPersistenceConfig
 ): Promise<Record<string, string>> {
   return Promise.resolve({});
 };
