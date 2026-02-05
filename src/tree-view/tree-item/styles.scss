@@ -43,6 +43,9 @@ $item-toggle-column-width: 28px;
         justify-self: center;
         position: relative;
         inset-block-start: 2px;
+        // Compensate for toggle size difference compared to the normal icon size.
+        // This way, in trees with icons the toggles and icons are perfectly aligned.
+        inset-inline-start: -2px;
       }
     }
 

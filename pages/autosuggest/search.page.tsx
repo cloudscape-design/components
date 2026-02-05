@@ -23,6 +23,12 @@ const options: AutosuggestProps.Option[] = [
   { value: '_apple_', label: 'Apple' },
   { value: '_sweet_apple_', label: 'Apple (sweet)', tags: ['sweet'] },
   { value: '_pineapple_', label: 'Pineapple XL', description: 'pine+apple' },
+  // Korean IME test options -- to test, enable Korean 2-set keyboard
+  { value: '_ga_word_', label: '가족 (Family)', description: 'Starts with 가' },
+  { value: '_gak_word_', label: '각도 (Angle)', description: 'Starts with 각' },
+  { value: '_gan_word_', label: '간단 (Simple)', description: 'Starts with 간' },
+  { value: '_gar_word_', label: '가방 (Bag)', description: 'Korean word starting with 가' },
+  { value: '_gae_word_', label: '개념 (Concept)', description: 'Starts with 개' },
 ];
 const enteredTextLabel = (value: string) => `Search for: "${value}"`;
 

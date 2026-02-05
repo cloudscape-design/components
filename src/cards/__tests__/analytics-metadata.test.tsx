@@ -125,6 +125,7 @@ describe('Cards renders correct analytics metadata', () => {
           });
 
           const selectedItems = trackBy ? ['third', 'fourth'] : undefined;
+          const selectedItemsLabels = ['third', 'fourth'];
 
           const firstSelectionArea = findSelectionInput(wrapper, 0);
           validateComponentNameAndLabels(firstSelectionArea, labels);
@@ -133,7 +134,13 @@ describe('Cards renders correct analytics metadata', () => {
             detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
           };
           const firstMetadata = getMetadata(
-            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            {
+              selectedItemsCount: '2',
+              selectedItems,
+              selectedItemsLabels,
+              selectionType: 'multi',
+              variant: 'full-page',
+            },
             selectEvent
           );
           expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
@@ -146,7 +153,13 @@ describe('Cards renders correct analytics metadata', () => {
           const disabledSelectionArea = findSelectionInput(wrapper, 1);
           validateComponentNameAndLabels(disabledSelectionArea, labels);
           const secondMetadata = getMetadata(
-            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            {
+              selectedItemsCount: '2',
+              selectedItems,
+              selectedItemsLabels,
+              selectionType: 'multi',
+              variant: 'full-page',
+            },
             undefined,
             {
               position: '2',
@@ -167,7 +180,13 @@ describe('Cards renders correct analytics metadata', () => {
             detail: { label: 'third', position: '3', item: getItem(2, trackBy) },
           };
           const thirdMetadata = getMetadata(
-            { selectedItemsCount: '2', selectedItems, selectionType: 'multi', variant: 'full-page' },
+            {
+              selectedItemsCount: '2',
+              selectedItems,
+              selectedItemsLabels,
+              selectionType: 'multi',
+              variant: 'full-page',
+            },
             deselectEvent
           );
           expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(thirdMetadata);
@@ -186,11 +205,18 @@ describe('Cards renders correct analytics metadata', () => {
           });
 
           const selectedItems = trackBy ? ['third'] : undefined;
+          const selectedItemsLabels = ['third'];
 
           const firstSelectionArea = findSelectionInput(wrapper, 0);
           validateComponentNameAndLabels(firstSelectionArea, labels);
           const firstMetadata = getMetadata(
-            { selectedItemsCount: '1', selectedItems, selectionType: 'single', variant: 'container' },
+            {
+              selectedItemsCount: '1',
+              selectedItems,
+              selectedItemsLabels,
+              selectionType: 'single',
+              variant: 'container',
+            },
             {
               action: 'select',
               detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
@@ -206,7 +232,13 @@ describe('Cards renders correct analytics metadata', () => {
           const disabledSelectionArea = findSelectionInput(wrapper, 1);
           validateComponentNameAndLabels(disabledSelectionArea, labels);
           const secondMetadata = getMetadata(
-            { selectedItemsCount: '1', selectedItems, selectionType: 'single', variant: 'container' },
+            {
+              selectedItemsCount: '1',
+              selectedItems,
+              selectedItemsLabels,
+              selectionType: 'single',
+              variant: 'container',
+            },
             undefined,
             {
               position: '2',
@@ -228,6 +260,7 @@ describe('Cards renders correct analytics metadata', () => {
         });
 
         const selectedItems = trackBy ? [] : undefined;
+        const selectedItemsLabels: Array<string> = [];
 
         const firstSelectionArea = findSelectionInput(wrapper, 0);
         validateComponentNameAndLabels(firstSelectionArea, labels);
@@ -236,7 +269,7 @@ describe('Cards renders correct analytics metadata', () => {
           detail: { label: 'first', position: '1', item: getItem(0, trackBy) },
         };
         const firstMetadata = getMetadata(
-          { selectedItemsCount: '0', selectedItems, selectionType: 'multi', variant: 'container' },
+          { selectedItemsCount: '0', selectedItems, selectedItemsLabels, selectionType: 'multi', variant: 'container' },
           selectEvent
         );
         expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(firstMetadata);
@@ -249,6 +282,7 @@ describe('Cards renders correct analytics metadata', () => {
       const componentDetails = {
         selectedItemsCount: '0',
         selectedItems: [],
+        selectedItemsLabels: [],
         selectionType: 'none',
         variant: 'container',
       };

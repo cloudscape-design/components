@@ -207,6 +207,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundProgressBarValueDefault: {
+    description: 'The default background color of the progress bar value.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundProgressBarDefault: {
+    description: 'The default background color of the progress bar.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundSegmentActive: {
     description: 'The background color of the active segment in a segmented control.',
     public: true,
@@ -231,6 +241,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The background color of segmented control wrapper.',
     public: false,
     themeable: true,
+  },
+  colorBackgroundSliderHandleDefault: {
+    description: 'The default background color of the slider handle.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderHandleActive: {
+    description: 'The background color of the slider handle in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeDefault: {
+    description: 'The default background color of the slider range.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeActive: {
+    description: 'The background color of the slider range in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderTrackDefault: {
+    description: 'The default background color of the slider track.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundStatusError: {
     description: 'The background color of an item in error state. For example: error alerts.',

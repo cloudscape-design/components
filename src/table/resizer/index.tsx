@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
@@ -8,6 +9,7 @@ import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@clouds
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import DragHandleWrapper from '../../internal/components/drag-handle-wrapper';
+import { useThrottleCallback } from '../../internal/hooks/use-throttle-callback';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
@@ -30,6 +32,7 @@ interface ResizerProps {
   isBorderless: boolean;
 }
 
+const RESIZE_THROTTLE = 25;
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
@@ -168,7 +171,7 @@ export function Resizer({
     [minWidth, onWidthUpdate, updateTrackerPosition]
   );
 
-  const resizeColumn = useCallback(
+  const resizeColumn = useThrottleCallback(
     (offset: number) => {
       const elements = getResizerElements(resizerToggleRef.current);
       if (!elements) {
@@ -183,6 +186,7 @@ export function Resizer({
         updateColumnWidth(newWidth);
       }
     },
+    RESIZE_THROTTLE,
     [updateColumnWidth]
   );
 

@@ -240,7 +240,10 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
     "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
-    "ariaLabels.previousPageLabel": "Halaman sebelumnya"
+    "ariaLabels.previousPageLabel": "Halaman sebelumnya",
+    "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
+    "i18nStrings.jumpToPageInputLabel": "Halaman",
+    "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia."
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",

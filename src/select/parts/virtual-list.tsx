@@ -74,7 +74,10 @@ const VirtualListOpen = forwardRef(
               menuEl: menuRefObject?.current,
             });
           } else {
-            scrollToIndex(index);
+            // Fix for AWSUI-61506. Defer scroll to next frame to ensure
+            // virtual items are measured after re-render. When called from
+            // parent's useEffect, measurements may not be ready yet.
+            requestAnimationFrame(() => scrollToIndex(index));
           }
         }
         previousHighlightedIndex.current = index;
@@ -105,12 +108,7 @@ const VirtualListOpen = forwardRef(
     return (
       <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
         {finalOptions}
-        <div
-          aria-hidden="true"
-          key="total-size"
-          className={styles['layout-strut']}
-          style={{ height: totalSize - stickySize }}
-        />
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}

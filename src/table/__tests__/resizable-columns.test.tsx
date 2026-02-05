@@ -66,6 +66,10 @@ function findDragHandle() {
   return new InternalDragHandleWrapper(document.body);
 }
 
+async function waitForResizeThrottle() {
+  await new Promise(resolve => setTimeout(resolve, 50));
+}
+
 afterEach(() => {
   jest.restoreAllMocks();
 });
@@ -235,18 +239,25 @@ test('takes width as min width if it is less than 120px and min width is not set
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '100px' });
 });
 
-test('should follow along each mouse move event', () => {
+test('should follow along each mouse move event', async () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
 
   firePointerdown(wrapper.findColumnResizer(1)!);
   firePointermove(200);
+  await waitForResizeThrottle();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+
   firePointermove(250);
+  await waitForResizeThrottle();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '250px' });
+
   firePointermove(200);
+  await waitForResizeThrottle();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+
   firePointerup(200);
+  await waitForResizeThrottle();
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
 });
 

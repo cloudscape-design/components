@@ -317,6 +317,9 @@ export interface I18nFormatArgTypes {
       "pageNumber": string | number;
     }
     "ariaLabels.previousPageLabel": never;
+    "ariaLabels.jumpToPageButtonLabel": never;
+    "i18nStrings.jumpToPageInputLabel": never;
+    "i18nStrings.jumpToPageError": never;
   }
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": never;

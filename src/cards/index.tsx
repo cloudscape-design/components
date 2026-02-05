@@ -156,6 +156,10 @@ const Cards = React.forwardRef(function <T = any>(
       selectionType: selectionType || 'none',
       itemsCount: `${items.length}`,
       selectedItemsCount: `${(selectedItems || []).length}`,
+      selectedItemsLabels: {
+        root: 'self',
+        selector: `.${styles['card-selected']} .${analyticsSelectors['card-header']}`,
+      },
       variant,
     },
   };
