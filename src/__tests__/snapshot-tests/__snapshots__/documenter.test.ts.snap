@@ -3557,6 +3557,56 @@ For more information, see the
       "type": "AutosuggestProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.
+
+The item inside the props has a different shape depending on its type:
+
+
+### item
+
+- \`type\` ('item') - The item type.
+- \`index\` (number) - The item's absolute position in the dropdown.
+- \`option\` (Option) - The original option configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`selected\` (boolean) - Whether the item is selected.
+- \`parent\` (OptionGroupRenderItem | null) - The parent group item, if any.
+
+### group
+
+- \`type\` ('group') - The item type.
+- \`index\` (number) - The item's absolute position in the dropdown.
+- \`option\` (OptionGroup) - The original option configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+
+### entered-text
+
+- \`type\` ('entered-text') - The item type.
+- \`option\` (Option) - The entered-text option configuration.
+
+When providing a custom \`renderOption\` implementation, it fully replaces the default visual rendering and content for that item.
+The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+
+When returning \`null\`, the default rendering will be applied for that item.",
+      "inlineType": {
+        "name": "AutosuggestProps.ItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: AutosuggestProps.RenderItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AutosuggestProps.ItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).",
@@ -11483,6 +11533,13 @@ exports[`Components definition for error-boundary matches the snapshot: error-bo
   "name": "ErrorBoundary",
   "properties": [
     {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Optional identifier for the error boundary instance.
 
 When provided, the identifier is included in the \`onError\` callback payload.
@@ -11550,6 +11607,15 @@ attribute \`data-awsui-boundary-id={errorBoundaryId}\` to support debugging.",
       "name": "i18nStrings",
       "optional": true,
       "type": "ErrorBoundaryProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Callback invoked when an error is intercepted by the boundary.
@@ -19328,7 +19394,7 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "defaultValue": "'standalone'",
       "description": "Enables the correct styling of the progress bar in different contexts. You can set it to one of the following:
 
-- \`"flash"\` - Use this variatn when using the progress bar within a flash component.
+- \`"flash"\` - Use this variant when using the progress bar within a flash component.
              Note that the result button isn't displayed when using this variant.
              Use the \`buttonText\` property and the \`onButtonClick\` event listener of the flashbar item instead of the result button provided by the progress bar.
 - \`"key-value"\` - Use this variant when using the progress bar within the key-value pairs pattern.
