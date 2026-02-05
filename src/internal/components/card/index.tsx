@@ -30,7 +30,7 @@ export default function Card({
         className,
         styles.root,
         selected && styles.selected,
-        !header && styles['no-header'],
+        !header && !description && !icon && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
       )}
@@ -45,7 +45,7 @@ export default function Card({
         )}
       >
         <InternalStructuredItem
-          content={<div className={styles['header-inner']}>{header}</div>}
+          content={header && <div className={styles['header-inner']}>{header}</div>}
           secondaryContent={description && <div className={styles.description}>{description}</div>}
           icon={icon}
           actions={actions}
