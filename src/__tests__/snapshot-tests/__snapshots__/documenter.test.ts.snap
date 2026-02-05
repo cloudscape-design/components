@@ -11111,6 +11111,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "isoDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "isoDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11187,6 +11192,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "slashedDateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "slashedDatePlaceholder",
             "optional": true,
             "type": "string",
           },
