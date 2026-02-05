@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useRef, useState } from 'react';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
@@ -9,9 +9,6 @@ import awsuiPlugins from '../../../internal/plugins';
 import { Feature, FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
-interface UseFeatureNotificationsProps {
-  activeDrawersIds: Array<string>;
-}
 interface RenderLatestFeaturePromptProps {
   triggerRef: RefObject<HTMLElement>;
 }
@@ -53,7 +50,7 @@ function filterOutdatedFeatures(features: Record<string, string>): Record<string
   }, {});
 }
 
-export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotificationsProps) {
+export function useFeatureNotifications() {
   const i18n = useInternalI18n('features-notification-drawer');
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
@@ -62,27 +59,6 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
   );
   const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
-
-  useEffect(() => {
-    if (!featureNotificationsData || markAllAsRead) {
-      return;
-    }
-    const id = featureNotificationsData?.id;
-    if (activeDrawersIds.includes(id) && !markAllAsRead) {
-      const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
-        return {
-          ...acc,
-          [feature.id]: feature.releaseDate.toString(),
-        };
-      }, {});
-      const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
-      const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
-      persistFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
-        awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
-        setMarkAllAsRead(true);
-      });
-    }
-  }, [featureNotificationsData, activeDrawersIds, markAllAsRead, featurePromptDismissed, seenFeatures]);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -197,6 +173,25 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
     );
   }
 
+  const onOpenFeatureNotificationsDrawer = () => {
+    if (!featureNotificationsData || markAllAsRead) {
+      return;
+    }
+    const id = featureNotificationsData?.id;
+    const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
+      return {
+        ...acc,
+        [feature.id]: feature.releaseDate.toString(),
+      };
+    }, {});
+    const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
+    const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
+    persistFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
+      awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
+      setMarkAllAsRead(true);
+    });
+  };
+
   const featureNotificationsProps: FeatureNotificationsProps = {
     renderLatestFeaturePrompt,
     drawerId: featureNotificationsData?.id,
@@ -204,6 +199,7 @@ export function useFeatureNotifications({ activeDrawersIds }: UseFeatureNotifica
 
   return {
     featureNotificationsProps,
+    onOpenFeatureNotificationsDrawer,
     featureNotificationsMessageHandler,
   };
 }

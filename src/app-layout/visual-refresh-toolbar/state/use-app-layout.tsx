@@ -204,9 +204,8 @@ export const useAppLayout = (
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
-  const { featureNotificationsProps, featureNotificationsMessageHandler } = useFeatureNotifications({
-    activeDrawersIds: [...activeGlobalDrawersIds, ...(activeDrawer ? [activeDrawer.id] : [])],
-  });
+  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
+    useFeatureNotifications();
 
   const checkAIDrawerIdExists = (id: string) => {
     return aiDrawer?.id === id;
@@ -285,6 +284,9 @@ export const useAppLayout = (
   ) => {
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
+    if (featureNotificationsProps?.drawerId && featureNotificationsProps?.drawerId === drawerId) {
+      onOpenFeatureNotificationsDrawer();
+    }
   };
 
   const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
