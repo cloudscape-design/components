@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
     "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
-    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}، {fileName}",
     "i18nStrings.errorIconAriaLabel": "خطأ",
     "i18nStrings.warningIconAriaLabel": "تحذير"
   },

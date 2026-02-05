@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.limitShowMore": "Tampilkan selengkapnya",
-    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.warningIconAriaLabel": "Peringatan"
   },

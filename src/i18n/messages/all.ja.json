@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "少なく表示",
     "i18nStrings.limitShowMore": "さらに表示",
-    "i18nStrings.removeFileAriaLabel": "ファイル {fileIndex} を削除",
+    "i18nStrings.removeFileAriaLabel": "ファイル {fileIndex}、{fileName} を削除",
     "i18nStrings.errorIconAriaLabel": "エラー",
     "i18nStrings.warningIconAriaLabel": "警告"
   },
