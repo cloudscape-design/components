@@ -18,13 +18,6 @@ export interface FeatureNotificationsProps {
 }
 export type RenderLatestFeaturePrompt = (props: RenderLatestFeaturePromptProps) => JSX.Element | null;
 
-// TODO
-// switch focus after closing the feature prompt
-const persistenceConfig = {
-  uniqueKey: 'feature-notifications',
-  crossServicePersistence: false,
-};
-
 function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
   daysToSubtract = daysToSubtract || 0;
   const pastDate = new Date(currentDate);
@@ -105,7 +98,10 @@ export function useFeatureNotifications() {
         ),
       });
 
-      retrieveFeatureNotifications(persistenceConfig).then(seenFeatureNotifications => {
+      if (!payload?.persistenceConfig) {
+        return;
+      }
+      retrieveFeatureNotifications(payload?.persistenceConfig).then(seenFeatureNotifications => {
         setSeenFeatures(seenFeatureNotifications);
         const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
         if (hasUnseenFeatures) {
@@ -174,7 +170,7 @@ export function useFeatureNotifications() {
   }
 
   const onOpenFeatureNotificationsDrawer = () => {
-    if (!featureNotificationsData || markAllAsRead) {
+    if (!featureNotificationsData || !featureNotificationsData.persistenceConfig || markAllAsRead) {
       return;
     }
     const id = featureNotificationsData?.id;
@@ -186,7 +182,7 @@ export function useFeatureNotifications() {
     }, {});
     const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
     const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
-    persistFeatureNotifications(persistenceConfig, allFeaturesMap).then(() => {
+    persistFeatureNotifications(featureNotificationsData.persistenceConfig, allFeaturesMap).then(() => {
       awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
       setMarkAllAsRead(true);
     });

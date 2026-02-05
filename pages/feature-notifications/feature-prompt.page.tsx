@@ -104,6 +104,10 @@ registerFeatureNotifications({
 
     return () => unmount(container);
   },
+  persistenceConfig: {
+    uniqueKey: 'feature-notifications',
+    crossServicePersistence: false,
+  },
 });
 
 export default function () {

@@ -50,6 +50,10 @@ const featureNotificationsDefaults: FeatureNotificationsPayload<string> = {
   mountItem: (container, data) => {
     container.textContent = data;
   },
+  persistenceConfig: {
+    uniqueKey: 'feature-notifications',
+    crossServicePersistence: false,
+  },
 };
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({

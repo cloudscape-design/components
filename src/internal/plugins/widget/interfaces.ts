@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
+import { FeaturePromptProps } from '../../do-not-use/feature-prompt';
 import { NonCancelableEventHandler } from '../../events';
 
 interface Message<Type, Payload> {
@@ -72,6 +73,15 @@ export interface FeatureNotificationsPayload<T> {
   mountItem?: MountContentPart<T>;
   featuresPageLink?: string;
   filterFeatures?: (item: Feature<T>) => boolean;
+  /**
+   * Config to persist seen feature notifications
+   * persistenceConfig contains:
+   * * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
+   * * `crossServicePersistence` (boolean) - (Optional) If true, the persistence state will be shared across AWS services.
+   * * Should be false for consoles
+   * @awsuiSystem console
+   */
+  persistenceConfig?: FeaturePromptProps.PersistenceConfig;
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
