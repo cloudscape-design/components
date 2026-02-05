@@ -112,8 +112,7 @@ describe('selection control labels', () => {
       `${selectedItemsCount}(${selectedItems.length}) of ${itemsCount} selected`,
     itemSelectionLabel: ({ itemsCount, selectedItemsCount }, item) =>
       `${selectedItemsCount} of ${itemsCount} ${item.name} selected`,
-    allItemsLoaderSelectionLabel: () => 'Root loader',
-    itemLoaderSelectionLabel: (_, item) => `${item.name} loader`,
+    itemLoaderSelectionLabel: (_, item) => (item ? `${item.name} loader` : 'Root loader'),
   };
   const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
 
@@ -165,7 +164,7 @@ describe('selection control labels', () => {
     expect(getRowSelector(wrapper, 3)).toHaveAttribute('aria-label', '0 of 7 Bananas selected');
   });
 
-  test('adds allItemsLoaderSelectionLabel and itemLoaderSelectionLabel', () => {
+  test('adds itemLoaderSelectionLabel', () => {
     const { wrapper } = renderTable({
       expandableRows: createExpandableRows({
         expandedItems: items,

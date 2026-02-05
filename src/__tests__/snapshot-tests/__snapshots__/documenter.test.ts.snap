@@ -25272,9 +25272,7 @@ The selection state includes:
  * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
  * \`itemsCount\` (optional, number) - corresponds to \`expandableRows.totalItemsCount\` or \`totalItemsCount\`.
  * \`selectedItemsCount\` (optional, number) - corresponds to \`expandableRows.totalSelectedItemsCount\` or \`selectedItems.length\`.
-* \`allItemsLoaderSelectionLabel\`: ((SelectionState) => string) - Specifies the alternative text for root resource loader selector
-in tables with data grouping.
-* \`itemLoaderSelectionLabel\`: ((SelectionState, Item) => string) - Specifies the alternative text for item resource loader selector
+* \`itemLoaderSelectionLabel\`: ((SelectionState, Item) => string) - Specifies the alternative text for resource loader selector
 in tables with data grouping.
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
@@ -25315,22 +25313,6 @@ in tables with data grouping.
             "name": "activateEditLabel",
             "optional": true,
             "type": "((column: TableProps.ColumnDefinition<any>, item: T) => string)",
-          },
-          {
-            "inlineType": {
-              "name": "(data: TableProps.SelectionState<T>) => string",
-              "parameters": [
-                {
-                  "name": "data",
-                  "type": "TableProps.SelectionState<T>",
-                },
-              ],
-              "returnType": "string",
-              "type": "function",
-            },
-            "name": "allItemsLoaderSelectionLabel",
-            "optional": true,
-            "type": "((data: TableProps.SelectionState<T>) => string)",
           },
           {
             "inlineType": {
@@ -25398,7 +25380,7 @@ in tables with data grouping.
           },
           {
             "inlineType": {
-              "name": "(data: TableProps.SelectionState<T>, row: T) => string",
+              "name": "(data: TableProps.SelectionState<T>, row: T | null) => string",
               "parameters": [
                 {
                   "name": "data",
@@ -25406,7 +25388,7 @@ in tables with data grouping.
                 },
                 {
                   "name": "row",
-                  "type": "T",
+                  "type": "T | null",
                 },
               ],
               "returnType": "string",
@@ -25414,7 +25396,7 @@ in tables with data grouping.
             },
             "name": "itemLoaderSelectionLabel",
             "optional": true,
-            "type": "((data: TableProps.SelectionState<T>, row: T) => string)",
+            "type": "((data: TableProps.SelectionState<T>, row: T | null) => string)",
           },
           {
             "inlineType": {

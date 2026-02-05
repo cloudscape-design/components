@@ -38,7 +38,6 @@ export default () => {
           tableLabel: 'Transactions table',
           selectionGroupLabel: 'Transactions selection',
           allItemsSelectionLabel: getSelectionAriaLabel,
-          allItemsLoaderSelectionLabel: getLoaderSelectionAriaLabel,
           itemSelectionLabel: getSelectionAriaLabel,
           itemLoaderSelectionLabel: getLoaderSelectionAriaLabel,
         }}

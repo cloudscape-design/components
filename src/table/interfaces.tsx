@@ -198,9 +198,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *  * `selectedItems` (Item[]) - corresponds to table's `selectedItems`.
    *  * `itemsCount` (optional, number) - corresponds to `expandableRows.totalItemsCount` or `totalItemsCount`.
    *  * `selectedItemsCount` (optional, number) - corresponds to `expandableRows.totalSelectedItemsCount` or `selectedItems.length`.
-   * * `allItemsLoaderSelectionLabel`: ((SelectionState) => string) - Specifies the alternative text for root resource loader selector
-   * in tables with data grouping.
-   * * `itemLoaderSelectionLabel`: ((SelectionState, Item) => string) - Specifies the alternative text for item resource loader selector
+   * * `itemLoaderSelectionLabel`: ((SelectionState, Item) => string) - Specifies the alternative text for resource loader selector
    * in tables with data grouping.
    * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
@@ -535,8 +533,7 @@ export namespace TableProps {
   export interface AriaLabels<T> {
     allItemsSelectionLabel?: (data: SelectionState<T>) => string;
     itemSelectionLabel?: (data: SelectionState<T>, row: T) => string;
-    allItemsLoaderSelectionLabel?: (data: SelectionState<T>) => string;
-    itemLoaderSelectionLabel?: (data: SelectionState<T>, row: T) => string;
+    itemLoaderSelectionLabel?: (data: SelectionState<T>, row: null | T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
     resizerRoleDescription?: string;

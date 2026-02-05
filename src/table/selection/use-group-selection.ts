@@ -128,9 +128,10 @@ export function useGroupSelection<T>({
       checked: item ? selectionTree.isItemSelected(item) : selectionTree.getState().inverted,
       indeterminate: false,
       onChange: createLoaderToggleHandle(item),
-      ariaLabel: item
-        ? joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.itemLoaderSelectionLabel?.({ selectedItems }, item))
-        : joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsLoaderSelectionLabel?.({ selectedItems })),
+      ariaLabel: joinStrings(
+        ariaLabels?.selectionGroupLabel,
+        ariaLabels?.itemLoaderSelectionLabel?.({ selectedItems }, item)
+      ),
     }),
   };
 }

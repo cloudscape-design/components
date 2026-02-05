@@ -32,7 +32,7 @@ export function getSelectionAriaLabel(
   return !item ? state : isGroupRow(item) ? `${state} from ${formatGroup(item)}` : formatGroup(item);
 }
 
-export function getLoaderSelectionAriaLabel(_: unknown, item?: TransactionRow) {
+export function getLoaderSelectionAriaLabel(_: unknown, item: null | TransactionRow) {
   return item ? `more transactions for ${formatGroup(item)}` : 'more transactions';
 }
 
