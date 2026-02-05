@@ -5,20 +5,46 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import ErrorBoundary, { ErrorBoundaryProps } from '../../../lib/components/error-boundary';
+import { BuiltInErrorBoundaryProps } from '../../../lib/components/error-boundary/interfaces';
 import { BuiltInErrorBoundary } from '../../../lib/components/error-boundary/internal';
-import { refreshPage } from '../../../lib/components/error-boundary/utils';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-jest.mock('../../../lib/components/error-boundary/utils', () => ({
-  ...jest.requireActual('../../../lib/components/error-boundary/utils'),
-  refreshPage: jest.fn(),
-}));
-
 type RenderProps = Omit<
-  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> },
+  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> } & {
+    [key: `data-${string}`]: string;
+  },
   'children'
 >;
+
+type BoundaryTestSpec = Omit<ErrorBoundaryProps, 'children'> | Omit<BuiltInErrorBoundaryProps, 'children'>;
+
+function createBoundary(id: string, other: Partial<ErrorBoundaryProps>): BoundaryTestSpec {
+  return {
+    i18nStrings: { headerText: id },
+    errorBoundaryId: id,
+    onError: jest.fn(),
+    ...other,
+  };
+}
+function createBuiltInBoundary(props: Partial<BuiltInErrorBoundaryProps>): BoundaryTestSpec {
+  return { wrapper: content => <div>built-in({content})</div>, ...props };
+}
+
+function Recursive({ boundaries }: { boundaries: BoundaryTestSpec[] }) {
+  if (boundaries.length === 0) {
+    return <div>{{}}</div>;
+  }
+  const props = {
+    ...boundaries[0],
+    children: (
+      <div>
+        <Recursive boundaries={boundaries.slice(1)} />
+      </div>
+    ),
+  };
+  return 'onError' in props ? <ErrorBoundary {...props} /> : <BuiltInErrorBoundary {...props} />;
+}
 
 function renderWithErrorBoundary(children: React.ReactNode, props?: RenderProps) {
   const onError = jest.fn();
@@ -370,31 +396,57 @@ describe('error propagation and suppressNested', () => {
     });
   });
 
-  test('deep-suppresses nested error boundaries', () => {
-    const onErrorL1 = jest.fn();
-    const onErrorL2 = jest.fn();
-    const onErrorL3 = jest.fn();
-    render(
-      <ErrorBoundary onError={onErrorL1} i18nStrings={{ headerText: 'l1' }} errorBoundaryId="l1" suppressNested={true}>
-        <div>
-          <ErrorBoundary onError={onErrorL2} i18nStrings={{ headerText: 'l2' }} errorBoundaryId="l2">
-            <div>
-              <ErrorBoundary onError={onErrorL3} i18nStrings={{ headerText: 'l3' }} errorBoundaryId="l3">
-                <div>{{}}</div>
-              </ErrorBoundary>
-            </div>
-          </ErrorBoundary>
-        </div>
-      </ErrorBoundary>
-    );
-    expect(findHeader().getElement()).toHaveTextContent('l1');
-    expect(onErrorL1).toHaveBeenCalledWith({
-      error: expect.any(Error),
-      errorInfo: expect.any(Object),
-      errorBoundaryId: 'l1',
-    });
-    expect(onErrorL2).not.toHaveBeenCalled();
-    expect(onErrorL3).not.toHaveBeenCalled();
+  test.each<{ description: string; boundaries: BoundaryTestSpec[]; expected: string }>([
+    {
+      description: 'suppresses boundaries deeply',
+      boundaries: [
+        createBoundary('l1', { suppressNested: true }),
+        createBoundary('l2', { suppressible: true }),
+        createBoundary('l3', { suppressible: true }),
+      ],
+      expected: 'l1',
+    },
+    {
+      description: 'does not suppress boundary with suppressible=false',
+      boundaries: [
+        createBoundary('l1', { suppressNested: true }),
+        createBoundary('l2', { suppressible: true }),
+        createBoundary('l3', { suppressible: false }),
+      ],
+      expected: 'l3',
+    },
+    {
+      description: 'does not suppress boundary under suppressible=false',
+      boundaries: [
+        createBoundary('l1', { suppressNested: true }),
+        createBoundary('l2', { suppressible: false }),
+        createBoundary('l3', { suppressible: true }),
+      ],
+      expected: 'l3',
+    },
+    {
+      description: 'can use suppress nested and suppressible together',
+      boundaries: [
+        createBoundary('l1', { suppressNested: true }),
+        createBoundary('l2', { suppressNested: true, suppressible: false }),
+        createBoundary('l3', { suppressible: true }),
+      ],
+      expected: 'l2',
+    },
+  ])('suppressNested and suppressible: $description', ({ boundaries, expected }) => {
+    render(<Recursive boundaries={boundaries} />);
+    expect(findHeader().getElement()).toHaveTextContent(expected);
+    for (const { onError, errorBoundaryId } of boundaries.filter(b => 'onError' in b)) {
+      if (errorBoundaryId === expected) {
+        expect(onError).toHaveBeenCalledWith({
+          error: expect.any(Error),
+          errorInfo: expect.any(Object),
+          errorBoundaryId,
+        });
+      } else {
+        expect(onError).not.toHaveBeenCalled();
+      }
+    }
   });
 
   test('recovers from error when re-rendering a component with error boundary using a different React key', () => {
@@ -461,29 +513,50 @@ describe('built-in error boundaries', () => {
     });
   });
 
-  test('built-in error boundaries are suppressed when suppress nested is used on standalone error boundary', () => {
-    const onError = jest.fn();
-    render(
-      <div id="outer-div">
-        <ErrorBoundary onError={onError} i18nStrings={{ headerText: 'x' }} errorBoundaryId="x" suppressNested={true}>
-          <div id="inner-div">
-            <BuiltInErrorBoundary>
-              <BuiltInErrorBoundary>
-                <div>{{}}</div>
-              </BuiltInErrorBoundary>
-            </BuiltInErrorBoundary>
-          </div>
-        </ErrorBoundary>
-      </div>
-    );
-    expect(createWrapper().find('#inner-div')).toBe(null);
-    expect(createWrapper().find('#outer-div')).not.toBe(null);
-    expect(createWrapper().find('#outer-div')!.findErrorBoundary()!.findHeader().getElement()).toHaveTextContent('x');
-    expect(onError).toHaveBeenCalledWith({
-      error: expect.any(Error),
-      errorInfo: expect.any(Object),
-      errorBoundaryId: 'x',
-    });
+  test.each<{ description: string; boundaries: BoundaryTestSpec[]; expected: string }>([
+    {
+      description: 'suppresses built-in boundaries deeply',
+      boundaries: [
+        createBoundary('standalone', { suppressNested: true }),
+        createBuiltInBoundary({}),
+        createBuiltInBoundary({}),
+      ],
+      expected: 'standalone',
+    },
+    {
+      description: 'suppresses built-in boundary under suppressible=true',
+      boundaries: [
+        createBoundary('outer', { suppressNested: true }),
+        createBuiltInBoundary({}),
+        createBoundary('inner', { suppressible: true }),
+        createBuiltInBoundary({}),
+      ],
+      expected: 'outer',
+    },
+    {
+      description: 'does not suppress built-in boundary under suppressible=false',
+      boundaries: [
+        createBoundary('outer', { suppressNested: true }),
+        createBuiltInBoundary({}),
+        createBoundary('inner', { suppressible: false }),
+        createBuiltInBoundary({}),
+      ],
+      expected: 'built-in(inner)',
+    },
+  ])('suppressing built-in boundaries, $description', ({ boundaries, expected }) => {
+    render(<Recursive boundaries={boundaries} />);
+    expect(findBoundary()!.getElement().parentElement!.textContent).toBe(expected);
+    for (const { onError, errorBoundaryId } of boundaries.filter(b => 'onError' in b)) {
+      if (errorBoundaryId && expected.includes(errorBoundaryId)) {
+        expect(onError).toHaveBeenCalledWith({
+          error: expect.any(Error),
+          errorInfo: expect.any(Object),
+          errorBoundaryId,
+        });
+      } else {
+        expect(onError).not.toHaveBeenCalled();
+      }
+    }
   });
 
   test('built-in error boundaries are suppressed when suppress nested is used on built-in error boundary', () => {
@@ -539,10 +612,56 @@ describe('built-in error boundaries', () => {
 });
 
 describe('default behaviors', () => {
+  let originalLocation: PropertyDescriptor | undefined;
+
+  beforeEach(() => {
+    originalLocation = Object.getOwnPropertyDescriptor(window, 'location');
+  });
+
+  afterEach(() => {
+    if (originalLocation) {
+      Object.defineProperty(window, 'location', originalLocation);
+    }
+  });
+
   test('window reload is called when the refresh action is clicked', () => {
+    const mockReload = jest.fn();
+    Object.defineProperty(window, 'location', { configurable: true, value: { reload: mockReload } });
+
     renderWithErrorBoundary(<b>{{}}</b>);
     findRefreshAction()!.click();
-    expect(refreshPage).toHaveBeenCalledTimes(1);
+    expect(mockReload).toHaveBeenCalledTimes(1);
+  });
+
+  test('hides default refresh in cross-origin iframes', () => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: {
+        get href() {
+          throw new Error();
+        },
+      },
+    });
+
+    renderWithErrorBoundary(<b>{{}}</b>);
+    expect(findRefreshAction()).toBe(null);
+  });
+});
+
+describe('base props passing to fallback', () => {
+  test('class name is added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { className: 'test' });
+    expect(findBoundary()!.getElement()).toHaveClass('test');
+  });
+
+  test('data-attributes are added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'data-resource-guidance': 'off' });
+    expect(findBoundary()!.getElement().dataset.resourceGuidance).toBe('off');
+  });
+
+  test('other attributes are not added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'aria-label': 'label' } as any);
+    expect(findBoundary()!.getElement()).not.toHaveAttribute('aria-label');
   });
 });
 

@@ -162,6 +162,7 @@ function createItems(options: Options) {
         type: 'child',
         disabled: option.disabled || rest.disabled,
         option,
+        parent: group,
       };
 
       items.push(childOption);
