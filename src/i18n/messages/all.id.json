@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
     "i18nStrings.datePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.isoDatePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.slashedDatePlaceholder": "HH/BB/TTTT",
     "i18nStrings.timePlaceholder": "jj:mm:dd",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",

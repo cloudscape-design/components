@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
     "i18nStrings.datePlaceholder": "DD/MM/YYYY",
+    "i18nStrings.isoDatePlaceholder": "DD-MM-YYYY",
+    "i18nStrings.slashedDatePlaceholder": "DD/MM/YYYY",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "For date, use DD/MM/YYYY. For time, use 24-hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",

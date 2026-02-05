@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "Data de término",
     "i18nStrings.endTimeLabel": "Horário de término",
     "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para data, use AAAA/MM/DD.",

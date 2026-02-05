@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "終了日",
     "i18nStrings.endTimeLabel": "終了時刻",
     "i18nStrings.datePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",
     "i18nStrings.dateConstraintText": "日付には YYYY/MM/DD を使用してください。",

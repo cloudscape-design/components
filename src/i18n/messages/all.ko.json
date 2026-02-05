@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "종료 날짜",
     "i18nStrings.endTimeLabel": "종료 시간",
     "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
     "i18nStrings.dateConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다.",

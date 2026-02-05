@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "تاريخ الانتهاء",
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
     "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
     "i18nStrings.dateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",

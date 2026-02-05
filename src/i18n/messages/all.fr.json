@@ -159,6 +159,8 @@
     "i18nStrings.endDateLabel": "Date de fin",
     "i18nStrings.endTimeLabel": "Heure de fin",
     "i18nStrings.datePlaceholder": "JJ/MM/AAAA",
+    "i18nStrings.isoDatePlaceholder": "JJ-MM-AAAA",
+    "i18nStrings.slashedDatePlaceholder": "JJ/MM/AAAA",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
     "i18nStrings.dateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",

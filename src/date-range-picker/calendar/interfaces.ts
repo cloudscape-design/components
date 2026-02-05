@@ -29,6 +29,8 @@ export type RangeCalendarI18nStrings = Pick<
   | 'slashedMonthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
   | 'datePlaceholder'
+  | 'isoDatePlaceholder'
+  | 'slashedDatePlaceholder'
   | 'timePlaceholder'
 >;
 
