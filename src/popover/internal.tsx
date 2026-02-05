@@ -29,8 +29,8 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
   isInline?: boolean;
-  visible?: boolean;
-  onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
+  __visible?: boolean;
+  __onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
 }
 
 export default React.forwardRef(InternalPopover);
@@ -55,8 +55,8 @@ function InternalPopover(
     __onOpen,
     __internalRootRef,
     __closeAnalyticsAction,
-    visible: controlledVisible,
-    onVisibleChange,
+    __visible: controlledVisible,
+    __onVisibleChange: onVisibleChange,
 
     ...restProps
   }: InternalPopoverProps,

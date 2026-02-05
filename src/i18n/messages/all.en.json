@@ -158,8 +158,6 @@
     "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
-    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
-    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
     "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
@@ -181,10 +179,6 @@
     "i18nStrings.headerText": "Unexpected error, content failed to show",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.} other {Refresh to try again.}}",
     "i18nStrings.refreshActionText": "Refresh page"
-  },
-  "features-notification-drawer": {
-    "i18nStrings.title": "Latest feature releases",
-    "i18nStrings.viewAll": "View all feature releases"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",
