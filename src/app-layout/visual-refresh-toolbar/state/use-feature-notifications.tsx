@@ -6,7 +6,12 @@ import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { persistFeatureNotifications, retrieveFeatureNotifications } from '../../../internal/persistence';
 import awsuiPlugins from '../../../internal/plugins';
-import { Feature, FeatureNotificationsPayload, WidgetMessage } from '../../../internal/plugins/widget/interfaces';
+import {
+  Feature,
+  FeatureNotificationsPayload,
+  FeatureNotificationsPersistenceConfig,
+  WidgetMessage,
+} from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
 interface RenderLatestFeaturePromptProps {
@@ -101,18 +106,24 @@ export function useFeatureNotifications() {
       if (!payload?.persistenceConfig) {
         return;
       }
-      retrieveFeatureNotifications(payload?.persistenceConfig).then(seenFeatureNotifications => {
-        setSeenFeatures(seenFeatureNotifications);
-        const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
-        if (hasUnseenFeatures) {
-          if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
-            featurePromptRef.current?.show();
+      const __retrieveFeatureNotifications:
+        | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
+        | undefined = (payload as any)?.__retrieveFeatureNotifications;
+
+      (__retrieveFeatureNotifications || retrieveFeatureNotifications)(payload?.persistenceConfig).then(
+        seenFeatureNotifications => {
+          setSeenFeatures(seenFeatureNotifications);
+          const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
+          if (hasUnseenFeatures) {
+            if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
+              featurePromptRef.current?.show();
+            }
+            awsuiPlugins.appLayout.updateDrawer({ id: payload.id, badge: true });
+          } else {
+            setMarkAllAsRead(true);
           }
-          awsuiPlugins.appLayout.updateDrawer({ id: payload.id, badge: true });
-        } else {
-          setMarkAllAsRead(true);
         }
-      });
+      );
       return;
     }
 
@@ -182,7 +193,13 @@ export function useFeatureNotifications() {
     }, {});
     const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
     const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
-    persistFeatureNotifications(featureNotificationsData.persistenceConfig, allFeaturesMap).then(() => {
+    const __persistFeatureNotifications:
+      | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
+      | undefined = (featureNotificationsData as any)?.__persistFeatureNotifications;
+    (__persistFeatureNotifications ?? persistFeatureNotifications)(
+      featureNotificationsData.persistenceConfig,
+      allFeaturesMap
+    ).then(() => {
       awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
       setMarkAllAsRead(true);
     });

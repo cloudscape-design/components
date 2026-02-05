@@ -7,7 +7,10 @@ import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
 import { setPersistenceFunctionsForTesting } from '~components/internal/persistence';
-import { registerFeatureNotifications } from '~components/internal/plugins/widget';
+import {
+  FeatureNotificationsPersistenceConfig,
+  registerFeatureNotifications,
+} from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
 import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/content-blocks';
@@ -111,6 +114,35 @@ registerFeatureNotifications({
   persistenceConfig: {
     uniqueKey: 'feature-notifications',
     crossServicePersistence: false,
+  },
+  // DON'T USE
+  ...{
+    __persistFeatureNotifications: async function (
+      persistenceConfig: FeatureNotificationsPersistenceConfig,
+      value: Record<string, string>
+    ) {
+      const result = await new Promise<void>(resolve =>
+        setTimeout(() => {
+          localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
+          resolve();
+        }, 150)
+      );
+      return result;
+    },
+    __retrieveFeatureNotifications: async function (persistenceConfig: FeatureNotificationsPersistenceConfig) {
+      const result = await new Promise<Record<string, string>>(resolve =>
+        setTimeout(
+          () =>
+            resolve(
+              localStorage.getItem(persistenceConfig.uniqueKey)
+                ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
+                : {}
+            ),
+          150
+        )
+      );
+      return result;
+    },
   },
 });
 

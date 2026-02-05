@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
-import { FeaturePromptProps } from '../../do-not-use/feature-prompt';
 import { NonCancelableEventHandler } from '../../events';
 
 interface Message<Type, Payload> {
@@ -66,6 +65,11 @@ export interface Feature<T> {
   releaseDate: Date;
 }
 
+export interface FeatureNotificationsPersistenceConfig {
+  uniqueKey: string;
+  crossServicePersistence?: boolean;
+}
+
 export interface FeatureNotificationsPayload<T> {
   id: string;
   suppressFeaturePrompt?: boolean;
@@ -81,7 +85,7 @@ export interface FeatureNotificationsPayload<T> {
    * * Should be false for consoles
    * @awsuiSystem console
    */
-  persistenceConfig?: FeaturePromptProps.PersistenceConfig;
+  persistenceConfig?: FeatureNotificationsPersistenceConfig;
 }
 
 export type RegisterDrawerMessage = Message<'registerLeftDrawer' | 'registerBottomDrawer', DrawerPayload>;
