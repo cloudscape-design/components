@@ -76,6 +76,11 @@ describeEachAppLayout(({ size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
   });
 
+  test('runtime drawer triggerless does not crash page', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, trigger: undefined });
+    await expect(renderComponent(<AppLayout />)).resolves.not.toThrow();
+  });
+
   test('runtime drawers integration can be dynamically enabled and disabled', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
     const { wrapper, rerender } = await renderComponent(<AppLayout />);

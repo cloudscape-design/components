@@ -7,17 +7,13 @@ import { render } from '@testing-library/react';
 import ErrorBoundary, { ErrorBoundaryProps } from '../../../lib/components/error-boundary';
 import { BuiltInErrorBoundaryProps } from '../../../lib/components/error-boundary/interfaces';
 import { BuiltInErrorBoundary } from '../../../lib/components/error-boundary/internal';
-import { refreshPage } from '../../../lib/components/error-boundary/utils';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-jest.mock('../../../lib/components/error-boundary/utils', () => ({
-  ...jest.requireActual('../../../lib/components/error-boundary/utils'),
-  refreshPage: jest.fn(),
-}));
-
 type RenderProps = Omit<
-  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> },
+  Partial<ErrorBoundaryProps> & { i18nProvider?: Record<string, Record<string, string>> } & {
+    [key: `data-${string}`]: string;
+  },
   'children'
 >;
 
@@ -616,10 +612,56 @@ describe('built-in error boundaries', () => {
 });
 
 describe('default behaviors', () => {
+  let originalLocation: PropertyDescriptor | undefined;
+
+  beforeEach(() => {
+    originalLocation = Object.getOwnPropertyDescriptor(window, 'location');
+  });
+
+  afterEach(() => {
+    if (originalLocation) {
+      Object.defineProperty(window, 'location', originalLocation);
+    }
+  });
+
   test('window reload is called when the refresh action is clicked', () => {
+    const mockReload = jest.fn();
+    Object.defineProperty(window, 'location', { configurable: true, value: { reload: mockReload } });
+
     renderWithErrorBoundary(<b>{{}}</b>);
     findRefreshAction()!.click();
-    expect(refreshPage).toHaveBeenCalledTimes(1);
+    expect(mockReload).toHaveBeenCalledTimes(1);
+  });
+
+  test('hides default refresh in cross-origin iframes', () => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: {
+        get href() {
+          throw new Error();
+        },
+      },
+    });
+
+    renderWithErrorBoundary(<b>{{}}</b>);
+    expect(findRefreshAction()).toBe(null);
+  });
+});
+
+describe('base props passing to fallback', () => {
+  test('class name is added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { className: 'test' });
+    expect(findBoundary()!.getElement()).toHaveClass('test');
+  });
+
+  test('data-attributes are added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'data-resource-guidance': 'off' });
+    expect(findBoundary()!.getElement().dataset.resourceGuidance).toBe('off');
+  });
+
+  test('other attributes are not added to the fallback', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, { 'aria-label': 'label' } as any);
+    expect(findBoundary()!.getElement()).not.toHaveAttribute('aria-label');
   });
 });
 
