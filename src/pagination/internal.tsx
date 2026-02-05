@@ -348,11 +348,11 @@ const InternalPagination = React.forwardRef(
                 <InternalPopover
                   size="medium"
                   dismissButton={false}
-                  visible={popoverVisible}
+                  __visible={popoverVisible}
                   content={jumpToPageError ?? defaultI18nStrings.jumpToPageError}
                   position="bottom"
                   triggerType="custom"
-                  onVisibleChange={({ detail }) => setPopoverVisible(detail.visible)}
+                  __onVisibleChange={({ detail }) => setPopoverVisible(detail.visible)}
                 >
                   {jumpToPageButton}
                 </InternalPopover>
