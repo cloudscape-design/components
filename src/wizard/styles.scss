@@ -21,6 +21,7 @@
 
   &.small-container {
     grid-template-columns: minmax(0, 1fr) 0;
+    grid-template-rows: auto auto 1fr;
     row-gap: awsui.$space-scaled-l;
   }
 }
@@ -244,6 +245,7 @@
   &.small-container {
     > .form-header {
       grid-column: 1 / span 2;
+      grid-row: 2;
     }
 
     > .form-header > .form-header-content {
@@ -252,6 +254,7 @@
 
     > .form-component {
       grid-column: 1 / span 2;
+      grid-row: 3;
     }
   }
 }
@@ -261,6 +264,8 @@
 }
 
 .collapsed-steps {
+  grid-column: 1 / span 2;
+  grid-row: 1;
   padding-block-start: awsui.$space-scaled-xxs;
 }
 

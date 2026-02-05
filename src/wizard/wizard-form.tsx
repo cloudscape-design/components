@@ -24,15 +24,12 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
-import WizardStepNavigationExpandable from './wizard-step-navigation-expandable';
 
 import styles from './styles.css.js';
 
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
-  farthestStepIndex: number;
-  showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
   isPrimaryLoading: boolean;
@@ -42,10 +39,7 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onCancelClick: () => void;
   onPreviousClick: () => void;
   onPrimaryClick: () => void;
-  onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
-  isStepNavigationExpanded: boolean;
-  onStepNavigationExpandChange: (expanded: boolean) => void;
 }
 
 export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`;
@@ -79,8 +73,6 @@ function WizardForm({
   stepHeaderRef,
   steps,
   activeStepIndex,
-  farthestStepIndex,
-  showCollapsedSteps,
   i18nStrings,
   submitButtonText,
   isPrimaryLoading,
@@ -90,10 +82,7 @@ function WizardForm({
   onCancelClick,
   onPreviousClick,
   onPrimaryClick,
-  onStepClick,
   onSkipToClick,
-  isStepNavigationExpanded,
-  onStepNavigationExpandChange,
 }: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
   const rootRef = useRef<HTMLElement>();
   const ref = useMergeRefs(rootRef, __internalRootRef);
@@ -136,27 +125,9 @@ function WizardForm({
     }
   }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId, funnelStepInfo]);
 
-  const stepNavigationProps = {
-    activeStepIndex,
-    farthestStepIndex,
-    allowSkipTo,
-    i18nStrings,
-    isLoadingNextStep: isPrimaryLoading,
-    onStepClick,
-    onSkipToClick,
-    steps,
-    expanded: isStepNavigationExpanded,
-    onExpandChange: onStepNavigationExpandChange,
-  };
-
   return (
     <>
       <WizardFormHeader>
-        {showCollapsedSteps && (
-          <div className={styles['collapsed-steps']}>
-            <WizardStepNavigationExpandable {...stepNavigationProps} />
-          </div>
-        )}
         <InternalHeader
           className={styles['form-header-component']}
           variant="h1"

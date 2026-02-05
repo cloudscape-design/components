@@ -27,6 +27,7 @@ import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/
 import { WizardProps } from './interfaces';
 import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
 import WizardNavigation from './wizard-navigation';
+import WizardStepNavigationExpandable from './wizard-step-navigation-expandable';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -194,27 +195,38 @@ export default function InternalWizard({
           onSkipToClick={onSkipToClick}
           steps={steps}
         />
+        {smallContainer && (
+          <div className={styles['collapsed-steps']}>
+            <WizardStepNavigationExpandable
+              activeStepIndex={actualActiveStepIndex}
+              farthestStepIndex={farthestStepIndex.current}
+              allowSkipTo={allowSkipTo}
+              i18nStrings={i18nStrings}
+              isLoadingNextStep={isLoadingNextStep}
+              onStepClick={onStepClick}
+              onSkipToClick={onSkipToClick}
+              steps={steps}
+              expanded={isStepNavigationExpanded}
+              onExpandChange={setIsStepNavigationExpanded}
+            />
+          </div>
+        )}
         <div
           className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
         >
           <WizardForm
             steps={steps}
-            showCollapsedSteps={smallContainer}
             i18nStrings={i18nStrings}
             submitButtonText={submitButtonText}
             activeStepIndex={actualActiveStepIndex}
-            farthestStepIndex={farthestStepIndex.current}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}
             customPrimaryActions={customPrimaryActions}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}
-            onStepClick={onStepClick}
             onSkipToClick={onSkipToClick}
             onPrimaryClick={onPrimaryClick}
-            isStepNavigationExpanded={isStepNavigationExpanded}
-            onStepNavigationExpandChange={setIsStepNavigationExpanded}
           />
         </div>
       </div>
