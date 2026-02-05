@@ -24,13 +24,15 @@ export default function Card({
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
+  const headerRowEmpty = !header && !description && !icon && !actions;
+
   return (
     <div
       className={clsx(
         className,
         styles.root,
         selected && styles.selected,
-        !header && !description && !icon && styles['no-header'],
+        headerRowEmpty && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
       )}
