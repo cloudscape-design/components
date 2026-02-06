@@ -194,39 +194,40 @@ const DatePicker = React.forwardRef(
             expandToViewport={expandToViewport}
             scrollable={false}
             dropdownId={dropdownId}
-          >
-            {isDropDownOpen && (
-              <FocusLock className={styles['focus-lock']} autoFocus={true}>
-                <div tabIndex={0} className={styles.calendar} role="dialog">
-                  <InternalCalendar
-                    value={value}
-                    onChange={e => {
-                      fireNonCancelableEvent(onChange, e.detail);
-                      buttonRef?.current?.focus();
-                      setIsDropDownOpen(false);
-                    }}
-                    locale={normalizedLocale}
-                    startOfWeek={startOfWeek}
-                    ariaDescribedby={calendarDescriptionId}
-                    ariaLabel={ariaLabel}
-                    ariaLabelledby={ariaLabelledby}
-                    granularity={granularity}
-                    isDateEnabled={isDateEnabled}
-                    dateDisabledReason={dateDisabledReason}
-                    i18nStrings={{
-                      ...i18nStrings,
-                      todayAriaLabel: i18nStrings?.todayAriaLabel ?? todayAriaLabel,
-                      nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
-                      previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
-                    }}
-                  />
-                  <InternalLiveRegion id={calendarDescriptionId} hidden={true} tagName="span">
-                    {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
-                  </InternalLiveRegion>
-                </div>
-              </FocusLock>
-            )}
-          </Dropdown>
+            content={
+              isDropDownOpen ? (
+                <FocusLock className={styles['focus-lock']} autoFocus={true}>
+                  <div tabIndex={0} className={styles.calendar} role="dialog">
+                    <InternalCalendar
+                      value={value}
+                      onChange={e => {
+                        fireNonCancelableEvent(onChange, e.detail);
+                        buttonRef?.current?.focus();
+                        setIsDropDownOpen(false);
+                      }}
+                      locale={normalizedLocale}
+                      startOfWeek={startOfWeek}
+                      ariaDescribedby={calendarDescriptionId}
+                      ariaLabel={ariaLabel}
+                      ariaLabelledby={ariaLabelledby}
+                      granularity={granularity}
+                      isDateEnabled={isDateEnabled}
+                      dateDisabledReason={dateDisabledReason}
+                      i18nStrings={{
+                        ...i18nStrings,
+                        todayAriaLabel: i18nStrings?.todayAriaLabel ?? todayAriaLabel,
+                        nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
+                        previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
+                      }}
+                    />
+                    <InternalLiveRegion id={calendarDescriptionId} hidden={true} tagName="span">
+                      {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
+                    </InternalLiveRegion>
+                  </div>
+                </FocusLock>
+              ) : undefined
+            }
+          />
         )}
       </div>
     );

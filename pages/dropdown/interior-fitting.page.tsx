@@ -41,25 +41,25 @@ export default function DropdownScenario() {
             }
             open={openParent1}
             onDropdownClose={() => setOpenParent1(false)}
-          >
-            <ul className={styles.list}>
-              <li id="childDropdown1">
-                <Dropdown
-                  interior={true}
-                  stretchWidth={false}
-                  trigger={
-                    <div className="trigger" onClick={() => setOpenChild1(!openChild1)}>
-                      Expandable trigger
-                    </div>
-                  }
-                  open={openChild1}
-                  onDropdownClose={() => setOpenChild1(false)}
-                >
-                  <ListContent n={5} withSpaces={true} repeat={8} />
-                </Dropdown>
-              </li>
-            </ul>
-          </Dropdown>
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown1">
+                  <Dropdown
+                    interior={true}
+                    stretchWidth={false}
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild1(!openChild1)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild1}
+                    onDropdownClose={() => setOpenChild1(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
@@ -73,25 +73,25 @@ export default function DropdownScenario() {
             }
             open={openParent2}
             onDropdownClose={() => setOpenParent2(false)}
-          >
-            <ul className={styles.list} style={{ overflowY: 'auto', blockSize: '100px' }}>
-              <li id="childDropdown2">
-                <Dropdown
-                  interior={true}
-                  stretchWidth={false}
-                  trigger={
-                    <div className="trigger" onClick={() => setOpenChild2(!openChild2)}>
-                      Expandable trigger
-                    </div>
-                  }
-                  open={openChild2}
-                  onDropdownClose={() => setOpenChild2(false)}
-                >
-                  <ListContent n={5} withSpaces={true} repeat={8} />
-                </Dropdown>
-              </li>
-            </ul>
-          </Dropdown>
+            content={
+              <ul className={styles.list} style={{ overflowY: 'auto', blockSize: '100px' }}>
+                <li id="childDropdown2">
+                  <Dropdown
+                    interior={true}
+                    stretchWidth={false}
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild2(!openChild2)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild2}
+                    onDropdownClose={() => setOpenChild2(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
@@ -105,25 +105,25 @@ export default function DropdownScenario() {
             }
             open={openParent3}
             onDropdownClose={() => setOpenParent3(false)}
-          >
-            <ul className={styles.list}>
-              <li id="childDropdown3">
-                <Dropdown
-                  interior={true}
-                  stretchWidth={false}
-                  trigger={
-                    <div className="trigger" onClick={() => setOpenChild3(!openChild3)}>
-                      Expandable trigger
-                    </div>
-                  }
-                  open={openChild3}
-                  onDropdownClose={() => setOpenChild3(false)}
-                >
-                  <ListContent n={5} withSpaces={true} repeat={8} />
-                </Dropdown>
-              </li>
-            </ul>
-          </Dropdown>
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown3">
+                  <Dropdown
+                    interior={true}
+                    stretchWidth={false}
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild3(!openChild3)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild3}
+                    onDropdownClose={() => setOpenChild3(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
@@ -141,25 +141,25 @@ export default function DropdownScenario() {
             }
             open={openParent4}
             onDropdownClose={() => setOpenParent4(false)}
-          >
-            <ul className={styles.list}>
-              <li id="childDropdown4">
-                <Dropdown
-                  interior={true}
-                  stretchWidth={false}
-                  trigger={
-                    <div className="trigger" onClick={() => setOpenChild4(!openChild4)}>
-                      Expandable trigger
-                    </div>
-                  }
-                  open={openChild4}
-                  onDropdownClose={() => setOpenChild4(false)}
-                >
-                  <ListContent n={5} withSpaces={true} repeat={8} />
-                </Dropdown>
-              </li>
-            </ul>
-          </Dropdown>
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown4">
+                  <Dropdown
+                    interior={true}
+                    stretchWidth={false}
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild4(!openChild4)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild4}
+                    onDropdownClose={() => setOpenChild4(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
         </div>
       </div>
     </article>

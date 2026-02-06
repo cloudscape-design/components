@@ -33,9 +33,8 @@ export default function DropdownScenario() {
           }
           open={open1}
           onDropdownClose={() => setOpen1(false)}
-        >
-          <ListContent n={10} />
-        </Dropdown>
+          content={<ListContent n={10} />}
+        />
       </div>
       <div id="largeDropDown">
         <Dropdown
@@ -48,9 +47,8 @@ export default function DropdownScenario() {
           onDropdownClose={() => setOpen2(false)}
           header={<div style={{ blockSize: '30px' }} />}
           footer={<div className="footer" style={{ blockSize: '30px' }} />}
-        >
-          <ListContent n={100} />
-        </Dropdown>
+          content={<ListContent n={100} />}
+        />
       </div>
 
       <div style={{ blockSize: '400px' }} />
@@ -63,9 +61,8 @@ export default function DropdownScenario() {
           }
           open={open3}
           onDropdownClose={() => setOpen3(false)}
-        >
-          <ListContent n={10} />
-        </Dropdown>
+          content={<ListContent n={10} />}
+        />
       </div>
 
       <div style={{ blockSize: '400px' }} />
