@@ -6,7 +6,6 @@ import { AppLayout, Badge, Box, Button, Header, Icon, Link, SpaceBetween } from 
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
-import { setPersistenceFunctionsForTesting } from '~components/internal/persistence';
 import {
   FeatureNotificationsPersistenceConfig,
   registerFeatureNotifications,
@@ -17,32 +16,6 @@ import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
-
-setPersistenceFunctionsForTesting({
-  persistFeatureNotifications: async function (persistenceConfig, value) {
-    const result = await new Promise<void>(resolve =>
-      setTimeout(() => {
-        localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
-        resolve();
-      }, 150)
-    );
-    return result;
-  },
-  retrieveFeatureNotifications: async function (persistenceConfig) {
-    const result = await new Promise<Record<string, string>>(resolve =>
-      setTimeout(
-        () =>
-          resolve(
-            localStorage.getItem(persistenceConfig.uniqueKey)
-              ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
-              : {}
-          ),
-        150
-      )
-    );
-    return result;
-  },
-});
 
 registerFeatureNotifications({
   id: 'local-feature-notifications',
