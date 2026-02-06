@@ -12,6 +12,7 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
+import Card from '../internal/components/card';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
