@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
@@ -14,6 +14,9 @@ import {
 } from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
+interface UseFeatureNotificationsProps {
+  drawersIds: Array<string>;
+}
 interface RenderLatestFeaturePromptProps {
   triggerRef: RefObject<HTMLElement>;
 }
@@ -48,7 +51,7 @@ function filterOutdatedFeatures(features: Record<string, string>): Record<string
   }, {});
 }
 
-export function useFeatureNotifications() {
+export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsProps) {
   const i18n = useInternalI18n('features-notification-drawer');
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
@@ -57,6 +60,22 @@ export function useFeatureNotifications() {
   );
   const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
+  const shouldShowFeaturePrompt = useRef(false);
+
+  useEffect(() => {
+    if (
+      !shouldShowFeaturePrompt.current ||
+      !featureNotificationsData ||
+      !drawersIds?.length ||
+      !featurePromptRef.current
+    ) {
+      return;
+    }
+    if (drawersIds.includes(featureNotificationsData.id)) {
+      featurePromptRef?.current?.show();
+      shouldShowFeaturePrompt.current = false;
+    }
+  }, [drawersIds, featureNotificationsData]);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -116,7 +135,7 @@ export function useFeatureNotifications() {
           const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
           if (hasUnseenFeatures) {
             if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
-              featurePromptRef.current?.show();
+              shouldShowFeaturePrompt.current = true;
             }
             awsuiPlugins.appLayout.updateDrawer({ id: payload.id, badge: true });
           } else {

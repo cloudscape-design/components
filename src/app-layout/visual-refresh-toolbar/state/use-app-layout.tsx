@@ -205,7 +205,7 @@ export const useAppLayout = (
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
 
   const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
-    useFeatureNotifications();
+    useFeatureNotifications({ drawersIds: drawers?.map(drawer => drawer.id) ?? [] });
 
   const checkAIDrawerIdExists = (id: string) => {
     return aiDrawer?.id === id;
