@@ -11,7 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
 import TabTrap from '../internal/components/tab-trap/index.js';
 import { Transition, TransitionStatus } from '../internal/components/transition';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -27,9 +27,128 @@ import {
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { InternalDropdownProps } from './interfaces';
+import { ExpandToViewport } from './interfaces';
 
 import styles from './styles.css.js';
+
+/**
+ * Internal props used by the internal dropdown implementation.
+ * This maintains the original internal API for backward compatibility.
+ */
+interface InternalDropdownProps extends ExpandToViewport {
+  /**
+   * Trigger element.
+   */
+  trigger: React.ReactNode;
+  /**
+   * "Sticky" header of the dropdown content
+   */
+  header?: React.ReactNode;
+  /**
+   * Footer slot fixed at the bottom of the dropdown
+   */
+  footer?: React.ReactNode;
+  /**
+   * Dropdown content elements (passed as children).
+   */
+  children?: React.ReactNode;
+  /**
+   * Updating content key triggers dropdown position re-evaluation.
+   */
+  contentKey?: string;
+  /**
+   * Open state of the dropdown.
+   */
+  open?: boolean;
+  /**
+   * Called when a user clicks outside of the dropdown content, when it is open.
+   */
+  onDropdownClose?: NonCancelableEventHandler<null>;
+  /**
+   * Dropdown id
+   */
+  dropdownId?: string;
+  /**
+   * Stretches dropdown to occupy entire width.
+   */
+  stretchWidth?: boolean;
+  /**
+   * Stretches dropdown to occupy entire height.
+   */
+  stretchHeight?: boolean;
+
+  /**
+   * Stretches the trigger to the height of the dropdown container.
+   */
+  stretchTriggerHeight?: boolean;
+
+  /**
+   * Whether the dropdown content should be at least as wide as the trigger.
+   *
+   * @defaultValue true
+   */
+  stretchToTriggerWidth?: boolean;
+
+  /**
+   * Whether the dropdown content can grow beyond the width of the trigger.
+   */
+  stretchBeyondTriggerWidth?: boolean;
+
+  /**
+   * Determines that the dropdown should preferably be aligned to the center of the trigger
+   * instead of dropping left or right.
+   */
+  preferCenter?: boolean;
+
+  /**
+   * Sets the min width of the dropdown (in px)
+   */
+  minWidth?: number;
+  /**
+   * Whether the dropdown will have a scrollbar or not
+   */
+  scrollable?: boolean;
+
+  /**
+   * Whether the dropdown will have a focus loop including trigger, header, content and footer.
+   */
+  loopFocus?: boolean;
+
+  /**
+   * Called when focus enters the trigger or dropdown content.
+   */
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when focus leaves the trigger or dropdown content.
+   */
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * ID for the dropdown content wrapper
+   */
+  dropdownContentId?: string;
+  /**
+   * HTML role for the dropdown content wrapper
+   */
+  dropdownContentRole?: string;
+  /**
+   * Labelledby for the dropdown (required when role="dialog")
+   */
+  ariaLabelledby?: string;
+  /**
+   * Describedby for the dropdown (recommended when role="dialog")
+   */
+  ariaDescribedby?: string;
+  /**
+   * Whether this is an interior dropdown (flyout)
+   */
+  interior?: boolean;
+  /**
+   * Mouse down handler
+   */
+  onMouseDown?: React.MouseEventHandler;
+}
 
 type InternalDropdownPropsWithBase = InternalDropdownProps & InternalBaseComponentProps;
 
