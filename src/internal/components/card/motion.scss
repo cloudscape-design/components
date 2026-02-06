@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles' as styles;
-@use '../internal/styles/tokens' as awsui;
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
 
-.card-inner {
+.root {
   @include styles.with-motion {
     transition-property: background-color;
     transition-duration: awsui.$motion-duration-transition-show-paced;
@@ -14,7 +14,7 @@
   }
 }
 
-.card-inner::before {
+.root::before {
   @include styles.with-motion {
     transition-property: border-top-color, border-right-color, border-bottom-color, border-left-color;
     transition-duration: awsui.$motion-duration-transition-show-paced;

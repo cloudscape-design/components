@@ -34436,9 +34436,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
-for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
-is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
@@ -45071,9 +45068,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
-for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
-is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
