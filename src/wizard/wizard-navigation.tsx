@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalBox from '../box/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import InternalLink from '../link/internal';
@@ -97,6 +99,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
     styles['navigation-link'],
     status === StepStatusValues.Active ? styles['navigation-link-active'] : styles['navigation-link-disabled']
   );
+  const optionalDescriptionId = useUniqueId('wizard-step-optional-');
 
   return (
     <li
@@ -112,7 +115,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
         margin={{ bottom: 'xxs' }}
       >
         {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+        {step.isOptional && <i id={optionalDescriptionId}>{` - ${i18nStrings.optional}`}</i>}
       </InternalBox>
       <div>
         {status === StepStatusValues.Visited || status === StepStatusValues.Next ? (
@@ -127,6 +130,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
               }
             }}
             variant="primary"
+            nativeAttributes={step.isOptional ? { 'aria-describedby': optionalDescriptionId } : undefined}
           >
             {step.title}
           </InternalLink>
@@ -135,6 +139,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
             className={clsx(spanClassName, analyticsSelectors['step-title'])}
             aria-current={status === StepStatusValues.Active ? 'step' : undefined}
             aria-disabled={status === StepStatusValues.Active ? undefined : 'true'}
+            aria-describedby={step.isOptional ? optionalDescriptionId : undefined}
           >
             {step.title}
           </span>

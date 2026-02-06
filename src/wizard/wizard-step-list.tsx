@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import { getNavigationActionDetail } from './analytics-metadata/utils';
 import { WizardProps } from './interfaces';
 
@@ -144,8 +146,8 @@ function WizardStepListItem({
   const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
   const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
   const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
-  const optionalSuffix = step.isOptional ? ` - ${i18nStrings.optional}` : '';
-  const fullStepLabel = `${stepLabel}${optionalSuffix}: ${step.title}`;
+  const fullStepLabel = `${stepLabel}: ${step.title}`;
+  const optionalDescriptionId = useUniqueId('wizard-step-optional-');
   const state = {
     active: 'active',
     unvisited: 'disabled',
@@ -161,7 +163,7 @@ function WizardStepListItem({
 
       <span className={clsx(styles.number, styles['navigation-link-label'])}>
         {i18nStrings.stepNumberLabel?.(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+        {step.isOptional && <i id={optionalDescriptionId}>{` - ${i18nStrings.optional}`}</i>}
       </span>
 
       <a
@@ -193,6 +195,7 @@ function WizardStepListItem({
         role="button"
         tabIndex={isClickable ? 0 : undefined}
         aria-label={fullStepLabel}
+        aria-describedby={step.isOptional ? optionalDescriptionId : undefined}
         {...(status === StepStatusValues.Unvisited
           ? {}
           : getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`))}
