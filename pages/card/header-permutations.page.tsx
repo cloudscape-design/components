@@ -10,12 +10,29 @@ import PermutationsView from '../utils/permutations-view';
 import { actions, CardPage, icon, longContent, longDescription, longHeader, shortHeader } from './common';
 
 const permutations = createPermutations<InternalCardProps & { width?: number }>([
+  // With header
   {
-    header: [shortHeader, longHeader, undefined],
+    header: [shortHeader, longHeader],
     children: [longContent],
     description: [undefined, longDescription],
     actions: [undefined, actions],
     icon: [undefined, icon],
+  },
+  // Without header and without description
+  {
+    header: [undefined],
+    children: [longContent],
+    description: [undefined],
+    actions: [undefined, actions],
+    icon: [undefined, icon],
+  },
+  // Without header but with description
+  {
+    header: [undefined],
+    children: [longContent],
+    description: [longDescription],
+    actions: [undefined, actions],
+    icon: [undefined],
   },
 ]);
 
