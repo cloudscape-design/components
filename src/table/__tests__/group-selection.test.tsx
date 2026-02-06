@@ -116,7 +116,7 @@ describe('selection control labels', () => {
   };
   const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
 
-  test('adds selectionGroupLabel and allItemsSelectionLabel to select-all checkbox', () => {
+  test('adds allItemsSelectionLabel to select-all checkbox', () => {
     const { wrapper, rerender } = renderTable({
       expandableRows: createExpandableRows({ groupSelection: { inverted: false, toggledItems: [items[0]] } }),
       totalItemsCount: 3,

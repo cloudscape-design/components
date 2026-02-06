@@ -68,7 +68,7 @@ describe('selection control labels', () => {
   };
   const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
 
-  test('adds selectionGroupLabel and allItemsSelectionLabel to select-all checkbox', () => {
+  test('adds allItemsSelectionLabel to select-all checkbox', () => {
     const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels });
     expect(getSelectionA11yHeader(wrapper)).toBe(null);
     expect(wrapper.findSelectAllTrigger()!.getElement()).toHaveAttribute('aria-label', '1(1) of 3 selected');
