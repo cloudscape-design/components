@@ -36,7 +36,7 @@ export default function RangeInputs({
   const separator = isIso ? '-' : '/';
   const defaultDateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
   const datePlaceholder = isIso
-    ? i18nStrings?.isoDatePlaceholder
+    ? i18nStrings?.isoDatePlaceholder || defaultDateInputPlaceholder
     : i18nStrings?.slashedDatePlaceholder || defaultDateInputPlaceholder;
   const timePlaceholder = i18nStrings?.timePlaceholder || timeInputFormat;
   const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
