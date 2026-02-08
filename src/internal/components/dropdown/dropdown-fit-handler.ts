@@ -175,15 +175,14 @@ const getWidths = ({
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
 
   // Calculate effective min/max widths
-  const minWidth =
-    minWidthConstraint === 'trigger' || minWidthConstraint === undefined ? triggerInlineSize : minWidthConstraint;
+  const minWidth = minWidthConstraint === 'trigger' ? triggerInlineSize : (minWidthConstraint ?? 0);
 
   const maxWidth =
     maxWidthConstraint === 'trigger'
       ? triggerInlineSize
       : typeof maxWidthConstraint === 'number'
         ? maxWidthConstraint
-        : Math.max(defaultMaxDropdownWidth, triggerInlineSize);
+        : Number.MAX_VALUE;
 
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
   return { idealWidth, minWidth, triggerInlineSize };

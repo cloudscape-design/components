@@ -162,7 +162,7 @@ const Dropdown = ({
   stretchTriggerHeight = false,
   stretchWidth = true,
   stretchHeight = false,
-  minWidth = 'trigger',
+  minWidth,
   maxWidth,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stretchToTriggerWidth,
@@ -214,15 +214,17 @@ const Dropdown = ({
       // When stretchWidth is true and not using portal, occupy entire width
       target.classList.add(styles['occupy-entire-width']);
     } else {
-      // Only set explicit inline-size when using 'trigger' constraints (calculated in JS)
-      // When using numeric constraints, CSS min/max handle sizing automatically
-      const usesCSSConstraints = typeof minWidth === 'number' || typeof maxWidth === 'number';
-      if (usesCSSConstraints) {
+      // Determine width setting strategy
+      const hasNumericConstraints = typeof minWidth === 'number' || typeof maxWidth === 'number';
+      // const hasTriggerConstraints = minWidth === 'trigger' || maxWidth === 'trigger';
+
+      if (hasNumericConstraints) {
+        // Numeric constraints: use CSS min/max
         target.style.inlineSize = '';
         target.style.minInlineSize = typeof minWidth === 'number' ? `${minWidth}px` : '';
         target.style.maxInlineSize = typeof maxWidth === 'number' ? `${maxWidth}px` : '';
       } else {
-        // Use JS-calculated width for 'trigger' constraints
+        // No numeric constraints: use JS-calculated width (handles both undefined and 'trigger')
         target.style.inlineSize = position.inlineSize;
         target.style.minInlineSize = '';
         target.style.maxInlineSize = '';
@@ -301,11 +303,10 @@ const Dropdown = ({
   // If not, remove the class that allows stretching beyond trigger width
   const fixStretching = () => {
     const classNameToRemove = styles['stretch-beyond-trigger-width'];
-    // Only applies when maxWidth is not set to 'trigger' (meaning it can grow)
-    const canStretchBeyond = maxWidth !== 'trigger';
     if (
       open &&
-      canStretchBeyond &&
+      maxWidth === undefined &&
+      !stretchWidth &&
       dropdownRef.current &&
       triggerRef.current &&
       dropdownRef.current.classList.contains(classNameToRemove) &&
@@ -424,9 +425,11 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
-  // Don't apply stretch-beyond-trigger-width class when stretchWidth is true
-  const canStretchBeyondTrigger = maxWidth !== 'trigger' && !stretchWidth;
-  const useDefaultMaxWidth = maxWidth === undefined && !stretchWidth;
+  // Only apply stretch-beyond-trigger-width when we have at least one constraint defined
+  // This prevents the 100% fallback from affecting natural content sizing
+  const hasAnyConstraint = minWidth !== undefined || maxWidth !== undefined;
+  const canStretchBeyondTrigger = hasAnyConstraint && maxWidth !== 'trigger' && !stretchWidth;
+  const useDefaultMaxWidth = maxWidth === undefined && minWidth !== undefined && !stretchWidth;
 
   return (
     <div

@@ -103,8 +103,7 @@ export interface DropdownProps extends ExpandToViewport {
    * Minimum width constraint for the dropdown.
    * - Number: minimum width in pixels
    * - 'trigger': dropdown will be at least as wide as the trigger
-   *
-   * @defaultValue 'trigger'
+   * - undefined: no minimum constraint (natural content sizing)
    */
   minWidth?: DropdownWidthConstraint;
 
@@ -112,8 +111,7 @@ export interface DropdownProps extends ExpandToViewport {
    * Maximum width constraint for the dropdown.
    * - Number: maximum width in pixels
    * - 'trigger': dropdown cannot exceed the trigger width
-   *
-   * If not specified, dropdown can grow up to 465px by default.
+   * - undefined: no maximum constraint (natural content sizing)
    */
   maxWidth?: DropdownWidthConstraint;
 
