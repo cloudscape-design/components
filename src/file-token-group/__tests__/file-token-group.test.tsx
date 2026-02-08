@@ -228,7 +228,7 @@ describe('Tooltip', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
     fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
 
     fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
@@ -238,7 +238,7 @@ describe('Tooltip', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
     fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
 
     fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
@@ -248,7 +248,7 @@ describe('Tooltip', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
     fireEvent.focus(wrapper.findFileToken(1)!.findFileName().getElement());
-    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
 
     fireEvent.blur(wrapper.findFileToken(1)!.findFileName().getElement());
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();

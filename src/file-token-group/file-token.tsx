@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
@@ -91,18 +91,10 @@ function InternalFileToken({
     return false;
   }
 
-  useEffect(() => {
-    const checkTruncation = () => {
-      setIsTruncated(isEllipsisActive());
-    };
-
-    // Check immediately after mount
-    checkTruncation();
-
-    // Check on window resize
-    window.addEventListener('resize', checkTruncation);
-    return () => window.removeEventListener('resize', checkTruncation);
-  }, [file.name, showFileSize, showFileLastModified, showFileThumbnail, alignment]);
+  useResizeObserver(
+    () => fileNameContainerRef.current,
+    () => setIsTruncated(isEllipsisActive())
+  );
 
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
@@ -149,7 +141,7 @@ function InternalFileToken({
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
               <div
-                className={styles['file-name-button']}
+                className={styles['file-name-container']}
                 onMouseOver={() => setShowTooltip(true)}
                 onMouseOut={() => setShowTooltip(false)}
                 onFocus={() => setShowTooltip(true)}
