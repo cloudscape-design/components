@@ -5,6 +5,12 @@ import React from 'react';
 import { NonCancelableEventHandler } from '../../events';
 
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
+
+/**
+ * Width constraint that can be a pixel value or reference the trigger width
+ */
+export type DropdownWidthConstraint = number | 'trigger';
+
 export interface OptionsLoadItemsDetail {
   filteringText: string;
   firstPage: boolean;
@@ -94,14 +100,35 @@ export interface DropdownProps extends ExpandToViewport {
   stretchTriggerHeight?: boolean;
 
   /**
+   * Minimum width constraint for the dropdown.
+   * - Number: minimum width in pixels
+   * - 'trigger': dropdown will be at least as wide as the trigger
+   *
+   * @defaultValue 'trigger'
+   */
+  minWidth?: DropdownWidthConstraint;
+
+  /**
+   * Maximum width constraint for the dropdown.
+   * - Number: maximum width in pixels
+   * - 'trigger': dropdown cannot exceed the trigger width
+   *
+   * If not specified, dropdown can grow up to 465px by default.
+   */
+  maxWidth?: DropdownWidthConstraint;
+
+  /**
    * Whether the dropdown content should be at least as wide as the trigger.
    *
+   * @deprecated Use minWidth='trigger' instead
    * @defaultValue true
    */
   stretchToTriggerWidth?: boolean;
 
   /**
    * Whether the dropdown content can grow beyond the width of the trigger.
+   *
+   * @deprecated Use maxWidth property instead. Leave maxWidth undefined to allow growth, or set maxWidth='trigger' to constrain to trigger width.
    */
   stretchBeyondTriggerWidth?: boolean;
 
@@ -115,10 +142,6 @@ export interface DropdownProps extends ExpandToViewport {
    * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
    */
   interior?: boolean;
-  /**
-   * Sets the min width of the dropdown (in px)
-   */
-  minWidth?: number;
   /**
    * Whether the dropdown will have a scrollbar or not
    */

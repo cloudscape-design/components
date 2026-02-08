@@ -183,7 +183,7 @@ describe('getDropdownPosition', () => {
     });
   });
 
-  describe('with stretchBeyondTriggerWidth=true', () => {
+  describe('with maxWidth undefined (can stretch beyond trigger)', () => {
     test('can expand beyond trigger width', () => {
       const triggerElement = getSizedElement(100, 50, 300, 15);
       const dropdownElement = getSizedElement(200, 300);
@@ -193,7 +193,7 @@ describe('getDropdownPosition', () => {
           triggerElement,
           dropdownElement,
           overflowParents: [windowSize],
-          stretchBeyondTriggerWidth: true,
+          maxWidth: undefined,
         })
       ).toEqual({
         ...defaults,
@@ -210,7 +210,7 @@ describe('getDropdownPosition', () => {
           triggerElement,
           dropdownElement,
           overflowParents: [windowSize],
-          stretchBeyondTriggerWidth: true,
+          maxWidth: undefined,
         })
       ).toEqual({
         ...defaults,
@@ -227,11 +227,68 @@ describe('getDropdownPosition', () => {
           triggerElement,
           dropdownElement,
           overflowParents: [windowSize],
-          stretchBeyondTriggerWidth: true,
+          maxWidth: undefined,
         })
       ).toEqual({
         ...defaults,
         inlineSize: '700px',
+      });
+    });
+  });
+
+  describe('with maxWidth="trigger" (constrained to trigger)', () => {
+    test('cannot expand beyond trigger width', () => {
+      const triggerElement = getSizedElement(100, 50, 300, 15);
+      const dropdownElement = getSizedElement(200, 300);
+
+      expect(
+        getDropdownPosition({
+          triggerElement,
+          dropdownElement,
+          overflowParents: [windowSize],
+          maxWidth: 'trigger',
+        })
+      ).toEqual({
+        ...defaults,
+        inlineSize: '100px',
+      });
+    });
+  });
+
+  describe('with minWidth=number', () => {
+    test('respects explicit minWidth pixel value', () => {
+      const triggerElement = getSizedElement(100, 50, 300, 15);
+      const dropdownElement = getSizedElement(50, 300);
+
+      expect(
+        getDropdownPosition({
+          triggerElement,
+          dropdownElement,
+          overflowParents: [windowSize],
+          minWidth: 80,
+        })
+      ).toEqual({
+        ...defaults,
+        inlineSize: '80px',
+      });
+    });
+  });
+
+  describe('with maxWidth=number', () => {
+    test('respects explicit maxWidth pixel value', () => {
+      const triggerElement = getSizedElement(100, 50, 300, 15);
+      const dropdownElement = getSizedElement(500, 300);
+
+      expect(
+        getDropdownPosition({
+          triggerElement,
+          dropdownElement,
+          overflowParents: [windowSize],
+          maxWidth: 300,
+        })
+      ).toEqual({
+        ...defaults,
+        inlineSize: '300px',
       });
     });
   });

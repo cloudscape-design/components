@@ -71,7 +71,8 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
-  stretchBeyondTriggerWidth?: boolean;
+  canStretchBeyondTrigger?: boolean;
+  useDefaultMaxWidth?: boolean;
   header?: React.ReactNode;
   content?: React.ReactNode;
   footer?: React.ReactNode;
@@ -94,7 +95,8 @@ const TransitionContent = ({
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
-  stretchBeyondTriggerWidth,
+  canStretchBeyondTrigger,
+  useDefaultMaxWidth,
   header,
   content,
   footer,
@@ -116,7 +118,7 @@ const TransitionContent = ({
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
-        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
+        [styles['stretch-beyond-trigger-width']]: canStretchBeyondTrigger,
       })}
       ref={contentRef}
       id={id}
@@ -126,9 +128,7 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
-      style={
-        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
-      }
+      style={useDefaultMaxWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}}
       onMouseDown={onMouseDown}
     >
       <div
@@ -162,12 +162,15 @@ const Dropdown = ({
   stretchTriggerHeight = false,
   stretchWidth = true,
   stretchHeight = false,
-  stretchToTriggerWidth = true,
-  stretchBeyondTriggerWidth = false,
+  minWidth = 'trigger',
+  maxWidth,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  stretchToTriggerWidth,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  stretchBeyondTriggerWidth,
   expandToViewport = false,
   preferCenter = false,
   interior = false,
-  minWidth,
   scrollable = true,
   loopFocus = expandToViewport,
   onFocus,
@@ -208,11 +211,22 @@ const Dropdown = ({
     }
 
     if (entireWidth && !expandToViewport) {
-      if (stretchToTriggerWidth) {
-        target.classList.add(styles['occupy-entire-width']);
-      }
+      // When stretchWidth is true and not using portal, occupy entire width
+      target.classList.add(styles['occupy-entire-width']);
     } else {
-      target.style.inlineSize = position.inlineSize;
+      // Only set explicit inline-size when using 'trigger' constraints (calculated in JS)
+      // When using numeric constraints, CSS min/max handle sizing automatically
+      const usesCSSConstraints = typeof minWidth === 'number' || typeof maxWidth === 'number';
+      if (usesCSSConstraints) {
+        target.style.inlineSize = '';
+        target.style.minInlineSize = typeof minWidth === 'number' ? `${minWidth}px` : '';
+        target.style.maxInlineSize = typeof maxWidth === 'number' ? `${maxWidth}px` : '';
+      } else {
+        // Use JS-calculated width for 'trigger' constraints
+        target.style.inlineSize = position.inlineSize;
+        target.style.minInlineSize = '';
+        target.style.maxInlineSize = '';
+      }
     }
 
     // Using styles for main dropdown to adjust its position as preferred alternative
@@ -283,20 +297,23 @@ const Dropdown = ({
     }
   };
 
-  // Prevent the dropdown width from stretching beyond the trigger width
-  // if that is going to cause the dropdown to be cropped because of overflow
+  // Check if the dropdown has enough space to fit with its desired width constraints
+  // If not, remove the class that allows stretching beyond trigger width
   const fixStretching = () => {
     const classNameToRemove = styles['stretch-beyond-trigger-width'];
+    // Only applies when maxWidth is not set to 'trigger' (meaning it can grow)
+    const canStretchBeyond = maxWidth !== 'trigger';
     if (
       open &&
-      stretchBeyondTriggerWidth &&
+      canStretchBeyond &&
       dropdownRef.current &&
       triggerRef.current &&
       dropdownRef.current.classList.contains(classNameToRemove) &&
       !hasEnoughSpaceToStretchBeyondTriggerWidth({
         triggerElement: triggerRef.current,
         dropdownElement: dropdownRef.current,
-        desiredMinWidth: minWidth,
+        minWidthConstraint: minWidth,
+        maxWidthConstraint: maxWidth,
         expandToViewport,
         stretchWidth,
         stretchHeight,
@@ -312,10 +329,10 @@ const Dropdown = ({
   useLayoutEffect(() => {
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-        // calculate scroll width only for dropdowns that has a scrollbar and ignore it for date picker components
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -328,11 +345,12 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            stretchBeyondTriggerWidth
+            maxWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
         );
+
         if (scrollable) {
           dropdownRef.current.classList.remove(styles.nowrap);
         }
@@ -406,6 +424,10 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
+  // Don't apply stretch-beyond-trigger-width class when stretchWidth is true
+  const canStretchBeyondTrigger = maxWidth !== 'trigger' && !stretchWidth;
+  const useDefaultMaxWidth = maxWidth === undefined && !stretchWidth;
+
   return (
     <div
       className={clsx(
@@ -451,7 +473,8 @@ const Dropdown = ({
                 header={header}
                 content={content}
                 expandToViewport={expandToViewport}
-                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
+                canStretchBeyondTrigger={canStretchBeyondTrigger}
+                useDefaultMaxWidth={useDefaultMaxWidth}
                 footer={footer}
                 onMouseDown={onMouseDown}
                 isRefresh={isRefresh}
