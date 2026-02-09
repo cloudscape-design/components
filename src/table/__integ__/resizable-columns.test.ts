@@ -339,16 +339,18 @@ test(
   })
 );
 
-test(
-  'should recover column widths when the inner state is reset',
-  setupTest(async page => {
-    await page.resizeColumn(2, 100);
-    const oldWidth = await page.getColumnWidth(2);
-    await page.click('#reset-state');
-    const newWidth = await page.getColumnWidth(2);
-    expect(oldWidth).toEqual(newWidth);
-  })
-);
+for (let i = 0; i < 100; i++) {
+  test(
+    'should recover column widths when the inner state is reset',
+    setupTest(async page => {
+      const initialColumnWidth = 130;
+      await page.resizeColumn(2, 100);
+      await page.waitForAssertion(() => expect(page.getColumnWidth(2)).resolves.toBe(initialColumnWidth + 100));
+      await page.click('#reset-state');
+      await page.waitForAssertion(() => expect(page.getColumnWidth(2)).resolves.toBe(initialColumnWidth + 100));
+    })
+  );
+}
 
 test.each([false, true])(
   'should resize column to grow by keyboard [enableKeyboardNavigation=%s]',
