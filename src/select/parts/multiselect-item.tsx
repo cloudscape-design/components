@@ -159,6 +159,7 @@ const MultiSelectItem = (
   return (
     <SelectableItem
       disableContentStyling={!!renderResult}
+      ariaSelected={isParent && indeterminate ? undefined : Boolean(selected)}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
