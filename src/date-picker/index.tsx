@@ -186,7 +186,8 @@ const DatePicker = React.forwardRef(
           trigger
         ) : (
           <Dropdown
-            stretchWidth={true}
+            minWidth="trigger"
+            maxWidth="trigger"
             stretchHeight={true}
             open={isDropDownOpen}
             onDropdownClose={onDropdownCloseHandler}

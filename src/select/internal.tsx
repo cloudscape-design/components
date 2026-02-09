@@ -7,6 +7,7 @@ import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/componen
 
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
+import { getBreakpointValue } from '../internal/breakpoints';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
@@ -255,7 +256,8 @@ const InternalSelect = React.forwardRef(
           }
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          stretchBeyondTriggerWidth={true}
+          minWidth="trigger"
+          maxWidth={expandToViewport ? getBreakpointValue('xxs') : undefined}
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}

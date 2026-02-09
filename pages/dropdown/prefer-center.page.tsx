@@ -27,7 +27,7 @@ export default function DropdownScenario() {
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="leftDropdown" className={styles['dropdown-container']}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             preferCenter={true}
             trigger={
               <Button className="trigger" onClick={() => setOpen1(!open1)}>
@@ -43,7 +43,7 @@ export default function DropdownScenario() {
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="centerDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             preferCenter={true}
             trigger={
               <Button className="trigger" onClick={() => setOpen2(!open2)}>
@@ -59,7 +59,7 @@ export default function DropdownScenario() {
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="rightDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '250px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             preferCenter={true}
             trigger={
               <Button className="trigger" onClick={() => setOpen3(!open3)}>

@@ -36,7 +36,7 @@ export default function DropdownScenario() {
       <div className={styles.container}>
         <div id="topLeftDropDown" className={styles['dropdown-container']}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen1(!open1)}>
                 Scenario 1
@@ -51,7 +51,7 @@ export default function DropdownScenario() {
       <div className={styles.container}>
         <div id="topRightDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '80px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen2(!open2)}>
                 Scenario 2
@@ -66,7 +66,7 @@ export default function DropdownScenario() {
       <div className={styles.container}>
         <div id="bottomLeftDropDown" className={styles['dropdown-container']} style={{ top: '170px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen3(!open3)}>
                 Scenario 3
@@ -81,7 +81,7 @@ export default function DropdownScenario() {
       <div className={styles.container}>
         <div id="topMiddleDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '20px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen4(!open4)}>
                 Scenario 4
@@ -100,7 +100,7 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '80px', insetBlockStart: '170px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen5(!open5)}>
                 Scenario 5

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBreakpointValue } from '../../breakpoints';
 import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers';
 import { LogicalDOMRect } from './dropdown-position';
 import { DropdownWidthConstraint } from './interfaces';
@@ -44,10 +43,6 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 
   return parents.shift();
 };
-
-// By default, most dropdowns should expand their content as necessary, but to a maximum of 465px (the XXS breakpoint).
-// This value was determined by UX but may be subject to change in the future, depending on the feedback.
-export const defaultMaxDropdownWidth = getBreakpointValue('xxs');
 
 const getAvailableSpace = ({
   trigger,
@@ -175,26 +170,31 @@ const getWidths = ({
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
 
   // Calculate effective min/max widths
-  const minWidth = minWidthConstraint === 'trigger' ? triggerInlineSize : (minWidthConstraint ?? 0);
+  // undefined = no min constraint (0)
+  const minWidth =
+    minWidthConstraint === 'trigger'
+      ? triggerInlineSize
+      : typeof minWidthConstraint === 'number'
+        ? minWidthConstraint
+        : 0;
 
   const maxWidth =
     maxWidthConstraint === 'trigger'
       ? triggerInlineSize
       : typeof maxWidthConstraint === 'number'
         ? maxWidthConstraint
-        : Number.MAX_VALUE;
+        : Number.MAX_VALUE; // undefined = no max constraint
 
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
   return { idealWidth, minWidth, triggerInlineSize };
 };
 
-export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
+export const hasEnoughSpaceForFlexibleWidth = ({
   triggerElement,
   dropdownElement,
   minWidthConstraint,
   maxWidthConstraint,
   expandToViewport,
-  stretchWidth,
   stretchHeight,
   isMobile,
 }: {
@@ -203,7 +203,6 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   minWidthConstraint?: DropdownWidthConstraint;
   maxWidthConstraint?: DropdownWidthConstraint;
   expandToViewport: boolean;
-  stretchWidth: boolean;
   stretchHeight: boolean;
   isMobile: boolean;
 }) => {
@@ -222,7 +221,6 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   const availableSpace = getAvailableSpace({
     trigger: triggerElement,
     overflowParents,
-    stretchWidth,
     stretchHeight,
     isMobile,
   });
@@ -236,7 +234,7 @@ export const getDropdownPosition = ({
   minWidth: minWidthConstraint,
   maxWidth: maxWidthConstraint,
   preferCenter = false,
-  stretchWidth = false,
+  matchTriggerWidth = false,
   stretchHeight = false,
   isMobile = false,
 }: {
@@ -246,7 +244,7 @@ export const getDropdownPosition = ({
   minWidth?: DropdownWidthConstraint;
   maxWidth?: DropdownWidthConstraint;
   preferCenter?: boolean;
-  stretchWidth?: boolean;
+  matchTriggerWidth?: boolean;
   stretchHeight?: boolean;
   isMobile?: boolean;
 }): DropdownPosition => {
@@ -254,7 +252,7 @@ export const getDropdownPosition = ({
   const availableSpace = getAvailableSpace({
     trigger: triggerElement,
     overflowParents,
-    stretchWidth,
+    stretchWidth: matchTriggerWidth,
     stretchHeight,
     isMobile,
   });
@@ -364,7 +362,7 @@ export const calculatePosition = (
   interior: boolean,
   expandToViewport: boolean,
   preferCenter: boolean,
-  stretchWidth: boolean,
+  matchTriggerWidth: boolean,
   stretchHeight: boolean,
   isMobile: boolean,
   minWidth?: DropdownWidthConstraint,
@@ -397,7 +395,7 @@ export const calculatePosition = (
         minWidth,
         maxWidth,
         preferCenter,
-        stretchWidth,
+        matchTriggerWidth,
         stretchHeight,
         isMobile,
       });
