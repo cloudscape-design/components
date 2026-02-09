@@ -25200,7 +25200,7 @@ the default browser context menu behavior.",
     {
       "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
-The event \`detail\` contains the current list of \`selectedItems\`.",
+The event \`detail\` contains the new state for \`selectedItems\`.",
       "detailInlineType": {
         "name": "TableProps.SelectionChangeDetail<T>",
         "properties": [
@@ -25327,11 +25327,19 @@ scroll parent scrolls to reveal the first row of the table.",
     },
     {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
-* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
-You can use the first argument of type \`SelectionState\` to access the current selection state of the component
-(for example, the \`selectedItems\` list). The second argument is the corresponding  \`Item\` object.
-* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
+* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for item selection controls.
+The selection state includes:
+ * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
+ * \`itemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
+ * \`selectedItemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
+* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for all items selection control.
+The selection state includes:
+ * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
+ * \`itemsCount\` (optional, number) - corresponds to \`expandableRows.totalItemsCount\` or \`totalItemsCount\`.
+ * \`selectedItemsCount\` (optional, number) - corresponds to \`expandableRows.totalSelectedItemsCount\` or \`selectedItems.length\`.
+* \`itemLoaderSelectionLabel\`: ((SelectionState, Item) => string) - Specifies the alternative text for resource loader selector
+in tables with data grouping.
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 * \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
@@ -25435,6 +25443,26 @@ You can use the first argument of type \`SelectionState\` to access the current 
             "name": "expandButtonLabel",
             "optional": true,
             "type": "((item: T) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(data: TableProps.SelectionState<T>, row: T | null) => string",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TableProps.SelectionState<T>",
+                },
+                {
+                  "name": "row",
+                  "type": "T | null",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "itemLoaderSelectionLabel",
+            "optional": true,
+            "type": "((data: TableProps.SelectionState<T>, row: T | null) => string)",
           },
           {
             "inlineType": {
@@ -25584,6 +25612,8 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
   to reorder the items. This property accepts a custom comparator that is used to compare two items.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
   If present, the \`sortingField\` property is ignored.
+* \`counter\` ((ItemCounterData) => string) - Specifies secondary cell content, displayed next to the primary. Use it to display
+  resource counters in the first column of expandable tables with data grouping.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
   * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
   * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
@@ -25648,7 +25678,22 @@ By default, the keyboard navigation is active for tables with expandable rows.",
 * \`getItemChildren\` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
 * \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
 * \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
-* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.",
+* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
+* \`groupSelection\` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
+properties \`selectionType\` and \`selectedItems\` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
+ * \`{ inverted: false, toggledItems: [] }\` - no items are selected;
+ * \`{ inverted: true, toggledItems: [] }\` - all items are selected;
+ * \`{ inverted: false, toggledItems: ["a", "a.1"] }\` - all items nested under "a", unless also nested under "a.1", are selected.
+ * \`{ inverted: true, toggledItems: ["a", "a.1"] }\` - the opposite of above.
+* \`onGroupSelectionChange\` (optional, TableProps.OnGroupSelectionChange<Item>) - Called when group selection changes.
+* \`getItemsCount\` (optional, (Item) => number) - Use it to indicate the number of resources nested under the given item.
+The value is passed as \`itemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
+* \`totalItemsCount\` (optional, number) - Use it to indicate the total number of resources in the table.
+The value is passed as \`itemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.
+* \`getSelectedItemsCount\` (optional, (Item) => number) - Use it to indicate the number of selected resources nested under the given item.
+The value is passed as \`selectedItemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
+* \`totalSelectedItemsCount\` (optional, number) - Use it to indicate the total number of selected resources in the table.
+The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.",
       "inlineType": {
         "name": "TableProps.ExpandableRows<T>",
         "properties": [
@@ -25672,6 +25717,59 @@ By default, the keyboard navigation is active for tables with expandable rows.",
             "name": "getItemChildren",
             "optional": false,
             "type": "(item: T) => ReadonlyArray<T>",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => number",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "number",
+              "type": "function",
+            },
+            "name": "getItemsCount",
+            "optional": true,
+            "type": "((item: T) => number)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => number",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "number",
+              "type": "function",
+            },
+            "name": "getSelectedItemsCount",
+            "optional": true,
+            "type": "((item: T) => number)",
+          },
+          {
+            "inlineType": {
+              "name": "TableProps.GroupSelectionState<T>",
+              "properties": [
+                {
+                  "name": "inverted",
+                  "optional": false,
+                  "type": "boolean",
+                },
+                {
+                  "name": "toggledItems",
+                  "optional": false,
+                  "type": "ReadonlyArray<T>",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "groupSelection",
+            "optional": true,
+            "type": "TableProps.GroupSelectionState<T>",
           },
           {
             "inlineType": {
@@ -25704,6 +25802,32 @@ By default, the keyboard navigation is active for tables with expandable rows.",
             "name": "onExpandableItemToggle",
             "optional": false,
             "type": "TableProps.OnExpandableItemToggle<T>",
+          },
+          {
+            "inlineType": {
+              "name": "TableProps.OnGroupSelectionChange<T>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "NonCancelableCustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onGroupSelectionChange",
+            "optional": true,
+            "type": "TableProps.OnGroupSelectionChange<T>",
+          },
+          {
+            "name": "totalItemsCount",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "totalSelectedItemsCount",
+            "optional": true,
+            "type": "number",
           },
         ],
         "type": "object",
@@ -25810,6 +25934,23 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "((data: TableProps.LiveAnnouncement) => string)",
+    },
+    {
+      "description": "Renders loader counter that is appended to the loader content in all loader states.",
+      "inlineType": {
+        "name": "(detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "detail",
+            "type": "TableProps.RenderLoaderCounterDetail<T>",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderLoaderCounter",
+      "optional": true,
+      "type": "((detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode)",
     },
     {
       "description": "Renders loader row content for empty row state: the loading status is "finished",
@@ -40046,6 +40187,37 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
+          "name": "findBodyCellCounter",
+          "parameters": [
+            {
+              "description": "1-based index of the row of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "rowIndex",
+              "typeName": "number",
+            },
+            {
+              "description": "1-based index of the column of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -48932,6 +49104,32 @@ If not specified, the method returns the result text that is currently displayed
         {
           "description": "Returns a table cell based on given row and column indices.",
           "name": "findBodyCell",
+          "parameters": [
+            {
+              "description": "1-based index of the row of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "rowIndex",
+              "typeName": "number",
+            },
+            {
+              "description": "1-based index of the column of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
+          "name": "findBodyCellCounter",
           "parameters": [
             {
               "description": "1-based index of the row of the cell to select.",
