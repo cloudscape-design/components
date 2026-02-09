@@ -955,3 +955,19 @@ test('tolerates options with { options: undefined }, and considers them to not b
   wrapper.openDropdown();
   expect(wrapper.findDropdown().findOptionByValue('option1')).not.toBeNull();
 });
+
+test('renders aria-multiselectable="true" on listbox', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+  wrapper.openDropdown();
+  const listbox = wrapper.findDropdown().find('[role="listbox"]');
+  expect(listbox!.getElement()).toHaveAttribute('aria-multiselectable', 'true');
+});
+
+test('renders aria-multiselectable="true" on listbox with virtual scroll', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[]} options={defaultOptions} virtualScroll={true} />
+  );
+  wrapper.openDropdown();
+  const listbox = wrapper.findDropdown().find('[role="listbox"]');
+  expect(listbox!.getElement()).toHaveAttribute('aria-multiselectable', 'true');
+});
