@@ -312,7 +312,6 @@ const DateRangePicker = React.forwardRef(
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown
-          stretchWidth={false}
           stretchHeight={true}
           open={isDropDownOpen}
           onDropdownClose={() => closeDropdown()}

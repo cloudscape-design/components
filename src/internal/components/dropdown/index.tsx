@@ -210,8 +210,10 @@ const Dropdown = ({
       verticalContainer.style.maxBlockSize = position.blockSize;
     }
 
-    if (entireWidth && !expandToViewport) {
-      // When stretchWidth is true and not using portal, occupy entire width
+    // Only apply occupy-entire-width when stretchWidth is true AND no width constraints are set
+    // If width constraints exist, they should take precedence
+    const hasWidthConstraints = minWidth !== undefined || maxWidth !== undefined;
+    if (entireWidth && !expandToViewport && !hasWidthConstraints) {
       target.classList.add(styles['occupy-entire-width']);
     } else {
       // Determine width setting strategy
@@ -425,11 +427,10 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
-  // Only apply stretch-beyond-trigger-width when we have at least one constraint defined
-  // This prevents the 100% fallback from affecting natural content sizing
-  const hasAnyConstraint = minWidth !== undefined || maxWidth !== undefined;
-  const canStretchBeyondTrigger = hasAnyConstraint && maxWidth !== 'trigger' && !stretchWidth;
-  const useDefaultMaxWidth = maxWidth === undefined && minWidth !== undefined && !stretchWidth;
+  // The 465px default should only apply when using the old default behavior (trigger constraints)
+  // Not when user explicitly sets their own constraints or wants natural sizing
+  const canStretchBeyondTrigger = maxWidth !== 'trigger' && !stretchWidth;
+  const useDefaultMaxWidth = false; // Don't apply 465px default with new API
 
   return (
     <div
