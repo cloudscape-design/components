@@ -14,6 +14,10 @@ import {
 } from '../../../internal/plugins/widget/interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
+const DEFAULT_PERSISTENCE_CONFIG = {
+  uniqueKey: 'feature-notifications',
+};
+
 interface UseFeatureNotificationsProps {
   drawersIds: Array<string>;
 }
@@ -122,14 +126,12 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
         ),
       });
 
-      if (!payload?.persistenceConfig) {
-        return;
-      }
+      const persistenceConfig = payload.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
       const __retrieveFeatureNotifications:
         | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
         | undefined = (payload as any)?.__retrieveFeatureNotifications;
 
-      (__retrieveFeatureNotifications || retrieveFeatureNotifications)(payload?.persistenceConfig).then(
+      (__retrieveFeatureNotifications || retrieveFeatureNotifications)(persistenceConfig).then(
         seenFeatureNotifications => {
           setSeenFeatures(seenFeatureNotifications);
           const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
@@ -200,9 +202,10 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
   }
 
   const onOpenFeatureNotificationsDrawer = () => {
-    if (!featureNotificationsData || !featureNotificationsData.persistenceConfig || markAllAsRead) {
+    if (!featureNotificationsData || markAllAsRead) {
       return;
     }
+    const persistenceConfig = featureNotificationsData.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
     const id = featureNotificationsData?.id;
     const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
       return {
@@ -215,10 +218,7 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
     const __persistFeatureNotifications:
       | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
       | undefined = (featureNotificationsData as any)?.__persistFeatureNotifications;
-    (__persistFeatureNotifications ?? persistFeatureNotifications)(
-      featureNotificationsData.persistenceConfig,
-      allFeaturesMap
-    ).then(() => {
+    (__persistFeatureNotifications ?? persistFeatureNotifications)(persistenceConfig, allFeaturesMap).then(() => {
       awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
       setMarkAllAsRead(true);
     });

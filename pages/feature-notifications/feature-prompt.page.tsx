@@ -86,7 +86,6 @@ registerFeatureNotifications({
   },
   persistenceConfig: {
     uniqueKey: 'feature-notifications',
-    crossServicePersistence: false,
   },
   // DON'T USE
   ...{

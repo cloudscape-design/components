@@ -67,7 +67,6 @@ export interface Feature<T> {
 
 export interface FeatureNotificationsPersistenceConfig {
   uniqueKey: string;
-  crossServicePersistence?: boolean;
 }
 
 export interface FeatureNotificationsPayload<T> {
@@ -77,14 +76,6 @@ export interface FeatureNotificationsPayload<T> {
   mountItem?: MountContentPart<T>;
   featuresPageLink?: string;
   filterFeatures?: (item: Feature<T>) => boolean;
-  /**
-   * Config to persist seen feature notifications
-   * persistenceConfig contains:
-   * * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
-   * * `crossServicePersistence` (boolean) - (Optional) If true, the persistence state will be shared across AWS services.
-   * * Should be false for consoles
-   * @awsuiSystem console
-   */
   persistenceConfig?: FeatureNotificationsPersistenceConfig;
 }
 

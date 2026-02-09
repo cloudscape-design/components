@@ -52,7 +52,6 @@ const featureNotificationsDefaults: FeatureNotificationsPayload<string> = {
   },
   persistenceConfig: {
     uniqueKey: 'feature-notifications',
-    crossServicePersistence: false,
   },
 };
 
