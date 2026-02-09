@@ -4,7 +4,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../box/internal.js';
 import { FormFieldError, FormFieldWarning } from '../form-field/internal';
@@ -22,7 +22,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export namespace FileTokenProps {
   export interface I18nStrings {
-    removeFileAriaLabel?: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number, fileName: string) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
@@ -75,9 +75,10 @@ function InternalFileToken({
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
 
   const getDismissLabel = (fileIndex: number) => {
-    return i18nStrings?.removeFileAriaLabel?.(fileIndex);
+    return i18nStrings?.removeFileAriaLabel?.(fileIndex, file.name);
   };
 
   function isEllipsisActive() {
@@ -89,6 +90,11 @@ function InternalFileToken({
     }
     return false;
   }
+
+  useResizeObserver(
+    () => fileNameContainerRef.current,
+    () => setIsTruncated(isEllipsisActive())
+  );
 
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
@@ -135,14 +141,20 @@ function InternalFileToken({
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
               <div
+                className={styles['file-name-container']}
                 onMouseOver={() => setShowTooltip(true)}
                 onMouseOut={() => setShowTooltip(false)}
+                onFocus={() => setShowTooltip(true)}
+                onBlur={() => setShowTooltip(false)}
+                role={isTruncated ? 'button' : undefined}
+                aria-expanded={isTruncated ? showTooltip : undefined}
+                tabIndex={isTruncated ? 0 : -1}
                 ref={fileNameContainerRef}
               >
                 <InternalBox
                   fontWeight="normal"
                   className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
-                    [testUtilStyles['ellipsis-active']]: isEllipsisActive(),
+                    [testUtilStyles['ellipsis-active']]: isTruncated,
                   })}
                 >
                   <span ref={fileNameRef}>{file.name}</span>
@@ -183,7 +195,7 @@ function InternalFileToken({
           {warningText}
         </FormFieldWarning>
       )}
-      {showTooltip && isEllipsisActive() && (
+      {showTooltip && isTruncated && (
         <Tooltip
           getTrack={() => containerRef.current}
           content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
