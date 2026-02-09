@@ -64,14 +64,14 @@ export function useExpandableTableProps<T>({
 
       if (visible) {
         visibleItems.push(item);
+        children.forEach((child, index) =>
+          traverse(
+            child,
+            { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item },
+            expandedSet.has(item)
+          )
+        );
       }
-      children.forEach((child, index) =>
-        traverse(
-          child,
-          { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item },
-          visible && expandedSet.has(item)
-        )
-      );
     };
     items.forEach((item, index) =>
       traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null }, true)
