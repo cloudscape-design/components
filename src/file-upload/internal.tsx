@@ -191,7 +191,7 @@ function InternalFileUpload(
             removeFileAriaLabel: i18n(
               'i18nStrings.removeFileAriaLabel',
               i18nStrings?.removeFileAriaLabel,
-              format => fileIndex => format({ fileIndex: fileIndex + 1 })
+              format => (fileIndex: number, fileName: string) => format({ fileIndex: fileIndex + 1, fileName })
             ),
             limitShowFewer: i18n('i18nStrings.limitShowFewer', i18nStrings?.limitShowFewer),
             limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),

@@ -29,6 +29,7 @@ export interface SelectListProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
+  isMultiSelect?: boolean;
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
@@ -49,6 +50,7 @@ const PlainList = (
     useInteractiveGroups,
     screenReaderContent,
     firstOptionSticky,
+    isMultiSelect,
     renderOption,
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
@@ -87,7 +89,12 @@ const PlainList = (
   const withScrollbar = !!width && width.inner < width.outer;
 
   return (
-    <OptionsList {...menuProps} ref={mergedRef} stickyItemBlockSize={stickyOptionBlockSize}>
+    <OptionsList
+      {...menuProps}
+      ref={mergedRef}
+      stickyItemBlockSize={stickyOptionBlockSize}
+      isMultiSelect={isMultiSelect}
+    >
       {renderOptions({
         renderOption,
         options: filteredOptions,

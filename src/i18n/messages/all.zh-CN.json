@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
     "i18nStrings.limitShowMore": "显示更多",
-    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}，{fileName}",
     "i18nStrings.errorIconAriaLabel": "错误",
     "i18nStrings.warningIconAriaLabel": "警告"
   },

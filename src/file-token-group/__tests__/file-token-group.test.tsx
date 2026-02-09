@@ -228,7 +228,7 @@ describe('Tooltip', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
     fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
 
     fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
@@ -238,10 +238,40 @@ describe('Tooltip', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
     fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
 
     fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+  });
+
+  test('Should show tooltip on keyboard focus', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+
+    fireEvent.focus(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toHaveTextContent(file3.name);
+
+    fireEvent.blur(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+  });
+
+  test('Should make filename focusable via keyboard', () => {
+    const wrapper = render({ items: [{ file: file3 }] });
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+
+    expect(fileNameContainer).toHaveAttribute('tabindex', '0');
+  });
+
+  test('Should toggle aria-expanded when tooltip visibility changes on truncated filenames', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(fileNameContainer).toHaveAttribute('aria-expanded', 'false');
   });
 });
 
@@ -250,14 +280,16 @@ describe('Focusing behavior', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }], limit });
     wrapper.findFileToken(1)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+    expect(fileNameContainer).toHaveFocus();
   });
 
   test('Focus is dispatched to the previous token when removing the token at the end', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }] });
     wrapper.findFileToken(2)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+    expect(fileNameContainer).toHaveFocus();
   });
 });
 

@@ -16,6 +16,7 @@ import { getTableCellRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
 
 import tableStyles from '../styles.css.js';
+import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
@@ -57,6 +58,7 @@ export interface TableTdElementProps {
   isEditingDisabled?: boolean;
   hasSuccessIcon?: boolean;
   tableVariant?: string;
+  counter?: React.ReactNode;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -97,6 +99,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isEditingDisabled,
       hasSuccessIcon,
       tableVariant,
+      counter,
       ...rest
     },
     ref
@@ -165,7 +168,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
+        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>
+          {children}
+          {counter ? (
+            <div className={styles['body-cell-counter']}>
+              {' '}
+              <span className={testUtilStyles['body-cell-counter']}>{counter}</span>
+            </div>
+          ) : null}
+        </div>
       </Element>
     );
   }
