@@ -70,7 +70,8 @@ awsuiPlugins.alertContent.registerContentReplacer({
         context.content &&
         typeof context.content === 'object' &&
         'props' in context.content &&
-        context.content.props.children?.match('Access denied')
+        typeof context.content.props.children === 'string' &&
+        context.content.props.children.match('Access denied')
       )
     );
   },
