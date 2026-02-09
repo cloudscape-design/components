@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-max-type, @cloudscape-design/no-implicit-descendant */
+
+@use '~design-tokens' as tokens;
+
+.filter-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: tokens.$space-static-m;
+  justify-content: space-between;
+}
+
+.filter-layout-filter {
+  flex: 1;
+  min-inline-size: 200px;
+}
+
+.grouping-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: tokens.$space-static-m;
+
+  ul {
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: tokens.$space-static-xs;
+  }
+
+  li {
+    list-style: none;
+  }
+}

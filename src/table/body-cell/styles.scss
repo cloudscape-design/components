@@ -153,6 +153,14 @@ $cell-negative-space-vertical: 2px;
       text-overflow: ellipsis;
     }
   }
+
+  &-counter {
+    display: inline;
+    color: awsui.$color-text-body-secondary;
+    font-size: awsui.$font-size-body-s;
+    vertical-align: bottom;
+  }
+
   &:first-child {
     border-inline-start: $border-placeholder;
     @include cell-padding-inline-start($cell-edge-horizontal-padding);
