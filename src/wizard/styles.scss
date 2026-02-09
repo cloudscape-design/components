@@ -22,12 +22,18 @@
   &.small-container {
     grid-template-columns: minmax(0, 1fr) 0;
     grid-template-rows: auto auto 1fr;
-    row-gap: awsui.$space-scaled-l;
+    row-gap: awsui.$space-s;
   }
 }
 
 .wizard:not(.refresh) {
   display: flex;
+  gap: awsui.$space-xl;
+
+  &.small-container {
+    flex-direction: column;
+    gap: awsui.$space-s;
+  }
 }
 
 .navigation.refresh {
@@ -183,7 +189,6 @@
 .navigation:not(.refresh) {
   color: awsui.$color-text-disabled;
   display: inline-block;
-  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
   min-inline-size: 20 * styles.$base-size;
   padding-block-start: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
