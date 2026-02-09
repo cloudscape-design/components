@@ -25,6 +25,7 @@
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.cjs",
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",
     "start:react18:dev": "cross-env NODE_ENV=development REACT_VERSION=18 webpack serve --config pages/webpack.config.cjs",
+    "prepare-package-lock": "node node_modules/@cloudscape-design/build-tools/lib/scripts/prepare-package-lock.js",
     "prepare": "husky"
   },
   "dependencies": {
