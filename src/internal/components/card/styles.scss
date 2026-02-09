@@ -1,0 +1,112 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+@mixin card-style {
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+  box-sizing: border-box;
+
+  &::before {
+    @include styles.base-pseudo-element;
+    // Reset border color to prevent it from flashing black during card selection animation
+    border-color: transparent;
+    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+    z-index: 1;
+  }
+
+  &::after {
+    @include styles.base-pseudo-element;
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+  &:not(.refresh)::after {
+    box-shadow: awsui.$shadow-container;
+  }
+  &.refresh::after {
+    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  }
+}
+
+.root {
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  background-color: awsui.$color-background-container-content;
+  min-inline-size: 0;
+  @include card-style;
+}
+
+$button-padding-vertical: styles.$control-padding-vertical;
+$button-padding-horizontal: awsui.$space-xxs;
+$padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-vertical);
+
+.header {
+  &:not(.no-padding) {
+    padding-block-end: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-card-horizontal;
+    &:not(.with-actions) {
+      padding-block-start: $padding-block-start-base;
+      padding-inline-end: awsui.$space-card-horizontal;
+    }
+    &.with-actions {
+      // Compensate the padding given by the buttons in the actions slot
+      padding-block-start: calc($padding-block-start-base - $button-padding-vertical);
+      padding-inline-end: calc(awsui.$space-card-horizontal - $button-padding-horizontal);
+    }
+  }
+  &-inner {
+    @include styles.font-heading-s;
+  }
+}
+
+.body {
+  &:not(.no-padding) {
+    padding-block-start: awsui.$space-xxs;
+    padding-block-end: awsui.$space-card-vertical;
+    padding-inline: awsui.$space-card-horizontal;
+  }
+  &.no-padding {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+}
+
+.no-header,
+.no-content {
+  // No need to preserve the space between header and content when one of them is missing.
+  > .header:not(.no-padding) {
+    padding-block-end: 0;
+  }
+  > .body:not(.no-padding) {
+    padding-block-start: 0;
+  }
+}
+
+.selected {
+  background-color: awsui.$color-background-item-selected;
+  &::before {
+    border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
+    border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
+  }
+}
+
+.description {
+  color: awsui.$color-text-heading-secondary;
+}

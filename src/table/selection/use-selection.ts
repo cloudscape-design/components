@@ -6,7 +6,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../internal/events';
 import { joinStrings } from '../../internal/utils/strings';
-import { TableProps } from '../interfaces';
+import { InternalSelectionType, TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 import { SelectionProps } from './interfaces';
 import { ItemSet } from './utils';
@@ -19,19 +19,21 @@ type SelectionOptions<T> = Pick<
   | 'loading'
   | 'onSelectionChange'
   | 'selectedItems'
-  | 'selectionType'
   | 'trackBy'
-> & { setLastUserAction?: (name: string) => void };
+  | 'totalItemsCount'
+> & { setLastUserAction?: (name: string) => void; selectionType?: InternalSelectionType };
 
-export function useSelection<T>(options: SelectionOptions<T>): {
-  isItemSelected: (item: T) => boolean;
-  getSelectAllProps?: () => SelectionProps;
-  getItemSelectionProps?: (item: T) => SelectionProps;
-  setLastUserAction?: (name: string) => void;
-} {
+export function useSelection<T>(options: SelectionOptions<T>): SelectionProps<T> {
   const singleSelectionProps = useSingleSelection(options);
   const multiSelectionProps = useMultiSelection(options);
-  return options.selectionType === 'single' ? singleSelectionProps : multiSelectionProps;
+  switch (options.selectionType) {
+    case 'single':
+      return singleSelectionProps;
+    case 'multi':
+      return multiSelectionProps;
+    default:
+      return { isItemSelected: () => false };
+  }
 }
 
 function useSingleSelection<T>({
@@ -42,7 +44,7 @@ function useSingleSelection<T>({
   selectionType,
   trackBy,
   setLastUserAction,
-}: SelectionOptions<T>) {
+}: SelectionOptions<T>): SelectionProps<T> {
   // The name assigned to all controls to combine them in a single group.
   const selectionControlName = useUniqueId();
 
@@ -63,7 +65,7 @@ function useSingleSelection<T>({
 
   return {
     isItemSelected,
-    getItemSelectionProps: (item: T): SelectionProps => ({
+    getItemSelectionProps: item => ({
       name: selectionControlName,
       selectionType: 'single',
       disabled: isItemDisabled(item),
@@ -87,7 +89,8 @@ function useMultiSelection<T>({
   selectionType,
   trackBy,
   setLastUserAction,
-}: SelectionOptions<T>) {
+  totalItemsCount,
+}: SelectionOptions<T>): SelectionProps<T> {
   // The name assigned to all controls to combine them in a single group.
   const selectionControlName = useUniqueId();
   const [shiftPressed, setShiftPressed] = useState(false);
@@ -171,23 +174,30 @@ function useMultiSelection<T>({
 
   return {
     isItemSelected,
-    getSelectAllProps: (): SelectionProps => ({
+    getSelectAllProps: () => ({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: allItemsDisabled || !!loading,
       checked: allItemsCheckboxSelected,
       indeterminate: allItemsCheckboxIndeterminate,
       onChange: handleToggleAll,
-      ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+      ariaLabel: joinStrings(
+        ariaLabels?.selectionGroupLabel,
+        ariaLabels?.allItemsSelectionLabel?.({
+          selectedItems,
+          itemsCount: totalItemsCount,
+          selectedItemsCount: selectedItems.length,
+        })
+      ),
       selectionGroupLabel: ariaLabels?.selectionGroupLabel,
     }),
-    getItemSelectionProps: (item: T): SelectionProps => ({
+    getItemSelectionProps: item => ({
       name: selectionControlName,
       selectionType: 'multi',
       disabled: isItemDisabled(item),
       checked: isItemSelected(item),
       onChange: () => handleToggleItem(item),
-      onShiftToggle: (value: boolean) => setShiftPressed(value),
+      onShiftToggle: value => setShiftPressed(value),
       ariaLabel: joinStrings(
         ariaLabels?.selectionGroupLabel,
         ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)

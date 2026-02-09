@@ -7,8 +7,8 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { TableHeaderCell } from './header-cell';
-import { TableProps } from './interfaces';
-import { focusMarkers, SelectionProps } from './selection';
+import { InternalSelectionType, TableProps } from './interfaces';
+import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
 import { StickyColumnsModel } from './sticky-columns';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
@@ -18,7 +18,7 @@ import { getColumnKey } from './utils';
 import styles from './styles.css.js';
 
 export interface TheadProps {
-  selectionType: TableProps.SelectionType | undefined;
+  selectionType: undefined | InternalSelectionType;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;
@@ -27,7 +27,7 @@ export interface TheadProps {
   tableVariant?: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  getSelectAllProps?: () => SelectionProps;
+  getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Map<PropertyKey, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
