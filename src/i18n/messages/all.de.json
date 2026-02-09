@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Weniger anzeigen",
     "i18nStrings.limitShowMore": "Mehr anzeigen",
-    "i18nStrings.removeFileAriaLabel": "Datei {fileIndex} entfernen",
+    "i18nStrings.removeFileAriaLabel": "Datei {fileIndex} entfernen, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.warningIconAriaLabel": "Warnung"
   },

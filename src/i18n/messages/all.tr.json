@@ -183,7 +183,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",
     "i18nStrings.limitShowMore": "Daha fazla göster",
-    "i18nStrings.removeFileAriaLabel": "Dosyayı kaldır {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Şu dosyayı kaldır: {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
