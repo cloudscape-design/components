@@ -53,6 +53,9 @@ const Table = React.forwardRef(
         metadata: {
           expandableRows: !!props.expandableRows,
           progressiveLoading: !!props.getLoadingStatus,
+          groupSelection: !!props.expandableRows?.groupSelection,
+          cellCounters: props.columnDefinitions.filter(dev => !!dev.counter).length,
+          loaderCounters: !!props.renderLoaderCounter,
           inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
           disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
           hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),

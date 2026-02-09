@@ -307,10 +307,13 @@ const Demo = forwardRef(
         expandableRows={
           expandableRows
             ? {
-                getItemChildren: item => [
-                  { ...item, Id: item.Id + '-1' },
-                  { ...item, Id: item.Id + '-2' },
-                ],
+                getItemChildren: item =>
+                  item.Id.split('-').length < 3
+                    ? [
+                        { ...item, Id: item.Id + '-1' },
+                        { ...item, Id: item.Id + '-2' },
+                      ]
+                    : [],
                 isItemExpandable: item => !item.Id.endsWith('-1') && !item.Id.endsWith('-2'),
                 expandedItems,
                 onExpandableItemToggle: ({ detail }) => {

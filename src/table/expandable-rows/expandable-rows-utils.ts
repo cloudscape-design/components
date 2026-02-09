@@ -12,6 +12,8 @@ interface ExpandableItemProps<T> extends ExpandableItemDetail<T> {
   onExpandableItemToggle: () => void;
   expandButtonLabel?: string;
   collapseButtonLabel?: string;
+  itemsCount?: number;
+  selectedItemsCount?: number;
 }
 
 interface ExpandableItemDetail<T> {
@@ -20,6 +22,17 @@ interface ExpandableItemDetail<T> {
   posInSet: number;
   parent: null | T;
   children: readonly T[];
+}
+
+export interface InternalExpandableRowsProps<T> {
+  isExpandable: boolean;
+  allItems: readonly T[];
+  getExpandableItemProps(item: T): ExpandableItemProps<T>;
+  hasGroupSelection: boolean;
+  groupSelection: TableProps.GroupSelectionState<T>;
+  onGroupSelectionChange?: TableProps.OnGroupSelectionChange<T>;
+  totalItemsCount?: number;
+  totalSelectedItemsCount?: number;
 }
 
 export function useExpandableTableProps<T>({
@@ -32,7 +45,7 @@ export function useExpandableTableProps<T>({
   expandableRows?: TableProps.ExpandableRows<T>;
   trackBy?: TableProps.TrackBy<T>;
   ariaLabels?: TableProps.AriaLabels<T>;
-}) {
+}): InternalExpandableRowsProps<T> {
   const i18n = useInternalI18n('table');
   const isExpandable = !!expandableRows;
 
@@ -45,19 +58,23 @@ export function useExpandableTableProps<T>({
   if (isExpandable) {
     const visibleItems = new Array<T>();
 
-    const traverse = (item: T, detail: Omit<ExpandableItemDetail<T>, 'children'>) => {
+    const traverse = (item: T, detail: Omit<ExpandableItemDetail<T>, 'children'>, visible: boolean) => {
       const children = expandableRows.getItemChildren(item);
       itemToDetail.set(item, { ...detail, children });
 
-      visibleItems.push(item);
-      if (expandedSet.has(item)) {
-        children.forEach((child, index) =>
-          traverse(child, { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item })
-        );
+      if (visible) {
+        visibleItems.push(item);
       }
+      children.forEach((child, index) =>
+        traverse(
+          child,
+          { level: detail.level + 1, setSize: children.length, posInSet: index + 1, parent: item },
+          visible && expandedSet.has(item)
+        )
+      );
     };
     items.forEach((item, index) =>
-      traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null })
+      traverse(item, { level: 1, setSize: items.length, posInSet: index + 1, parent: null }, true)
     );
 
     for (let index = 0; index < visibleItems.length; index++) {
@@ -91,8 +108,19 @@ export function useExpandableTableProps<T>({
       collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
       parent,
       children,
+      itemsCount: expandableRows?.getItemsCount?.(item),
+      selectedItemsCount: expandableRows?.getSelectedItemsCount?.(item),
     };
   };
 
-  return { isExpandable, allItems, getExpandableItemProps };
+  return {
+    isExpandable,
+    allItems,
+    getExpandableItemProps,
+    hasGroupSelection: !!expandableRows?.groupSelection,
+    groupSelection: expandableRows?.groupSelection ?? { inverted: false, toggledItems: [] },
+    onGroupSelectionChange: expandableRows?.onGroupSelectionChange,
+    totalItemsCount: expandableRows?.totalItemsCount,
+    totalSelectedItemsCount: expandableRows?.totalSelectedItemsCount,
+  };
 }
