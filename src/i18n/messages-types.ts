@@ -196,6 +196,10 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
+    "i18nStrings.datePlaceholder": never;
+    "i18nStrings.isoDatePlaceholder": never;
+    "i18nStrings.slashedDatePlaceholder": never;
+    "i18nStrings.timePlaceholder": never;
     "i18nStrings.dateTimeConstraintText": never;
     "i18nStrings.dateConstraintText": never;
     "i18nStrings.slashedDateTimeConstraintText": never;

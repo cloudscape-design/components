@@ -36,9 +36,9 @@ export default function RangeInputs({
   const separator = isIso ? '-' : '/';
   const defaultDateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
   const datePlaceholder = isIso
-    ? i18nStrings?.isoDatePlaceholder || defaultDateInputPlaceholder
-    : i18nStrings?.slashedDatePlaceholder || defaultDateInputPlaceholder;
-  const timePlaceholder = i18nStrings?.timePlaceholder || timeInputFormat;
+    ? i18n('i18nStrings.isoDatePlaceholder', i18nStrings?.isoDatePlaceholder) || defaultDateInputPlaceholder
+    : i18n('i18nStrings.slashedDatePlaceholder', i18nStrings?.slashedDatePlaceholder) || defaultDateInputPlaceholder;
+  const timePlaceholder = i18n('i18nStrings.timePlaceholder', i18nStrings?.timePlaceholder) || timeInputFormat;
   const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
   const i18nKey = generateI18NKey(isMonthPicker, dateOnly, isIso);
   const i18nFallbackKey = generateI18NFallbackKey(isMonthPicker, dateOnly);
