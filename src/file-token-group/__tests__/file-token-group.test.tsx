@@ -256,14 +256,14 @@ describe('Tooltip', () => {
 
   test('Should make filename focusable via keyboard', () => {
     const wrapper = render({ items: [{ file: file3 }] });
-    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
 
-    expect(fileNameElement).toHaveAttribute('tabindex', '0');
+    expect(fileNameContainer).toHaveAttribute('tabindex', '0');
   });
 
   test('Should toggle aria-expanded when tooltip visibility changes on truncated filenames', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
-    const fileNameContainer = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
 
     expect(fileNameContainer).toHaveAttribute('aria-expanded', 'false');
 
@@ -280,18 +280,16 @@ describe('Focusing behavior', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }], limit });
     wrapper.findFileToken(1)!.findRemoveButton().click();
 
-    // After dismissal, focus moves to the filename container (first focusable element in the token)
-    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
-    expect(fileNameElement).toHaveFocus();
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+    expect(fileNameContainer).toHaveFocus();
   });
 
   test('Focus is dispatched to the previous token when removing the token at the end', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }] });
     wrapper.findFileToken(2)!.findRemoveButton().click();
 
-    // After dismissal, focus moves to the filename container (first focusable element in the token)
-    const fileNameElement = wrapper.findFileToken(1)!.findFileName().getElement().parentElement;
-    expect(fileNameElement).toHaveFocus();
+    const fileNameContainer = wrapper.findFileToken(1)!.getElement().querySelector(`.${styles['file-name-container']}`);
+    expect(fileNameContainer).toHaveFocus();
   });
 });
 
