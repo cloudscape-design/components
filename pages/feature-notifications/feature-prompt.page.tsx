@@ -120,6 +120,7 @@ registerFeatureNotifications({
 
 export default function () {
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const root = document.createElement('div');
@@ -145,7 +146,7 @@ export default function () {
         <FeaturePrompt
           ref={featurePromptRef}
           onDismiss={() => {
-            // handle focus behavior here
+            triggerRef.current?.focus();
           }}
           position="bottom"
           header={
@@ -179,6 +180,7 @@ export default function () {
                 </Header>
               </div>
               <Button
+                ref={triggerRef}
                 onClick={() => {
                   featurePromptRef.current?.show();
                 }}
