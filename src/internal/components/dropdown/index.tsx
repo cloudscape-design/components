@@ -298,10 +298,12 @@ const Dropdown = ({
 
   // Check if the dropdown has enough space to fit with its desired width constraints
   // If not, remove the class that allows flexible width sizing
+  // Only applies when no explicit width constraints are set (default behavior)
   const fixStretching = () => {
     const classNameToRemove = styles['use-flexible-width'];
     if (
       open &&
+      minWidth === undefined &&
       maxWidth === undefined &&
       !matchTriggerWidth &&
       dropdownRef.current &&
