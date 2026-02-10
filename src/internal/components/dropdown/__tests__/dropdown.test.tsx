@@ -34,11 +34,7 @@ jest.mock('../../../../../lib/components/internal/components/dropdown/dropdown-f
 describe('Dropdown Component', () => {
   describe('Properties', () => {
     test('closed by default', () => {
-      const [wrapper] = renderDropdown(
-        <Dropdown trigger={<button />}>
-          <div id="content" />
-        </Dropdown>
-      );
+      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} content={<div id="content" />} />);
       expect(wrapper.findOpenDropdown()).not.toBeTruthy();
     });
     test('opens with the prop', () => {
@@ -66,11 +62,19 @@ describe('Dropdown Component', () => {
     test('does not fire close event when a portaled element inside dropdown is clicked', async () => {
       const handleCloseDropdown = jest.fn();
       renderDropdown(
-        <Dropdown trigger={<button />} onDropdownClose={handleCloseDropdown} open={true}>
-          <Dropdown trigger={<button />} open={true} expandToViewport={true}>
-            <button data-testid="inside">inside</button>
-          </Dropdown>
-        </Dropdown>
+        <Dropdown
+          trigger={<button />}
+          onDropdownClose={handleCloseDropdown}
+          open={true}
+          content={
+            <Dropdown
+              trigger={<button />}
+              open={true}
+              expandToViewport={true}
+              content={<button data-testid="inside">inside</button>}
+            />
+          }
+        />
       );
       await runPendingEvents();
 
@@ -91,9 +95,12 @@ describe('Dropdown Component', () => {
       }
       const handleCloseDropdown = jest.fn();
       const [wrapper] = renderDropdown(
-        <Dropdown trigger={<button />} onDropdownClose={handleCloseDropdown} open={true}>
-          <SelfDestructible />
-        </Dropdown>
+        <Dropdown
+          trigger={<button />}
+          onDropdownClose={handleCloseDropdown}
+          open={true}
+          content={<SelfDestructible />}
+        />
       );
       await runPendingEvents();
 
@@ -124,11 +131,20 @@ describe('Dropdown Component', () => {
       const handleFocus = jest.fn();
       const handleBlur = jest.fn();
       renderDropdown(
-        <Dropdown trigger={<button data-testid="trigger" />} onFocus={handleFocus} onBlur={handleBlur} open={true}>
-          <Dropdown trigger={<button />} open={true} expandToViewport={true}>
-            <button data-testid="inside">inside</button>
-          </Dropdown>
-        </Dropdown>
+        <Dropdown
+          trigger={<button data-testid="trigger" />}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          open={true}
+          content={
+            <Dropdown
+              trigger={<button />}
+              open={true}
+              expandToViewport={true}
+              content={<button data-testid="inside">inside</button>}
+            />
+          }
+        />
       );
       await runPendingEvents();
 

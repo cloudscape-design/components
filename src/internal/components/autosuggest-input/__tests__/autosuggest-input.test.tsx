@@ -299,9 +299,12 @@ describe('blur handling', () => {
           onChange={() => undefined}
           onCloseDropdown={onClose}
           dropdownContent={
-            <Dropdown trigger={<button />} open={true} expandToViewport={true}>
-              <button data-testid="target">target</button>
-            </Dropdown>
+            <Dropdown
+              trigger={<button />}
+              open={true}
+              expandToViewport={true}
+              content={<button data-testid="target">target</button>}
+            />
           }
         />
       </div>

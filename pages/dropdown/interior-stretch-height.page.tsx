@@ -42,9 +42,8 @@ export default function DropdownScenario() {
             }
             open={openParent1}
             onDropdownClose={() => setOpenParent1(false)}
-          >
-            <ListContent n={15} withSpaces={true} repeat={20} />
-          </Dropdown>
+            content={<ListContent n={15} withSpaces={true} repeat={20} />}
+          />
         </div>
       </div>
       <div
@@ -62,9 +61,8 @@ export default function DropdownScenario() {
             }
             open={openParent2}
             onDropdownClose={() => setOpenParent2(false)}
-          >
-            <ListContent n={15} withSpaces={true} repeat={20} />
-          </Dropdown>
+            content={<ListContent n={15} withSpaces={true} repeat={20} />}
+          />
         </div>
       </div>
       <div
@@ -82,11 +80,12 @@ export default function DropdownScenario() {
             }
             open={openParent3}
             onDropdownClose={() => setOpenParent3(false)}
-          >
-            <div style={{ inlineSize: '400px' }}>
-              <ListContent n={15} withSpaces={true} repeat={20} />
-            </div>
-          </Dropdown>
+            content={
+              <div style={{ inlineSize: '400px' }}>
+                <ListContent n={15} withSpaces={true} repeat={20} />
+              </div>
+            }
+          />
         </div>
       </div>
     </article>

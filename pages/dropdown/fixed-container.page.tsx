@@ -33,9 +33,8 @@ export default function () {
             }
             open={open}
             onDropdownClose={() => setOpen(false)}
-          >
-            <ListContent n={5} />
-          </Dropdown>
+            content={<ListContent n={5} />}
+          />
         </div>
         <div className={styles.placeholder}>An extra element to enable page scroll</div>
       </ScreenshotArea>

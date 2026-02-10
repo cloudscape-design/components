@@ -106,12 +106,13 @@ export default function DropdownScenario() {
               }
               expandToViewport={expandToViewport}
               loopFocus={loopFocus}
-            >
-              <div style={{ padding: 8 }}>
-                <Button disabled={disableContent}>content-1</Button>
-                <Button disabled={disableContent}>content-2</Button>
-              </div>
-            </Dropdown>
+              content={
+                <div style={{ padding: 8 }}>
+                  <Button disabled={disableContent}>content-1</Button>
+                  <Button disabled={disableContent}>content-2</Button>
+                </div>
+              }
+            />
           </div>
         </SpaceBetween>
       </Box>
