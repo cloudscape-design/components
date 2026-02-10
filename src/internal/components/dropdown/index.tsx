@@ -224,16 +224,8 @@ const Dropdown = ({
     if (!interior && matchTriggerWidth && !expandToViewport) {
       target.classList.add(styles['occupy-entire-width']);
     } else if (!target.classList.contains(styles['use-flexible-width'])) {
-      // Only set inline-size if not using CSS variables via use-flexible-width
+      // Only set inline-size if not using CSS class for flexible width
       target.style.inlineSize = position.inlineSize;
-      target.style.minInlineSize = '';
-      target.style.maxInlineSize = '';
-    } else {
-      // When using use-flexible-width with minWidth='trigger', set min-inline-size
-      // to ensure the dropdown is at least as wide as the trigger (needed for virtualScroll)
-      if (minWidth === 'trigger') {
-        target.style.minInlineSize = `${triggerBox.inlineSize}px`;
-      }
     }
 
     // Using styles for main dropdown to adjust its position as preferred alternative
