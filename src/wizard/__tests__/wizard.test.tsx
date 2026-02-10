@@ -9,6 +9,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import { handleStepNavigation, StepStatusValues } from '../../../lib/components/wizard/wizard-step-list';
+import { KeyCode } from '../../internal/keycode';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
@@ -370,6 +371,32 @@ describe('Navigation', () => {
     );
     expect(onNavigate).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'step' } })
+    );
+  });
+
+  test('navigates to visited step on Enter key', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
+
+    wrapper.findMenuNavigationLink(1)!.keydown(KeyCode.enter);
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
+    );
+  });
+
+  test('navigates to visited step on Space key', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
+
+    const navLink = wrapper.findMenuNavigationLink(1)!;
+    navLink.keydown(KeyCode.space);
+    navLink.keyup(KeyCode.space);
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
     );
   });
 });
