@@ -184,7 +184,6 @@ export function useDateRangePickerSettings(
     endDateLabel: 'End date',
     startTimeLabel: 'Start time',
     endTimeLabel: 'End time',
-    datePlaceholder: undefined, // Use default format-based placeholder
     timePlaceholder: undefined, // Use default format-based placeholder
     clearButtonLabel: 'Clear and dismiss',
     cancelButtonLabel: 'Cancel',
