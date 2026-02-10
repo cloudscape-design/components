@@ -30,7 +30,7 @@ registerFeatureNotifications({
         <Box variant="p">
           You can now enrich CloudTrail events with additional information by adding resources tags and IAM global keys
           in CloudTrail lake.{' '}
-          <Link external={true} href="https://amazon.com">
+          <Link variant="primary" external={true} href="https://amazon.com">
             Learn more
           </Link>
         </Box>
@@ -52,7 +52,7 @@ registerFeatureNotifications({
           <Box variant="p">
             More enhanced filtering options provide tighter control over your AWS activity data, improving the
             efficiency and precision of security, compliance, and operational investigations.{' '}
-            <Link external={true} href="https://amazon.com">
+            <Link variant="primary" external={true} href="https://amazon.com">
               View user guide
             </Link>
           </Box>
@@ -71,7 +71,10 @@ registerFeatureNotifications({
           <Box variant="p">
             Use application map to automatically discover and organize your services into groups based on your business
             needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational signals such
-            as SLOs, health indicators, and top insights in a contextual drawer. <Link href="#">Learn more</Link>
+            as SLOs, health indicators, and top insights in a contextual drawer.{' '}
+            <Link variant="primary" href="#">
+              Learn more
+            </Link>
           </Box>
         </>
       ),
