@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
@@ -9,10 +9,12 @@ import Arrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { getBaseProps } from '../../base-component';
+import FocusLock from '../../components/focus-lock';
 import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { SomeRequired } from '../../types';
+import { nodeBelongs } from '../../utils/node-belongs';
 import { FeaturePromptProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -53,45 +55,59 @@ function InternalFeaturePrompt(
     },
   }));
 
+  useEffect(() => {
+    if (!show) {
+      return;
+    }
+    const clickListener = (event: MouseEvent) => {
+      // Since the listener is registered on the window, `event.target` will incorrectly point at the
+      // shadow root if the component is rendered inside shadow DOM.
+      const target = event.composedPath ? event.composedPath()[0] : event.target;
+      if (!nodeBelongs(popoverBodyRef.current, target)) {
+        setShow(false);
+        fireNonCancelableEvent(onDismiss);
+      }
+    };
+    window.addEventListener('click', clickListener, true);
+
+    return () => {
+      window.removeEventListener('click', clickListener, true);
+    };
+  }, [show, onDismiss]);
+
   return (
     <span {...baseProps} className={styles.root} ref={__internalRootRef}>
       {show && (
         <Portal>
           <ResetContextsForModal>
-            <PopoverContainer
-              size={size}
-              fixedWidth={false}
-              position={position}
-              getTrack={getTrack}
-              trackKey={trackKey}
-              variant="annotation"
-              arrow={position => <Arrow position={position} variant="info" />}
-              zIndex={7000}
-              renderWithPortal={true}
-            >
-              <PopoverBody
-                ref={popoverBodyRef}
-                dismissButton={true}
-                dismissAriaLabel={i18nStrings?.dismissAriaLabel}
-                header={header}
-                onDismiss={() => {
-                  setShow(false);
-                  fireNonCancelableEvent(onDismiss);
-                }}
+            <FocusLock autoFocus={true} restoreFocus={true}>
+              <PopoverContainer
+                size={size}
+                fixedWidth={false}
+                position={position}
+                getTrack={getTrack}
+                trackKey={trackKey}
                 variant="annotation"
-                overflowVisible="content"
-                onBlur={event => {
-                  const relatedTarget = event.relatedTarget;
-                  if (relatedTarget && popoverBodyRef.current?.contains(relatedTarget)) {
-                    return;
-                  }
-                  setShow(false);
-                  fireNonCancelableEvent(onDismiss);
-                }}
+                arrow={position => <Arrow position={position} variant="info" />}
+                zIndex={7000}
+                renderWithPortal={true}
               >
-                {content}
-              </PopoverBody>
-            </PopoverContainer>
+                <PopoverBody
+                  ref={popoverBodyRef}
+                  dismissButton={true}
+                  dismissAriaLabel={i18nStrings?.dismissAriaLabel}
+                  header={header}
+                  onDismiss={() => {
+                    setShow(false);
+                    fireNonCancelableEvent(onDismiss);
+                  }}
+                  variant="annotation"
+                  overflowVisible="content"
+                >
+                  {content}
+                </PopoverBody>
+              </PopoverContainer>
+            </FocusLock>
           </ResetContextsForModal>
         </Portal>
       )}
