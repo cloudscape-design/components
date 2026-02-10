@@ -399,6 +399,32 @@ describe('Navigation', () => {
       expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
     );
   });
+
+  test('skip-to navigation via Enter key', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, onNavigate, allowSkipTo: true });
+
+    wrapper.findMenuNavigationLink(3)!.keydown(KeyCode.enter);
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
+    );
+  });
+
+  test('skip-to navigation via Space key', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, onNavigate, allowSkipTo: true });
+
+    const navLink = wrapper.findMenuNavigationLink(3)!;
+    navLink.keydown(KeyCode.space);
+    navLink.keyup(KeyCode.space);
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
+    );
+  });
 });
 
 describe('Form', () => {
