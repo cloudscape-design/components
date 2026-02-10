@@ -126,7 +126,7 @@ const TransitionContent = ({
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
-        [styles['use-flexible-width']]: useFlexibleWidth,
+        [styles['use-flexible-width']]: useFlexibleWidth && !interior,
       })}
       ref={contentRef}
       id={id}
