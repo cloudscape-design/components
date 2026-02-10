@@ -11106,6 +11106,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "isoDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "isoDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11186,6 +11191,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "slashedDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "slashedDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11207,6 +11217,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "startTimeLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "timePlaceholder",
             "optional": true,
             "type": "string",
           },
@@ -11533,6 +11548,13 @@ exports[`Components definition for error-boundary matches the snapshot: error-bo
   "name": "ErrorBoundary",
   "properties": [
     {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Optional identifier for the error boundary instance.
 
 When provided, the identifier is included in the \`onError\` callback payload.
@@ -11600,6 +11622,15 @@ attribute \`data-awsui-boundary-id={errorBoundaryId}\` to support debugging.",
       "name": "i18nStrings",
       "optional": true,
       "type": "ErrorBoundaryProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Callback invoked when an error is intercepted by the boundary.
