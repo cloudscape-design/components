@@ -572,14 +572,6 @@ export namespace DateRangePickerProps {
     previousYearAriaLabel?: string;
 
     /**
-     * Placeholder text for date inputs in absolute mode.
-     * Should match the expected date format (for example "YYYY-MM-DD", "JJJJ-MM-TT" for German).
-     * Used for both start and end date inputs.
-     * @i18n
-     */
-    datePlaceholder?: string;
-
-    /**
      * Placeholder text for date inputs in absolute mode with 'iso' format (dashes).
      * Should match the expected date format (for example "YYYY-MM-DD", "JJJJ-MM-TT" for German).
      * Used for both start and end date inputs.
