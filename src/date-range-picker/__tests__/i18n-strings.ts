@@ -34,9 +34,6 @@ export const i18nStrings: DateRangePickerProps.I18nStrings = {
   cancelButtonLabel: 'Cancel',
   applyButtonLabel: 'Apply',
   renderSelectedAbsoluteRangeAriaLive: () => `Range selected from A to B`,
-  isoDatePlaceholder: 'YYYY-MM-DD',
-  slashedDatePlaceholder: 'YYYY/MM/DD',
-  timePlaceholder: 'hh:mm:ss',
 };
 
 export const i18nStringsWithExtraFormatConstraints: DateRangePickerProps.I18nStrings = {
