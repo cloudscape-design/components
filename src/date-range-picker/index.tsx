@@ -320,41 +320,42 @@ const DateRangePicker = React.forwardRef(
           stretchToTriggerWidth={false}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
-        >
-          {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
-          <ResetContextsForModal>
-            {isDropDownOpen && (
-              <DateRangePickerDropdown
-                startOfWeek={startOfWeek}
-                locale={normalizedLocale}
-                isSingleGrid={isSingleGrid}
-                onDropdownClose={() => closeDropdown(true)}
-                value={value}
-                showClearButton={showClearButton}
-                isDateEnabled={isDateEnabled}
-                dateDisabledReason={dateDisabledReason}
-                i18nStrings={i18nStrings}
-                onClear={onClear}
-                onApply={onApply}
-                getTimeOffset={getTimeOffset}
-                timeOffset={timeOffset}
-                relativeOptions={relativeOptions}
-                isValidRange={isValidRange}
-                dateOnly={dateOnly}
-                absoluteFormat={absoluteFormat}
-                timeInputFormat={timeInputFormat}
-                dateInputFormat={dateInputFormat}
-                rangeSelectorMode={rangeSelectorMode}
-                ariaLabelledby={ariaLabelledby}
-                ariaDescribedby={ariaDescribedby}
-                customAbsoluteRangeControl={customAbsoluteRangeControl}
-                customRelativeRangeUnits={customRelativeRangeUnits}
-                renderRelativeRangeContent={renderRelativeRangeContent}
-                granularity={granularity}
-              />
-            )}
-          </ResetContextsForModal>
-        </Dropdown>
+          content={
+            /* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */
+            <ResetContextsForModal>
+              {isDropDownOpen && (
+                <DateRangePickerDropdown
+                  startOfWeek={startOfWeek}
+                  locale={normalizedLocale}
+                  isSingleGrid={isSingleGrid}
+                  onDropdownClose={() => closeDropdown(true)}
+                  value={value}
+                  showClearButton={showClearButton}
+                  isDateEnabled={isDateEnabled}
+                  dateDisabledReason={dateDisabledReason}
+                  i18nStrings={i18nStrings}
+                  onClear={onClear}
+                  onApply={onApply}
+                  getTimeOffset={getTimeOffset}
+                  timeOffset={timeOffset}
+                  relativeOptions={relativeOptions}
+                  isValidRange={isValidRange}
+                  dateOnly={dateOnly}
+                  absoluteFormat={absoluteFormat}
+                  timeInputFormat={timeInputFormat}
+                  dateInputFormat={dateInputFormat}
+                  rangeSelectorMode={rangeSelectorMode}
+                  ariaLabelledby={ariaLabelledby}
+                  ariaDescribedby={ariaDescribedby}
+                  customAbsoluteRangeControl={customAbsoluteRangeControl}
+                  customRelativeRangeUnits={customRelativeRangeUnits}
+                  renderRelativeRangeContent={renderRelativeRangeContent}
+                  granularity={granularity}
+                />
+              )}
+            </ResetContextsForModal>
+          }
+        />
       </div>
     );
   }

@@ -366,59 +366,62 @@ const InternalButtonDropdown = React.forwardRef(
           onDropdownClose={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
-        >
-          {hasHeader && (
-            <div className={styles.header} id={headerId}>
-              {title && (
-                <div className={styles.title}>
-                  <InternalBox
-                    fontSize="heading-s"
-                    fontWeight="bold"
-                    color="inherit"
-                    tagOverride="h2"
-                    margin={{ vertical: 'n', horizontal: 'n' }}
-                  >
-                    {title}
-                  </InternalBox>
+          content={
+            <>
+              {hasHeader && (
+                <div className={styles.header} id={headerId}>
+                  {title && (
+                    <div className={styles.title}>
+                      <InternalBox
+                        fontSize="heading-s"
+                        fontWeight="bold"
+                        color="inherit"
+                        tagOverride="h2"
+                        margin={{ vertical: 'n', horizontal: 'n' }}
+                      >
+                        {title}
+                      </InternalBox>
+                    </div>
+                  )}
+                  {description && (
+                    <InternalBox fontSize="body-s">
+                      <span className={styles.description}>{description}</span>
+                    </InternalBox>
+                  )}
                 </div>
               )}
-              {description && (
-                <InternalBox fontSize="body-s">
-                  <span className={styles.description}>{description}</span>
-                </InternalBox>
-              )}
-            </div>
-          )}
-          <OptionsList
-            open={canBeOpened && isOpen}
-            position="static"
-            role="menu"
-            tagOverride="ul"
-            decreaseBlockMargin={true}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
-            statusType="finished"
-          >
-            <ItemsList
-              items={items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              hasExpandableGroups={expandableGroups}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={true}
-              highlightItem={highlightItem}
-              expandToViewport={expandToViewport}
-              variant={variant}
-              analyticsMetadataTransformer={analyticsMetadataTransformer}
-              linkStyle={linkStyle}
-              position={position}
-              renderItem={renderItem}
-            />
-          </OptionsList>
-        </Dropdown>
+              <OptionsList
+                open={canBeOpened && isOpen}
+                position="static"
+                role="menu"
+                tagOverride="ul"
+                decreaseBlockMargin={true}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
+                statusType="finished"
+              >
+                <ItemsList
+                  items={items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  hasExpandableGroups={expandableGroups}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={true}
+                  highlightItem={highlightItem}
+                  expandToViewport={expandToViewport}
+                  variant={variant}
+                  analyticsMetadataTransformer={analyticsMetadataTransformer}
+                  linkStyle={linkStyle}
+                  position={position}
+                  renderItem={renderItem}
+                />
+              </OptionsList>
+            </>
+          }
+        />
       </div>
     );
   }

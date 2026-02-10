@@ -58,7 +58,7 @@ export interface DropdownProps extends ExpandToViewport {
   /**
    * Dropdown content elements.
    */
-  children?: React.ReactNode;
+  content?: React.ReactNode;
   /**
    * Updating content key triggers dropdown position re-evaluation.
    */

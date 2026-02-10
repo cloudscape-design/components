@@ -267,24 +267,25 @@ const InternalSelect = React.forwardRef(
           expandToViewport={expandToViewport}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}
-        >
-          <ListComponent
-            listBottom={
-              !dropdownStatus.isSticky ? (
-                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-              ) : null
-            }
-            renderOption={renderOption}
-            menuProps={menuProps}
-            getOptionProps={getOptionProps}
-            filteredOptions={filteredOptions}
-            filteringValue={filteringValue}
-            ref={scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            screenReaderContent={announcement}
-            highlightType={highlightType}
-          />
-        </Dropdown>
+          content={
+            <ListComponent
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              renderOption={renderOption}
+              menuProps={menuProps}
+              getOptionProps={getOptionProps}
+              filteredOptions={filteredOptions}
+              filteringValue={filteringValue}
+              ref={scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              screenReaderContent={announcement}
+              highlightType={highlightType}
+            />
+          }
+        />
         <div hidden={true} id={selectAriaLabelId}>
           {ariaLabel || inlineLabelText}
         </div>

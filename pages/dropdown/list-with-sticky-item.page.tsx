@@ -87,17 +87,18 @@ export default function MultiselectPage() {
                   </Box>
                 ) : null
               }
-            >
-              <ListComponent
-                menuProps={{ statusType: 'finished', ref, open }}
-                getOptionProps={(option, index) => ({ option: { ...option }, key: index, index: index, open })}
-                filteredOptions={options}
-                filteringValue={''}
-                firstOptionSticky={true}
-                highlightType={{ type: 'mouse', moveFocus: false }}
-                useInteractiveGroups={true}
-              />
-            </Dropdown>
+              content={
+                <ListComponent
+                  menuProps={{ statusType: 'finished', ref, open }}
+                  getOptionProps={(option, index) => ({ option: { ...option }, key: index, index: index, open })}
+                  filteredOptions={options}
+                  filteringValue={''}
+                  firstOptionSticky={true}
+                  highlightType={{ type: 'mouse', moveFocus: false }}
+                  useInteractiveGroups={true}
+                />
+              }
+            />
           </div>
         </SpaceBetween>
       </Box>

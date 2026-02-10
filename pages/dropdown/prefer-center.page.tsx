@@ -36,9 +36,8 @@ export default function DropdownScenario() {
             }
             open={open1}
             onDropdownClose={() => setOpen1(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
@@ -53,9 +52,8 @@ export default function DropdownScenario() {
             }
             open={open2}
             onDropdownClose={() => setOpen2(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
@@ -70,9 +68,8 @@ export default function DropdownScenario() {
             }
             open={open3}
             onDropdownClose={() => setOpen3(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
     </article>

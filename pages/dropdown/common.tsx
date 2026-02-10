@@ -17,9 +17,8 @@ export function SampleDropdown({ id, children }: { id: string; children: React.R
       }
       open={isOpened}
       onDropdownClose={() => setOpened(false)}
-    >
-      {children}
-    </Dropdown>
+      content={children}
+    />
   );
 }
 
