@@ -14,6 +14,24 @@ import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
+// Helper to mock mobile viewport for useMobile() hook
+const mockMobileViewport = () => {
+  const originalMatchMedia = window.matchMedia;
+  window.matchMedia = jest.fn().mockImplementation(query => ({
+    matches: query.includes('max-width'),
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }));
+  return () => {
+    window.matchMedia = originalMatchMedia;
+  };
+};
+
 declare global {
   interface Window {
     AWSC?: any;
@@ -82,10 +100,6 @@ describe('i18nStrings', () => {
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      const expectedCollapsedSteps = `${i18nStrings.collapsedStepsLabel!(2, DEFAULT_STEPS.length)}`;
-      expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(
-        expectedCollapsedSteps
-      );
 
       const expectedFormTitle = `${DEFAULT_STEPS[1].title} - ${i18nStrings.optional}`;
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent(expectedFormTitle);
@@ -640,6 +654,50 @@ describe('handleStepNavigation', () => {
   });
 });
 
+describe('Mobile navigation', () => {
+  test('renders collapsed steps label in mobile viewport', () => {
+    const restoreViewport = mockMobileViewport();
+    const { container } = render(
+      <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
+    );
+    const wrapper = createWrapper(container).findWizard()!;
+    const expectedCollapsedSteps = `${DEFAULT_I18N_SETS[0].collapsedStepsLabel!(2, DEFAULT_STEPS.length)}`;
+    expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(expectedCollapsedSteps);
+    restoreViewport();
+  });
+
+  test('renders i18n collapsed steps label in mobile viewport', () => {
+    const restoreViewport = mockMobileViewport();
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          wizard: {
+            'i18nStrings.stepNumberLabel': 'Custom step {stepNumber}',
+            'i18nStrings.collapsedStepsLabel': 'Custom step {stepNumber} of {stepsCount}',
+            'i18nStrings.navigationAriaLabel': 'Custom steps',
+            'i18nStrings.cancelButton': 'Custom cancel',
+            'i18nStrings.previousButton': 'Custom previous',
+            'i18nStrings.nextButton': 'Custom next',
+            'i18nStrings.optional': 'Custom optional',
+          },
+        }}
+      >
+        <Wizard
+          i18nStrings={{ submitButton: 'Create instance' }}
+          steps={[
+            { title: 'Step 1', content: 'Content 1' },
+            { title: 'Step 2', content: 'Content 2' },
+            { title: 'Step 3', content: 'Content 3' },
+          ]}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findWizard()!;
+    expect(wrapper.getElement()).toHaveTextContent('Custom step 1 of 3');
+    restoreViewport();
+  });
+});
+
 describe('i18n', () => {
   test('supports rendering static strings using i18n provider', () => {
     const { container } = render(
@@ -672,7 +730,6 @@ describe('i18n', () => {
     expect(wrapper.find('li:nth-child(1)')!.getElement()).toHaveTextContent(
       'Custom step 1 - Custom optional' + 'Step 1'
     );
-    expect(wrapper.getElement()).toHaveTextContent('Custom step 1 of 3');
     expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Custom cancel');
     expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent('Custom next');
     expect(wrapper.findSkipToButton()!.getElement()).toHaveTextContent('Custom skip to Step 3');
