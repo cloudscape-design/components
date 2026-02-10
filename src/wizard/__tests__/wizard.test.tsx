@@ -1,15 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
-import { handleStepNavigation, StepStatusValues } from '../../../lib/components/wizard/wizard-step-list';
-import { KeyCode } from '../../internal/keycode';
+import WizardStepList, {
+  handleStepNavigation,
+  StepStatusValues,
+} from '../../../lib/components/wizard/wizard-step-list';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
@@ -371,58 +373,6 @@ describe('Navigation', () => {
     );
     expect(onNavigate).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'step' } })
-    );
-  });
-
-  test('navigates to visited step on Enter key', () => {
-    const onNavigate = jest.fn();
-    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
-
-    wrapper.findMenuNavigationLink(1)!.keydown(KeyCode.enter);
-
-    expect(onNavigate).toHaveBeenCalledTimes(1);
-    expect(onNavigate).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
-    );
-  });
-
-  test('navigates to visited step on Space key', () => {
-    const onNavigate = jest.fn();
-    const [wrapper] = renderDefaultWizard({ activeStepIndex: 2, onNavigate });
-
-    const navLink = wrapper.findMenuNavigationLink(1)!;
-    navLink.keydown(KeyCode.space);
-    navLink.keyup(KeyCode.space);
-
-    expect(onNavigate).toHaveBeenCalledTimes(1);
-    expect(onNavigate).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
-    );
-  });
-
-  test('skip-to navigation via Enter key', () => {
-    const onNavigate = jest.fn();
-    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, onNavigate, allowSkipTo: true });
-
-    wrapper.findMenuNavigationLink(3)!.keydown(KeyCode.enter);
-
-    expect(onNavigate).toHaveBeenCalledTimes(1);
-    expect(onNavigate).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
-    );
-  });
-
-  test('skip-to navigation via Space key', () => {
-    const onNavigate = jest.fn();
-    const [wrapper] = renderDefaultWizard({ activeStepIndex: 0, onNavigate, allowSkipTo: true });
-
-    const navLink = wrapper.findMenuNavigationLink(3)!;
-    navLink.keydown(KeyCode.space);
-    navLink.keyup(KeyCode.space);
-
-    expect(onNavigate).toHaveBeenCalledTimes(1);
-    expect(onNavigate).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
     );
   });
 });
@@ -789,5 +739,173 @@ describe('i18n', () => {
     expect(wrapper.find('nav')!.getElement()).toHaveAccessibleName('Custom steps');
     wrapper.findPrimaryButton().click();
     expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent('Custom previous');
+  });
+});
+
+describe('WizardStepList keyboard navigation', () => {
+  const testSteps = [
+    { title: 'Step 1', content: 'content 1' },
+    { title: 'Step 2', content: 'content 2', isOptional: true },
+    { title: 'Step 3', content: 'content 3', isOptional: true },
+  ];
+
+  const defaultI18nStrings = {
+    stepNumberLabel: (stepNumber: number) => `Step ${stepNumber}`,
+    optional: 'optional',
+  };
+
+  function renderStepList(props: {
+    activeStepIndex: number;
+    farthestStepIndex: number;
+    allowSkipTo?: boolean;
+    onStepClick: jest.Mock;
+    onSkipToClick: jest.Mock;
+  }) {
+    return render(
+      <WizardStepList
+        activeStepIndex={props.activeStepIndex}
+        farthestStepIndex={props.farthestStepIndex}
+        allowSkipTo={props.allowSkipTo ?? false}
+        i18nStrings={defaultI18nStrings}
+        isLoadingNextStep={false}
+        onStepClick={props.onStepClick}
+        onSkipToClick={props.onSkipToClick}
+        steps={testSteps}
+      />
+    );
+  }
+
+  test('navigates to visited step on Enter keydown', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    // First step is visited (index 0, farthestStepIndex is 2)
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    fireEvent.keyDown(firstStepLink, { key: 'Enter' });
+
+    expect(onStepClick).toHaveBeenCalledWith(0);
+    expect(onSkipToClick).not.toHaveBeenCalled();
+  });
+
+  test('navigates to visited step on Space keyup', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    fireEvent.keyDown(firstStepLink, { key: ' ' });
+    fireEvent.keyUp(firstStepLink, { key: ' ' });
+
+    expect(onStepClick).toHaveBeenCalledWith(0);
+    expect(onSkipToClick).not.toHaveBeenCalled();
+  });
+
+  test('does not navigate on Space keydown only (requires keyup)', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    fireEvent.keyDown(firstStepLink, { key: ' ' });
+
+    // Only keydown, no keyup - should not trigger navigation
+    expect(onStepClick).not.toHaveBeenCalled();
+    expect(onSkipToClick).not.toHaveBeenCalled();
+  });
+
+  test('calls preventDefault on Enter keydown', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+
+    firstStepLink.dispatchEvent(event);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  test('calls preventDefault on Space keydown', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true });
+    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+
+    firstStepLink.dispatchEvent(event);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  test('skip-to navigation via Enter key', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 0,
+      farthestStepIndex: 0,
+      allowSkipTo: true,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    // Third step should be "next" (skippable) since steps 2 and 3 are optional
+    const links = container.querySelectorAll('a[role="button"]');
+    const thirdStepLink = links[2] as HTMLElement;
+
+    fireEvent.keyDown(thirdStepLink, { key: 'Enter' });
+
+    expect(onSkipToClick).toHaveBeenCalledWith(2);
+    expect(onStepClick).not.toHaveBeenCalled();
+  });
+
+  test('skip-to navigation via Space key', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 0,
+      farthestStepIndex: 0,
+      allowSkipTo: true,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const links = container.querySelectorAll('a[role="button"]');
+    const thirdStepLink = links[2] as HTMLElement;
+
+    fireEvent.keyDown(thirdStepLink, { key: ' ' });
+    fireEvent.keyUp(thirdStepLink, { key: ' ' });
+
+    expect(onSkipToClick).toHaveBeenCalledWith(2);
+    expect(onStepClick).not.toHaveBeenCalled();
   });
 });
