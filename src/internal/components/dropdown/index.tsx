@@ -204,8 +204,8 @@ const Dropdown = ({
   const isMobile = useMobile();
 
   // Derive if dropdown should match trigger width exactly
-  // This happens when minWidth='trigger' and maxWidth is either 'trigger' or not specified
-  const matchTriggerWidth = minWidth === 'trigger' && (maxWidth === 'trigger' || maxWidth === undefined);
+  // This happens when both minWidth and maxWidth are explicitly set to 'trigger'
+  const matchTriggerWidth = minWidth === 'trigger' && maxWidth === 'trigger';
 
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,
@@ -429,18 +429,35 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
-  // Use flexible width sizing when not constrained to trigger width
-  const useFlexibleWidth = maxWidth !== 'trigger' && !matchTriggerWidth;
+  // Use flexible width sizing when not matching trigger width exactly
+  const useFlexibleWidth = !matchTriggerWidth;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
   const getMinWidthCssValue = (): string | undefined => {
-    return typeof minWidth === 'number' ? `${minWidth}px` : undefined;
+    if (typeof minWidth === 'number') {
+      return `${minWidth}px`;
+    }
+    if (minWidth === 'max-content') {
+      return 'max-content';
+    }
+    if (minWidth === 'trigger') {
+      return '100%';
+    }
+    return undefined;
   };
 
   const getMaxWidthCssValue = (): string | undefined => {
     if (typeof maxWidth === 'number') {
       return `${maxWidth}px`;
+    }
+    if (maxWidth === 'max-content') {
+      return 'max-content';
+    }
+    // When maxWidth is undefined, allow dropdown to grow to content size
+    // The CSS fallback of 100% would constrain it to trigger width
+    if (maxWidth === undefined) {
+      return 'none';
     }
     return undefined;
   };

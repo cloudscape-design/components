@@ -256,8 +256,8 @@ const InternalSelect = React.forwardRef(
           }
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          minWidth="trigger"
-          maxWidth={expandToViewport ? getBreakpointValue('xxs') : undefined}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          maxWidth={getBreakpointValue('xxs')}
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}

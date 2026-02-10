@@ -295,8 +295,8 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
-          minWidth={dropdownWidth ?? 'trigger'}
-          maxWidth={expandToViewport ? getBreakpointValue('xxs') : undefined}
+          minWidth={expandToViewport ? undefined : (dropdownWidth ?? 'max-content')}
+          maxWidth={getBreakpointValue('xxs')}
           contentKey={dropdownContentKey}
           onFocus={handleFocus}
           onBlur={handleBlur}

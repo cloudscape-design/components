@@ -75,8 +75,8 @@
   }
   &.use-flexible-width {
     inline-size: max-content;
-    min-inline-size: var(#{custom-props.$dropdownDefaultMinWidth}, 0);
     max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, none);
+    min-inline-size: var(#{custom-props.$dropdownDefaultMinWidth}, auto);
   }
   &.interior > .dropdown-content-wrapper {
     margin-block-start: -1px;
@@ -94,10 +94,10 @@
     display: block;
 
     &:not(.interior).refresh[data-animating='true'] {
-      transform: translateY(4px);
+      transform: translateY(5px);
 
       &.dropdown-drop-up {
-        transform: translateY(-4px);
+        transform: translateY(-5px);
       }
     }
     &.nowrap {

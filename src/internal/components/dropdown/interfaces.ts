@@ -7,9 +7,9 @@ import { NonCancelableEventHandler } from '../../events';
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 
 /**
- * Width constraint that can be a pixel value or reference the trigger width
+ * Width constraint that can be a pixel value, reference the trigger width, or fit content
  */
-export type DropdownWidthConstraint = number | 'trigger';
+export type DropdownWidthConstraint = number | 'trigger' | 'max-content';
 
 export interface OptionsLoadItemsDetail {
   filteringText: string;

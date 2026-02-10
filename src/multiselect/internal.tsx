@@ -168,8 +168,8 @@ const InternalMultiselect = React.forwardRef(
             dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
           }
           open={multiselectProps.isOpen}
-          minWidth="trigger"
-          maxWidth={expandToViewport ? getBreakpointValue('xxs') : undefined}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          maxWidth={getBreakpointValue('xxs')}
           trigger={trigger}
           header={filter}
           footer={
