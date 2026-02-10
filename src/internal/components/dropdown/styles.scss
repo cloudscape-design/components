@@ -94,10 +94,10 @@
     display: block;
 
     &:not(.interior).refresh[data-animating='true'] {
-      transform: translateY(5px);
+      transform: translateY(4px);
 
       &.dropdown-drop-up {
-        transform: translateY(-5px);
+        transform: translateY(-4px);
       }
     }
     &.nowrap {
