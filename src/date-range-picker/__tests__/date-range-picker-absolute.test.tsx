@@ -1030,6 +1030,79 @@ describe('Date range picker', () => {
         });
       });
 
+      describe('date input placeholder', () => {
+        test('month picker derives placeholder from date placeholder by removing day part', () => {
+          // Uses German-style placeholder to verify i18n value is actually used (not the default YYYY-MM)
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            dateInputFormat: 'iso',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: 'JJJJ-MM-TT',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'JJJJ-MM'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'JJJJ-MM'
+          );
+        });
+
+        test('day picker keeps full date placeholder unchanged', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            dateInputFormat: 'iso',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: 'YYYY-MM-DD',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY-MM-DD'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY-MM-DD'
+          );
+        });
+
+        test('month picker uses default placeholder when no i18n placeholder provided', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            dateInputFormat: 'slashed',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: undefined,
+              slashedDatePlaceholder: undefined,
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY/MM'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY/MM'
+          );
+        });
+      });
+
       describe('i18n', () => {
         describe.each([true, false] as const)('With dateOnly of %s', dateOnly => {
           test('supports using absolute range with i18n defaults', () => {
