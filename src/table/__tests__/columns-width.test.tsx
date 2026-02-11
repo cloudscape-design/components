@@ -137,6 +137,33 @@ test('should use the fallback value for columns without explicit width', () => {
   ]);
 });
 
+test('should respect minWidth for dynamically added columns without explicit width', () => {
+  const columns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: '', cell: item => item.id, width: 100 },
+    { id: 'name', header: '', cell: () => '-', minWidth: 250 },
+    { id: 'description', header: '', cell: () => '-', minWidth: 300 },
+  ];
+  const { wrapper, rerender } = renderTable(
+    <Table columnDefinitions={columns} visibleColumns={['id']} items={defaultItems} resizableColumns={true} />
+  );
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual(['100px']);
+  // Dynamically add columns that have minWidth but no explicit width
+  rerender(
+    <Table
+      columnDefinitions={columns}
+      visibleColumns={['id', 'name', 'description']}
+      items={defaultItems}
+      resizableColumns={true}
+    />
+  );
+  // Bug #4236: Previously these would be '120px' (DEFAULT_COLUMN_WIDTH) instead of respecting minWidth
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+    '100px',
+    '250px',
+    '300px',
+  ]);
+});
+
 describe('reading widths from the DOM', () => {
   const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
   beforeEach(() => {
