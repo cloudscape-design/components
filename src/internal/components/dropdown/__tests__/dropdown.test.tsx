@@ -5,6 +5,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
+import customCssProps from '../../../../../lib/components/internal/generated/custom-css-properties';
 import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
 
 const outsideId = 'outside';
@@ -190,6 +191,20 @@ describe('Dropdown Component', () => {
       (calculatePosition as jest.Mock).mockClear();
       fireEvent.scroll(window, { target: { scrollY: 100 } });
       expect(calculatePosition).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('width CSS variables', () => {
+    test('passes through CSS string minWidth value', () => {
+      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} minWidth="300px" />);
+      const dropdown = wrapper.findOpenDropdown()!.getElement();
+      expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMinWidth)).toBe('300px');
+    });
+
+    test('passes through CSS string maxWidth value', () => {
+      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} maxWidth="250px" />);
+      const dropdown = wrapper.findOpenDropdown()!.getElement();
+      expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMaxWidth)).toBe('250px');
     });
   });
 });
