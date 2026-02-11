@@ -42,6 +42,13 @@ beforeEach(() => {
   jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height / 2));
   Object.defineProperty(window, 'innerWidth', { value: viewport.width, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: viewport.height, writable: true });
+
+  // Mock requestAnimationFrame to execute synchronously for tests
+  // This is needed because the forced position logic uses requestAnimationFrame
+  jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
+    cb(0);
+    return 0;
+  });
 });
 
 afterEach(() => {
