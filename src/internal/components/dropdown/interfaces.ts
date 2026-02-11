@@ -7,9 +7,12 @@ import { NonCancelableEventHandler } from '../../events';
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 
 /**
- * Width constraint that can be a pixel value, reference the trigger width, or fit content
+ * Width constraint for the dropdown.
+ * - 'trigger': references the trigger element's width
+ * - string: any valid CSS value (e.g., '100px', '50%', 'max-content')
+ * - number: width in pixels
  */
-export type DropdownWidthConstraint = number | 'trigger' | 'max-content';
+export type DropdownWidthConstraint = 'trigger' | string | number;
 
 export interface OptionsLoadItemsDetail {
   filteringText: string;

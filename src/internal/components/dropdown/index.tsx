@@ -429,31 +429,34 @@ const Dropdown = ({
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
   const getMinWidthCssValue = (): string | undefined => {
+    if (minWidth === undefined) {
+      return undefined;
+    }
     if (typeof minWidth === 'number') {
       return `${minWidth}px`;
     }
-    if (minWidth === 'max-content') {
-      return 'max-content';
-    }
+    // 'trigger' is a special keyword that maps to 100% (relative to parent)
     if (minWidth === 'trigger') {
       return '100%';
     }
-    return undefined;
+    // Pass through any other CSS value as-is
+    return minWidth;
   };
 
   const getMaxWidthCssValue = (): string | undefined => {
     if (typeof maxWidth === 'number') {
       return `${maxWidth}px`;
     }
-    if (maxWidth === 'max-content') {
-      return 'max-content';
+    // 'trigger' is a special keyword that maps to 100% (relative to parent)
+    if (maxWidth === 'trigger') {
+      return '100%';
     }
     // When maxWidth is undefined, allow dropdown to grow to content size
-    // The CSS fallback of 100% would constrain it to trigger width
     if (maxWidth === undefined) {
       return 'none';
     }
-    return undefined;
+    // Pass through any other CSS value as-is
+    return maxWidth;
   };
 
   return (
