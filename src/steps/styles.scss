@@ -99,11 +99,13 @@
       > .horizontal-header {
         grid-row: 2;
         grid-column: 1 / span 3;
+        padding-inline-end: awsui.$space-xs;
       }
 
       > .details {
         grid-row: 3;
         grid-column: 1 / span 3;
+        padding-inline-end: awsui.$space-xs;
       }
     }
 
