@@ -669,6 +669,26 @@ describe('Mobile navigation', () => {
     restoreViewport();
   });
 
+  test('expandable section can be toggled in mobile viewport', () => {
+    const restoreViewport = mockMobileViewport();
+    const { container } = render(
+      <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
+    );
+    const wrapper = createWrapper(container);
+
+    // Find the expandable section using the generic wrapper
+    const expandableSection = wrapper.findExpandableSection();
+    expect(expandableSection).not.toBeNull();
+
+    // Toggle the expandable section - this exercises the onChange handler in WizardStepNavigationExpandable
+    expandableSection!.findHeader()!.click();
+
+    // Toggle again to exercise the handler again
+    expandableSection!.findHeader()!.click();
+
+    restoreViewport();
+  });
+
   test('renders i18n collapsed steps label in mobile viewport', () => {
     const restoreViewport = mockMobileViewport();
     const { container } = render(
@@ -742,7 +762,7 @@ describe('i18n', () => {
   });
 });
 
-describe('WizardStepList keyboard navigation', () => {
+describe('WizardStepList click and keyboard navigation', () => {
   const testSteps = [
     { title: 'Step 1', content: 'content 1' },
     { title: 'Step 2', content: 'content 2', isOptional: true },
@@ -904,6 +924,61 @@ describe('WizardStepList keyboard navigation', () => {
 
     fireEvent.keyDown(thirdStepLink, { key: ' ' });
     fireEvent.keyUp(thirdStepLink, { key: ' ' });
+
+    expect(onSkipToClick).toHaveBeenCalledWith(2);
+    expect(onStepClick).not.toHaveBeenCalled();
+  });
+
+  test('navigates to visited step on click', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    fireEvent.click(firstStepLink);
+
+    expect(onStepClick).toHaveBeenCalledWith(0);
+    expect(onSkipToClick).not.toHaveBeenCalled();
+  });
+
+  test('calls preventDefault on click', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 2,
+      farthestStepIndex: 2,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const firstStepLink = container.querySelector('a[role="button"]') as HTMLElement;
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
+
+    firstStepLink.dispatchEvent(event);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  test('skip-to navigation via click', () => {
+    const onStepClick = jest.fn();
+    const onSkipToClick = jest.fn();
+    const { container } = renderStepList({
+      activeStepIndex: 0,
+      farthestStepIndex: 0,
+      allowSkipTo: true,
+      onStepClick,
+      onSkipToClick,
+    });
+
+    const links = container.querySelectorAll('a[role="button"]');
+    const thirdStepLink = links[2] as HTMLElement;
+    fireEvent.click(thirdStepLink);
 
     expect(onSkipToClick).toHaveBeenCalledWith(2);
     expect(onStepClick).not.toHaveBeenCalled();
