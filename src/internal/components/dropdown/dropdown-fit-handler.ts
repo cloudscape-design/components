@@ -155,6 +155,20 @@ const getInteriorAvailableSpace = ({
   );
 };
 
+const resolveWidthConstraint = (
+  constraint: DropdownWidthConstraint | undefined,
+  triggerWidth: number,
+  fallback: number
+): number => {
+  if (constraint === 'trigger') {
+    return triggerWidth;
+  }
+  if (typeof constraint === 'number') {
+    return constraint;
+  }
+  return fallback;
+};
+
 const getWidths = ({
   triggerElement,
   dropdownElement,
@@ -169,20 +183,8 @@ const getWidths = ({
   const { inlineSize: triggerInlineSize } = getLogicalBoundingClientRect(triggerElement);
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
 
-  // Calculate effective min/max widths
-  const minWidth =
-    minWidthConstraint === 'trigger'
-      ? triggerInlineSize
-      : typeof minWidthConstraint === 'number'
-        ? minWidthConstraint
-        : 0;
-
-  const maxWidth =
-    maxWidthConstraint === 'trigger'
-      ? triggerInlineSize
-      : typeof maxWidthConstraint === 'number'
-        ? maxWidthConstraint
-        : Number.MAX_VALUE; // undefined = no max constraint
+  const minWidth = resolveWidthConstraint(minWidthConstraint, triggerInlineSize, 0);
+  const maxWidth = resolveWidthConstraint(maxWidthConstraint, triggerInlineSize, Number.MAX_VALUE);
 
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
   return { idealWidth, minWidth, triggerInlineSize };

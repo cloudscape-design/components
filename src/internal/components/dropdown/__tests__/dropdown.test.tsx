@@ -195,14 +195,14 @@ describe('Dropdown Component', () => {
   });
 
   describe('width CSS variables', () => {
-    test('passes through CSS string minWidth value', () => {
-      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} minWidth="300px" />);
+    test('applies numeric minWidth value as pixels', () => {
+      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} minWidth={300} />);
       const dropdown = wrapper.findOpenDropdown()!.getElement();
       expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMinWidth)).toBe('300px');
     });
 
-    test('passes through CSS string maxWidth value', () => {
-      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} maxWidth="250px" />);
+    test('applies numeric maxWidth value as pixels', () => {
+      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} maxWidth={250} />);
       const dropdown = wrapper.findOpenDropdown()!.getElement();
       expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMaxWidth)).toBe('250px');
     });

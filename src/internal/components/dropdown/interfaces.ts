@@ -9,10 +9,9 @@ export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 /**
  * Width constraint for the dropdown.
  * - 'trigger': references the trigger element's width
- * - string: any valid CSS value (e.g., '100px', '50%', 'max-content')
  * - number: width in pixels
  */
-export type DropdownWidthConstraint = 'trigger' | string | number;
+export type DropdownWidthConstraint = 'trigger' | number;
 
 export interface OptionsLoadItemsDetail {
   filteringText: string;

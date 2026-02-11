@@ -431,28 +431,19 @@ const Dropdown = ({
     if (typeof minWidth === 'number') {
       return `${minWidth}px`;
     }
-    // 'trigger' is a special keyword that maps to 100% (relative to parent)
-    if (minWidth === 'trigger') {
-      return '100%';
-    }
-    // Pass through any other CSS value as-is
-    return minWidth;
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
   };
 
   const getMaxWidthCssValue = (): string | undefined => {
-    if (typeof maxWidth === 'number') {
-      return `${maxWidth}px`;
-    }
-    // 'trigger' is a special keyword that maps to 100% (relative to parent)
-    if (maxWidth === 'trigger') {
-      return '100%';
-    }
-    // When maxWidth is undefined, allow dropdown to grow to content size
     if (maxWidth === undefined) {
       return 'none';
     }
-    // Pass through any other CSS value as-is
-    return maxWidth;
+    if (typeof maxWidth === 'number') {
+      return `${maxWidth}px`;
+    }
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
   };
 
   return (
