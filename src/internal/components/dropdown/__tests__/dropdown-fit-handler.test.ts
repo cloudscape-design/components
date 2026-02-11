@@ -102,7 +102,7 @@ describe('getDropdownPosition', () => {
     });
   });
 
-  test('minWidth cannot be more than trigger width', () => {
+  test('minWidth is respected even when larger than trigger width', () => {
     const trigger = getSizedElement(200, 50, 300, 100);
     const dropdown = getSizedElement(100, 400);
     expect(
@@ -114,7 +114,7 @@ describe('getDropdownPosition', () => {
       })
     ).toEqual({
       ...defaults,
-      inlineSize: '200px',
+      inlineSize: '300px',
     });
   });
 
@@ -183,7 +183,7 @@ describe('getDropdownPosition', () => {
     });
   });
 
-  describe('with maxWidth undefined (can stretch beyond trigger)', () => {
+  describe('with maxWidth undefined (no max constraint)', () => {
     test('can expand beyond trigger width', () => {
       const triggerElement = getSizedElement(100, 50, 300, 15);
       const dropdownElement = getSizedElement(200, 300);
@@ -201,7 +201,7 @@ describe('getDropdownPosition', () => {
       });
     });
 
-    test('cannot expand beyond the XXS breakpoint', () => {
+    test('can expand to content width', () => {
       const triggerElement = getSizedElement(100, 50, 300, 15);
       const dropdownElement = getSizedElement(1000, 300);
 
@@ -214,11 +214,11 @@ describe('getDropdownPosition', () => {
         })
       ).toEqual({
         ...defaults,
-        inlineSize: '465px',
+        inlineSize: '935px',
       });
     });
 
-    test('will always grow to the width of the trigger if possible', () => {
+    test('will always grow to the width of the content if possible', () => {
       const triggerElement = getSizedElement(700, 50, 300, 15);
       const dropdownElement = getSizedElement(400, 300);
 
@@ -231,7 +231,7 @@ describe('getDropdownPosition', () => {
         })
       ).toEqual({
         ...defaults,
-        inlineSize: '700px',
+        inlineSize: '400px',
       });
     });
   });
