@@ -34,7 +34,17 @@ export default function RangeInputs({
   const showTimeInput = !dateOnly && !isMonthPicker;
   const isIso = dateInputFormat === 'iso';
   const separator = isIso ? '-' : '/';
-  const dateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
+  const defaultDateInputPlaceholder = `YYYY${separator}MM${isMonthPicker ? '' : `${separator}DD`}`;
+  const i18nDatePlaceholder = isIso
+    ? i18n('i18nStrings.isoDatePlaceholder', i18nStrings?.isoDatePlaceholder)
+    : i18n('i18nStrings.slashedDatePlaceholder', i18nStrings?.slashedDatePlaceholder);
+  // For month picker, derive the month placeholder by removing the day part from the date placeholder
+  const datePlaceholder = i18nDatePlaceholder
+    ? isMonthPicker
+      ? i18nDatePlaceholder.split(separator).slice(0, 2).join(separator)
+      : i18nDatePlaceholder
+    : defaultDateInputPlaceholder;
+  const timePlaceholder = i18n('i18nStrings.timePlaceholder', i18nStrings?.timePlaceholder) || timeInputFormat;
   const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
   const i18nKey = generateI18NKey(isMonthPicker, dateOnly, isIso);
   const i18nFallbackKey = generateI18NFallbackKey(isMonthPicker, dateOnly);
@@ -54,7 +64,7 @@ export default function RangeInputs({
               className={clsx(testutilStyles['start-date-input'], isMonthPicker && testutilStyles['start-month-input'])}
               onChange={event => onChangeStartDate(event.detail.value)}
               format={dateInputFormat}
-              placeholder={dateInputPlaceholder}
+              placeholder={datePlaceholder}
               granularity={granularity}
             />
           </InternalFormField>
@@ -64,7 +74,7 @@ export default function RangeInputs({
                 value={startTime}
                 onChange={event => onChangeStartTime(event.detail.value)}
                 format={timeInputFormat}
-                placeholder={timeInputFormat}
+                placeholder={timePlaceholder}
                 className={testutilStyles['start-time-input']}
               />
             </InternalFormField>
@@ -84,7 +94,7 @@ export default function RangeInputs({
               className={clsx(testutilStyles['end-date-input'], isMonthPicker && testutilStyles['end-month-picker'])}
               onChange={event => onChangeEndDate(event.detail.value)}
               format={dateInputFormat}
-              placeholder={dateInputPlaceholder}
+              placeholder={datePlaceholder}
               granularity={granularity}
             />
           </InternalFormField>
@@ -94,7 +104,7 @@ export default function RangeInputs({
                 value={endTime}
                 onChange={event => onChangeEndTime(event.detail.value)}
                 format={timeInputFormat}
-                placeholder={timeInputFormat}
+                placeholder={timePlaceholder}
                 className={testutilStyles['end-time-input']}
               />
             </InternalFormField>
