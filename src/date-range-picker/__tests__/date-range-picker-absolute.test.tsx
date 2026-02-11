@@ -1032,13 +1032,14 @@ describe('Date range picker', () => {
 
       describe('date input placeholder', () => {
         test('month picker derives placeholder from date placeholder by removing day part', () => {
+          // Uses German-style placeholder to verify i18n value is actually used (not the default YYYY-MM)
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
             granularity: 'month',
             dateInputFormat: 'iso',
             i18nStrings: {
               ...i18nStrings,
-              isoDatePlaceholder: 'YYYY-MM-DD',
+              isoDatePlaceholder: 'JJJJ-MM-TT',
             },
           });
 
@@ -1046,11 +1047,11 @@ describe('Date range picker', () => {
 
           expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
             'placeholder',
-            'YYYY-MM'
+            'JJJJ-MM'
           );
           expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
             'placeholder',
-            'YYYY-MM'
+            'JJJJ-MM'
           );
         });
 
