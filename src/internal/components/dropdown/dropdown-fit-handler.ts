@@ -170,15 +170,12 @@ const getWidths = ({
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
 
   // Calculate effective min/max widths
-  // 'max-content' uses the content's required width, undefined = no min constraint (0)
   const minWidth =
     minWidthConstraint === 'trigger'
       ? triggerInlineSize
-      : minWidthConstraint === 'max-content'
-        ? requiredWidth
-        : typeof minWidthConstraint === 'number'
-          ? minWidthConstraint
-          : 0;
+      : typeof minWidthConstraint === 'number'
+        ? minWidthConstraint
+        : 0;
 
   const maxWidth =
     maxWidthConstraint === 'trigger'
