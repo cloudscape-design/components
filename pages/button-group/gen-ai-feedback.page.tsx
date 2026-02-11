@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 
-import { Box, Button, ButtonGroup, ButtonGroupProps, Header, SpaceBetween, StatusIndicator } from '~components';
+import { Box, Button, ButtonGroup, type ButtonGroupProps, Header, SpaceBetween, StatusIndicator } from '~components';
 
 export default function ButtonGroupPage() {
   const [feedback, setFeedback] = useState<string>('');

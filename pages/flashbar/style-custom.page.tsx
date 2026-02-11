@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Flashbar, FlashbarProps, SpaceBetween } from '~components';
+import { Flashbar, type FlashbarProps, SpaceBetween } from '~components';
 
 import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';

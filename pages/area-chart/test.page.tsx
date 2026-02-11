@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
 
-import { AreaChartProps } from '~components/area-chart';
+import { type AreaChartProps } from '~components/area-chart';
 import ButtonDropdown from '~components/button-dropdown';
 import { NonCancelableEventHandler } from '~components/internal/events';
 import SpaceBetween from '~components/space-between';

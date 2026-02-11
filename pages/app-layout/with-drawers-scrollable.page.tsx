@@ -14,7 +14,7 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
 import { mount, unmount } from '~mount';
 

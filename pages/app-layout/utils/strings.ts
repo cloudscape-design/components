@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { SplitPanelProps } from '~components/split-panel';
+import { type SplitPanelProps } from '~components/split-panel';
 
 export const discreetSplitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   closeButtonAriaLabel: 'Close panel',

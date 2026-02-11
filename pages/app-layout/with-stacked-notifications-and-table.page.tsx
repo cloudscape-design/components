@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import { AppLayout, Box, Button, Flashbar, Header, SpaceBetween, SplitPanel, Table, Toggle } from '~components';
-import { FlashbarProps } from '~components/flashbar';
+import { type FlashbarProps } from '~components/flashbar';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import labels from './utils/labels';

@@ -5,8 +5,8 @@ import { useContext, useState } from 'react';
 import React from 'react';
 
 import { Checkbox, FormField, Input, Select, SpaceBetween } from '~components';
-import { CalendarProps } from '~components/calendar';
-import { DateRangePickerProps } from '~components/date-range-picker';
+import { type CalendarProps } from '~components/calendar';
+import { type DateRangePickerProps } from '~components/date-range-picker';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { makeIsDateValidFunction, makeIsMonthValidFunction } from './is-valid-range';

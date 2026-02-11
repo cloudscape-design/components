@@ -3,7 +3,7 @@
 
 import React, { useContext, useState } from 'react';
 
-import { Box, Button, ButtonGroup, ButtonGroupProps, Header, SpaceBetween, StatusIndicator } from '~components';
+import { Box, Button, ButtonGroup, type ButtonGroupProps, Header, SpaceBetween, StatusIndicator } from '~components';
 import FileTokenGroup from '~components/file-token-group';
 
 import AppContext, { AppContextType } from '../app/app-context';

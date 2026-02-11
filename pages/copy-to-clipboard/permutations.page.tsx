@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { CopyToClipboard, CopyToClipboardProps } from '~components';
+import { type CopyToClipboard, CopyToClipboardProps } from '~components';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

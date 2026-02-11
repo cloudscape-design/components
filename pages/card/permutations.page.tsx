@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Card from '~components/internal/components/card';
-import { InternalCardProps } from '~components/internal/components/card/interfaces';
+import { type InternalCardProps } from '~components/internal/components/card/interfaces';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
