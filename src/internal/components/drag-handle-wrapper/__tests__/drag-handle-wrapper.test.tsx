@@ -43,10 +43,15 @@ beforeEach(() => {
   Object.defineProperty(window, 'innerWidth', { value: viewport.width, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: viewport.height, writable: true });
 
-  // Mock requestAnimationFrame to execute synchronously for tests
-  // This is needed because the forced position logic uses requestAnimationFrame
+  // Mock requestAnimationFrame to execute the callback once synchronously
+  // but prevent infinite recursion from the continuous position monitoring loop
+  let rafExecuting = false;
   jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
-    cb(0);
+    if (!rafExecuting) {
+      rafExecuting = true;
+      cb(0);
+      rafExecuting = false;
+    }
     return 0;
   });
 });
