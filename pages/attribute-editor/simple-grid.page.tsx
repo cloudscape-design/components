@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { Box, Button, Input, InputProps, Link } from '~components';
+import { Box, Button, Input, type InputProps, Link } from '~components';
 import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
 
 interface Tag {

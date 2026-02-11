@@ -6,9 +6,16 @@
     <title>Cloudscape demo pages</title>
 
     <script>
-      const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
+      const isDevelopment = '<%= MODE %>' !== 'production';
 
-      const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
+      const csp = {
+        'default-src': "'self'",
+        'font-src': 'data:',
+         // Vite injects the styles as <style> tags to allow for HMR, so we need to allow unsafe-inline.
+         // We could use nonces, but that will introduce another set of problems - for development environment, unsafe-inline should be fine.
+        'style-src': !isDevelopment ? `'self'` : `'self' 'unsafe-inline'`,
+        'script-src': `'self'`
+      };
 
       if (isDevelopment) {
         csp['connect-src'] = `'self' ws://${location.host};`;
@@ -40,5 +47,6 @@
     <div id="b">
       <div id="app"></div>
     </div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

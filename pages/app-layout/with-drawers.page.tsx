@@ -3,7 +3,7 @@
 import React, { useContext, useRef, useState } from 'react';
 
 import { AppLayout, Button, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';

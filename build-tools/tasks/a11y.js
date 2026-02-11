@@ -13,7 +13,7 @@ module.exports = task('test:a11y', async () => {
     },
   };
   const shard = parseArgs({ options, strict: false }).values.shard;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
+  const devServer = execa('vite', ['--config', 'vite.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
     },

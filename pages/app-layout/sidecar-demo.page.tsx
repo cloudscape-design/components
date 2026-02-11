@@ -18,7 +18,7 @@ import {
   StatusIndicator,
   Table,
 } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 
 import './utils/external-sidecar-widget-demo';
 import './utils/external-global-left-panel-widget';

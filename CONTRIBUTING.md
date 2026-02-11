@@ -40,6 +40,22 @@ Clone this repository and install the dependencies:
 ```
 git clone git@github.com:cloudscape-design/components.git
 cd components
+npm install
+```
+
+To generate the build artifacts, run the following command:
+
+```
+npm run build
+```
+
+Then, start the dev-server by running:
+
+```
+npm start
+```
+
+This will start the vite dev server at http://localhost:8080 with HMR.
 ```
 
 For setup, building, and running locally, see [Setup](docs/SETUP.md).

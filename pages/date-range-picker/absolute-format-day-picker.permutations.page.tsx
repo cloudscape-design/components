@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { DateRangePicker, DateRangePickerProps } from '~components';
+import { DateRangePicker, type DateRangePickerProps } from '~components';
 
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';

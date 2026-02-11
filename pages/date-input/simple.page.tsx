@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Box, Select, SelectProps, SpaceBetween, Toggle } from '~components';
+import { Box, Select, type SelectProps, SpaceBetween, Toggle } from '~components';
 import DateInput, { DateInputProps } from '~components/date-input';
 
 import { AppContextType } from '../app/app-context';

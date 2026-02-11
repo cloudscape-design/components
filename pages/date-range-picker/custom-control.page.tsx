@@ -14,7 +14,7 @@ import {
   sub,
 } from 'date-fns';
 
-import { DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
+import { DateRangePicker, type DateRangePickerProps, FormField, Link } from '~components';
 import { formatDate } from '~components/internal/utils/date-time';
 
 import { SimplePage } from '../app/templates';

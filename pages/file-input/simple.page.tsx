@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Box, ColumnLayout, FileInput, FileInputProps } from '~components';
+import { Box, ColumnLayout, FileInput, type FileInputProps } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 

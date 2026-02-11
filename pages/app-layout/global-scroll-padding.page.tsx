@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Select, SelectProps } from '~components';
+import { Select, type SelectProps } from '~components';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
 import Header from '~components/header';

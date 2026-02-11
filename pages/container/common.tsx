@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import Button from '~components/button';
-import { ContainerProps } from '~components/container';
+import { type ContainerProps } from '~components/container';
 import Container from '~components/container';
 import Header from '~components/header';
 import Link from '~components/link';

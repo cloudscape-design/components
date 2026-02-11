@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { AppLayout, ContentLayout, Header, HelpPanel, Link } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 
 import './utils/external-widget';
 import { Breadcrumbs, Containers } from './utils/content-blocks';

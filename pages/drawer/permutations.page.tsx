@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { Drawer, DrawerProps } from '~components';
+import { Drawer, type DrawerProps } from '~components';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

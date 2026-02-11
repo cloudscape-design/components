@@ -12,7 +12,7 @@ module.exports = task('test:integ', async () => {
     reactVersion: { type: 'string' },
   };
   const { shard, reactVersion = '16' } = parseArgs({ options, strict: false }).values;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
+  const devServer = execa('vite', ['--config', 'vite.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
       REACT_VERSION: reactVersion,

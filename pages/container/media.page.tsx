@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import { ContainerProps } from '~components/container';
+import { type ContainerProps } from '~components/container';
 import Container from '~components/container';
 import FormField from '~components/form-field';
 import Header from '~components/header';

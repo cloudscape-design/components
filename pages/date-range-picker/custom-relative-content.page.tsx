@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { DateRangePicker, DateRangePickerProps, FormField, Grid, Header, Link, SpaceBetween } from '~components';
+import { DateRangePicker, type DateRangePickerProps, FormField, Grid, Header, Link, SpaceBetween } from '~components';
 
 import { SimplePage } from '../app/templates';
 import { Settings, useDateRangePickerSettings } from './common';
