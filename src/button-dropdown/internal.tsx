@@ -11,7 +11,6 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton, InternalButtonProps } from '../button/internal';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import { getBreakpointValue } from '../internal/breakpoints';
 import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -360,8 +359,6 @@ const InternalButtonDropdown = React.forwardRef(
       >
         <Dropdown
           open={canBeOpened && isOpen}
-          minWidth={expandToViewport ? undefined : 'trigger'}
-          maxWidth={getBreakpointValue('xxs')}
           stretchTriggerHeight={variant === 'navigation'}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
