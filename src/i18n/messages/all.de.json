@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Endmonat",
     "i18nStrings.endDateLabel": "Enddatum",
     "i18nStrings.endTimeLabel": "Endzeit",
+    "i18nStrings.datePlaceholder": "JJJJ-MM-TT",
+    "i18nStrings.isoDatePlaceholder": "JJJJ-MM-TT",
+    "i18nStrings.slashedDatePlaceholder": "JJJJ/MM/TT",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
     "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
     "i18nStrings.slashedDateTimeConstraintText": "Verwenden Sie für das Datum das Format JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Weniger anzeigen",
     "i18nStrings.limitShowMore": "Mehr anzeigen",
-    "i18nStrings.removeFileAriaLabel": "Datei {fileIndex} entfernen",
+    "i18nStrings.removeFileAriaLabel": "Datei {fileIndex} entfernen, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.warningIconAriaLabel": "Warnung"
   },

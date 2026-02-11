@@ -39,9 +39,8 @@ export default function DropdownScenario() {
           onDropdownClose={() => setOpen(false)}
           minWidth={800}
           stretchWidth={false}
-        >
-          <ListContent n={10} />
-        </Dropdown>
+          content={<ListContent n={10} />}
+        />
       </div>
       <div style={{ blockSize: '400px' }} />
     </article>

@@ -196,6 +196,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
+    "i18nStrings.isoDatePlaceholder": never;
+    "i18nStrings.slashedDatePlaceholder": never;
+    "i18nStrings.timePlaceholder": never;
     "i18nStrings.dateTimeConstraintText": never;
     "i18nStrings.dateConstraintText": never;
     "i18nStrings.slashedDateTimeConstraintText": never;
@@ -235,6 +238,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.limitShowMore": never;
     "i18nStrings.removeFileAriaLabel": {
       "fileIndex": string | number;
+      "fileName": string;
     }
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.warningIconAriaLabel": never;
@@ -244,6 +248,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.limitShowMore": never;
     "i18nStrings.removeFileAriaLabel": {
       "fileIndex": string | number;
+      "fileName": string;
     }
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.warningIconAriaLabel": never;

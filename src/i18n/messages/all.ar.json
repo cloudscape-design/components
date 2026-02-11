@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "نهاية الشهر",
     "i18nStrings.endDateLabel": "تاريخ الانتهاء",
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
     "i18nStrings.dateConstraintText": "للحصول على التاريخ، استخدم الصيغة YYYY/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
     "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
-    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}، {fileName}",
     "i18nStrings.errorIconAriaLabel": "خطأ",
     "i18nStrings.warningIconAriaLabel": "تحذير"
   },

@@ -81,11 +81,12 @@ export default function DateRangePickerCalendarPage() {
                   onDropdownClose={() => {}}
                   onMouseDown={() => {}}
                   trigger={null}
-                >
-                  <Box padding="m">
-                    <Calendar {...permutation} granularity="month" />
-                  </Box>
-                </Dropdown>
+                  content={
+                    <Box padding="m">
+                      <Calendar {...permutation} granularity="month" />
+                    </Box>
+                  }
+                />
               </div>
             );
           }}

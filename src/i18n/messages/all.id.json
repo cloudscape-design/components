@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
+    "i18nStrings.datePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
+    "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
+    "i18nStrings.timePlaceholder": "jj:mm:dd",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
     "i18nStrings.slashedDateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.limitShowMore": "Tampilkan selengkapnya",
-    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.warningIconAriaLabel": "Peringatan"
   },

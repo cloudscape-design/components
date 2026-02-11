@@ -73,7 +73,7 @@ interface TransitionContentProps {
   expandToViewport?: boolean;
   stretchBeyondTriggerWidth?: boolean;
   header?: React.ReactNode;
-  children?: React.ReactNode;
+  content?: React.ReactNode;
   footer?: React.ReactNode;
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
@@ -96,7 +96,7 @@ const TransitionContent = ({
   expandToViewport,
   stretchBeyondTriggerWidth,
   header,
-  children,
+  content,
   footer,
   position,
   open,
@@ -134,14 +134,14 @@ const TransitionContent = ({
       <div
         className={clsx(
           styles['dropdown-content-wrapper'],
-          !header && !children && styles['is-empty'],
+          !header && !content && styles['is-empty'],
           isRefresh && styles.refresh
         )}
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
             {header}
-            {children}
+            {content}
             {footer}
           </DropdownContextProvider>
         </div>
@@ -151,7 +151,7 @@ const TransitionContent = ({
 };
 
 const Dropdown = ({
-  children,
+  content,
   trigger,
   open,
   onDropdownClose,
@@ -449,6 +449,7 @@ const Dropdown = ({
                 stretchWidth={stretchWidth}
                 interior={interior}
                 header={header}
+                content={content}
                 expandToViewport={expandToViewport}
                 stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
                 footer={footer}
@@ -461,9 +462,7 @@ const Dropdown = ({
                 role={dropdownContentRole}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
-              >
-                {children}
-              </TransitionContent>
+              />
 
               <TabTrap
                 focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}

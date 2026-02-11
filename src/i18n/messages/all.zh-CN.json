@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "结束月底",
     "i18nStrings.endDateLabel": "结束日期",
     "i18nStrings.endTimeLabel": "结束时间",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
     "i18nStrings.dateConstraintText": "对于日期，使用 YYYY/MM/DD。",
     "i18nStrings.slashedDateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
     "i18nStrings.limitShowMore": "显示更多",
-    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}，{fileName}",
     "i18nStrings.errorIconAriaLabel": "错误",
     "i18nStrings.warningIconAriaLabel": "警告"
   },

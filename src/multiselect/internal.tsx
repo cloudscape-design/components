@@ -178,27 +178,29 @@ const InternalMultiselect = React.forwardRef(
           stretchBeyondTriggerWidth={true}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}
-        >
-          <ListComponent
-            renderOption={renderOption}
-            listBottom={
-              !dropdownStatus.isSticky ? (
-                <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-              ) : null
-            }
-            menuProps={multiselectProps.getMenuProps()}
-            getOptionProps={multiselectProps.getOptionProps}
-            filteredOptions={multiselectProps.filteredOptions}
-            filteringValue={filteringValue}
-            ref={multiselectProps.scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            checkboxes={true}
-            useInteractiveGroups={true}
-            screenReaderContent={multiselectProps.announcement}
-            highlightType={multiselectProps.highlightType}
-            firstOptionSticky={hasFilteredOptions && enableSelectAll}
-          />
-        </Dropdown>
+          content={
+            <ListComponent
+              renderOption={renderOption}
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              menuProps={multiselectProps.getMenuProps()}
+              getOptionProps={multiselectProps.getOptionProps}
+              filteredOptions={multiselectProps.filteredOptions}
+              filteringValue={filteringValue}
+              ref={multiselectProps.scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              checkboxes={true}
+              useInteractiveGroups={true}
+              screenReaderContent={multiselectProps.announcement}
+              highlightType={multiselectProps.highlightType}
+              firstOptionSticky={hasFilteredOptions && enableSelectAll}
+              isMultiSelect={true}
+            />
+          }
+        />
 
         {showTokens && (
           <InternalTokenGroup

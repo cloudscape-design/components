@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "마지막 월",
     "i18nStrings.endDateLabel": "종료 날짜",
     "i18nStrings.endTimeLabel": "종료 시간",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
     "i18nStrings.dateConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다.",
     "i18nStrings.slashedDateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "간단히 표시",
     "i18nStrings.limitShowMore": "자세히 표시",
-    "i18nStrings.removeFileAriaLabel": "파일 {fileIndex} 제거",
+    "i18nStrings.removeFileAriaLabel": "{fileIndex}, {fileName} 파일 제거",
     "i18nStrings.errorIconAriaLabel": "오류",
     "i18nStrings.warningIconAriaLabel": "경고"
   },

@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
+    "i18nStrings.datePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.isoDatePlaceholder": "YYYY-AA-GG",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.timePlaceholder": "sa: dk: sn",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
     "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
@@ -183,7 +187,7 @@
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",
     "i18nStrings.limitShowMore": "Daha fazla göster",
-    "i18nStrings.removeFileAriaLabel": "Dosyayı kaldır {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Şu dosyayı kaldır: {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.warningIconAriaLabel": "Uyarı"
   },

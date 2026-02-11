@@ -144,31 +144,32 @@ const ExpandableCategoryElement = ({
         interior={true}
         expandToViewport={expandToViewport}
         trigger={trigger}
-      >
-        {item.items && expanded && (
-          <ul
-            role="menu"
-            aria-label={item.text}
-            className={clsx(styles['items-list-container'], styles['in-dropdown'])}
-          >
-            <ItemsList
-              items={item.items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={lastInDropdown}
-              highlightItem={highlightItem}
-              variant={variant}
-              position={position}
-              renderItem={renderItem}
-              parentProps={groupProps}
-            />
-          </ul>
-        )}
-      </Dropdown>
+        content={
+          item.items && expanded ? (
+            <ul
+              role="menu"
+              aria-label={item.text}
+              className={clsx(styles['items-list-container'], styles['in-dropdown'])}
+            >
+              <ItemsList
+                items={item.items}
+                onItemActivate={onItemActivate}
+                onGroupToggle={onGroupToggle}
+                targetItem={targetItem}
+                isHighlighted={isHighlighted}
+                isKeyboardHighlight={isKeyboardHighlight}
+                isExpanded={isExpanded}
+                lastInDropdown={lastInDropdown}
+                highlightItem={highlightItem}
+                variant={variant}
+                position={position}
+                renderItem={renderItem}
+                parentProps={groupProps}
+              />
+            </ul>
+          ) : undefined
+        }
+      />
     );
   }
 

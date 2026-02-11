@@ -44,9 +44,8 @@ export default function DropdownScenario() {
             }
             open={open1}
             onDropdownClose={() => setOpen1(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -60,9 +59,8 @@ export default function DropdownScenario() {
             }
             open={open2}
             onDropdownClose={() => setOpen2(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -76,9 +74,8 @@ export default function DropdownScenario() {
             }
             open={open3}
             onDropdownClose={() => setOpen3(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={2} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={2} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -92,9 +89,8 @@ export default function DropdownScenario() {
             }
             open={open4}
             onDropdownClose={() => setOpen4(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={22} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={22} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -112,9 +108,8 @@ export default function DropdownScenario() {
             }
             open={open5}
             onDropdownClose={() => setOpen5(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={18} />
-          </Dropdown>
+            content={<ListContent n={10} withSpaces={true} repeat={18} />}
+          />
         </div>
       </div>
     </article>
