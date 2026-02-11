@@ -17,8 +17,6 @@ export interface StepsProps extends BaseComponentProps {
   /**
    * The visual orientation of the steps (vertical or horizontal).
    * By default the orientation is vertical.
-   *
-   * @awsuiSystem core
    */
   orientation?: StepsProps.Orientation;
   /**

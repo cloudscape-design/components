@@ -25051,9 +25051,6 @@ By default the orientation is vertical.",
       },
       "name": "orientation",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "string",
     },
     {
