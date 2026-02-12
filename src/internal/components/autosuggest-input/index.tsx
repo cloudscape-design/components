@@ -296,7 +296,7 @@ const AutosuggestInput = React.forwardRef(
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
           minWidth={dropdownWidth ? dropdownWidth : expandToViewport ? undefined : 'trigger'}
-          maxWidth={getBreakpointValue('xxs')}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}
           onFocus={handleFocus}
           onBlur={handleBlur}

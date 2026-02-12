@@ -169,7 +169,7 @@ const InternalMultiselect = React.forwardRef(
           }
           open={multiselectProps.isOpen}
           minWidth={expandToViewport ? undefined : 'trigger'}
-          maxWidth={getBreakpointValue('xxs')}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
           footer={
