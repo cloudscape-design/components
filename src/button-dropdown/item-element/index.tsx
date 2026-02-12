@@ -22,6 +22,32 @@ import { getItemTarget } from '../utils/utils';
 import analyticsLabels from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
+/**
+ * Converts dataAttributes object to DOM data-* attributes.
+ * - Automatically prepends 'data-' prefix if not present
+ * - Excludes 'testid' to prevent overriding existing behavior
+ * - Filters out undefined values
+ */
+const getDataAttributes = (dataAttributes?: Record<string, string>): Record<string, string> => {
+  if (!dataAttributes) return {};
+  
+  return Object.entries(dataAttributes).reduce((acc, [key, value]) => {
+    // Exclude 'testid' to prevent overriding existing data-testid behavior
+    if (key === 'testid' || key === 'data-testid') {
+      console.warn('ButtonDropdown: "testid" key is reserved and cannot be overridden via dataAttributes');
+      return acc;
+    }
+    
+    // Skip undefined values
+    if (value === undefined) return acc;
+    
+    // Add 'data-' prefix if not already present
+    const attrKey = key.startsWith('data-') ? key : `data-${key}`;
+    acc[attrKey] = value;
+    return acc;
+  }, {} as Record<string, string>);
+};
+
 const ItemElement = ({
   position = '1',
   index,
@@ -73,6 +99,7 @@ const ItemElement = ({
       role="presentation"
       data-testid={item.id}
       data-description={item.description}
+      {...getDataAttributes(item.dataAttributes)}
       onClick={onClick}
       onMouseEnter={onHover}
       onTouchStart={onHover}

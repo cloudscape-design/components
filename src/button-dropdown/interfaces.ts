@@ -282,6 +282,27 @@ export namespace ButtonDropdownProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     labelTag?: string;
+    /**
+     * Custom data attributes to add to the dropdown item element.
+     * Attribute names will automatically be prefixed with "data-".
+     * The "testid" key is reserved and cannot be overridden.
+     *
+     * Use this for analytics tracking, testing selectors, or other metadata.
+     *
+     * @example
+     * items={[
+     *   {
+     *     id: 'edit',
+     *     text: 'Edit',
+     *     dataAttributes: {
+     *       'analytics-action': 'edit-product',
+     *       'item-key': 'product-123'
+     *     }
+     *   }
+     * ]}
+     * // Renders as: data-analytics-action="edit-product" data-item-key="product-123"
+     */
+    dataAttributes?: Record<string, string>;
   }
 
   export interface CheckboxItem
