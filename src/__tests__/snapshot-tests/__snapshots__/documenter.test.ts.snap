@@ -31879,11 +31879,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findItemById",
           "parameters": [
             {
+              "description": "of the item to find",
               "flags": {
                 "isOptional": false,
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find the disabled or non-disabled item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -31920,7 +31930,17 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find all disabled or non-disabled items.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -42003,11 +42023,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findItemById",
           "parameters": [
             {
+              "description": "of the item to find",
               "flags": {
                 "isOptional": false,
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find the disabled or non-disabled item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -42050,7 +42080,17 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find all disabled or non-disabled items.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -43303,11 +43343,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findItemById",
           "parameters": [
             {
+              "description": "of the item to find",
               "flags": {
                 "isOptional": false,
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find the disabled or non-disabled item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -43320,7 +43370,17 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find all disabled or non-disabled items.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -50436,11 +50496,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
           "name": "findItemById",
           "parameters": [
             {
+              "description": "of the item to find",
               "flags": {
                 "isOptional": false,
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find the disabled or non-disabled item.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -50456,7 +50526,17 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "description": "* disabled (optional, boolean) - Use it to find all disabled or non-disabled items.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",

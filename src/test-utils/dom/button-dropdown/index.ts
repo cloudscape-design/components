@@ -11,6 +11,18 @@ import itemStyles from '../../../button-dropdown/item-element/styles.selectors.j
 import styles from '../../../button-dropdown/styles.selectors.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 
+function getItemSelector({ disabled }: { disabled?: boolean }): string {
+  let selector = `.${itemStyles['item-element']}`;
+
+  if (disabled === true) {
+    selector += `.${itemStyles.disabled}`;
+  } else if (disabled === false) {
+    selector += `:not(.${itemStyles.disabled})`;
+  }
+
+  return selector;
+}
+
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
 
@@ -40,9 +52,12 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   * @param id of the item to find
+   * @param options
+   * * disabled (optional, boolean) - Use it to find the disabled or non-disabled item.
    */
-  findItemById(id: string): ElementWrapper | null {
-    const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
+  findItemById(id: string, options: { disabled?: boolean } = {}): ElementWrapper | null {
+    const itemSelector = `${getItemSelector(options)}[data-testid="${id}"]`;
     return this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
   }
 
@@ -88,9 +103,12 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   * @param options
+   * * disabled (optional, boolean) - Use it to find all disabled or non-disabled items.
    */
-  findItems(): Array<ElementWrapper> {
-    return this.findOpenDropdown()?.findAll(`.${itemStyles['item-element']}`) || [];
+  findItems(options: { disabled?: boolean } = {}): Array<ElementWrapper> {
+    const selector = getItemSelector(options);
+    return this.findOpenDropdown()?.findAll(selector) || [];
   }
 
   /**
