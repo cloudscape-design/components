@@ -71,7 +71,6 @@ interface TransitionContentProps {
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
-  useFlexibleWidth?: boolean;
   minWidth?: string;
   maxWidth?: string;
   header?: React.ReactNode;
@@ -97,7 +96,6 @@ const TransitionContent = ({
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
-  useFlexibleWidth,
   minWidth,
   maxWidth,
   header,
@@ -128,7 +126,7 @@ const TransitionContent = ({
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
-        [styles['use-flexible-width']]: useFlexibleWidth && !interior,
+        [styles['use-flexible-width']]: !matchTriggerWidth && !interior,
       })}
       ref={contentRef}
       id={id}
@@ -412,9 +410,6 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
-  // Use flexible width sizing when not matching trigger width exactly
-  const useFlexibleWidth = !matchTriggerWidth;
-
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
   const getMinWidthCssValue = (): string | undefined => {
@@ -485,7 +480,6 @@ const Dropdown = ({
                 header={header}
                 content={content}
                 expandToViewport={expandToViewport}
-                useFlexibleWidth={useFlexibleWidth}
                 minWidth={getMinWidthCssValue()}
                 maxWidth={getMaxWidthCssValue()}
                 footer={footer}
