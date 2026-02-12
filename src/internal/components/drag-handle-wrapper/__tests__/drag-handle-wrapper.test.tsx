@@ -62,6 +62,7 @@ beforeEach(() => {
     rafCallbacks.add(cb);
     return rafCallbacks.size;
   });
+  jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {});
 });
 
 afterEach(() => {
@@ -970,5 +971,38 @@ describe('forced position behavior', () => {
     expect(getDirectionButton('block-start')).not.toBe(null);
     expect(getDirectionButton('inline-start')).not.toBe(null);
     expect(getDirectionButton('inline-end')).not.toBe(null);
+  });
+
+  test('recomputes forced position when element position changes on animation frame', () => {
+    // Use on-demand rAF execution for this test
+    let rafCallback: FrameRequestCallback = () => {};
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
+      rafCallback = cb;
+      return 0;
+    });
+
+    // Start with handle in center (no forced position needed)
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height / 2));
+
+    const { showButtons } = renderDragHandle({
+      directions: { 'block-start': 'active', 'inline-start': 'active' },
+    });
+    showButtons();
+
+    // Execute the first animation frame - position is centered, no forced position
+    act(() => rafCallback(0));
+    expect(getAnyForcedDirectionButton()).toBe(null);
+    expect(getDirectionButton('block-start')).not.toBe(null);
+    expect(getDirectionButton('inline-start')).not.toBe(null);
+
+    // Simulate element moving to top edge (e.g., during CSS transition)
+    jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
+
+    // Execute the next animation frame - should now have forced position
+    act(() => rafCallback(0));
+    expect(getForcedDirectionButton('block-start', 'bottom', 1)).not.toBe(null);
+    expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
+    expect(getDirectionButton('block-start')).toBe(null);
+    expect(getDirectionButton('inline-start')).toBe(null);
   });
 });

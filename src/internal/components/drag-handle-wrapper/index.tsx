@@ -192,10 +192,10 @@ export default function DragHandleWrapper({
       return;
     }
 
-    let cleanedUp = false;
+    let frameId: number;
 
     const checkPosition = () => {
-      if (cleanedUp || !dragHandleRef.current) {
+      if (!dragHandleRef.current) {
         return;
       }
       const rect = getLogicalBoundingClientRect(dragHandleRef.current);
@@ -211,13 +211,13 @@ export default function DragHandleWrapper({
       } else {
         setForcedPosition(null);
       }
-      requestAnimationFrame(checkPosition);
+      frameId = requestAnimationFrame(checkPosition);
     };
 
-    requestAnimationFrame(checkPosition);
+    frameId = requestAnimationFrame(checkPosition);
 
     return () => {
-      cleanedUp = true;
+      cancelAnimationFrame(frameId);
     };
   }, [showButtons, visibleDirections]);
 
