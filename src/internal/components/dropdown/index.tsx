@@ -223,8 +223,7 @@ const Dropdown = ({
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
       target.classList.add(styles['occupy-entire-width']);
-    } else if (!target.classList.contains(styles['use-flexible-width'])) {
-      // Only set inline-size if not using CSS class for flexible width
+    } else {
       target.style.inlineSize = position.inlineSize;
     }
 
