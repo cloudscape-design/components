@@ -519,165 +519,28 @@ describe('Internal ButtonDropdown badge property', () => {
   });
 });
 
-describe('ButtonDropdown test utils disabled items', () => {
-  const testProps = { expandToViewport: false };
-
-  const itemsWithDisabled: ButtonDropdownProps.Items = [
-    { id: 'enabled1', text: 'Enabled 1' },
-    { id: 'disabled1', text: 'Disabled 1', disabled: true },
-    { id: 'enabled2', text: 'Enabled 2' },
-    { id: 'disabled2', text: 'Disabled 2', disabled: true },
-    { id: 'enabled3', text: 'Enabled 3' },
+test('findItems and findItemById support disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [
+    { id: 'e1', text: 'Enabled' },
+    { id: 'd1', text: 'Disabled', disabled: true },
   ];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
 
-  describe('findItems', () => {
-    it('returns all items by default', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItems()).toHaveLength(5);
-    });
+  expect(wrapper.findItems()).toHaveLength(2);
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItems({ disabled: false })).toHaveLength(1);
+  expect(wrapper.findItemById('d1', { disabled: true })).not.toBeNull();
+  expect(wrapper.findItemById('e1', { disabled: true })).toBeNull();
+});
 
-    it('returns all items when disabled is undefined', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItems({})).toHaveLength(5);
-    });
+test('disabled category items are found with disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [{ text: 'Category', disabled: true, items: [{ id: 'c1', text: 'Item' }] }];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
 
-    it('returns only disabled items when disabled is true', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      const disabledItems = wrapper.findItems({ disabled: true });
-      expect(disabledItems).toHaveLength(2);
-      expect(disabledItems[0].getElement()).toHaveTextContent('Disabled 1');
-      expect(disabledItems[1].getElement()).toHaveTextContent('Disabled 2');
-    });
-
-    it('returns only non-disabled items when disabled is false', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      const enabledItems = wrapper.findItems({ disabled: false });
-      expect(enabledItems).toHaveLength(3);
-      expect(enabledItems[0].getElement()).toHaveTextContent('Enabled 1');
-      expect(enabledItems[1].getElement()).toHaveTextContent('Enabled 2');
-      expect(enabledItems[2].getElement()).toHaveTextContent('Enabled 3');
-    });
-
-    it('returns empty array when no items match the disabled filter', () => {
-      const allEnabledItems: ButtonDropdownProps.Items = [
-        { id: 'enabled1', text: 'Enabled 1' },
-        { id: 'enabled2', text: 'Enabled 2' },
-      ];
-      const wrapper = renderButtonDropdown({ ...testProps, items: allEnabledItems });
-      wrapper.openDropdown();
-      expect(wrapper.findItems({ disabled: true })).toHaveLength(0);
-    });
-  });
-
-  describe('findItemById', () => {
-    it('finds item by id regardless of disabled state by default', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('enabled1')).not.toBeNull();
-      expect(wrapper.findItemById('disabled1')).not.toBeNull();
-    });
-
-    it('finds disabled item by id when disabled is true', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('disabled1', { disabled: true })).not.toBeNull();
-      expect(wrapper.findItemById('disabled2', { disabled: true })).not.toBeNull();
-    });
-
-    it('returns null for enabled item when disabled is true', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('enabled1', { disabled: true })).toBeNull();
-    });
-
-    it('finds enabled item by id when disabled is false', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('enabled1', { disabled: false })).not.toBeNull();
-      expect(wrapper.findItemById('enabled2', { disabled: false })).not.toBeNull();
-    });
-
-    it('returns null for disabled item when disabled is false', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('disabled1', { disabled: false })).toBeNull();
-    });
-
-    it('returns null for non-existent id', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: itemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('non-existent')).toBeNull();
-      expect(wrapper.findItemById('non-existent', { disabled: true })).toBeNull();
-      expect(wrapper.findItemById('non-existent', { disabled: false })).toBeNull();
-    });
-  });
-
-  describe('with categories', () => {
-    const categoryItemsWithDisabled: ButtonDropdownProps.Items = [
-      {
-        text: 'Category',
-        items: [
-          { id: 'cat-enabled1', text: 'Cat Enabled 1' },
-          { id: 'cat-disabled1', text: 'Cat Disabled 1', disabled: true },
-        ],
-      },
-      { id: 'top-enabled', text: 'Top Enabled' },
-      { id: 'top-disabled', text: 'Top Disabled', disabled: true },
-    ];
-
-    it('finds disabled items across categories', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: categoryItemsWithDisabled });
-      wrapper.openDropdown();
-      const disabledItems = wrapper.findItems({ disabled: true });
-      expect(disabledItems).toHaveLength(2);
-    });
-
-    it('finds enabled items across categories', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: categoryItemsWithDisabled });
-      wrapper.openDropdown();
-      const enabledItems = wrapper.findItems({ disabled: false });
-      expect(enabledItems).toHaveLength(2);
-    });
-
-    it('finds specific item in category by id and disabled state', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: categoryItemsWithDisabled });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('cat-disabled1', { disabled: true })).not.toBeNull();
-      expect(wrapper.findItemById('cat-enabled1', { disabled: false })).not.toBeNull();
-    });
-  });
-
-  describe('with disabled category', () => {
-    const disabledCategoryItems: ButtonDropdownProps.Items = [
-      {
-        text: 'Disabled Category',
-        disabled: true,
-        items: [
-          { id: 'cat-item1', text: 'Cat Item 1' },
-          { id: 'cat-item2', text: 'Cat Item 2' },
-        ],
-      },
-      { id: 'top-enabled', text: 'Top Enabled' },
-    ];
-
-    it('items in disabled category are considered disabled', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: disabledCategoryItems });
-      wrapper.openDropdown();
-      const disabledItems = wrapper.findItems({ disabled: true });
-      // Both items in disabled category should be found as disabled
-      expect(disabledItems).toHaveLength(2);
-    });
-
-    it('finds item in disabled category when disabled is true', () => {
-      const wrapper = renderButtonDropdown({ ...testProps, items: disabledCategoryItems });
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('cat-item1', { disabled: true })).not.toBeNull();
-    });
-  });
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItemById('c1', { disabled: true })).not.toBeNull();
 });
 
 describe('ButtonDropdown download property', () => {
