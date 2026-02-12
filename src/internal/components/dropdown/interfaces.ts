@@ -55,38 +55,47 @@ export interface DropdownProps extends ExpandToViewport {
    * Trigger element.
    */
   trigger: React.ReactNode;
+
   /**
    * "Sticky" header of the dropdown content
    */
   header?: React.ReactNode;
+
   /**
    * Footer slot fixed at the bottom of the dropdown
    */
   footer?: React.ReactNode;
+
   /**
    * Dropdown content elements.
    */
   content?: React.ReactNode;
+
   /**
    * Updating content key triggers dropdown position re-evaluation.
    */
   contentKey?: string;
+
   /**
    * Open state of the dropdown.
    */
   open?: boolean;
+
   /**
    * Called when a user clicks outside of the dropdown content, when it is open.
    */
   onDropdownClose?: NonCancelableEventHandler<null>;
+
   /**
    * Called when a mouse button is pressed inside the dropdown content.
    */
   onMouseDown?: React.MouseEventHandler;
+
   /**
    * Dropdown id
    */
   dropdownId?: string;
+
   /**
    * Stretches dropdown to occupy entire height.
    */
@@ -128,6 +137,7 @@ export interface DropdownProps extends ExpandToViewport {
    * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
    */
   interior?: boolean;
+
   /**
    * Whether the dropdown will have a scrollbar or not
    */
@@ -152,14 +162,17 @@ export interface DropdownProps extends ExpandToViewport {
    * ID for the dropdown content wrapper
    */
   dropdownContentId?: string;
+
   /**
    * HTML role for the dropdown content wrapper
    */
   dropdownContentRole?: string;
+
   /**
    * Labelledby for the dropdown (required when role="dialog")
    */
   ariaLabelledby?: string;
+
   /**
    * Describedby for the dropdown (recommended when role="dialog")
    */
