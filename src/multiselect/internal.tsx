@@ -163,10 +163,8 @@ const InternalMultiselect = React.forwardRef(
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(ariaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
+          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
+          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={multiselectProps.isOpen}
           minWidth={expandToViewport ? undefined : 'trigger'}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898

@@ -81,6 +81,7 @@ interface TransitionContentProps {
   onMouseDown?: React.MouseEventHandler<Element>;
   id?: string;
   role?: string;
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
 }
@@ -106,6 +107,7 @@ const TransitionContent = ({
   onMouseDown,
   id,
   role,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: TransitionContentProps) => {
@@ -131,6 +133,7 @@ const TransitionContent = ({
       ref={contentRef}
       id={id}
       role={role}
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
       data-open={open}
@@ -181,7 +184,8 @@ const Dropdown = ({
   onBlur,
   contentKey,
   dropdownContentId,
-  dropdownContentRole,
+  ariaRole,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: DropdownProps) => {
@@ -489,7 +493,8 @@ const Dropdown = ({
                 verticalContainerRef={verticalContainerRef}
                 position={position}
                 id={dropdownContentId}
-                role={dropdownContentRole}
+                role={ariaRole}
+                ariaLabel={ariaLabel}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
               />
