@@ -213,12 +213,7 @@ const Dropdown = ({
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    if (!matchTriggerWidth) {
-      // 1px offset for dropdowns where the dropdown itself needs a border, rather than on the items
-      verticalContainer.style.maxBlockSize = `${parseInt(position.blockSize) + 1}px`;
-    } else {
-      verticalContainer.style.maxBlockSize = position.blockSize;
-    }
+    verticalContainer.style.maxBlockSize = position.blockSize;
 
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
