@@ -5,6 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
+import styles from '../../../lib/components/wizard/styles.selectors.js';
+
 const wizardWrapper = createWrapper().findWizard();
 
 class WizardPageObject extends BasePageObject {
@@ -104,15 +106,13 @@ describe('Wizard narrow viewport navigation', () => {
       await browser.url('/#/light/wizard/simple?visualRefresh=true');
       await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
 
-      // Collapsed steps container should exist at narrow viewport
-      // Note: Using attribute selector because CSS class names are hashed in the build output
-      // Using isExisting() because ExpandableSection header has screenreader-only styling when collapsed
-      const collapsedStepsSelector = `${wizardWrapper.toSelector()} [class*="collapsed-steps"]`;
-      await expect(page.isExisting(collapsedStepsSelector)).resolves.toBe(true);
+      // Collapsed steps container should be displayed at narrow viewport
+      const collapsedSteps = wizardWrapper.find(`.${styles['collapsed-steps']}`).findExpandableSection().toSelector();
+      await expect(page.isDisplayed(collapsedSteps)).resolves.toBe(true);
 
       // Sidebar navigation should be hidden at narrow viewport
-      const navigationSelector = `${wizardWrapper.toSelector()} [class*="navigation"]`;
-      await expect(page.isDisplayed(navigationSelector)).resolves.toBe(false);
+      const navigation = wizardWrapper.findByClassName(styles.navigation).toSelector();
+      await expect(page.isDisplayed(navigation)).resolves.toBe(false);
     })
   );
 });

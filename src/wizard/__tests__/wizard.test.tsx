@@ -5,6 +5,7 @@ import { fireEvent, render } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
@@ -17,23 +18,11 @@ import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
-// Helper to mock mobile viewport for useMobile() hook
-const mockMobileViewport = () => {
-  const originalMatchMedia = window.matchMedia;
-  window.matchMedia = jest.fn().mockImplementation(query => ({
-    matches: query.includes('max-width'),
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  }));
-  return () => {
-    window.matchMedia = originalMatchMedia;
-  };
-};
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
+  useMobile: jest.fn().mockReturnValue(false),
+}));
+const mockedUseMobile = useMobile as jest.Mock;
 
 declare global {
   interface Window {
@@ -658,19 +647,24 @@ describe('handleStepNavigation', () => {
 });
 
 describe('Mobile navigation', () => {
+  beforeEach(() => {
+    mockedUseMobile.mockReturnValue(true);
+  });
+
+  afterEach(() => {
+    mockedUseMobile.mockReturnValue(false);
+  });
+
   test('renders collapsed steps label in mobile viewport', () => {
-    const restoreViewport = mockMobileViewport();
     const { container } = render(
       <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
     );
     const wrapper = createWrapper(container).findWizard()!;
     const expectedCollapsedSteps = `${DEFAULT_I18N_SETS[0].collapsedStepsLabel!(2, DEFAULT_STEPS.length)}`;
     expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(expectedCollapsedSteps);
-    restoreViewport();
   });
 
   test('expandable section can be toggled in mobile viewport', () => {
-    const restoreViewport = mockMobileViewport();
     const { container } = render(
       <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
     );
@@ -685,12 +679,9 @@ describe('Mobile navigation', () => {
 
     // Toggle again to exercise the handler again
     expandableSection!.findHeader()!.click();
-
-    restoreViewport();
   });
 
   test('renders i18n collapsed steps label in mobile viewport', () => {
-    const restoreViewport = mockMobileViewport();
     const { container } = render(
       <TestI18nProvider
         messages={{
@@ -717,7 +708,6 @@ describe('Mobile navigation', () => {
     );
     const wrapper = createWrapper(container).findWizard()!;
     expect(wrapper.getElement()).toHaveTextContent('Custom step 1 of 3');
-    restoreViewport();
   });
 });
 
