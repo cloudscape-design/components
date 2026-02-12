@@ -174,10 +174,6 @@ const Dropdown = ({
   minWidth,
   maxWidth,
   hideBlockBorder = true,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  stretchToTriggerWidth,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  stretchBeyondTriggerWidth,
   expandToViewport = false,
   preferCenter = false,
   interior = false,

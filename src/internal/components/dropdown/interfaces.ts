@@ -114,21 +114,6 @@ export interface DropdownProps extends ExpandToViewport {
   maxWidth?: DropdownWidthConstraint;
 
   /**
-   * Whether the dropdown content should be at least as wide as the trigger.
-   *
-   * @deprecated Use minWidth='trigger' instead
-   * @defaultValue true
-   */
-  stretchToTriggerWidth?: boolean;
-
-  /**
-   * Whether the dropdown content can grow beyond the width of the trigger.
-   *
-   * @deprecated Use maxWidth property instead. Leave maxWidth undefined to allow growth, or set maxWidth='trigger' to constrain to trigger width.
-   */
-  stretchBeyondTriggerWidth?: boolean;
-
-  /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger
    * instead of dropping left or right.
    */
