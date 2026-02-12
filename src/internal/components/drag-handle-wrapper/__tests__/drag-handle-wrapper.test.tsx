@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
@@ -32,6 +32,10 @@ const position = (inlineStart: number, blockStart: number) => ({
   insetBlockEnd: blockStart + size.blockSize,
 });
 
+// Store RAF callbacks globally so flush() can be used in tests
+let rafCallbacks: Set<FrameRequestCallback>;
+let flushAnimationFrames: () => void;
+
 beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;
 });
@@ -43,16 +47,20 @@ beforeEach(() => {
   Object.defineProperty(window, 'innerWidth', { value: viewport.width, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: viewport.height, writable: true });
 
-  // Mock requestAnimationFrame to execute the callback once synchronously
-  // but prevent infinite recursion from the continuous position monitoring loop
-  let rafExecuting = false;
+  // Mock requestAnimationFrame to collect callbacks for explicit flushing
+  // This gives tests control over when position calculations run
+  rafCallbacks = new Set<FrameRequestCallback>();
+  flushAnimationFrames = () => {
+    act(() => {
+      const callbacks = [...rafCallbacks]; // Snapshot before clearing
+      rafCallbacks.clear();
+      callbacks.forEach(cb => cb(performance.now()));
+    });
+  };
+
   jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
-    if (!rafExecuting) {
-      rafExecuting = true;
-      cb(0);
-      rafExecuting = false;
-    }
-    return 0;
+    rafCallbacks.add(cb);
+    return rafCallbacks.size;
   });
 });
 
@@ -771,6 +779,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height / 2));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getDirectionButton('block-start')).not.toBe(null);
     expect(getDirectionButton('block-end')).not.toBe(null);
@@ -783,6 +792,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
@@ -795,6 +805,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 25));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
@@ -807,6 +818,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width - 75, 25));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
@@ -819,6 +831,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, viewport.height / 2));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
@@ -831,6 +844,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width - 75, viewport.height / 2));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
@@ -843,6 +857,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height - 75));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'top', 1)).not.toBe(null);
@@ -855,6 +870,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, 25));
 
     renderDragHandle({ directions: { 'inline-start': 'active', 'block-start': 'active' }, initialShowButtons: true });
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-start', 'bottom', 1)).not.toBe(null);
     expect(getForcedDirectionButton('inline-start', 'bottom', 0)).not.toBe(null);
@@ -865,6 +881,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(viewport.width / 2, viewport.height - 75));
 
     renderDragHandle({ directions: { 'inline-end': 'active', 'block-end': 'active' }, initialShowButtons: true });
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
     expect(getForcedDirectionButton('inline-end', 'top', 1)).not.toBe(null);
@@ -875,6 +892,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 100));
 
     renderDragHandle({ directions: { 'inline-start': 'active', 'block-end': 'active' }, initialShowButtons: true });
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'top', 0)).not.toBe(null);
     expect(getForcedDirectionButton('inline-start', 'top', 1)).not.toBe(null);
@@ -885,6 +903,7 @@ describe('forced position behavior', () => {
     jest.mocked(getLogicalBoundingClientRect).mockReturnValue(position(25, 100));
 
     renderDragHandle(allDirections);
+    flushAnimationFrames();
 
     expect(getForcedDirectionButton('block-end', 'bottom', 3)).not.toBe(null);
     expect(getForcedDirectionButton('block-start', 'bottom', 2)).not.toBe(null);
@@ -900,6 +919,7 @@ describe('forced position behavior', () => {
       directions: { 'block-start': 'active', 'block-end': 'active', 'inline-end': 'active' },
       initialShowButtons: true,
     });
+    flushAnimationFrames();
 
     expect(getAnyForcedDirectionButton()).toBe(null);
     expect(getDirectionButton('block-start')).not.toBe(null);
@@ -914,6 +934,7 @@ describe('forced position behavior', () => {
       directions: { 'block-start': 'active', 'block-end': 'active', 'inline-start': 'active' },
       initialShowButtons: true,
     });
+    flushAnimationFrames();
 
     expect(getAnyForcedDirectionButton()).toBe(null);
     expect(getDirectionButton('block-start')).not.toBe(null);
@@ -928,6 +949,7 @@ describe('forced position behavior', () => {
       directions: { 'block-end': 'active', 'inline-start': 'active', 'inline-end': 'active' },
       initialShowButtons: true,
     });
+    flushAnimationFrames();
 
     expect(getAnyForcedDirectionButton()).toBe(null);
     expect(getDirectionButton('block-end')).not.toBe(null);
@@ -942,6 +964,7 @@ describe('forced position behavior', () => {
       directions: { 'block-start': 'active', 'inline-start': 'active', 'inline-end': 'active' },
       initialShowButtons: true,
     });
+    flushAnimationFrames();
 
     expect(getAnyForcedDirectionButton()).toBe(null);
     expect(getDirectionButton('block-start')).not.toBe(null);
