@@ -52,9 +52,9 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
-   * @param id of the item to find
-   * @param options
-   * * disabled (optional, boolean) - Use it to find the disabled or non-disabled item.
+   *
+   * Supported options:
+   * * `disabled` (boolean) - Use it to find the disabled or non-disabled item.
    */
   findItemById(id: string, options: { disabled?: boolean } = {}): ElementWrapper | null {
     const itemSelector = `${getItemSelector(options)}[data-testid="${id}"]`;
@@ -103,8 +103,9 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
-   * @param options
-   * * disabled (optional, boolean) - Use it to find all disabled or non-disabled items.
+   *
+   * Supported options:
+   * * `disabled` (boolean) - Use it to find all disabled or non-disabled items.
    */
   findItems(options: { disabled?: boolean } = {}): Array<ElementWrapper> {
     const selector = getItemSelector(options);
