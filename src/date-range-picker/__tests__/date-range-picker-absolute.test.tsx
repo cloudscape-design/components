@@ -1127,6 +1127,30 @@ describe('Date range picker', () => {
             'jj:mm'
           );
         });
+
+        testIf(granularity === 'day')('derives hour-only placeholder from time placeholder', () => {
+          // Uses Indonesian-style placeholder to verify i18n value is actually used (not the default hh)
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            timeInputFormat: 'hh',
+            i18nStrings: {
+              ...i18nStrings,
+              timePlaceholder: 'jj:mm:dd',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj'
+          );
+          expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj'
+          );
+        });
       });
 
       describe('i18n', () => {
