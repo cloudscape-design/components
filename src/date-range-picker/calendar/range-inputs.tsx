@@ -44,7 +44,12 @@ export default function RangeInputs({
       ? i18nDatePlaceholder.split(separator).slice(0, 2).join(separator)
       : i18nDatePlaceholder
     : defaultDateInputPlaceholder;
-  const timePlaceholder = i18n('i18nStrings.timePlaceholder', i18nStrings?.timePlaceholder) || timeInputFormat;
+  const i18nTimePlaceholder = i18n('i18nStrings.timePlaceholder', i18nStrings?.timePlaceholder);
+  // Derive time placeholder based on timeInputFormat: hh:mm:ss → 3 parts, hh:mm → 2 parts, hh → 1 part
+  const timeFormatParts = timeInputFormat.split(':').length;
+  const timePlaceholder = i18nTimePlaceholder
+    ? i18nTimePlaceholder.split(':').slice(0, timeFormatParts).join(':')
+    : timeInputFormat;
   const i18nProvided = provideI18N(i18nStrings!, isMonthPicker, dateOnly, isIso);
   const i18nKey = generateI18NKey(isMonthPicker, dateOnly, isIso);
   const i18nFallbackKey = generateI18NFallbackKey(isMonthPicker, dateOnly);
