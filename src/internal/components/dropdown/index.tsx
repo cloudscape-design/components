@@ -65,6 +65,7 @@ interface TransitionContentProps {
   transitionRef: React.MutableRefObject<any>;
   dropdownClasses: string;
   matchTriggerWidth: boolean;
+  hideBlockBorder: boolean;
   interior: boolean;
   isRefresh: boolean;
   dropdownRef: React.RefObject<HTMLDivElement>;
@@ -90,6 +91,7 @@ const TransitionContent = ({
   transitionRef,
   dropdownClasses,
   matchTriggerWidth,
+  hideBlockBorder,
   interior,
   isRefresh,
   dropdownRef,
@@ -122,7 +124,7 @@ const TransitionContent = ({
       className={clsx(styles.dropdown, dropdownClasses, {
         [styles.open]: open,
         [styles['with-limited-width']]: !matchTriggerWidth,
-        [styles['hide-block-border']]: matchTriggerWidth,
+        [styles['hide-block-border']]: hideBlockBorder,
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
@@ -171,6 +173,7 @@ const Dropdown = ({
   stretchHeight = false,
   minWidth,
   maxWidth,
+  hideBlockBorder = true,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stretchToTriggerWidth,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -481,6 +484,7 @@ const Dropdown = ({
                 dropdownClasses={dropdownClasses}
                 open={open}
                 matchTriggerWidth={matchTriggerWidth}
+                hideBlockBorder={hideBlockBorder}
                 interior={interior}
                 header={header}
                 content={content}

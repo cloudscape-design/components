@@ -135,6 +135,11 @@ export interface DropdownProps extends ExpandToViewport {
   preferCenter?: boolean;
 
   /**
+   * Hides the block (top/bottom) borders of the dropdown content wrapper.
+   */
+  hideBlockBorder?: boolean;
+
+  /**
    * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
    */
   interior?: boolean;
