@@ -519,6 +519,30 @@ describe('Internal ButtonDropdown badge property', () => {
   });
 });
 
+test('findItems and findItemById support disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [
+    { id: 'e1', text: 'Enabled' },
+    { id: 'd1', text: 'Disabled', disabled: true },
+  ];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
+
+  expect(wrapper.findItems()).toHaveLength(2);
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItems({ disabled: false })).toHaveLength(1);
+  expect(wrapper.findItemById('d1', { disabled: true })).not.toBeNull();
+  expect(wrapper.findItemById('e1', { disabled: true })).toBeNull();
+});
+
+test('disabled category items are found with disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [{ text: 'Category', disabled: true, items: [{ id: 'c1', text: 'Item' }] }];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
+
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItemById('c1', { disabled: true })).not.toBeNull();
+});
+
 describe('ButtonDropdown download property', () => {
   const testProps = { expandToViewport: false };
 
