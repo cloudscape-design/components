@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
@@ -184,8 +184,20 @@ export default function DragHandleWrapper({
   const directionsOrder = forcedPosition === 'bottom' ? [...DIRECTIONS_ORDER].reverse() : DIRECTIONS_ORDER;
   const visibleDirections = directionsOrder.filter(dir => directions[dir]);
 
-  useLayoutEffect(() => {
-    if (showButtons && dragHandleRef.current) {
+  // Continuously monitor position while buttons are shown to handle CSS transitions/animations.
+  // The position needs to be recalculated as the element may animate into its final position.
+  useEffect(() => {
+    if (!showButtons || !dragHandleRef.current) {
+      setForcedPosition(null);
+      return;
+    }
+
+    let frameId: number;
+
+    const checkPosition = () => {
+      if (!dragHandleRef.current) {
+        return;
+      }
       const rect = getLogicalBoundingClientRect(dragHandleRef.current);
       const conflicts = {
         'block-start': rect.insetBlockStart < FORCED_POSITION_PROXIMITY_PX,
@@ -199,7 +211,14 @@ export default function DragHandleWrapper({
       } else {
         setForcedPosition(null);
       }
-    }
+      frameId = requestAnimationFrame(checkPosition);
+    };
+
+    frameId = requestAnimationFrame(checkPosition);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [showButtons, visibleDirections]);
 
   return (
