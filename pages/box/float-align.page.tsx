@@ -27,10 +27,13 @@ export default function BoxPermutations() {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <Box {...permutation} className={styles['permutation-box']}>
-              {permutation.textAlign && `textAlign:${permutation.textAlign}`}
-              {permutation.float && `float:${permutation.float}`}
-            </Box>
+            // The flow-root is necessary for the float permutations so that the permutation wrapper height is computed correctly.
+            <div style={{ display: 'flow-root' }}>
+              <Box {...permutation} className={styles['permutation-box']}>
+                {permutation.textAlign && `textAlign:${permutation.textAlign}`}
+                {permutation.float && `float:${permutation.float}`}
+              </Box>
+            </div>
           )}
         />
       </ScreenshotArea>
