@@ -24,6 +24,18 @@ function getItemSelector({ disabled }: { disabled?: boolean }): string {
   return selector;
 }
 
+function getItemSelector({ disabled }: { disabled?: boolean }): string {
+  let selector = `.${itemStyles['item-element']}`;
+
+  if (disabled === true) {
+    selector += `.${itemStyles.disabled}`;
+  } else if (disabled === false) {
+    selector += `:not(.${itemStyles.disabled})`;
+  }
+
+  return selector;
+}
+
 export default class ButtonDropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles['button-dropdown'];
 
