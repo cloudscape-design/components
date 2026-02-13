@@ -33,8 +33,14 @@ const position = (inlineStart: number, blockStart: number) => ({
 });
 
 // Store RAF callbacks globally so flush() can be used in tests
-let rafCallbacks: Set<FrameRequestCallback>;
-let flushAnimationFrames: () => void;
+const rafCallbacks = new Set<FrameRequestCallback>();
+const flushAnimationFrames = () => {
+  act(() => {
+    const callbacks = [...rafCallbacks]; // Snapshot before clearing to preserve re-registered callbacks
+    rafCallbacks.clear();
+    callbacks.forEach(cb => cb(performance.now()));
+  });
+};
 
 beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;
@@ -47,17 +53,10 @@ beforeEach(() => {
   Object.defineProperty(window, 'innerWidth', { value: viewport.width, writable: true });
   Object.defineProperty(window, 'innerHeight', { value: viewport.height, writable: true });
 
-  // Mock requestAnimationFrame to collect callbacks for explicit flushing
-  // This gives tests control over when position calculations run
-  rafCallbacks = new Set<FrameRequestCallback>();
-  flushAnimationFrames = () => {
-    act(() => {
-      const callbacks = [...rafCallbacks]; // Snapshot before clearing
-      rafCallbacks.clear();
-      callbacks.forEach(cb => cb(performance.now()));
-    });
-  };
+  // Clear any leftover callbacks from previous tests
+  rafCallbacks.clear();
 
+  // Mock requestAnimationFrame to collect callbacks for explicit flushing
   jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
     rafCallbacks.add(cb);
     return rafCallbacks.size;
