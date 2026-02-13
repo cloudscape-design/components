@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/actions/.github/workflows/release.yml@main
+    uses: cloudscape-design/actions/.github/workflows/release.yml@always-vr-build
     secrets: inherit
     with:
       skip-test: true
