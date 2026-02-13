@@ -89,7 +89,7 @@ export default function DateRangePickerCalendarPage() {
         <PermutationsView
           permutations={permutations}
           render={permutation => (
-            <div style={{ blockSize: '400px', position: 'relative' }}>
+            <div style={{ blockSize: '400px' }}>
               <Dropdown
                 stretchWidth={true}
                 stretchHeight={true}
