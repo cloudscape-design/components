@@ -92,9 +92,6 @@ export default function InternalContainer({
 }: InternalContainerProps) {
   const isMobile = useMobile();
   const isRefresh = useVisualRefresh();
-  if (isRefresh === false) {
-    throw new Error('isRefresh === false');
-  }
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
