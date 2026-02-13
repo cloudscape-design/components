@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
@@ -18,9 +18,9 @@ import {
 } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useFunnelChangeEvent } from './analytics';
 import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces';
@@ -54,8 +54,9 @@ export default function InternalWizard({
 }: InternalWizardProps) {
   const baseProps = getBaseProps(rest);
 
-  const isMobile = useMobile();
-  const smallContainer = isMobile;
+  const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
+  const ref = useMergeRefs(breakpointsRef, __internalRootRef);
+  const smallContainer = breakpoint === 'default';
 
   const [activeStepIndex, setActiveStepIndex] = useControllable(controlledActiveStepIndex, onNavigate, 0, {
     componentName: 'Wizard',
@@ -173,7 +174,7 @@ export default function InternalWizard({
     <div
       {...baseProps}
       {...funnelProps}
-      ref={__internalRootRef}
+      ref={ref}
       className={clsx(styles.root, analyticsSelectors.root, baseProps.className)}
       {...(__injectAnalyticsComponentMetadata
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })

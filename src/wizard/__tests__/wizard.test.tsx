@@ -5,7 +5,7 @@ import { fireEvent, render } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import { useContainerBreakpoints } from '../../../lib/components/internal/hooks/container-queries';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
@@ -18,11 +18,11 @@ import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
-  useMobile: jest.fn().mockReturnValue(false),
+jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/container-queries'),
+  useContainerBreakpoints: jest.fn().mockReturnValue(['xs', { current: null }]),
 }));
-const mockedUseMobile = useMobile as jest.Mock;
+const mockedUseContainerBreakpoints = useContainerBreakpoints as jest.Mock;
 
 declare global {
   interface Window {
@@ -646,16 +646,16 @@ describe('handleStepNavigation', () => {
   });
 });
 
-describe('Mobile navigation', () => {
+describe('Small container navigation', () => {
   beforeEach(() => {
-    mockedUseMobile.mockReturnValue(true);
+    mockedUseContainerBreakpoints.mockReturnValue(['default', { current: null }]);
   });
 
   afterEach(() => {
-    mockedUseMobile.mockReturnValue(false);
+    mockedUseContainerBreakpoints.mockReturnValue(['xs', { current: null }]);
   });
 
-  test('renders collapsed steps label in mobile viewport', () => {
+  test('renders collapsed steps label in small container', () => {
     const { container } = render(
       <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
     );
@@ -664,7 +664,7 @@ describe('Mobile navigation', () => {
     expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(expectedCollapsedSteps);
   });
 
-  test('expandable section can be toggled in mobile viewport', () => {
+  test('expandable section can be toggled in small container', () => {
     const { container } = render(
       <Wizard i18nStrings={DEFAULT_I18N_SETS[0]} steps={DEFAULT_STEPS} activeStepIndex={1} />
     );
@@ -681,7 +681,7 @@ describe('Mobile navigation', () => {
     expandableSection!.findHeader()!.click();
   });
 
-  test('renders i18n collapsed steps label in mobile viewport', () => {
+  test('renders i18n collapsed steps label in small container', () => {
     const { container } = render(
       <TestI18nProvider
         messages={{
