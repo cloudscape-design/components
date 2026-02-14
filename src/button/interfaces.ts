@@ -209,6 +209,7 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   iconAlt?: string;
 
   /**
+   * An object containing CSS properties to customize the button's visual appearance.
    * @awsuiSystem core
    */
   style?: ButtonProps.Style;

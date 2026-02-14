@@ -217,6 +217,7 @@ export interface FlashbarProps extends BaseComponentProps {
   i18nStrings?: FlashbarProps.I18nStrings;
 
   /**
+   * An object containing CSS properties to customize the flashbar's visual appearance.
    * @awsuiSystem core
    */
   style?: FlashbarProps.Style;

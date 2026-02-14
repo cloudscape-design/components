@@ -29,6 +29,7 @@ export interface BadgeProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
+   * An object containing CSS properties to customize the badge's visual appearance.
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;

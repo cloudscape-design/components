@@ -61,6 +61,7 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
   onDelayedChange?: NonCancelableEventHandler<TextFilterProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the text filter's visual appearance.
    * @awsuiSystem core
    */
   style?: TextFilterProps.Style;

@@ -165,6 +165,7 @@ export interface AutosuggestProps
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
 
   /**
+   * An object containing CSS properties to customize the autosuggest's visual appearance.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;

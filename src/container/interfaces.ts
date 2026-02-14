@@ -83,6 +83,7 @@ export interface ContainerProps extends BaseComponentProps {
   variant?: 'default' | 'stacked';
 
   /**
+   * An object containing CSS properties to customize the container's visual appearance.
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;

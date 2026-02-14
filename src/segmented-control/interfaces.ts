@@ -46,6 +46,7 @@ export interface SegmentedControlProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<SegmentedControlProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the segmented control's visual appearance.
    * @awsuiSystem core
    */
   style?: SegmentedControlProps.Style;

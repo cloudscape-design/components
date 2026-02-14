@@ -23,6 +23,7 @@ export interface ToggleProps extends BaseCheckboxProps {
   onChange?: NonCancelableEventHandler<ToggleProps.ChangeDetail>;
 
   /**
+   * An object containing CSS properties to customize the toggle's visual appearance.
    * @awsuiSystem core
    */
   style?: ToggleProps.Style;

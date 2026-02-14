@@ -131,6 +131,7 @@ export interface PromptInputProps
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
+   * An object containing CSS properties to customize the prompt input's visual appearance.
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;

@@ -100,6 +100,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
   /**
+   * An object containing CSS properties to customize the button group's visual appearance.
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;

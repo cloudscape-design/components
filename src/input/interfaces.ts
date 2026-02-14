@@ -183,6 +183,7 @@ export interface InputProps
   step?: InputProps.Step;
 
   /**
+   * An object containing CSS properties to customize the input's visual appearance.
    * @awsuiSystem core
    */
   style?: InputProps.Style;
