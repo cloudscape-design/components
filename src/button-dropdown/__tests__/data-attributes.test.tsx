@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import ButtonDropdown from '../../../lib/components/button-dropdown';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 describe('ButtonDropdown data attributes', () => {
   test('renders custom data attributes on items', () => {
-    const { getByText } = render(
+    const { container } = render(
       <ButtonDropdown
         items={[
           {
@@ -21,32 +23,37 @@ describe('ButtonDropdown data attributes', () => {
       />
     );
 
-    const item = getByText('Edit').closest('li');
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const item = wrapper.findItemById('edit')!.getElement();
+
     expect(item).toHaveAttribute('data-analytics-action', 'edit-product');
     expect(item).toHaveAttribute('data-item-key', 'product-123');
   });
 
-  test('automatically prepends data- prefix', () => {
-    const { getByText } = render(
+  test('does not duplicate data- prefix when already present', () => {
+    const { container } = render(
       <ButtonDropdown
         items={[
           {
-            id: 'delete',
-            text: 'Delete',
-            dataAttributes: { 'custom-attr': 'value' },
+            id: 'action',
+            text: 'Action',
+            dataAttributes: { 'data-custom': 'value' },
           },
         ]}
       />
     );
 
-    const item = getByText('Delete').closest('li');
-    expect(item).toHaveAttribute('data-custom-attr', 'value');
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const item = wrapper.findItemById('action')!.getElement();
+
+    expect(item).toHaveAttribute('data-custom', 'value');
+    expect(item).not.toHaveAttribute('data-data-custom');
   });
 
   test('excludes testid from dataAttributes', () => {
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-    
-    const { getByText } = render(
+    const { container } = render(
       <ButtonDropdown
         items={[
           {
@@ -58,38 +65,41 @@ describe('ButtonDropdown data attributes', () => {
       />
     );
 
-    const item = getByText('Action').closest('li');
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const item = wrapper.findItemById('original-id')!.getElement();
+
     expect(item).toHaveAttribute('data-testid', 'original-id');
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'ButtonDropdown: "testid" key is reserved and cannot be overridden via dataAttributes'
-    );
-    
-    consoleSpy.mockRestore();
   });
 
   test('handles undefined values', () => {
-    const { getByText } = render(
+    const dataAttrs: Record<string, string | undefined> = {
+      defined: 'value',
+      undefined: undefined,
+    };
+
+    const { container } = render(
       <ButtonDropdown
         items={[
           {
             id: 'action',
             text: 'Action',
-            dataAttributes: {
-              defined: 'value',
-              undefined: undefined,
-            },
+            dataAttributes: dataAttrs as Record<string, string>,
           },
         ]}
       />
     );
 
-    const item = getByText('Action').closest('li');
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const item = wrapper.findItemById('action')!.getElement();
+
     expect(item).toHaveAttribute('data-defined', 'value');
     expect(item).not.toHaveAttribute('data-undefined');
   });
 
-  test('works with multiple items', () => {
-    const { getByText } = render(
+  test('works with multiple items, disabled items, and checkbox items', () => {
+    const { container } = render(
       <ButtonDropdown
         items={[
           {
@@ -98,40 +108,11 @@ describe('ButtonDropdown data attributes', () => {
             dataAttributes: { action: 'edit' },
           },
           {
-            id: 'delete',
-            text: 'Delete',
-            dataAttributes: { action: 'delete' },
-          },
-        ]}
-      />
-    );
-
-    expect(getByText('Edit').closest('li')).toHaveAttribute('data-action', 'edit');
-    expect(getByText('Delete').closest('li')).toHaveAttribute('data-action', 'delete');
-  });
-
-  test('works with disabled items', () => {
-    const { getByText } = render(
-      <ButtonDropdown
-        items={[
-          {
             id: 'disabled',
             text: 'Disabled',
             disabled: true,
             dataAttributes: { state: 'disabled' },
           },
-        ]}
-      />
-    );
-
-    const item = getByText('Disabled').closest('li');
-    expect(item).toHaveAttribute('data-state', 'disabled');
-  });
-
-  test('works with checkbox items', () => {
-    const { getByText } = render(
-      <ButtonDropdown
-        items={[
           {
             itemType: 'checkbox',
             id: 'checkbox-item',
@@ -143,7 +124,11 @@ describe('ButtonDropdown data attributes', () => {
       />
     );
 
-    const item = getByText('Checkbox').closest('li');
-    expect(item).toHaveAttribute('data-checkbox-id', 'cb-1');
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    wrapper.openDropdown();
+
+    expect(wrapper.findItemById('edit')!.getElement()).toHaveAttribute('data-action', 'edit');
+    expect(wrapper.findItemById('disabled')!.getElement()).toHaveAttribute('data-state', 'disabled');
+    expect(wrapper.findItemById('checkbox-item')!.getElement()).toHaveAttribute('data-checkbox-id', 'cb-1');
   });
 });

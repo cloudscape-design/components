@@ -29,6 +29,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
+   * - `dataAttributes` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
    *
    * ### action
    *
@@ -282,26 +283,6 @@ export namespace ButtonDropdownProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     labelTag?: string;
-    /**
-     * Custom data attributes to add to the dropdown item element.
-     * Attribute names will automatically be prefixed with "data-".
-     * The "testid" key is reserved and cannot be overridden.
-     *
-     * Use this for analytics tracking, testing selectors, or other metadata.
-     *
-     * @example
-     * items={[
-     *   {
-     *     id: 'edit',
-     *     text: 'Edit',
-     *     dataAttributes: {
-     *       'analytics-action': 'edit-product',
-     *       'item-key': 'product-123'
-     *     }
-     *   }
-     * ]}
-     * // Renders as: data-analytics-action="edit-product" data-item-key="product-123"
-     */
     dataAttributes?: Record<string, string>;
   }
 
