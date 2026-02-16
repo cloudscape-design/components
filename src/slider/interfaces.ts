@@ -84,6 +84,8 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
   readOnly?: boolean;
 
   /**
+   * An object containing CSS properties to customize the slider's visual appearance.
+   * Refer to the [style](/components/slider/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: SliderProps.Style;
