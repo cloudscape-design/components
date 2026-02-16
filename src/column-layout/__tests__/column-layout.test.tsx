@@ -27,6 +27,14 @@ describe('ColumnLayout component', () => {
         expect(wrapper.getElement()).toHaveClass(styles[`grid-columns-${columnCount}`]);
       });
     });
+
+    it('uses flexible layout for more than 4 columns without minColumnWidth', () => {
+      const renderResult = render(<ColumnLayout columns={5} />);
+      const wrapper = createWrapper(renderResult.container);
+      expect(wrapper.getElement()).not.toHaveClass(styles['grid-columns-5']);
+      const flexibleGrid = wrapper.find('[class*="css-grid"]');
+      expect(flexibleGrid).toBeTruthy();
+    });
   });
 
   describe('borders property', () => {
