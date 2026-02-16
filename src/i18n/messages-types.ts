@@ -3,230 +3,230 @@
 
 /** Auto-generated argument types based on "en" i18n strings. Do not edit manually. */
 export interface I18nFormatArgTypes {
-  "[charts]": {
-    "loadingText": never;
-    "errorText": never;
-    "recoveryText": never;
-    "i18nStrings.filterLabel": never;
-    "i18nStrings.filterPlaceholder": never;
-    "i18nStrings.legendAriaLabel": never;
-    "i18nStrings.chartAriaRoleDescription": never;
-    "i18nStrings.xAxisAriaRoleDescription": never;
-    "i18nStrings.yAxisAriaRoleDescription": never;
-  }
-  "alert": {
-    "dismissAriaLabel": never;
-    "i18nStrings.successIconAriaLabel": never;
-    "i18nStrings.errorIconAriaLabel": never;
-    "i18nStrings.warningIconAriaLabel": never;
-    "i18nStrings.infoIconAriaLabel": never;
-    "i18nStrings.dismissAriaLabel": never;
-  }
-  "annotation-context": {
-    "i18nStrings.nextButtonText": never;
-    "i18nStrings.previousButtonText": never;
-    "i18nStrings.finishButtonText": never;
-    "i18nStrings.labelDismissAnnotation": never;
-    "i18nStrings.stepCounterText": {
-      "stepNumber": string | number;
-      "totalStepCount": string | number;
-    }
-    "i18nStrings.taskTitle": {
-      "taskNumber": string | number;
-      "taskTitle": string | number;
-    }
-    "i18nStrings.labelHotspot": {
-      "openState": string;
-      "stepNumber": string | number;
-      "totalStepCount": string | number;
-    }
-  }
-  "app-layout": {
-    "ariaLabels.drawers": never;
-    "ariaLabels.drawersOverflow": never;
-    "ariaLabels.drawersOverflowWithBadge": never;
-    "ariaLabels.navigation": never;
-    "ariaLabels.navigationClose": never;
-    "ariaLabels.navigationToggle": never;
-    "ariaLabels.notifications": never;
-    "ariaLabels.tools": never;
-    "ariaLabels.toolsClose": never;
-    "ariaLabels.toolsToggle": never;
-  }
-  "area-chart": {
-    "i18nStrings.detailTotalLabel": never;
-  }
-  "attribute-editor": {
-    "removeButtonText": never;
-    "i18nStrings.itemRemovedAriaLive": never;
-  }
-  "autosuggest": {
-    "errorIconAriaLabel": never;
-    "selectedAriaLabel": never;
-    "enteredTextLabel": {
-      "value": string | number;
-    }
-    "recoveryText": never;
-  }
-  "breadcrumb-group": {
-    "expandAriaLabel": never;
-  }
-  "button": {
-    "i18nStrings.externalIconAriaLabel": never;
-  }
-  "calendar": {
-    "nextMonthAriaLabel": never;
-    "previousMonthAriaLabel": never;
-    "todayAriaLabel": never;
-    "i18nStrings.nextYearAriaLabel": never;
-    "i18nStrings.previousYearAriaLabel": never;
-    "i18nStrings.currentMonthAriaLabel": never;
-  }
-  "cards": {
-    "ariaLabels.selectionGroupLabel": never;
-  }
-  "code-editor": {
-    "i18nStrings.loadingState": never;
-    "i18nStrings.errorState": never;
-    "i18nStrings.errorStateRecovery": never;
-    "i18nStrings.editorGroupAriaLabel": never;
-    "i18nStrings.statusBarGroupAriaLabel": never;
-    "i18nStrings.cursorPosition": {
-      "row": string | number;
-      "column": string | number;
-    }
-    "i18nStrings.errorsTab": never;
-    "i18nStrings.warningsTab": never;
-    "i18nStrings.preferencesButtonAriaLabel": never;
-    "i18nStrings.paneCloseButtonAriaLabel": never;
-    "i18nStrings.preferencesModalHeader": never;
-    "i18nStrings.preferencesModalCancel": never;
-    "i18nStrings.preferencesModalConfirm": never;
-    "i18nStrings.preferencesModalWrapLines": never;
-    "i18nStrings.preferencesModalTheme": never;
-    "i18nStrings.preferencesModalThemeFilteringAriaLabel": never;
-    "i18nStrings.preferencesModalThemeFilteringPlaceholder": never;
-    "i18nStrings.preferencesModalLightThemes": never;
-    "i18nStrings.preferencesModalDarkThemes": never;
-    "i18nStrings.cursorPositionAriaLabel": {
-      "row": string | number;
-    }
-    "i18nStrings.resizeHandleAriaLabel": never;
-    "i18nStrings.resizeHandleTooltipText": never;
-  }
-  "collection-preferences": {
-    "title": never;
-    "confirmLabel": never;
-    "cancelLabel": never;
-    "pageSizePreference.title": never;
-    "wrapLinesPreference.label": never;
-    "wrapLinesPreference.description": never;
-    "stripedRowsPreference.label": never;
-    "stripedRowsPreference.description": never;
-    "contentDensityPreference.label": never;
-    "contentDensityPreference.description": never;
-    "stickyColumnsPreference.firstColumns.title": never;
-    "stickyColumnsPreference.firstColumns.description": never;
-    "stickyColumnsPreference.firstColumns.options[0].label": never;
-    "stickyColumnsPreference.firstColumns.options[1].label": never;
-    "stickyColumnsPreference.firstColumns.options[2].label": never;
-    "stickyColumnsPreference.lastColumns.title": never;
-    "stickyColumnsPreference.lastColumns.description": never;
-    "stickyColumnsPreference.lastColumns.options[0].label": never;
-    "stickyColumnsPreference.lastColumns.options[1].label": never;
-    "contentDisplayPreference.title": never;
-    "contentDisplayPreference.description": never;
-    "contentDisplayPreference.dragHandleAriaLabel": never;
-    "contentDisplayPreference.dragHandleAriaDescription": never;
-    "contentDisplayPreference.liveAnnouncementDndStarted": {
-      "position": string | number;
-      "total": string | number;
-    }
-    "contentDisplayPreference.liveAnnouncementDndDiscarded": never;
-    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": never;
-    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": never;
-    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": never;
-    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": never;
-    "contentDisplayPreference.liveAnnouncementDndItemReordered": {
-      "isInitialPosition": string;
-      "currentPosition": string | number;
-      "total": string | number;
-    }
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": {
-      "isInitialPosition": string;
-      "initialPosition": string | number;
-      "total": string | number;
-      "finalPosition": string | number;
-    }
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": {
-      "count": number;
-    }
-  }
-  "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": never;
-  }
-  "date-picker": {
-    "i18nStrings.openCalendarAriaLabel": {
-      "selectedDate": string;
-    }
-  }
-  "date-range-picker": {
-    "i18nStrings.relativeModeTitle": never;
-    "i18nStrings.absoluteModeTitle": never;
-    "i18nStrings.relativeRangeSelectionHeading": never;
-    "i18nStrings.relativeRangeSelectionMonthlyDescription": never;
-    "i18nStrings.cancelButtonLabel": never;
-    "i18nStrings.clearButtonLabel": never;
-    "i18nStrings.applyButtonLabel": never;
-    "i18nStrings.customRelativeRangeOptionLabel": never;
-    "i18nStrings.customRelativeRangeOptionDescription": never;
-    "i18nStrings.customRelativeRangeUnitLabel": never;
-    "i18nStrings.customRelativeRangeDurationLabel": never;
-    "i18nStrings.customRelativeRangeDurationPlaceholder": never;
-    "i18nStrings.previousMonthAriaLabel": never;
-    "i18nStrings.nextMonthAriaLabel": never;
-    "i18nStrings.previousYearAriaLabel": never;
-    "i18nStrings.nextYearAriaLabel": never;
-    "i18nStrings.currentMonthAriaLabel": never;
-    "i18nStrings.todayAriaLabel": never;
-    "i18nStrings.startMonthLabel": never;
-    "i18nStrings.startDateLabel": never;
-    "i18nStrings.startTimeLabel": never;
-    "i18nStrings.endMonthLabel": never;
-    "i18nStrings.endDateLabel": never;
-    "i18nStrings.endTimeLabel": never;
-    "i18nStrings.isoDatePlaceholder": never;
-    "i18nStrings.slashedDatePlaceholder": never;
-    "i18nStrings.timePlaceholder": never;
-    "i18nStrings.dateTimeConstraintText": never;
-    "i18nStrings.dateConstraintText": never;
-    "i18nStrings.slashedDateTimeConstraintText": never;
-    "i18nStrings.isoDateTimeConstraintText": never;
-    "i18nStrings.slashedDateConstraintText": never;
-    "i18nStrings.isoDateConstraintText": never;
-    "i18nStrings.slashedMonthConstraintText": never;
-    "i18nStrings.isoMonthConstraintText": never;
-    "i18nStrings.monthConstraintText": never;
-    "i18nStrings.errorIconAriaLabel": never;
-    "i18nStrings.renderSelectedAbsoluteRangeAriaLive": {
-      "startDate": string | number;
-      "endDate": string | number;
-    }
-    "i18nStrings.formatRelativeRange": {
-      "unit": string;
-      "amount": number;
-    }
-    "i18nStrings.formatUnit": {
-      "unit": string;
-      "amount": number;
-    }
-  }
-  "drawer": {
-    "i18nStrings.loadingText": never;
-  }
-  "error-boundary": {
-    "i18nStrings.headerText"?: never;
-    "i18nStrings.descriptionText"?: {
+  '[charts]': {
+    loadingText: never;
+    errorText: never;
+    recoveryText: never;
+    'i18nStrings.filterLabel': never;
+    'i18nStrings.filterPlaceholder': never;
+    'i18nStrings.legendAriaLabel': never;
+    'i18nStrings.chartAriaRoleDescription': never;
+    'i18nStrings.xAxisAriaRoleDescription': never;
+    'i18nStrings.yAxisAriaRoleDescription': never;
+  };
+  alert: {
+    dismissAriaLabel: never;
+    'i18nStrings.successIconAriaLabel': never;
+    'i18nStrings.errorIconAriaLabel': never;
+    'i18nStrings.warningIconAriaLabel': never;
+    'i18nStrings.infoIconAriaLabel': never;
+    'i18nStrings.dismissAriaLabel': never;
+  };
+  'annotation-context': {
+    'i18nStrings.nextButtonText': never;
+    'i18nStrings.previousButtonText': never;
+    'i18nStrings.finishButtonText': never;
+    'i18nStrings.labelDismissAnnotation': never;
+    'i18nStrings.stepCounterText': {
+      stepNumber: string | number;
+      totalStepCount: string | number;
+    };
+    'i18nStrings.taskTitle': {
+      taskNumber: string | number;
+      taskTitle: string | number;
+    };
+    'i18nStrings.labelHotspot': {
+      openState: string;
+      stepNumber: string | number;
+      totalStepCount: string | number;
+    };
+  };
+  'app-layout': {
+    'ariaLabels.drawers': never;
+    'ariaLabels.drawersOverflow': never;
+    'ariaLabels.drawersOverflowWithBadge': never;
+    'ariaLabels.navigation': never;
+    'ariaLabels.navigationClose': never;
+    'ariaLabels.navigationToggle': never;
+    'ariaLabels.notifications': never;
+    'ariaLabels.tools': never;
+    'ariaLabels.toolsClose': never;
+    'ariaLabels.toolsToggle': never;
+  };
+  'area-chart': {
+    'i18nStrings.detailTotalLabel': never;
+  };
+  'attribute-editor': {
+    removeButtonText: never;
+    'i18nStrings.itemRemovedAriaLive': never;
+  };
+  autosuggest: {
+    errorIconAriaLabel: never;
+    selectedAriaLabel: never;
+    enteredTextLabel: {
+      value: string | number;
+    };
+    recoveryText: never;
+  };
+  'breadcrumb-group': {
+    expandAriaLabel: never;
+  };
+  button: {
+    'i18nStrings.externalIconAriaLabel': never;
+  };
+  calendar: {
+    nextMonthAriaLabel: never;
+    previousMonthAriaLabel: never;
+    todayAriaLabel: never;
+    'i18nStrings.nextYearAriaLabel': never;
+    'i18nStrings.previousYearAriaLabel': never;
+    'i18nStrings.currentMonthAriaLabel': never;
+  };
+  cards: {
+    'ariaLabels.selectionGroupLabel': never;
+  };
+  'code-editor': {
+    'i18nStrings.loadingState': never;
+    'i18nStrings.errorState': never;
+    'i18nStrings.errorStateRecovery': never;
+    'i18nStrings.editorGroupAriaLabel': never;
+    'i18nStrings.statusBarGroupAriaLabel': never;
+    'i18nStrings.cursorPosition': {
+      row: string | number;
+      column: string | number;
+    };
+    'i18nStrings.errorsTab': never;
+    'i18nStrings.warningsTab': never;
+    'i18nStrings.preferencesButtonAriaLabel': never;
+    'i18nStrings.paneCloseButtonAriaLabel': never;
+    'i18nStrings.preferencesModalHeader': never;
+    'i18nStrings.preferencesModalCancel': never;
+    'i18nStrings.preferencesModalConfirm': never;
+    'i18nStrings.preferencesModalWrapLines': never;
+    'i18nStrings.preferencesModalTheme': never;
+    'i18nStrings.preferencesModalThemeFilteringAriaLabel': never;
+    'i18nStrings.preferencesModalThemeFilteringPlaceholder': never;
+    'i18nStrings.preferencesModalLightThemes': never;
+    'i18nStrings.preferencesModalDarkThemes': never;
+    'i18nStrings.cursorPositionAriaLabel': {
+      row: string | number;
+    };
+    'i18nStrings.resizeHandleAriaLabel': never;
+    'i18nStrings.resizeHandleTooltipText': never;
+  };
+  'collection-preferences': {
+    title: never;
+    confirmLabel: never;
+    cancelLabel: never;
+    'pageSizePreference.title': never;
+    'wrapLinesPreference.label': never;
+    'wrapLinesPreference.description': never;
+    'stripedRowsPreference.label': never;
+    'stripedRowsPreference.description': never;
+    'contentDensityPreference.label': never;
+    'contentDensityPreference.description': never;
+    'stickyColumnsPreference.firstColumns.title': never;
+    'stickyColumnsPreference.firstColumns.description': never;
+    'stickyColumnsPreference.firstColumns.options[0].label': never;
+    'stickyColumnsPreference.firstColumns.options[1].label': never;
+    'stickyColumnsPreference.firstColumns.options[2].label': never;
+    'stickyColumnsPreference.lastColumns.title': never;
+    'stickyColumnsPreference.lastColumns.description': never;
+    'stickyColumnsPreference.lastColumns.options[0].label': never;
+    'stickyColumnsPreference.lastColumns.options[1].label': never;
+    'contentDisplayPreference.title': never;
+    'contentDisplayPreference.description': never;
+    'contentDisplayPreference.dragHandleAriaLabel': never;
+    'contentDisplayPreference.dragHandleAriaDescription': never;
+    'contentDisplayPreference.liveAnnouncementDndStarted': {
+      position: string | number;
+      total: string | number;
+    };
+    'contentDisplayPreference.liveAnnouncementDndDiscarded': never;
+    'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder': never;
+    'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel': never;
+    'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText': never;
+    'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText': never;
+    'contentDisplayPreference.liveAnnouncementDndItemReordered': {
+      isInitialPosition: string;
+      currentPosition: string | number;
+      total: string | number;
+    };
+    'contentDisplayPreference.liveAnnouncementDndItemCommitted': {
+      isInitialPosition: string;
+      initialPosition: string | number;
+      total: string | number;
+      finalPosition: string | number;
+    };
+    'contentDisplayPreference.i18nStrings.columnFilteringCountText': {
+      count: number;
+    };
+  };
+  'copy-to-clipboard': {
+    'i18nStrings.copyButtonText': never;
+  };
+  'date-picker': {
+    'i18nStrings.openCalendarAriaLabel': {
+      selectedDate: string;
+    };
+  };
+  'date-range-picker': {
+    'i18nStrings.relativeModeTitle': never;
+    'i18nStrings.absoluteModeTitle': never;
+    'i18nStrings.relativeRangeSelectionHeading': never;
+    'i18nStrings.relativeRangeSelectionMonthlyDescription': never;
+    'i18nStrings.cancelButtonLabel': never;
+    'i18nStrings.clearButtonLabel': never;
+    'i18nStrings.applyButtonLabel': never;
+    'i18nStrings.customRelativeRangeOptionLabel': never;
+    'i18nStrings.customRelativeRangeOptionDescription': never;
+    'i18nStrings.customRelativeRangeUnitLabel': never;
+    'i18nStrings.customRelativeRangeDurationLabel': never;
+    'i18nStrings.customRelativeRangeDurationPlaceholder': never;
+    'i18nStrings.previousMonthAriaLabel': never;
+    'i18nStrings.nextMonthAriaLabel': never;
+    'i18nStrings.previousYearAriaLabel': never;
+    'i18nStrings.nextYearAriaLabel': never;
+    'i18nStrings.currentMonthAriaLabel': never;
+    'i18nStrings.todayAriaLabel': never;
+    'i18nStrings.startMonthLabel': never;
+    'i18nStrings.startDateLabel': never;
+    'i18nStrings.startTimeLabel': never;
+    'i18nStrings.endMonthLabel': never;
+    'i18nStrings.endDateLabel': never;
+    'i18nStrings.endTimeLabel': never;
+    'i18nStrings.isoDatePlaceholder': never;
+    'i18nStrings.slashedDatePlaceholder': never;
+    'i18nStrings.timePlaceholder': never;
+    'i18nStrings.dateTimeConstraintText': never;
+    'i18nStrings.dateConstraintText': never;
+    'i18nStrings.slashedDateTimeConstraintText': never;
+    'i18nStrings.isoDateTimeConstraintText': never;
+    'i18nStrings.slashedDateConstraintText': never;
+    'i18nStrings.isoDateConstraintText': never;
+    'i18nStrings.slashedMonthConstraintText': never;
+    'i18nStrings.isoMonthConstraintText': never;
+    'i18nStrings.monthConstraintText': never;
+    'i18nStrings.errorIconAriaLabel': never;
+    'i18nStrings.renderSelectedAbsoluteRangeAriaLive': {
+      startDate: string | number;
+      endDate: string | number;
+    };
+    'i18nStrings.formatRelativeRange': {
+      unit: string;
+      amount: number;
+    };
+    'i18nStrings.formatUnit': {
+      unit: string;
+      amount: number;
+    };
+  };
+  drawer: {
+    'i18nStrings.loadingText': never;
+  };
+  'error-boundary': {
+    'i18nStrings.headerText'?: never;
+    'i18nStrings.descriptionText'?: {
       hasFeedback: boolean;
       Feedback: (chunks: React.ReactNode[]) => React.ReactNode;
     };
