@@ -12,23 +12,26 @@ import { metrics } from '../../metrics';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
-function useSetGlobalBreadcrumbsImplementation({
-  __disableGlobalization,
-  ...props
-}: BreadcrumbGroupProps<any> & { __disableGlobalization?: boolean }) {
+function useSetGlobalBreadcrumbsImplementation(
+  props: BreadcrumbGroupProps<any> & { __disableGlobalization?: boolean },
+  enabled: boolean = false
+) {
+  const { __disableGlobalization, ...breadcrumbProps } = props;
   const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
   const isLayoutVisible = useContext(AppLayoutVisibilityContext) ?? true;
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
   const [registered, setRegistered] = useState(false);
 
+  const shouldRegister = enabled && !isInToolbar && !__disableGlobalization && isLayoutVisible;
+
   useEffect(() => {
-    if (isInToolbar || __disableGlobalization || !isLayoutVisible) {
+    if (!shouldRegister) {
       return;
     }
-    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered => {
+    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(breadcrumbProps, isRegistered => {
       setRegistered(isRegistered ?? true);
       if (isRegistered) {
-        const breadcrumbs = props.items.map(item => item.text).join(' > ');
+        const breadcrumbs = breadcrumbProps.items.map(item => item.text).join(' > ');
         metrics.sendOpsMetricObject('awsui-global-breadcrumbs-used', { breadcrumbs });
       }
     });
@@ -39,23 +42,20 @@ function useSetGlobalBreadcrumbsImplementation({
     };
     // subsequent prop changes are handled by another effect
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInToolbar, __disableGlobalization, isLayoutVisible]);
+  }, [shouldRegister]);
 
   useLayoutEffect(() => {
-    registrationRef.current?.update(props);
+    if (shouldRegister) {
+      registrationRef.current?.update(breadcrumbProps);
+    }
   });
 
   return registered;
 }
 
 export function useSetGlobalBreadcrumbs<T extends BreadcrumbGroupProps.Item>(props: BreadcrumbGroupProps<T>) {
-  // avoid additional side effects when this feature is not active
-  if (!useAppLayoutFlagEnabled()) {
-    return false;
-  }
-  // getGlobalFlag() value does not change without full page reload
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useSetGlobalBreadcrumbsImplementation(props);
+  const enabled = useAppLayoutFlagEnabled() ?? false;
+  return useSetGlobalBreadcrumbsImplementation(props, enabled);
 }
 
 export function useGetGlobalBreadcrumbs(enabled: boolean) {
