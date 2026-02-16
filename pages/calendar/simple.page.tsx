@@ -16,7 +16,7 @@ export default function CalendarPage() {
         maxWidth="trigger"
         stretchHeight={true}
         open={true}
-        onDropdownClose={() => {}}
+        onOutsideClick={() => {}}
         onMouseDown={() => {}}
         trigger={null}
         content={

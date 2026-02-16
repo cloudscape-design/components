@@ -35,7 +35,7 @@ export default function DropdownScenario() {
             </div>
           }
           open={open}
-          onDropdownClose={() => setOpen(false)}
+          onOutsideClick={() => setOpen(false)}
           minWidth={800}
           content={<ListContent n={10} />}
         />

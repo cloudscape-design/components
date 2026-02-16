@@ -82,9 +82,11 @@ export interface DropdownProps extends ExpandToViewport {
   open?: boolean;
 
   /**
-   * Called when a user clicks outside of the dropdown content, when it is open.
+   * Called when the user clicks outside the dropdown and trigger.
+   * The dropdown does not close automatically - the parent component
+   * must update the `open` prop to close the dropdown.
    */
-  onDropdownClose?: NonCancelableEventHandler<null>;
+  onOutsideClick?: NonCancelableEventHandler<null>;
 
   /**
    * Called when a mouse button is pressed inside the dropdown content.
@@ -157,6 +159,17 @@ export interface DropdownProps extends ExpandToViewport {
    * Called when focus leaves the trigger or dropdown content.
    */
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when any element inside the dropdown content gains focus.
+   * This includes nested interactive elements like buttons, links, or inputs.
+   */
+  onFocusIn?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when focus leaves the dropdown content entirely.
+   */
+  onFocusOut?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
    * ID for the dropdown content wrapper

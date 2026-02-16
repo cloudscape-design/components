@@ -364,7 +364,7 @@ const InternalButtonDropdown = React.forwardRef(
           hideBlockBorder={false}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
-          onDropdownClose={() => toggleDropdown()}
+          onOutsideClick={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
           content={

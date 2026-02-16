@@ -314,7 +314,7 @@ const DateRangePicker = React.forwardRef(
         <Dropdown
           stretchHeight={true}
           open={isDropDownOpen}
-          onDropdownClose={() => closeDropdown()}
+          onOutsideClick={() => closeDropdown()}
           trigger={trigger}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
@@ -326,7 +326,7 @@ const DateRangePicker = React.forwardRef(
                   startOfWeek={startOfWeek}
                   locale={normalizedLocale}
                   isSingleGrid={isSingleGrid}
-                  onDropdownClose={() => closeDropdown(true)}
+                  onOutsideClick={() => closeDropdown(true)}
                   value={value}
                   showClearButton={showClearButton}
                   isDateEnabled={isDateEnabled}

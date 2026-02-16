@@ -79,6 +79,8 @@ interface TransitionContentProps {
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  onFocusIn?: React.FocusEventHandler<Element>;
+  onFocusOut?: React.FocusEventHandler<Element>;
   id?: string;
   role?: string;
   ariaLabelledby?: string;
@@ -104,6 +106,8 @@ const TransitionContent = ({
   position,
   open,
   onMouseDown,
+  onFocusIn,
+  onFocusOut,
   id,
   role,
   ariaLabelledby,
@@ -138,6 +142,8 @@ const TransitionContent = ({
       aria-hidden={!open}
       style={dropdownStyles}
       onMouseDown={onMouseDown}
+      onFocus={onFocusIn}
+      onBlur={onFocusOut}
     >
       <div
         className={clsx(
@@ -162,7 +168,7 @@ const Dropdown = ({
   content,
   trigger,
   open,
-  onDropdownClose,
+  onOutsideClick,
   onMouseDown,
   header,
   footer,
@@ -179,6 +185,8 @@ const Dropdown = ({
   loopFocus = expandToViewport,
   onFocus,
   onBlur,
+  onFocusIn,
+  onFocusOut,
   contentKey,
   dropdownContentId,
   dropdownContentRole,
@@ -287,6 +295,19 @@ const Dropdown = ({
     }
   };
 
+  const isOutsideDropdownContent = (element: Element) =>
+    !dropdownRef.current || !nodeBelongs(dropdownRef.current, element);
+
+  const focusInHandler = (event: React.FocusEvent) => {
+    fireNonCancelableEvent(onFocusIn, event);
+  };
+
+  const focusOutHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusOut, event);
+    }
+  };
+
   // Check if the dropdown has enough space to fit with its desired width constraints
   // If not, remove the class that allows flexible width sizing
   const fixStretching = () => {
@@ -372,7 +393,7 @@ const Dropdown = ({
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
       if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
-        fireNonCancelableEvent(onDropdownClose);
+        fireNonCancelableEvent(onOutsideClick);
       }
     };
     window.addEventListener('click', clickListener, true);
@@ -380,7 +401,7 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onDropdownClose]);
+  }, [open, onOutsideClick]);
 
   // sync dropdown position on scroll and resize
   useLayoutEffect(() => {
@@ -484,6 +505,8 @@ const Dropdown = ({
                 maxWidth={getMaxWidthCssValue()}
                 footer={footer}
                 onMouseDown={onMouseDown}
+                onFocusIn={focusInHandler}
+                onFocusOut={focusOutHandler}
                 isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}

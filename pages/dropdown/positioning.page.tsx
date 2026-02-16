@@ -43,7 +43,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={open1}
-            onDropdownClose={() => setOpen1(false)}
+            onOutsideClick={() => setOpen1(false)}
             content={<ListContent n={10} withSpaces={true} repeat={12} />}
           />
         </div>
@@ -58,7 +58,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={open2}
-            onDropdownClose={() => setOpen2(false)}
+            onOutsideClick={() => setOpen2(false)}
             content={<ListContent n={10} withSpaces={true} repeat={12} />}
           />
         </div>
@@ -73,7 +73,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={open3}
-            onDropdownClose={() => setOpen3(false)}
+            onOutsideClick={() => setOpen3(false)}
             content={<ListContent n={10} withSpaces={true} repeat={2} />}
           />
         </div>
@@ -88,7 +88,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={open4}
-            onDropdownClose={() => setOpen4(false)}
+            onOutsideClick={() => setOpen4(false)}
             content={<ListContent n={10} withSpaces={true} repeat={22} />}
           />
         </div>
@@ -107,7 +107,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={open5}
-            onDropdownClose={() => setOpen5(false)}
+            onOutsideClick={() => setOpen5(false)}
             content={<ListContent n={10} withSpaces={true} repeat={18} />}
           />
         </div>
