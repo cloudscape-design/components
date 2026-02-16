@@ -185,8 +185,8 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
           triggerRef.current!.dataset!.awsuiSuppressTooltip = 'true';
         }}
         onDismiss={() => {
-          triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
           triggerRef?.current!.focus();
+          triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
           setFeaturePromptDismissed(true);
         }}
         header={

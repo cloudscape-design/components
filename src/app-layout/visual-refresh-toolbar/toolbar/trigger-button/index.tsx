@@ -129,6 +129,7 @@ function TriggerButton(
       let shouldShowTooltip = false;
       const eventWithRelatedTarget = event as any;
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
+      const isSuppressedOnTarget = eventWithRelatedTarget?.target?.dataset?.awsuiSuppressTooltip === 'true';
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
       if (
         (isForSplitPanel && !!relatedTarget) || // relatedTarget is null when split panel is closed
@@ -137,6 +138,9 @@ function TriggerButton(
             !isForPreviousActiveDrawer)) // for when the drawer was not opened recently
       ) {
         shouldShowTooltip = true;
+      }
+      if (isSuppressedOnTarget) {
+        shouldShowTooltip = false;
       }
       setSupressTooltip(!shouldShowTooltip);
       setShowTooltip(true);

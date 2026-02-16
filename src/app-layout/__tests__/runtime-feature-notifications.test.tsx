@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import {
   persistFeatureNotifications,
   retrieveFeatureNotifications,
@@ -15,6 +16,17 @@ import { FeatureNotificationsPayload } from '../../../lib/components/internal/pl
 import createWrapper from '../../../lib/components/test-utils/dom';
 import FeaturePromptWrapper from '../../../lib/components/test-utils/dom/internal/feature-prompt';
 import { describeEachAppLayout } from './utils';
+
+const i18nMessages = {
+  'features-notification-drawer': {
+    'i18nStrings.title': 'Latest feature releases',
+    'i18nStrings.viewAll': 'View all feature releases',
+    'ariaLabels.closeButton': 'Close notifications',
+    'ariaLabels.content': 'Feature notifications',
+    'ariaLabels.triggerButton': 'Show feature notifications',
+    'ariaLabels.resizeHandle': 'Resize feature notifications',
+  },
+};
 
 // Mock dates for consistent testing
 const mockDate2025 = new Date('2025-01-15');
@@ -198,14 +210,38 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     const { container } = await renderComponent(<AppLayout />);
     await delay();
 
+    const featurePromptWrapper = new FeaturePromptWrapper(container);
+
     await waitFor(() => {
-      const featurePromptWrapper = new FeaturePromptWrapper(container);
       expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent(
         'This is the first new feature content'
       );
-      // featurePromptWrapper.findDismissButton()!.click();
-      // expect(featurePromptWrapper.findContent()).toBeFalsy();
     });
+  });
+
+  test('should focus on the drawer trigger button when feature prompt is dismissed', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
+    const { container, wrapper } = await renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout />
+      </TestI18nProvider>
+    );
+    await delay();
+
+    const featurePromptWrapper = new FeaturePromptWrapper(container);
+
+    await waitFor(() => {
+      expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent(
+        'This is the first new feature content'
+      );
+    });
+
+    featurePromptWrapper.findDismissButton()!.click();
+    expect(featurePromptWrapper.findContent()).toBeFalsy();
+
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveFocus();
+    // ensure the tooltip on the trigger button is suppressed after switching the focus
+    expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
