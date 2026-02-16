@@ -7,8 +7,6 @@ const workspace = require('../utils/workspace');
 
 const ALWAYS_VISUAL_REFRESH = process.env.ALWAYS_VISUAL_REFRESH === 'true';
 
-console.log('DEBUG', { ALWAYS_VISUAL_REFRESH, processValue: process.env.ALWAYS_VISUAL_REFRESH });
-
 function writeEnvironmentFile(theme) {
   const filepath = 'internal/environment';
   const values = {

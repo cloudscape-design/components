@@ -12,4 +12,4 @@ on:
 
 jobs:
   dry-run:
-    uses: cloudscape-design/actions/.github/workflows/dry-run.yml@always-vr-build
+    uses: cloudscape-design/actions/.github/workflows/dry-run.yml@main

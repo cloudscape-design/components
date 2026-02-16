@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         react: [16, 18]
-    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@always-vr-build
+    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
       artifact-path: pages/lib/static-default
@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         react: [16, 18]
-    uses: cloudscape-design/actions/.github/workflows/deploy.yml@always-vr-build
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
       artifact-name: dev-pages-react${{ matrix.react }}
