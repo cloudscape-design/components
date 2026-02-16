@@ -9,7 +9,6 @@ import Arrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
 import { getBaseProps } from '../../base-component';
-import FocusLock from '../../components/focus-lock';
 import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -80,34 +79,33 @@ function InternalFeaturePrompt(
       {show && (
         <Portal>
           <ResetContextsForModal>
-            <FocusLock autoFocus={true} restoreFocus={true}>
-              <PopoverContainer
-                size={size}
-                fixedWidth={false}
-                position={position}
-                getTrack={getTrack}
-                trackKey={trackKey}
+            <PopoverContainer
+              size={size}
+              fixedWidth={false}
+              position={position}
+              getTrack={getTrack}
+              trackKey={trackKey}
+              variant="annotation"
+              arrow={position => <Arrow position={position} variant="info" />}
+              zIndex={7000}
+              renderWithPortal={true}
+            >
+              <PopoverBody
+                ref={popoverBodyRef}
+                dismissButton={true}
+                dismissAriaLabel={i18nStrings?.dismissAriaLabel}
+                header={header}
+                onDismiss={() => {
+                  setShow(false);
+                  fireNonCancelableEvent(onDismiss);
+                }}
                 variant="annotation"
-                arrow={position => <Arrow position={position} variant="info" />}
-                zIndex={7000}
-                renderWithPortal={true}
+                overflowVisible="content"
+                trapFocus={true}
               >
-                <PopoverBody
-                  ref={popoverBodyRef}
-                  dismissButton={true}
-                  dismissAriaLabel={i18nStrings?.dismissAriaLabel}
-                  header={header}
-                  onDismiss={() => {
-                    setShow(false);
-                    fireNonCancelableEvent(onDismiss);
-                  }}
-                  variant="annotation"
-                  overflowVisible="content"
-                >
-                  {content}
-                </PopoverBody>
-              </PopoverContainer>
-            </FocusLock>
+                {content}
+              </PopoverBody>
+            </PopoverContainer>
           </ResetContextsForModal>
         </Portal>
       )}

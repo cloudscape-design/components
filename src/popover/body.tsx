@@ -30,6 +30,7 @@ export interface PopoverBodyProps {
   ariaLabelledby?: string;
 
   closeAnalyticsAction?: string;
+  trapFocus?: boolean;
 }
 
 const PopoverBody = React.forwardRef(
@@ -46,6 +47,7 @@ const PopoverBody = React.forwardRef(
       className,
       ariaLabelledby,
       closeAnalyticsAction,
+      trapFocus,
     }: PopoverBodyProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -92,7 +94,7 @@ const PopoverBody = React.forwardRef(
     );
 
     const isDialog = showDismissButton;
-    const shouldTrapFocus = showDismissButton && variant !== 'annotation';
+    const shouldTrapFocus = trapFocus || (showDismissButton && variant !== 'annotation');
 
     const dialogProps = isDialog
       ? {
