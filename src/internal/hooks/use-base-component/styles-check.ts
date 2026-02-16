@@ -25,13 +25,40 @@ function documentReady(document: Document, callback: () => void) {
   }
 }
 
+async function stylesheetsLoaded(document: Document): Promise<void> {
+  // Skip if document doesn't have styleSheets (e.g., in test environments with mock documents)
+  if (!document.styleSheets) {
+    return;
+  }
+
+  const promises: Promise<void>[] = [];
+
+  for (const stylesheet of Array.from(document.styleSheets)) {
+    if (stylesheet.href && stylesheet.ownerNode) {
+      const link = stylesheet.ownerNode as HTMLLinkElement;
+      if (!link.sheet || link.getAttribute('data-loading') === 'true') {
+        promises.push(
+          new Promise<void>(resolve => {
+            link.addEventListener('load', () => resolve(), { once: true });
+            link.addEventListener('error', () => resolve(), { once: true });
+          })
+        );
+      }
+    }
+  }
+
+  await Promise.all(promises);
+}
+
 export function documentReadyAndIdle(document: Document, signal: AbortSignal) {
   return new Promise<void>((resolve, reject) => {
     signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
     documentReady(document, () => {
-      setTimeout(() => {
-        requestIdleCallback(() => resolve());
-      }, 1000);
+      stylesheetsLoaded(document).then(() => {
+        setTimeout(() => {
+          requestIdleCallback(() => resolve());
+        }, 1000);
+      });
     });
   });
 }
