@@ -13,3 +13,5 @@ on:
 jobs:
   dry-run:
     uses: cloudscape-design/actions/.github/workflows/dry-run.yml@main
+    with:
+      force-visual-refresh: false
