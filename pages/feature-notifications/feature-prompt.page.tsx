@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import { AppLayout, Badge, Box, Button, Header, Icon, Link, SpaceBetween } from '~components';
 import { I18nProvider } from '~components/i18n';
@@ -12,118 +12,123 @@ import {
 } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
 
-registerFeatureNotifications({
-  id: 'local-feature-notifications',
-  suppressFeaturePrompt: false,
-  featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
-  filterFeatures: () => true,
-  features: [
-    {
-      id: '1',
-      header: <Box fontWeight="bold">New feature, events with more resource tags</Box>,
-      content: (
-        <Box variant="p">
-          You can now enrich CloudTrail events with additional information by adding resources tags and IAM global keys
-          in CloudTrail lake.{' '}
-          <Link variant="primary" external={true} href="https://amazon.com">
-            Learn more
-          </Link>
-        </Box>
-      ),
-      contentCategory: (
-        <Box fontSize="body-s" color="text-label">
-          Event coverage
-        </Box>
-      ),
-      releaseDate: new Date('2025-11-01'),
-    },
-    {
-      id: '2',
-      header: (
-        <Box fontWeight="bold">Enhanced filtering options for CloudTrail events ingested into event data stores</Box>
-      ),
-      content: (
-        <>
-          <Box variant="p">
-            More enhanced filtering options provide tighter control over your AWS activity data, improving the
-            efficiency and precision of security, compliance, and operational investigations.{' '}
-            <Link variant="primary" external={true} href="https://amazon.com">
-              View user guide
-            </Link>
-          </Box>
-          <Box margin={{ top: 'xs' }}>
-            <Button>Create an Enhanced trail</Button>
-          </Box>
-        </>
-      ),
-      releaseDate: new Date('2025-07-28'),
-    },
-    {
-      id: '3',
-      header: <Box fontWeight="bold">Introducing Application Map</Box>,
-      content: (
-        <>
-          <Box variant="p">
-            Use application map to automatically discover and organize your services into groups based on your business
-            needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational signals such
-            as SLOs, health indicators, and top insights in a contextual drawer.{' '}
-            <Link variant="primary" href="#">
-              Learn more
-            </Link>
-          </Box>
-        </>
-      ),
-      contentCategory: <Badge>Operational investigations</Badge>,
-      releaseDate: new Date('2025-08-01'),
-    },
-  ],
-  mountItem: (container, data) => {
-    mount(data, container);
-
-    return () => unmount(container);
-  },
-  persistenceConfig: {
-    uniqueKey: 'feature-notifications',
-  },
-  // DON'T USE
-  ...{
-    __persistFeatureNotifications: async function (
-      persistenceConfig: FeatureNotificationsPersistenceConfig,
-      value: Record<string, string>
-    ) {
-      const result = await new Promise<void>(resolve =>
-        setTimeout(() => {
-          localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
-          resolve();
-        }, 150)
-      );
-      return result;
-    },
-    __retrieveFeatureNotifications: async function (persistenceConfig: FeatureNotificationsPersistenceConfig) {
-      const result = await new Promise<Record<string, string>>(resolve =>
-        setTimeout(
-          () =>
-            resolve(
-              localStorage.getItem(persistenceConfig.uniqueKey)
-                ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
-                : {}
-            ),
-          150
-        )
-      );
-      return result;
-    },
-  },
-});
+type DemoContext = React.Context<
+  AppContextType<{
+    persistence: string;
+  }>
+>;
 
 export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    registerFeatureNotifications({
+      id: 'local-feature-notifications',
+      suppressFeaturePrompt: false,
+      featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
+      filterFeatures: () => true,
+      features: [
+        {
+          id: '1',
+          header: <Box fontWeight="bold">New feature, events with more resource tags</Box>,
+          content: (
+            <Box variant="p">
+              You can now enrich CloudTrail events with additional information by adding resources tags and IAM global
+              keys in CloudTrail lake.{' '}
+              <Link variant="primary" external={true} href="https://amazon.com">
+                Learn more
+              </Link>
+            </Box>
+          ),
+          contentCategory: (
+            <Box fontSize="body-s" color="text-label">
+              Event coverage
+            </Box>
+          ),
+          releaseDate: new Date('2025-11-01'),
+        },
+        {
+          id: '2',
+          header: (
+            <Box fontWeight="bold">
+              Enhanced filtering options for CloudTrail events ingested into event data stores
+            </Box>
+          ),
+          content: (
+            <>
+              <Box variant="p">
+                More enhanced filtering options provide tighter control over your AWS activity data, improving the
+                efficiency and precision of security, compliance, and operational investigations.{' '}
+                <Link variant="primary" external={true} href="https://amazon.com">
+                  View user guide
+                </Link>
+              </Box>
+              <Box margin={{ top: 'xs' }}>
+                <Button>Create an Enhanced trail</Button>
+              </Box>
+            </>
+          ),
+          releaseDate: new Date('2025-07-28'),
+        },
+        {
+          id: '3',
+          header: <Box fontWeight="bold">Introducing Application Map</Box>,
+          content: (
+            <>
+              <Box variant="p">
+                Use application map to automatically discover and organize your services into groups based on your
+                business needs. Identify root cause faster instead of troubleshooting isolated symptoms with operational
+                signals such as SLOs, health indicators, and top insights in a contextual drawer.{' '}
+                <Link variant="primary" href="#">
+                  Learn more
+                </Link>
+              </Box>
+            </>
+          ),
+          contentCategory: <Badge>Operational investigations</Badge>,
+          releaseDate: new Date('2025-08-01'),
+        },
+      ],
+      mountItem: (container, data) => {
+        mount(data, container);
+
+        return () => unmount(container);
+      },
+      persistenceConfig: {
+        uniqueKey: 'feature-notifications',
+      },
+      // DON'T USE
+      ...{
+        __persistFeatureNotifications: async function (
+          persistenceConfig: FeatureNotificationsPersistenceConfig,
+          value: Record<string, string>
+        ) {
+          const result = await new Promise<void>(resolve =>
+            setTimeout(() => {
+              setUrlParams({ persistence: JSON.stringify(value) });
+              resolve();
+            }, 150)
+          );
+          return result;
+        },
+        __retrieveFeatureNotifications: async function () {
+          const result = await new Promise<Record<string, string>>(resolve =>
+            setTimeout(() => resolve(urlParams.persistence ? JSON.parse(urlParams.persistence!) : {}), 150)
+          );
+          return result;
+        },
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const root = document.createElement('div');
@@ -189,6 +194,15 @@ export default function () {
                 }}
               >
                 show a feature prompt
+              </Button>
+              <Button
+                ref={triggerRef}
+                onClick={() => {
+                  setUrlParams({ persistence: undefined });
+                  window.location.reload();
+                }}
+              >
+                clean up persistence storage and reload the page
               </Button>
               <Containers />
             </>
