@@ -36,3 +36,4 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColor
 
 export const mode: StyleDictionary.ModeIdentifier = 'color';
 export { expandedTokens as tokens };
+export { colorTokens as sharedTokens };
