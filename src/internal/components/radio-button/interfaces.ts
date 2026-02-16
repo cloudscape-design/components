@@ -73,6 +73,7 @@ export interface RadioButtonProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the radio button's visual appearance.
+   * Refer to the [style](/components/radio-button/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: RadioButtonProps.Style;

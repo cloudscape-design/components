@@ -84,6 +84,7 @@ export interface ContainerProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the container's visual appearance.
+   * Refer to the [style](/components/container/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;

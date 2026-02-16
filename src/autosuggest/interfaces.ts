@@ -166,6 +166,7 @@ export interface AutosuggestProps
 
   /**
    * An object containing CSS properties to customize the autosuggest's visual appearance.
+   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;

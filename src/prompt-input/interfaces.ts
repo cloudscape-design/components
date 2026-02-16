@@ -132,6 +132,7 @@ export interface PromptInputProps
 
   /**
    * An object containing CSS properties to customize the prompt input's visual appearance.
+   * Refer to the [style](/components/prompt-input/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;

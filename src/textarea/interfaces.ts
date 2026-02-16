@@ -53,6 +53,7 @@ export interface TextareaProps
 
   /**
    * An object containing CSS properties to customize the textarea's visual appearance.
+   * Refer to the [style](/components/textarea/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: TextareaProps.Style;

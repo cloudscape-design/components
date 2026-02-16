@@ -30,6 +30,7 @@ export interface BadgeProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the badge's visual appearance.
+   * Refer to the [style](/components/badge/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;

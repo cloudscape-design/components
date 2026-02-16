@@ -66,6 +66,7 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
 
   /**
    * An object containing CSS properties to customize the radio group's visual appearance.
+   * Refer to the [style](/components/radio-group/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;

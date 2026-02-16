@@ -184,6 +184,7 @@ export interface InputProps
 
   /**
    * An object containing CSS properties to customize the input's visual appearance.
+   * Refer to the [style](/components/input/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: InputProps.Style;
