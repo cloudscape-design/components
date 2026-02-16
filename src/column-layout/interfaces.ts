@@ -9,7 +9,6 @@ import { ColumnLayoutBreakpoint } from './internal';
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**
    * Specifies the number of columns in each grid row.
-   * When `minColumnWidth` is not set, only up to 4 columns are supported.
    */
   columns?: number;
 
@@ -35,6 +34,7 @@ export interface ColumnLayoutProps extends BaseComponentProps {
    *
    * The number of columns is determined by the value of this property, the available space,
    * and the maximum number of columns as defined by the `columns` property.
+   * When not specified and `columns` is 5 or more, defaults to 1 pixel to enable responsive column sizing.
    */
   minColumnWidth?: number;
 

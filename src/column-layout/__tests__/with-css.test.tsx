@@ -59,4 +59,22 @@ describe('ColumnLayout (with CSS grid) component', () => {
 
     expect(getGridColumns()).toBe('repeat(4, minmax(0, 1fr))');
   });
+
+  it('uses flexible layout for more than 4 columns without explicit minColumnWidth', () => {
+    const { wrapper, getGridColumns } = renderColumnLayout({
+      columns: 5,
+      children: (
+        <>
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+        </>
+      ),
+    });
+
+    expect(wrapper.getElement().childElementCount).toBe(5);
+    expect(getGridColumns()).toBe('repeat(5, minmax(0, 1fr))');
+  });
 });

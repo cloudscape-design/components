@@ -21,6 +21,11 @@ const permutations = createPermutations<ColumnLayoutProps>([
     columns: [1, 2, 3, 4],
     minColumnWidth: [200],
   },
+  {
+    variant: ['default'],
+    columns: [5],
+    minColumnWidth: [undefined],
+  },
 ]);
 
 export default function ColumnLayoutPermutationsPage() {
