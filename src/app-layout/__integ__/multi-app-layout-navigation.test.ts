@@ -54,21 +54,23 @@ describe('Multi app layout navigation', () => {
       })
     );
 
-    testIf(iframe)(
-      'should clean up and restore previous breadcrumb state, specific for a page',
-      setupTest(async page => {
-        await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+    for (let i = 0; i < 100; i++) {
+      testIf(iframe)(
+        `should clean up and restore previous breadcrumb state, specific for a page, ${i}`,
+        setupTest(async page => {
+          await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
 
-        await page.clickHref('page2');
-        expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
+          await page.clickHref('page2');
+          expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
 
-        await page.clickHref('page3');
-        await page.waitForVisible(mainLayout.findBreadcrumbs().toSelector());
-        await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page3');
+          await page.clickHref('page3');
+          await page.waitForVisible(mainLayout.findBreadcrumbs().toSelector());
+          await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page3');
 
-        await page.clickHref('page1');
-        await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
-      })
-    );
+          await page.clickHref('page1');
+          await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+        })
+      );
+    }
   });
 });
