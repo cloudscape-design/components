@@ -20,7 +20,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 registerFeatureNotifications({
   id: 'local-feature-notifications',
   suppressFeaturePrompt: false,
-  featuresPageLink: '/new-amazing-features',
+  featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
   filterFeatures: () => true,
   features: [
     {
