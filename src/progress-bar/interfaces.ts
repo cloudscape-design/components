@@ -84,6 +84,8 @@ export interface ProgressBarProps extends BaseComponentProps {
   onResultButtonClick?: NonCancelableEventHandler;
 
   /**
+   * An object containing CSS properties to customize the progress bar's visual appearance.
+   * Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ProgressBarProps.Style;

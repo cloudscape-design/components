@@ -52,6 +52,8 @@ export interface TextareaProps
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
+   * An object containing CSS properties to customize the textarea's visual appearance.
+   * Refer to the [style](/components/textarea/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: TextareaProps.Style;
