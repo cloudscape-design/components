@@ -274,7 +274,6 @@
 }
 
 /* Override fixed sidebar width for expandable navigation */
-/* stylelint-disable selector-max-type */
 .navigation.refresh.collapsed-steps-navigation {
   grid-column: unset;
   grid-row: unset;
@@ -284,7 +283,6 @@
     inline-size: 100%;
   }
 }
-/* stylelint-enable selector-max-type */
 
 .form-header-component {
   &-wrapper {
