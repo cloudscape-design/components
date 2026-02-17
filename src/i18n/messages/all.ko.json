@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {새로 고침하여 다시 시도하세요. 현재 이 문제를 추적하고 있지만 <Feedback>여기에서 더 자세한 정보를</Feedback> 공유할 수 있습니다.} other {새로 고침하여 다시 시도하세요.}}",
     "i18nStrings.refreshActionText": "페이지 새로고침"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "최신 기능 릴리스",
+    "i18nStrings.viewAll": "모든 기능 릴리스 보기",
+    "ariaLabels.closeButton": "알림 닫기",
+    "ariaLabels.content": "기능 알림",
+    "ariaLabels.triggerButton": "기능 알림 보기",
+    "ariaLabels.resizeHandle": "크기 조정 기능 알림"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "간단히 표시",
     "i18nStrings.limitShowMore": "자세히 표시",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "다음 페이지",
     "ariaLabels.pageLabel": "전체 페이지 중 {pageNumber}페이지",
-    "ariaLabels.previousPageLabel": "이전 페이지"
+    "ariaLabels.previousPageLabel": "이전 페이지",
+    "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
+    "i18nStrings.jumpToPageInputLabel": "페이지",
+    "i18nStrings.jumpToPageError": "페이지가 범위를 벗어났습니다. 마지막으로 사용 가능한 페이지를 표시합니다.",
+    "i18nStrings.jumpToPageLoadingText": "로드 중"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "패널 크기 조정 핸들",

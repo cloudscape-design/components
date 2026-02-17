@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Yeniden denemek için yenileyin. Bu sorunu takip ediyoruz ancak <Feedback>buradan daha fazla bilgi</Feedback> paylaşabilirsiniz.} other {Yeniden denemek için yenileyin.}}",
     "i18nStrings.refreshActionText": "Sayfayı yenile"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "En son özellik sürümleri",
+    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin",
+    "ariaLabels.closeButton": "Bildirimleri kapat",
+    "ariaLabels.content": "Özellik bildirimleri",
+    "ariaLabels.triggerButton": "Özellik bildirimlerini göster",
+    "ariaLabels.resizeHandle": "Özellik bildirimlerini yeniden boyutlandır"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",
     "i18nStrings.limitShowMore": "Daha fazla göster",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Sonraki sayfa",
     "ariaLabels.pageLabel": "Sayfa {pageNumber}/tüm sayfalar",
-    "ariaLabels.previousPageLabel": "Önceki sayfa"
+    "ariaLabels.previousPageLabel": "Önceki sayfa",
+    "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
+    "i18nStrings.jumpToPageInputLabel": "Sayfa",
+    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",

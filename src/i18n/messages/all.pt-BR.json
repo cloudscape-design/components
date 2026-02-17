@@ -165,11 +165,11 @@
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para data, use AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
-    "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA-MM-DD. Para o horário, use o formato de 24 horas.",
+    "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.slashedDateConstraintText": "Para data, use AAAA/MM/DD.",
-    "i18nStrings.isoDateConstraintText": "Para data, use AAAA-MM-DD.",
+    "i18nStrings.isoDateConstraintText": "Para data, use AAAA/MM/DD.",
     "i18nStrings.slashedMonthConstraintText": "Para mês, use AAAA/MM.",
-    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA-MM.",
+    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.monthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erro",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervalo selecionado de {startDate} a {endDate}",
@@ -183,6 +183,14 @@
     "i18nStrings.headerText": "Erro inesperado, falha na exibição do conteúdo",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.} other {Atualize para tentar novamente.}}",
     "i18nStrings.refreshActionText": "Atualizar página"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lançamentos de atributos",
+    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos",
+    "ariaLabels.closeButton": "Fechar notificações",
+    "ariaLabels.content": "Notificações de recursos",
+    "ariaLabels.triggerButton": "Mostrar notificações de recursos",
+    "ariaLabels.resizeHandle": "Redimensionar notificações de recursos"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Próxima página",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas as páginas",
-    "ariaLabels.previousPageLabel": "Página anterior"
+    "ariaLabels.previousPageLabel": "Página anterior",
+    "ariaLabels.jumpToPageButtonLabel": "Ir para a página",
+    "i18nStrings.jumpToPageInputLabel": "Página",
+    "i18nStrings.jumpToPageError": "Página fora do alcance. Mostrando a última página disponível.",
+    "i18nStrings.jumpToPageLoadingText": "Carregando"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Alça de redimensionamento do painel",

@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {حدِّث الصفحة للمحاولة مرة أخرى. نحن نتتبع هذه المشكلة، ولكن يمكنك مشاركة <Feedback>المزيد من المعلومات هنا</Feedback>.} other {حدِّث الصفحة للمحاولة مرة أخرى.}}",
     "i18nStrings.refreshActionText": "تحديث الصفحة"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "أحدث إصدارات الميزات",
+    "i18nStrings.viewAll": "عرض جميع إصدارات الميزات",
+    "ariaLabels.closeButton": "إغلاق الإشعارات",
+    "ariaLabels.content": "إشعارات الميزات",
+    "ariaLabels.triggerButton": "عرض إشعارات الميزات",
+    "ariaLabels.resizeHandle": "إعادة ضبط حجم إشعارات الميزات"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
     "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "الصفحة التالية",
     "ariaLabels.pageLabel": "صفحة رقم {pageNumber} من إجمالي عدد الصفحات",
-    "ariaLabels.previousPageLabel": "الصفحة السابقة"
+    "ariaLabels.previousPageLabel": "الصفحة السابقة",
+    "ariaLabels.jumpToPageButtonLabel": "الانتقال إلى الصفحة",
+    "i18nStrings.jumpToPageInputLabel": "صفحة",
+    "i18nStrings.jumpToPageError": "الصفحة خارج نطاق الوصول. جارٍ عرض آخر صفحة متاحة.",
+    "i18nStrings.jumpToPageLoadingText": "جار التحميل"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "مقبض تغيير حجم اللوحة",

@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {刷新再试一次。我们正在跟踪此问题，但您可以<Feedback>在此处共享更多信息</Feedback>。} other {刷新再试一次。}}",
     "i18nStrings.refreshActionText": "刷新页面"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新功能发布",
+    "i18nStrings.viewAll": "查看所有功能发布",
+    "ariaLabels.closeButton": "关闭通知",
+    "ariaLabels.content": "功能通知",
+    "ariaLabels.triggerButton": "显示功能通知",
+    "ariaLabels.resizeHandle": "调整功能通知的大小"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
     "i18nStrings.limitShowMore": "显示更多",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",
     "ariaLabels.pageLabel": "所有页面中的第 {pageNumber} 页",
-    "ariaLabels.previousPageLabel": "上一页"
+    "ariaLabels.previousPageLabel": "上一页",
+    "ariaLabels.jumpToPageButtonLabel": "跳转到页面",
+    "i18nStrings.jumpToPageInputLabel": "页面",
+    "i18nStrings.jumpToPageError": "页面超出范围。显示最后一个可用页面。",
+    "i18nStrings.jumpToPageLoadingText": "正在加载"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "面板大小调整手柄",

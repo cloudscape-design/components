@@ -159,8 +159,8 @@
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
     "i18nStrings.datePlaceholder": "HH-BB-TTTT",
-    "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
-    "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
+    "i18nStrings.isoDatePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.slashedDatePlaceholder": "HH/BB/TTTT",
     "i18nStrings.timePlaceholder": "jj:mm:dd",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
@@ -183,6 +183,14 @@
     "i18nStrings.headerText": "Kesalahan tak terduga, konten gagal ditampilkan",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh untuk mencoba lagi. Kami sedang melacak masalah ini, tetapi Anda dapat membagikan <Feedback>informasi selengkapnya di sini</Feedback>.} other {Refresh untuk mencoba lagi.}}",
     "i18nStrings.refreshActionText": "Segarkan halaman"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Rilis fitur terbaru",
+    "i18nStrings.viewAll": "Lihat semua rilis fitur",
+    "ariaLabels.closeButton": "Tutup notifikasi",
+    "ariaLabels.content": "Notifikasi fitur",
+    "ariaLabels.triggerButton": "Tampilkan notifikasi fitur",
+    "ariaLabels.resizeHandle": "Ubah ukuran notifikasi fitur"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
     "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
-    "ariaLabels.previousPageLabel": "Halaman sebelumnya"
+    "ariaLabels.previousPageLabel": "Halaman sebelumnya",
+    "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
+    "i18nStrings.jumpToPageInputLabel": "Halaman",
+    "i18nStrings.jumpToPageError": "Halaman di luar rentang. Menampilkan halaman terakhir yang tersedia.",
+    "i18nStrings.jumpToPageLoadingText": "Memuat"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Handel pengubahan ukuran panel",

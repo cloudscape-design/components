@@ -91,11 +91,6 @@
     inline-size: 87px;
     margin-block-start: -0.6em;
     overflow: visible;
-
-    // stylelint-disable-next-line selector-max-universal
-    > * > * {
-      inline-size: 100%;
-    }
   }
 }
 

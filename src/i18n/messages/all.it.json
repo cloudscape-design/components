@@ -159,8 +159,8 @@
     "i18nStrings.endDateLabel": "Data di fine",
     "i18nStrings.endTimeLabel": "Ora di fine",
     "i18nStrings.datePlaceholder": "GG/MM/AAAA",
-    "i18nStrings.isoDatePlaceholder": "AAAA-MM-GG",
-    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/GG",
+    "i18nStrings.isoDatePlaceholder": "GG-MM-AAAA",
+    "i18nStrings.slashedDatePlaceholder": "GG/MM/AAAA",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
@@ -183,6 +183,14 @@
     "i18nStrings.headerText": "Errore imprevisto, impossibile visualizzare il contenuto",
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.} other {Aggiorna la pagina per riprovare.}}",
     "i18nStrings.refreshActionText": "Aggiorna pagina"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Ultime versioni delle funzionalità",
+    "i18nStrings.viewAll": "Visualizza tutte le versioni delle funzionalità",
+    "ariaLabels.closeButton": "Chiudi notifiche",
+    "ariaLabels.content": "Notifiche delle funzionalità",
+    "ariaLabels.triggerButton": "Mostra le notifiche delle funzionalità",
+    "ariaLabels.resizeHandle": "Ridimensiona le notifiche delle funzionalità"
   },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Pagina successiva",
     "ariaLabels.pageLabel": "Pagina {pageNumber} di tutte le pagine",
-    "ariaLabels.previousPageLabel": "Pagina precedente"
+    "ariaLabels.previousPageLabel": "Pagina precedente",
+    "ariaLabels.jumpToPageButtonLabel": "Vai alla pagina",
+    "i18nStrings.jumpToPageInputLabel": "Pagina",
+    "i18nStrings.jumpToPageError": "Pagina fuori intervallo. Mostra l'ultima pagina disponibile.",
+    "i18nStrings.jumpToPageLoadingText": "Caricamento in corso"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Maniglia di ridimensionamento del pannello",

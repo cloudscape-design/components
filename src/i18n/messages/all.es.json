@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
     "i18nStrings.refreshActionText": "Actualizar página"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lanzamientos de características",
+    "i18nStrings.viewAll": "Ver todos los lanzamientos de características",
+    "ariaLabels.closeButton": "Cerrar notificaciones",
+    "ariaLabels.content": "Notificaciones de características",
+    "ariaLabels.triggerButton": "Mostrar notificaciones de características",
+    "ariaLabels.resizeHandle": "Redimensionar notificaciones de características"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar más",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Página siguiente",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
-    "ariaLabels.previousPageLabel": "Página anterior"
+    "ariaLabels.previousPageLabel": "Página anterior",
+    "ariaLabels.jumpToPageButtonLabel": "Ir a la página",
+    "i18nStrings.jumpToPageInputLabel": "Página",
+    "i18nStrings.jumpToPageError": "Página fuera de rango. Se muestra la última página disponible.",
+    "i18nStrings.jumpToPageLoadingText": "Cargando"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",

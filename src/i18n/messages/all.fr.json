@@ -159,17 +159,17 @@
     "i18nStrings.endDateLabel": "Date de fin",
     "i18nStrings.endTimeLabel": "Heure de fin",
     "i18nStrings.datePlaceholder": "JJ/MM/AAAA",
-    "i18nStrings.isoDatePlaceholder": "AAAA-MM-JJ",
-    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/JJ",
+    "i18nStrings.isoDatePlaceholder": "JJ-MM-AAAA",
+    "i18nStrings.slashedDatePlaceholder": "JJ/MM/AAAA",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
-    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
+    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
     "i18nStrings.dateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
     "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA. Pour l’heure, utilisez le format 24 heures.",
-    "i18nStrings.isoDateTimeConstraintText": "Pour la date, utilisez le format JJ-MM-AAAA. Pour l’heure, utilisez le format 24 heures.",
+    "i18nStrings.isoDateTimeConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA. Pour l’heure, utilisez le format 24 heures.",
     "i18nStrings.slashedDateConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA.",
-    "i18nStrings.isoDateConstraintText": "Pour la date, utilisez le format JJ-MM-AAAA.",
+    "i18nStrings.isoDateConstraintText": "Pour la date, utilisez le format JJ/MM/AAAA.",
     "i18nStrings.slashedMonthConstraintText": "Pour le mois, utilisez le format MM/AAAA.",
-    "i18nStrings.isoMonthConstraintText": "Pour le mois, utilisez le format MM-AAAA.",
+    "i18nStrings.isoMonthConstraintText": "Pour le mois, utilisez le format MM/AAAA.",
     "i18nStrings.monthConstraintText": "Pour le mois, utilisez le format AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
@@ -184,10 +184,18 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d'informations ici</Feedback>.} other {Actualisez pour réessayer.}}",
     "i18nStrings.refreshActionText": "Actualiser la page"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Dernières fonctionnalités publiées",
+    "i18nStrings.viewAll": "Voir toutes les fonctionnalités publiées",
+    "ariaLabels.closeButton": "Fermer les notifications",
+    "ariaLabels.content": "Notifications de fonctionnalités",
+    "ariaLabels.triggerButton": "Afficher les notifications de fonctionnalités",
+    "ariaLabels.resizeHandle": "Redimensionner les notifications de fonctionnalités"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",
     "i18nStrings.limitShowMore": "Afficher plus",
-    "i18nStrings.removeFileAriaLabel": "Supprimer le fichier {fileIndex}, {fileName}",
+    "i18nStrings.removeFileAriaLabel": "Supprimer le fichier {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.warningIconAriaLabel": "Avertissement"
   },
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Page suivante",
     "ariaLabels.pageLabel": "Page {pageNumber} de toutes les pages",
-    "ariaLabels.previousPageLabel": "Page précédente"
+    "ariaLabels.previousPageLabel": "Page précédente",
+    "ariaLabels.jumpToPageButtonLabel": "Aller à la page",
+    "i18nStrings.jumpToPageInputLabel": "Page",
+    "i18nStrings.jumpToPageError": "Page hors de portée. Affichage de la dernière page disponible.",
+    "i18nStrings.jumpToPageLoadingText": "Chargement en cours"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement du panneau",

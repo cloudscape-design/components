@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Refresh to try again. We are tracking this issue, but you can share <Feedback>more information here</Feedback>.} other {Refresh to try again.}}",
     "i18nStrings.refreshActionText": "Refresh page"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Latest feature releases",
+    "i18nStrings.viewAll": "View all feature releases",
+    "ariaLabels.closeButton": "Close notifications",
+    "ariaLabels.content": "Feature notifications",
+    "ariaLabels.triggerButton": "Show feature notifications",
+    "ariaLabels.resizeHandle": "Resize feature notifications"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",
     "i18nStrings.limitShowMore": "Show more",
@@ -244,7 +252,11 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Next page",
     "ariaLabels.pageLabel": "Page {pageNumber} of all pages",
-    "ariaLabels.previousPageLabel": "Previous page"
+    "ariaLabels.previousPageLabel": "Previous page",
+    "ariaLabels.jumpToPageButtonLabel": "Jump to page",
+    "i18nStrings.jumpToPageInputLabel": "Page",
+    "i18nStrings.jumpToPageError": "Page out of range. Showing last available page.",
+    "i18nStrings.jumpToPageLoadingText": "Loading"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
