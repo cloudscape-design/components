@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { GIT_SHA, PACKAGE_VERSION, THEME } from '../../environment';
 import { metrics } from '../../metrics';
 
-export function checkMissingStyles(ownerDocument: Document) {
+function checkMissingStyles(ownerDocument: Document) {
   if (!ownerDocument.defaultView) {
     // skip the check if this iframe is detached
     return;
@@ -26,7 +26,7 @@ function documentReady(document: Document, callback: () => void) {
   }
 }
 
-export async function documentReadyAndIdle(document: Document, signal: AbortSignal) {
+async function documentReadyAndIdle(document: Document, signal: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
     signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
     documentReady(document, () => {
@@ -60,7 +60,7 @@ export async function documentReadyAndIdle(document: Document, signal: AbortSign
   );
 }
 
-const checkedDocs = new WeakMap<Document, boolean>();
+let checkedDocs = new WeakMap<Document, boolean>();
 const checkMissingStylesOnce = (document: Document) => {
   const checked = checkedDocs.get(document);
   if (!checked) {
@@ -68,6 +68,8 @@ const checkMissingStylesOnce = (document: Document) => {
     checkedDocs.set(document, true);
   }
 };
+
+export const __testResetCheckedDocs = () => (checkedDocs = new WeakMap());
 
 export function useMissingStylesCheck(elementRef: React.RefObject<HTMLElement>) {
   useEffect(() => {
