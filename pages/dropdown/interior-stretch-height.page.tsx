@@ -33,7 +33,7 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '100px', blockSize: '800px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             stretchHeight={true}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent1(!openParent1)}>
@@ -52,7 +52,7 @@ export default function DropdownScenario() {
       >
         <div id="dropdown2" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             stretchHeight={false}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent2(!openParent2)}>
@@ -71,7 +71,8 @@ export default function DropdownScenario() {
       >
         <div id="dropdown3" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={true}
+            minWidth="trigger"
+            maxWidth="trigger"
             stretchHeight={true}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent3(!openParent3)}>

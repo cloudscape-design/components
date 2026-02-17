@@ -73,9 +73,10 @@
   &.occupy-entire-width {
     min-inline-size: 100%;
   }
-  &.stretch-beyond-trigger-width {
+  &.use-flexible-width {
     inline-size: max-content;
-    max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
+    max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, none);
+    min-inline-size: var(#{custom-props.$dropdownDefaultMinWidth}, auto);
   }
   &.interior > .dropdown-content-wrapper {
     margin-block-start: -1px;

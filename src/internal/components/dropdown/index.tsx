@@ -19,9 +19,8 @@ import { Transition, TransitionStatus } from '../transition';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,
-  defaultMaxDropdownWidth,
   DropdownPosition,
-  hasEnoughSpaceToStretchBeyondTriggerWidth,
+  hasEnoughSpaceForFlexibleWidth,
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
@@ -65,13 +64,15 @@ interface TransitionContentProps {
   state: TransitionStatus;
   transitionRef: React.MutableRefObject<any>;
   dropdownClasses: string;
-  stretchWidth: boolean;
+  matchTriggerWidth: boolean;
+  hideBlockBorder: boolean;
   interior: boolean;
   isRefresh: boolean;
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
-  stretchBeyondTriggerWidth?: boolean;
+  minWidth?: string;
+  maxWidth?: string;
   header?: React.ReactNode;
   content?: React.ReactNode;
   footer?: React.ReactNode;
@@ -88,13 +89,15 @@ const TransitionContent = ({
   state,
   transitionRef,
   dropdownClasses,
-  stretchWidth,
+  matchTriggerWidth,
+  hideBlockBorder,
   interior,
   isRefresh,
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
-  stretchBeyondTriggerWidth,
+  minWidth,
+  maxWidth,
   header,
   content,
   footer,
@@ -107,16 +110,23 @@ const TransitionContent = ({
   ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
+  const dropdownStyles: Record<string, string> = {};
+  if (minWidth) {
+    dropdownStyles[customCssProps.dropdownDefaultMinWidth] = minWidth;
+  }
+  if (maxWidth) {
+    dropdownStyles[customCssProps.dropdownDefaultMaxWidth] = maxWidth;
+  }
   return (
     <div
       className={clsx(styles.dropdown, dropdownClasses, {
         [styles.open]: open,
-        [styles['with-limited-width']]: !stretchWidth,
-        [styles['hide-block-border']]: stretchWidth,
+        [styles['with-limited-width']]: !matchTriggerWidth,
+        [styles['hide-block-border']]: hideBlockBorder,
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
-        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
+        [styles['use-flexible-width']]: !matchTriggerWidth && !interior,
       })}
       ref={contentRef}
       id={id}
@@ -126,9 +136,7 @@ const TransitionContent = ({
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
-      style={
-        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
-      }
+      style={dropdownStyles}
       onMouseDown={onMouseDown}
     >
       <div
@@ -160,14 +168,13 @@ const Dropdown = ({
   footer,
   dropdownId,
   stretchTriggerHeight = false,
-  stretchWidth = true,
   stretchHeight = false,
-  stretchToTriggerWidth = true,
-  stretchBeyondTriggerWidth = false,
+  minWidth,
+  maxWidth,
+  hideBlockBorder = true,
   expandToViewport = false,
   preferCenter = false,
   interior = false,
-  minWidth,
   scrollable = true,
   loopFocus = expandToViewport,
   onFocus,
@@ -193,24 +200,21 @@ const Dropdown = ({
 
   const isMobile = useMobile();
 
+  // Derive if dropdown should match trigger width exactly
+  // This happens when both minWidth and maxWidth are explicitly set to 'trigger'
+  const matchTriggerWidth = minWidth === 'trigger' && maxWidth === 'trigger';
+
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,
     triggerBox: LogicalDOMRect,
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    const entireWidth = !interior && stretchWidth;
-    if (!stretchWidth) {
-      // 1px offset for dropdowns where the dropdown itself needs a border, rather than on the items
-      verticalContainer.style.maxBlockSize = `${parseInt(position.blockSize) + 1}px`;
-    } else {
-      verticalContainer.style.maxBlockSize = position.blockSize;
-    }
+    verticalContainer.style.maxBlockSize = position.blockSize;
 
-    if (entireWidth && !expandToViewport) {
-      if (stretchToTriggerWidth) {
-        target.classList.add(styles['occupy-entire-width']);
-      }
+    // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
+    if (!interior && matchTriggerWidth && !expandToViewport) {
+      target.classList.add(styles['occupy-entire-width']);
     } else {
       target.style.inlineSize = position.inlineSize;
     }
@@ -283,22 +287,21 @@ const Dropdown = ({
     }
   };
 
-  // Prevent the dropdown width from stretching beyond the trigger width
-  // if that is going to cause the dropdown to be cropped because of overflow
+  // Check if the dropdown has enough space to fit with its desired width constraints
+  // If not, remove the class that allows flexible width sizing
   const fixStretching = () => {
-    const classNameToRemove = styles['stretch-beyond-trigger-width'];
+    const classNameToRemove = styles['use-flexible-width'];
     if (
       open &&
-      stretchBeyondTriggerWidth &&
       dropdownRef.current &&
       triggerRef.current &&
       dropdownRef.current.classList.contains(classNameToRemove) &&
-      !hasEnoughSpaceToStretchBeyondTriggerWidth({
+      !hasEnoughSpaceForFlexibleWidth({
         triggerElement: triggerRef.current,
         dropdownElement: dropdownRef.current,
-        desiredMinWidth: minWidth,
+        minWidthConstraint: minWidth,
+        maxWidthConstraint: maxWidth,
         expandToViewport,
-        stretchWidth,
         stretchHeight,
         isMobile,
       })
@@ -312,10 +315,10 @@ const Dropdown = ({
   useLayoutEffect(() => {
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-        // calculate scroll width only for dropdowns that has a scrollbar and ignore it for date picker components
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -324,15 +327,16 @@ const Dropdown = ({
             interior,
             expandToViewport,
             preferCenter,
-            stretchWidth,
+            matchTriggerWidth,
             stretchHeight,
             isMobile,
             minWidth,
-            stretchBeyondTriggerWidth
+            maxWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
         );
+
         if (scrollable) {
           dropdownRef.current.classList.remove(styles.nowrap);
         }
@@ -356,7 +360,7 @@ const Dropdown = ({
     }
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
+  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, matchTriggerWidth, isMobile, contentKey]);
 
   // subscribe to outside click
   useEffect(() => {
@@ -406,6 +410,30 @@ const Dropdown = ({
 
   const referrerId = useUniqueId();
 
+  // Compute CSS variable values for min/max width
+  // These will be used by the use-flexible-width CSS class
+  const getMinWidthCssValue = (): string | undefined => {
+    if (minWidth === undefined) {
+      return undefined;
+    }
+    if (typeof minWidth === 'number') {
+      return `${minWidth}px`;
+    }
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
+  };
+
+  const getMaxWidthCssValue = (): string | undefined => {
+    if (maxWidth === undefined) {
+      return 'none';
+    }
+    if (typeof maxWidth === 'number') {
+      return `${maxWidth}px`;
+    }
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
+  };
+
   return (
     <div
       className={clsx(
@@ -446,12 +474,14 @@ const Dropdown = ({
                 transitionRef={ref}
                 dropdownClasses={dropdownClasses}
                 open={open}
-                stretchWidth={stretchWidth}
+                matchTriggerWidth={matchTriggerWidth}
+                hideBlockBorder={hideBlockBorder}
                 interior={interior}
                 header={header}
                 content={content}
                 expandToViewport={expandToViewport}
-                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
+                minWidth={getMinWidthCssValue()}
+                maxWidth={getMaxWidthCssValue()}
                 footer={footer}
                 onMouseDown={onMouseDown}
                 isRefresh={isRefresh}

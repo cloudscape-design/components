@@ -7,6 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import { getBreakpointValue } from '../internal/breakpoints';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -167,6 +168,8 @@ const InternalMultiselect = React.forwardRef(
             dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
           }
           open={multiselectProps.isOpen}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
           footer={
@@ -175,7 +178,6 @@ const InternalMultiselect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
-          stretchBeyondTriggerWidth={true}
           // Forces dropdown position recalculation when new options are loaded
           contentKey={hasOptions.current.toString()}
           content={

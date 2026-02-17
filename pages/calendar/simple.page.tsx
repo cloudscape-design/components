@@ -12,7 +12,8 @@ export default function CalendarPage() {
     <article>
       <h1>Calendar page for a11y tests</h1>
       <Dropdown
-        stretchWidth={true}
+        minWidth="trigger"
+        maxWidth="trigger"
         stretchHeight={true}
         open={true}
         onDropdownClose={() => {}}
