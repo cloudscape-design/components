@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -254,6 +254,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(featurePromptWrapper.findContent()).toBeFalsy();
 
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveFocus();
+    // ensure the tooltip on the trigger button is suppressed after switching the focus
+    expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
+    fireEvent.pointerEnter(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement());
     // ensure the tooltip on the trigger button is suppressed after switching the focus
     expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
   });
