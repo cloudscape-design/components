@@ -2,4 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 'use client';
 export * from '../internal/plugins/widget/interfaces';
-export { registerFeatureNotifications, showFeaturePromptIfPossible } from '../internal/plugins/widget/index';
+export {
+  registerFeatureNotifications,
+  showFeaturePromptIfPossible,
+  clearFeatureNotifications,
+} from '../internal/plugins/widget/index';

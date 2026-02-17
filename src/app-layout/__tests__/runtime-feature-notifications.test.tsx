@@ -182,6 +182,20 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(activeDrawerWrapper!.find('a')!.getElement()).toHaveAttribute('href', '/features-page');
   });
 
+  test('clears feature notifications correctly', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
+    const { wrapper } = await renderComponent(<AppLayout />);
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
+
+    awsuiWidgetPlugins.clearFeatureNotifications();
+
+    await delay();
+
+    await waitFor(() => {
+      expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeFalsy();
+    });
+  });
+
   test('supports custom filterFeatures function', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({
       ...featureNotificationsDefaults,

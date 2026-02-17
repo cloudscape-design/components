@@ -161,6 +161,11 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
       featurePromptRef.current?.show();
       return;
     }
+
+    if (event.type === 'clearFeatureNotifications') {
+      setFeatureNotificationsData(null);
+      return;
+    }
   }
 
   function getLatestUnseenFeature(): Feature<unknown> | null {

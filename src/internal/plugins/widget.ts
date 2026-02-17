@@ -8,4 +8,5 @@ export {
   registerFeatureNotifications,
   updateDrawer,
   showFeaturePromptIfPossible,
+  clearFeatureNotifications,
 } from './widget/index';

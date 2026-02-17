@@ -99,6 +99,9 @@ export interface ExitExpandedModeMessage {
 export interface ShowFeaturePromptIfPossible {
   type: 'showFeaturePromptIfPossible';
 }
+export interface ClearFeatureNotifications {
+  type: 'clearFeatureNotifications';
+}
 
 export type AppLayoutUpdateMessage<T = unknown> =
   | UpdateDrawerConfigMessage
@@ -108,7 +111,8 @@ export type AppLayoutUpdateMessage<T = unknown> =
   | ExpandDrawerMessage
   | ExitExpandedModeMessage
   | RegisterFeatureNotificationsMessage<T>
-  | ShowFeaturePromptIfPossible;
+  | ShowFeaturePromptIfPossible
+  | ClearFeatureNotifications;
 
 export type InitialMessage<T> = RegisterDrawerMessage | RegisterFeatureNotificationsMessage<T>;
 

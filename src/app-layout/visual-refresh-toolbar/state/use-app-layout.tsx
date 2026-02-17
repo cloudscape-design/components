@@ -247,7 +247,11 @@ export const useAppLayout = (
       return;
     }
 
-    if (message.type === 'registerFeatureNotifications' || message.type === 'showFeaturePromptIfPossible') {
+    if (
+      ['registerFeatureNotifications', 'showFeaturePromptIfPossible', 'clearFeatureNotifications'].includes(
+        message.type
+      )
+    ) {
       featureNotificationsMessageHandler(message);
       return;
     }

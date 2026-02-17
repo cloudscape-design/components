@@ -48,6 +48,10 @@ export function showFeaturePromptIfPossible() {
   updateDrawer({ type: 'showFeaturePromptIfPossible' });
 }
 
+export function clearFeatureNotifications() {
+  updateDrawer({ type: 'clearFeatureNotifications' });
+}
+
 /**
  * Interact with already registered app layout drawers
  * @param message
