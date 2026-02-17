@@ -36,8 +36,6 @@ export interface DrawerConfig {
   defaultActive?: boolean;
   trigger?: {
     iconSvg?: string;
-    // Do not use directly
-    __iconName?: string;
   };
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
@@ -45,8 +43,6 @@ export interface DrawerConfig {
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ItemRuntime>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-  // Do not use directly
-  __content?: React.ReactNode;
 }
 
 const updatableProperties = [
