@@ -1135,10 +1135,6 @@ describe('toolbar mode only features', () => {
             mountContent: container => (container.textContent = 'global drawer content 1'),
           });
 
-          if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-            return;
-          }
-
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
 
@@ -1166,9 +1162,6 @@ describe('toolbar mode only features', () => {
             preserveInactiveContent: true,
           });
 
-          if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-            return;
-          }
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
 
@@ -1205,10 +1198,6 @@ describe('toolbar mode only features', () => {
             preserveInactiveContent: true,
           });
 
-          if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-            return;
-          }
-
           const renderProps = await renderComponent(<AppLayout drawers={[testDrawer]} />);
           const { globalDrawersWrapper } = renderProps;
 
@@ -1232,7 +1221,11 @@ describe('toolbar mode only features', () => {
         test(`closes a drawer when closeDrawer is called (${type} drawer)`, async () => {
           registerDrawer({ ...drawerDefaults, resizable: true });
 
-          if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
+          const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
             return;
           }
 
@@ -1266,10 +1259,6 @@ describe('toolbar mode only features', () => {
         });
 
         test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
-          if (await validateThemeCompatibility(theme, <AppLayout toolsHide={true} />)) {
-            return;
-          }
-
           const renderProps = await renderComponent(<AppLayout toolsHide={true} />);
 
           registerDrawer({
@@ -1294,12 +1283,16 @@ describe('toolbar mode only features', () => {
             onToggle: event => onToggle(event.detail),
           });
 
+          const renderProps = await renderComponent(<AppLayout />);
 =======
-          if (await validateThemeCompatibility(theme, <AppLayout />)) {
+          const renderProps = await renderComponent(<AppLayout />);
+
+          await delay();
+
+          if (isNotRefreshToolbarTheme(theme)) {
             return;
           }
->>>>>>> 7bdbb71cb (test: add classic theme tests for drawer filtering test (#4245))
-          const renderProps = await renderComponent(<AppLayout />);
+>>>>>>> 4fa2b7697 (refactor: move theme validation after render setup in tests (#4253))
 
           await delay();
 
@@ -1395,7 +1388,11 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
 
-      if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
         return;
       }
 
@@ -1422,7 +1419,11 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 1'),
       });
 
-      if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
         return;
       }
 
@@ -1451,24 +1452,6 @@ describe('toolbar mode only features', () => {
         type: 'global',
         trigger: undefined,
       });
-
-      if (
-        await validateThemeCompatibility(
-          theme,
-          <AppLayout
-            drawers={[testDrawer]}
-            content={
-              <>
-                <Button data-testid="trigger-button" onClick={() => awsuiPlugins.appLayout.openDrawer(drawerId)}>
-                  Open a drawer without a trigger
-                </Button>
-              </>
-            }
-          />
-        )
-      ) {
-        return;
-      }
 
       const { globalDrawersWrapper, getByTestId } = await renderComponent(
         <AppLayout
@@ -1511,7 +1494,11 @@ describe('toolbar mode only features', () => {
     test('should not render a trigger button if registered drawer does not have a trigger prop', async () => {
       awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, trigger: undefined });
 
-      if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
         return;
       }
 
@@ -1560,10 +1547,6 @@ describe('toolbar mode only features', () => {
 
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {
-        if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-          return;
-        }
-
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
         wrapper.findDrawerTriggerById('security')!.click();
@@ -1599,10 +1582,6 @@ describe('toolbar mode only features', () => {
       });
 
       test('should not open if there are already global drawers opened by user action on the page', async () => {
-        if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-          return;
-        }
-
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
         wrapper.findDrawerTriggerById('security')!.click();
@@ -1638,10 +1617,6 @@ describe('toolbar mode only features', () => {
       });
 
       test('should not open if the maximum number (2) of global drawers is already open on the page', async () => {
-        if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
-          return;
-        }
-
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
         wrapper.findDrawerTriggerById('security')!.click();
@@ -1688,10 +1663,6 @@ describe('toolbar mode only features', () => {
       });
 
       test('should open global bottom drawer by default when defaultActive is set', async () => {
-        if (await validateThemeCompatibility(theme, <AppLayout />)) {
-          return;
-        }
-
         const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
         awsuiWidgetPlugins.registerBottomDrawer({
@@ -2129,7 +2100,11 @@ describe('toolbar mode only features', () => {
       awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, id: 'test2' });
       awsuiWidgetPlugins.registerBottomDrawer({ ...drawerDefaults, id: 'bottom' });
 
-      if (await validateThemeCompatibility(theme, <AppLayout />)) {
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      await delay();
+
+      if (isNotRefreshToolbarTheme(theme)) {
         return;
       }
 
@@ -2189,9 +2164,6 @@ describe('toolbar mode only features', () => {
     });
 
     test('calls onResize handler for bottom drawer', async () => {
-      if (await validateThemeCompatibility(theme, <AppLayout />)) {
-        return;
-      }
       const { wrapper, globalDrawersWrapper, debug } = await renderComponent(<AppLayout />);
       const onResize = jest.fn();
       awsuiWidgetPlugins.registerBottomDrawer({
@@ -2274,8 +2246,11 @@ describe('toolbar mode only features', () => {
 
       test('assigns correct ARIA roles when mixing global and regular drawers', async () => {
         registerGlobalDrawers(2);
+        const { wrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
 
-        if (await validateThemeCompatibility(theme, <AppLayout drawers={manyDrawers} />)) {
+        await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
           return;
         }
         const { wrapper } = await renderComponent(<AppLayout drawers={manyDrawers} />);
@@ -2306,7 +2281,12 @@ describe('toolbar mode only features', () => {
       test('assigns menuitemcheckbox role to global drawers in overflow menu', async () => {
         registerGlobalDrawers(3);
 
-        if (await validateThemeCompatibility(theme, <AppLayout drawers={[testDrawer]} />)) {
+        // In mobile view, two drawers are visible in the toolbar, the others are placed in the overflow menu
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        await delay();
+
+        if (isNotRefreshToolbarTheme(theme)) {
           return;
         }
 
@@ -2344,9 +2324,6 @@ describe('toolbar mode only features', () => {
         type: 'global',
         isExpandable: true,
       });
-      if (await validateThemeCompatibility(theme, <AppLayout />)) {
-        return;
-      }
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
       await delay();
