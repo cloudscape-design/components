@@ -14,7 +14,7 @@ export interface FeaturePromptProps {
    * Called when a user closes the prompt by using the close icon button,
    * clicking outside the prompt, shifting focus out of the prompt or pressing ESC.
    */
-  onDismiss?: NonCancelableEventHandler<null>;
+  onDismiss?: NonCancelableEventHandler<{ method?: string }>;
 
   /**
    * Determines where the feature prompt is displayed when opened, relative to the trigger.

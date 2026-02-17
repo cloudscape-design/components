@@ -190,10 +190,16 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
         onShow={() => {
           triggerRef.current!.dataset!.awsuiSuppressTooltip = 'true';
         }}
-        onDismiss={() => {
-          triggerRef?.current!.focus();
-          triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
+        onDismiss={event => {
+          if (event.detail?.method !== 'blur') {
+            triggerRef?.current!.focus();
+          }
           setFeaturePromptDismissed(true);
+          Promise.resolve().then(() => {
+            if (triggerRef.current?.dataset) {
+              triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
+            }
+          });
         }}
         header={
           <RuntimeContentPart mountContent={featureNotificationsData?.mountItem} content={latestFeature.header} />

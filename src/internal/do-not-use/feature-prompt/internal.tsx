@@ -64,7 +64,7 @@ function InternalFeaturePrompt(
       const target = event.composedPath ? event.composedPath()[0] : event.target;
       if (!nodeBelongs(popoverBodyRef.current, target)) {
         setShow(false);
-        fireNonCancelableEvent(onDismiss);
+        fireNonCancelableEvent(onDismiss, { method: 'click-outside' });
       }
     };
     window.addEventListener('click', clickListener, true);
@@ -95,9 +95,15 @@ function InternalFeaturePrompt(
                 dismissButton={true}
                 dismissAriaLabel={i18nStrings?.dismissAriaLabel}
                 header={header}
-                onDismiss={() => {
+                onDismiss={method => {
                   setShow(false);
-                  fireNonCancelableEvent(onDismiss);
+                  fireNonCancelableEvent(onDismiss, { method });
+                }}
+                onBlur={event => {
+                  if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                    setShow(false);
+                    fireNonCancelableEvent(onDismiss, { method: 'blur' });
+                  }
                 }}
                 variant="annotation"
                 overflowVisible="content"

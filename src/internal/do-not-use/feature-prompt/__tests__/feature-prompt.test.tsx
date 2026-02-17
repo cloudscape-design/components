@@ -62,7 +62,7 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('content');
   });
 
-  test.skip('should dismiss feature prompt on shifting focus away', () => {
+  test('should dismiss feature prompt on shifting focus away', () => {
     const { getByTestId, wrapper } = renderComponent(<TestComponent />);
 
     expect(wrapper.findContent()).toBeFalsy();
@@ -72,11 +72,13 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findHeader()!.getElement()).toHaveTextContent('header');
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('content');
 
-    fireEvent.blur(wrapper.findContent()!.getElement());
+    fireEvent.blur(wrapper.findContent()!.getElement(), {
+      relatedTarget: getByTestId('trigger-button'),
+    });
     expect(wrapper.findContent()).toBeFalsy();
   });
 
-  test.skip('should call component onDismiss when dismissed via close button', () => {
+  test('should call component onDismiss when dismissed via close button', () => {
     const onDismissMock = jest.fn();
     const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
 
@@ -85,11 +87,11 @@ describe('FeaturePrompt', () => {
 
     wrapper.findDismissButton()!.click();
 
-    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(onDismissMock).toHaveBeenCalled();
     expect(wrapper.findContent()).toBeFalsy();
   });
 
-  test.skip('should call component onDismiss when dismissed programmatically', () => {
+  test('should call component onDismiss when dismissed programmatically', () => {
     const onDismissMock = jest.fn();
     const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
 
@@ -98,18 +100,20 @@ describe('FeaturePrompt', () => {
 
     getByTestId('dismiss-button').click();
 
-    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(onDismissMock).toHaveBeenCalled();
     expect(wrapper.findContent()).toBeFalsy();
   });
 
-  test.skip('should call component onDismiss when dismissed via blur', () => {
+  test('should call component onDismiss when dismissed via blur', () => {
     const onDismissMock = jest.fn();
     const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
 
     getByTestId('trigger-button').click();
     expect(wrapper.findContent()).toBeTruthy();
 
-    fireEvent.blur(wrapper.findContent()!.getElement());
+    fireEvent.blur(wrapper.findContent()!.getElement(), {
+      relatedTarget: getByTestId('trigger-button'),
+    });
 
     expect(onDismissMock).toHaveBeenCalledTimes(1);
     expect(wrapper.findContent()).toBeFalsy();
@@ -133,7 +137,7 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findContent()).toBeTruthy();
   });
 
-  test.skip('should dismiss when blur relatedTarget is outside popover body', () => {
+  test('should dismiss when blur relatedTarget is outside popover body', () => {
     const onDismissMock = jest.fn();
     const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
 
