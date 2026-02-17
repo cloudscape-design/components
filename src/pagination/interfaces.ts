@@ -48,6 +48,9 @@ export interface PaginationProps {
    * @i18n
    */
   ariaLabels?: PaginationProps.Labels;
+  /**
+   * @i18n
+   */
   i18nStrings?: PaginationProps.I18nStrings;
 
   /**
@@ -85,8 +88,12 @@ export namespace PaginationProps {
   }
 
   export interface I18nStrings {
+    /** @i18n */
+    jumpToPageInputLabel?: string;
+    /** @i18n */
     jumpToPageError?: string;
-    jumpToPageLabel?: string;
+    /** @i18n */
+    jumpToPageLoadingText?: string;
   }
 
   export interface ChangeDetail {

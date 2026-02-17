@@ -18,7 +18,7 @@ const paginationLabels: PaginationProps.Labels = {
 };
 
 const paginationI18nStrings: PaginationProps.I18nStrings = {
-  jumpToPageLabel: 'Page',
+  jumpToPageInputLabel: 'Page',
   jumpToPageError: 'Enter a valid page number',
 };
 

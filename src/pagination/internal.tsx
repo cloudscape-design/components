@@ -25,19 +25,6 @@ import { getPaginationState, range } from './utils';
 
 import styles from './styles.css.js';
 
-const defaultAriaLabels: Required<PaginationProps.Labels> = {
-  nextPageLabel: '',
-  paginationLabel: '',
-  previousPageLabel: '',
-  jumpToPageButton: '',
-  pageLabel: pageNumber => `${pageNumber}`,
-};
-
-const defaultI18nStrings: Required<PaginationProps.I18nStrings> = {
-  jumpToPageLabel: '',
-  jumpToPageError: '',
-};
-
 interface PageButtonProps {
   className?: string;
   ariaLabel: string;
@@ -135,12 +122,9 @@ const InternalPagination = React.forwardRef(
     const [jumpToPageValue, setJumpToPageValue] = useState(currentPageIndex?.toString());
     const prevLoadingRef = React.useRef(jumpToPage?.loading);
     const jumpToPageInputRef = useRef<HTMLInputElement>(null);
-    const [popoverVisible, setPopoverVisible] = useState(false);
     const [hasError, setHasError] = useState(false);
 
     const i18n = useInternalI18n('pagination');
-    const i18nTutorial = useInternalI18n('tutorial-panel');
-    const loadingText = i18nTutorial('i18nStrings.loadingText', 'Loading');
 
     // Expose setError function via ref
     React.useImperativeHandle(ref, () => ({
@@ -155,18 +139,16 @@ const InternalPagination = React.forwardRef(
       prevLoadingRef.current = jumpToPage?.loading;
     }, [jumpToPage?.loading, currentPageIndex]);
 
-    const paginationLabel = ariaLabels?.paginationLabel;
-    const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel);
-    const previousPageLabel = i18n('ariaLabels.previousPageLabel', ariaLabels?.previousPageLabel);
+    const paginationLabel = ariaLabels?.paginationLabel ?? '';
+    const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? '';
+    const previousPageLabel = i18n('ariaLabels.previousPageLabel', ariaLabels?.previousPageLabel) ?? '';
     const pageNumberLabelFn =
-      i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
-      defaultAriaLabels.pageLabel;
-    const jumpToPageLabel =
-      i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageLabel) ?? defaultI18nStrings.jumpToPageLabel;
-    const jumpToPageButtonLabel =
-      i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? defaultAriaLabels.jumpToPageButton;
-    const jumpToPageError =
-      i18n('i18nStrings.jumpToPageError', i18nStrings?.jumpToPageError) ?? defaultI18nStrings.jumpToPageError;
+      i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ?? (() => '');
+
+    const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
+    const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
+    const jumpToPageError = i18n('i18nStrings.jumpToPageError', i18nStrings?.jumpToPageError) ?? '';
+    const jumpToPageLoadingText = i18n('i18nStrings.jumpToPageLoadingText', i18nStrings?.jumpToPageLoadingText) ?? '';
 
     function handlePrevPageClick(requestedPageIndex: number) {
       handlePageClick(requestedPageIndex);
@@ -220,19 +202,6 @@ const InternalPagination = React.forwardRef(
       }
     };
 
-    // Show popover when error appears
-    React.useEffect(() => {
-      if (hasError) {
-        // For open-end, wait until loading completes
-        if (openEnd && jumpToPage?.loading) {
-          return;
-        }
-        setPopoverVisible(true);
-      } else {
-        setPopoverVisible(false);
-      }
-    }, [hasError, jumpToPage?.loading, openEnd]);
-
     const previousButtonDisabled = disabled || currentPageIndex === 1;
     const nextButtonDisabled = disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount));
     const tableComponentContext = useTableComponentsContext();
@@ -247,8 +216,8 @@ const InternalPagination = React.forwardRef(
         iconName="arrow-right"
         variant="icon"
         loading={jumpToPage?.loading}
-        loadingText={loadingText}
-        ariaLabel={jumpToPage?.loading ? loadingText : (jumpToPageButtonLabel ?? defaultAriaLabels.jumpToPageButton)}
+        loadingText={jumpToPageLoadingText}
+        ariaLabel={jumpToPage?.loading ? jumpToPageLoadingText : jumpToPageButtonLabel}
         onClick={() => handleJumpToPageClick(Number(jumpToPageValue))}
         disabled={!jumpToPageValue || Number(jumpToPageValue) === currentPageIndex}
       />
@@ -264,7 +233,7 @@ const InternalPagination = React.forwardRef(
         <PageButton
           className={styles.arrow}
           pageIndex={currentPageIndex - 1}
-          ariaLabel={previousPageLabel ?? defaultAriaLabels.nextPageLabel}
+          ariaLabel={previousPageLabel}
           disabled={previousButtonDisabled}
           onClick={handlePrevPageClick}
           {...(previousButtonDisabled
@@ -308,7 +277,7 @@ const InternalPagination = React.forwardRef(
         <PageButton
           className={styles.arrow}
           pageIndex={currentPageIndex + 1}
-          ariaLabel={nextPageLabel ?? defaultAriaLabels.nextPageLabel}
+          ariaLabel={nextPageLabel}
           disabled={nextButtonDisabled}
           onClick={handleNextPageClick}
           {...(nextButtonDisabled
@@ -330,13 +299,14 @@ const InternalPagination = React.forwardRef(
                   type="number"
                   value={jumpToPageValue}
                   __inlineLabelText={jumpToPageLabel || undefined}
+                  __fullWidth={true}
                   ariaLabel={jumpToPageLabel || undefined}
                   nativeInputAttributes={{
                     min: 1,
                     max: !openEnd ? pagesCount : undefined,
                   }}
                   onChange={handleInputChange}
-                  onBlur={() => setPopoverVisible(false)}
+                  onBlur={() => setHasError(false)}
                   onKeyDown={e => {
                     if (e.detail.keyCode === 13 && jumpToPageValue && Number(jumpToPageValue) !== currentPageIndex) {
                       handleJumpToPageClick(Number(jumpToPageValue));
@@ -348,11 +318,11 @@ const InternalPagination = React.forwardRef(
                 <InternalPopover
                   size="medium"
                   dismissButton={false}
-                  __visible={popoverVisible}
-                  content={jumpToPageError ?? defaultI18nStrings.jumpToPageError}
+                  __visible={hasError}
+                  content={jumpToPageError}
                   position="bottom"
                   triggerType="custom"
-                  __onVisibleChange={({ detail }) => setPopoverVisible(detail.visible)}
+                  __onVisibleChange={({ detail }) => !detail.visible && setHasError(false)}
                 >
                   {jumpToPageButton}
                 </InternalPopover>

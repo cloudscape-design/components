@@ -53,6 +53,7 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __inlineLabelText?: string;
+  __fullWidth?: boolean;
 }
 
 function InternalInput(
@@ -95,6 +96,7 @@ function InternalInput(
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
     __inlineLabelText,
+    __fullWidth,
     style,
     ...rest
   }: InternalInputProps,
@@ -226,11 +228,18 @@ function InternalInput(
         </span>
       )}
       {__inlineLabelText ? (
-        <div className={styles['inline-label-wrapper']}>
+        <div className={clsx(styles['inline-label-wrapper'], __fullWidth && styles['inline-label-wrapper-full-width'])}>
           <label htmlFor={controlId} className={styles['inline-label']}>
             {__inlineLabelText}
           </label>
-          <div className={styles['inline-label-trigger-wrapper']}>{mainInput}</div>
+          <div
+            className={clsx(
+              styles['inline-label-trigger-wrapper'],
+              __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+            )}
+          >
+            {mainInput}
+          </div>
         </div>
       ) : (
         mainInput
