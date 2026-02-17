@@ -137,6 +137,9 @@ export const useAppLayout = (
     bottomDrawersFocusControl.setFocus();
   };
 
+  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
+    useFeatureNotifications({ getDrawersIds: () => drawers?.map(drawer => drawer.id) ?? [] });
+
   const {
     drawers,
     activeDrawer,
@@ -156,6 +159,9 @@ export const useAppLayout = (
   } = useDrawers(
     {
       ...rest,
+      drawers: featureNotificationsProps?.drawer
+        ? [featureNotificationsProps?.drawer, ...(rest.drawers ?? [])]
+        : rest.drawers,
       onGlobalDrawerFocus,
       onAddNewActiveDrawer,
       expandedDrawerId,
@@ -203,9 +209,6 @@ export const useAppLayout = (
     drawersOpenQueue,
   });
   const activeGlobalBottomDrawerId = activeBottomDrawer?.id ?? null;
-
-  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
-    useFeatureNotifications({ drawersIds: drawers?.map(drawer => drawer.id) ?? [] });
 
   const checkAIDrawerIdExists = (id: string) => {
     return aiDrawer?.id === id;
@@ -284,7 +287,7 @@ export const useAppLayout = (
   ) => {
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
-    if (featureNotificationsProps?.drawerId && featureNotificationsProps?.drawerId === drawerId) {
+    if (featureNotificationsProps?.drawer?.id && featureNotificationsProps?.drawer?.id === drawerId) {
       onOpenFeatureNotificationsDrawer();
     }
   };

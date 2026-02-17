@@ -5,13 +5,13 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { persistFeatureNotifications, retrieveFeatureNotifications } from '../../../internal/persistence';
-import awsuiPlugins from '../../../internal/plugins';
 import {
   Feature,
   FeatureNotificationsPayload,
   FeatureNotificationsPersistenceConfig,
   WidgetMessage,
 } from '../../../internal/plugins/widget/interfaces';
+import { AppLayoutProps } from '../../interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
 const DEFAULT_PERSISTENCE_CONFIG = {
@@ -19,16 +19,19 @@ const DEFAULT_PERSISTENCE_CONFIG = {
 };
 
 interface UseFeatureNotificationsProps {
-  drawersIds: Array<string>;
+  getDrawersIds: () => Array<string>;
 }
 interface RenderLatestFeaturePromptProps {
   triggerRef: RefObject<HTMLElement>;
 }
 export interface FeatureNotificationsProps {
   renderLatestFeaturePrompt: RenderLatestFeaturePrompt;
-  drawerId?: string | null;
+  drawer?: AppLayoutProps.Drawer | null;
 }
 export type RenderLatestFeaturePrompt = (props: RenderLatestFeaturePromptProps) => JSX.Element | null;
+interface FeatureNotifications extends FeatureNotificationsPayload<unknown> {
+  badge?: boolean;
+}
 
 function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
   daysToSubtract = daysToSubtract || 0;
@@ -55,18 +58,20 @@ function filterOutdatedFeatures(features: Record<string, string>): Record<string
   }, {});
 }
 
-export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsProps) {
+export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificationsProps) {
   const i18n = useInternalI18n('features-notification-drawer');
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
-  const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotificationsPayload<unknown> | null>(
-    null
-  );
+  const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotifications | null>(null);
   const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const shouldShowFeaturePrompt = useRef(false);
 
   useEffect(() => {
+    if (!featureNotificationsData) {
+      return;
+    }
+    const drawersIds = getDrawersIds();
     if (
       !shouldShowFeaturePrompt.current ||
       !featureNotificationsData ||
@@ -79,7 +84,7 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
       featurePromptRef?.current?.show();
       shouldShowFeaturePrompt.current = false;
     }
-  }, [drawersIds, featureNotificationsData]);
+  }, [getDrawersIds, featureNotificationsData]);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -92,6 +97,31 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
       .sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime());
   };
 
+  const mapPayloadToDrawer = (payload: FeatureNotifications): AppLayoutProps.Drawer => {
+    return {
+      id: payload.id,
+      content: (
+        <RuntimeFeaturesNotificationDrawer
+          features={payload.features}
+          featuresPageLink={payload.featuresPageLink}
+          mountItem={payload.mountItem}
+        />
+      ),
+      trigger: {
+        iconName: 'suggestions',
+      },
+      ariaLabels: {
+        closeButton: i18n('ariaLabels.closeButton', undefined),
+        drawerName: i18n('ariaLabels.content', undefined) ?? '',
+        triggerButton: i18n('ariaLabels.triggerButton', undefined),
+        resizeHandle: i18n('ariaLabels.resizeHandle', undefined),
+      },
+      resizable: true,
+      defaultSize: 320,
+      badge: payload.badge,
+    };
+  };
+
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
       const { payload } = event;
@@ -99,32 +129,8 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
       if (features.length === 0) {
         return;
       }
+
       setFeatureNotificationsData({ ...payload, features });
-      awsuiPlugins.appLayout.registerDrawer({
-        id: payload.id,
-        defaultActive: false,
-        resizable: true,
-        defaultSize: 320,
-
-        ariaLabels: {
-          closeButton: i18n('ariaLabels.closeButton', undefined),
-          content: i18n('ariaLabels.content', undefined),
-          triggerButton: i18n('ariaLabels.triggerButton', undefined),
-          resizeHandle: i18n('ariaLabels.resizeHandle', undefined),
-        },
-
-        trigger: { __iconName: 'suggestions' },
-        mountContent: () => {},
-        unmountContent: () => {},
-
-        __content: (
-          <RuntimeFeaturesNotificationDrawer
-            features={features}
-            featuresPageLink={payload.featuresPageLink}
-            mountItem={payload.mountItem}
-          />
-        ),
-      });
 
       const persistenceConfig = payload.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
       const __retrieveFeatureNotifications:
@@ -139,7 +145,7 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
             if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
               shouldShowFeaturePrompt.current = true;
             }
-            awsuiPlugins.appLayout.updateDrawer({ id: payload.id, badge: true });
+            setFeatureNotificationsData(data => (data ? { ...data, badge: true } : data));
           } else {
             setMarkAllAsRead(true);
           }
@@ -207,7 +213,6 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
       return;
     }
     const persistenceConfig = featureNotificationsData.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
-    const id = featureNotificationsData?.id;
     const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
       return {
         ...acc,
@@ -220,14 +225,14 @@ export function useFeatureNotifications({ drawersIds }: UseFeatureNotificationsP
       | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
       | undefined = (featureNotificationsData as any)?.__persistFeatureNotifications;
     (__persistFeatureNotifications ?? persistFeatureNotifications)(persistenceConfig, allFeaturesMap).then(() => {
-      awsuiPlugins.appLayout.updateDrawer({ id, badge: false });
+      setFeatureNotificationsData(data => (data ? { ...data, badge: false } : data));
       setMarkAllAsRead(true);
     });
   };
 
   const featureNotificationsProps: FeatureNotificationsProps = {
     renderLatestFeaturePrompt,
-    drawerId: featureNotificationsData?.id,
+    drawer: featureNotificationsData && mapPayloadToDrawer(featureNotificationsData),
   };
 
   return {

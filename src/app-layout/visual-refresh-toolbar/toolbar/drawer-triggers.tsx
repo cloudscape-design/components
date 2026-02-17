@@ -186,7 +186,7 @@ export function DrawerTriggers({
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
           const selected = !expandedDrawerId && item.id === activeDrawerId;
-          const isFeatureNotificationsDrawer = featureNotificationsProps?.drawerId === item.id;
+          const isFeatureNotificationsDrawer = featureNotificationsProps?.drawer?.id === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}

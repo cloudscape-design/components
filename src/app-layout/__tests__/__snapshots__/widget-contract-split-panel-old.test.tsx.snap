@@ -155,7 +155,7 @@ Map {
       },
     },
     "featureNotificationsProps": {
-      "drawerId": undefined,
+      "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {
@@ -1009,7 +1009,7 @@ Map {
       },
     },
     "featureNotificationsProps": {
-      "drawerId": undefined,
+      "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
     "toolbarProps": {

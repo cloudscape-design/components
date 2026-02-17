@@ -275,6 +275,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
     awsuiWidgetPlugins.showFeaturePromptIfPossible();
 
+    await delay();
+
     await waitFor(() => {
       expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent(
         'This is the first new feature content'

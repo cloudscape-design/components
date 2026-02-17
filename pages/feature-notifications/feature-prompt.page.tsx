@@ -9,6 +9,7 @@ import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-u
 import {
   FeatureNotificationsPersistenceConfig,
   registerFeatureNotifications,
+  showFeaturePromptIfPossible,
 } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
@@ -193,7 +194,15 @@ export default function () {
                   featurePromptRef.current?.show();
                 }}
               >
-                show a feature prompt
+                show a standalone feature prompt
+              </Button>
+              <Button
+                ref={triggerRef}
+                onClick={() => {
+                  showFeaturePromptIfPossible();
+                }}
+              >
+                show a feature prompt for feature notifications
               </Button>
               <Button
                 ref={triggerRef}
