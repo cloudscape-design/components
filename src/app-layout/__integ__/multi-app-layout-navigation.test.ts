@@ -18,7 +18,7 @@ class PageObject extends BasePageObject {
   }
 }
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 200; i++) {
   describe('Multi app layout navigation', () => {
     describe.each([[true], [false]])('iframe=%s', iframe => {
       const mainLayout = createWrapper().find('[data-testid="main-layout"]').findAppLayout();
