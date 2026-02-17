@@ -17,8 +17,18 @@ jest.mock('../../../../../lib/components/internal/environment', () => ({
   GIT_SHA: 'abc',
 }));
 
-const EXPECTED_WARNING_ARGS = ['Missing AWS-UI CSS for theme "default", version "3.0.0 (abc)", and git sha "abc".'];
-const EXPECTED_METRIC_ARGS = ['awsui-missing-css-asset', {}];
+function expectNoError() {
+  expect(consoleErrorSpy).not.toHaveBeenCalled();
+  expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
+}
+
+function expectError() {
+  expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+  expect(consoleErrorSpy).toHaveBeenCalledWith(
+    'Missing AWS-UI CSS for theme "default", version "3.0.0 (abc)", and git sha "abc".'
+  );
+  expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-missing-css-asset', {});
+}
 
 function Test({ versionVar }: { versionVar?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -44,17 +54,6 @@ afterEach(() => {
   globalThis.requestIdleCallback = initialRequestIdleCallback;
   Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
 });
-
-function expectNoError() {
-  expect(consoleErrorSpy).not.toHaveBeenCalled();
-  expect(sendPanoramaMetricSpy).not.toHaveBeenCalled();
-}
-
-function expectError() {
-  expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
-  expect(consoleErrorSpy).toHaveBeenCalledWith(...EXPECTED_WARNING_ARGS);
-  expect(sendPanoramaMetricSpy).toHaveBeenCalledWith(...EXPECTED_METRIC_ARGS);
-}
 
 test('should pass the check if styles found', async () => {
   render(<Test versionVar="--awsui-version-info-abc: true;" />);
