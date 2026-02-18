@@ -406,7 +406,8 @@ const Dropdown = ({
 
   // subscribe to Escape key press
   useEffect(() => {
-    if (!open) {
+    // Only add the listener if onEscape callback is provided
+    if (!open || !onEscape) {
       return;
     }
     const keydownListener = (event: KeyboardEvent) => {
