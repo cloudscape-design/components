@@ -17,6 +17,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontFamilyHeader: {
+    description: 'The font family for headings and component headers. Defaults to the base font family.',
+    themeable: true,
+    public: true,
+  },
   fontFamilyMonospace: {
     description: 'The monospace font family that will be applied globally to the product interface.',
     themeable: true,
