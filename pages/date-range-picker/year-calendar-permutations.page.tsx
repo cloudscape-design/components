@@ -71,9 +71,7 @@ export default function DateRangePickerCalendarPage() {
           render={permutation => (
             <div style={{ blockSize: '300px' }}>
               <Dropdown
-                stretchWidth={true}
                 stretchHeight={true}
-                stretchToTriggerWidth={false}
                 open={true}
                 onDropdownClose={() => {}}
                 onMouseDown={() => {}}

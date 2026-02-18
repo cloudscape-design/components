@@ -20,8 +20,7 @@ export default function DropdownScenario() {
           Dropdown should have the width equal to the trigger width, if it is is larger than the <code>minWidth</code>
         </li>
         <li>
-          <code>stretchWidth</code> property takes precedence over <code>minWidth</code>. The dropdown grows greedily,
-          if <code>stretchWidth</code> is set to <code>true</code> (the default value)
+          Use <code>minWidth=trigger</code> and <code>maxWidth=trigger</code> to match trigger width exactly.
         </li>
       </ul>
       <div id="minWidthDropdown">
@@ -38,7 +37,6 @@ export default function DropdownScenario() {
           open={open}
           onDropdownClose={() => setOpen(false)}
           minWidth={800}
-          stretchWidth={false}
           content={<ListContent n={10} />}
         />
       </div>

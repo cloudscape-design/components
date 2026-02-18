@@ -34,6 +34,7 @@ export default function () {
             open={open}
             onDropdownClose={() => setOpen(false)}
             content={<ListContent n={5} />}
+            minWidth={'trigger'}
           />
         </div>
         <div className={styles.placeholder}>An extra element to enable page scroll</div>

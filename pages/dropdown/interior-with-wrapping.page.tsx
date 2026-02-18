@@ -30,7 +30,7 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '100px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpenParent5(!openParent5)}>
                 Scenario 5
@@ -43,7 +43,7 @@ export default function DropdownScenario() {
                 <li id="childDropdown5">
                   <Dropdown
                     interior={true}
-                    stretchWidth={false}
+                    minWidth="trigger"
                     trigger={
                       <div className="trigger" onClick={() => setOpenChild5(!openChild5)}>
                         Expandable trigger
@@ -66,7 +66,7 @@ export default function DropdownScenario() {
           style={{ insetBlockStart: '170px', insetInlineStart: '190px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpenParent6(!openParent6)}>
                 Scenario 6
@@ -79,7 +79,7 @@ export default function DropdownScenario() {
                 <li id="childDropdown6">
                   <Dropdown
                     interior={true}
-                    stretchWidth={false}
+                    minWidth="trigger"
                     trigger={
                       <div className="trigger" onClick={() => setOpenChild6(!openChild6)}>
                         Expandable trigger

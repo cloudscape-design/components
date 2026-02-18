@@ -359,8 +359,9 @@ const InternalButtonDropdown = React.forwardRef(
       >
         <Dropdown
           open={canBeOpened && isOpen}
-          stretchWidth={false}
           stretchTriggerHeight={variant === 'navigation'}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          hideBlockBorder={false}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
           onDropdownClose={() => toggleDropdown()}
