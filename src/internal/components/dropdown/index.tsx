@@ -187,6 +187,7 @@ const Dropdown = ({
   onBlur,
   onFocusIn,
   onFocusOut,
+  onEscape,
   contentKey,
   dropdownContentId,
   dropdownContentRole,
@@ -402,6 +403,25 @@ const Dropdown = ({
       window.removeEventListener('click', clickListener, true);
     };
   }, [open, onOutsideClick]);
+
+  // subscribe to Escape key press
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    const keydownListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Prevent any surrounding modals or dialogs from acting on this Escape key
+        event.stopPropagation();
+        fireNonCancelableEvent(onEscape);
+      }
+    };
+    window.addEventListener('keydown', keydownListener, true);
+
+    return () => {
+      window.removeEventListener('keydown', keydownListener, true);
+    };
+  }, [open, onEscape]);
 
   // sync dropdown position on scroll and resize
   useLayoutEffect(() => {

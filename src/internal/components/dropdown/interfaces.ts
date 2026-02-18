@@ -172,6 +172,13 @@ export interface DropdownProps extends ExpandToViewport {
   onFocusOut?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
+   * Called when the user presses the Escape key while the dropdown is open.
+   * The dropdown does not close automatically - the parent component
+   * must update the `open` prop to close the dropdown.
+   */
+  onEscape?: NonCancelableEventHandler;
+
+  /**
    * ID for the dropdown content wrapper
    */
   dropdownContentId?: string;

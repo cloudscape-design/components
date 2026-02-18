@@ -321,6 +321,64 @@ describe('Dropdown Component', () => {
     });
   });
 
+  describe('Escape key event', () => {
+    test('fires onEscape when Escape key is pressed while dropdown is open', async () => {
+      const handleEscape = jest.fn();
+      renderDropdown(<Dropdown trigger={<button data-testid="trigger" />} onEscape={handleEscape} open={true} />);
+      await runPendingEvents();
+
+      fireEvent.keyDown(window, { key: 'Escape' });
+      expect(handleEscape).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not fire onEscape when dropdown is closed', async () => {
+      const handleEscape = jest.fn();
+      renderDropdown(<Dropdown trigger={<button data-testid="trigger" />} onEscape={handleEscape} open={false} />);
+      await runPendingEvents();
+
+      fireEvent.keyDown(window, { key: 'Escape' });
+      expect(handleEscape).not.toHaveBeenCalled();
+    });
+
+    test('stops propagation to prevent parent handlers from catching the event', async () => {
+      const handleEscape = jest.fn();
+      const parentHandler = jest.fn();
+
+      render(
+        <div onKeyDown={parentHandler}>
+          <button data-testid={outsideId} />
+          <Dropdown trigger={<button data-testid="trigger" />} onEscape={handleEscape} open={true} />
+        </div>
+      );
+      await runPendingEvents();
+
+      const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+      const stopPropagationSpy = jest.spyOn(event, 'stopPropagation');
+
+      window.dispatchEvent(event);
+
+      expect(handleEscape).toHaveBeenCalledTimes(1);
+      expect(stopPropagationSpy).toHaveBeenCalled();
+    });
+
+    test('works with expandToViewport (portaled content)', async () => {
+      const handleEscape = jest.fn();
+      renderDropdown(
+        <Dropdown
+          trigger={<button data-testid="trigger" />}
+          onEscape={handleEscape}
+          open={true}
+          expandToViewport={true}
+          content={<button data-testid="inside">inside</button>}
+        />
+      );
+      await runPendingEvents();
+
+      fireEvent.keyDown(window, { key: 'Escape' });
+      expect(handleEscape).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('dropdown recalculate position on scroll', () => {
     beforeEach(() => {
       jest.useFakeTimers();
