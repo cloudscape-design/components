@@ -133,8 +133,6 @@ export interface DropdownProps extends ExpandToViewport {
    * Preferred alignment of the dropdown relative to its trigger.
    * The dropdown will attempt this alignment first, but will automatically
    * adjust if there's insufficient space on the preferred side.
-   *
-   * @defaultValue 'start'
    */
   preferredAlignment?: DropdownAlignment;
 
