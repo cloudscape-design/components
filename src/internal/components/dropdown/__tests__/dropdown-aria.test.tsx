@@ -73,8 +73,7 @@ describe('Dropdown ARIA attributes', () => {
       const wrapper = renderDropdown(
         <Dropdown trigger={<button />} open={false} ariaRole="dialog" content={<div>Content</div>} />
       );
-      // Dropdown content exists in DOM even when closed (for transitions)
-      const dropdownContainer = wrapper.getElement().querySelector('[aria-hidden]');
+      const dropdownContainer = wrapper.getElement().querySelector('[data-open]');
       expect(dropdownContainer).toHaveAttribute('aria-hidden', 'true');
     });
 
@@ -82,7 +81,7 @@ describe('Dropdown ARIA attributes', () => {
       const wrapper = renderDropdown(
         <Dropdown trigger={<button />} open={true} ariaRole="dialog" content={<div>Content</div>} />
       );
-      const dropdown = wrapper.findOpenDropdown()!.getElement();
+      const dropdown = wrapper.getElement().querySelector('[data-open]');
       expect(dropdown).toHaveAttribute('aria-hidden', 'false');
     });
   });
