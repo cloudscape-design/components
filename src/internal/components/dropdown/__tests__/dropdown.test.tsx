@@ -154,13 +154,47 @@ describe('Dropdown Component', () => {
     });
   });
 
-  describe('dropdown content focus events (onFocusIn/onFocusOut)', () => {
-    test('fires onFocusIn when any element inside dropdown content gains focus', async () => {
-      const handleFocusIn = jest.fn();
+  describe('dropdown content focus events (onFocusEnter/onFocusLeave)', () => {
+    test('fires onFocusEnter only when focus enters dropdown content from outside', async () => {
+      const handleFocusEnter = jest.fn();
       const [, outsideElement] = renderDropdown(
         <Dropdown
           trigger={<button data-testid="trigger" />}
-          onFocusIn={handleFocusIn}
+          onFocusEnter={handleFocusEnter}
+          open={true}
+          content={
+            <>
+              <button data-testid="button1">Button 1</button>
+              <button data-testid="button2">Button 2</button>
+            </>
+          }
+        />
+      );
+      await runPendingEvents();
+
+      // Focus on first button in dropdown content - onFocusEnter fires
+      screen.getByTestId('button1').focus();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+
+      // Focus on second button in dropdown content - onFocusEnter should NOT fire (focus already inside)
+      screen.getByTestId('button2').focus();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+
+      // Focus outside
+      outsideElement.focus();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+
+      // Focus back into dropdown - onFocusEnter fires again
+      screen.getByTestId('button1').focus();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(2);
+    });
+
+    test('fires onFocusLeave when focus leaves dropdown content entirely', async () => {
+      const handleFocusLeave = jest.fn();
+      const [, outsideElement] = renderDropdown(
+        <Dropdown
+          trigger={<button data-testid="trigger" />}
+          onFocusLeave={handleFocusLeave}
           open={true}
           content={
             <>
@@ -174,53 +208,23 @@ describe('Dropdown Component', () => {
 
       // Focus on first button in dropdown content
       screen.getByTestId('button1').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Focus on second button in dropdown content - onFocusIn fires again
+      // Move focus between elements in dropdown - onFocusLeave should not fire
       screen.getByTestId('button2').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(2);
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Focus outside - onFocusIn should not fire
+      // Focus outside dropdown content - onFocusLeave should fire
       outsideElement.focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(2);
+      expect(handleFocusLeave).toHaveBeenCalledTimes(1);
     });
 
-    test('fires onFocusOut when focus leaves dropdown content entirely', async () => {
-      const handleFocusOut = jest.fn();
-      const [, outsideElement] = renderDropdown(
-        <Dropdown
-          trigger={<button data-testid="trigger" />}
-          onFocusOut={handleFocusOut}
-          open={true}
-          content={
-            <>
-              <button data-testid="button1">Button 1</button>
-              <button data-testid="button2">Button 2</button>
-            </>
-          }
-        />
-      );
-      await runPendingEvents();
-
-      // Focus on first button in dropdown content
-      screen.getByTestId('button1').focus();
-      expect(handleFocusOut).not.toHaveBeenCalled();
-
-      // Move focus between elements in dropdown - onFocusOut should not fire
-      screen.getByTestId('button2').focus();
-      expect(handleFocusOut).not.toHaveBeenCalled();
-
-      // Focus outside dropdown content - onFocusOut should fire
-      outsideElement.focus();
-      expect(handleFocusOut).toHaveBeenCalledTimes(1);
-    });
-
-    test('fires onFocusOut when focus moves from dropdown content to trigger', async () => {
-      const handleFocusOut = jest.fn();
+    test('fires onFocusLeave when focus moves from dropdown content to trigger', async () => {
+      const handleFocusLeave = jest.fn();
       renderDropdown(
         <Dropdown
           trigger={<button data-testid="trigger" />}
-          onFocusOut={handleFocusOut}
+          onFocusLeave={handleFocusLeave}
           open={true}
           content={<button data-testid="button1">Button 1</button>}
         />
@@ -229,21 +233,21 @@ describe('Dropdown Component', () => {
 
       // Focus on button in dropdown content
       screen.getByTestId('button1').focus();
-      expect(handleFocusOut).not.toHaveBeenCalled();
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Move focus to trigger - onFocusOut SHOULD fire because trigger is outside dropdown content
+      // Move focus to trigger - onFocusLeave SHOULD fire because trigger is outside dropdown content
       screen.getByTestId('trigger').focus();
-      expect(handleFocusOut).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).toHaveBeenCalledTimes(1);
     });
 
-    test('onFocusIn fires for each focus event on nested interactive elements', async () => {
-      const handleFocusIn = jest.fn();
-      const handleFocusOut = jest.fn();
+    test('onFocusEnter fires only once when entering dropdown, not for internal focus changes', async () => {
+      const handleFocusEnter = jest.fn();
+      const handleFocusLeave = jest.fn();
       const [, outsideElement] = renderDropdown(
         <Dropdown
           trigger={<button data-testid="trigger" />}
-          onFocusIn={handleFocusIn}
-          onFocusOut={handleFocusOut}
+          onFocusEnter={handleFocusEnter}
+          onFocusLeave={handleFocusLeave}
           open={true}
           content={
             <div>
@@ -257,30 +261,30 @@ describe('Dropdown Component', () => {
       );
       await runPendingEvents();
 
-      // Focus on input - onFocusIn fires
+      // Focus on input - onFocusEnter fires
       screen.getByTestId('input').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(1);
-      expect(handleFocusOut).not.toHaveBeenCalled();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Move to link - onFocusIn fires again, onFocusOut does not
+      // Move to link - onFocusEnter should NOT fire again (already inside), onFocusLeave does not fire
       screen.getByTestId('link').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(2);
-      expect(handleFocusOut).not.toHaveBeenCalled();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Move outside - onFocusOut fires
+      // Move outside - onFocusLeave fires
       outsideElement.focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(2);
-      expect(handleFocusOut).toHaveBeenCalledTimes(1);
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).toHaveBeenCalledTimes(1);
     });
 
     test('works correctly with expandToViewport (portaled content)', async () => {
-      const handleFocusIn = jest.fn();
-      const handleFocusOut = jest.fn();
+      const handleFocusEnter = jest.fn();
+      const handleFocusLeave = jest.fn();
       const [, outsideElement] = renderDropdown(
         <Dropdown
           trigger={<button data-testid="trigger" />}
-          onFocusIn={handleFocusIn}
-          onFocusOut={handleFocusOut}
+          onFocusEnter={handleFocusEnter}
+          onFocusLeave={handleFocusLeave}
           open={true}
           expandToViewport={true}
           content={<button data-testid="inside">inside</button>}
@@ -288,36 +292,36 @@ describe('Dropdown Component', () => {
       );
       await runPendingEvents();
 
-      // Focus on portaled content - onFocusIn fires
+      // Focus on portaled content - onFocusEnter fires
       screen.getByTestId('inside').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(1);
-      expect(handleFocusOut).not.toHaveBeenCalled();
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).not.toHaveBeenCalled();
 
-      // Move focus outside - onFocusOut fires
+      // Move focus outside - onFocusLeave fires
       outsideElement.focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(1);
-      expect(handleFocusOut).toHaveBeenCalledTimes(1);
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
+      expect(handleFocusLeave).toHaveBeenCalledTimes(1);
     });
 
-    test('onFocusIn does not fire when trigger gains focus', async () => {
-      const handleFocusIn = jest.fn();
+    test('onFocusEnter does not fire when trigger gains focus', async () => {
+      const handleFocusEnter = jest.fn();
       renderDropdown(
         <Dropdown
           trigger={<button data-testid="trigger" />}
-          onFocusIn={handleFocusIn}
+          onFocusEnter={handleFocusEnter}
           open={true}
           content={<button data-testid="button1">Button 1</button>}
         />
       );
       await runPendingEvents();
 
-      // Focus on trigger - onFocusIn should not fire (trigger is not part of dropdown content)
+      // Focus on trigger - onFocusEnter should not fire (trigger is not part of dropdown content)
       screen.getByTestId('trigger').focus();
-      expect(handleFocusIn).not.toHaveBeenCalled();
+      expect(handleFocusEnter).not.toHaveBeenCalled();
 
-      // Focus on dropdown content - onFocusIn should fire
+      // Focus on dropdown content - onFocusEnter should fire
       screen.getByTestId('button1').focus();
-      expect(handleFocusIn).toHaveBeenCalledTimes(1);
+      expect(handleFocusEnter).toHaveBeenCalledTimes(1);
     });
   });
 

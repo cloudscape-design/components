@@ -79,8 +79,8 @@ interface TransitionContentProps {
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
-  onFocusIn?: React.FocusEventHandler<Element>;
-  onFocusOut?: React.FocusEventHandler<Element>;
+  onFocusEnter?: React.FocusEventHandler<Element>;
+  onFocusLeave?: React.FocusEventHandler<Element>;
   id?: string;
   role?: string;
   ariaLabelledby?: string;
@@ -106,8 +106,8 @@ const TransitionContent = ({
   position,
   open,
   onMouseDown,
-  onFocusIn,
-  onFocusOut,
+  onFocusEnter,
+  onFocusLeave,
   id,
   role,
   ariaLabelledby,
@@ -142,8 +142,8 @@ const TransitionContent = ({
       aria-hidden={!open}
       style={dropdownStyles}
       onMouseDown={onMouseDown}
-      onFocus={onFocusIn}
-      onBlur={onFocusOut}
+      onFocus={onFocusEnter}
+      onBlur={onFocusLeave}
     >
       <div
         className={clsx(
@@ -185,8 +185,8 @@ const Dropdown = ({
   loopFocus = expandToViewport,
   onFocus,
   onBlur,
-  onFocusIn,
-  onFocusOut,
+  onFocusEnter,
+  onFocusLeave,
   onEscape,
   contentKey,
   dropdownContentId,
@@ -299,13 +299,15 @@ const Dropdown = ({
   const isOutsideDropdownContent = (element: Element) =>
     !dropdownRef.current || !nodeBelongs(dropdownRef.current, element);
 
-  const focusInHandler = (event: React.FocusEvent) => {
-    fireNonCancelableEvent(onFocusIn, event);
+  const focusEnterHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusEnter, event);
+    }
   };
 
-  const focusOutHandler = (event: React.FocusEvent) => {
+  const focusLeaveHandler = (event: React.FocusEvent) => {
     if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
-      fireNonCancelableEvent(onFocusOut, event);
+      fireNonCancelableEvent(onFocusLeave, event);
     }
   };
 
@@ -526,8 +528,8 @@ const Dropdown = ({
                 maxWidth={getMaxWidthCssValue()}
                 footer={footer}
                 onMouseDown={onMouseDown}
-                onFocusIn={focusInHandler}
-                onFocusOut={focusOutHandler}
+                onFocusEnter={focusEnterHandler}
+                onFocusLeave={focusLeaveHandler}
                 isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}

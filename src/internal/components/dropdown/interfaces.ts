@@ -161,15 +161,15 @@ export interface DropdownProps extends ExpandToViewport {
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
-   * Called when any element inside the dropdown content gains focus.
-   * This includes nested interactive elements like buttons, links, or inputs.
+   * Called when focus enters the dropdown content from outside.
+   * This fires only once when focus moves into the dropdown, not when moving between elements within it.
    */
-  onFocusIn?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  onFocusEnter?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
    * Called when focus leaves the dropdown content entirely.
    */
-  onFocusOut?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  onFocusLeave?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
    * Called when the user presses the Escape key while the dropdown is open.
