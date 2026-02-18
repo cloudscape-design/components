@@ -250,10 +250,8 @@ const InternalSelect = React.forwardRef(
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
+          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
           minWidth={expandToViewport ? undefined : 'trigger'}
