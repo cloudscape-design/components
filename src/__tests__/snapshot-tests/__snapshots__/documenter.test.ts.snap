@@ -9387,7 +9387,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 
 The number of columns is determined by the value of this property, the available space,
 and the maximum number of columns as defined by the \`columns\` property.
-
 When not specified and \`columns\` is 5 or more, defaults to 1 pixel to enable responsive column sizing.",
       "name": "minColumnWidth",
       "optional": true,
