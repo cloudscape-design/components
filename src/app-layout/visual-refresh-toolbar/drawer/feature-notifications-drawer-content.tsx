@@ -21,10 +21,11 @@ export function RuntimeContentPart<T>({ content, mountContent }: RuntimeContentP
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!mountContent) {
+    if (!(mountContent && ref.current)) {
       return;
     }
-    const container = ref.current!;
+
+    const container = ref.current;
     const destructor = mountContent(container, content);
 
     return () => {

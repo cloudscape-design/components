@@ -103,10 +103,9 @@ function delay() {
   });
 }
 
-async function renderComponent(jsx: React.ReactElement) {
+function renderComponent(jsx: React.ReactElement) {
   const { container, rerender, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
-  await delay();
   return {
     wrapper,
     container,
@@ -118,7 +117,8 @@ async function renderComponent(jsx: React.ReactElement) {
 describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   test('registers feature notifications correctly', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
 
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
@@ -151,7 +151,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
   test('registers feature notifications correctly with no mountItem', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
 
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
@@ -184,7 +185,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
   test('clears feature notifications correctly', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
 
     awsuiWidgetPlugins.clearFeatureNotifications();
@@ -205,7 +207,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
         return feature.releaseDate >= halfYearAgo;
       },
     });
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
 
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
@@ -219,9 +222,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(featureItems).toHaveLength(3);
   });
 
-  test('shows feature prompt for a latest features', async () => {
+  test('shows feature prompt for latest features', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
-    const { container } = await renderComponent(<AppLayout />);
+    const { container } = renderComponent(<AppLayout />);
     await delay();
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
@@ -254,17 +257,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(featurePromptWrapper.findContent()).toBeFalsy();
 
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveFocus();
-    // ensure the tooltip on the trigger button is suppressed after switching the focus
+    // ensure the built-in tooltip on the trigger button (not the feature prompt) doesn't appear after focus changes.
     expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
     fireEvent.pointerEnter(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement());
-    // ensure the tooltip on the trigger button is suppressed after switching the focus
+    // ensure the built-in tooltip on the trigger button (not the feature prompt) doesn't appear after focus changes.
     expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
     mockRetrieveFeatureNotifications.mockResolvedValue({ 'feature-1': mockDate2025.toString() });
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
-    const { container } = await renderComponent(<AppLayout />);
+    const { container } = renderComponent(<AppLayout />);
     await delay();
 
     await waitFor(() => {
@@ -277,7 +280,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
   test('should not show feature prompt for unseen features is suppressed', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, suppressFeaturePrompt: true });
-    const { container } = await renderComponent(<AppLayout />);
+    const { container } = renderComponent(<AppLayout />);
+    await delay();
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
     expect(featurePromptWrapper.findContent()).toBeFalsy();
@@ -285,7 +289,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 
   test('shows feature prompt via triggering showFeaturePromptIfPossible when possible', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, suppressFeaturePrompt: true });
-    const { container } = await renderComponent(<AppLayout />);
+    const { container } = renderComponent(<AppLayout />);
+    await delay();
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
     expect(featurePromptWrapper.findContent()).toBeFalsy();
@@ -308,7 +313,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       'feature-old': mockDateOld.toString(),
     });
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, suppressFeaturePrompt: true });
-    const { container } = await renderComponent(<AppLayout />);
+    const { container } = renderComponent(<AppLayout />);
+    await delay();
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
     expect(featurePromptWrapper.findContent()).toBeFalsy();
@@ -336,7 +342,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     mockRetrieveFeatureNotifications.mockResolvedValue(seenFeatures);
 
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
 
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
 
@@ -362,7 +369,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     };
 
     awsuiWidgetPlugins.registerFeatureNotifications(emptyFeatures);
-    const { wrapper } = await renderComponent(<AppLayout />);
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
     expect(wrapper.findDrawerTriggerById('empty-features')).toBeFalsy();
   });
 });

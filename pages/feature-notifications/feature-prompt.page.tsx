@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
-import { AppLayout, Badge, Box, Button, Header, Icon, Link, SpaceBetween } from '~components';
+import { AppLayout, Badge, Box, Button, Container, Header, Icon, Link, SpaceBetween } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
@@ -184,39 +184,45 @@ export default function () {
                   Demo page
                 </Header>
               </div>
-              <Button
-                ref={triggerRef}
-                onClick={() => {
-                  featurePromptRef.current?.show();
-                }}
-              >
-                show a standalone feature prompt
-              </Button>
-              <Button
-                ref={triggerRef}
-                onClick={() => {
-                  showFeaturePromptIfPossible();
-                }}
-              >
-                show a feature prompt for feature notifications
-              </Button>
-              <Button
-                ref={triggerRef}
-                onClick={() => {
-                  localStorage.removeItem('feature-notifications');
-                  window.location.reload();
-                }}
-              >
-                clean up persistence storage and reload the page
-              </Button>
-              <Button
-                ref={triggerRef}
-                onClick={() => {
-                  clearFeatureNotifications();
-                }}
-              >
-                clear feature notifications
-              </Button>
+              <Box margin={{ top: 'm', bottom: 'm' }}>
+                <Container>
+                  <SpaceBetween direction="horizontal" size="m">
+                    <Button
+                      ref={triggerRef}
+                      onClick={() => {
+                        featurePromptRef.current?.show();
+                      }}
+                    >
+                      show a standalone feature prompt
+                    </Button>
+                    <Button
+                      ref={triggerRef}
+                      onClick={() => {
+                        showFeaturePromptIfPossible();
+                      }}
+                    >
+                      show a feature prompt for feature notifications
+                    </Button>
+                    <Button
+                      ref={triggerRef}
+                      onClick={() => {
+                        localStorage.removeItem('feature-notifications');
+                        window.location.reload();
+                      }}
+                    >
+                      clean up persistence storage and reload the page
+                    </Button>
+                    <Button
+                      ref={triggerRef}
+                      onClick={() => {
+                        clearFeatureNotifications();
+                      }}
+                    >
+                      clear feature notifications
+                    </Button>
+                  </SpaceBetween>
+                </Container>
+              </Box>
               <Containers />
             </>
           }
