@@ -17,7 +17,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  fontFamilyHeader: {
+  fontFamilyHeading: {
     description: 'The font family for headings and component headers. Defaults to the base font family.',
     themeable: true,
     public: true,

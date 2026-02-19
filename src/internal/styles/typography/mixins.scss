@@ -33,7 +33,7 @@
 }
 
 @mixin font-heading-xs($weight: true) {
-  font-family: constants.$font-family-header;
+  font-family: constants.$font-family-heading;
   font-size: awsui.$font-size-heading-xs;
   line-height: awsui.$line-height-heading-xs;
   @if $weight {
@@ -43,7 +43,7 @@
 }
 
 @mixin font-heading-s($weight: true) {
-  font-family: constants.$font-family-header;
+  font-family: constants.$font-family-heading;
   font-size: awsui.$font-size-heading-s;
   line-height: awsui.$line-height-heading-s;
   letter-spacing: awsui.$letter-spacing-heading-s;
@@ -54,7 +54,7 @@
 }
 
 @mixin font-heading-m($weight: true) {
-  font-family: constants.$font-family-header;
+  font-family: constants.$font-family-heading;
   font-size: awsui.$font-size-heading-m;
   line-height: awsui.$line-height-heading-m;
   letter-spacing: awsui.$letter-spacing-heading-m;
@@ -65,7 +65,7 @@
 }
 
 @mixin font-heading-l($weight: true) {
-  font-family: constants.$font-family-header;
+  font-family: constants.$font-family-heading;
   font-size: awsui.$font-size-heading-l;
   line-height: awsui.$line-height-heading-l;
   letter-spacing: awsui.$letter-spacing-heading-l;
@@ -76,7 +76,7 @@
 }
 
 @mixin font-heading-xl($weight: true) {
-  font-family: constants.$font-family-header;
+  font-family: constants.$font-family-heading;
   font-size: awsui.$font-size-heading-xl;
   line-height: awsui.$line-height-heading-xl;
   letter-spacing: awsui.$letter-spacing-heading-xl;
