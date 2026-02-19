@@ -9,6 +9,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontDisplayLabelWeight: '700',
   fontExpandableHeadingSize: '{fontSizeHeadingS}',
   fontFamilyBase: "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+  fontFamilyHeading: '{fontFamilyBase}',
   fontFamilyMonospace: "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
   fontHeaderH2DescriptionLineHeight: '{lineHeightBodyM}',
   fontHeaderH2DescriptionSize: '{fontSizeBodyM}',

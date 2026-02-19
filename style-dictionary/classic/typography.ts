@@ -12,6 +12,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontDisplayLabelWeight: '400',
   fontExpandableHeadingSize: '{fontSizeBodyM}',
   fontFamilyBase: "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+  fontFamilyHeading: '{fontFamilyBase}',
   fontHeaderH2DescriptionLineHeight: '{lineHeightBodyS}',
   fontHeaderH2DescriptionSize: '{fontSizeBodyS}',
   fontLinkButtonLetterSpacing: 'normal',

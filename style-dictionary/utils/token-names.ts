@@ -779,6 +779,7 @@ export type TypographyTokenName =
   | 'fontDisplayLabelWeight'
   | 'fontExpandableHeadingSize'
   | 'fontFamilyBase'
+  | 'fontFamilyHeading'
   | 'fontFamilyMonospace'
   | 'fontHeaderH2DescriptionLineHeight'
   | 'fontHeaderH2DescriptionSize'
