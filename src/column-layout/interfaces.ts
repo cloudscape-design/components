@@ -34,6 +34,7 @@ export interface ColumnLayoutProps extends BaseComponentProps {
    *
    * The number of columns is determined by the value of this property, the available space,
    * and the maximum number of columns as defined by the `columns` property.
+   *
    * When not specified and `columns` is 5 or more, defaults to 1 pixel to enable responsive column sizing.
    */
   minColumnWidth?: number;
