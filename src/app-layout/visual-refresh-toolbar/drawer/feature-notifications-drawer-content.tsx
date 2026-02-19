@@ -65,11 +65,9 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
             ),
             secondaryContent: (
               <>
-                {!!item.releaseDate && (
-                  <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
-                    {formatDate(item.releaseDate)}
-                  </Box>
-                )}
+                <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
+                  {formatDate(item.releaseDate)}
+                </Box>
                 {!!item.contentCategory && (
                   <Box margin={{ top: 'xs' }}>
                     <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />

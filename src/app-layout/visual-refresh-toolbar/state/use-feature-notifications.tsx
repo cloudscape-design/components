@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
 import { persistFeatureNotifications, retrieveFeatureNotifications } from '../../../internal/persistence';
@@ -124,6 +126,7 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
 
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
+      warnOnce('feature notifications', 'Feature notifications drawer is overriding the tools panel');
       const { payload } = event;
       const features = getFeaturesToDisplay(payload);
       if (features.length === 0) {
