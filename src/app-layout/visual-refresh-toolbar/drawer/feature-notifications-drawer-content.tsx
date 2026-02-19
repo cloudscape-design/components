@@ -51,43 +51,44 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
 
   return (
     <InternalDrawer header={i18n('i18nStrings.title', undefined)} disableContentPaddings={true}>
-      <Box
-        padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}
-        className={styles['runtime-feature-notifications-drawer-content']}
-      >
-        <List
-          items={features}
-          renderItem={item => ({
-            id: item.id,
-            content: (
-              <Box variant="h3">
-                <RuntimeContentPart mountContent={mountItem} content={item.header} />
-              </Box>
-            ),
-            secondaryContent: (
-              <SpaceBetween size="xs" direction="vertical">
-                <Box fontSize="body-s" color="text-body-secondary">
-                  {formatDate(item.releaseDate)}
+      <div className={styles['runtime-feature-notifications-drawer-content']}>
+        <Box padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}>
+          <List
+            items={features}
+            renderItem={item => ({
+              id: item.id,
+              content: (
+                <Box variant="h3">
+                  <RuntimeContentPart mountContent={mountItem} content={item.header} />
                 </Box>
-                {!!item.contentCategory && (
-                  <Box>
-                    <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />
+              ),
+              secondaryContent: (
+                <SpaceBetween size="xs" direction="vertical">
+                  <Box fontSize="body-s" color="text-body-secondary">
+                    {formatDate(item.releaseDate)}
                   </Box>
-                )}
-                <Box>
-                  <RuntimeContentPart mountContent={mountItem} content={item.content} />
-                </Box>
-              </SpaceBetween>
-            ),
-          })}
-        />
+                  {!!item.contentCategory && (
+                    <Box>
+                      <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />
+                    </Box>
+                  )}
+                  <Box>
+                    <RuntimeContentPart mountContent={mountItem} content={item.content} />
+                  </Box>
+                </SpaceBetween>
+              ),
+            })}
+          />
 
-        {!!featuresPageLink && (
-          <Box padding={{ top: 's' }} className={styles['runtime-feature-notifications-footer']}>
-            <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', undefined)}</Link>
-          </Box>
-        )}
-      </Box>
+          {!!featuresPageLink && (
+            <footer className={styles['runtime-feature-notifications-footer']}>
+              <Box padding={{ top: 's' }}>
+                <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', undefined)}</Link>
+              </Box>
+            </footer>
+          )}
+        </Box>
+      </div>
     </InternalDrawer>
   );
 }

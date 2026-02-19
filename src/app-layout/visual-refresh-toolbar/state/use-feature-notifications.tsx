@@ -20,9 +20,6 @@ const DEFAULT_PERSISTENCE_CONFIG = {
   uniqueKey: 'feature-notifications',
 };
 
-interface UseFeatureNotificationsProps {
-  getDrawersIds: () => Array<string>;
-}
 interface RenderLatestFeaturePromptProps {
   triggerRef: RefObject<HTMLElement>;
 }
@@ -60,7 +57,7 @@ function filterOutdatedFeatures(features: Record<string, string>): Record<string
   }, {});
 }
 
-export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificationsProps) {
+export function useFeatureNotifications() {
   const i18n = useInternalI18n('features-notification-drawer');
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
@@ -70,20 +67,12 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
   const shouldShowFeaturePrompt = useRef(false);
 
   const onMountFeaturePromptRef = useCallback(() => {
-    const drawersIds = getDrawersIds();
-    if (
-      !shouldShowFeaturePrompt.current ||
-      !featureNotificationsData ||
-      !drawersIds?.length ||
-      !featurePromptRef?.current
-    ) {
+    if (!shouldShowFeaturePrompt.current || !featureNotificationsData || !featurePromptRef?.current) {
       return;
     }
-    if (drawersIds.includes(featureNotificationsData.id)) {
-      featurePromptRef?.current?.show();
-      shouldShowFeaturePrompt.current = false;
-    }
-  }, [getDrawersIds, featureNotificationsData]);
+    featurePromptRef?.current?.show();
+    shouldShowFeaturePrompt.current = false;
+  }, [featureNotificationsData]);
   const featurePromptMergedRef = useMergeRefs(featurePromptRef, onMountFeaturePromptRef);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {

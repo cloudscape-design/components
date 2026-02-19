@@ -138,7 +138,7 @@ export const useAppLayout = (
   };
 
   const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
-    useFeatureNotifications({ getDrawersIds: () => drawers?.map(drawer => drawer.id) ?? [] });
+    useFeatureNotifications();
 
   const {
     drawers,
