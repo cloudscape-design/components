@@ -25,6 +25,46 @@ $global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow}
 $drawer-resize-handle-size: awsui.$space-m;
 $ai-drawer-heider-height: 42px;
 
+.ai-drawer-error-boundary {
+  position: sticky;
+  z-index: constants.$drawer-z-index;
+  background-color: awsui.$color-background-container-content;
+  display: grid;
+  inline-size: var(#{custom-props.$drawerSize});
+
+  block-size: 100%;
+  overflow: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  pointer-events: auto;
+  word-wrap: break-word;
+  border-start-end-radius: awsui.$space-xxs;
+  min-inline-size: 300px;
+
+  @include mobile-only {
+    margin-block-start: 42px;
+    inline-size: 100%;
+  }
+}
+
+.drawer-error-boundary {
+  @include mobile-only {
+    position: sticky;
+    z-index: constants.$drawer-z-index;
+    background-color: awsui.$color-background-container-content;
+    display: grid;
+    inline-size: var(#{custom-props.$drawerSize});
+    margin-block-start: 42px;
+
+    block-size: 100%;
+    overflow: hidden;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    overscroll-behavior-y: contain;
+    pointer-events: auto;
+    word-wrap: break-word;
+  }
+}
+
 .drawer {
   position: sticky;
   z-index: constants.$drawer-z-index;

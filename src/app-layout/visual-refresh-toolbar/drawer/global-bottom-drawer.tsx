@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -32,17 +33,25 @@ export function AppLayoutBottomDrawerWrapper({ widgetizedState }: { widgetizedSt
     <>
       {bottomDrawers.map(drawer => {
         return (
-          <AppLayoutGlobalBottomDrawerImplementation
+          <InternalErrorBoundary
             key={drawer.id}
-            activeDrawer={
-              activeGlobalBottomDrawerId === drawer.id ||
-              (drawer.preserveInactiveContent && openBottomDrawersHistory.current.has(drawer.id))
-                ? drawer
-                : undefined
-            }
-            show={activeGlobalBottomDrawerId === drawer.id}
-            widgetizedState={widgetizedState}
-          />
+            className={styles['drawer-error-boundary']}
+            onError={error => console.log('Error boundary for the local drawer: ', error)}
+            suppressNested={false}
+            suppressible={true}
+          >
+            <AppLayoutGlobalBottomDrawerImplementation
+              key={drawer.id}
+              activeDrawer={
+                activeGlobalBottomDrawerId === drawer.id ||
+                (drawer.preserveInactiveContent && openBottomDrawersHistory.current.has(drawer.id))
+                  ? drawer
+                  : undefined
+              }
+              show={activeGlobalBottomDrawerId === drawer.id}
+              widgetizedState={widgetizedState}
+            />
+          </InternalErrorBoundary>
         );
       })}
     </>

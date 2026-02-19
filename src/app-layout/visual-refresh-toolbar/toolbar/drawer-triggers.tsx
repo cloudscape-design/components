@@ -5,7 +5,11 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+import Box from '../../../box/internal';
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import Popover from '../../../popover/internal';
+import StatusIndicator from '../../../status-indicator/internal';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
@@ -51,6 +55,35 @@ interface DrawerTriggersProps {
   onSplitPanelToggle: (() => void) | undefined;
   disabled: boolean;
 }
+
+const TriggerButtonErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
+  return (
+    <InternalErrorBoundary
+      key={id}
+      onError={error => console.log('Error boundary for the trigger button: ', error)}
+      suppressNested={false}
+      suppressible={true}
+      renderFallback={props => {
+        return (
+          <Popover
+            size="medium"
+            header={props.header as any}
+            content={
+              <>
+                <Box variant="p">{props.description}</Box>
+                <Box variant="p">{props.action}</Box>
+              </>
+            }
+          >
+            <StatusIndicator type="error" />
+          </Popover>
+        );
+      }}
+    >
+      {children}
+    </InternalErrorBoundary>
+  );
+};
 
 export function DrawerTriggers({
   ariaLabels,
@@ -150,67 +183,71 @@ export function DrawerTriggers({
       >
         {splitPanelToggleProps && (
           <>
-            <TriggerButton
-              ariaLabel={splitPanelToggleProps.ariaLabel}
-              ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
-              className={clsx(
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                splitPanelTestUtilStyles['open-button']
-              )}
-              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && splitPanelToggleProps.active) {
-                  return;
-                }
-                onSplitPanelToggle?.();
-              }}
-              selected={!expandedDrawerId && splitPanelToggleProps.active}
-              ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
-              hasTooltip={true}
-              isMobile={isMobile}
-              isForSplitPanel={true}
-              disabled={disabled}
-            />
-            {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
+            <TriggerButtonErrorBoundary id={'split-panel-trigger'} key={'split-panel-trigger'}>
+              <TriggerButton
+                ariaLabel={splitPanelToggleProps.ariaLabel}
+                ariaControls={splitPanelToggleProps.controlId}
+                ariaExpanded={!expandedDrawerId && splitPanelToggleProps.active}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  testutilStyles['drawers-trigger'],
+                  splitPanelTestUtilStyles['open-button']
+                )}
+                iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && splitPanelToggleProps.active) {
+                    return;
+                  }
+                  onSplitPanelToggle?.();
+                }}
+                selected={!expandedDrawerId && splitPanelToggleProps.active}
+                ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
+                hasTooltip={true}
+                isMobile={isMobile}
+                isForSplitPanel={true}
+                disabled={disabled}
+              />
+              {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
+            </TriggerButtonErrorBoundary>
           </>
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
           const selected = !expandedDrawerId && item.id === activeDrawerId;
           return (
-            <TriggerButton
-              ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={selected}
-              ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(
-                styles['drawers-trigger'],
-                !toolsOnlyMode && testutilStyles['drawers-trigger'],
-                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-              )}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
-              key={item.id}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && activeDrawerId === item.id) {
-                  return;
-                }
-                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
-              }}
-              ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={selected}
-              badge={item.badge}
-              testId={`awsui-app-layout-trigger-${item.id}`}
-              hasTooltip={true}
-              hasOpenDrawer={hasOpenDrawer}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
-              isMobile={isMobile}
-              disabled={disabled}
-            />
+            <TriggerButtonErrorBoundary id={item.id} key={item.id}>
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                ariaExpanded={selected}
+                ariaControls={activeDrawerId === item.id ? item.id : undefined}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  !toolsOnlyMode && testutilStyles['drawers-trigger'],
+                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                )}
+                iconName={item.trigger!.iconName}
+                iconSvg={item.trigger!.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && activeDrawerId === item.id) {
+                    return;
+                  }
+                  onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
+                }}
+                ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
+                selected={selected}
+                badge={item.badge}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+                hasTooltip={true}
+                hasOpenDrawer={hasOpenDrawer}
+                tooltipText={item.ariaLabels?.drawerName}
+                isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+                isMobile={isMobile}
+                disabled={disabled}
+              />
+            </TriggerButtonErrorBoundary>
           );
         })}
         {globalDrawersStartIndex > 0 && visibleItems.length > globalDrawersStartIndex && (
@@ -227,98 +264,103 @@ export function DrawerTriggers({
           }
 
           return (
-            <TriggerButton
-              ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={selected}
-              ariaControls={selected ? item.id : undefined}
-              className={clsx(
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                testutilStyles['drawers-trigger-global']
-              )}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
-              key={item.id}
-              onClick={() => {
-                exitExpandedMode();
-                if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
-                  return;
-                }
-                if (isBottom) {
-                  onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
-                  return;
-                }
-                onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
-              }}
-              ref={isBottom ? bottomDrawersFocusRef : globalDrawersFocusControl?.refs[item.id]?.toggle}
-              selected={selected}
-              badge={item.badge}
-              testId={`awsui-app-layout-trigger-${item.id}`}
-              hasTooltip={true}
-              hasOpenDrawer={hasOpenDrawer}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
-              isMobile={isMobile}
-              disabled={disabled}
-            />
+            <TriggerButtonErrorBoundary id={item.id} key={item.id}>
+              <TriggerButton
+                ariaLabel={item.ariaLabels?.triggerButton}
+                ariaExpanded={selected}
+                ariaControls={selected ? item.id : undefined}
+                className={clsx(
+                  styles['drawers-trigger'],
+                  testutilStyles['drawers-trigger'],
+                  testutilStyles['drawers-trigger-global']
+                )}
+                iconName={item.trigger!.iconName}
+                iconSvg={item.trigger!.iconSvg}
+                key={item.id}
+                onClick={() => {
+                  exitExpandedMode();
+                  if (!!expandedDrawerId && item.id !== expandedDrawerId && activeGlobalDrawersIds.includes(item.id)) {
+                    return;
+                  }
+                  if (isBottom) {
+                    onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
+                    return;
+                  }
+                  onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
+                }}
+                ref={isBottom ? bottomDrawersFocusRef : globalDrawersFocusControl?.refs[item.id]?.toggle}
+                selected={selected}
+                badge={item.badge}
+                testId={`awsui-app-layout-trigger-${item.id}`}
+                hasTooltip={true}
+                hasOpenDrawer={hasOpenDrawer}
+                tooltipText={item.ariaLabels?.drawerName}
+                isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+                isMobile={isMobile}
+                disabled={disabled}
+              />
+            </TriggerButtonErrorBoundary>
           );
         })}
         {overflowItems.length > 0 && (
-          <OverflowMenu
-            items={overflowItems.map(item => {
-              const isBottom = item?.position === 'bottom';
-              let active =
-                activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
-              if (isBottom) {
-                active = item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
-              }
-              return {
-                ...item,
-                active,
-              };
-            })}
-            ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
-              return (
-                <TriggerButton
-                  ref={triggerRef}
-                  ariaLabel={ariaLabel}
-                  ariaExpanded={ariaExpanded}
-                  badge={overflowMenuHasBadge}
-                  className={clsx(
-                    styles['drawers-trigger'],
-                    testutilStyles['drawers-trigger'],
-                    testutilStyles['drawers-trigger-global'],
-                    testUtilsClass
-                  )}
-                  iconName="ellipsis"
-                  onClick={onClick}
-                  disabled={disabled}
-                />
-              );
-            }}
-            onItemClick={event => {
-              const id = event.detail.id;
-              exitExpandedMode();
-              const item = overflowItems.find(item => item.id === id);
-              const isBottom = item?.position === 'bottom';
-              if (isBottom) {
-                const selected =
-                  item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
-                onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
-                return;
-              }
-              if (globalDrawers.find(drawer => drawer.id === id)) {
-                if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
+          <TriggerButtonErrorBoundary id="overflow-trigger-menu" key="overflow-trigger-menu">
+            <OverflowMenu
+              items={overflowItems.map(item => {
+                const isBottom = item?.position === 'bottom';
+                let active =
+                  activeGlobalDrawersIds.includes(item.id) && (!expandedDrawerId || item.id === expandedDrawerId);
+                if (isBottom) {
+                  active =
+                    item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+                }
+                return {
+                  ...item,
+                  active,
+                };
+              })}
+              ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
+              customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+                return (
+                  <TriggerButton
+                    ref={triggerRef}
+                    ariaLabel={ariaLabel}
+                    ariaExpanded={ariaExpanded}
+                    badge={overflowMenuHasBadge}
+                    className={clsx(
+                      styles['drawers-trigger'],
+                      testutilStyles['drawers-trigger'],
+                      testutilStyles['drawers-trigger-global'],
+                      testUtilsClass
+                    )}
+                    iconName="ellipsis"
+                    onClick={onClick}
+                    disabled={disabled}
+                  />
+                );
+              }}
+              onItemClick={event => {
+                const id = event.detail.id;
+                exitExpandedMode();
+                const item = overflowItems.find(item => item.id === id);
+                const isBottom = item?.position === 'bottom';
+                if (isBottom) {
+                  const selected =
+                    item.id === activeGlobalBottomDrawerId && (!expandedDrawerId || item.id === expandedDrawerId);
+                  onActiveGlobalBottomDrawerChange?.(selected ? null : item.id, { initiatedByUserAction: true });
                   return;
                 }
-                onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
-              } else {
-                onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
-              }
-            }}
-            globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
-          />
+                if (globalDrawers.find(drawer => drawer.id === id)) {
+                  if (!!expandedDrawerId && id !== expandedDrawerId && activeGlobalDrawersIds.includes(id)) {
+                    return;
+                  }
+                  onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
+                } else {
+                  onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
+                }
+              }}
+              globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
+            />
+          </TriggerButtonErrorBoundary>
         )}
       </div>
     </aside>
