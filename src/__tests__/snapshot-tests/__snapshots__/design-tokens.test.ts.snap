@@ -2393,7 +2393,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -5126,7 +5126,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -7859,7 +7859,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -10592,7 +10592,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -13325,7 +13325,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -16058,7 +16058,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -18791,7 +18791,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
-    "font-family-header": {
+    "font-family-heading": {
       "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
@@ -21529,7 +21529,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -24262,7 +24262,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -26995,7 +26995,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -29728,7 +29728,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -32461,7 +32461,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -35194,7 +35194,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -37927,7 +37927,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -40660,7 +40660,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
-        "font-family-header": {
+        "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
@@ -43393,7 +43393,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
-    "font-family-header": {
+    "font-family-heading": {
       "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
