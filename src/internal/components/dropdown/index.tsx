@@ -79,6 +79,8 @@ interface TransitionContentProps {
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  onFocusEnter?: React.FocusEventHandler<Element>;
+  onFocusLeave?: React.FocusEventHandler<Element>;
   id?: string;
   ariaRole?: string;
   ariaLabel?: string;
@@ -105,6 +107,8 @@ const TransitionContent = ({
   position,
   open,
   onMouseDown,
+  onFocusEnter,
+  onFocusLeave,
   id,
   ariaRole,
   ariaLabel,
@@ -141,6 +145,8 @@ const TransitionContent = ({
       aria-hidden={!open}
       style={dropdownStyles}
       onMouseDown={onMouseDown}
+      onFocus={onFocusEnter}
+      onBlur={onFocusLeave}
     >
       <div
         className={clsx(
@@ -165,7 +171,7 @@ const Dropdown = ({
   content,
   trigger,
   open,
-  onDropdownClose,
+  onOutsideClick,
   onMouseDown,
   header,
   footer,
@@ -182,6 +188,9 @@ const Dropdown = ({
   loopFocus = expandToViewport,
   onFocus,
   onBlur,
+  onFocusEnter,
+  onFocusLeave,
+  onEscape,
   contentKey,
   dropdownContentId,
   ariaRole,
@@ -294,6 +303,21 @@ const Dropdown = ({
     }
   };
 
+  const isOutsideDropdownContent = (element: Element) =>
+    !dropdownRef.current || !nodeBelongs(dropdownRef.current, element);
+
+  const focusEnterHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusEnter, event);
+    }
+  };
+
+  const focusLeaveHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusLeave, event);
+    }
+  };
+
   // Check if the dropdown has enough space to fit with its desired width constraints
   // If not, remove the class that allows flexible width sizing
   const fixStretching = () => {
@@ -379,7 +403,7 @@ const Dropdown = ({
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
       if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
-        fireNonCancelableEvent(onDropdownClose);
+        fireNonCancelableEvent(onOutsideClick);
       }
     };
     window.addEventListener('click', clickListener, true);
@@ -387,7 +411,27 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onDropdownClose]);
+  }, [open, onOutsideClick]);
+
+  // subscribe to Escape key press
+  useEffect(() => {
+    // Only add the listener if onEscape callback is provided
+    if (!open || !onEscape) {
+      return;
+    }
+    const keydownListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Prevent any surrounding modals or dialogs from acting on this Escape key
+        event.stopPropagation();
+        fireNonCancelableEvent(onEscape);
+      }
+    };
+    window.addEventListener('keydown', keydownListener, true);
+
+    return () => {
+      window.removeEventListener('keydown', keydownListener, true);
+    };
+  }, [open, onEscape]);
 
   // sync dropdown position on scroll and resize
   useLayoutEffect(() => {
@@ -491,6 +535,8 @@ const Dropdown = ({
                 maxWidth={getMaxWidthCssValue()}
                 footer={footer}
                 onMouseDown={onMouseDown}
+                onFocusEnter={focusEnterHandler}
+                onFocusLeave={focusLeaveHandler}
                 isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}

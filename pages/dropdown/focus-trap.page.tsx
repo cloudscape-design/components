@@ -91,7 +91,7 @@ export default function DropdownScenario() {
                 </Button>
               }
               open={isOpen}
-              onDropdownClose={() => setIsOpen(false)}
+              onOutsideClick={() => setIsOpen(false)}
               header={
                 <div style={{ padding: 8 }}>
                   <Button disabled={disableHeader}>header-1</Button>

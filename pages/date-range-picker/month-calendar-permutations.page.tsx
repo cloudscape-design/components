@@ -93,7 +93,7 @@ export default function DateRangePickerCalendarPage() {
               <Dropdown
                 stretchHeight={true}
                 open={true}
-                onDropdownClose={() => {}}
+                onOutsideClick={() => {}}
                 onMouseDown={() => {}}
                 trigger={null}
                 content={

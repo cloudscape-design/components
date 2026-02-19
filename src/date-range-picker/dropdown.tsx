@@ -58,7 +58,7 @@ interface DateRangePickerDropdownProps
     Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
-  onDropdownClose: () => void;
+  onOutsideClick: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
   renderRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
@@ -75,7 +75,7 @@ export function DateRangePickerDropdown({
   onApply: applyValue,
   getTimeOffset,
   timeOffset,
-  onDropdownClose,
+  onOutsideClick,
   relativeOptions,
   showClearButton,
   isSingleGrid,
@@ -120,7 +120,7 @@ export function DateRangePickerDropdown({
 
   const closeDropdown = () => {
     setApplyClicked(false);
-    onDropdownClose();
+    onOutsideClick();
   };
 
   const onClear = () => {

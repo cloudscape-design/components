@@ -32,7 +32,7 @@ export default function () {
               </button>
             }
             open={open}
-            onDropdownClose={() => setOpen(false)}
+            onOutsideClick={() => setOpen(false)}
             content={<ListContent n={5} />}
             minWidth={'trigger'}
           />
