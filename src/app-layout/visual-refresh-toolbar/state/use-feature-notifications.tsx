@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useCallback, useRef, useState } from 'react';
+import React, { RefObject, useRef, useState } from 'react';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -13,6 +13,7 @@ import {
   FeatureNotificationsPersistenceConfig,
   WidgetMessage,
 } from '../../../internal/plugins/widget/interfaces';
+import { useMountRefPromise } from '../../../internal/utils/promises';
 import { AppLayoutProps } from '../../interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
@@ -64,16 +65,8 @@ export function useFeatureNotifications() {
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotifications | null>(null);
   const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
-  const shouldShowFeaturePrompt = useRef(false);
-
-  const onMountFeaturePromptRef = useCallback(() => {
-    if (!shouldShowFeaturePrompt.current || !featureNotificationsData || !featurePromptRef?.current) {
-      return;
-    }
-    featurePromptRef?.current?.show();
-    shouldShowFeaturePrompt.current = false;
-  }, [featureNotificationsData]);
-  const featurePromptMergedRef = useMergeRefs(featurePromptRef, onMountFeaturePromptRef);
+  const { ref: featurePromptMountRef, promise: featurePromptMountPromise } = useMountRefPromise();
+  const featurePromptMergedRef = useMergeRefs(featurePromptRef, featurePromptMountRef);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -133,7 +126,9 @@ export function useFeatureNotifications() {
           const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
           if (hasUnseenFeatures) {
             if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
-              shouldShowFeaturePrompt.current = true;
+              featurePromptMountPromise.then(() => {
+                featurePromptRef.current?.show();
+              });
             }
             setFeatureNotificationsData(data => (data ? { ...data, badge: true } : data));
           } else {
