@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { MutableRefObject, useEffect, useRef } from 'react';
-import clsx from 'clsx';
 
 import { useComponentMetadata, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
@@ -31,7 +30,6 @@ import styles from './styles.css.js';
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
-  showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
   isPrimaryLoading: boolean;
@@ -75,7 +73,6 @@ function WizardForm({
   stepHeaderRef,
   steps,
   activeStepIndex,
-  showCollapsedSteps,
   i18nStrings,
   submitButtonText,
   isPrimaryLoading,
@@ -131,9 +128,6 @@ function WizardForm({
   return (
     <>
       <WizardFormHeader>
-        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
-        </div>
         <InternalHeader
           className={styles['form-header-component']}
           variant="h1"
