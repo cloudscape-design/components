@@ -114,6 +114,14 @@ function renderComponent(jsx: React.ReactElement) {
   };
 }
 
+describeEachAppLayout(() => {
+  test('[backward compatibility] registerFeatureNotifications does not crash the page', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
+    await delay();
+    render(<AppLayout />);
+  });
+});
+
 describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   test('registers feature notifications correctly', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
