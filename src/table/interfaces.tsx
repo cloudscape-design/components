@@ -256,6 +256,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
   columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
+   * Add grouping for the columns define groups for columns to be under and also nested groups for which
+   * other groups will be nested under.
+   */
+  columnGroupingDefinitions?: ReadonlyArray<TableProps.ColumnGroupsDefinition<T>>;
+
+  /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
    *
    * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
@@ -494,6 +500,7 @@ export namespace TableProps {
 
   export type ColumnDefinition<T> = {
     id?: string;
+    groupId?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
@@ -512,6 +519,11 @@ export namespace TableProps {
     itemsCount?: number;
     selectedItemsCount?: number;
   }
+
+  export type ColumnGroupsDefinition<ItemType> = Pick<
+    ColumnDefinition<ItemType>,
+    'id' | 'header' | 'groupId' | 'ariaLabel'
+  >;
 
   export interface StickyColumns {
     first?: number;

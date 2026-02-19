@@ -229,15 +229,19 @@ export namespace CollectionPreferencesProps {
     title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+    groups?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
 
   export interface ContentDisplayOption {
     id: string;
+    groupId?: string;
     label: string;
     alwaysVisible?: boolean;
   }
+
+  export type ContentDisplayOptionGroup = Omit<ContentDisplayOption, 'alwaysVisible'>;
 
   export interface ContentDisplayItem {
     id: string;
