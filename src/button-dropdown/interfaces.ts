@@ -259,6 +259,7 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    dataAttributes?: Record<string, string>;
   }
 
   export interface Item {

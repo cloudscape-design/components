@@ -18,6 +18,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { getDataAttributes } from '../internal/utils/data-attributes';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
@@ -227,7 +228,7 @@ const InternalButtonDropdown = React.forwardRef(
         </div>
       );
     } else if (hasMainAction) {
-      const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, ...mainActionProps } =
+      const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, dataAttributes, ...mainActionProps } =
         mainAction;
       const mainActionIconProps = external
         ? ({ iconName: 'external', iconAlign: 'right', target: '_blank', rel: 'noopener noreferrer' } as const)
@@ -252,7 +253,10 @@ const InternalButtonDropdown = React.forwardRef(
           ariaLabel={mainActionAriaLabel}
           formAction="none"
           nativeAnchorAttributes={nativeMainActionAttributes?.anchor}
-          nativeButtonAttributes={nativeMainActionAttributes?.button}
+          nativeButtonAttributes={{
+            ...getDataAttributes(dataAttributes, ['testid']),
+            ...nativeMainActionAttributes?.button,
+          }}
         >
           {text}
         </InternalButton>

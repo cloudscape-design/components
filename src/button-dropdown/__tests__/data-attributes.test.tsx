@@ -132,3 +132,66 @@ describe('ButtonDropdown data attributes', () => {
     expect(wrapper.findItemById('checkbox-item')!.getElement()).toHaveAttribute('data-checkbox-id', 'cb-1');
   });
 });
+
+  test('renders custom data attributes on mainAction', () => {
+    const { container } = render(
+      <ButtonDropdown
+        items={[{ id: 'item1', text: 'Item 1' }]}
+        mainAction={{
+          text: 'Main Action',
+          dataAttributes: {
+            'analytics-action': 'main-action',
+            'button-type': 'primary',
+          },
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    );
+
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    const mainActionButton = wrapper.findMainAction()!.getElement();
+
+    expect(mainActionButton).toHaveAttribute('data-analytics-action', 'main-action');
+    expect(mainActionButton).toHaveAttribute('data-button-type', 'primary');
+  });
+
+  test('mainAction does not duplicate data- prefix when already present', () => {
+    const { container } = render(
+      <ButtonDropdown
+        items={[{ id: 'item1', text: 'Item 1' }]}
+        mainAction={{
+          text: 'Main Action',
+          dataAttributes: { 'data-custom': 'value' },
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    );
+
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    const mainActionButton = wrapper.findMainAction()!.getElement();
+
+    expect(mainActionButton).toHaveAttribute('data-custom', 'value');
+    expect(mainActionButton).not.toHaveAttribute('data-data-custom');
+  });
+
+  test('mainAction excludes testid from dataAttributes', () => {
+    const { container } = render(
+      <ButtonDropdown
+        items={[{ id: 'item1', text: 'Item 1' }]}
+        mainAction={{
+          text: 'Main Action',
+          dataAttributes: { testid: 'should-not-override' },
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    );
+
+    const wrapper = createWrapper(container).findButtonDropdown()!;
+    const mainActionButton = wrapper.findMainAction()!.getElement();
+
+    // Should not have testid attribute from dataAttributes
+    expect(mainActionButton).not.toHaveAttribute('data-testid', 'should-not-override');
+  });
