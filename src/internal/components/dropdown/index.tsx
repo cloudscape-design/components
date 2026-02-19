@@ -82,7 +82,8 @@ interface TransitionContentProps {
   onFocusEnter?: React.FocusEventHandler<Element>;
   onFocusLeave?: React.FocusEventHandler<Element>;
   id?: string;
-  role?: string;
+  ariaRole?: string;
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
 }
@@ -109,7 +110,8 @@ const TransitionContent = ({
   onFocusEnter,
   onFocusLeave,
   id,
-  role,
+  ariaRole,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: TransitionContentProps) => {
@@ -134,7 +136,8 @@ const TransitionContent = ({
       })}
       ref={contentRef}
       id={id}
-      role={role}
+      role={ariaRole}
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
       data-open={open}
@@ -179,7 +182,7 @@ const Dropdown = ({
   maxWidth,
   hideBlockBorder = true,
   expandToViewport = false,
-  preferCenter = false,
+  preferredAlignment = 'start',
   interior = false,
   scrollable = true,
   loopFocus = expandToViewport,
@@ -190,7 +193,8 @@ const Dropdown = ({
   onEscape,
   contentKey,
   dropdownContentId,
-  dropdownContentRole,
+  ariaRole,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: DropdownProps) => {
@@ -212,6 +216,9 @@ const Dropdown = ({
   // Derive if dropdown should match trigger width exactly
   // This happens when both minWidth and maxWidth are explicitly set to 'trigger'
   const matchTriggerWidth = minWidth === 'trigger' && maxWidth === 'trigger';
+
+  // Convert preferredAlignment to boolean for internal positioning logic
+  const preferCenter = preferredAlignment === 'center';
 
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,
@@ -535,7 +542,8 @@ const Dropdown = ({
                 verticalContainerRef={verticalContainerRef}
                 position={position}
                 id={dropdownContentId}
-                role={dropdownContentRole}
+                ariaRole={ariaRole}
+                ariaLabel={ariaLabel}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
               />

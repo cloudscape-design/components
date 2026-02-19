@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
+import { flattenChildren } from '../../internal/utils/flatten-children';
 import { InternalColumnLayoutProps } from '../interfaces';
 
 import styles from './styles.css.js';
@@ -68,7 +68,7 @@ export default function FlexibleColumnLayout({
     >
       {flattenedChildren.map((child, i) => {
         // If this react child is a primitive value, the key will be undefined
-        const key = (child as Record<'key', unknown>).key;
+        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
 
         return (
           <div

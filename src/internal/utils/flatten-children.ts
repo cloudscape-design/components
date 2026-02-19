@@ -1,0 +1,17 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { ReactNode } from 'react';
+import flattenChildrenLegacy from 'react-keyed-flatten-children';
+
+export function flattenChildren(children: ReactNode): ReactNode[] {
+  const versionString = React.version?.split('.')[0];
+  const majorVersion = versionString ? parseInt(versionString, 10) : NaN;
+
+  if (!Number.isNaN(majorVersion) && majorVersion < 19) {
+    // React 16-18: Use react-keyed-flatten-children for backward compatibility
+    return flattenChildrenLegacy(children);
+  }
+  // React 19+: Uses Children.toArray() which doesn't flatten fragments.
+  // This also supports bigint which is not available in earlier React versions.
+  return React.Children.toArray(children);
+}

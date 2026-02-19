@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ReactNode, useContext, useState } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
+import React, { isValidElement, ReactNode, useContext, useState } from 'react';
 
 import {
   Box,
@@ -16,6 +15,7 @@ import {
   SpaceBetween,
 } from '~components';
 import awsuiPlugins from '~components/internal/plugins';
+import { flattenChildren } from '~components/internal/utils/flatten-children';
 import { mount, unmount } from '~mount';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -27,8 +27,8 @@ type PageContext = React.Context<
 
 const nodeAsString = (node: ReactNode) =>
   flattenChildren(node)
-    .map(node => (typeof node === 'object' ? node.props.children : node))
-    .filter(node => typeof node === 'string')
+    .map((childNode: ReactNode) => (isValidElement(childNode) ? childNode.props.children : childNode))
+    .filter((childNode: ReactNode) => typeof childNode === 'string')
     .join('');
 
 awsuiPlugins.flashContent.registerContentReplacer({

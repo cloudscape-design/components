@@ -21,12 +21,19 @@
 
   &.small-container {
     grid-template-columns: minmax(0, 1fr) 0;
-    row-gap: awsui.$space-scaled-l;
+    grid-template-rows: auto auto 1fr;
+    row-gap: awsui.$space-scaled-xxs;
   }
 }
 
 .wizard:not(.refresh) {
   display: flex;
+  gap: awsui.$space-xl;
+
+  &.small-container {
+    flex-direction: column;
+    gap: awsui.$space-s;
+  }
 }
 
 .navigation.refresh {
@@ -182,7 +189,6 @@
 .navigation:not(.refresh) {
   color: awsui.$color-text-disabled;
   display: inline-block;
-  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
   min-inline-size: 20 * styles.$base-size;
   padding-block-start: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
@@ -244,6 +250,7 @@
   &.small-container {
     > .form-header {
       grid-column: 1 / span 2;
+      grid-row: 2;
     }
 
     > .form-header > .form-header-content {
@@ -252,6 +259,7 @@
 
     > .form-component {
       grid-column: 1 / span 2;
+      grid-row: 3;
     }
   }
 }
@@ -261,11 +269,18 @@
 }
 
 .collapsed-steps {
-  color: awsui.$color-text-heading-secondary;
-  font-weight: styles.$font-weight-bold;
-  padding-block-start: awsui.$space-scaled-xxs;
-  &-hidden {
-    display: none;
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+/* Override fixed sidebar width for expandable navigation */
+.navigation.refresh.collapsed-steps-navigation {
+  grid-column: unset;
+  grid-row: unset;
+  padding-block-start: 0;
+
+  > ul.refresh {
+    inline-size: 100%;
   }
 }
 

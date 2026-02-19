@@ -7,6 +7,13 @@ import { NonCancelableEventHandler } from '../../events';
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 
 /**
+ * Alignment of the dropdown relative to its trigger.
+ */
+export type DropdownAlignment =
+  | 'start' // Aligns to the start edge of trigger (default)
+  | 'center'; // Centers dropdown on trigger
+
+/**
  * Width constraint for the dropdown.
  * - 'trigger': references the trigger element's width
  * - number: width in pixels
@@ -125,10 +132,11 @@ export interface DropdownProps extends ExpandToViewport {
   maxWidth?: DropdownWidthConstraint;
 
   /**
-   * Determines that the dropdown should preferably be aligned to the center of the trigger
-   * instead of dropping left or right.
+   * Preferred alignment of the dropdown relative to its trigger.
+   * The dropdown will attempt this alignment first, but will automatically
+   * adjust if there's insufficient space on the preferred side.
    */
-  preferCenter?: boolean;
+  preferredAlignment?: DropdownAlignment;
 
   /**
    * Hides the block (top/bottom) borders of the dropdown content wrapper.
@@ -186,7 +194,12 @@ export interface DropdownProps extends ExpandToViewport {
   /**
    * HTML role for the dropdown content wrapper
    */
-  dropdownContentRole?: string;
+  ariaRole?: string;
+
+  /**
+   * Aria label for the dropdown content wrapper
+   */
+  ariaLabel?: string;
 
   /**
    * Labelledby for the dropdown (required when role="dialog")
