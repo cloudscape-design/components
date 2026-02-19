@@ -2393,6 +2393,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -5120,6 +5124,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -7851,6 +7859,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -10578,6 +10590,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -13309,6 +13325,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -16038,6 +16058,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -18765,6 +18789,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
+      "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
+    "font-family-header": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": {
@@ -21501,6 +21529,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -24228,6 +24260,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -26959,6 +26995,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -29686,6 +29726,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -32417,6 +32461,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -35144,6 +35192,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -37875,6 +37927,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -40604,6 +40660,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-header": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -43331,6 +43391,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
+      "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
+    "font-family-header": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": {
