@@ -191,6 +191,44 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(activeDrawerWrapper!.find('a')!.getElement()).toHaveAttribute('href', '/features-page');
   });
 
+  test('registerFeatureNotifications should override previous call when called multiple time', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
+    const { wrapper } = renderComponent(<AppLayout />);
+    await delay();
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
+
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    const activeDrawerWrapper = wrapper.findActiveDrawer()!;
+    const featureItems = activeDrawerWrapper.findList()!.findItems()!;
+
+    expect(activeDrawerWrapper.getElement()).toBeTruthy();
+
+    expect(featureItems).toHaveLength(2);
+
+    // override
+    awsuiWidgetPlugins.registerFeatureNotifications({
+      ...featureNotificationsDefaults,
+      features: [
+        {
+          id: 'feature-new',
+          header: 'New new Feature 1 Header',
+          content: 'This is the first new feature content',
+          contentCategory: 'Category A',
+          releaseDate: mockDate2025,
+        },
+      ],
+    });
+
+    await delay();
+
+    await waitFor(() => {
+      const featureItems = activeDrawerWrapper.findList()!.findItems()!;
+      expect(featureItems).toHaveLength(1);
+      expect(featureItems[0].findContent().getElement()).toHaveTextContent('New new Feature 1 Header');
+    });
+  });
+
   test('clears feature notifications correctly', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
     const { wrapper } = renderComponent(<AppLayout />);

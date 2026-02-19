@@ -220,6 +220,73 @@ export default function () {
                     >
                       clear feature notifications
                     </Button>
+                    <Button
+                      onClick={() => {
+                        registerFeatureNotifications({
+                          id: 'local-feature-notifications',
+                          suppressFeaturePrompt: false,
+                          featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
+                          filterFeatures: () => true,
+                          features: [
+                            {
+                              id: '1',
+                              header: <Box fontWeight="bold">Overriden</Box>,
+                              content: (
+                                <Box variant="p">
+                                  You can now enrich CloudTrail events with additional information by adding resources
+                                  tags and IAM global keys in CloudTrail lake.{' '}
+                                  <Link variant="primary" external={true} href="https://amazon.com">
+                                    Learn more
+                                  </Link>
+                                </Box>
+                              ),
+                              releaseDate: new Date('2025-11-01'),
+                            },
+                          ],
+                          mountItem: (container, data) => {
+                            mount(data, container);
+
+                            return () => unmount(container);
+                          },
+                          persistenceConfig: {
+                            uniqueKey: 'feature-notifications',
+                          },
+                          // DON'T USE
+                          ...{
+                            __persistFeatureNotifications: async function (
+                              persistenceConfig: FeatureNotificationsPersistenceConfig,
+                              value: Record<string, string>
+                            ) {
+                              const result = await new Promise<void>(resolve =>
+                                setTimeout(() => {
+                                  localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
+                                  resolve();
+                                }, 150)
+                              );
+                              return result;
+                            },
+                            __retrieveFeatureNotifications: async function (
+                              persistenceConfig: FeatureNotificationsPersistenceConfig
+                            ) {
+                              const result = await new Promise<Record<string, string>>(resolve =>
+                                setTimeout(
+                                  () =>
+                                    resolve(
+                                      localStorage.getItem(persistenceConfig.uniqueKey)
+                                        ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
+                                        : {}
+                                    ),
+                                  150
+                                )
+                              );
+                              return result;
+                            },
+                          },
+                        });
+                      }}
+                    >
+                      Override
+                    </Button>
                   </SpaceBetween>
                 </Container>
               </Box>

@@ -9,6 +9,7 @@ import { Feature, MountContentPart } from '../../../internal/plugins/widget/inte
 import { formatDate } from '../../../internal/utils/date-time';
 import Link from '../../../link/internal';
 import List from '../../../list/internal';
+import SpaceBetween from '../../../space-between/internal';
 
 import styles from './styles.css.js';
 
@@ -64,19 +65,19 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
               </Box>
             ),
             secondaryContent: (
-              <>
-                <Box margin={{ top: 'xs' }} fontSize="body-s" color="text-body-secondary">
+              <SpaceBetween size="xs" direction="vertical">
+                <Box fontSize="body-s" color="text-body-secondary">
                   {formatDate(item.releaseDate)}
                 </Box>
                 {!!item.contentCategory && (
-                  <Box margin={{ top: 'xs' }}>
+                  <Box>
                     <RuntimeContentPart mountContent={mountItem} content={item.contentCategory} />
                   </Box>
                 )}
-                <Box margin={{ top: 'xs' }}>
+                <Box>
                   <RuntimeContentPart mountContent={mountItem} content={item.content} />
                 </Box>
-              </>
+              </SpaceBetween>
             ),
           })}
         />
