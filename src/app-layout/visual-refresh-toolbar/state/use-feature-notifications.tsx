@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useCallback, useRef, useState } from 'react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
@@ -69,16 +69,13 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const shouldShowFeaturePrompt = useRef(false);
 
-  useEffect(() => {
-    if (!featureNotificationsData) {
-      return;
-    }
+  const onMountFeaturePromptRef = useCallback(() => {
     const drawersIds = getDrawersIds();
     if (
       !shouldShowFeaturePrompt.current ||
       !featureNotificationsData ||
       !drawersIds?.length ||
-      !featurePromptRef.current
+      !featurePromptRef?.current
     ) {
       return;
     }
@@ -87,6 +84,7 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
       shouldShowFeaturePrompt.current = false;
     }
   }, [getDrawersIds, featureNotificationsData]);
+  const featurePromptMergedRef = useMergeRefs(featurePromptRef, onMountFeaturePromptRef);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -194,7 +192,7 @@ export function useFeatureNotifications({ getDrawersIds }: UseFeatureNotificatio
     }
     return (
       <FeaturePrompt
-        ref={featurePromptRef}
+        ref={featurePromptMergedRef}
         onShow={() => {
           triggerRef.current!.dataset!.awsuiSuppressTooltip = 'true';
         }}
