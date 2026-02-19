@@ -176,7 +176,7 @@ const Dropdown = ({
   maxWidth,
   hideBlockBorder = true,
   expandToViewport = false,
-  preferCenter = false,
+  preferredAlignment = 'start',
   interior = false,
   scrollable = true,
   loopFocus = expandToViewport,
@@ -207,6 +207,9 @@ const Dropdown = ({
   // Derive if dropdown should match trigger width exactly
   // This happens when both minWidth and maxWidth are explicitly set to 'trigger'
   const matchTriggerWidth = minWidth === 'trigger' && maxWidth === 'trigger';
+
+  // Convert preferredAlignment to boolean for internal positioning logic
+  const preferCenter = preferredAlignment === 'center';
 
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,

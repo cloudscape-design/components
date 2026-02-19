@@ -28,7 +28,7 @@ export default function DropdownScenario() {
         <div id="leftDropdown" className={styles['dropdown-container']}>
           <Dropdown
             minWidth="trigger"
-            preferCenter={true}
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen1(!open1)}>
                 Scenario 1
@@ -44,7 +44,7 @@ export default function DropdownScenario() {
         <div id="centerDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
             minWidth="trigger"
-            preferCenter={true}
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen2(!open2)}>
                 Scenario 2
@@ -60,7 +60,7 @@ export default function DropdownScenario() {
         <div id="rightDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '250px' }}>
           <Dropdown
             minWidth="trigger"
-            preferCenter={true}
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen3(!open3)}>
                 Scenario 3
