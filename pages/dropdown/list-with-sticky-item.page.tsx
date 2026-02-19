@@ -78,7 +78,7 @@ export default function MultiselectPage() {
             <Dropdown
               trigger={<Button onClick={() => setOpen(!open)}>Open dropdown</Button>}
               open={open}
-              onDropdownClose={() => setOpen(false)}
+              onOutsideClick={() => setOpen(false)}
               expandToViewport={urlParams.expandToViewport}
               header={
                 urlParams.withHeader ? (

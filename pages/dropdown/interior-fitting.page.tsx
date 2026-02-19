@@ -40,7 +40,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent1}
-            onDropdownClose={() => setOpenParent1(false)}
+            onOutsideClick={() => setOpenParent1(false)}
             content={
               <ul className={styles.list}>
                 <li id="childDropdown1">
@@ -53,7 +53,7 @@ export default function DropdownScenario() {
                       </div>
                     }
                     open={openChild1}
-                    onDropdownClose={() => setOpenChild1(false)}
+                    onOutsideClick={() => setOpenChild1(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={8} />}
                   />
                 </li>
@@ -72,7 +72,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent2}
-            onDropdownClose={() => setOpenParent2(false)}
+            onOutsideClick={() => setOpenParent2(false)}
             content={
               <ul className={styles.list} style={{ overflowY: 'auto', blockSize: '100px' }}>
                 <li id="childDropdown2">
@@ -85,7 +85,7 @@ export default function DropdownScenario() {
                       </div>
                     }
                     open={openChild2}
-                    onDropdownClose={() => setOpenChild2(false)}
+                    onOutsideClick={() => setOpenChild2(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={8} />}
                   />
                 </li>
@@ -104,7 +104,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent3}
-            onDropdownClose={() => setOpenParent3(false)}
+            onOutsideClick={() => setOpenParent3(false)}
             content={
               <ul className={styles.list}>
                 <li id="childDropdown3">
@@ -117,7 +117,7 @@ export default function DropdownScenario() {
                       </div>
                     }
                     open={openChild3}
-                    onDropdownClose={() => setOpenChild3(false)}
+                    onOutsideClick={() => setOpenChild3(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={8} />}
                   />
                 </li>
@@ -140,7 +140,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent4}
-            onDropdownClose={() => setOpenParent4(false)}
+            onOutsideClick={() => setOpenParent4(false)}
             content={
               <ul className={styles.list}>
                 <li id="childDropdown4">
@@ -153,7 +153,7 @@ export default function DropdownScenario() {
                       </div>
                     }
                     open={openChild4}
-                    onDropdownClose={() => setOpenChild4(false)}
+                    onOutsideClick={() => setOpenChild4(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={8} />}
                   />
                 </li>
