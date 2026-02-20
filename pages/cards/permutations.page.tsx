@@ -24,8 +24,7 @@ const ariaLabels: CardsProps<Item>['ariaLabels'] = {
     `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
 };
 
-function createSimpleItems(count: number) {
-  const texts = ['One', 'Two', 'Three', 'Four'];
+function createSimpleItems(count: number, texts = ['One', 'Two', 'Three', 'Four']) {
   return range(count).map(number => ({ number, text: texts[number % texts.length] }));
 }
 
@@ -109,6 +108,18 @@ const permutations = createPermutations<CardsProps>([
     items: [createSimpleItems(3)],
     variant: [undefined, 'full-page'],
     pagination: [undefined, 'pagination'],
+  },
+  {
+    cardDefinition: [cardDefinition],
+    items: [
+      createSimpleItems(4, [
+        'Very long text to see how the other items are affected by a very long text in other cards. ',
+        'One',
+        'Two',
+        'Three',
+        'Four',
+      ]),
+    ],
   },
 ]);
 
