@@ -64,6 +64,10 @@ $trigger-underline-offset: 0.25em;
     */
     padding-block-end: calc(#{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
   }
+
+  &.in-inline-token {
+    text-underline-offset: 0.15em;
+  }
 }
 
 .trigger-type-text {

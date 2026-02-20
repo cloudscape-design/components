@@ -3,6 +3,8 @@
 import React from 'react';
 
 import Icon from '~components/icon';
+import Link from '~components/link';
+import Popover from '~components/popover';
 import Token, { TokenProps } from '~components/token';
 
 import createPermutations from '../utils/permutations';
@@ -55,6 +57,17 @@ const permutations = createPermutations<TokenProps>([
     readOnly: [false, true],
     disabled: [true, false],
     variant: ['normal'],
+  },
+  {
+    label: [
+      <Link key="link" variant="primary" href="#test">
+        link
+      </Link>,
+      <Popover key="popover" content="Test" triggerType="text-inline">
+        popover
+      </Popover>,
+    ],
+    variant: ['inline'],
   },
 ]);
 

@@ -19,6 +19,7 @@ import {
 import { getBaseProps } from '../internal/base-component';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { useTokenInlineContext } from '../internal/context/token-inline-context';
 import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -157,6 +158,7 @@ const InternalLink = React.forwardRef(
 
     const linkRef = useRef<HTMLElement>(null);
     const isVisualRefresh = useVisualRefresh();
+    const { isInlineToken } = useTokenInlineContext();
     useForwardFocus(ref, linkRef);
 
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
@@ -172,7 +174,8 @@ const InternalLink = React.forwardRef(
         applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],
-        styles[getColorStyle(variant, color)]
+        styles[getColorStyle(variant, color)],
+        isInlineToken && styles['in-inline-token']
       ),
       style: getLinkStyles(style),
       'aria-label': ariaLabel,
