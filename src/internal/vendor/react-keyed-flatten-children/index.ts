@@ -26,7 +26,7 @@ export default function flattenChildren(
       if (componentName) {
         warnOnce(
           componentName,
-          'Flattening fragments is deprecated and does not work in React 19+. If you need fragments to be flattened, use arrays instead.'
+          'React.Fragment children are flattened in React 18 but not in React 19+. Use arrays instead of fragments for consistent behavior.'
         );
       }
       acc.push(...flattenChildren(node.props.children, depth + 1, keys.concat(node.key || nodeIndex), componentName));
