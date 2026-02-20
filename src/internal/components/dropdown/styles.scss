@@ -38,6 +38,10 @@
   }
 
   &-content-wrapper {
+    // Apply styles-reset to ensure font-family and other styles are properly set
+    // when expandToViewport is true (dropdown rendered via portal to document.body)
+    @include styles.styles-reset;
+    white-space: inherit;
     position: relative;
     background-color: awsui.$color-background-dropdown-item-default;
     outline: none;

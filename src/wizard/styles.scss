@@ -28,7 +28,6 @@
 
 .wizard:not(.refresh) {
   display: flex;
-  gap: awsui.$space-xl;
 
   &.small-container {
     flex-direction: column;
@@ -189,6 +188,7 @@
 .navigation:not(.refresh) {
   color: awsui.$color-text-disabled;
   display: inline-block;
+  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
   min-inline-size: 20 * styles.$base-size;
   padding-block-start: awsui.$space-xxs;
   inline-size: 20 * styles.$base-size;
