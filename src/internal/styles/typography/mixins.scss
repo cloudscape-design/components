@@ -32,8 +32,10 @@
   line-height: awsui.$line-height-body-m;
 }
 
-@mixin font-heading-xs($weight: true) {
-  font-family: awsui.$font-family-heading;
+@mixin font-heading-xs($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-heading;
+  }
   font-size: awsui.$font-size-heading-xs;
   line-height: awsui.$line-height-heading-xs;
   @if $weight {
@@ -42,8 +44,10 @@
   }
 }
 
-@mixin font-heading-s($weight: true) {
-  font-family: awsui.$font-family-heading;
+@mixin font-heading-s($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-heading;
+  }
   font-size: awsui.$font-size-heading-s;
   line-height: awsui.$line-height-heading-s;
   letter-spacing: awsui.$letter-spacing-heading-s;
@@ -53,8 +57,10 @@
   }
 }
 
-@mixin font-heading-m($weight: true) {
-  font-family: awsui.$font-family-heading;
+@mixin font-heading-m($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-heading;
+  }
   font-size: awsui.$font-size-heading-m;
   line-height: awsui.$line-height-heading-m;
   letter-spacing: awsui.$letter-spacing-heading-m;
@@ -64,8 +70,10 @@
   }
 }
 
-@mixin font-heading-l($weight: true) {
-  font-family: awsui.$font-family-heading;
+@mixin font-heading-l($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-heading;
+  }
   font-size: awsui.$font-size-heading-l;
   line-height: awsui.$line-height-heading-l;
   letter-spacing: awsui.$letter-spacing-heading-l;
@@ -75,8 +83,10 @@
   }
 }
 
-@mixin font-heading-xl($weight: true) {
-  font-family: awsui.$font-family-heading;
+@mixin font-heading-xl($weight: true, $family: true) {
+  @if $family {
+    font-family: awsui.$font-family-heading;
+  }
   font-size: awsui.$font-size-heading-xl;
   line-height: awsui.$line-height-heading-xl;
   letter-spacing: awsui.$letter-spacing-heading-xl;
@@ -134,19 +144,19 @@
     @include font-body-m;
   }
   @if $font-size == heading-xs {
-    @include font-heading-xs($weight: false);
+    @include font-heading-xs($weight: false, $family: false);
   }
   @if $font-size == heading-s {
-    @include font-heading-s($weight: false);
+    @include font-heading-s($weight: false, $family: false);
   }
   @if $font-size == heading-m {
-    @include font-heading-m($weight: false);
+    @include font-heading-m($weight: false, $family: false);
   }
   @if $font-size == heading-l {
-    @include font-heading-l($weight: false);
+    @include font-heading-l($weight: false, $family: false);
   }
   @if $font-size == heading-xl {
-    @include font-heading-xl($weight: false);
+    @include font-heading-xl($weight: false, $family: false);
   }
   @if $font-size == display-l {
     @include font-display-l;
