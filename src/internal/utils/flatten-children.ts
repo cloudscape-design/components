@@ -3,10 +3,10 @@
 import React, { ReactNode } from 'react';
 
 import flattenChildrenLegacy from '../vendor/react-keyed-flatten-children';
+import { getReactMajorVersion } from './react-version';
 
 export function flattenChildren(children: ReactNode, componentName?: string): ReactNode[] {
-  const versionString = React.version?.split('.')[0];
-  const majorVersion = versionString ? parseInt(versionString, 10) : NaN;
+  const majorVersion = getReactMajorVersion();
 
   if (!Number.isNaN(majorVersion) && majorVersion < 19) {
     // React 16-18: Use react-keyed-flatten-children for backward compatibility
