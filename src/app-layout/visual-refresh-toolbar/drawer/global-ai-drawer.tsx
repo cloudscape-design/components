@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -14,6 +15,7 @@ import { AppLayoutProps } from '../../interfaces';
 import { FocusControlState } from '../../utils/use-focus-control';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { OnChangeParams } from '../state/use-ai-drawer';
+import { TriggerButtonErrorBoundary } from '../toolbar/drawer-triggers';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -188,26 +190,34 @@ export function AppLayoutGlobalAiDrawerImplementation({
                     <div className={styles['drawer-content']}>
                       <header className={styles['drawer-content-header']}>
                         <div className={styles['drawer-content-header-content']}>
-                          {activeAiDrawer?.header ?? <div />}
+                          <TriggerButtonErrorBoundary id="header">
+                            {activeAiDrawer?.header ?? <div />}
+                          </TriggerButtonErrorBoundary>
                           <div className={styles['drawer-actions']}>
-                            <ButtonGroup
-                              dropdownExpandToViewport={false}
-                              variant="icon"
-                              onItemClick={event => {
-                                switch (event.detail.id) {
-                                  case 'close':
-                                    onActiveAiDrawerChange?.(null, { initiatedByUserAction: true });
-                                    break;
-                                  case 'expand':
-                                    setExpandedDrawerId(isExpanded ? null : activeDrawerId!);
-                                    break;
-                                  default:
-                                    activeAiDrawer?.onHeaderActionClick?.(event);
-                                }
-                              }}
-                              ariaLabel="Left panel actions"
-                              items={drawerActions}
-                            />
+                            <InternalErrorBoundary
+                              onError={error => console.log('Error boundary for the local drawer: ', error)}
+                              suppressNested={false}
+                              suppressible={true}
+                            >
+                              <ButtonGroup
+                                dropdownExpandToViewport={false}
+                                variant="icon"
+                                onItemClick={event => {
+                                  switch (event.detail.id) {
+                                    case 'close':
+                                      onActiveAiDrawerChange?.(null, { initiatedByUserAction: true });
+                                      break;
+                                    case 'expand':
+                                      setExpandedDrawerId(isExpanded ? null : activeDrawerId!);
+                                      break;
+                                    default:
+                                      activeAiDrawer?.onHeaderActionClick?.(event);
+                                  }
+                                }}
+                                ariaLabel="Left panel actions"
+                                items={drawerActions}
+                              />
+                            </InternalErrorBoundary>
                           </div>
                         </div>
                         {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
@@ -242,7 +252,15 @@ export function AppLayoutGlobalAiDrawerImplementation({
                           </div>
                         )}
                       </header>
-                      <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
+                      <div className={styles['drawer-content-content']}>
+                        <InternalErrorBoundary
+                          onError={error => console.log('Error boundary for the local drawer: ', error)}
+                          suppressNested={false}
+                          suppressible={true}
+                        >
+                          {activeAiDrawer?.content}
+                        </InternalErrorBoundary>
+                      </div>
                     </div>
                   </div>
                 </aside>

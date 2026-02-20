@@ -14,7 +14,6 @@ import { isWidgetReady } from '../state/invariants';
 import { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../toolbar';
 
 import sharedStyles from '../../resize/styles.css.js';
-import drawerStyles from '../drawer/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
 export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, appLayoutProps }: SkeletonPartProps) => {
@@ -71,32 +70,25 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             {(!!activeAiDrawerId || (aiDrawer?.preserveInactiveContent && wasAiDrawerOpenRef.current)) && (
               <>
                 {(wasAiDrawerOpenRef.current = true)}
-                <InternalErrorBoundary
-                  className={drawerStyles['ai-drawer-error-boundary']}
-                  onError={error => console.log('Error boundary for the local drawer: ', error)}
-                  suppressNested={false}
-                  suppressible={true}
-                >
-                  <AppLayoutGlobalAiDrawerImplementation
-                    show={!!activeAiDrawerId}
-                    activeAiDrawer={aiDrawer ?? null}
-                    appLayoutInternals={appLayoutState.appLayoutInternals}
-                    aiDrawerProps={{
-                      activeAiDrawerSize: activeAiDrawerSize!,
-                      minAiDrawerSize: minAiDrawerSize!,
-                      maxAiDrawerSize: maxAiDrawerSize!,
-                      aiDrawer: aiDrawer!,
-                      ariaLabels,
-                      aiDrawerFocusControl,
-                      isMobile,
-                      drawersOpenQueue,
-                      onActiveAiDrawerChange,
-                      onActiveDrawerResize: ({ size }) => onActiveAiDrawerResize(size),
-                      expandedDrawerId,
-                      setExpandedDrawerId,
-                    }}
-                  />
-                </InternalErrorBoundary>
+                <AppLayoutGlobalAiDrawerImplementation
+                  show={!!activeAiDrawerId}
+                  activeAiDrawer={aiDrawer ?? null}
+                  appLayoutInternals={appLayoutState.appLayoutInternals}
+                  aiDrawerProps={{
+                    activeAiDrawerSize: activeAiDrawerSize!,
+                    minAiDrawerSize: minAiDrawerSize!,
+                    maxAiDrawerSize: maxAiDrawerSize!,
+                    aiDrawer: aiDrawer!,
+                    ariaLabels,
+                    aiDrawerFocusControl,
+                    isMobile,
+                    drawersOpenQueue,
+                    onActiveAiDrawerChange,
+                    onActiveDrawerResize: ({ size }) => onActiveAiDrawerResize(size),
+                    expandedDrawerId,
+                    setExpandedDrawerId,
+                  }}
+                />
               </>
             )}
           </ActiveDrawersContext.Provider>

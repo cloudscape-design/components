@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -179,33 +180,45 @@ function AppLayoutGlobalDrawerImplementation({
                 data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
               >
                 <div className={styles['drawer-actions']}>
-                  <ButtonGroup
-                    dropdownExpandToViewport={false}
-                    variant="icon"
-                    onItemClick={event => {
-                      switch (event.detail.id) {
-                        case 'close':
-                          onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true });
-                          break;
-                        case 'expand':
-                          setExpandedDrawerId(isExpanded ? null : activeDrawerId);
-                          break;
-                        default:
-                          activeGlobalDrawer?.onHeaderActionClick?.(event);
-                      }
-                    }}
-                    ariaLabel="Global panel actions"
-                    items={drawerActions}
-                    __internalRootRef={(root: HTMLElement) => {
-                      if (!root) {
-                        return;
-                      }
-                      refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
-                    }}
-                  />
+                  <InternalErrorBoundary
+                    onError={error => console.log('Error boundary for the trigger button: ', error)}
+                    suppressNested={false}
+                    suppressible={true}
+                  >
+                    <ButtonGroup
+                      dropdownExpandToViewport={false}
+                      variant="icon"
+                      onItemClick={event => {
+                        switch (event.detail.id) {
+                          case 'close':
+                            onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true });
+                            break;
+                          case 'expand':
+                            setExpandedDrawerId(isExpanded ? null : activeDrawerId);
+                            break;
+                          default:
+                            activeGlobalDrawer?.onHeaderActionClick?.(event);
+                        }
+                      }}
+                      ariaLabel="Global panel actions"
+                      items={drawerActions}
+                      __internalRootRef={(root: HTMLElement) => {
+                        if (!root) {
+                          return;
+                        }
+                        refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
+                      }}
+                    />
+                  </InternalErrorBoundary>
                 </div>
                 <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                  {activeGlobalDrawer?.content}
+                  <InternalErrorBoundary
+                    onError={error => console.log('Error boundary for the trigger button: ', error)}
+                    suppressNested={false}
+                    suppressible={true}
+                  >
+                    {activeGlobalDrawer?.content}
+                  </InternalErrorBoundary>
                 </div>
               </div>
             </div>

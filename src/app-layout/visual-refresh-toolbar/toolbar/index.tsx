@@ -101,6 +101,36 @@ export const ToolbarSectionErrorBoundary: React.FC<{ id: string }> = ({ id, chil
   );
 };
 
+export const LeftTriggerErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
+  return (
+    <InternalErrorBoundary
+      className={styles['ai-trigger-fallback']}
+      key={id}
+      onError={error => console.log('Error boundary for the trigger button: ', error)}
+      suppressNested={false}
+      suppressible={true}
+      renderFallback={props => {
+        return (
+          <Popover
+            size="medium"
+            header={props.header as any}
+            content={
+              <>
+                <Box variant="p">{props.description}</Box>
+                <Box variant="p">{props.action}</Box>
+              </>
+            }
+          >
+            <StatusIndicator type="error" />
+          </Popover>
+        );
+      }}
+    >
+      {children}
+    </InternalErrorBoundary>
+  );
+};
+
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
@@ -204,7 +234,7 @@ export function AppLayoutToolbarImplementation({
               opacity: ['entering', 'exiting'].includes(state) ? 0 : 1,
             }}
           >
-            <ToolbarSectionErrorBoundary id="toolbar-left-drawer-trigger">
+            <LeftTriggerErrorBoundary id="toolbar-left-drawer-trigger">
               <TriggerButton
                 ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
                 ariaExpanded={!!activeAiDrawerId}
@@ -225,7 +255,7 @@ export function AppLayoutToolbarImplementation({
                 testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
                 isForPreviousActiveDrawer={true}
               />
-            </ToolbarSectionErrorBoundary>
+            </LeftTriggerErrorBoundary>
           </div>
         )}
       </Transition>

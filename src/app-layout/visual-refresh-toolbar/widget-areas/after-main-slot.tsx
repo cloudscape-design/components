@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import {
@@ -16,7 +15,6 @@ import { AppLayoutSplitPanelDrawerSideImplementation as AppLayoutSplitPanelSide 
 import { isWidgetReady } from '../state/invariants';
 
 import sharedStyles from '../../resize/styles.css.js';
-import drawerStyles from '../drawer/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
 export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: SkeletonPartProps) => {
@@ -75,19 +73,12 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           drawerExpandedMode && styles.hidden
         )}
       >
-        <InternalErrorBoundary
-          className={drawerStyles['drawer-error-boundary']}
-          onError={error => console.log('Error boundary for the local drawer: ', error)}
-          suppressNested={false}
-          suppressible={true}
-        >
-          {drawers && drawers.length > 0 && (
-            <AppLayoutDrawer
-              appLayoutInternals={appLayoutState.appLayoutInternals}
-              bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
-            />
-          )}
-        </InternalErrorBoundary>
+        {drawers && drawers.length > 0 && (
+          <AppLayoutDrawer
+            appLayoutInternals={appLayoutState.appLayoutInternals}
+            bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
+          />
+        )}
       </div>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>

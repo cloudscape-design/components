@@ -11,6 +11,13 @@
 
 $toolbar-height: 42px;
 
+.ai-trigger-fallback {
+  display: flex;
+  align-items: center;
+  block-size: 100%;
+  padding-inline-start: awsui.$space-m;
+}
+
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
   box-sizing: border-box;

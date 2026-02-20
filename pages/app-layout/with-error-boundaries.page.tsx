@@ -203,7 +203,43 @@ export default function WithErrorBoundariesPage() {
                         });
                       }}
                     >
-                      Break left drawer on mount
+                      Break left drawer content on mount
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        registerLeftDrawer({
+                          id: 'ai-panel',
+                          resizable: true,
+                          isExpandable: true,
+                          defaultSize: 300,
+                          preserveInactiveContent: true,
+                          defaultActive: true,
+
+                          ariaLabels: {
+                            closeButton: 'Close AI Panel drawer',
+                            content: 'AI Panel',
+                            triggerButton: 'AI Panel',
+                            resizeHandle: 'Resize handle',
+                            expandedModeButton: 'Expanded mode button',
+                            exitExpandedModeButton: 'Console',
+                          },
+
+                          trigger: {
+                            customIcon: '',
+                          },
+
+                          mountHeader: () => {
+                            throw new Error('Mount error in drawer content');
+                          },
+                          unmountHeader: container => unmount(container),
+                          mountContent: container => {
+                            container.innerHTML = 'hello!';
+                          },
+                          unmountContent: container => unmount(container),
+                        });
+                      }}
+                    >
+                      Break left drawer header on mount
                     </Button>
                     <Button onClick={() => setIsBrokenNavigation(true)}>Break nav panel</Button>
                     <Button

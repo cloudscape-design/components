@@ -56,7 +56,7 @@ interface DrawerTriggersProps {
   disabled: boolean;
 }
 
-const TriggerButtonErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
+export const TriggerButtonErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
   return (
     <InternalErrorBoundary
       key={id}
@@ -68,6 +68,7 @@ const TriggerButtonErrorBoundary: React.FC<{ id: string }> = ({ id, children }) 
           <Popover
             size="medium"
             header={props.header as any}
+            renderWithPortal={true}
             content={
               <>
                 <Box variant="p">{props.description}</Box>
