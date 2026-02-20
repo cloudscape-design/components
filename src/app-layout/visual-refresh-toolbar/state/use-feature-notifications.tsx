@@ -18,7 +18,7 @@ import { AppLayoutProps } from '../../interfaces';
 import RuntimeFeaturesNotificationDrawer, { RuntimeContentPart } from '../drawer/feature-notifications-drawer-content';
 
 const DEFAULT_PERSISTENCE_CONFIG = {
-  uniqueKey: 'feature-notifications',
+  uniqueKey: 'awsui-feature-notifications',
 };
 
 interface RenderLatestFeaturePromptProps {
@@ -32,6 +32,11 @@ export type RenderLatestFeaturePrompt = (props: RenderLatestFeaturePromptProps) 
 interface FeatureNotifications extends FeatureNotificationsPayload<unknown> {
   badge?: boolean;
 }
+type FeatureId = string;
+type FeatureReleaseDateString = string;
+export type PersistedFeaturesDict = Record<FeatureId, FeatureReleaseDateString>;
+
+const FEATURE_NOTIFICATIONS_RETENTION_DAYS = 180;
 
 function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
   daysToSubtract = daysToSubtract || 0;
@@ -41,8 +46,8 @@ function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
   return pastDate;
 }
 
-function filterOutdatedFeatures(features: Record<string, string>): Record<string, string> {
-  const cutoffDate = subtractDaysFromDate(new Date(), 180);
+function filterOutdatedFeatures(features: PersistedFeaturesDict): PersistedFeaturesDict {
+  const cutoffDate = subtractDaysFromDate(new Date(), FEATURE_NOTIFICATIONS_RETENTION_DAYS);
 
   return Object.keys(features).reduce((acc, key) => {
     const featureDate = new Date(features[key]);
@@ -63,7 +68,7 @@ export function useFeatureNotifications() {
   const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotifications | null>(null);
-  const [seenFeatures, setSeenFeatures] = useState<Record<string, string>>({});
+  const [seenFeatures, setSeenFeatures] = useState<PersistedFeaturesDict>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const { ref: featurePromptMountRef, promise: featurePromptMountPromise } = useMountRefPromise();
   const featurePromptMergedRef = useMergeRefs(featurePromptRef, featurePromptMountRef);
@@ -117,9 +122,11 @@ export function useFeatureNotifications() {
 
       const persistenceConfig = payload.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
       const __retrieveFeatureNotifications:
-        | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
+        | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<PersistedFeaturesDict>)
         | undefined = (payload as any)?.__retrieveFeatureNotifications;
 
+      // Retrieve previously seen feature notifications from persistence to determine
+      // which features the user has already viewed
       (__retrieveFeatureNotifications || retrieveFeatureNotifications)(persistenceConfig).then(
         seenFeatureNotifications => {
           setSeenFeatures(seenFeatureNotifications);
@@ -218,7 +225,7 @@ export function useFeatureNotifications() {
     const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
     const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
     const __persistFeatureNotifications:
-      | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<Record<string, string>>)
+      | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<PersistedFeaturesDict>)
       | undefined = (featureNotificationsData as any)?.__persistFeatureNotifications;
     (__persistFeatureNotifications ?? persistFeatureNotifications)(persistenceConfig, allFeaturesMap).then(() => {
       setFeatureNotificationsData(data => (data ? { ...data, badge: false } : data));
