@@ -9361,8 +9361,7 @@ Note: This is not supported when used with \`minColumnWidth\`.",
     },
     {
       "defaultValue": "1",
-      "description": "Specifies the number of columns in each grid row.
-When \`minColumnWidth\` is not set, only up to 4 columns are supported.",
+      "description": "Specifies the number of columns in each grid row.",
       "name": "columns",
       "optional": true,
       "type": "number",
@@ -9387,7 +9386,9 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Use together with \`columns\` to specify the desired minimum width for each column in pixels.
 
 The number of columns is determined by the value of this property, the available space,
-and the maximum number of columns as defined by the \`columns\` property.",
+and the maximum number of columns as defined by the \`columns\` property.
+
+When not specified and \`columns\` is 5 or more, defaults to 1 pixel to enable responsive column sizing.",
       "name": "minColumnWidth",
       "optional": true,
       "type": "number",

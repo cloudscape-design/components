@@ -32,12 +32,12 @@ export default function ColumnLayout({
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['column-layout'])} ref={__internalRootRef}>
-      {minColumnWidth ? (
+      {minColumnWidth || columns > 4 ? (
         <FlexibleColumnLayout
           columns={columns}
           borders={borders}
           variant={variant}
-          minColumnWidth={minColumnWidth}
+          minColumnWidth={minColumnWidth ?? 1}
           disableGutters={disableGutters}
           __tagOverride={__tagOverride}
         >
