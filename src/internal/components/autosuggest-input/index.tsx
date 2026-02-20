@@ -4,6 +4,8 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import {
   BaseChangeDetail,
@@ -112,6 +114,11 @@ const AutosuggestInput = React.forwardRef(
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => inputRef.current,
+      entry => setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const [open, setOpen] = useState(false);
 
@@ -295,7 +302,16 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
-          minWidth={dropdownWidth ? dropdownWidth : expandToViewport ? undefined : 'trigger'}
+          minWidth={
+            // AWSUI-19898
+            dropdownWidth
+              ? dropdownWidth
+              : expandToViewport
+                ? triggerWidth !== null
+                  ? Math.min(triggerWidth, getBreakpointValue('xxs'))
+                  : undefined
+                : 'trigger'
+          }
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}
           onFocus={handleFocus}

@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -105,6 +105,13 @@ const InternalMultiselect = React.forwardRef(
       />
     );
 
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => setTriggerWidth(entry.borderBoxWidth)
+    );
+
     const trigger = (
       <Trigger
         placeholder={placeholder}
@@ -166,7 +173,14 @@ const InternalMultiselect = React.forwardRef(
           ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
           ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={multiselectProps.isOpen}
-          minWidth={expandToViewport ? undefined : 'trigger'}
+          minWidth={
+            // AWSUI-19898
+            expandToViewport
+              ? triggerWidth !== null
+                ? Math.min(triggerWidth, getBreakpointValue('xxs'))
+                : undefined
+              : 'trigger'
+          }
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}

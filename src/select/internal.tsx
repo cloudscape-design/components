@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
@@ -106,6 +106,11 @@ const InternalSelect = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -254,7 +259,14 @@ const InternalSelect = React.forwardRef(
           ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          minWidth={expandToViewport ? undefined : 'trigger'}
+          minWidth={
+            // AWSUI-19898
+            expandToViewport
+              ? triggerWidth !== null
+                ? Math.min(triggerWidth, getBreakpointValue('xxs'))
+                : undefined
+              : 'trigger'
+          }
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
