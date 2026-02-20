@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useRef, useState } from 'react';
+import React, { RefObject, useMemo, useRef, useState } from 'react';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -65,13 +65,15 @@ function filterOutdatedFeatures(features: PersistedFeaturesDict): PersistedFeatu
 
 export function useFeatureNotifications() {
   const i18n = useInternalI18n('features-notification-drawer');
-  const [markAllAsRead, setMarkAllAsRead] = useState(false);
   const [featurePromptDismissed, setFeaturePromptDismissed] = useState(false);
   const [featureNotificationsData, setFeatureNotificationsData] = useState<FeatureNotifications | null>(null);
   const [seenFeatures, setSeenFeatures] = useState<PersistedFeaturesDict>({});
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const { ref: featurePromptMountRef, promise: featurePromptMountPromise } = useMountRefPromise();
   const featurePromptMergedRef = useMergeRefs(featurePromptRef, featurePromptMountRef);
+  const allNotificationsSeen = useMemo(() => {
+    return featureNotificationsData?.features.every(feature => !!seenFeatures[feature.id]);
+  }, [featureNotificationsData, seenFeatures]);
 
   const defaultFeaturesFilter = (feature: Feature<unknown>) => {
     return feature.releaseDate >= subtractDaysFromDate(new Date(), 90);
@@ -138,8 +140,6 @@ export function useFeatureNotifications() {
               });
             }
             setFeatureNotificationsData(data => (data ? { ...data, badge: true } : data));
-          } else {
-            setMarkAllAsRead(true);
           }
         }
       );
@@ -147,7 +147,7 @@ export function useFeatureNotifications() {
     }
 
     if (event.type === 'showFeaturePromptIfPossible') {
-      if (markAllAsRead) {
+      if (allNotificationsSeen) {
         return;
       }
       featurePromptRef.current?.show();
@@ -212,7 +212,7 @@ export function useFeatureNotifications() {
   }
 
   const onOpenFeatureNotificationsDrawer = () => {
-    if (!featureNotificationsData || markAllAsRead) {
+    if (!featureNotificationsData || allNotificationsSeen) {
       return;
     }
     const persistenceConfig = featureNotificationsData.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
@@ -228,8 +228,8 @@ export function useFeatureNotifications() {
       | ((persistenceConfig: FeatureNotificationsPersistenceConfig) => Promise<PersistedFeaturesDict>)
       | undefined = (featureNotificationsData as any)?.__persistFeatureNotifications;
     (__persistFeatureNotifications ?? persistFeatureNotifications)(persistenceConfig, allFeaturesMap).then(() => {
+      setSeenFeatures(allFeaturesMap);
       setFeatureNotificationsData(data => (data ? { ...data, badge: false } : data));
-      setMarkAllAsRead(true);
     });
   };
 
