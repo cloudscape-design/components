@@ -113,7 +113,7 @@ const permutations = createPermutations<CardsProps>([
     cardDefinition: [cardDefinition],
     items: [
       createSimpleItems(4, [
-        'Very long text to see how the other items are affected by a very long text in other cards. ',
+        'Very long text to see how the other items are affected by a shorter text in other cards. This helps test layout behavior when card content varies significantly.',
         'One',
         'Two',
         'Three',
