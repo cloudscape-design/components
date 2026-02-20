@@ -219,7 +219,7 @@ export function useFeatureNotifications() {
     const featuresMap = featureNotificationsData.features.reduce((acc, feature) => {
       return {
         ...acc,
-        [feature.id]: feature.releaseDate.toString(),
+        [feature.id]: feature.releaseDate,
       };
     }, {});
     const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
