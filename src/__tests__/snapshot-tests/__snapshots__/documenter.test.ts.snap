@@ -8778,6 +8778,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "boolean",
           },
           {
+            "name": "groups",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
+          },
+          {
             "inlineType": {
               "name": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
               "properties": [
@@ -25701,6 +25706,13 @@ Use it in conjunction with the content display preference of the [collection pre
       "name": "columnDisplay",
       "optional": true,
       "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
+    },
+    {
+      "description": "Add grouping for the columns define groups for columns to be under and also nested groups for which
+other groups will be nested under.",
+      "name": "columnGroupingDefinitions",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.ColumnGroupsDefinition<T>>",
     },
     {
       "defaultValue": "'comfortable'",
