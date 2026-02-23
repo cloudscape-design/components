@@ -10,13 +10,14 @@ import {
   Button,
   CollectionPreferences,
   CollectionPreferencesProps,
-  Container,
   Header,
   Pagination,
   Table,
   TableProps,
   TextFilter,
 } from '~components';
+
+import { SimplePage } from '../app/templates';
 
 interface EC2Instance {
   id: string;
@@ -255,12 +256,12 @@ export default function EC2TableDemo() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps['preferences']>({
     pageSize: 10,
     contentDisplay: [
-      { id: 'id', visible: true },
-      { id: 'name', visible: true },
       { id: 'cpuUtilization', visible: true },
       { id: 'memoryUtilization', visible: true },
       { id: 'networkIn', visible: true },
       { id: 'networkOut', visible: true },
+      { id: 'id', visible: true },
+      { id: 'name', visible: true },
       { id: 'instanceType', visible: true },
       { id: 'az', visible: true },
       { id: 'state', visible: true },
@@ -297,12 +298,15 @@ export default function EC2TableDemo() {
   const { selectedItems } = collectionProps;
 
   return (
-    <Container>
+    <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
       <Table
         {...collectionProps}
         selectionType="multi"
         resizableColumns={true}
-        variant="stacked"
+        stickyColumns={{
+          first: 1,
+        }}
+        // variant="stacked"
         enableKeyboardNavigation={true}
         header={
           <Header
@@ -335,6 +339,6 @@ export default function EC2TableDemo() {
           />
         }
       />
-    </Container>
+    </SimplePage>
   );
 }
