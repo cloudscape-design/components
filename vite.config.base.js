@@ -174,6 +174,7 @@ export function createViteConfig({
 
   return {
     root: path.resolve(__dirname, 'pages/app'),
+    base: './',
     mode,
     plugins: [
       react({
