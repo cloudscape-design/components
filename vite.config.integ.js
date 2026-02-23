@@ -42,6 +42,12 @@ export default defineConfig(() => {
       port: 8080,
       host: 'localhost',
     },
+    // Preview server configuration (used when serving pre-built files in CI)
+    preview: {
+      port: 8080,
+      host: 'localhost',
+      open: false,
+    },
     // Disable optimizations that might interfere with testing
     build: {
       minify: false,
