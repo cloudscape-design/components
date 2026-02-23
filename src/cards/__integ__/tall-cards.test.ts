@@ -8,6 +8,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1000, height: 1600 });
     await browser.url('#/light/cards/tall-cards');
+    await page.waitForVisible('#overflow-parent');
     await testFn(page);
   });
 };
