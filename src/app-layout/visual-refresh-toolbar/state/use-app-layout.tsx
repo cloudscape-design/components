@@ -159,9 +159,7 @@ export const useAppLayout = (
   } = useDrawers(
     {
       ...rest,
-      drawers: featureNotificationsProps?.drawer
-        ? [featureNotificationsProps?.drawer, ...(rest.drawers ?? [])]
-        : rest.drawers,
+      externalLocalRuntimeDrawers: featureNotificationsProps?.drawer && [featureNotificationsProps?.drawer],
       onGlobalDrawerFocus,
       onAddNewActiveDrawer,
       expandedDrawerId,

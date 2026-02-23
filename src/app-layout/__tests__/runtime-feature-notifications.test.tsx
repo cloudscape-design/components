@@ -419,4 +419,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     await delay();
     expect(wrapper.findDrawerTriggerById('empty-features')).toBeFalsy();
   });
+
+  test('renders feature notifications drawer alongside tools', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
+    const { wrapper } = renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout tools="Tools content" ariaLabels={{ toolsToggle: 'Tools' }} />
+      </TestI18nProvider>
+    );
+    await delay();
+
+    // Both feature notifications and tools should be available
+    expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
+    expect(wrapper.findToolsToggle()).toBeTruthy();
+  });
 });

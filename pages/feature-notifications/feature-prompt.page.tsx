@@ -1,11 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
-import { AppLayout, Badge, Box, Button, Container, Header, Icon, Link, SpaceBetween } from '~components';
+import {
+  AppLayout,
+  AppLayoutProps,
+  Badge,
+  Box,
+  Button,
+  Container,
+  Header,
+  Icon,
+  Link,
+  SpaceBetween,
+  Toggle,
+} from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 import FeaturePrompt, { FeaturePromptProps } from '~components/internal/do-not-use/feature-prompt';
+import awsuiPlugins from '~components/internal/plugins';
 import {
   clearFeatureNotifications,
   FeatureNotificationsPersistenceConfig,
@@ -14,10 +27,57 @@ import {
 } from '~components/internal/plugins/widget';
 import { mount, unmount } from '~mount';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import ScreenshotArea from '../utils/screenshot-area';
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'security',
+
+  ariaLabels: {
+    closeButton: 'Security close button',
+    content: 'Security drawer content',
+    triggerButton: 'Security trigger button',
+    resizeHandle: 'Security resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <rect x="2" y="7" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M4,7V5a4,4,0,0,1,8,0V7" fill="none" stroke="currentColor" stroke-width="2" />
+    </svg>`,
+  },
+
+  onToggle: event => {
+    console.log('security drawer on toggle', event.detail);
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultActive: event.detail.isOpen });
+  },
+
+  resizable: true,
+  defaultSize: 320,
+
+  onResize: event => {
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultSize: event.detail.size });
+  },
+
+  mountContent: container => {
+    mount(<div>sldkfjsdkl</div>, container);
+  },
+  unmountContent: container => unmount(container),
+  headerActions: [
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+    },
+  ],
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
+});
 
 registerFeatureNotifications({
   id: 'local-feature-notifications',
@@ -123,9 +183,19 @@ registerFeatureNotifications({
   },
 });
 
+type DemoContext = React.Context<
+  AppContextType<{
+    hasTools: boolean | undefined;
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+  }>
+>;
+
 export default function () {
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const hasTools = urlParams.hasTools ?? false;
 
   useEffect(() => {
     const root = document.createElement('div');
@@ -177,6 +247,7 @@ export default function () {
           breadcrumbs={<Breadcrumbs />}
           navigation={<Navigation />}
           tools={<Tools>{toolsContent.long}</Tools>}
+          toolsHide={!hasTools}
           content={
             <>
               <div style={{ marginBlockEnd: '1rem' }}>
@@ -184,6 +255,9 @@ export default function () {
                   Demo page
                 </Header>
               </div>
+              <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
+                Use Tools
+              </Toggle>
               <Box margin={{ top: 'm', bottom: 'm' }}>
                 <Container>
                   <SpaceBetween direction="horizontal" size="m">
