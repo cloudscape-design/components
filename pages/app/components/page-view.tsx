@@ -11,7 +11,7 @@ export default function PageView({ pageId }: { pageId: string }) {
   if (!pagesComponents[pageId]) {
     pagesComponents[pageId] = lazy(() =>
       pagesContext(`../${pageId}.page.tsx`).catch(error => {
-        console.error(`Failed to load page: ${pageId}`, error);
+        console.error('Failed to load page: %s', pageId, error);
 
         return {
           default: () => (
