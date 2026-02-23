@@ -31,6 +31,7 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
+import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 
 awsuiPlugins.appLayout.registerDrawer({
@@ -238,136 +239,141 @@ export default function () {
           getTrack={() => document.querySelector('#settings-icon')}
           trackKey="settings-icon"
         />
-        <AppLayout
-          ariaLabels={labels}
-          analyticsMetadata={{
-            flowType: 'home',
-            instanceIdentifier: 'demo-page',
-          }}
-          breadcrumbs={<Breadcrumbs />}
-          navigation={<Navigation />}
-          tools={<Tools>{toolsContent.long}</Tools>}
-          toolsHide={!hasTools}
-          content={
-            <>
-              <div style={{ marginBlockEnd: '1rem' }}>
-                <Header variant="h1" description="Basic demo">
-                  Demo page
-                </Header>
-              </div>
-              <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
-                Use Tools
-              </Toggle>
-              <Box margin={{ top: 'm', bottom: 'm' }}>
-                <Container>
-                  <SpaceBetween direction="horizontal" size="m">
-                    <Button
-                      ref={triggerRef}
-                      onClick={() => {
-                        featurePromptRef.current?.show();
-                      }}
-                    >
-                      show a standalone feature prompt
-                    </Button>
-                    <Button
-                      ref={triggerRef}
-                      onClick={() => {
-                        showFeaturePromptIfPossible();
-                      }}
-                    >
-                      show a feature prompt for feature notifications
-                    </Button>
-                    <Button
-                      ref={triggerRef}
-                      onClick={() => {
-                        localStorage.removeItem('feature-notifications');
-                        window.location.reload();
-                      }}
-                    >
-                      clean up persistence storage and reload the page
-                    </Button>
-                    <Button
-                      ref={triggerRef}
-                      onClick={() => {
-                        clearFeatureNotifications();
-                      }}
-                    >
-                      clear feature notifications
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        registerFeatureNotifications({
-                          id: 'local-feature-notifications',
-                          suppressFeaturePrompt: false,
-                          featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
-                          filterFeatures: () => true,
-                          features: [
-                            {
-                              id: '1',
-                              header: <Box fontWeight="bold">Overriden</Box>,
-                              content: (
-                                <Box variant="p">
-                                  You can now enrich CloudTrail events with additional information by adding resources
-                                  tags and IAM global keys in CloudTrail lake.{' '}
-                                  <Link variant="primary" external={true} href="https://amazon.com">
-                                    Learn more
-                                  </Link>
-                                </Box>
-                              ),
-                              releaseDate: new Date('2025-11-01'),
-                            },
-                          ],
-                          mountItem: (container, data) => {
-                            mount(data, container);
+        <IframeWrapper
+          id="x"
+          AppComponent={() => (
+            <AppLayout
+              ariaLabels={labels}
+              analyticsMetadata={{
+                flowType: 'home',
+                instanceIdentifier: 'demo-page',
+              }}
+              breadcrumbs={<Breadcrumbs />}
+              navigation={<Navigation />}
+              tools={<Tools>{toolsContent.long}</Tools>}
+              toolsHide={!hasTools}
+              content={
+                <>
+                  <div style={{ marginBlockEnd: '1rem' }}>
+                    <Header variant="h1" description="Basic demo">
+                      Demo page
+                    </Header>
+                  </div>
+                  <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
+                    Use Tools
+                  </Toggle>
+                  <Box margin={{ top: 'm', bottom: 'm' }}>
+                    <Container>
+                      <SpaceBetween direction="horizontal" size="m">
+                        <Button
+                          ref={triggerRef}
+                          onClick={() => {
+                            featurePromptRef.current?.show();
+                          }}
+                        >
+                          show a standalone feature prompt
+                        </Button>
+                        <Button
+                          ref={triggerRef}
+                          onClick={() => {
+                            showFeaturePromptIfPossible();
+                          }}
+                        >
+                          show a feature prompt for feature notifications
+                        </Button>
+                        <Button
+                          ref={triggerRef}
+                          onClick={() => {
+                            localStorage.removeItem('feature-notifications');
+                            window.location.reload();
+                          }}
+                        >
+                          clean up persistence storage and reload the page
+                        </Button>
+                        <Button
+                          ref={triggerRef}
+                          onClick={() => {
+                            clearFeatureNotifications();
+                          }}
+                        >
+                          clear feature notifications
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            registerFeatureNotifications({
+                              id: 'local-feature-notifications',
+                              suppressFeaturePrompt: false,
+                              featuresPageLink: '/#/feature-notifications/feature-prompt?appLayoutToolbar=true',
+                              filterFeatures: () => true,
+                              features: [
+                                {
+                                  id: '1',
+                                  header: <Box fontWeight="bold">Overriden</Box>,
+                                  content: (
+                                    <Box variant="p">
+                                      You can now enrich CloudTrail events with additional information by adding
+                                      resources tags and IAM global keys in CloudTrail lake.{' '}
+                                      <Link variant="primary" external={true} href="https://amazon.com">
+                                        Learn more
+                                      </Link>
+                                    </Box>
+                                  ),
+                                  releaseDate: new Date('2025-11-01'),
+                                },
+                              ],
+                              mountItem: (container, data) => {
+                                mount(data, container);
 
-                            return () => unmount(container);
-                          },
-                          persistenceConfig: {
-                            uniqueKey: 'feature-notifications',
-                          },
-                          // DON'T USE
-                          ...{
-                            __persistFeatureNotifications: async function (
-                              persistenceConfig: FeatureNotificationsPersistenceConfig,
-                              value: Record<string, string>
-                            ) {
-                              const result = await new Promise<void>(resolve =>
-                                setTimeout(() => {
-                                  localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
-                                  resolve();
-                                }, 150)
-                              );
-                              return result;
-                            },
-                            __retrieveFeatureNotifications: async function (
-                              persistenceConfig: FeatureNotificationsPersistenceConfig
-                            ) {
-                              const result = await new Promise<Record<string, string>>(resolve =>
-                                setTimeout(
-                                  () =>
-                                    resolve(
-                                      localStorage.getItem(persistenceConfig.uniqueKey)
-                                        ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
-                                        : {}
-                                    ),
-                                  150
-                                )
-                              );
-                              return result;
-                            },
-                          },
-                        });
-                      }}
-                    >
-                      Override
-                    </Button>
-                  </SpaceBetween>
-                </Container>
-              </Box>
-              <Containers />
-            </>
-          }
-        />
+                                return () => unmount(container);
+                              },
+                              persistenceConfig: {
+                                uniqueKey: 'feature-notifications',
+                              },
+                              // DON'T USE
+                              ...{
+                                __persistFeatureNotifications: async function (
+                                  persistenceConfig: FeatureNotificationsPersistenceConfig,
+                                  value: Record<string, string>
+                                ) {
+                                  const result = await new Promise<void>(resolve =>
+                                    setTimeout(() => {
+                                      localStorage.setItem(persistenceConfig.uniqueKey, JSON.stringify(value));
+                                      resolve();
+                                    }, 150)
+                                  );
+                                  return result;
+                                },
+                                __retrieveFeatureNotifications: async function (
+                                  persistenceConfig: FeatureNotificationsPersistenceConfig
+                                ) {
+                                  const result = await new Promise<Record<string, string>>(resolve =>
+                                    setTimeout(
+                                      () =>
+                                        resolve(
+                                          localStorage.getItem(persistenceConfig.uniqueKey)
+                                            ? JSON.parse(localStorage.getItem(persistenceConfig.uniqueKey)!)
+                                            : {}
+                                        ),
+                                      150
+                                    )
+                                  );
+                                  return result;
+                                },
+                              },
+                            });
+                          }}
+                        >
+                          Override
+                        </Button>
+                      </SpaceBetween>
+                    </Container>
+                  </Box>
+                  <Containers />
+                </>
+              }
+            />
+          )}
+        ></IframeWrapper>
       </I18nProvider>
     </ScreenshotArea>
   );
