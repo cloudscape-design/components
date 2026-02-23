@@ -270,6 +270,17 @@ export default function EC2TableDemo() {
     ],
   });
 
+  const ariaLabels: TableProps<EC2Instance>['ariaLabels'] = {
+    selectionGroupLabel: 'EC2 instances selection',
+    allItemsSelectionLabel: ({ selectedItems }) =>
+      `${selectedItems.length} ${selectedItems.length === 1 ? 'instance' : 'instances'} selected`,
+    itemSelectionLabel: ({ selectedItems }, item) => {
+      const isItemSelected = selectedItems.includes(item);
+      return `${item.name} is ${isItemSelected ? '' : 'not '}selected`;
+    },
+    tableLabel: 'EC2 Instances',
+  };
+
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
     allInstances,
     {
@@ -299,6 +310,7 @@ export default function EC2TableDemo() {
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
+      <h1>EC2 Instances Table</h1>
       <Table
         {...collectionProps}
         selectionType="multi"
@@ -308,6 +320,7 @@ export default function EC2TableDemo() {
         }}
         // variant="stacked"
         enableKeyboardNavigation={true}
+        ariaLabels={ariaLabels}
         header={
           <Header
             counter={
