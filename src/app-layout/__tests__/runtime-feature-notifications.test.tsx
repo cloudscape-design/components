@@ -122,7 +122,7 @@ describeEachAppLayout(() => {
   });
 });
 
-describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
+describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   test('registers feature notifications correctly', async () => {
     awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
     const { wrapper } = renderComponent(<AppLayout />);
@@ -308,6 +308,35 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     fireEvent.pointerEnter(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement());
     // ensure the built-in tooltip on the trigger button (not the feature prompt) doesn't appear after focus changes.
     expect(wrapper.findDrawerTriggerTooltip()).toBeFalsy();
+  });
+
+  test('renders labels from i18n provider', async () => {
+    awsuiWidgetPlugins.registerFeatureNotifications(featureNotificationsDefaults);
+    const { wrapper } = await renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout />
+      </TestI18nProvider>
+    );
+    await delay();
+
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Show feature notifications'
+    );
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    const activeDrawerWrapper = wrapper.findActiveDrawer()!;
+
+    expect(activeDrawerWrapper.getElement()).toHaveAttribute('aria-label', 'Feature notifications');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('Latest feature releases');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('View all feature releases');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Close notifications');
+    if (size === 'desktop') {
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Resize feature notifications'
+      );
+    }
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
