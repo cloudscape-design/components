@@ -11,11 +11,6 @@ import AutosuggestInput, {
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  useResizeObserver: jest.fn(),
-}));
-
 function render(jsx: React.ReactElement) {
   const { container, rerender, getByTestId } = renderJsx(jsx);
   const wrapper = new AutosuggestInputWrapper(container);
