@@ -118,7 +118,7 @@ const AutosuggestInput = React.forwardRef(
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => inputRef.current,
-      entry => setTriggerWidth(entry.borderBoxWidth)
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
     );
 
     const [open, setOpen] = useState(false);
