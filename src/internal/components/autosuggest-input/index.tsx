@@ -23,6 +23,7 @@ import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelab
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { KeyCode } from '../../keycode';
+import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import Dropdown from '../dropdown';
@@ -302,16 +303,7 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
-          minWidth={
-            // AWSUI-19898
-            dropdownWidth
-              ? dropdownWidth
-              : expandToViewport
-                ? triggerWidth !== null
-                  ? Math.min(triggerWidth, getBreakpointValue('xxs'))
-                  : undefined
-                : 'trigger'
-          }
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}
           onFocus={handleFocus}

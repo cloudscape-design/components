@@ -18,6 +18,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
@@ -259,14 +260,7 @@ const InternalSelect = React.forwardRef(
           ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          minWidth={
-            // AWSUI-19898
-            expandToViewport
-              ? triggerWidth !== null
-                ? Math.min(triggerWidth, getBreakpointValue('xxs'))
-                : undefined
-              : 'trigger'
-          }
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}

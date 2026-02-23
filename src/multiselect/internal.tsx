@@ -14,6 +14,7 @@ import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
 import PlainList from '../select/parts/plain-list';
@@ -173,14 +174,7 @@ const InternalMultiselect = React.forwardRef(
           ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
           ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={multiselectProps.isOpen}
-          minWidth={
-            // AWSUI-19898
-            expandToViewport
-              ? triggerWidth !== null
-                ? Math.min(triggerWidth, getBreakpointValue('xxs'))
-                : undefined
-              : 'trigger'
-          }
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
