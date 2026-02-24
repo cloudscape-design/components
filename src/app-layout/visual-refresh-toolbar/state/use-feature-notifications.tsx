@@ -36,11 +36,9 @@ interface FeatureNotifications extends FeatureNotificationsPayload<unknown> {
 const FEATURE_NOTIFICATIONS_RETENTION_DAYS = 180;
 const DEFAULT_FEATURE_FILTER_DAYS = 90;
 
-function subtractDaysFromDate(currentDate: Date, daysToSubtract: number) {
-  daysToSubtract = daysToSubtract || 0;
+function subtractDaysFromDate(currentDate: Date, daysToSubtract: number = 0): Date {
   const pastDate = new Date(currentDate);
   pastDate.setDate(pastDate.getDate() - daysToSubtract);
-
   return pastDate;
 }
 
