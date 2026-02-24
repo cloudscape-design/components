@@ -31,6 +31,17 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    */
   size?: ModalProps.Size;
   /**
+   * Controls the vertical positioning of the modal.
+   *
+   * - `center` (default) - The modal is vertically centered in the viewport and re-centers
+   *   when content height changes. Use for dialogs with static, predictable content.
+   *
+   * - `top` - The modal anchors at fixed distance and grows downward
+   *   as content expands. Use when the content changes dynamically to prevent disruptive
+   *   vertical repositioning that can cause users to lose context.
+   */
+  position?: ModalProps.Position;
+  /**
    * Determines whether the modal is displayed on the screen. Modals are hidden by default.
    * Set this property to `true` to show them.
    */
@@ -82,6 +93,7 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
 
 export namespace ModalProps {
   export type Size = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'max';
+  export type Position = 'center' | 'top';
 
   export interface DismissDetail {
     reason: string;

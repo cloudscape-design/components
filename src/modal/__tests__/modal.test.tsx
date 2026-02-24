@@ -119,6 +119,20 @@ describe('Modal component', () => {
     });
   });
 
+  describe('position property', () => {
+    it('defaults to center position', () => {
+      const wrapper = renderModal();
+      expect(wrapper.findFocusLock().getElement()).toHaveClass(styles['position-center']);
+    });
+
+    it('displays correct position', () => {
+      (['center', 'top'] as ModalProps.Position[]).forEach(position => {
+        const wrapper = renderModal({ position });
+        expect(wrapper.findFocusLock().getElement()).toHaveClass(styles[`position-${position}`]);
+      });
+    });
+  });
+
   describe('dismiss on click', () => {
     it('closes the dialog when clicked on the overlay section of the container', () => {
       const onDismissSpy = jest.fn();

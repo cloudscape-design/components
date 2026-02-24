@@ -39,6 +39,14 @@ $modal-z-index: 5000;
   padding-inline: 0;
   z-index: $modal-z-index;
   pointer-events: none;
+
+  &.position-top {
+    margin-block-start: 0;
+  }
+
+  &.position-center {
+    margin-block: auto;
+  }
 }
 
 .dialog {
