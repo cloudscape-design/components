@@ -37,7 +37,8 @@ export default class WizardWrapper extends FormWrapper {
   }
 
   findMenuNavigationLinks(): Array<ElementWrapper> {
-    return this.findAllByClassName(styles['navigation-link']);
+    const nav = this.findByClassName(styles.navigation);
+    return nav ? nav.findAllByClassName(styles['navigation-link']) : [];
   }
 
   /**
@@ -54,7 +55,7 @@ export default class WizardWrapper extends FormWrapper {
   findMenuNavigationLink(stepNumber: number, state?: string): ElementWrapper | null {
     const additionalClassName = state ? `.${styles[`navigation-link-${state}`]}` : '';
     return this.find(
-      `.${styles['navigation-link-item']}:nth-child(${stepNumber}) .${styles['navigation-link']}${additionalClassName}`
+      `.${styles.navigation} .${styles['navigation-link-item']}:nth-child(${stepNumber}) .${styles['navigation-link']}${additionalClassName}`
     );
   }
 
