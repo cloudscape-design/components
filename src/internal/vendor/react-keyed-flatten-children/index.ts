@@ -19,16 +19,14 @@ export default function flattenChildren(
   children: ReactNode,
   depth = 0,
   keys: (string | number)[] = [],
-  componentName?: string
+  componentName: string
 ): ReactNode[] {
   return Children.toArray(children).reduce((acc: ReactNode[], node, nodeIndex) => {
     if (isFragmentWithChildren(node)) {
-      if (componentName) {
-        warnOnce(
-          componentName,
-          'React.Fragment children are flattened in React 18 but not in React 19+. Use arrays instead of fragments for consistent behavior.'
-        );
-      }
+      warnOnce(
+        componentName,
+        'React.Fragment children are flattened in React 18 but not in React 19+. Use arrays instead of fragments for consistent behavior.'
+      );
       acc.push(...flattenChildren(node.props.children, depth + 1, keys.concat(node.key || nodeIndex), componentName));
     } else if (isValidElement(node)) {
       acc.push(

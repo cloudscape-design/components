@@ -5,14 +5,24 @@ import React, { ReactNode } from 'react';
 import flattenChildrenLegacy from '../vendor/react-keyed-flatten-children';
 import { getReactMajorVersion } from './react-version';
 
-export function flattenChildren(children: ReactNode, componentName?: string): ReactNode[] {
+/**
+ * Flattens React children into a single-level array.
+ *
+ * This utility handles version-specific differences in React's children handling:
+ * - **React 16-18**: Flattens nested arrays AND fragments into a single array
+ * - **React 19+**: Flattens nested arrays but preserves fragments as single elements
+ *
+ * @param children - React children to flatten (elements, arrays, fragments, etc.)
+ * @param componentName - Component name used for warning messages. Required to enable fragment
+ *                        detection warnings in React 16-18 when fragments are found.
+ *
+ * @returns A flat array of React nodes
+ */
+export function flattenChildren(children: ReactNode, componentName: string): ReactNode[] {
   const majorVersion = getReactMajorVersion();
 
   if (!Number.isNaN(majorVersion) && majorVersion < 19) {
-    // React 16-18: Use react-keyed-flatten-children for backward compatibility
     return flattenChildrenLegacy(children, 0, [], componentName);
   }
-  // React 19+: Uses Children.toArray() which doesn't flatten fragments.
-  // This also supports bigint which is not available in earlier React versions.
   return React.Children.toArray(children);
 }
