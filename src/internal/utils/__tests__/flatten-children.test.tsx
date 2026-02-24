@@ -49,12 +49,12 @@ describe('flattenChildren', () => {
     });
 
     it('flattens nested arrays', () => {
-      expect(flattenChildren(nestedArrayChildren)).toHaveLength(4);
+      expect(flattenChildren(nestedArrayChildren, 'TestComponent')).toHaveLength(4);
     });
 
     it('does NOT flatten fragments', () => {
-      expect(flattenChildren(fragmentChildren)).toHaveLength(2);
-      expect(flattenChildren(singleFragment)).toHaveLength(1);
+      expect(flattenChildren(fragmentChildren, 'TestComponent')).toHaveLength(2);
+      expect(flattenChildren(singleFragment, 'TestComponent')).toHaveLength(1);
     });
 
     it('does not warn about fragments', () => {
@@ -75,12 +75,12 @@ describe('flattenChildren', () => {
     });
 
     it('flattens nested arrays', () => {
-      expect(flattenChildren(nestedArrayChildren)).toHaveLength(4);
+      expect(flattenChildren(nestedArrayChildren, 'TestComponent')).toHaveLength(4);
     });
 
     it('flattens fragments', () => {
-      expect(flattenChildren(fragmentChildren)).toHaveLength(3);
-      expect(flattenChildren(singleFragment)).toHaveLength(2);
+      expect(flattenChildren(fragmentChildren, 'TestComponent')).toHaveLength(3);
+      expect(flattenChildren(singleFragment, 'TestComponent')).toHaveLength(2);
     });
 
     it('warns when fragments are found with componentName', () => {
@@ -89,11 +89,6 @@ describe('flattenChildren', () => {
         'TestComponent',
         'React.Fragment children are flattened in React 18 but not in React 19+. Use arrays instead of fragments for consistent behavior.'
       );
-    });
-
-    it('does not warn when no componentName is provided', () => {
-      flattenChildren(fragmentChildren);
-      expect(warnOnce).not.toHaveBeenCalled();
     });
 
     it('does not warn when no fragments are present', () => {
