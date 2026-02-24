@@ -34,7 +34,8 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
    * Specifies the height of the modal. When provided, the modal content becomes scrollable if it exceeds the specified height.
    * If the specified height exceeds available viewport space, the modal will use the maximum available space.
-   * The minimum height is header height + footer height + 60px content height (to ensure content is accessible).
+   * To make sure the content is accessible, the component will apply a minimum height of 60px for the content area,
+   * plus the header height and the footer height.
    */
   height?: number;
 
