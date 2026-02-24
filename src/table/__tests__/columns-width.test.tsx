@@ -162,7 +162,7 @@ test('should respect minWidth when dynamically adding columns via visibleColumns
   expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
     '100px', // original column unchanged
     '150px', // use minWidth because 150 > 80
-    '180px', // sue width (minWidth defaults to width)
+    '180px', // use width (minWidth defaults to width)
     '200px', // use minWidth because 200 > 180
   ]);
 });
