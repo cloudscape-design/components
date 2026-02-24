@@ -51076,7 +51076,12 @@ Supported options:
           "parameters": [],
           "returnType": {
             "isNullable": false,
-            "name": "Array<never> | MultiElementWrapper<ElementWrapper>",
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
           },
         },
         {

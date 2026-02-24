@@ -37,8 +37,7 @@ export default class WizardWrapper extends FormWrapper {
   }
 
   findMenuNavigationLinks(): Array<ElementWrapper> {
-    const nav = this.findByClassName(styles.navigation);
-    return nav ? nav.findAllByClassName(styles['navigation-link']) : [];
+    return this.findByClassName(styles.navigation)!.findAllByClassName(styles['navigation-link']);
   }
 
   /**
