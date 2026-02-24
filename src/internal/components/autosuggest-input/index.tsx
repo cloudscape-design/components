@@ -4,6 +4,8 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import {
   BaseChangeDetail,
@@ -21,6 +23,7 @@ import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelab
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { KeyCode } from '../../keycode';
+import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import Dropdown from '../dropdown';
@@ -112,6 +115,11 @@ const AutosuggestInput = React.forwardRef(
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => inputRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const [open, setOpen] = useState(false);
 
@@ -295,7 +303,7 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
-          minWidth={dropdownWidth ? dropdownWidth : expandToViewport ? undefined : 'trigger'}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}
           onFocus={handleFocus}

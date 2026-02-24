@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import * as getDropdownMinWidthModule from '../../../lib/components/internal/utils/get-dropdown-min-width';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -58,10 +60,10 @@ function renderMultiselect(jsx: React.ReactElement) {
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
 
-  //just mock the `warnOnce` export
   return {
     __esModule: true,
     ...originalModule,
+    useResizeObserver: jest.fn(),
     warnOnce: jest.fn(),
   };
 });
@@ -970,4 +972,38 @@ test('renders aria-multiselectable="true" on listbox with virtual scroll', () =>
   wrapper.openDropdown();
   const listbox = wrapper.findDropdown().find('[role="listbox"]');
   expect(listbox!.getElement()).toHaveAttribute('aria-multiselectable', 'true');
+});
+
+describe('resize observer', () => {
+  let getDropdownMinWidthSpy: jest.SpyInstance;
+  let resizeCallbacks: Array<(entry: ContainerQueryEntry) => void>;
+
+  beforeEach(() => {
+    resizeCallbacks = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => resizeCallbacks.push(cb));
+    getDropdownMinWidthSpy = jest.spyOn(getDropdownMinWidthModule, 'getDropdownMinWidth');
+  });
+
+  afterEach(() => {
+    jest.mocked(useResizeObserver).mockReset();
+    getDropdownMinWidthSpy.mockRestore();
+  });
+
+  function fireResize(borderBoxWidth: number) {
+    act(() => resizeCallbacks.forEach(cb => cb({ borderBoxWidth } as ContainerQueryEntry)));
+  }
+
+  test('sets triggerWidth when borderBoxWidth is positive', () => {
+    renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+    fireResize(300);
+    expect(getDropdownMinWidthSpy).toHaveBeenCalledWith(expect.objectContaining({ triggerWidth: 300 }));
+  });
+
+  test('does not set triggerWidth when borderBoxWidth is 0', () => {
+    renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+    getDropdownMinWidthSpy.mockClear();
+    fireResize(0);
+    // borderBoxWidth === 0 short-circuits the callback so triggerWidth stays null and no re-render occurs
+    expect(getDropdownMinWidthSpy).not.toHaveBeenCalled();
+  });
 });

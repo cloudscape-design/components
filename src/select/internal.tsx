@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
@@ -18,6 +18,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
@@ -106,6 +107,11 @@ const InternalSelect = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -254,7 +260,7 @@ const InternalSelect = React.forwardRef(
           ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          minWidth={expandToViewport ? undefined : 'trigger'}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
