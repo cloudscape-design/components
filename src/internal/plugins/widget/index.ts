@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { getExternalProps } from '../../utils/external-props';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
@@ -45,7 +46,7 @@ export function registerFeatureNotifications<T>(payload: FeatureNotificationsPay
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
 export function registerFeatureNotificationsPublic<T>(payload: FeatureNotificationsPayloadPublic<T>) {
-  registerFeatureNotifications(payload);
+  registerFeatureNotifications(getExternalProps(payload));
 }
 
 export function showFeaturePromptIfPossible() {
