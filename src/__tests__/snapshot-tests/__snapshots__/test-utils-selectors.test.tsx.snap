@@ -92,7 +92,6 @@ exports[`test-utils selectors 1`] = `
   "button-dropdown": [
     "awsui_button-dropdown_sne0l",
     "awsui_description_sne0l",
-    "awsui_disabled_93a1u",
     "awsui_dropdown-trigger_sne0l",
     "awsui_expandable_16mm3",
     "awsui_highlighted_93a1u",
@@ -609,7 +608,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_gxp9y",
   ],
   "table": [
-    "awsui_body-cell-counter_10jtt",
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
@@ -735,6 +733,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_navigation-link-item_1xupv",
     "awsui_navigation-link-label_1xupv",
     "awsui_navigation-link_1xupv",
+    "awsui_navigation_1xupv",
     "awsui_previous-button_1xupv",
     "awsui_primary-button_1xupv",
     "awsui_root_1xupv",

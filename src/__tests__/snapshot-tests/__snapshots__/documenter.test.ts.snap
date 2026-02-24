@@ -209,8 +209,6 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the alert's visual appearance.
-Refer to the [style](/components/alert/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "AlertProps.Style",
         "properties": [
@@ -3639,8 +3637,6 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the autosuggest's visual appearance.
-Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "AutosuggestProps.Style",
         "properties": [
@@ -3984,8 +3980,6 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
-      "description": "An object containing CSS properties to customize the badge's visual appearance.
-Refer to the [style](/components/badge/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "BadgeProps.Style",
         "properties": [
@@ -5501,8 +5495,6 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the button's visual appearance.
-Refer to the [style](/components/button/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ButtonProps.Style",
         "properties": [
@@ -5956,7 +5948,6 @@ The following properties are supported across all types:
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
 - \`description\` (string) - additional data that will be passed to a \`data-description\` attribute. **Deprecated**, has no effect.
 - \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
-- \`dataAttributes\` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
 
 ### action
 
@@ -6620,8 +6611,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
     },
     {
-      "description": "An object containing CSS properties to customize the button group's visual appearance.
-Refer to the [style](/components/button-group/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ButtonGroupProps.Style",
         "properties": [
@@ -7603,8 +7592,6 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the checkbox's visual appearance.
-Refer to the [style](/components/checkbox/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "CheckboxProps.Style",
         "properties": [
@@ -9567,8 +9554,6 @@ If no height is provided, the media slot will be displayed at its full height.",
       "type": "ContainerProps.Media",
     },
     {
-      "description": "An object containing CSS properties to customize the container's visual appearance.
-Refer to the [style](/components/container/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ContainerProps.Style",
         "properties": [
@@ -11121,11 +11106,6 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
-            "name": "isoDatePlaceholder",
-            "optional": true,
-            "type": "string",
-          },
-          {
             "name": "isoDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11206,11 +11186,6 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
-            "name": "slashedDatePlaceholder",
-            "optional": true,
-            "type": "string",
-          },
-          {
             "name": "slashedDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11232,11 +11207,6 @@ Defaults to \`false\`.",
           },
           {
             "name": "startTimeLabel",
-            "optional": true,
-            "type": "string",
-          },
-          {
-            "name": "timePlaceholder",
             "optional": true,
             "type": "string",
           },
@@ -11563,13 +11533,6 @@ exports[`Components definition for error-boundary matches the snapshot: error-bo
   "name": "ErrorBoundary",
   "properties": [
     {
-      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
-      "description": "Adds the specified classes to the root element of the component.",
-      "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Optional identifier for the error boundary instance.
 
 When provided, the identifier is included in the \`onError\` callback payload.
@@ -11637,15 +11600,6 @@ attribute \`data-awsui-boundary-id={errorBoundaryId}\` to support debugging.",
       "name": "i18nStrings",
       "optional": true,
       "type": "ErrorBoundaryProps.I18nStrings",
-    },
-    {
-      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
-use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
-use the \`id\` attribute, consider setting it on a parent element instead.",
-      "description": "Adds the specified ID to the root element of the component.",
-      "name": "id",
-      "optional": true,
-      "type": "string",
     },
     {
       "description": "Callback invoked when an error is intercepted by the boundary.
@@ -12164,7 +12118,7 @@ Make sure that you add a listener to this event to update your application state
     },
     {
       "description": "An object containing all the localized strings required by the component:
-* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button. Receives file index and file name.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
 * \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
@@ -12221,15 +12175,11 @@ Make sure that you add a listener to this event to update your application state
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number, fileName: string) => string",
+              "name": "(fileIndex: number) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
-                },
-                {
-                  "name": "fileName",
-                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -12237,7 +12187,7 @@ Make sure that you add a listener to this event to update your application state
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number, fileName: string) => string)",
+            "type": "((fileIndex: number) => string)",
           },
           {
             "name": "warningIconAriaLabel",
@@ -12515,15 +12465,11 @@ is provided by its parent form field component.",
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number, fileName: string) => string",
+              "name": "(fileIndex: number) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
-                },
-                {
-                  "name": "fileName",
-                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -12531,7 +12477,7 @@ is provided by its parent form field component.",
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number, fileName: string) => string)",
+            "type": "((fileIndex: number) => string)",
           },
           {
             "inlineType": {
@@ -12772,8 +12718,6 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the flashbar's visual appearance.
-Refer to the [style](/components/flashbar/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "FlashbarProps.Style",
         "properties": [
@@ -15427,8 +15371,6 @@ including the date, month, week, time, datetime-local, number and range types.",
       "type": "InputProps.Step",
     },
     {
-      "description": "An object containing CSS properties to customize the input's visual appearance.
-Refer to the [style](/components/input/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "InputProps.Style",
         "properties": [
@@ -16472,8 +16414,6 @@ By default, the component sets the \`rel\` attribute to "noopener noreferrer" wh
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the link's visual appearance.
-Refer to the [style](/components/link/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "LinkProps.Style",
         "properties": [
@@ -19346,8 +19286,6 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the progress bar's visual appearance.
-Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ProgressBarProps.Style",
         "properties": [
@@ -20059,8 +19997,6 @@ inadvertently sending data (such as user passwords) to third parties.",
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the prompt input's visual appearance.
-Refer to the [style](/components/prompt-input/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "PromptInputProps.Style",
         "properties": [
@@ -21267,8 +21203,6 @@ This property should be set for either all or none of the radio buttons in a gro
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the radio button's visual appearance.
-Refer to the [style](/components/radio-button/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "RadioButtonProps.Style",
         "properties": [
@@ -21674,8 +21608,6 @@ being included in a form submission. A read-only control is still focusable.",
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the radio group's visual appearance.
-Refer to the [style](/components/radio-group/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "RadioButtonProps.Style",
         "properties": [
@@ -22862,8 +22794,6 @@ Each segment has the following properties:
       "type": "string | null",
     },
     {
-      "description": "An object containing CSS properties to customize the segmented control's visual appearance.
-Refer to the [style](/components/segmented-control/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "SegmentedControlProps.Style",
         "properties": [
@@ -24416,8 +24346,6 @@ being included in a form submission. A read-only control is still focusable.",
       "type": "number",
     },
     {
-      "description": "An object containing CSS properties to customize the slider's visual appearance.
-Refer to the [style](/components/slider/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "SliderProps.Style",
         "properties": [
@@ -25099,6 +25027,9 @@ By default the orientation is vertical.",
       },
       "name": "orientation",
       "optional": true,
+      "systemTags": [
+        "core",
+      ],
       "type": "string",
     },
     {
@@ -25253,7 +25184,7 @@ the default browser context menu behavior.",
     {
       "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
-The event \`detail\` contains the new state for \`selectedItems\`.",
+The event \`detail\` contains the current list of \`selectedItems\`.",
       "detailInlineType": {
         "name": "TableProps.SelectionChangeDetail<T>",
         "properties": [
@@ -25380,19 +25311,11 @@ scroll parent scrolls to reveal the first row of the table.",
     },
     {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
+* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
+You can use the first argument of type \`SelectionState\` to access the current selection state of the component
+(for example, the \`selectedItems\` list). The second argument is the corresponding  \`Item\` object.
+* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
-* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for item selection controls.
-The selection state includes:
- * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
- * \`itemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
- * \`selectedItemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
-* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for all items selection control.
-The selection state includes:
- * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
- * \`itemsCount\` (optional, number) - corresponds to \`expandableRows.totalItemsCount\` or \`totalItemsCount\`.
- * \`selectedItemsCount\` (optional, number) - corresponds to \`expandableRows.totalSelectedItemsCount\` or \`selectedItems.length\`.
-* \`itemLoaderSelectionLabel\`: ((SelectionState, Item) => string) - Specifies the alternative text for resource loader selector
-in tables with data grouping.
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 * \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
@@ -25496,26 +25419,6 @@ in tables with data grouping.
             "name": "expandButtonLabel",
             "optional": true,
             "type": "((item: T) => string)",
-          },
-          {
-            "inlineType": {
-              "name": "(data: TableProps.SelectionState<T>, row: T | null) => string",
-              "parameters": [
-                {
-                  "name": "data",
-                  "type": "TableProps.SelectionState<T>",
-                },
-                {
-                  "name": "row",
-                  "type": "T | null",
-                },
-              ],
-              "returnType": "string",
-              "type": "function",
-            },
-            "name": "itemLoaderSelectionLabel",
-            "optional": true,
-            "type": "((data: TableProps.SelectionState<T>, row: T | null) => string)",
           },
           {
             "inlineType": {
@@ -25665,8 +25568,6 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
   to reorder the items. This property accepts a custom comparator that is used to compare two items.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
   If present, the \`sortingField\` property is ignored.
-* \`counter\` ((ItemCounterData) => string) - Specifies secondary cell content, displayed next to the primary. Use it to display
-  resource counters in the first column of expandable tables with data grouping.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
   * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
   * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
@@ -25731,22 +25632,7 @@ By default, the keyboard navigation is active for tables with expandable rows.",
 * \`getItemChildren\` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
 * \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
 * \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
-* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
-* \`groupSelection\` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
-properties \`selectionType\` and \`selectedItems\` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
- * \`{ inverted: false, toggledItems: [] }\` - no items are selected;
- * \`{ inverted: true, toggledItems: [] }\` - all items are selected;
- * \`{ inverted: false, toggledItems: ["a", "a.1"] }\` - all items nested under "a", unless also nested under "a.1", are selected.
- * \`{ inverted: true, toggledItems: ["a", "a.1"] }\` - the opposite of above.
-* \`onGroupSelectionChange\` (optional, TableProps.OnGroupSelectionChange<Item>) - Called when group selection changes.
-* \`getItemsCount\` (optional, (Item) => number) - Use it to indicate the number of resources nested under the given item.
-The value is passed as \`itemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
-* \`totalItemsCount\` (optional, number) - Use it to indicate the total number of resources in the table.
-The value is passed as \`itemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.
-* \`getSelectedItemsCount\` (optional, (Item) => number) - Use it to indicate the number of selected resources nested under the given item.
-The value is passed as \`selectedItemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
-* \`totalSelectedItemsCount\` (optional, number) - Use it to indicate the total number of selected resources in the table.
-The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.",
+* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.",
       "inlineType": {
         "name": "TableProps.ExpandableRows<T>",
         "properties": [
@@ -25770,59 +25656,6 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "name": "getItemChildren",
             "optional": false,
             "type": "(item: T) => ReadonlyArray<T>",
-          },
-          {
-            "inlineType": {
-              "name": "(item: T) => number",
-              "parameters": [
-                {
-                  "name": "item",
-                  "type": "T",
-                },
-              ],
-              "returnType": "number",
-              "type": "function",
-            },
-            "name": "getItemsCount",
-            "optional": true,
-            "type": "((item: T) => number)",
-          },
-          {
-            "inlineType": {
-              "name": "(item: T) => number",
-              "parameters": [
-                {
-                  "name": "item",
-                  "type": "T",
-                },
-              ],
-              "returnType": "number",
-              "type": "function",
-            },
-            "name": "getSelectedItemsCount",
-            "optional": true,
-            "type": "((item: T) => number)",
-          },
-          {
-            "inlineType": {
-              "name": "TableProps.GroupSelectionState<T>",
-              "properties": [
-                {
-                  "name": "inverted",
-                  "optional": false,
-                  "type": "boolean",
-                },
-                {
-                  "name": "toggledItems",
-                  "optional": false,
-                  "type": "ReadonlyArray<T>",
-                },
-              ],
-              "type": "object",
-            },
-            "name": "groupSelection",
-            "optional": true,
-            "type": "TableProps.GroupSelectionState<T>",
           },
           {
             "inlineType": {
@@ -25855,32 +25688,6 @@ The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allIt
             "name": "onExpandableItemToggle",
             "optional": false,
             "type": "TableProps.OnExpandableItemToggle<T>",
-          },
-          {
-            "inlineType": {
-              "name": "TableProps.OnGroupSelectionChange<T>",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": "NonCancelableCustomEvent<Detail>",
-                },
-              ],
-              "returnType": "void",
-              "type": "function",
-            },
-            "name": "onGroupSelectionChange",
-            "optional": true,
-            "type": "TableProps.OnGroupSelectionChange<T>",
-          },
-          {
-            "name": "totalItemsCount",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "totalSelectedItemsCount",
-            "optional": true,
-            "type": "number",
           },
         ],
         "type": "object",
@@ -25987,23 +25794,6 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "((data: TableProps.LiveAnnouncement) => string)",
-    },
-    {
-      "description": "Renders loader counter that is appended to the loader content in all loader states.",
-      "inlineType": {
-        "name": "(detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode",
-        "parameters": [
-          {
-            "name": "detail",
-            "type": "TableProps.RenderLoaderCounterDetail<T>",
-          },
-        ],
-        "returnType": "React.ReactNode",
-        "type": "function",
-      },
-      "name": "renderLoaderCounter",
-      "optional": true,
-      "type": "((detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode)",
     },
     {
       "description": "Renders loader row content for empty row state: the loading status is "finished",
@@ -26475,8 +26265,6 @@ need to introduce friction to the switching of tabs.",
       "type": "string",
     },
     {
-      "description": "An object containing CSS properties to customize the tabs' visual appearance.
-Refer to the [style](/components/tabs/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TabsProps.Style",
         "properties": [
@@ -27501,8 +27289,6 @@ If set to \`true\`, the live announcement of countText by assistive technologies
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the text filter's visual appearance.
-Refer to the [style](/components/text-filter/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TextFilterProps.Style",
         "properties": [
@@ -28079,8 +27865,6 @@ inadvertently sending data (such as user passwords) to third parties.",
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the textarea's visual appearance.
-Refer to the [style](/components/textarea/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TextareaProps.Style",
         "properties": [
@@ -28894,8 +28678,6 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "type": "boolean",
     },
     {
-      "description": "An object containing CSS properties to customize the toggle's visual appearance.
-Refer to the [style](/components/toggle/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ToggleProps.Style",
         "properties": [
@@ -31916,10 +31698,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItemById",
           "parameters": [
             {
@@ -31928,14 +31707,6 @@ Supported options:
               },
               "name": "id",
               "typeName": "string",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -31970,21 +31741,9 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItems",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -34661,6 +34420,9 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
+for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
+is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
@@ -40271,37 +40033,6 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
-          "name": "findBodyCellCounter",
-          "parameters": [
-            {
-              "description": "1-based index of the row of the cell to select.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "rowIndex",
-              "typeName": "number",
-            },
-            {
-              "description": "1-based index of the column of the cell to select.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "columnIndex",
-              "typeName": "number",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -42060,10 +41791,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItemById",
           },
@@ -42075,14 +41803,6 @@ Supported options:
               },
               "name": "id",
               "typeName": "string",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -42120,24 +41840,12 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -43386,10 +43094,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItemById",
           "parameters": [
             {
@@ -43398,14 +43103,6 @@ Supported options:
               },
               "name": "id",
               "typeName": "string",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -43416,21 +43113,9 @@ Supported options:
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "name": "findItems",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -45370,6 +45055,9 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
+          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
+for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
+is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
@@ -49258,32 +48946,6 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
-          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
-          "name": "findBodyCellCounter",
-          "parameters": [
-            {
-              "description": "1-based index of the row of the cell to select.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "rowIndex",
-              "typeName": "number",
-            },
-            {
-              "description": "1-based index of the column of the cell to select.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "columnIndex",
-              "typeName": "number",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -50539,10 +50201,7 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItemById",
           },
@@ -50555,14 +50214,6 @@ Supported options:
               "name": "id",
               "typeName": "string",
             },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
           ],
           "returnType": {
             "isNullable": false,
@@ -50572,24 +50223,12 @@ Supported options:
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
-
-Supported options:
-* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ disabled?: boolean | undefined; }",
-            },
-          ],
+          "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
