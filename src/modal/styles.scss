@@ -66,6 +66,14 @@ $modal-z-index: 5000;
     max-inline-size: 820px;
   }
 
+  &.x-large {
+    max-inline-size: 1024px;
+  }
+
+  &.xx-large {
+    max-inline-size: 1280px;
+  }
+
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
     max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));

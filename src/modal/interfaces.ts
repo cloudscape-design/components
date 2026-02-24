@@ -26,8 +26,8 @@ export interface BaseModalProps {
 export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
    * Sets the width of the modal. `max` uses variable width up to the
-   * largest size allowed by the design guidelines. Other sizes
-   * (`small`/`medium`/`large`) have fixed widths.
+   * largest size allowed by the design guidelines. Other sizes have fixed widths:
+   * `small` (320px), `medium` (600px), `large` (820px), `x-large` (1024px), `xx-large` (1280px).
    */
   size?: ModalProps.Size;
   /**
@@ -81,7 +81,7 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
 }
 
 export namespace ModalProps {
-  export type Size = 'small' | 'medium' | 'large' | 'max';
+  export type Size = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'max';
 
   export interface DismissDetail {
     reason: string;

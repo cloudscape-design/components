@@ -112,7 +112,7 @@ describe('Modal component', () => {
 
   describe('size property', () => {
     it('displays correct size', () => {
-      (['small', 'medium', 'large', 'max'] as ModalProps.Size[]).forEach(size => {
+      (['small', 'medium', 'large', 'x-large', 'xx-large', 'max'] as ModalProps.Size[]).forEach(size => {
         const wrapper = renderModal({ size });
         expect(wrapper.findDialog().getElement()).toHaveClass(styles[size]);
       });
