@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Button, FormField, Input, Modal, SpaceBetween } from '~components';
+import { Button, Checkbox, FormField, Input, Modal, SpaceBetween } from '~components';
 
 import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -11,6 +11,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function () {
   const { urlParams, setUrlParams } = useAppContext();
   const [visible, setVisible] = useState(false);
+  const showFooter = urlParams.footer ? true : false;
+  const footer = <Button variant="primary">OK</Button>;
 
   return (
     <SimplePage
@@ -31,6 +33,9 @@ export default function () {
               type="number"
             />
           </FormField>
+          <Checkbox checked={showFooter} onChange={e => setUrlParams({ footer: e.detail.checked })}>
+            Show footer
+          </Checkbox>
         </SpaceBetween>
       }
     >
@@ -44,11 +49,7 @@ export default function () {
           onDismiss={() => setVisible(false)}
           width={urlParams.width ? Number(urlParams.width) : undefined}
           height={urlParams.height ? Number(urlParams.height) : undefined}
-          footer={
-            <span style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button variant="primary">OK</Button>
-            </span>
-          }
+          footer={showFooter ? footer : undefined}
         >
           {Array(100)
             .fill(0)
