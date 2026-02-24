@@ -70,7 +70,7 @@ function ModalWithAnalyticsFunnel({
   );
 }
 
-export default function Modal({ size = 'medium', position = 'center', ...props }: ModalProps) {
+export default function Modal({ size = 'medium', position = 'center', width, height, ...props }: ModalProps) {
   const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
@@ -81,6 +81,8 @@ export default function Modal({ size = 'medium', position = 'center', ...props }
         position,
         disableContentPaddings: props.disableContentPaddings,
         flowType: analyticsMetadata.flowType,
+        width,
+        height,
       },
       metadata: {
         hasResourceType: Boolean(analyticsMetadata?.resourceType),
@@ -97,6 +99,8 @@ export default function Modal({ size = 'medium', position = 'center', ...props }
         baseComponentProps={baseComponentProps}
         size={size}
         position={position}
+        width={width}
+        height={height}
         {...props}
       />
     );
@@ -106,6 +110,8 @@ export default function Modal({ size = 'medium', position = 'center', ...props }
     <InternalModal
       size={size}
       position={position}
+      width={width}
+      height={height}
       {...props}
       {...baseComponentProps}
       __injectAnalyticsComponentMetadata={true}

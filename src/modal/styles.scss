@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../container/shared' as container;
 @use './motion';
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $modal-z-index: 5000;
 
@@ -33,9 +34,8 @@ $modal-z-index: 5000;
 
 .focus-lock {
   align-self: flex-start;
-  margin-block: auto;
   margin-inline: auto;
-  padding-block: awsui.$space-s;
+  padding-block: awsui.$space-static-s;
   padding-inline: 0;
   z-index: $modal-z-index;
   pointer-events: none;
@@ -47,6 +47,10 @@ $modal-z-index: 5000;
   &.position-center {
     margin-block: auto;
   }
+
+  &.custom-height-focus-lock {
+    padding-block-end: 0;
+  }
 }
 
 .dialog {
@@ -54,20 +58,21 @@ $modal-z-index: 5000;
   inset-block-start: 0;
   transform: translate(0, 0);
 
-  inline-size: calc(100vw - #{awsui.$space-s} * 2);
+  inline-size: calc(100vw - #{awsui.$space-static-s} * 2);
 
   box-sizing: border-box;
   outline: none; // prevent highlight when focus set for ESC support
 
   z-index: $modal-z-index;
   pointer-events: all;
+  $modal-size-medium: 600px;
 
   &.small {
     max-inline-size: 320px;
   }
 
   &.medium {
-    max-inline-size: 600px;
+    max-inline-size: $modal-size-medium;
   }
 
   &.large {
@@ -82,11 +87,20 @@ $modal-z-index: 5000;
     max-inline-size: 1280px;
   }
 
-  &.max.breakpoint-xs {
+  &.custom-width {
+    max-inline-size: var(#{custom-props.$modalCustomWidth, $modal-size-medium});
+  }
+
+  &.breakpoint-l.max {
     // viewport - (closed app layout panel widths + 20px on each side)
     max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
     margin-block: auto;
     margin-inline: auto;
+  }
+
+  &.custom-height {
+    block-size: var(#{custom-props.$modalCustomHeight});
+    max-block-size: calc(100vh - (2 * #{awsui.$space-static-s}));
   }
 }
 
@@ -101,6 +115,12 @@ $modal-z-index: 5000;
   border-end-start-radius: awsui.$border-radius-container;
   border-end-end-radius: awsui.$border-radius-container;
   box-shadow: awsui.$shadow-modal;
+
+  &.custom-height-container {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+  }
 }
 
 .content {
@@ -111,6 +131,12 @@ $modal-z-index: 5000;
   &.no-paddings {
     padding-block: 0;
     padding-inline: 0;
+  }
+
+  // When custom height is set, make content scrollable
+  &.custom-height-content {
+    flex-grow: 1;
+    overflow-y: auto;
   }
 }
 
@@ -140,6 +166,11 @@ $modal-z-index: 5000;
   position: sticky;
   inset-block-end: 0;
   z-index: 800;
+
+  &.custom-height {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
 
   &--stuck {
     border-start-start-radius: 0;
