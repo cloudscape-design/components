@@ -735,6 +735,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_navigation-link-item_1xupv",
     "awsui_navigation-link-label_1xupv",
     "awsui_navigation-link_1xupv",
+    "awsui_navigation_1xupv",
     "awsui_previous-button_1xupv",
     "awsui_primary-button_1xupv",
     "awsui_root_1xupv",
