@@ -48,6 +48,10 @@ export interface PaginationProps {
    * @i18n
    */
   ariaLabels?: PaginationProps.Labels;
+  /**
+   * @i18n
+   */
+  i18nStrings?: PaginationProps.I18nStrings;
 
   /**
    * Called when a user interaction causes a pagination change. The event `detail` contains the new `currentPageIndex`.
@@ -68,6 +72,10 @@ export interface PaginationProps {
    * * `requestedPageIndex` (integer) - The index of the requested page.
    */
   onNextPageClick?: NonCancelableEventHandler<PaginationProps.PageClickDetail>;
+  /**
+   * Jump to page configuration
+   */
+  jumpToPage?: PaginationProps.JumpToPageProps;
 }
 
 export namespace PaginationProps {
@@ -76,6 +84,20 @@ export namespace PaginationProps {
     paginationLabel?: string;
     previousPageLabel?: string;
     pageLabel?: (pageNumber: number) => string;
+    jumpToPageButton?: string;
+  }
+
+  export interface I18nStrings {
+    /** @i18n */
+    jumpToPageInputLabel?: string;
+    /** @i18n */
+    jumpToPageError?: string;
+    /** @i18n */
+    jumpToPageLoadingText?: string;
+  }
+
+  export interface ChangeDetail {
+    currentPageIndex: number;
   }
 
   export interface PageClickDetail {
@@ -83,7 +105,17 @@ export namespace PaginationProps {
     requestedPageIndex: number;
   }
 
-  export interface ChangeDetail {
-    currentPageIndex: number;
+  export interface JumpToPageProps {
+    /**
+     * User controlled loading state when jump to page callback is executing
+     */
+    loading?: boolean;
+  }
+
+  export interface Ref {
+    /**
+     * Set error state for jump to page. Component will auto-clear when user types or navigates.
+     */
+    setError: (hasError: boolean) => void;
   }
 }

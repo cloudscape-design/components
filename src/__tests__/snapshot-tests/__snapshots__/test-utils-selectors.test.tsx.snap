@@ -463,6 +463,8 @@ exports[`test-utils selectors 1`] = `
   "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
+    "awsui_jump-to-page-input_fvjdu",
+    "awsui_jump-to-page_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
   ],
