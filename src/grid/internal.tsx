@@ -53,7 +53,7 @@ const InternalGrid = React.forwardRef(
     /*
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
-    const flattenedChildren = flattenChildren(children);
+    const flattenedChildren = flattenChildren(children, 'Grid');
     const Tag = (__tagOverride ?? 'div') as 'div';
 
     if (isDevelopment) {

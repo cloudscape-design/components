@@ -53,7 +53,7 @@ export default function FlexibleColumnLayout({
   const shouldDisableGutters = variant !== 'text-grid' && disableGutters;
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
-  const flattenedChildren = flattenChildren(children);
+  const flattenedChildren = flattenChildren(children, 'ColumnLayout');
   const Tag = (__tagOverride ?? 'div') as 'div';
 
   return (
