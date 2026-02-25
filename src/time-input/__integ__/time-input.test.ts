@@ -49,12 +49,14 @@ class TimeInputPage extends BasePageObject {
   }
 
   async clearInput() {
-    const value = await this.getValue(defaultSelector);
+    const value = (await this.getValue(defaultSelector)) ?? '';
 
-    await this.focusInput();
-    await this.keys('End');
-    for (let k = 0; k < value.length; k++) {
-      await this.keys('Backspace');
+    if (typeof value === 'string') {
+      await this.focusInput();
+      await this.keys('End');
+      for (let k = 0; k < value.length; k++) {
+        await this.keys('Backspace');
+      }
     }
   }
 

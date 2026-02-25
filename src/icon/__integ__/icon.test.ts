@@ -28,7 +28,7 @@ class IconSizeInherit extends BasePageObject {
   }
 
   async hasSize(className: string, selector: string = dynamicIconSelector) {
-    const classes = await this.getElementAttribute(selector, 'class');
+    const classes = (await this.getElementAttribute(selector, 'class')) ?? '';
     return classes.indexOf(styles[className]) !== -1;
   }
 }

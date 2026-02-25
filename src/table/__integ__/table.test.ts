@@ -84,6 +84,6 @@ test(
     ariaLabelledby = await page.getElementAttribute(scrollableWrapperSelector, 'aria-labelledby');
     expect(role).toEqual('region');
     expect(ariaLabelledby).not.toBeFalsy();
-    await expect(page.getElementsText(`#${CSS.escape(ariaLabelledby)}`)).resolves.toEqual([tableHeading]);
+    await expect(page.getElementsText(`#${CSS.escape(ariaLabelledby)}`) ?? '').resolves.toEqual([tableHeading]);
   })
 );
