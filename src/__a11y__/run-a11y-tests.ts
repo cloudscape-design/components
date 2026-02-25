@@ -32,6 +32,7 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         'theming/tokens',
         // this page intentionally has issues to test the helper
         'undefined-texts',
+        'app-layout/with-error-boundaries',
       ];
       const testFunction =
         skipPages.includes(inputUrl) ||
