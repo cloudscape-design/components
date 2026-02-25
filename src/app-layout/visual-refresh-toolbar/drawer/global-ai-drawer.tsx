@@ -192,7 +192,9 @@ export function AppLayoutGlobalAiDrawerImplementation({
                       <div className={styles['drawer-content']}>
                         <header className={styles['drawer-content-header']}>
                           <div className={styles['drawer-content-header-content']}>
-                            {activeAiDrawer?.header ?? <div />}
+                            <AppLayoutBuiltInErrorBoundary renderFallback={() => <div />}>
+                              {activeAiDrawer?.header ?? <div />}
+                            </AppLayoutBuiltInErrorBoundary>
                             <div className={styles['drawer-actions']}>
                               <ButtonGroup
                                 dropdownExpandToViewport={false}
@@ -246,7 +248,9 @@ export function AppLayoutGlobalAiDrawerImplementation({
                             </div>
                           )}
                         </header>
-                        <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
+                        <AppLayoutBuiltInErrorBoundary>
+                          <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
+                        </AppLayoutBuiltInErrorBoundary>
                       </div>
                     </div>
                   </aside>
