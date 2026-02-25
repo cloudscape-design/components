@@ -115,7 +115,7 @@ function PortaledModal({
   const instanceUniqueId = useUniqueId();
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
-  const [breakpoint, breakpointsRef] = useContainerBreakpoints(['l']);
+  const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
 
   const i18n = useInternalI18n('modal');
   const closeAriaLabel = i18n('closeAriaLabel', rest.closeAriaLabel);

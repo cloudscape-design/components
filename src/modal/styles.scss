@@ -91,7 +91,7 @@ $modal-z-index: 5000;
     max-inline-size: var(#{custom-props.$modalCustomWidth, $modal-size-medium});
   }
 
-  &.breakpoint-l.max {
+  &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
     max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
     margin-block: auto;
