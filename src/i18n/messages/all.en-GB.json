@@ -247,7 +247,8 @@
     "ariaLabels.previousPageLabel": "Previous page",
     "ariaLabels.jumpToPageButtonLabel": "Jump to page",
     "i18nStrings.jumpToPageInputLabel": "Page",
-    "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page."
+    "i18nStrings.jumpToPageError": "Page out of range. Showing the last available page.",
+    "i18nStrings.jumpToPageLoadingText": "Loading"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel resize handle",
