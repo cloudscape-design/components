@@ -239,8 +239,8 @@ function PortaledModal({
   const constrainedHeight = Math.max(height ?? 0, minModalHeight);
   const constrainedWidth = Math.max(width ?? 0, MIN_MODAL_WIDTH);
 
-  const hasCustomHeight = Number.isFinite(width);
-  const hasCustomWidth = Number.isFinite(height);
+  const hasCustomHeight = height !== undefined && !Number.isNaN(height);
+  const hasCustomWidth = width !== undefined && !Number.isNaN(width);
   // Development warnings for adjusted values
   if (isDevelopment) {
     if (hasCustomHeight && constrainedHeight !== height) {
