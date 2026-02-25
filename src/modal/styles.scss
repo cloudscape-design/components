@@ -47,10 +47,6 @@ $modal-z-index: 5000;
   &.position-center {
     margin-block: auto;
   }
-
-  &.custom-height-focus-lock {
-    padding-block-end: 0;
-  }
 }
 
 .dialog {
@@ -65,14 +61,13 @@ $modal-z-index: 5000;
 
   z-index: $modal-z-index;
   pointer-events: all;
-  $modal-size-medium: 600px;
 
   &.small {
     max-inline-size: 320px;
   }
 
   &.medium {
-    max-inline-size: $modal-size-medium;
+    max-inline-size: 600px;
   }
 
   &.large {
@@ -88,7 +83,7 @@ $modal-z-index: 5000;
   }
 
   &.custom-width {
-    max-inline-size: var(#{custom-props.$modalCustomWidth, $modal-size-medium});
+    max-inline-size: var(#{custom-props.$modalCustomWidth});
   }
 
   &.max.breakpoint-xs {

@@ -295,11 +295,7 @@ function PortaledModal({
               disabled={!visible}
               autoFocus={true}
               restoreFocus={true}
-              className={clsx(
-                styles['focus-lock'],
-                styles[`position-${position}`],
-                hasCustomHeight && styles['custom-height-focus-lock']
-              )}
+              className={clsx(styles['focus-lock'], styles[`position-${position}`])}
             >
               <div
                 className={clsx(
