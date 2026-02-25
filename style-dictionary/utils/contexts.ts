@@ -75,3 +75,11 @@ export const createAppLayoutToolbarContext = (tokens: TokenCategory<string, Glob
     tokens,
   };
 };
+
+export const createChatComponentsContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'chat-components',
+    selector: '.awsui-context-chat-components',
+    tokens,
+  };
+};

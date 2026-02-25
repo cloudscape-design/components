@@ -2,12 +2,24 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Card from '~components/internal/components/card';
-import { InternalCardProps } from '~components/internal/components/card/interfaces';
+import Card from '~components/card';
+import { InternalCardProps } from '~components/card/interfaces';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { actions, CardPage, icon, longContent, longDescription, longHeader, shortHeader } from './common';
+import {
+  actions,
+  CardPage,
+  icon,
+  longContent,
+  longDescription,
+  longFooter,
+  longHeader,
+  reactNodeContent,
+  shortDescription,
+  shortFooter,
+  shortHeader,
+} from './common';
 
 const permutations = createPermutations<InternalCardProps & { width?: number }>([
   // With header
@@ -33,6 +45,21 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     description: [longDescription],
     actions: [undefined, actions],
     icon: [undefined],
+  },
+  // Without footer
+  {
+    header: [shortHeader],
+    children: [longContent],
+    description: [shortDescription],
+    actions: [actions],
+    icon: [undefined],
+    footer: [shortFooter, longFooter],
+  },
+  // With custom paddings
+  {
+    children: [reactNodeContent],
+    disableHeaderPaddings: [true],
+    disableContentPaddings: [true],
   },
 ]);
 
