@@ -5,6 +5,7 @@ import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
+import { BuiltInErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
@@ -143,11 +144,11 @@ export function AppLayoutDrawerImplementation({
               )}
               style={{ blockSize: drawerHeight }}
             >
-              {toolsContent}
+              <BuiltInErrorBoundary suppressNested={false}>{toolsContent}</BuiltInErrorBoundary>
             </div>
             {activeDrawerId !== TOOLS_DRAWER_ID && (
               <div key={activeDrawerId} className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                {activeDrawer?.content}
+                <BuiltInErrorBoundary suppressNested={false}>{activeDrawer?.content}</BuiltInErrorBoundary>
               </div>
             )}
           </div>

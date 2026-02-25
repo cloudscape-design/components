@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
@@ -103,10 +104,16 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <AppLayoutNavigation
-            appLayoutInternals={appLayoutState.appLayoutInternals}
-            bottomDrawerReportedSize={bottomDrawerReportedSize}
-          />
+          <InternalErrorBoundary
+            onError={error => console.log('Error boundary for the nav panel: ', error)}
+            suppressNested={false}
+            suppressible={true}
+          >
+            <AppLayoutNavigation
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={bottomDrawerReportedSize}
+            />
+          </InternalErrorBoundary>
         </div>
       )}
     </>

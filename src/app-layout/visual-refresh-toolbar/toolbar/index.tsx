@@ -6,7 +6,11 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import Box from '../../../box/internal';
+import { InternalErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import Popover from '../../../popover/internal';
+import StatusIndicator from '../../../status-indicator/internal';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
@@ -67,6 +71,65 @@ export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
 }
+
+export const ToolbarSectionErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
+  return (
+    <InternalErrorBoundary
+      key={id}
+      onError={error => console.log('Error boundary for the trigger button: ', error)}
+      suppressNested={false}
+      suppressible={true}
+      renderFallback={props => {
+        return (
+          <Popover
+            size="medium"
+            header={props.header as any}
+            content={
+              <>
+                <Box variant="p">{props.description}</Box>
+                <Box variant="p">{props.action}</Box>
+              </>
+            }
+          >
+            <StatusIndicator type="error" />
+          </Popover>
+        );
+      }}
+    >
+      {children}
+    </InternalErrorBoundary>
+  );
+};
+
+export const LeftTriggerErrorBoundary: React.FC<{ id: string }> = ({ id, children }) => {
+  return (
+    <InternalErrorBoundary
+      className={styles['ai-trigger-fallback']}
+      key={id}
+      onError={error => console.log('Error boundary for the trigger button: ', error)}
+      suppressNested={false}
+      suppressible={true}
+      renderFallback={props => {
+        return (
+          <Popover
+            size="medium"
+            header={props.header as any}
+            content={
+              <>
+                <Box variant="p">{props.description}</Box>
+                <Box variant="p">{props.action}</Box>
+              </>
+            }
+          >
+            <StatusIndicator type="error" />
+          </Popover>
+        );
+      }}
+    >
+      {children}
+    </InternalErrorBoundary>
+  );
+};
 
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
@@ -171,26 +234,28 @@ export function AppLayoutToolbarImplementation({
               opacity: ['entering', 'exiting'].includes(state) ? 0 : 1,
             }}
           >
-            <TriggerButton
-              ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
-              ariaExpanded={!!activeAiDrawerId}
-              iconName={aiDrawer?.trigger!.iconName}
-              iconSvg={aiDrawer?.trigger!.iconSvg}
-              customSvg={aiDrawer?.trigger!.customIcon}
-              className={testutilStyles['ai-drawer-toggle']}
-              onClick={() => {
-                if (setExpandedDrawerId) {
-                  setExpandedDrawerId(null);
-                }
-                onActiveAiDrawerChange?.(aiDrawer?.id ?? null, { initiatedByUserAction: true });
-              }}
-              ref={aiDrawerFocusRef}
-              selected={!drawerExpandedMode && !!activeAiDrawerId}
-              disabled={anyPanelOpenInMobile}
-              variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'circle'}
-              testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
-              isForPreviousActiveDrawer={true}
-            />
+            <LeftTriggerErrorBoundary id="toolbar-left-drawer-trigger">
+              <TriggerButton
+                ariaLabel={aiDrawer?.ariaLabels?.triggerButton}
+                ariaExpanded={!!activeAiDrawerId}
+                iconName={aiDrawer?.trigger!.iconName}
+                iconSvg={aiDrawer?.trigger!.iconSvg}
+                customSvg={aiDrawer?.trigger!.customIcon}
+                className={testutilStyles['ai-drawer-toggle']}
+                onClick={() => {
+                  if (setExpandedDrawerId) {
+                    setExpandedDrawerId(null);
+                  }
+                  onActiveAiDrawerChange?.(aiDrawer?.id ?? null, { initiatedByUserAction: true });
+                }}
+                ref={aiDrawerFocusRef}
+                selected={!drawerExpandedMode && !!activeAiDrawerId}
+                disabled={anyPanelOpenInMobile}
+                variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'circle'}
+                testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
+                isForPreviousActiveDrawer={true}
+              />
+            </LeftTriggerErrorBoundary>
           </div>
         )}
       </Transition>
@@ -229,27 +294,29 @@ export function AppLayoutToolbarImplementation({
           bottomDrawers?.length ||
           (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <div className={clsx(styles['universal-toolbar-drawers'])}>
-            <DrawerTriggers
-              ariaLabels={ariaLabels}
-              activeDrawerId={activeDrawerId ?? null}
-              drawers={drawers?.filter(item => !!item.trigger) ?? []}
-              drawersFocusRef={drawersFocusRef}
-              onActiveDrawerChange={onActiveDrawerChange}
-              splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
-              splitPanelFocusRef={splitPanelFocusRef}
-              onSplitPanelToggle={onSplitPanelToggle}
-              disabled={anyPanelOpenInMobile}
-              globalDrawersFocusControl={globalDrawersFocusControl}
-              bottomDrawersFocusRef={bottomDrawersFocusRef}
-              globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
-              activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
-              onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
-              expandedDrawerId={expandedDrawerId}
-              setExpandedDrawerId={setExpandedDrawerId!}
-              bottomDrawers={bottomDrawers}
-              onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
-              activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
-            />
+            <ToolbarSectionErrorBoundary id="toolbar-drawers">
+              <DrawerTriggers
+                ariaLabels={ariaLabels}
+                activeDrawerId={activeDrawerId ?? null}
+                drawers={drawers?.filter(item => !!item.trigger) ?? []}
+                drawersFocusRef={drawersFocusRef}
+                onActiveDrawerChange={onActiveDrawerChange}
+                splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
+                splitPanelFocusRef={splitPanelFocusRef}
+                onSplitPanelToggle={onSplitPanelToggle}
+                disabled={anyPanelOpenInMobile}
+                globalDrawersFocusControl={globalDrawersFocusControl}
+                bottomDrawersFocusRef={bottomDrawersFocusRef}
+                globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
+                activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
+                onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
+                expandedDrawerId={expandedDrawerId}
+                setExpandedDrawerId={setExpandedDrawerId!}
+                bottomDrawers={bottomDrawers}
+                onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
+                activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
+              />
+            </ToolbarSectionErrorBoundary>
           </div>
         )}
       </ToolbarContainer>
