@@ -3,6 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../error-boundary/internal';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
@@ -88,7 +89,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             </AppLayoutVisibilityContext.Provider>
           )}
         </AppLayoutStateProvider>
-        <AppLayoutWidgetizedState forwardRef={forwardRef} appLayoutProps={props} stateManager={stateManager} />
+        <AppLayoutBuiltInErrorBoundary>
+          <AppLayoutWidgetizedState forwardRef={forwardRef} appLayoutProps={props} stateManager={stateManager} />
+        </AppLayoutBuiltInErrorBoundary>
       </>
     );
   }

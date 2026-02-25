@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import {
@@ -63,23 +64,25 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           </AppLayoutSplitPanelSide>
         </div>
       )}
-      <div
-        className={clsx(
-          styles.tools,
-          !toolsOpen && styles['panel-hidden'],
-          sharedStyles['with-motion-horizontal'],
-          navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-          toolsOpen && styles['tools-open'],
-          drawerExpandedMode && styles.hidden
-        )}
-      >
-        {drawers && drawers.length > 0 && (
-          <AppLayoutDrawer
-            appLayoutInternals={appLayoutState.appLayoutInternals}
-            bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
-          />
-        )}
-      </div>
+      <AppLayoutBuiltInErrorBoundary>
+        <div
+          className={clsx(
+            styles.tools,
+            !toolsOpen && styles['panel-hidden'],
+            sharedStyles['with-motion-horizontal'],
+            navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
+            toolsOpen && styles['tools-open'],
+            drawerExpandedMode && styles.hidden
+          )}
+        >
+          {drawers && drawers.length > 0 && (
+            <AppLayoutDrawer
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
+            />
+          )}
+        </div>
+      </AppLayoutBuiltInErrorBoundary>
       <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>
         <ActiveDrawersContext.Provider value={activeGlobalDrawersIds ?? []}>
           <AppLayoutGlobalDrawers appLayoutInternals={appLayoutState.appLayoutInternals} />

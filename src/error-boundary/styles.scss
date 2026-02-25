@@ -6,6 +6,7 @@
 .error-boundary,
 .header,
 .description,
-.action {
+.action,
+.app-layout-part-fallback {
   display: contents;
 }
