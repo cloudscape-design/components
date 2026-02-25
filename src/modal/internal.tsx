@@ -236,12 +236,11 @@ function PortaledModal({
   const minModalHeight = (headerHeight ?? 0) + (footer ? (footerHeight ?? 0) : 0) + MIN_CONTENT_HEIGHT;
 
   // Constrain dimensions to minimum values
-  const constrainedHeight = height && height < minModalHeight ? minModalHeight : height;
-  const constrainedWidth = width && width < MIN_MODAL_WIDTH ? MIN_MODAL_WIDTH : width;
+  const constrainedHeight = Math.max(height ?? 0, minModalHeight);
+  const constrainedWidth = Math.max(width ?? 0, MIN_MODAL_WIDTH);
 
-  const hasCustomWidth = constrainedWidth !== undefined && constrainedWidth !== 0;
-  const hasCustomHeight = constrainedHeight !== undefined && constrainedHeight !== 0;
-
+  const hasCustomHeight = Number.isFinite(width);
+  const hasCustomWidth = Number.isFinite(height);
   // Development warnings for adjusted values
   if (isDevelopment) {
     if (hasCustomHeight && constrainedHeight !== height) {

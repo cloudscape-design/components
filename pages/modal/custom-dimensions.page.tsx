@@ -47,8 +47,8 @@ export default function () {
           header="Custom dimensions modal"
           visible={visible}
           onDismiss={() => setVisible(false)}
-          width={urlParams.width ? Number(urlParams.width) : undefined}
-          height={urlParams.height ? Number(urlParams.height) : undefined}
+          width={Number(urlParams.width) || undefined}
+          height={Number(urlParams.height) || undefined}
           footer={showFooter ? footer : undefined}
         >
           {Array(100)
