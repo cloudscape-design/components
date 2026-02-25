@@ -323,6 +323,7 @@ export interface I18nFormatArgTypes {
     "ariaLabels.jumpToPageButtonLabel": never;
     "i18nStrings.jumpToPageInputLabel": never;
     "i18nStrings.jumpToPageError": never;
+    "i18nStrings.jumpToPageLoadingText": never;
   }
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": never;

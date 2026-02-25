@@ -247,7 +247,8 @@
     "ariaLabels.previousPageLabel": "Vorherige Seite",
     "ariaLabels.jumpToPageButtonLabel": "Zur Seite springen",
     "i18nStrings.jumpToPageInputLabel": "Seite",
-    "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an."
+    "i18nStrings.jumpToPageError": "Seite ist außerhalb des Bereichs. Zeigt die letzte verfügbare Seite an.",
+    "i18nStrings.jumpToPageLoadingText": "Wird geladen"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Größe des Panels ändern",

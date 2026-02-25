@@ -247,7 +247,8 @@
     "ariaLabels.previousPageLabel": "Önceki sayfa",
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "i18nStrings.jumpToPageInputLabel": "Sayfa",
-    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor."
+    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",

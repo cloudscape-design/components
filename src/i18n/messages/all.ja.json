@@ -247,7 +247,8 @@
     "ariaLabels.previousPageLabel": "前のページ",
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "i18nStrings.jumpToPageInputLabel": "ページ",
-    "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。"
+    "i18nStrings.jumpToPageError": "ページが範囲外です。最後に利用可能なページを表示しています。",
+    "i18nStrings.jumpToPageLoadingText": "ロード中"
   },
   "panel-resize-handle": {
     "i18nStrings.resizeHandleAriaLabel": "パネルのサイズ変更ハンドル",
