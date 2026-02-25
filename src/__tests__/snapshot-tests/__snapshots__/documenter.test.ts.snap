@@ -39282,7 +39282,7 @@ Returns null if the panel layout is not resizable.",
           "name": "findResultText",
           "parameters": [
             {
-              "description": "[optional] Status of the result text. It can be aither "error" or "succes".
+              "description": "[optional] Status of the result text. It can be either "error" or "success".
 If not specified, the method returns the result text that is currently displayed, independently of the result status.",
               "flags": {
                 "isOptional": true,
@@ -48578,7 +48578,7 @@ Returns null if the panel layout is not resizable.",
           "name": "findResultText",
           "parameters": [
             {
-              "description": "[optional] Status of the result text. It can be aither "error" or "succes".
+              "description": "[optional] Status of the result text. It can be either "error" or "success".
 If not specified, the method returns the result text that is currently displayed, independently of the result status.",
               "flags": {
                 "isOptional": true,

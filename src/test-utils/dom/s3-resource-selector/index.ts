@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import createWrapper from '../';
 import ButtonWrapper from '../button';
@@ -27,7 +28,7 @@ class S3InContextWrapper extends ComponentWrapper {
 
   findVersionsSelect(): SelectWrapper | null {
     const select = this.findByClassName(inContextStyles['layout-version']);
-    return select && select.findSelect();
+    return select && select.findComponent(`.${SelectWrapper.rootSelector}`, SelectWrapper);
   }
 
   findViewButton(): ButtonWrapper {
@@ -51,12 +52,15 @@ export default class S3ResourceSelectorWrapper extends ComponentWrapper {
   }
 
   findModal(): S3ModalWrapper | null {
-    const modal = createWrapper().findModal(`.${testUtilStyles['modal-root']}`);
+    const modal = createWrapper().findComponent(
+      appendSelector(`.${testUtilStyles['modal-root']}`, `.${ModalWrapper.rootSelector}`),
+      ModalWrapper
+    );
     return modal && new S3ModalWrapper(modal.getElement());
   }
 
   findTable(): TableWrapper | null {
-    const modal = this.findModal();
+    const modal = createWrapper().findComponent(`.${ModalWrapper.rootSelector}`, ModalWrapper);
     return modal && modal.findComponent(`.${TableWrapper.rootSelector}`, TableWrapper);
   }
 }

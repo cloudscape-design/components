@@ -14,7 +14,10 @@ export default class ProgressBarWrapper extends ComponentWrapper {
   }
 
   findResultButton(): ButtonWrapper | null {
-    return this.findByClassName(styles['result-button'])?.findButton() || null;
+    return (
+      this.findByClassName(styles['result-button'])?.findComponent(`.${ButtonWrapper.rootSelector}`, ButtonWrapper) ||
+      null
+    );
   }
 
   /**
@@ -22,7 +25,7 @@ export default class ProgressBarWrapper extends ComponentWrapper {
    *
    * @param status
    *
-   * [optional] Status of the result text. It can be aither "error" or "succes".
+   * [optional] Status of the result text. It can be either "error" or "success".
    * If not specified, the method returns the result text that is currently displayed, independently of the result status.
    */
   findResultText(status?: string): ElementWrapper | null {
