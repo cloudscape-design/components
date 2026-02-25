@@ -14,6 +14,8 @@ export namespace TableGroupedTypes {
     colspan: number;
     rowspan: number;
     isGroup: boolean;
+    // TODO: I could find a better way to make this modular instead of 2 props
+    // for column and column-group
     columnDefinition?: TableProps.ColumnDefinition<T>;
     groupDefinition?: TableProps.ColumnGroupsDefinition<T>;
     parentGroupIds: string[]; // Chain of parent group IDs for ARIA headers attribute
@@ -65,7 +67,22 @@ function createNodeConnections<T>(
       return;
     }
 
+    // Track nodes visited in this single leaf-to-root path to detect cycles
+    const pathVisited = new Set<string>();
+
     while (currentNode) {
+      // Cycle detection: if we've seen this node in the current path, we have a circular reference
+      if (pathVisited.has(currentNode.id)) {
+        warnOnceInDev(`Circular reference detected in column group definitions involving "${currentNode.id}".`);
+        // Connect the node to root to prevent orphaning
+        if (!visitedNodesIdSet.has(currentNode.id)) {
+          rootNode.addChild(currentNode);
+          visitedNodesIdSet.add(currentNode.id);
+        }
+        break;
+      }
+      pathVisited.add(currentNode.id);
+
       const groupDef = currentNode.groupDefinition;
       const colDef = currentNode.columnDefinition;
 
@@ -84,6 +101,9 @@ function createNodeConnections<T>(
       const parentNode = idToNodeMap.get(parentId);
       if (!parentNode) {
         // Parent not found, connect to root
+        warnOnceInDev(
+          `Group "${currentNode.id}" references non-existent parent group "${parentId}". Treating as top-level.`
+        );
         if (!visitedNodesIdSet.has(currentNode.id)) {
           rootNode.addChild(currentNode);
           visitedNodesIdSet.add(currentNode.id);

@@ -61,7 +61,13 @@ import {
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { useColumnGrouping } from './use-column-grouping';
+import {
+  ColumnWidthDefinition,
+  ColumnWidthsProvider,
+  DEFAULT_COLUMN_WIDTH,
+  useColumnWidths,
+} from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
@@ -74,6 +80,33 @@ import styles from './styles.css.js';
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
+
+/**
+ * Renders a <colgroup> with <col> elements for each leaf column.
+ * With table-layout:fixed, <col> widths control actual column widths,
+ * which makes colspan headers automatically span the correct width.
+ * Must be rendered inside ColumnWidthsProvider.
+ */
+function TableColGroup({
+  visibleColumnDefinitions,
+  hasSelection,
+  selectionColumnWidth,
+}: {
+  visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
+  hasSelection: boolean;
+  selectionColumnWidth: number;
+}) {
+  const { setCol } = useColumnWidths();
+  return (
+    <colgroup>
+      {hasSelection && <col style={{ width: selectionColumnWidth }} />}
+      {visibleColumnDefinitions.map((column, colIndex) => {
+        const columnId = getColumnKey(column, colIndex);
+        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
+      })}
+    </colgroup>
+  );
+}
 
 type InternalTableProps<T> = SomeRequired<
   TableProps<T>,
@@ -107,6 +140,7 @@ const InternalTable = React.forwardRef(
       preferences,
       items,
       columnDefinitions,
+      columnGroupingDefinitions,
       trackBy,
       loading,
       loadingText,
@@ -300,6 +334,16 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
+    // Build visible column IDs set for grouping
+    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => col.id || `column-${idx}`));
+
+    const hierarchicalStructure = useColumnGrouping(
+      columnGroupingDefinitions,
+      columnDefinitions,
+      visibleColumnIds,
+      columnDisplay
+    );
+
     const selectionProps = {
       items: allItems,
       rootItems: items,
@@ -394,6 +438,8 @@ const InternalTable = React.forwardRef(
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
+      columnGroupingDefinitions,
+      hierarchicalStructure,
       variant: computedVariant,
       tableVariant: computedVariant,
       wrapLines,
@@ -452,6 +498,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const headerRowCount = hierarchicalStructure?.rows.length ?? 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -460,6 +507,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
+            hierarchicalStructure={hierarchicalStructure}
           >
             <InternalContainer
               {...baseProps}
@@ -566,10 +614,18 @@ const InternalTable = React.forwardRef(
                       tableRole,
                       totalItemsCount,
                       totalColumnsCount: totalColumnsCount,
+                      headerRowCount,
                       ariaLabel: ariaLabels?.tableLabel,
                       ariaLabelledby,
                     })}
                   >
+                    {resizableColumns && hierarchicalStructure && hierarchicalStructure.rows.length > 1 && (
+                      <TableColGroup
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        hasSelection={hasSelection}
+                        selectionColumnWidth={SELECTION_COLUMN_WIDTH}
+                      />
+                    )}
                     <Thead
                       ref={theadRef}
                       hidden={stickyHeader}
@@ -599,6 +655,7 @@ const InternalTable = React.forwardRef(
                             tableRole,
                             firstIndex,
                             rowIndex,
+                            headerRowCount,
                             level: row.type === 'loader' ? row.level : undefined,
                             ...rowExpandableProps,
                           });
