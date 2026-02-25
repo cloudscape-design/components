@@ -11,7 +11,9 @@ import {
   CollectionPreferences,
   CollectionPreferencesProps,
   Header,
+  Input,
   Pagination,
+  SpaceBetween,
   Table,
   TableProps,
   TextFilter,
@@ -108,6 +110,7 @@ const columnDefinitions: TableProps<EC2Instance>['columnDefinitions'] = [
     cell: (item: EC2Instance) => item.id,
     sortingField: 'id',
     isRowHeader: true,
+    groupId: 'metrics',
   },
   {
     id: 'name',
@@ -308,6 +311,9 @@ export default function EC2TableDemo() {
 
   const { selectedItems } = collectionProps;
 
+  const [firstSticky, setFirstSticky] = useState('0');
+  const [lastSticky, setLastSticky] = useState('0');
+
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
       <h1>EC2 Instances Table</h1>
@@ -316,7 +322,8 @@ export default function EC2TableDemo() {
         selectionType="multi"
         resizableColumns={true}
         stickyColumns={{
-          first: 1,
+          first: +firstSticky,
+          last: +lastSticky,
         }}
         // variant="stacked"
         enableKeyboardNavigation={true}
@@ -338,11 +345,29 @@ export default function EC2TableDemo() {
         items={items}
         pagination={<Pagination {...paginationProps} />}
         filter={
-          <TextFilter
-            {...filterProps}
-            countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
-            filteringPlaceholder="Find instances"
-          />
+          <SpaceBetween size="m" direction="horizontal">
+            {/* first */}
+            <Input
+              onChange={({ detail }) => setFirstSticky(detail.value)}
+              value={firstSticky}
+              name="first"
+              inputMode="numeric"
+              type="number"
+            />
+            <Input
+              onChange={({ detail }) => setLastSticky(detail.value)}
+              value={lastSticky}
+              name="last"
+              inputMode="numeric"
+              type="number"
+            />
+
+            <TextFilter
+              {...filterProps}
+              countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
+              filteringPlaceholder="Find instances"
+            />
+          </SpaceBetween>
         }
         preferences={
           <CollectionPreferences
