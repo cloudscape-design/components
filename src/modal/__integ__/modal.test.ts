@@ -210,7 +210,7 @@ test(
   'keeps focused element visible with custom height',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/modal/custom-dimensions?height=400');
+    await browser.url('#/light/modal/custom-dimensions?height=400&footer=true');
 
     await page.click('[data-testid="modal-trigger"]');
     const modal = createWrapper().findModal();

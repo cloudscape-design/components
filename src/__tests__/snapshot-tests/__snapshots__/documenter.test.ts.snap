@@ -17506,7 +17506,8 @@ The function will be called when a user clicks on the trigger button.",
     {
       "description": "Specifies the height of the modal. When provided, the modal content becomes scrollable if it exceeds the specified height.
 If the specified height exceeds available viewport space, the modal will use the maximum available space.
-The minimum height is constrained to ensure the content area is at least 60px for accessibility.",
+To make sure the content is accessible, the component will apply a minimum height of 60px for the content area,
+plus the header height and the footer height.",
       "name": "height",
       "optional": true,
       "type": "number",
@@ -17532,12 +17533,12 @@ render to an element under \`document.body\`.",
       "defaultValue": "'center'",
       "description": "Controls the vertical positioning of the modal.
 
-- \`center\` (default) - Modal is vertically centered in viewport and re-centers
+- \`center\` (default) - The modal is vertically centered in the viewport and re-centers
   when content height changes. Use for dialogs with static, predictable content.
 
-- \`top\` - Modal anchors at fixed distance and grows downward
-  as content expands. Use when content changes dynamically to prevent disruptive
-  vertical repositioning that causes users to lose focus.",
+- \`top\` - The modal anchors at fixed distance and grows downward
+  as content expands. Use when the content changes dynamically to prevent disruptive
+  vertical repositioning that can cause users to lose context.",
       "inlineType": {
         "name": "ModalProps.Position",
         "type": "union",
@@ -17572,7 +17573,7 @@ of the most recent getModalRoot call as an argument.",
     {
       "defaultValue": "'medium'",
       "description": "Sets the width of the modal. \`max\` uses variable width up to the
-largest size allowed by the design guidelines. Other sizes:
+largest size allowed by the design guidelines. Other sizes have fixed widths:
 \`small\` (320px), \`medium\` (600px), \`large\` (820px), \`x-large\` (1024px), \`xx-large\` (1280px).",
       "inlineType": {
         "name": "ModalProps.Size",
