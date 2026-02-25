@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
-import { AppLayoutBuiltInErrorBoundary, BuiltInErrorBoundary } from '../../../error-boundary/internal';
+import { BuiltInErrorBoundary } from '../../../error-boundary/internal';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { AppLayoutInternalProps, AppLayoutPendingState } from '../interfaces';
@@ -19,7 +19,6 @@ import {
 import { isWidgetReady } from '../state/invariants';
 import { ToolbarProps } from '../toolbar';
 import { SkeletonPartProps, SkeletonSlotsAttributes } from './interfaces';
-import { BeforeMainSlotSkeleton } from './skeleton-parts';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -78,21 +77,9 @@ export const SkeletonLayout = ({
           }
         }
       >
-        <AppLayoutBuiltInErrorBoundary
-          renderFallback={() => (
-            <BeforeMainSlotSkeleton
-              toolbarProps={toolbarProps}
-              appLayoutProps={appLayoutProps}
-              appLayoutState={appLayoutState}
-            />
-          )}
-        >
-          <AppLayoutBeforeMainSlot {...mergedProps} />
-        </AppLayoutBuiltInErrorBoundary>
+        <AppLayoutBeforeMainSlot {...mergedProps} />
         <main {...mainElAttributes} className={mainElAttributes?.className ?? styles['main-landmark']}>
-          <AppLayoutBuiltInErrorBoundary>
-            <AppLayoutTopContentSlot {...mergedProps} />
-          </AppLayoutBuiltInErrorBoundary>
+          <AppLayoutTopContentSlot {...mergedProps} />
           <div
             {...contentWrapperElAttributes}
             className={
@@ -106,13 +93,9 @@ export const SkeletonLayout = ({
               {registered ? <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary> : null}
             </div>
           </div>
-          <AppLayoutBuiltInErrorBoundary>
-            <AppLayoutBottomContentSlot {...mergedProps} />
-          </AppLayoutBuiltInErrorBoundary>
+          <AppLayoutBottomContentSlot {...mergedProps} />
         </main>
-        <AppLayoutBuiltInErrorBoundary>
-          <AppLayoutAfterMainSlot {...mergedProps} />
-        </AppLayoutBuiltInErrorBoundary>
+        <AppLayoutAfterMainSlot {...mergedProps} />
       </div>
     </VisualContext>
   );

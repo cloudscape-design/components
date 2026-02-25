@@ -39,7 +39,7 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
   const globalToolsOpen = !!activeGlobalDrawersIds?.length;
 
   return (
-    <>
+    <AppLayoutBuiltInErrorBoundary>
       {!!bottomDrawers.length && (
         <div className={styles['bottom-tool']}>
           <ActiveDrawersContext.Provider value={activeGlobalBottomDrawerId ? [activeGlobalBottomDrawerId] : []}>
@@ -88,7 +88,7 @@ export const AfterMainSlotImplementation = ({ appLayoutState, appLayoutProps }: 
           <AppLayoutGlobalDrawers appLayoutInternals={appLayoutState.appLayoutInternals} />
         </ActiveDrawersContext.Provider>
       </div>
-    </>
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 

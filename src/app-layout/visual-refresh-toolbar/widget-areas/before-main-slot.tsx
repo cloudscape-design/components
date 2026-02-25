@@ -56,7 +56,15 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
   const drawerExpandedModeInChildLayout = !!toolbarProps?.expandedDrawerId;
   const { __embeddedViewMode: embeddedViewMode } = appLayoutProps as any;
   return (
-    <>
+    <AppLayoutBuiltInErrorBoundary
+      renderFallback={() => (
+        <BeforeMainSlotSkeleton
+          toolbarProps={toolbarProps}
+          appLayoutProps={appLayoutProps}
+          appLayoutState={appLayoutState}
+        />
+      )}
+    >
       {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
         <AppLayoutToolbar
           appLayoutInternals={appLayoutState.appLayoutInternals}
@@ -117,7 +125,7 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
           </AppLayoutBuiltInErrorBoundary>
         </div>
       )}
-    </>
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 

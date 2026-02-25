@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SkeletonPartProps } from '../skeleton/interfaces';
 import { AppLayoutSplitPanelDrawerBottomImplementation as AppLayoutSplitPanelBottom } from '../split-panel';
@@ -18,7 +19,7 @@ export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps
   const { splitPanelPosition, placement, activeGlobalBottomDrawerId, bottomDrawerReportedSize, isMobile } =
     appLayoutState.widgetizedState;
   return (
-    <>
+    <AppLayoutBuiltInErrorBoundary>
       {splitPanelPosition === 'bottom' && (
         <div
           className={clsx(styles['split-panel-bottom'], sharedStyles['with-motion-vertical'])}
@@ -35,7 +36,7 @@ export const BottomContentSlotImplementation = ({ appLayoutState, appLayoutProps
           </AppLayoutSplitPanelBottom>
         </div>
       )}
-    </>
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 

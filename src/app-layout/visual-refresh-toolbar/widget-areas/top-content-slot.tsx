@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutNotificationsImplementation as AppLayoutNotifications } from '../notifications';
@@ -16,7 +17,7 @@ export const TopContentSlotImplementation = ({ appLayoutProps, appLayoutState }:
     return null;
   }
   return (
-    <>
+    <AppLayoutBuiltInErrorBoundary>
       {appLayoutProps.notifications && (
         <div
           className={clsx(
@@ -30,7 +31,7 @@ export const TopContentSlotImplementation = ({ appLayoutProps, appLayoutState }:
           {appLayoutProps.notifications}
         </AppLayoutNotifications>
       )}
-    </>
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 
