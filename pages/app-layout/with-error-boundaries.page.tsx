@@ -91,6 +91,7 @@ export default function WithErrorBoundariesPage() {
         <AppLayout
           ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
           ref={appLayoutRef}
+          breadcrumbs={<BreadcrumbGroup items={breadcrumbsItems} />}
           content={
             <ErrorBoundary onError={() => null}>
               <div data-testid="app-layout-content-area">
@@ -369,7 +370,6 @@ export default function WithErrorBoundariesPage() {
                       </Button>
                     </Container>
                   </SpaceBetween>
-                  <BreadcrumbGroup items={breadcrumbsItems} />
                 </ContentLayout>
               </div>
             </ErrorBoundary>

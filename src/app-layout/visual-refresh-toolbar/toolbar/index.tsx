@@ -226,11 +226,13 @@ export function AppLayoutToolbarImplementation({
           </nav>
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
-          <ToolbarBreadcrumbsSection
-            ownBreadcrumbs={appLayoutInternals.breadcrumbs}
-            discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-            includeTestUtils={true}
-          />
+          <AppLayoutBuiltInErrorBoundary>
+            <ToolbarBreadcrumbsSection
+              ownBreadcrumbs={appLayoutInternals.breadcrumbs}
+              discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+              includeTestUtils={true}
+            />
+          </AppLayoutBuiltInErrorBoundary>
         )}
         {(drawers?.length ||
           globalDrawers?.length ||
