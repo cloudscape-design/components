@@ -190,8 +190,9 @@ export function useEditableTokens({
       renderTokensToDOM(movedTokens, elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
       // Position cursor immediately to avoid flicker
+      // Only if element has focus to avoid stealing focus
       requestAnimationFrame(() => {
-        if (elementRef.current) {
+        if (elementRef.current && document.activeElement === elementRef.current) {
           setCursorPosition(elementRef.current, position);
         }
       });
@@ -359,8 +360,11 @@ export function useEditableTokens({
           targetPosition = cursorPositionToRestore;
         }
 
-        // Unified restoration: set cursor to target position
-        setCursorPosition(elementRef.current, targetPosition);
+        // Unified restoration: only restore if element has focus
+        // This prevents stealing focus from other elements
+        if (document.activeElement === elementRef.current) {
+          setCursorPosition(elementRef.current, targetPosition);
+        }
       })
     );
 
