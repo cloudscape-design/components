@@ -142,7 +142,7 @@ const Thead = React.forwardRef(
     };
 
     // No grouping - render single row
-    if (!hierarchicalStructure || hierarchicalStructure.rows.length === 1) {
+    if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
       return (
         <thead className={clsx(!hidden && styles['thead-active'])}>
           <tr
