@@ -179,7 +179,7 @@ describe('column-grouping-utils', () => {
         expect(result?.rows).toHaveLength(2);
       });
 
-      it('row 0 has ungrouped columns with rowspan=2', () => {
+      it('row 0 has ungrouped columns expanded into hidden placeholder cells (rowspan=1, isHidden=true)', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
@@ -191,9 +191,13 @@ describe('column-grouping-utils', () => {
         const idCol = row0?.find(c => c.id === 'id');
         const nameCol = row0?.find(c => c.id === 'name');
 
-        expect(idCol?.rowspan).toBe(2);
+        // Ungrouped leaf columns are expanded: a hidden placeholder appears in row 0
+        // and the real cell appears in row 1 (aligned with leaf columns of groups)
+        expect(idCol?.rowspan).toBe(1);
+        expect(idCol?.isHidden).toBe(true);
         expect(idCol?.colspan).toBe(1);
-        expect(nameCol?.rowspan).toBe(2);
+        expect(nameCol?.rowspan).toBe(1);
+        expect(nameCol?.isHidden).toBe(true);
         expect(nameCol?.colspan).toBe(1);
       });
 
@@ -218,7 +222,7 @@ describe('column-grouping-utils', () => {
         expect(configGroup?.colspan).toBe(1); // type only
       });
 
-      it('row 1 has only grouped columns', () => {
+      it('row 1 has grouped columns plus real ungrouped columns (expanded from row 0)', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
@@ -228,12 +232,23 @@ describe('column-grouping-utils', () => {
 
         const row1 = result?.rows[1].columns;
 
-        expect(row1?.length).toBe(3); // cpu, memory, type
-        expect(row1?.map(c => c.id)).toEqual(['cpu', 'memory', 'type']);
-        row1?.forEach(col => {
-          expect(col.isGroup).toBe(false);
-          expect(col.rowspan).toBe(1);
-          expect(col.colspan).toBe(1);
+        // Row 1 contains the real ungrouped columns (id, name) plus the grouped leaf columns
+        expect(row1?.length).toBe(5); // id, name, cpu, memory, type
+        expect(row1?.map(c => c.id)).toEqual(['id', 'name', 'cpu', 'memory', 'type']);
+
+        // id and name are the real (non-hidden) cells
+        const idCol = row1?.find(c => c.id === 'id');
+        const nameCol = row1?.find(c => c.id === 'name');
+        expect(idCol?.isHidden).toBe(false);
+        expect(nameCol?.isHidden).toBe(false);
+
+        // grouped leaf columns are normal
+        ['cpu', 'memory', 'type'].forEach(id => {
+          const col = row1?.find(c => c.id === id);
+          expect(col?.isGroup).toBe(false);
+          expect(col?.rowspan).toBe(1);
+          expect(col?.colspan).toBe(1);
+          expect(col?.isHidden).toBe(false);
         });
       });
 
@@ -437,7 +452,7 @@ describe('column-grouping-utils', () => {
     });
 
     describe('mixed ungrouped and grouped columns', () => {
-      it('ungrouped columns span all rows', () => {
+      it('ungrouped columns are expanded into hidden placeholder in row 0, real cell in row 1', () => {
         const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
         const columns: TableProps.ColumnDefinition<any>[] = [
           { id: 'ungrouped', header: 'Ungrouped', cell: () => 'ungrouped' },
@@ -446,9 +461,17 @@ describe('column-grouping-utils', () => {
 
         const result = CalculateHierarchyTree(columns, ['ungrouped', 'grouped'], groups);
 
-        const ungroupedCol = result?.rows[0].columns.find(c => c.id === 'ungrouped');
-        expect(ungroupedCol?.rowspan).toBe(2); // spans both rows
-        expect(ungroupedCol?.rowIndex).toBe(0);
+        // Row 0 has a hidden placeholder for 'ungrouped'
+        const ungroupedRow0 = result?.rows[0].columns.find(c => c.id === 'ungrouped');
+        expect(ungroupedRow0?.rowspan).toBe(1);
+        expect(ungroupedRow0?.isHidden).toBe(true);
+        expect(ungroupedRow0?.rowIndex).toBe(0);
+
+        // Row 1 has the real 'ungrouped' cell
+        const ungroupedRow1 = result?.rows[1].columns.find(c => c.id === 'ungrouped');
+        expect(ungroupedRow1?.rowspan).toBe(1);
+        expect(ungroupedRow1?.isHidden).toBe(false);
+        expect(ungroupedRow1?.rowIndex).toBe(1);
       });
 
       it('maintains correct column order with mixed types', () => {
@@ -462,8 +485,17 @@ describe('column-grouping-utils', () => {
 
         const result = CalculateHierarchyTree(columns, ['a', 'b', 'c', 'd'], groups);
 
+        // Row 0: hidden placeholders for a and c, plus the group header
         expect(result?.rows[0].columns.map(c => c.id)).toEqual(['a', 'group1', 'c']);
-        expect(result?.rows[1].columns.map(c => c.id)).toEqual(['b', 'd']);
+        const row0Hidden = result?.rows[0].columns.filter(c => c.isHidden).map(c => c.id);
+        expect(row0Hidden).toEqual(['a', 'c']);
+
+        // Row 1: real a and c cells plus grouped columns b and d
+        // b and d appear in the order determined by the tree traversal (b before d),
+        // with c inserted after d based on its colIndex
+        expect(result?.rows[1].columns.map(c => c.id)).toEqual(['a', 'b', 'd', 'c']);
+        const row1Hidden = result?.rows[1].columns.filter(c => c.isHidden).map(c => c.id);
+        expect(row1Hidden).toEqual([]); // no hidden cells in row 1
       });
     });
 
