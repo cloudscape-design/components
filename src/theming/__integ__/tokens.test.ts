@@ -15,7 +15,9 @@ class ColorTokensMosaikPage extends BasePageObject {
       for (const [prop, value] of (document.body as any).computedStyleMap()) {
         // Custom Property
         if (prop.startsWith('--')) {
-          result[prop] = value[0][0].trim();
+          // Try legacy nested array structure first (older Chrome), fallback to toString()
+          const legacyValue = value[0]?.[0];
+          result[prop] = typeof legacyValue === 'string' ? legacyValue.trim() : value.toString().trim();
         }
       }
       return result;
