@@ -179,7 +179,12 @@ export default function MultiselectPage() {
             </label>
           </SpaceBetween>
 
-          <ScreenshotArea>
+          <ScreenshotArea
+            style={{
+              // extra space to include dropdown in the screenshot area
+              paddingBlockEnd: 300,
+            }}
+          >
             <Multiselect
               ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
               enableSelectAll={urlParams.enableSelectAll}
