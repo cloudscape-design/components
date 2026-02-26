@@ -210,12 +210,12 @@ export function DrawerTriggers({
                   onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
                 }}
                 ref={
-                item.id === previousActiveLocalDrawerId.current
-                  ? drawersFocusRef
-                  : isFeatureNotificationsDrawer
-                    ? featureNotificationTriggerRef
-                    : null
-              }
+                  item.id === previousActiveLocalDrawerId.current
+                    ? drawersFocusRef
+                    : isFeatureNotificationsDrawer
+                      ? featureNotificationTriggerRef
+                      : null
+                }
                 selected={selected}
                 badge={item.badge}
                 testId={`awsui-app-layout-trigger-${item.id}`}

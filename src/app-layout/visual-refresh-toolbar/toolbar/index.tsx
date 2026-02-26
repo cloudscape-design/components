@@ -260,7 +260,8 @@ export function AppLayoutToolbarImplementation({
                 bottomDrawers={bottomDrawers}
                 onActiveGlobalBottomDrawerChange={onActiveGlobalBottomDrawerChange}
                 activeGlobalBottomDrawerId={activeGlobalBottomDrawerId}
-              featureNotificationsProps={featureNotificationsProps}/>
+                featureNotificationsProps={featureNotificationsProps}
+              />
             </AppLayoutBuiltInErrorBoundary>
           </div>
         )}
