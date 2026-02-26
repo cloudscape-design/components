@@ -24,7 +24,7 @@ const PromptInput = React.forwardRef(
       maxRows = 3,
       ...props
     }: PromptInputProps,
-    ref: React.Ref<PromptInputProps.Ref>
+    ref: React.Ref<PromptInputProps.Ref | HTMLTextAreaElement>
   ) => {
     const baseComponentProps = useBaseComponent('PromptInput', {
       props: {

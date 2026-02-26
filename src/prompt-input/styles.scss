@@ -122,32 +122,50 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     );
     background-color: var(#{custom-props.$promptInputStyleBackgroundFocus}, awsui.$color-background-input-default);
   }
+
+  // Prevent focus styles when disabled
+  &.disabled:focus-within,
+  &.disabled:focus {
+    @include styles.form-disabled-element(
+      $background-color: var(
+          #{custom-props.$promptInputStyleBackgroundDisabled},
+          awsui.$color-background-input-disabled
+        ),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+  }
 }
 
 .textarea {
   @include styles.styles-reset;
-  @include styles.control-border-radius-full();
   @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
   // Restore default text cursor
   cursor: text;
-  // Allow multi-line placeholders
+  // Allow multi-line placeholders and word wrapping
   white-space: pre-wrap;
-  background-color: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background-color: transparent;
 
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
 
   color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
-  max-inline-size: 100%;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   border: 0;
 
-  &::placeholder {
+  &.placeholder-visible::before {
+    content: attr(data-placeholder);
     @include styles.form-placeholder(
       $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
       $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
@@ -155,6 +173,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
     );
     opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    inset-block-start: styles.$control-padding-vertical;
+    inset-inline-start: styles.$control-padding-horizontal;
   }
 
   &:hover {
@@ -182,9 +204,19 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     padding-inline-start: $invalid-border-offset;
   }
 
-  &:disabled {
+  &:disabled,
+  &.textarea-disabled {
     color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled);
+    @include styles.form-disabled-element;
     cursor: default;
+    overflow-y: hidden;
+
+    // Prevent focus styles when disabled
+    &:focus-within,
+    &:focus {
+      @include styles.form-disabled-element;
+      box-shadow: none;
+    }
 
     &::placeholder {
       @include styles.form-placeholder-disabled;
@@ -198,10 +230,23 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
+  // Placeholder for disabled contentEditable div
+  &.placeholder-visible::before {
+    @include styles.form-placeholder-disabled;
+    opacity: 1;
+    pointer-events: none; // Prevent cursor from getting stuck on placeholder in Safari
+  }
 
   &-wrapper {
     display: flex;
+    position: relative;
   }
+}
+
+.editable-wrapper {
+  flex: 1;
+  min-inline-size: 0;
+  position: relative;
 }
 
 .primary-action {
@@ -269,4 +314,33 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   flex: 1;
   align-self: stretch;
   cursor: text;
+}
+
+.token-container {
+  display: inline-block;
+  user-select: all;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  padding-inline: awsui.$space-xxxs;
+}
+
+// Paragraph elements - reset browser default margins/padding
+.paragraph {
+  @include styles.styles-reset;
+  // Ensure paragraphs are only as tall as their line-height
+  margin: 0;
+  padding: 0;
+  // Preserve whitespace including trailing spaces
+  white-space: pre-wrap;
+  // Inherit color from parent (textarea) for disabled/readonly states
+  color: inherit;
+
+  // Prevent focus styles on paragraphs when parent textarea is disabled
+  .textarea-disabled & {
+    &:focus-within,
+    &:focus {
+      background: inherit;
+      outline: none;
+    }
+  }
 }

@@ -97,8 +97,10 @@ function InternalToken({
     }
   };
 
+  const SpanOrDivTag = isInline ? 'span' : 'div';
+
   return (
-    <div
+    <SpanOrDivTag
       {...baseProps}
       ref={__internalRootRef}
       className={clsx(
@@ -127,7 +129,7 @@ function InternalToken({
       }}
       tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
     >
-      <div
+      <SpanOrDivTag
         className={clsx(
           !isInline ? styles['token-box'] : styles['token-box-inline'],
           disabled && styles['token-box-disabled'],
@@ -154,7 +156,7 @@ function InternalToken({
             inline={isInline}
           />
         )}
-      </div>
+      </SpanOrDivTag>
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           data-testid="token-tooltip"
@@ -169,7 +171,7 @@ function InternalToken({
           }}
         />
       )}
-    </div>
+    </SpanOrDivTag>
   );
 }
 

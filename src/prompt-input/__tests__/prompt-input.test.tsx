@@ -274,7 +274,7 @@ describe('events', () => {
 
     wrapper.setTextareaValue('updated value');
 
-    expect(onChange).toHaveBeenCalledWith({ value: 'updated value' });
+    expect(onChange).toHaveBeenCalledWith({ value: 'updated value', tokens: [] });
   });
 
   test('fire an action event on action button click with correct parameters', () => {

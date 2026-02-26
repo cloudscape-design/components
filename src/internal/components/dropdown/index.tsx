@@ -170,6 +170,7 @@ const TransitionContent = ({
 const Dropdown = ({
   content,
   trigger,
+  triggerRef: externalTriggerRef,
   open,
   onOutsideClick,
   onMouseDown,
@@ -180,6 +181,7 @@ const Dropdown = ({
   stretchHeight = false,
   minWidth,
   maxWidth,
+  maxHeight,
   hideBlockBorder = true,
   expandToViewport = false,
   preferredAlignment = 'start',
@@ -199,12 +201,15 @@ const Dropdown = ({
   ariaDescribedby,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const internalTriggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
+
+  // Use external trigger ref if provided, otherwise use internal ref
+  const triggerRef = externalTriggerRef || internalTriggerRef;
 
   const isRefresh = useVisualRefresh();
 
@@ -226,7 +231,9 @@ const Dropdown = ({
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    verticalContainer.style.maxBlockSize = position.blockSize;
+    // Apply maxBlockSize, constrained by maxHeight prop if provided
+    const constrainedBlockSize = maxHeight ? `min(${position.blockSize}, ${maxHeight}px)` : position.blockSize;
+    verticalContainer.style.maxBlockSize = constrainedBlockSize;
 
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
@@ -411,7 +418,7 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick]);
+  }, [open, onOutsideClick, triggerRef]);
 
   // subscribe to Escape key press
   useEffect(() => {
@@ -457,7 +464,7 @@ const Dropdown = ({
     return () => {
       controller.abort();
     };
-  }, [open, expandToViewport, isMobile]);
+  }, [open, expandToViewport, isMobile, triggerRef]);
 
   const referrerId = useUniqueId();
 
@@ -496,9 +503,15 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
-        {trigger}
-      </div>
+      {!externalTriggerRef && (
+        <div
+          id={referrerId}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
+          ref={internalTriggerRef}
+        >
+          {trigger}
+        </div>
+      )}
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
