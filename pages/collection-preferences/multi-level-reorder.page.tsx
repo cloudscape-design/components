@@ -41,7 +41,8 @@ const columnOptions: CollectionPreferencesProps.ContentDisplayOption[] = [
 ];
 
 const columnGroups: CollectionPreferencesProps.ContentDisplayOptionGroup[] = [
-  { id: 'performance', label: 'Performance' },
+  { id: 'metrics', label: 'Metrics' },
+  { id: 'performance', label: 'Performance', groupId: 'metrics' },
   { id: 'configuration', label: 'Configuration' },
   { id: 'cost', label: 'Cost' },
 ];
