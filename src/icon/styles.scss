@@ -11,6 +11,8 @@
   position: relative;
   display: inline-block;
   vertical-align: top;
+  box-sizing: border-box;
+
   &-flex-height {
     display: inline-flex;
     align-items: center;
@@ -23,8 +25,12 @@
     pointer-events: none;
   }
 
-  @include mixins.style-svg();
+  > svg,
+  > img {
+    vertical-align: top;
+  }
 
+  @include mixins.style-svg();
   @include mixins.make-icon-sizes;
   @include mixins.make-icon-variants;
 
