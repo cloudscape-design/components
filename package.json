@@ -127,7 +127,7 @@
     "react-virtual": "^2.8.2",
     "react18": "npm:react@^18.3.1",
     "rimraf": "^6.1.0",
-    "rollup": "^3.29.5",
+    "rollup": "^3.30.0",
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.89.2",
     "sass-loader": "^12.3.0",
