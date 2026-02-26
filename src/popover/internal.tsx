@@ -40,6 +40,7 @@ function InternalPopover(
     fixedWidth = false,
     triggerType = 'text',
     dismissButton = true,
+    maxHeight,
 
     children,
     header,
@@ -156,6 +157,7 @@ function InternalPopover(
         arrow={position => <Arrow position={position} />}
         renderWithPortal={renderWithPortal}
         zIndex={renderWithPortal ? 7000 : undefined}
+        maxHeight={maxHeight}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <PopoverBody

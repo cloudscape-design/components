@@ -16,6 +16,13 @@ export interface PopoverProps extends BaseComponentProps {
   size?: PopoverProps.Size;
 
   /**
+   * Specifies the maximum height of the popover body in pixels.
+   * If the content exceeds this height, the popover body becomes scrollable.
+   * By default, the popover extends to the edge of the viewport.
+   */
+  maxHeight?: number;
+
+  /**
    * Expands the popover body to its maximum width regardless of content.
    * For example, use it when you need to place a column layout in the popover content.
    */
