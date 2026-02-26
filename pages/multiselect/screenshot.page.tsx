@@ -81,7 +81,7 @@ export default function MultiselectPage() {
 
   return (
     <article>
-      <h1>Multiselect with &quot;Select all&quot;</h1>
+      <h1>Multiselect for screenshot</h1>
       <Box padding={{ horizontal: 'l' }}>
         <SpaceBetween size="xxl">
           <SpaceBetween direction="horizontal" size="l">
