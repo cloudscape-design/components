@@ -877,18 +877,27 @@ export function handleSpaceAfterClosedTrigger(
   const spaceNode = document.createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
 
-  // Calculate cursor position after the space for unified restoration
+  // Calculate cursor position: after trigger + after space
   const tokens = extractTokensFromDOM(editableElement);
   let cursorPosition = 0;
   let foundTrigger = false;
 
-  for (const token of tokens) {
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
     if (token.type === 'trigger' && !foundTrigger) {
-      cursorPosition += getTokenCursorLength(token) + 1; // trigger + space
       foundTrigger = true;
-      break;
+      cursorPosition += getTokenCursorLength(token);
+
+      // Check if next token is the space we just inserted
+      const nextToken = tokens[i + 1];
+      if (nextToken && nextToken.type === 'text' && nextToken.value.startsWith(' ')) {
+        cursorPosition += 1; // Position after the space
+        break;
+      }
+    } else {
+      cursorPosition += getTokenCursorLength(token);
     }
-    cursorPosition += getTokenCursorLength(token);
   }
 
   // Store position for unified restoration
