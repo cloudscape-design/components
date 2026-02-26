@@ -253,7 +253,7 @@ export default function PromptInputShortcutsPage() {
   }, [plainTextValue]);
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (items.length === 0 && enableAutoFocus) {
       ref.current?.focus();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
