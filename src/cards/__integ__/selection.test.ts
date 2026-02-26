@@ -14,7 +14,7 @@ class CardsPage extends BasePageObject {
 
   getActiveElement = async () => {
     const element = await this.browser.getActiveElement();
-    return this.browser.$(element);
+    return this.browser.$(element as any);
   };
 }
 
