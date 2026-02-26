@@ -42,9 +42,10 @@ interface HierarchicalContentDisplayProps {
   tree: OptionTreeNode[];
   onToggle: (option: OptionWithVisibility) => void;
   onTreeChange: (newTree: OptionTreeNode[]) => void;
-  ariaLabelledby: string;
-  ariaDescribedby: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
   i18nStrings: React.ComponentProps<typeof InternalList>['i18nStrings'];
+  depth?: number;
 }
 
 function HierarchicalContentDisplay({
@@ -54,6 +55,7 @@ function HierarchicalContentDisplay({
   ariaLabelledby,
   ariaDescribedby,
   i18nStrings,
+  depth = 0,
 }: HierarchicalContentDisplayProps) {
   return (
     <InternalList
@@ -63,31 +65,27 @@ function HierarchicalContentDisplay({
         announcementLabel: node.label,
         content: node.isGroup ? (
           <InternalSpaceBetween size="xxs">
-            {/* Group label row — no toggle, just the header text */}
+            {/* Group header — no toggle */}
             <InternalBox fontWeight="bold" display="inline">
               {node.label}
             </InternalBox>
-            {/* Nested sortable list for children */}
+            {/* Recursively render children (sub-groups or leaf columns) */}
             {node.children.length > 0 && (
               <InternalBox padding={{ left: 'l' }}>
-                <InternalList
-                  items={node.children}
-                  renderItem={child => ({
-                    id: child.id,
-                    announcementLabel: child.label,
-                    content: <ContentDisplayOption option={child} onToggle={onToggle} />,
-                  })}
-                  disableItemPaddings={true}
-                  sortable={true}
-                  onSortingChange={({ detail: { items } }) => {
-                    onTreeChange(tree.map(n => (n.id === node.id && n.isGroup ? { ...n, children: [...items] } : n)));
-                  }}
+                <HierarchicalContentDisplay
+                  tree={node.children}
+                  onToggle={onToggle}
+                  onTreeChange={newChildren =>
+                    onTreeChange(tree.map(n => (n.id === node.id && n.isGroup ? { ...n, children: newChildren } : n)))
+                  }
                   i18nStrings={i18nStrings}
+                  depth={depth + 1}
                 />
               </InternalBox>
             )}
           </InternalSpaceBetween>
         ) : (
+          // node is OptionLeafNode — has all OptionWithVisibility fields
           <ContentDisplayOption option={node} onToggle={onToggle} />
         ),
       })}
@@ -96,8 +94,7 @@ function HierarchicalContentDisplay({
       onSortingChange={({ detail: { items } }) => {
         onTreeChange([...items]);
       }}
-      ariaLabelledby={ariaLabelledby}
-      ariaDescribedby={ariaDescribedby}
+      {...(depth === 0 ? { ariaLabelledby, ariaDescribedby } : {})}
       i18nStrings={i18nStrings}
     />
   );
