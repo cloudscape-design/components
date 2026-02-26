@@ -221,13 +221,13 @@ const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
     title: 'Column preferences',
     description: 'Customize the columns visibility and order.',
     options: [
-      { id: 'id', label: 'Instance ID', alwaysVisible: true },
       { id: 'name', label: 'Name' },
       { id: 'cpuUtilization', label: 'CPU (%)', groupId: 'performance' },
       { id: 'memoryUtilization', label: 'Memory (%)', groupId: 'performance' },
       { id: 'networkIn', label: 'Network In (MB/s)', groupId: 'performance' },
       { id: 'networkOut', label: 'Network Out (MB/s)', groupId: 'performance' },
       { id: 'instanceType', label: 'Instance Type', groupId: 'configuration' },
+      { id: 'id', label: 'Instance ID', alwaysVisible: true, groupId: 'metrics' },
       { id: 'az', label: 'Availability Zone', groupId: 'configuration' },
       { id: 'state', label: 'State', groupId: 'configuration' },
       { id: 'monthlyCost', label: 'Monthly Cost ($)', groupId: 'cost' },
@@ -236,7 +236,8 @@ const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
     groups: [
       { id: 'cost', label: 'Cost' },
       { id: 'configuration', label: 'Configuration' },
-      { id: 'performance', label: 'Performance' },
+      { id: 'performance', label: 'Performance', groupId: 'metrics' },
+      { id: 'metrics', label: 'Metrics' },
     ],
   },
 };
