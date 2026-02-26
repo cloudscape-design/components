@@ -14,7 +14,7 @@ export interface FeaturePromptProps {
    * Called when a user closes the prompt by using the close icon button,
    * clicking outside the prompt, shifting focus out of the prompt or pressing ESC.
    */
-  onDismiss?: NonCancelableEventHandler<null>;
+  onDismiss?: NonCancelableEventHandler<{ method?: FeaturePromptProps.DismissMethod }>;
 
   /**
    * Determines where the feature prompt is displayed when opened, relative to the trigger.
@@ -59,6 +59,7 @@ export interface FeaturePromptProps {
 }
 
 export namespace FeaturePromptProps {
+  export type DismissMethod = 'click-outside' | 'blur' | 'escape' | 'close-button';
   export type Position = PopoverProps.Position;
   export type Size = PopoverProps.Size;
   export interface I18nStrings {
