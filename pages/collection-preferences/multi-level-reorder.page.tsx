@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import CollectionPreferences from '~components/collection-preferences';
+import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 import {
@@ -13,68 +13,37 @@ import {
   wrapLinesPreference,
 } from './shared-configs';
 
-const shortOptionsList = [
+const columnOptions: CollectionPreferencesProps.ContentDisplayOption[] = [
+  // ungroupdd
+  { id: 'name', label: 'Name', alwaysVisible: true },
+  { id: 'status', label: 'Status' },
+
+  // performance
+  { id: 'cpuUtilization', label: 'CPU (%)', groupId: 'performance' },
+  { id: 'memoryUtilization', label: 'Memory (%)', groupId: 'performance' },
+  { id: 'networkIn', label: 'Network In (MB/s)', groupId: 'performance' },
+  { id: 'networkOut', label: 'Network Out (MB/s)', groupId: 'performance' },
+
+  // config
+  { id: 'instanceType', label: 'Instance Type', groupId: 'configuration' },
+  { id: 'availabilityZone', label: 'Availability Zone', groupId: 'configuration' },
+  { id: 'region', label: 'Region', groupId: 'configuration' },
+
+  // cost
+  { id: 'monthlyCost', label: 'Monthly Cost ($)', groupId: 'cost' },
+  { id: 'spotPrice', label: 'Spot Price ($/hr)', groupId: 'cost' },
   {
-    id: 'root1',
-    label: 'Root Item 1',
-  },
-  {
-    id: 'root2',
-    label: 'Root Item 2',
-  },
-  {
-    id: 'child1',
-    label: 'Child 1 of Root 1',
-    parentId: 'root1',
-  },
-  {
-    id: 'child2',
-    label: 'Child 2 of Root 1',
-    parentId: 'root1',
-  },
-  {
-    id: 'grandchild1',
-    label: 'Grandchild 1 of Child 1',
-    parentId: 'child1',
-  },
-  {
-    id: 'grandchild2',
-    label: 'Grandchild 2 of Child 1',
-    parentId: 'child1',
-  },
-  {
-    id: 'greatgrandchild1',
-    label: 'Great-Grandchild 1 (Level 4)',
-    parentId: 'grandchild1',
-  },
-  {
-    id: 'root3',
-    label: 'Root Item 3',
-  },
-  {
-    id: 'child3',
-    label: 'Child of Root 3',
-    parentId: 'root3',
-  },
-  {
-    id: 'root4',
+    id: 'reservedCost',
     label:
-      'Root Item 4 - Long text to verify wrapping behavior and ensure that the reordering feature works correctly with extended content',
+      'Reserved Instance Cost - Long text to verify wrapping behavior and ensure the reordering feature works correctly with extended content',
+    groupId: 'cost',
   },
-  {
-    id: 'child4',
-    label: 'Child of Root 4',
-    parentId: 'root4',
-  },
-  {
-    id: 'grandchild3',
-    label: 'Grandchild of Root 4',
-    parentId: 'child4',
-  },
-  {
-    id: 'root5',
-    label: 'ExtremelyLongLabelTextWithoutSpacesToVerifyThatItWrapsToTheNextLine',
-  },
+];
+
+const columnGroups: CollectionPreferencesProps.ContentDisplayOptionGroup[] = [
+  { id: 'performance', label: 'Performance' },
+  { id: 'configuration', label: 'Configuration' },
+  { id: 'cost', label: 'Cost' },
 ];
 
 export default function App() {
@@ -90,7 +59,8 @@ export default function App() {
         contentDisplayPreference={{
           title: 'Column preferences',
           description: 'Customize the columns visibility and order.',
-          options: shortOptionsList,
+          options: columnOptions,
+          groups: columnGroups,
           ...contentDisplayPreferenceI18nStrings,
         }}
       />
