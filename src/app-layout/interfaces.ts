@@ -309,12 +309,6 @@ export namespace AppLayoutProps {
       customIcon?: React.ReactNode;
     };
     ariaLabels: DrawerAriaLabels;
-    /**
-     * Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
-     *
-     * When using a badge, update `ariaLabels.triggerButton` to include the badge context for accessibility.
-     * For example: `triggerButton: hasUnread ? 'Notifications, has unread messages' : 'Notifications'`
-     */
     badge?: boolean;
     resizable?: boolean;
     defaultSize?: number;
@@ -325,12 +319,6 @@ export namespace AppLayoutProps {
   export interface DrawerAriaLabels {
     drawerName: string;
     closeButton?: string;
-    /**
-     * Label for the trigger button. When the drawer has an active badge,
-     * update this label to convey the badge information for accessibility.
-     *
-     * Example: `triggerButton: hasBadge ? 'Notifications, has unread messages' : 'Notifications'`
-     */
     triggerButton?: string;
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
