@@ -224,3 +224,28 @@ describe('with stickyHeader=true', () => {
     ]);
   });
 });
+
+test('does not measure column widths when re-rendering with unchanged columns', () => {
+  const getBoundingClientRectSpy = jest.spyOn(Element.prototype, 'getBoundingClientRect');
+  const columns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'id', cell: item => item.id, width: 150 },
+    { id: 'text', header: 'text', cell: item => item.text, width: 200 },
+  ];
+  const { rerender } = renderTable(
+    <Table columnDefinitions={columns} items={defaultItems} resizableColumns={true} stickyColumns={{ first: 1 }} />
+  );
+
+  // Clear call count after initial render
+  getBoundingClientRectSpy.mockClear();
+
+  // Re-render with different items but same columns
+  const newItems = [
+    { id: 1, text: 'updated' },
+    { id: 2, text: 'new item' },
+  ];
+  rerender(<Table columnDefinitions={columns} items={newItems} resizableColumns={true} stickyColumns={{ first: 1 }} />);
+
+  expect(getBoundingClientRectSpy).not.toHaveBeenCalled();
+
+  getBoundingClientRectSpy.mockRestore();
+});

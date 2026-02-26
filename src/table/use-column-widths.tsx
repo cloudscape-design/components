@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
@@ -35,18 +35,17 @@ function readWidths(
 }
 
 function updateWidths(
-  visibleColumns: readonly ColumnWidthDefinition[],
+  column: ColumnWidthDefinition | undefined,
   oldWidths: Map<PropertyKey, number>,
   newWidth: number,
   columnId: PropertyKey
 ) {
-  const column = visibleColumns.find(column => column.id === columnId);
   let minWidth = DEFAULT_COLUMN_WIDTH;
   if (typeof column?.width === 'number' && column.width < DEFAULT_COLUMN_WIDTH) {
-    minWidth = column?.width;
+    minWidth = column.width;
   }
   if (typeof column?.minWidth === 'number') {
-    minWidth = column?.minWidth;
+    minWidth = column.minWidth;
   }
   newWidth = Math.max(newWidth, minWidth);
   if (oldWidths.get(columnId) === newWidth) {
@@ -83,6 +82,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   const containerWidthRef = useRef(0);
   const [columnWidths, setColumnWidths] = useState<null | Map<PropertyKey, number>>(null);
 
+  const columnById = useMemo(() => new Map(visibleColumns.map(column => [column.id, column])), [visibleColumns]);
+
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
@@ -96,7 +97,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   };
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
-    const column = visibleColumns.find(column => column.id === columnId);
+    const column = columnById.get(columnId);
     if (!column) {
       return {};
     }
@@ -190,7 +191,8 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   }, []);
 
   function updateColumn(columnId: PropertyKey, newWidth: number) {
-    setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
+    const column = columnById.get(columnId);
+    setColumnWidths(columnWidths => updateWidths(column, columnWidths ?? new Map(), newWidth, columnId));
   }
 
   return (
