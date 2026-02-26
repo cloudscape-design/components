@@ -1,0 +1,38 @@
+name: Lock threads
+
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  discussions: write
+  contents: read
+
+jobs:
+  lock-discussion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the PR branch
+        uses: actions/checkout@v4
+        with:
+          path: 'components'
+
+      - name: Setup lock-discussion project
+        run: |
+          echo "the PWD is : ${PWD}"
+          cp -r components/.github/workflows/lock-discussion lock-discussion
+          cd lock-discussion
+          npm i --force
+
+      - name: Run lock discussion
+        run: |
+          cd lock-discussion
+          npm run lock
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
