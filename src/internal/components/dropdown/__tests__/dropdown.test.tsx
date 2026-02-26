@@ -504,7 +504,6 @@ describe('triggerRef prop', () => {
     }
     render(<TestComponent />);
 
-    // Open the dropdown after mount so that externalTriggerRef.current is populated
     act(() => screen.getByTestId('open-btn').click());
 
     const trigger = screen.getByTestId('trigger');
