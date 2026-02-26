@@ -55,7 +55,6 @@ function updateWidths(
   }
   const newWidths = new Map(oldWidths);
   newWidths.set(columnId, newWidth);
-  console.log(newWidths);
   return newWidths;
 }
 
@@ -339,17 +338,12 @@ export function ColumnWidthsProvider({
     // Find the rightmost leaf descendant
     const rightmostLeaf = findRightmostLeaf(String(groupId), columnWidths);
     if (!rightmostLeaf) {
-      console.warn(`No rightmost leaf found for group ${String(groupId)}`);
       return;
     }
 
     // Apply the delta to the rightmost leaf column
     const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
     const newLeafWidth = currentLeafWidth + delta;
-
-    console.log(
-      `Group resize: ${String(groupId)} delta=${delta}px -> applying to leaf ${rightmostLeaf} (${currentLeafWidth}px -> ${newLeafWidth}px)`
-    );
 
     // Use updateColumn to handle the leaf resize (which will propagate to parents automatically)
     updateColumn(rightmostLeaf, newLeafWidth);

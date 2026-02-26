@@ -348,6 +348,7 @@ export default function EC2TableDemo() {
           <SpaceBetween size="m" direction="horizontal">
             {/* first */}
             <Input
+              ariaLabel="First sticky column count"
               onChange={({ detail }) => setFirstSticky(detail.value)}
               value={firstSticky}
               name="first"
@@ -355,6 +356,7 @@ export default function EC2TableDemo() {
               type="number"
             />
             <Input
+              ariaLabel="Last sticky column count"
               onChange={({ detail }) => setLastSticky(detail.value)}
               value={lastSticky}
               name="last"
