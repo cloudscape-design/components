@@ -3,7 +3,7 @@
 
 import type { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { isBreakToken, isHTMLElement, isTextNode, isTextToken } from './type-guards';
+import { isBreakToken, isHTMLElement, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 import { findAllParagraphs, getTokenType } from './utils';
 
 // HELPER FUNCTIONS
@@ -309,7 +309,10 @@ export function getTokenCursorLength(token: PromptInputProps.InputToken): number
   if (isBreakToken(token)) {
     return 0;
   }
-  return 1;
+  if (isTriggerToken(token)) {
+    return 1 + token.value.length; // trigger char + value
+  }
+  return 1; // references
 }
 
 export function getCursorPositionAtIndex(tokens: readonly PromptInputProps.InputToken[], index: number): number {
