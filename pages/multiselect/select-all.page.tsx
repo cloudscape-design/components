@@ -13,14 +13,18 @@ import { deselectAriaLabel, getInlineAriaLabel, groupedOptions, i18nStrings } fr
 
 type DemoContext = React.Context<
   AppContextType<{
-    closeAfter?: boolean;
-    expandToViewport?: boolean;
-    inlineTokens?: boolean;
-    manyOptions?: boolean;
-    virtualScroll?: boolean;
+    // Props passed to the component
+    enableSelectAll?: MultiselectProps['enableSelectAll'];
+    expandToViewport?: MultiselectProps['expandToViewport'];
+    filteringType?: MultiselectProps['filteringType'];
+    inlineTokens?: MultiselectProps['inlineTokens'];
+    keepOpen?: MultiselectProps['keepOpen'];
+    statusType?: MultiselectProps['statusType'];
+    virtualScroll?: MultiselectProps['virtualScroll'];
+    // Content controls
     withDisabledOptions?: boolean;
-    withFiltering?: boolean;
     withGroups?: boolean;
+    manyOptions?: boolean;
   }>
 >;
 
@@ -100,10 +104,10 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={!!urlParams.withFiltering}
-                onChange={e => setUrlParams({ withFiltering: e.target.checked })}
+                checked={!!urlParams.enableSelectAll}
+                onChange={e => setUrlParams({ enableSelectAll: e.target.checked })}
               />{' '}
-              With filtering
+              Enable select all
             </label>
             <label>
               <input
@@ -124,10 +128,10 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={!!urlParams.closeAfter}
-                onChange={e => setUrlParams({ closeAfter: e.target.checked })}
+                checked={!!urlParams.keepOpen}
+                onChange={e => setUrlParams({ keepOpen: e.target.checked })}
               />{' '}
-              Close after selection
+              Keep open after selection
             </label>
             <label>
               <input
@@ -145,25 +149,56 @@ export default function MultiselectPage() {
               />{' '}
               Many options
             </label>
+            <label>
+              Filtering:{' '}
+              <select
+                value={urlParams.filteringType ?? ''}
+                onChange={e => setUrlParams({ filteringType: e.target.value as MultiselectProps['filteringType'] })}
+              >
+                <option value="manual">manual</option>
+                <option value="auto">auto</option>
+                <option value="none">none</option>
+              </select>
+            </label>
+            <label>
+              Status type:{' '}
+              <select
+                value={urlParams.statusType ?? ''}
+                onChange={e => setUrlParams({ statusType: e.target.value as MultiselectProps['statusType'] })}
+              >
+                {(
+                  ['pending', 'loading', 'finished', 'error'] as const satisfies NonNullable<
+                    MultiselectProps['statusType']
+                  >[]
+                ).map(v => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </label>
           </SpaceBetween>
 
           <ScreenshotArea>
             <Multiselect
-              selectedOptions={selectedOptions}
-              deselectAriaLabel={deselectAriaLabel}
-              filteringType={urlParams.withFiltering ? 'auto' : 'none'}
-              options={options}
-              i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
-              enableSelectAll={true}
-              placeholder={'Choose options'}
-              onChange={event => {
-                setSelectedOptions(event.detail.selectedOptions);
-              }}
               ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
-              inlineTokens={urlParams.inlineTokens}
+              enableSelectAll={urlParams.enableSelectAll}
               expandToViewport={urlParams.expandToViewport}
-              keepOpen={!urlParams.closeAfter}
+              filteringType={urlParams.filteringType}
+              inlineTokens={urlParams.inlineTokens}
+              keepOpen={urlParams.keepOpen}
+              onLoadItems={() => {}}
+              options={options}
+              selectedOptions={selectedOptions}
+              statusType={urlParams.statusType}
               virtualScroll={urlParams.virtualScroll}
+              onChange={event => setSelectedOptions(event.detail.selectedOptions)}
+              placeholder={'Choose options'}
+              deselectAriaLabel={deselectAriaLabel}
+              i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
+              recoveryText="Retry"
+              finishedText="End of all results"
+              errorText="verylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspacesverylongtextwithoutspaces"
             />
           </ScreenshotArea>
         </SpaceBetween>
