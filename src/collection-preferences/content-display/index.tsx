@@ -18,7 +18,14 @@ import InternalTextFilter from '../../text-filter/internal';
 import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
-import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
+import {
+  buildOptionTree,
+  flattenOptionTree,
+  getFilteredOptions,
+  getSortedOptions,
+  OptionTreeNode,
+  OptionWithVisibility,
+} from './utils';
 
 import styles from '../styles.css.js';
 
@@ -31,10 +38,76 @@ interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.Conte
   value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }
 
+interface HierarchicalContentDisplayProps {
+  tree: OptionTreeNode[];
+  onToggle: (option: OptionWithVisibility) => void;
+  onTreeChange: (newTree: OptionTreeNode[]) => void;
+  ariaLabelledby: string;
+  ariaDescribedby: string;
+  i18nStrings: React.ComponentProps<typeof InternalList>['i18nStrings'];
+}
+
+function HierarchicalContentDisplay({
+  tree,
+  onToggle,
+  onTreeChange,
+  ariaLabelledby,
+  ariaDescribedby,
+  i18nStrings,
+}: HierarchicalContentDisplayProps) {
+  return (
+    <InternalList
+      items={tree}
+      renderItem={node => ({
+        id: node.id,
+        announcementLabel: node.label,
+        content: node.isGroup ? (
+          <InternalSpaceBetween size="xxs">
+            {/* Group label row — no toggle, just the header text */}
+            <InternalBox fontWeight="bold" display="inline">
+              {node.label}
+            </InternalBox>
+            {/* Nested sortable list for children */}
+            {node.children.length > 0 && (
+              <InternalBox padding={{ left: 'l' }}>
+                <InternalList
+                  items={node.children}
+                  renderItem={child => ({
+                    id: child.id,
+                    announcementLabel: child.label,
+                    content: <ContentDisplayOption option={child} onToggle={onToggle} />,
+                  })}
+                  disableItemPaddings={true}
+                  sortable={true}
+                  onSortingChange={({ detail: { items } }) => {
+                    onTreeChange(tree.map(n => (n.id === node.id && n.isGroup ? { ...n, children: [...items] } : n)));
+                  }}
+                  i18nStrings={i18nStrings}
+                />
+              </InternalBox>
+            )}
+          </InternalSpaceBetween>
+        ) : (
+          <ContentDisplayOption option={node} onToggle={onToggle} />
+        ),
+      })}
+      disableItemPaddings={true}
+      sortable={true}
+      onSortingChange={({ detail: { items } }) => {
+        onTreeChange([...items]);
+      }}
+      ariaLabelledby={ariaLabelledby}
+      ariaDescribedby={ariaDescribedby}
+      i18nStrings={i18nStrings}
+    />
+  );
+}
+
 export default function ContentDisplayPreference({
   title,
   description,
   options,
+  groups,
   value = options.map(({ id }) => ({
     id,
     visible: true,
@@ -56,11 +129,12 @@ export default function ContentDisplayPreference({
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
+  const [sortedOptions, sortedAndFilteredOptions, optionTree] = useMemo(() => {
     const sorted = getSortedOptions({ options, contentDisplay: value });
     const filtered = getFilteredOptions(sorted, columnFilteringText);
-    return [sorted, filtered];
-  }, [columnFilteringText, options, value]);
+    const tree = groups && groups.length > 0 ? buildOptionTree(sorted, groups) : null;
+    return [sorted, filtered, tree];
+  }, [columnFilteringText, groups, options, value]);
 
   const onToggle = (option: OptionWithVisibility) => {
     // We use sortedOptions as base and not value because there might be options that
@@ -126,48 +200,85 @@ export default function ContentDisplayPreference({
         </div>
       )}
 
-      <InternalList
-        items={sortedAndFilteredOptions}
-        renderItem={item => ({
-          id: item.id,
-          content: <ContentDisplayOption option={item} onToggle={onToggle} />,
-          announcementLabel: item.label,
-        })}
-        disableItemPaddings={true}
-        sortable={true}
-        sortDisabled={columnFilteringText.trim().length > 0}
-        onSortingChange={({ detail: { items } }) => {
-          onChange(items);
-        }}
-        ariaDescribedby={descriptionId}
-        ariaLabelledby={titleId}
-        i18nStrings={{
-          liveAnnouncementDndStarted: i18n(
-            'contentDisplayPreference.liveAnnouncementDndStarted',
-            liveAnnouncementDndStarted,
-            formatDndStarted
-          ),
-          liveAnnouncementDndItemReordered: i18n(
-            'contentDisplayPreference.liveAnnouncementDndItemReordered',
-            liveAnnouncementDndItemReordered,
-            formatDndItemReordered
-          ),
-          liveAnnouncementDndItemCommitted: i18n(
-            'contentDisplayPreference.liveAnnouncementDndItemCommitted',
-            liveAnnouncementDndItemCommitted,
-            formatDndItemCommitted
-          ),
-          liveAnnouncementDndDiscarded: i18n(
-            'contentDisplayPreference.liveAnnouncementDndDiscarded',
-            liveAnnouncementDndDiscarded
-          ),
-          dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
-          dragHandleAriaDescription: i18n(
-            'contentDisplayPreference.dragHandleAriaDescription',
-            dragHandleAriaDescription
-          ),
-        }}
-      />
+      {/* Grouped hierarchical view */}
+      {optionTree && columnFilteringText.trim().length === 0 ? (
+        <HierarchicalContentDisplay
+          tree={optionTree}
+          onToggle={onToggle}
+          onTreeChange={newTree => onChange(flattenOptionTree(newTree))}
+          ariaDescribedby={descriptionId}
+          ariaLabelledby={titleId}
+          i18nStrings={{
+            liveAnnouncementDndStarted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndStarted',
+              liveAnnouncementDndStarted,
+              formatDndStarted
+            ),
+            liveAnnouncementDndItemReordered: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemReordered',
+              liveAnnouncementDndItemReordered,
+              formatDndItemReordered
+            ),
+            liveAnnouncementDndItemCommitted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+              liveAnnouncementDndItemCommitted,
+              formatDndItemCommitted
+            ),
+            liveAnnouncementDndDiscarded: i18n(
+              'contentDisplayPreference.liveAnnouncementDndDiscarded',
+              liveAnnouncementDndDiscarded
+            ),
+            dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
+            dragHandleAriaDescription: i18n(
+              'contentDisplayPreference.dragHandleAriaDescription',
+              dragHandleAriaDescription
+            ),
+          }}
+        />
+      ) : (
+        <InternalList
+          items={sortedAndFilteredOptions}
+          renderItem={item => ({
+            id: item.id,
+            content: <ContentDisplayOption option={item} onToggle={onToggle} />,
+            announcementLabel: item.label,
+          })}
+          disableItemPaddings={true}
+          sortable={true}
+          sortDisabled={columnFilteringText.trim().length > 0}
+          onSortingChange={({ detail: { items } }) => {
+            onChange(items);
+          }}
+          ariaDescribedby={descriptionId}
+          ariaLabelledby={titleId}
+          i18nStrings={{
+            liveAnnouncementDndStarted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndStarted',
+              liveAnnouncementDndStarted,
+              formatDndStarted
+            ),
+            liveAnnouncementDndItemReordered: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemReordered',
+              liveAnnouncementDndItemReordered,
+              formatDndItemReordered
+            ),
+            liveAnnouncementDndItemCommitted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+              liveAnnouncementDndItemCommitted,
+              formatDndItemCommitted
+            ),
+            liveAnnouncementDndDiscarded: i18n(
+              'contentDisplayPreference.liveAnnouncementDndDiscarded',
+              liveAnnouncementDndDiscarded
+            ),
+            dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
+            dragHandleAriaDescription: i18n(
+              'contentDisplayPreference.dragHandleAriaDescription',
+              dragHandleAriaDescription
+            ),
+          }}
+        />
+      )}
     </div>
   );
 }
