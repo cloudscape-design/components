@@ -10,6 +10,7 @@ import {
   Button,
   CollectionPreferences,
   CollectionPreferencesProps,
+  FormField,
   Header,
   Input,
   Pagination,
@@ -17,6 +18,7 @@ import {
   Table,
   TableProps,
   TextFilter,
+  Toggle,
 } from '~components';
 
 import { SimplePage } from '../app/templates';
@@ -313,14 +315,44 @@ export default function EC2TableDemo() {
 
   const [firstSticky, setFirstSticky] = useState('0');
   const [lastSticky, setLastSticky] = useState('0');
+  const [resizable, setResizable] = useState(true);
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
       <h1>EC2 Instances Table</h1>
+
+      <SpaceBetween size="m" direction="horizontal" alignItems="end">
+        <Toggle onChange={({ detail }) => setResizable(detail.checked)} checked={resizable}>
+          Resizable
+        </Toggle>
+
+        {/* first */}
+        <FormField label="Sticky First">
+          <Input
+            ariaLabel="First sticky column count"
+            onChange={({ detail }) => setFirstSticky(detail.value)}
+            value={firstSticky}
+            name="first"
+            inputMode="numeric"
+            type="number"
+          />
+        </FormField>
+        <FormField label="Sticky Last">
+          <Input
+            ariaLabel="Last sticky column count"
+            onChange={({ detail }) => setLastSticky(detail.value)}
+            value={lastSticky}
+            name="last"
+            inputMode="numeric"
+            type="number"
+          />
+        </FormField>
+      </SpaceBetween>
+
       <Table
         {...collectionProps}
         selectionType="multi"
-        resizableColumns={true}
+        resizableColumns={resizable}
         stickyColumns={{
           first: +firstSticky,
           last: +lastSticky,
@@ -345,31 +377,11 @@ export default function EC2TableDemo() {
         items={items}
         pagination={<Pagination {...paginationProps} />}
         filter={
-          <SpaceBetween size="m" direction="horizontal">
-            {/* first */}
-            <Input
-              ariaLabel="First sticky column count"
-              onChange={({ detail }) => setFirstSticky(detail.value)}
-              value={firstSticky}
-              name="first"
-              inputMode="numeric"
-              type="number"
-            />
-            <Input
-              ariaLabel="Last sticky column count"
-              onChange={({ detail }) => setLastSticky(detail.value)}
-              value={lastSticky}
-              name="last"
-              inputMode="numeric"
-              type="number"
-            />
-
-            <TextFilter
-              {...filterProps}
-              countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
-              filteringPlaceholder="Find instances"
-            />
-          </SpaceBetween>
+          <TextFilter
+            {...filterProps}
+            countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
+            filteringPlaceholder="Find instances"
+          />
         }
         preferences={
           <CollectionPreferences
