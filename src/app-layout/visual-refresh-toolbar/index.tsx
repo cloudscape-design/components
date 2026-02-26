@@ -91,9 +91,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             </AppLayoutVisibilityContext.Provider>
           )}
         </AppLayoutStateProvider>
-        <AppLayoutBuiltInErrorBoundary>
-          <AppLayoutWidgetizedState forwardRef={forwardRef} appLayoutProps={props} stateManager={stateManager} />
-        </AppLayoutBuiltInErrorBoundary>
+        <AppLayoutWidgetizedState forwardRef={forwardRef} appLayoutProps={props} stateManager={stateManager} />
       </>
     );
   }

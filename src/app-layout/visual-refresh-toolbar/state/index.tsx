@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, useLayoutEffect, useState } from 'react';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { AppLayoutInternalProps, AppLayoutState } from '../interfaces';
@@ -30,7 +31,7 @@ export interface AppLayoutStateProps {
   forwardRef: ForwardedRef<AppLayoutProps.Ref>;
 }
 
-export const AppLayoutStateProvider = ({ appLayoutProps, stateManager, forwardRef }: AppLayoutStateProps) => {
+export const AppLayoutStateProviderInternal = ({ appLayoutProps, stateManager, forwardRef }: AppLayoutStateProps) => {
   const [hasToolbar, setHasToolbar] = useState(stateManager.current.hasToolbar ?? false);
   const appLayoutState = useAppLayout(hasToolbar, appLayoutProps, forwardRef);
   const skeletonSlotsAttributes = useSkeletonSlotsAttributes(hasToolbar, appLayoutProps, appLayoutState);
@@ -53,6 +54,14 @@ export const AppLayoutStateProvider = ({ appLayoutProps, stateManager, forwardRe
   }, [stateManager]);
 
   return <></>;
+};
+
+export const AppLayoutStateProvider = (props: AppLayoutStateProps) => {
+  return (
+    <AppLayoutBuiltInErrorBoundary>
+      <AppLayoutStateProviderInternal {...props} />
+    </AppLayoutBuiltInErrorBoundary>
+  );
 };
 
 export const createWidgetizedAppLayoutState = createWidgetizedComponent(AppLayoutStateProvider);
