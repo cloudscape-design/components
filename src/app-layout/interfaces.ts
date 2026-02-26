@@ -33,6 +33,8 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * * trigger (DrawerTrigger) - the button that opens and closes the active drawer.
    * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
    * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+   *   When using a badge, update `ariaLabels.triggerButton` to include the badge context for accessibility
+   *   (for example: "Notifications, has unread messages").
    * * resizable (boolean) - if the drawer is resizable or not.
    * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
    * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
@@ -44,7 +46,8 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * #### DrawerAriaLabels
    * - `drawerName` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
    * - `closeButton` (string) - (Optional) Label for the close button.
-   * - `triggerButton` (string) - (Optional) Label for the trigger button.
+   * - `triggerButton` (string) - (Optional) Label for the trigger button. When the drawer has an active badge,
+   *   update this label to convey the badge information (for example: "Notifications, has unread messages").
    * - `resizeHandle` (string) - (Optional) Label for the resize handle.
    */
   drawers?: Array<AppLayoutProps.Drawer>;
@@ -306,6 +309,12 @@ export namespace AppLayoutProps {
       customIcon?: React.ReactNode;
     };
     ariaLabels: DrawerAriaLabels;
+    /**
+     * Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+     *
+     * When using a badge, update `ariaLabels.triggerButton` to include the badge context for accessibility.
+     * For example: `triggerButton: hasUnread ? 'Notifications, has unread messages' : 'Notifications'`
+     */
     badge?: boolean;
     resizable?: boolean;
     defaultSize?: number;
@@ -316,6 +325,12 @@ export namespace AppLayoutProps {
   export interface DrawerAriaLabels {
     drawerName: string;
     closeButton?: string;
+    /**
+     * Label for the trigger button. When the drawer has an active badge,
+     * update this label to convey the badge information for accessibility.
+     *
+     * Example: `triggerButton: hasBadge ? 'Notifications, has unread messages' : 'Notifications'`
+     */
     triggerButton?: string;
     resizeHandle?: string;
     resizeHandleTooltipText?: string;
