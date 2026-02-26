@@ -3,11 +3,13 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
+import RemoteI18nProvider from '../../i18n/providers/remote-provider';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
+import { useAriaLabels } from '../utils/use-aria-labels';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternalProps, AppLayoutPendingState } from './interfaces';
-import { AppLayoutWidgetizedState } from './internal';
+import { AppLayoutWidgetizedState, loadFormatter } from './internal';
 import { SkeletonLayout } from './skeleton';
 import { SkeletonSlotsAttributes } from './skeleton/interfaces';
 import { DeduplicationType, useMultiAppLayout } from './skeleton/multi-layout';
@@ -62,36 +64,65 @@ const AppLayoutStateProvider: React.FC<{
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (props, forwardRef) => {
-    const stateManager = useRef<StateManager>({ setState: undefined, hasToolbar: false, setToolbar: undefined });
-    const { __forceDeduplicationType: forceDeduplicationType, __embeddedViewMode: embeddedViewMode } = props as any;
+    const stateManagerRef = useRef<StateManager>({ setState: undefined, hasToolbar: false, setToolbar: undefined });
 
     return (
-      <>
-        <AppLayoutStateProvider
-          forceDeduplicationType={forceDeduplicationType}
+      <RemoteI18nProvider loadFormatter={loadFormatter}>
+        <AppLayoutVisualRefreshToolbarWithI18n
+          appLayoutRef={forwardRef}
+          stateManagerRef={stateManagerRef}
           appLayoutProps={props}
-          stateManager={stateManager}
-        >
-          {(registered, appLayoutState, toolbarProps, skeletonAttributes) => (
-            <AppLayoutVisibilityContext.Provider value={appLayoutState.isIntersecting}>
-              {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-              {(embeddedViewMode || !toolbarProps) && props.breadcrumbs ? (
-                <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
-              ) : null}
-              <SkeletonLayout
-                registered={registered}
-                toolbarProps={toolbarProps}
-                appLayoutProps={props}
-                appLayoutState={appLayoutState}
-                skeletonSlotsAttributes={skeletonAttributes}
-              />
-            </AppLayoutVisibilityContext.Provider>
-          )}
-        </AppLayoutStateProvider>
-        <AppLayoutWidgetizedState forwardRef={forwardRef} appLayoutProps={props} stateManager={stateManager} />
-      </>
+        />
+      </RemoteI18nProvider>
     );
   }
 );
+
+function AppLayoutVisualRefreshToolbarWithI18n({
+  appLayoutRef,
+  stateManagerRef,
+  appLayoutProps,
+}: {
+  appLayoutRef: React.ForwardedRef<AppLayoutProps.Ref>;
+  stateManagerRef: React.MutableRefObject<StateManager>;
+  appLayoutProps: AppLayoutInternalProps;
+}) {
+  const { __forceDeduplicationType: forceDeduplicationType, __embeddedViewMode: embeddedViewMode } =
+    appLayoutProps as any;
+
+  const ariaLabels = useAriaLabels(appLayoutProps.ariaLabels);
+  const appLayoutPropsWithI18n = { ...appLayoutProps, ariaLabels };
+
+  return (
+    <>
+      <AppLayoutStateProvider
+        forceDeduplicationType={forceDeduplicationType}
+        appLayoutProps={appLayoutPropsWithI18n}
+        stateManager={stateManagerRef}
+      >
+        {(registered, appLayoutState, toolbarProps, skeletonAttributes) => (
+          <AppLayoutVisibilityContext.Provider value={appLayoutState.isIntersecting}>
+            {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
+            {(embeddedViewMode || !toolbarProps) && appLayoutPropsWithI18n.breadcrumbs ? (
+              <ScreenreaderOnly>{appLayoutPropsWithI18n.breadcrumbs}</ScreenreaderOnly>
+            ) : null}
+            <SkeletonLayout
+              registered={registered}
+              toolbarProps={toolbarProps}
+              appLayoutProps={appLayoutPropsWithI18n}
+              appLayoutState={appLayoutState}
+              skeletonSlotsAttributes={skeletonAttributes}
+            />
+          </AppLayoutVisibilityContext.Provider>
+        )}
+      </AppLayoutStateProvider>
+      <AppLayoutWidgetizedState
+        forwardRef={appLayoutRef}
+        appLayoutProps={appLayoutPropsWithI18n}
+        stateManager={stateManagerRef}
+      />
+    </>
+  );
+}
 
 export default AppLayoutVisualRefreshToolbar;

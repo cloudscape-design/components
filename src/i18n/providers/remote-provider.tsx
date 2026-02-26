@@ -47,19 +47,10 @@ export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI1
 
     staticLoadFormatter({ locale })
       .then(formatter => {
-        if (!formatter) {
-          // Formatter wasn't available, bail.
-          return;
-        }
-        if ('startTransition' in React && typeof React.startTransition === 'function') {
-          // Use startTransition (if available) to prevent the followup render from blocking
-          // more important user interactions.
-          React.startTransition(() => {
-            setFormatFunction(() => formatter.format.bind(formatter));
-          });
-        } else {
+        if (formatter) {
           setFormatFunction(() => formatter.format.bind(formatter));
         }
+        // If formatter isn't available, do nothing.
       })
       .catch(() => {
         // Do nothing. Failure in fetching the formatter should not be fatal.
