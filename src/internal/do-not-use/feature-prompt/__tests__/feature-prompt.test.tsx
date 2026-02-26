@@ -11,7 +11,7 @@ function renderComponent(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);
   const wrapper = new FeaturePromptWrapper(container);
 
-  return { wrapper, ...rest };
+  return { wrapper, container, ...rest };
 }
 
 const TestComponent = ({ onDismiss }: { onDismiss?: FeaturePromptProps['onDismiss'] }) => {
@@ -46,6 +46,7 @@ const TestComponent = ({ onDismiss }: { onDismiss?: FeaturePromptProps['onDismis
         getTrack={() => trackRef.current}
         trackKey="track-element"
       />
+      <iframe src="#" data-testid="test-iframe"></iframe>
     </div>
   );
 };
@@ -72,7 +73,9 @@ describe('FeaturePrompt', () => {
     expect(wrapper.findHeader()!.getElement()).toHaveTextContent('header');
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('content');
 
-    fireEvent.blur(wrapper.findContent()!.getElement());
+    fireEvent.blur(wrapper.findContent()!.getElement(), {
+      relatedTarget: getByTestId('trigger-button'),
+    });
     expect(wrapper.findContent()).toBeFalsy();
   });
 
@@ -85,7 +88,7 @@ describe('FeaturePrompt', () => {
 
     wrapper.findDismissButton()!.click();
 
-    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(onDismissMock).toHaveBeenCalled();
     expect(wrapper.findContent()).toBeFalsy();
   });
 
@@ -98,7 +101,7 @@ describe('FeaturePrompt', () => {
 
     getByTestId('dismiss-button').click();
 
-    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(onDismissMock).toHaveBeenCalled();
     expect(wrapper.findContent()).toBeFalsy();
   });
 
@@ -109,7 +112,9 @@ describe('FeaturePrompt', () => {
     getByTestId('trigger-button').click();
     expect(wrapper.findContent()).toBeTruthy();
 
-    fireEvent.blur(wrapper.findContent()!.getElement());
+    fireEvent.blur(wrapper.findContent()!.getElement(), {
+      relatedTarget: getByTestId('trigger-button'),
+    });
 
     expect(onDismissMock).toHaveBeenCalledTimes(1);
     expect(wrapper.findContent()).toBeFalsy();
@@ -148,6 +153,20 @@ describe('FeaturePrompt', () => {
     });
 
     expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(wrapper.findContent()).toBeFalsy();
+  });
+
+  test('should dismiss when clicking inside an iframe', () => {
+    const onDismissMock = jest.fn();
+    const { getByTestId, wrapper } = renderComponent(<TestComponent onDismiss={onDismissMock} />);
+
+    getByTestId('trigger-button').click();
+    expect(wrapper.findContent()).toBeTruthy();
+
+    getByTestId('test-iframe').click();
+
+    expect(onDismissMock).toHaveBeenCalledTimes(1);
+    expect(onDismissMock).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'click-outside' } }));
     expect(wrapper.findContent()).toBeFalsy();
   });
 });

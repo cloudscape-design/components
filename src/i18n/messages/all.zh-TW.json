@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {重新整理以再試一次。我們正在追蹤此問題，但您可以在此處分享<Feedback>更多資訊</Feedback>。} other {重新整理以再試一次。}}",
     "i18nStrings.refreshActionText": "重新整理頁面"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新功能發布",
+    "i18nStrings.viewAll": "檢視所有功能發布",
+    "ariaLabels.closeButton": "關閉通知",
+    "ariaLabels.content": "功能通知",
+    "ariaLabels.triggerButton": "顯示功能通知",
+    "ariaLabels.resizeHandle": "調整功能通知的大小"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "顯示較少",
     "i18nStrings.limitShowMore": "顯示更多",
