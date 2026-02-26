@@ -182,7 +182,7 @@ export default function MultiselectPage() {
           <ScreenshotArea
             style={{
               // extra space to include dropdown in the screenshot area
-              paddingBlockEnd: 300,
+              paddingBlockEnd: 550,
             }}
           >
             <Multiselect
