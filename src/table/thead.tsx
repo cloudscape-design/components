@@ -57,8 +57,7 @@ const Thead = React.forwardRef(
       selectionType,
       getSelectAllProps,
       columnDefinitions,
-      // columnGroupingDefinitions,
-      hierarchicalStructure: h, // TODO: change to normal later, no convert to h
+      hierarchicalStructure: h,
       sortingColumn,
       sortingDisabled,
       sortingDescending,
@@ -88,14 +87,7 @@ const Thead = React.forwardRef(
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
 
-    /// TODO: Remove this nati later, JUST TESTING :)
-    const hierarchicalStructure: TableGroupedTypes.HierarchicalStructure<any> = {
-      // maxDepth: 1,
-      maxDepth: h?.maxDepth ?? 1,
-      columnToParentIds: h?.columnToParentIds ?? new Map<string, string[]>(),
-      // rows: h?.rows?.slice(-1) ?? [],  // - shows only last column
-      rows: h?.rows ?? [],
-    };
+    const hierarchicalStructure: TableGroupedTypes.HierarchicalStructure<any> | undefined = h;
 
     // Helper to get child column IDs for a group (for getting minWidths)
     const getChildColumnIds = (groupId: string): string[] => {
@@ -186,7 +178,7 @@ const Thead = React.forwardRef(
                   updateColumn={updateColumn}
                   onResizeFinish={() => onResizeFinish(columnWidths)}
                   resizableColumns={resizableColumns}
-                  resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, columnId)}
+                  resizableStyle={getColumnStyles(sticky, columnId)}
                   onClick={detail => {
                     setLastUserAction('sorting');
                     fireNonCancelableEvent(onSortingChange, detail);

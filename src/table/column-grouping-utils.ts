@@ -3,7 +3,6 @@
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { isDevelopment } from '../internal/is-development';
-import { Optional } from '../internal/types';
 import { TableProps } from './interfaces';
 import { getVisibleColumnDefinitions } from './utils';
 
@@ -193,7 +192,7 @@ export function CalculateHierarchyTree<T>(
   visibleColumnIds: string[],
   columnGroupingDefinitions: TableProps.ColumnGroupsDefinition<T>[],
   columnDisplayProperties?: TableProps.ColumnDisplayProperties[]
-): Optional<TableGroupedTypes.HierarchicalStructure<T>> {
+): TableGroupedTypes.HierarchicalStructure<T> {
   // filtering by visible columns
   const visibleColumns: Readonly<TableProps.ColumnDefinition<T>[]> = getVisibleColumnDefinitions({
     columnDisplay: columnDisplayProperties,

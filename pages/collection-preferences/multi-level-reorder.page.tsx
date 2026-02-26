@@ -79,18 +79,21 @@ const shortOptionsList = [
 
 export default function App() {
   return (
-    <CollectionPreferences
-      {...baseProperties}
-      pageSizePreference={pageSizePreference}
-      wrapLinesPreference={wrapLinesPreference}
-      contentDensityPreference={contentDensityPreference}
-      customPreference={customPreference}
-      contentDisplayPreference={{
-        title: 'Column preferences',
-        description: 'Customize the columns visibility and order.',
-        options: shortOptionsList,
-        ...contentDisplayPreferenceI18nStrings,
-      }}
-    />
+    <>
+      <h1>Multi-level Reorder Preferences</h1>
+      <CollectionPreferences
+        {...baseProperties}
+        pageSizePreference={pageSizePreference}
+        wrapLinesPreference={wrapLinesPreference}
+        contentDensityPreference={contentDensityPreference}
+        customPreference={customPreference}
+        contentDisplayPreference={{
+          title: 'Column preferences',
+          description: 'Customize the columns visibility and order.',
+          options: shortOptionsList,
+          ...contentDisplayPreferenceI18nStrings,
+        }}
+      />
+    </>
   );
 }
