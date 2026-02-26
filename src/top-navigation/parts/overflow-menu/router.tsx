@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useContext, useMemo, useState } from 'react';
 
 type View = 'utilities' | 'dropdown-menu';
 
@@ -60,7 +60,8 @@ interface RouterProps {
 
 const Router = ({ children }: RouterProps) => {
   const [state, setState] = useState<RouteState>({ view: 'utilities', data: null });
-  return <ViewContext.Provider value={{ state, setState }}>{children}</ViewContext.Provider>;
+  const value = useMemo(() => ({ state, setState }), [state]);
+  return <ViewContext.Provider value={value}>{children}</ViewContext.Provider>;
 };
 
 export default Router;
