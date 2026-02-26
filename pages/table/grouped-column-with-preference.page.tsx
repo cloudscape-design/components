@@ -320,12 +320,12 @@ export default function EC2TableDemo() {
       <Table
         {...collectionProps}
         selectionType="multi"
-        resizableColumns={true}
+        // resizableColumns={true}
         stickyColumns={{
           first: +firstSticky,
           last: +lastSticky,
         }}
-        // variant="stacked"
+        variant="stacked"
         enableKeyboardNavigation={true}
         ariaLabels={ariaLabels}
         header={
