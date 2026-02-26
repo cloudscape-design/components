@@ -136,7 +136,7 @@ export class AppLayoutSplitViewPage extends BasePageObject {
       wrapper.findSplitPanel().findSlider().toSelector(),
       'aria-valuenow'
     );
-    return parseFloat(attrValue);
+    return parseFloat(attrValue ?? '');
   }
 
   getContentOffsetBottom(theme: string) {
