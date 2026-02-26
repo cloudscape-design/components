@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -136,6 +137,9 @@ export const useAppLayout = (
     bottomDrawersFocusControl.setFocus();
   };
 
+  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
+    useFeatureNotifications();
+
   const {
     drawers,
     activeDrawer,
@@ -155,6 +159,7 @@ export const useAppLayout = (
   } = useDrawers(
     {
       ...rest,
+      externalLocalRuntimeDrawers: featureNotificationsProps?.drawer && [featureNotificationsProps?.drawer],
       onGlobalDrawerFocus,
       onAddNewActiveDrawer,
       expandedDrawerId,
@@ -240,6 +245,15 @@ export const useAppLayout = (
       return;
     }
 
+    if (
+      ['registerFeatureNotifications', 'showFeaturePromptIfPossible', 'clearFeatureNotifications'].includes(
+        message.type
+      )
+    ) {
+      featureNotificationsMessageHandler(message);
+      return;
+    }
+
     if (!('payload' in message && 'id' in message.payload)) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,
@@ -275,6 +289,9 @@ export const useAppLayout = (
   ) => {
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
+    if (featureNotificationsProps?.drawer?.id && featureNotificationsProps?.drawer?.id === drawerId) {
+      onOpenFeatureNotificationsDrawer();
+    }
   };
 
   const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
@@ -619,6 +636,7 @@ export const useAppLayout = (
       onActiveBottomDrawerResize,
       bottomDrawers,
       bottomDrawersFocusControl,
+      featureNotificationsProps,
     },
   };
 };
