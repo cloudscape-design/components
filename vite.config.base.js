@@ -227,6 +227,9 @@ export function createViteConfig({
       outDir: path.resolve(rootDir, outputPath),
       sourcemap: true,
       cssMinify: 'lightningcss',
+      chunkSizeWarningLimit: 1000,
+      cssCodeSplit: true,
+      assetsInlineLimit: 0,
       rollupOptions: {
         output: {
           manualChunks: createManualChunks(componentsPath, designTokensPath),
