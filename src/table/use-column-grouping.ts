@@ -30,39 +30,7 @@ export function useColumnGrouping<T>(
     const columns = [...columnDefinitions];
     const columnDisplayMutable = columnDisplay ? [...columnDisplay] : undefined;
 
-    // Call the new CalculateHierarchyTree function
-    const result = CalculateHierarchyTree(columns, visibleIds, groups, columnDisplayMutable);
-
-    // Return result or fallback to single row if undefined
-    if (!result) {
-      const fallbackColumns: TableGroupedTypes.ColumnInRow<T>[] = [];
-      let colIndex = 0;
-
-      columnDefinitions.forEach((col, index) => {
-        const id = col.id || `column-${index}`;
-        if (!visibleColumnIds || visibleColumnIds.has(id)) {
-          fallbackColumns.push({
-            id,
-            header: col.header,
-            colspan: 1,
-            rowspan: 1,
-            isGroup: false,
-            columnDefinition: col,
-            groupDefinition: undefined,
-            parentGroupIds: [],
-            rowIndex: 0,
-            colIndex: colIndex++,
-          });
-        }
-      });
-
-      return {
-        rows: [{ columns: fallbackColumns }],
-        maxDepth: 1,
-        columnToParentIds: new Map(),
-      };
-    }
-
-    return result;
+    // Call the CalculateHierarchyTree function
+    return CalculateHierarchyTree(columns, visibleIds, groups, columnDisplayMutable);
   }, [columnGroupingDefinitions, columnDefinitions, visibleColumnIds, columnDisplay]);
 }

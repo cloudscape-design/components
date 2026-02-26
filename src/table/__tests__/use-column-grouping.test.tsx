@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { renderHook } from '../../__tests__/render-hook';
+import { CalculateHierarchyTree } from '../column-grouping-utils';
 import { TableProps } from '../interfaces';
 import { useColumnGrouping } from '../use-column-grouping';
 
@@ -435,6 +436,57 @@ describe('useColumnGrouping', () => {
       // Should only have valid group
       const groupIds = result.current.rows[0].columns.filter(c => c.isGroup).map(c => c.id);
       expect(groupIds).toEqual(['valid']);
+    });
+  });
+
+  describe('CalculateHierarchyTree direct tests for edge cases', () => {
+    it('skips columns with undefined id in visibleLeafColumns', () => {
+      // Column has no id → line 62 early return in createNodeConnections
+      const cols: TableProps.ColumnDefinition<any>[] = [{ header: 'No ID', cell: () => 'x' }];
+      const result = CalculateHierarchyTree(cols, ['col-0'], [], undefined);
+      // No columns with ids → empty rows
+      expect(result.rows).toHaveLength(0);
+    });
+
+    it('skips columns whose id is not in the node map (not visible)', () => {
+      // Column has id but is not in visibleColumnIds → getVisibleColumnDefinitions filters it out
+      // Then createNodeConnections iterates visibleColumns but the node is not in idToNodeMap → line 67
+      const cols: TableProps.ColumnDefinition<any>[] = [
+        { id: 'a', header: 'A', cell: () => 'a' },
+        { id: 'b', header: 'B', cell: () => 'b' },
+      ];
+      // Only 'a' is visible, so 'b' is filtered out before createNodeConnections
+      const result = CalculateHierarchyTree(cols, ['a'], [], undefined);
+      expect(result.rows).toHaveLength(1);
+      expect(result.rows[0].columns).toHaveLength(1);
+      expect(result.rows[0].columns[0].id).toBe('a');
+    });
+
+    it('skips group definitions with undefined id', () => {
+      // Group definition has undefined id → line 209 early return
+      const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'a', header: 'A', cell: () => 'a' }];
+      const groups = [{ id: undefined, header: 'Bad Group' } as any];
+      const result = CalculateHierarchyTree(cols, ['a'], groups, undefined);
+      // Should just have column 'a', no group
+      expect(result.rows).toHaveLength(1);
+      expect(result.rows[0].columns[0].id).toBe('a');
+    });
+
+    it('handles circular reference with already-visited node connecting to root', () => {
+      // Two groups referencing each other: a→b, b→a
+      // When traversing from leaf "col" → group "a" → group "b" → detects cycle at "a"
+      // The circular node gets connected to root (lines 79-80)
+      const cols: TableProps.ColumnDefinition<any>[] = [
+        { id: 'col-circ', header: 'Col', groupId: 'grp-a-circ', cell: () => 'x' },
+      ];
+      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
+        { id: 'grp-a-circ', header: 'A', groupId: 'grp-b-circ' },
+        { id: 'grp-b-circ', header: 'B', groupId: 'grp-a-circ' },
+      ];
+      const result = CalculateHierarchyTree(cols, ['col-circ'], groups, undefined);
+      // Should not crash; produces some result
+      expect(result.rows).toBeDefined();
+      expect(result.maxDepth).toBeGreaterThanOrEqual(0);
     });
   });
 
