@@ -498,7 +498,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
-    const headerRowCount = hierarchicalStructure?.rows.length ?? 1;
+    const headerRowCount = hierarchicalStructure?.rows.length || 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
