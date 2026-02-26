@@ -3,18 +3,7 @@
 
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import {
-  addMonths,
-  addYears,
-  endOfDay,
-  isAfter,
-  isBefore,
-  isSameMonth,
-  isSameYear,
-  startOfDay,
-  startOfMonth,
-  startOfYear,
-} from 'date-fns';
+import dayjs from 'dayjs';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -62,9 +51,15 @@ export default function DateRangePickerCalendar({
 
   const [announcement, setAnnouncement] = useState('');
   const findPageToDisplay = isMonthPicker ? findYearToDisplay : findMonthToDisplay;
-  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
-  const addPage = isMonthPicker ? addYears : addMonths;
-  const startOfPage = isMonthPicker ? startOfYear : startOfMonth;
+  const isSamePage = isMonthPicker
+    ? (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'year')
+    : (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month');
+  const addPage = isMonthPicker
+    ? (date: Date, amount: number) => dayjs(date).add(amount, 'year').toDate()
+    : (date: Date, amount: number) => dayjs(date).add(amount, 'month').toDate();
+  const startOfPage = isMonthPicker
+    ? (date: Date) => dayjs(date).startOf('year').toDate()
+    : (date: Date) => dayjs(date).startOf('month').toDate();
   const findItemToFocus = isMonthPicker ? findMonthToFocus : findDateToFocus;
   const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid));
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
@@ -137,12 +132,12 @@ export default function DateRangePickerCalendar({
 
     // If both fields are empty, we set the start date
     if (!start.date && !end.date) {
-      newStart = startOfDay(selectedDate);
+      newStart = dayjs(selectedDate).startOf('day').toDate();
       announcement = announceStart(newStart);
     }
     // If both fields are set, we start new
     else if (start.date && end.date) {
-      newStart = startOfDay(selectedDate);
+      newStart = dayjs(selectedDate).startOf('day').toDate();
       newEnd = null;
       announcement = announceStart(newStart);
     }
@@ -150,13 +145,13 @@ export default function DateRangePickerCalendar({
     else if (start.date && !end.date) {
       const parsedStartDate = parseDate(start.date);
 
-      if (isBefore(selectedDate, parsedStartDate)) {
+      if (dayjs(selectedDate).isBefore(parsedStartDate)) {
         // The user has selected the range backwards, so we swap start and end
-        newStart = startOfDay(selectedDate);
-        newEnd = endOfDay(parsedStartDate);
+        newStart = dayjs(selectedDate).startOf('day').toDate();
+        newEnd = dayjs(parsedStartDate).endOf('day').toDate();
         announcement = announceStart(newStart) + announceRange(newStart, newEnd);
       } else {
-        newEnd = endOfDay(selectedDate);
+        newEnd = dayjs(selectedDate).endOf('day').toDate();
         announcement = announceEnd(newEnd) + announceRange(parsedStartDate, newEnd);
       }
     }
@@ -164,13 +159,13 @@ export default function DateRangePickerCalendar({
     else if (!start.date && end.date) {
       const existingEndDate = parseDate(end.date);
 
-      if (isAfter(selectedDate, existingEndDate)) {
+      if (dayjs(selectedDate).isAfter(existingEndDate)) {
         // The user has selected the range backwards, so we swap start and end
-        newStart = startOfDay(existingEndDate);
-        newEnd = endOfDay(selectedDate);
+        newStart = dayjs(existingEndDate).startOf('day').toDate();
+        newEnd = dayjs(selectedDate).endOf('day').toDate();
         announcement = announceEnd(newEnd) + announceRange(newStart, newEnd);
       } else {
-        newStart = startOfDay(selectedDate);
+        newStart = dayjs(selectedDate).startOf('day').toDate();
         announcement = announceStart(newStart) + announceRange(newStart, existingEndDate);
       }
     }
@@ -204,7 +199,9 @@ export default function DateRangePickerCalendar({
   };
 
   const onHeaderChangePageHandler = (amount: number) => {
-    const addPageFn = isMonthPicker ? addYears : addMonths;
+    const addPageFn = isMonthPicker
+      ? (date: Date, amt: number) => dayjs(date).add(amt, 'year').toDate()
+      : (date: Date, amt: number) => dayjs(date).add(amt, 'month').toDate();
     const getBaseFn = isMonthPicker ? getBaseMonth : getBaseDay;
     const newBasePage = addPageFn(currentPage, amount);
     setCurrentPage(newBasePage);

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { addMinutes } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { joinDateTime } from '.';
 import { formatDate } from './format-date';
@@ -26,7 +26,9 @@ export function shiftTimezoneOffset(dateString: string, targetTimezoneOffset?: n
 
   const date = new Date(valueWithoutOffset);
   targetTimezoneOffset = targetTimezoneOffset ?? 0 - date.getTimezoneOffset();
-  const adjustedDate = addMinutes(date, targetTimezoneOffset - originalTimezoneOffset);
+  const adjustedDate = dayjs(date)
+    .add(targetTimezoneOffset - originalTimezoneOffset, 'minute')
+    .toDate();
 
   return joinDateTime(formatDate(adjustedDate), formatTime(adjustedDate));
 }

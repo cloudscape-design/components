@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { DatePicker, FormField, TimeInput } from '~components';
 import { I18nProvider } from '~components/i18n';
@@ -57,12 +57,15 @@ const dateProperty: InternalFilteringProperty = {
   operators: ['=', '!='],
   defaultOperator: '=',
   getTokenType: () => 'value',
-  getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd') : ''),
+  getValueFormatter: () => (value: Date) => (value ? dayjs(value).format('YYYY-MM-DD') : ''),
   getValueFormRenderer:
     () =>
     ({ value }) => (
       <FormField>
-        <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
+        <DatePicker
+          value={value ? dayjs(value).format('YYYY-MM-DD') : ''}
+          openCalendarAriaLabel={openCalendarAriaLabel}
+        />
       </FormField>
     ),
   externalProperty,
@@ -75,16 +78,19 @@ const dateTimeProperty: InternalFilteringProperty = {
   operators: ['=', '!='],
   defaultOperator: '=',
   getTokenType: () => 'value',
-  getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd hh:mm') : ''),
+  getValueFormatter: () => (value: Date) => (value ? dayjs(value).format('YYYY-MM-DD HH:mm') : ''),
   getValueFormRenderer:
     () =>
     ({ value }) => (
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         <FormField description="Date">
-          <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
+          <DatePicker
+            value={value ? dayjs(value).format('YYYY-MM-DD') : ''}
+            openCalendarAriaLabel={openCalendarAriaLabel}
+          />
         </FormField>
         <FormField description="Time">
-          <TimeInput value={value ? format(value, 'hh:mm:ss') : ''} />
+          <TimeInput value={value ? dayjs(value).format('HH:mm:ss') : ''} />
         </FormField>
       </div>
     ),

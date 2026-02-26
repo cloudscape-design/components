@@ -2,17 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import {
-  endOfMonth,
-  endOfQuarter,
-  endOfWeek,
-  endOfYear,
-  startOfMonth,
-  startOfQuarter,
-  startOfWeek,
-  startOfYear,
-  sub,
-} from 'date-fns';
+import dayjs from 'dayjs';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+
+dayjs.extend(quarterOfYear);
 
 import { DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
 import { formatDate } from '~components/internal/utils/date-time';
@@ -48,11 +41,11 @@ export default function DatePickerScenario() {
           onFollow={() =>
             setSelectedDate({
               start: {
-                date: formatDate(startOfWeek(new Date())),
+                date: formatDate(dayjs().startOf('week').toDate()),
                 time: '',
               },
               end: {
-                date: formatDate(endOfWeek(new Date())),
+                date: formatDate(dayjs().endOf('week').toDate()),
                 time: '',
               },
             })
@@ -63,8 +56,8 @@ export default function DatePickerScenario() {
         <Link
           onFollow={() =>
             setSelectedDate({
-              start: { date: formatDate(startOfMonth(new Date())), time: '' },
-              end: { date: formatDate(endOfMonth(new Date())), time: '' },
+              start: { date: formatDate(dayjs().startOf('month').toDate()), time: '' },
+              end: { date: formatDate(dayjs().endOf('month').toDate()), time: '' },
             })
           }
         >
@@ -88,9 +81,9 @@ export default function DatePickerScenario() {
     setSelectedDate: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>
   ) => {
     const today = new Date();
-    const lastMonth = sub(today, { months: 1 });
-    const oneQuarterAgoDate = sub(today, { months: 3 });
-    const oneYearAgoDate = sub(today, { years: 1 });
+    const lastMonth = dayjs(today).subtract(1, 'month').toDate();
+    const oneQuarterAgoDate = dayjs(today).subtract(3, 'month').toDate();
+    const oneYearAgoDate = dayjs(today).subtract(1, 'year').toDate();
     return (
       <>
         Auto-select:{' '}
@@ -109,11 +102,11 @@ export default function DatePickerScenario() {
           onFollow={() =>
             setSelectedDate({
               start: {
-                date: formatDate(startOfQuarter(oneQuarterAgoDate)),
+                date: formatDate(dayjs(oneQuarterAgoDate).startOf('quarter').toDate()),
                 time: '',
               },
               end: {
-                date: formatDate(endOfQuarter(oneQuarterAgoDate)),
+                date: formatDate(dayjs(oneQuarterAgoDate).endOf('quarter').toDate()),
                 time: '',
               },
             })
@@ -124,8 +117,8 @@ export default function DatePickerScenario() {
         <Link
           onFollow={() =>
             setSelectedDate({
-              start: { date: formatDate(startOfYear(oneYearAgoDate)), time: '' },
-              end: { date: formatDate(endOfYear(oneYearAgoDate)), time: '' },
+              start: { date: formatDate(dayjs(oneYearAgoDate).startOf('year').toDate()), time: '' },
+              end: { date: formatDate(dayjs(oneYearAgoDate).endOf('year').toDate()), time: '' },
             })
           }
         >

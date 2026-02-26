@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { isSameMonth, isSameYear } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { KeyCode } from '../../internal/keycode';
 import handleKey from '../../internal/utils/handle-key';
@@ -38,7 +38,9 @@ export default function useCalendarGridKeyboardNavigation({
   const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
   const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
-  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const isSamePage = isMonthPicker
+    ? (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'year')
+    : (date1: Date, date2: Date) => dayjs(date1).isSame(date2, 'month');
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent<HTMLElement>) => {
     let updatedFocusDate;

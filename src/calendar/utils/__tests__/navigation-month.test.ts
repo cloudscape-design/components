@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addYears, subYears } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { getBaseMonth, moveMonth } from '../navigation-month';
 
-//mocked to avoid complications with timezones in the 'date-fns' package
-jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfYear: () => new Date('2025-01-01') }));
+//mocked to avoid complications with timezones in the dayjs package
+jest.mock('dayjs', () => {
+  const originalDayjs = jest.requireActual('dayjs');
+  return originalDayjs;
+});
 
 const startYear = '2022',
   startMonth = '01',
@@ -13,22 +16,28 @@ const startYear = '2022',
 const startDate = new Date(`${startYear}-${startMonth}-${startDay}`);
 
 function disableMonths(...blockedDates: string[]) {
-  return (date: Date) => blockedDates.every(blocked => new Date(blocked).getMonth() !== date.getMonth());
+  return (date: Date) => {
+    const blockedMonths = blockedDates.map(blocked => {
+      const [, month] = blocked.split('-');
+      return parseInt(month, 10) - 1; // Convert to 0-indexed month
+    });
+    return !blockedMonths.includes(date.getMonth());
+  };
 }
 
 describe('moveMonth', () => {
-  const baseDate = new Date('2024-01-01');
+  const baseDate = new Date(2024, 0, 1); // January 1, 2024 in local time
 
   test('moves forward to the next active month', () => {
     const isDateFocusable = (date: Date) => date.getMonth() === 2; // Only March is active
     const result = moveMonth(baseDate, isDateFocusable, 1);
-    expect(result).toEqual(new Date('2024-03-01'));
+    expect(result).toEqual(new Date(2024, 2, 1)); // March 1, 2024 in local time
   });
 
   test('moves backward to the previous active month', () => {
     const isDateFocusable = (date: Date) => date.getMonth() === 10; // Only November is active
     const result = moveMonth(baseDate, isDateFocusable, -1);
-    expect(result).toEqual(new Date('2023-11-01')); // November 1, 2023
+    expect(result).toEqual(new Date(2023, 10, 1)); // November 1, 2023 in local time
   });
 
   test('returns start date if no active month found within 10 years forward', () => {
@@ -44,9 +53,9 @@ describe('moveMonth', () => {
   });
 
   test('finds active month at the edge of 10 year limit', () => {
-    //set to match mock above
-    const tenYearsLater = addYears(new Date('2025-01-01'), 10);
-    const tenYearsEarlier = subYears(new Date('2025-01-01'), 10);
+    const referenceDate = new Date(2024, 0, 1);
+    const tenYearsLater = dayjs(referenceDate).add(10, 'year').toDate();
+    const tenYearsEarlier = dayjs(referenceDate).subtract(10, 'year').toDate();
 
     const isDateFocusable = (date: Date) =>
       date.getTime() === tenYearsLater.getTime() || date.getTime() === tenYearsEarlier.getTime();
@@ -60,7 +69,7 @@ describe('moveMonth', () => {
 });
 
 test('getBaseMonth', () => {
-  expect(getBaseMonth(startDate, () => true)).toEqual(new Date('2025-01-01')); //match mocked date
-  expect(getBaseMonth(startDate, disableMonths('2022-01', '2022-02'))).toEqual(new Date('2025-03')); //match first after mocked date
-  expect(getBaseMonth(startDate, () => false)).toEqual(new Date('2025-01-01'));
+  expect(getBaseMonth(startDate, () => true)).toEqual(dayjs(startDate).startOf('year').toDate()); //match actual start of year
+  expect(getBaseMonth(startDate, disableMonths('2022-01', '2022-02'))).toEqual(new Date(2022, 2, 1)); //March 1, 2022 in local time
+  expect(getBaseMonth(startDate, () => false)).toEqual(dayjs(startDate).startOf('year').toDate());
 });
