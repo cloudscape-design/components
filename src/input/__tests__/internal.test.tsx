@@ -75,3 +75,18 @@ test('overrides form-field properties', () => {
   expect(element).toHaveAttribute('aria-describedby', 'description');
   expect(element).not.toHaveAttribute('aria-invalid');
 });
+
+test('renders inline label when __inlineLabelText is provided', () => {
+  renderInput(<InternalInput value="" controlId="test-input" __inlineLabelText="Page" />);
+
+  const label = createWrapper().find('label')!;
+  expect(label.getElement()).toHaveTextContent('Page');
+  expect(label.getElement()).toHaveAttribute('for', 'test-input');
+});
+
+test('renders input without inline label wrapper when __inlineLabelText is not provided', () => {
+  renderInput(<InternalInput value="" />);
+
+  expect(createWrapper().find('label')).toBeNull();
+  expect(createWrapper().findByClassName(styles['inline-label-wrapper'])).toBeNull();
+});
