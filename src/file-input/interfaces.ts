@@ -11,6 +11,17 @@ export interface FileInputProps extends BaseComponentProps, FormFieldCommonValid
   variant?: 'button' | 'icon';
 
   /**
+   * Specifies the selection mode for the file input.
+   * - `'file'`: Standard file selection (default)
+   * - `'folder'`: Enables folder selection using the `webkitdirectory` attribute.
+   *   When in folder mode, multiple selection is automatically enabled regardless
+   *   of the `multiple` prop value, and files are filtered by the `accept` criteria
+   *   after selection (since native accept filtering doesn't work with webkitdirectory).
+   * @default 'file'
+   */
+  mode?: 'file' | 'folder';
+
+  /**
    * Adds `aria-label` to the file input element. Use this to provide an accessible name for file inputs
    * that don't have visible text, and to distinguish between multiple file inputs with identical visible text.
    */

@@ -11936,6 +11936,14 @@ The event \`detail\` contains the current value of the component.",
   "name": "FileDropzone",
   "properties": [
     {
+      "description": "Specifies the file types to accept when files or folders are dropped.
+Follows the same format as the native input accept attribute.
+Examples: ".jpg,.png", "image/*", "application/pdf"",
+      "name": "accept",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -12081,6 +12089,25 @@ single form field.",
       "name": "invalid",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the selection mode for the file input.
+- \`'file'\`: Standard file selection (default)
+- \`'folder'\`: Enables folder selection using the \`webkitdirectory\` attribute.
+  When in folder mode, multiple selection is automatically enabled regardless
+  of the \`multiple\` prop value, and files are filtered by the \`accept\` criteria
+  after selection (since native accept filtering doesn't work with webkitdirectory).",
+      "inlineType": {
+        "name": ""file" | "folder"",
+        "type": "union",
+        "values": [
+          "file",
+          "folder",
+        ],
+      },
+      "name": "mode",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.",
