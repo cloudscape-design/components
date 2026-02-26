@@ -13,6 +13,7 @@ export namespace TableGroupedTypes {
     colspan: number;
     rowspan: number;
     isGroup: boolean;
+    isHidden: boolean; // True for placeholder cells that fill gaps where rowspan > 1 would have been
     // TODO: I could find a better way to make this modular instead of 2 props
     // for column and column-group
     columnDefinition?: TableProps.ColumnDefinition<T>;
@@ -134,6 +135,7 @@ export class TableHeaderNode<T> {
   rowIndex: number = -1;
   colIndex: number = -1;
   isRoot: boolean = false;
+  isHidden: boolean = false;
 
   constructor(
     id: string,
@@ -146,6 +148,7 @@ export class TableHeaderNode<T> {
       rowIndex?: number;
       colIndex?: number;
       isRoot?: boolean;
+      isHidden?: boolean;
     }
   ) {
     this.id = id;
@@ -244,6 +247,12 @@ export function CalculateHierarchyTree<T>(
     traverseForRowSpanAndRowIndex(node, rootNode.subtreeHeight - 1);
   });
 
+  // Expand nodes with rowspan > 1 into chains of hidden nodes in the tree
+  expandRowspansToHiddenNodes(rootNode);
+
+  // Re-compute subtree heights after hidden node insertion
+  traverseForSubtreeHeight(rootNode);
+
   // dfs for colspan and col index
   traverseForColSpanAndColIndex(rootNode);
 
@@ -279,6 +288,71 @@ function traverseForRowSpanAndRowIndex<T>(
   });
 }
 
+/**
+ * Expands nodes with rowspan > 1 into a chain of hidden placeholder nodes ABOVE
+ * the real node, so the visible cell appears at the bottom (aligned with leaf columns).
+ *
+ * For a node at rowIndex=R with rowspan=N, we:
+ *   1. Create (N-1) hidden placeholder nodes at rows R, R+1, ..., R+N-2
+ *   2. Move the real node to row R+N-1 (the bottom of its span) with rowspan=1
+ *   3. The hidden nodes form a parent chain: parent→hidden(R)→hidden(R+1)→...→realNode(R+N-1)
+ *   4. The real node keeps its original children.
+ */
+function expandRowspansToHiddenNodes<T>(node: TableHeaderNode<T>): void {
+  // Process children first (bottom-up so we don't interfere with our own expansion)
+  for (const child of [...node.children]) {
+    expandRowspansToHiddenNodes(child);
+  }
+
+  if (node.isRoot) {
+    return;
+  }
+
+  if (node.rowspan <= 1) {
+    return;
+  }
+
+  // Only expand leaf columns — groups keep their natural HTML rowspan
+  if (node.isGroup) {
+    return;
+  }
+
+  const originalRowspan = node.rowspan;
+  const originalRowIndex = node.rowIndex;
+  const parentNode = node.parentNode!;
+
+  // Remove this node from its parent's children
+  const indexInParent = parentNode.children.indexOf(node);
+  parentNode.children.splice(indexInParent, 1);
+
+  // Build a chain of hidden nodes at the top rows
+  let currentParent = parentNode;
+  for (let r = 0; r < originalRowspan - 1; r++) {
+    const hiddenNode = new TableHeaderNode<T>(node.id, {
+      rowIndex: originalRowIndex + r,
+      rowspan: 1,
+      colspan: node.colspan,
+      columnDefinition: node.columnDefinition,
+      groupDefinition: node.groupDefinition,
+      isHidden: true,
+    });
+    // Insert at the same position in parent to maintain column order
+    if (currentParent === parentNode) {
+      currentParent.children.splice(indexInParent, 0, hiddenNode);
+    } else {
+      currentParent.addChild(hiddenNode);
+    }
+    hiddenNode.parentNode = currentParent;
+    currentParent = hiddenNode;
+  }
+
+  // Move the real node to the bottom row
+  node.rowIndex = originalRowIndex + originalRowspan - 1;
+  node.rowspan = 1;
+  currentParent.addChild(node);
+  node.parentNode = currentParent;
+}
+
 // takes currColIndex from where to start from
 // and returns the starting colindex for next node
 function traverseForColSpanAndColIndex<T>(node: TableHeaderNode<T>, currColIndex = 0): number {
@@ -302,7 +376,10 @@ function buildParentChain<T>(node: TableHeaderNode<T>): string[] {
   let current = node.parentNode;
 
   while (current && !current.isRoot) {
-    chain.push(current.id);
+    // Skip hidden placeholder nodes — they are not real group parents
+    if (!current.isHidden) {
+      chain.push(current.id);
+    }
     current = current.parentNode;
   }
 
@@ -320,17 +397,18 @@ function buildHierarchicalStructure<T>(rootNode: TableHeaderNode<T>): TableGroup
 
   while (queue.length > 0) {
     const node = queue.shift()!;
+    const parentChain = buildParentChain(node);
 
-    // Create ColumnInRow from node
     const columnInRow: TableGroupedTypes.ColumnInRow<T> = {
       id: node.id,
       header: node.groupDefinition?.header || node.columnDefinition?.header,
       colspan: node.colspan,
       rowspan: node.rowspan,
       isGroup: node.isGroup,
+      isHidden: node.isHidden,
       columnDefinition: node.columnDefinition,
       groupDefinition: node.groupDefinition,
-      parentGroupIds: buildParentChain(node),
+      parentGroupIds: parentChain,
       rowIndex: node.rowIndex,
       colIndex: node.colIndex,
     };
@@ -341,15 +419,11 @@ function buildHierarchicalStructure<T>(rootNode: TableHeaderNode<T>): TableGroup
     }
     rowsMap.get(node.rowIndex)!.push(columnInRow);
 
-    // Track parent chain for leaf columns
-    // if (node.isLeaf && node.columnDefinition) {
-    //     columnToParentIds.set(node.id, buildParentChain(node));
-    // }
-
-    if (node.isLeaf && node.columnDefinition) {
-      const parentChain = buildParentChain(node);
-      if (parentChain.length > 0) {
-        columnToParentIds.set(node.id, parentChain);
+    // Track parent chain for leaf columns (skip hidden placeholder nodes)
+    if (node.isLeaf && node.columnDefinition && !node.isHidden) {
+      const parentChainForTracking = buildParentChain(node);
+      if (parentChainForTracking.length > 0) {
+        columnToParentIds.set(node.id, parentChainForTracking);
       }
     }
 

@@ -9,6 +9,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { TableGroupedTypes } from './column-grouping-utils';
 import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
+import { TableHiddenHeaderCell } from './header-cell/hidden-header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
@@ -199,6 +200,7 @@ const Thead = React.forwardRef(
     }
 
     // Grouped columns
+    console.log(hierarchicalStructure.rows);
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         {hierarchicalStructure.rows.map((row, rowIndex) => (
@@ -236,6 +238,36 @@ const Thead = React.forwardRef(
             ) : null}
 
             {row.columns.map(col => {
+              // Hidden placeholder cell — fills gaps where rowspan > 1 would have been
+              if (col.isHidden) {
+                const columnDef = col.columnDefinition;
+                const minWidth = columnDef?.minWidth
+                  ? typeof columnDef.minWidth === 'string'
+                    ? parseInt(columnDef.minWidth)
+                    : columnDef.minWidth
+                  : undefined;
+
+                return (
+                  <TableHiddenHeaderCell
+                    {...commonCellProps}
+                    key={`${col.id}-hidden-${col.rowIndex}`}
+                    columnId={col.id}
+                    colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
+                    colspan={col.colspan}
+                    tabIndex={sticky ? -1 : 0}
+                    focusedComponent={focusedComponent}
+                    resizableColumns={resizableColumns}
+                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
+                    onResizeFinish={() => onResizeFinish(columnWidths)}
+                    updateColumn={updateColumn}
+                    cellRef={node => setCell(sticky, col.id, node)}
+                    resizerRoleDescription={resizerRoleDescription}
+                    resizerTooltipText={resizerTooltipText}
+                    minWidth={minWidth}
+                  />
+                );
+              }
+
               if (col.isGroup) {
                 // Group header cell
                 const groupDefinition = col.groupDefinition!;

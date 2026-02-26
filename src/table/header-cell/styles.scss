@@ -13,6 +13,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include focus-visible.when-visible {
     @content;
   }
+
   &.header-cell-fake-focus {
     @include focus-visible.when-visible-unfocused {
       @content;
@@ -66,19 +67,54 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
+
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
   }
+
   &-variant-full-page {
     background: awsui.$color-background-layout-main;
   }
+
+  // Hidden placeholder cells for grouped column headers.
+  // These cells have no content — they exist purely to maintain column width alignment.
+  // We use :has(.header-cell-hidden-content) because the `hidden` prop on TableThElement
+  // is the table-level visibility prop (for the measurement thead), not our placeholder concept.
+  &:has(.header-cell-hidden-content) {
+    border-block-end-color: transparent;
+
+    // Complete divider styles for hidden placeholder cells.
+    // The normal divider rule `th:not(:last-child) > .divider` fails when hidden cells
+    // end up as :last-child (due to rowspan siblings not being in the same <tr>).
+    // We replicate the full divider positioning here with the same block-gap
+    // to keep divider heights visually consistent with normal header cells.
+    > .resize-divider {
+      position: absolute;
+      outline: none;
+      pointer-events: none;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      inset-block-start: 0;
+      min-block-size: awsui.$line-height-heading-xs;
+      // Use the same block-gap as normal dividers (from resizer/styles.scss)
+      // to keep divider heights visually consistent across the header row.
+      max-block-size: calc(100% - 2 * #{awsui.$space-xs} - #{awsui.$space-xxxs});
+      margin-block: auto;
+      margin-inline: auto;
+      border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-default;
+      box-sizing: border-box;
+    }
+  }
+
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }
+
   &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
   &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
     background: none;
   }
+
   &:last-child,
   &.header-cell-sortable {
     padding-inline-end: awsui.$space-xs;
@@ -88,20 +124,25 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
+
     &.table-variant-full-page {
       background: awsui.$color-background-layout-main;
     }
+
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
+
     &-last-inline-start {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
+
       & > .resize-divider {
         display: none;
       }
@@ -111,6 +152,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
         clip-path: inset(0 0 0 -24px);
       }
     }
+
     &-last-inline-end {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
@@ -146,6 +188,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
+
   &:focus {
     outline: none;
     text-decoration: none;
@@ -164,9 +207,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   & > .header-cell-content {
     cursor: pointer;
   }
+
   & > .header-cell-content:hover,
   &.header-cell-sorted > .header-cell-content {
     color: awsui.$color-text-interactive-active;
+
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;
     }
@@ -206,6 +251,7 @@ settings icon in the pagination slot.
   &:first-child {
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
+
   &:first-child > .header-cell-content {
     // @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
@@ -231,4 +277,11 @@ settings icon in the pagination slot.
   &.sticky-cell-pad-inline-start {
     @include cell-offset($cell-horizontal-padding);
   }
+}
+
+// Hidden placeholder cell content — empty but maintains cell structure
+.header-cell-hidden-content {
+  // No padding or visible content — the cell is purely structural
+  // Height is determined by sibling cells in the same row
+  inline-size: 100%;
 }

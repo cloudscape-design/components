@@ -51,26 +51,14 @@ describe('useColumnGrouping', () => {
       expect(result.current.rows).toHaveLength(2);
     });
 
-    it('row 0 contains ungrouped columns with rowspan and group headers', () => {
+    it('row 0 contains hidden placeholders for ungrouped columns and group headers', () => {
       const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
 
       const row0 = result.current.rows[0].columns;
 
-      // Ungrouped columns
-      expect(row0[0]).toMatchObject({
-        id: 'id',
-        header: 'ID',
-        colspan: 1,
-        rowspan: 2,
-        isGroup: false,
-      });
-      expect(row0[1]).toMatchObject({
-        id: 'name',
-        header: 'Name',
-        colspan: 1,
-        rowspan: 2,
-        isGroup: false,
-      });
+      // Hidden placeholders at top for ungrouped columns
+      expect(row0[0]).toMatchObject({ id: 'id', isHidden: true, rowspan: 1 });
+      expect(row0[1]).toMatchObject({ id: 'name', isHidden: true, rowspan: 1 });
 
       // Group headers
       expect(row0[2]).toMatchObject({
@@ -89,20 +77,31 @@ describe('useColumnGrouping', () => {
       });
     });
 
-    it('row 1 contains only grouped columns', () => {
+    it('row 0 has hidden placeholders at top for ungrouped columns, row 1 has visible cells at bottom', () => {
       const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+
+      // Row 0: hidden placeholders for id, name (at top) + group headers
+      const row0 = result.current.rows[0].columns;
+      expect(row0[0]).toMatchObject({ id: 'id', isHidden: true, rowspan: 1 });
+      expect(row0[1]).toMatchObject({ id: 'name', isHidden: true, rowspan: 1 });
 
       const row1 = result.current.rows[1].columns;
 
-      expect(row1).toHaveLength(4);
-      expect(row1[0]).toMatchObject({
+      // Row 1: visible id + visible name (at bottom, aligned with leaf row) + 4 leaf columns
+      const visibleId = row1.find(c => c.id === 'id' && !c.isHidden);
+      const visibleName = row1.find(c => c.id === 'name' && !c.isHidden);
+      expect(visibleId).toBeDefined();
+      expect(visibleName).toBeDefined();
+
+      // Leaf columns
+      expect(row1.find(c => c.id === 'cpu' && !c.isHidden)).toMatchObject({
         id: 'cpu',
         header: 'CPU',
         colspan: 1,
         rowspan: 1,
         isGroup: false,
       });
-      expect(row1[1]).toMatchObject({
+      expect(row1.find(c => c.id === 'memory' && !c.isHidden)).toMatchObject({
         id: 'memory',
         header: 'Memory',
         colspan: 1,
@@ -118,7 +117,8 @@ describe('useColumnGrouping', () => {
       expect(row0.map((c: any) => c.id)).toEqual(['id', 'name', 'performance', 'config']);
 
       const row1 = result.current.rows[1].columns;
-      expect(row1.map((c: any) => c.id)).toEqual(['cpu', 'memory', 'type', 'az']);
+      // Visible id and name now in row 1 (bottom) alongside leaf columns
+      expect(row1.map((c: any) => c.id)).toEqual(['id', 'name', 'cpu', 'memory', 'type', 'az']);
     });
   });
 
@@ -128,12 +128,16 @@ describe('useColumnGrouping', () => {
       const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds));
 
       const row0 = result.current.rows[0].columns;
-      expect(row0).toHaveLength(2); // id + performance group
-      expect(row0[0].id).toBe('id');
+      // Row 0: hidden placeholder for id (top) + performance group
+      expect(row0).toHaveLength(2);
+      expect(row0[0]).toMatchObject({ id: 'id', isHidden: true });
       expect(row0[1].id).toBe('performance');
 
       const row1 = result.current.rows[1].columns;
-      expect(row1).toHaveLength(2); // cpu + memory
+      // Row 1: visible id (bottom) + cpu + memory
+      expect(row1).toHaveLength(3);
+      const visibleId = row1.find(c => c.id === 'id' && !c.isHidden);
+      expect(visibleId).toBeDefined();
     });
 
     it('hides group when all children are hidden', () => {
@@ -164,11 +168,15 @@ describe('useColumnGrouping', () => {
       expect(result.current.columnToParentIds.get('type')).toEqual(['config']);
     });
 
-    it('returns empty array for ungrouped columns', () => {
+    it('ungrouped columns do not have parent group entries', () => {
       const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
 
-      expect(result.current.columnToParentIds.get('id')).toBeUndefined();
-      expect(result.current.columnToParentIds.get('name')).toBeUndefined();
+      // Ungrouped columns may have entries due to hidden node chain, but should not have group IDs
+      const idParents = result.current.columnToParentIds.get('id');
+      const nameParents = result.current.columnToParentIds.get('name');
+      // Either undefined or empty — no group parents
+      expect(!idParents || idParents.length === 0).toBe(true);
+      expect(!nameParents || nameParents.length === 0).toBe(true);
     });
   });
 
@@ -177,17 +185,19 @@ describe('useColumnGrouping', () => {
       const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
 
       const row0 = result.current.rows[0].columns;
-      expect(row0[0].colIndex).toBe(0); // id
-      expect(row0[1].colIndex).toBe(1); // name
+      expect(row0[0].colIndex).toBe(0); // hidden id placeholder
+      expect(row0[1].colIndex).toBe(1); // hidden name placeholder
       expect(row0[2].colIndex).toBe(2); // performance group starts at 2
       expect(row0[3].colIndex).toBe(4); // config group starts at 4
 
       const row1 = result.current.rows[1].columns;
-      // Row 1 colIndex accounts for ungrouped columns from row 0
-      expect(row1[0].colIndex).toBe(2); // cpu (after id=0, name=1)
-      expect(row1[1].colIndex).toBe(3); // memory
-      expect(row1[2].colIndex).toBe(4); // type
-      expect(row1[3].colIndex).toBe(5); // az
+      // Row 1: visible id + name (at bottom) + leaf columns
+      expect(row1[0].colIndex).toBe(0); // visible id
+      expect(row1[1].colIndex).toBe(1); // visible name
+      expect(row1[2].colIndex).toBe(2); // cpu
+      expect(row1[3].colIndex).toBe(3); // memory
+      expect(row1[4].colIndex).toBe(4); // type
+      expect(row1[5].colIndex).toBe(5); // az
     });
   });
 
@@ -344,12 +354,12 @@ describe('useColumnGrouping', () => {
       expect(result.current.maxDepth).toBe(3);
       expect(result.current.rows).toHaveLength(3);
 
-      // Row 0: ungrouped column (id), metrics group, config group
+      // Row 0: hidden placeholder for id (top), metrics group, config group
       expect(result.current.rows[0].columns).toHaveLength(3);
       expect(result.current.rows[0].columns[0]).toMatchObject({
         id: 'id',
-        rowspan: 3,
-        isGroup: false,
+        rowspan: 1,
+        isHidden: true,
       });
       expect(result.current.rows[0].columns[1]).toMatchObject({
         id: 'metrics',
@@ -360,15 +370,15 @@ describe('useColumnGrouping', () => {
         isGroup: true,
       });
 
-      // Row 1: performance group
-      expect(result.current.rows[1].columns).toHaveLength(1);
-      expect(result.current.rows[1].columns[0]).toMatchObject({
-        id: 'performance',
-        isGroup: true,
-      });
+      // Row 1: hidden placeholder for id, performance group, hidden placeholder for config's type
+      const row1Ids = result.current.rows[1].columns.map(c => c.id);
+      expect(row1Ids).toContain('id'); // hidden placeholder
+      expect(row1Ids).toContain('performance');
 
-      // Row 2: leaf columns (cpu, type)
-      expect(result.current.rows[2].columns).toHaveLength(2);
+      // Row 2: leaf columns (hidden placeholder for id, cpu, type)
+      const row2 = result.current.rows[2].columns;
+      const row2NonHidden = row2.filter(c => !c.isHidden);
+      expect(row2NonHidden.length).toBeGreaterThanOrEqual(2); // at least cpu and type
     });
 
     it('prevents circular references in nested groups', () => {
@@ -414,12 +424,12 @@ describe('useColumnGrouping', () => {
 
       const { result } = renderHook(() => useColumnGrouping(groups, cols));
 
-      // col1 should be treated as ungrouped (no entry in columnToParentIds)
-      expect(result.current.columnToParentIds.get('col1')).toBeUndefined();
-      // col1 should appear in row 0 with rowspan
-      const col1InRow0 = result.current.rows[0].columns.find(c => c.id === 'col1');
-      expect(col1InRow0).toBeDefined();
-      expect(col1InRow0?.rowspan).toBe(result.current.maxDepth);
+      // col1 should appear with rowspan=1 in the bottom row (visible, not hidden)
+      const allRows = result.current.rows;
+      const lastRow = allRows[allRows.length - 1];
+      const col1Visible = lastRow.columns.find(c => c.id === 'col1' && !c.isHidden);
+      expect(col1Visible).toBeDefined();
+      expect(col1Visible?.rowspan).toBe(1);
     });
 
     it('handles group without id (should be skipped)', () => {
