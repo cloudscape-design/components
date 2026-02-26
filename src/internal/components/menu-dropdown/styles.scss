@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .button {
   @include styles.styles-reset;
@@ -59,7 +58,7 @@
     margin-inline-end: awsui.$space-xl;
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     // -1px because the button touches the edges of the top navigation.
     @include styles.focus-highlight(-1px);
   }

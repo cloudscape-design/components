@@ -6,7 +6,6 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
@@ -51,7 +50,7 @@
     }
   }
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.link-focus(
       $border-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused),
       $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
