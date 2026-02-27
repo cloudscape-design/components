@@ -10,6 +10,10 @@ import testUtilStyles from './test-classes/styles.css.js';
  * that a message is announced again even if it matches the previous content
  * of the live region.
  *
+ * Multiple LiveRegion instances are automatically coordinated to prevent
+ * screen readers from dropping announcements when they occur simultaneously.
+ * Announcements are staggered with a minimum gap to ensure all are heard.
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions
  */
 export class LiveRegionController {
@@ -19,6 +23,22 @@ export class LiveRegionController {
    * 0 to make the live region update the DOM without waiting for a timer.
    */
   public static defaultDelay = 2;
+
+  /**
+   * Minimum time gap between announcements from different
+   * LiveRegion instances. This prevents screen readers from dropping
+   * announcements when multiple live regions update simultaneously.
+   *
+   * Screen readers throttle announcements to avoid overwhelming users.
+   * A 500ms gap ensures each announcement is detected and spoken.
+   */
+  private static readonly MIN_ANNOUNCEMENT_GAP_MS = 500;
+
+  /**
+   * Timestamp of the next available announcement slot (in milliseconds).
+   * Used to coordinate announcements across all LiveRegion instances.
+   */
+  private static _nextAvailableSlot = 0;
 
   private _element: HTMLElement;
   private _timeoutId: number | undefined;
@@ -48,22 +68,58 @@ export class LiveRegionController {
     }
   }
 
-  announce({ message, forceReannounce = false }: { message?: string; delay?: number; forceReannounce?: boolean }) {
+  announce({
+    message,
+    delay,
+    forceReannounce = false,
+  }: {
+    message?: string;
+    delay?: number;
+    forceReannounce?: boolean;
+  }) {
     if (!message) {
       return;
     }
 
     this._nextAnnouncement = message.trim();
 
-    if (this.delay === 0 || forceReannounce) {
+    // Use the provided delay or fall back to the instance delay
+    const effectiveDelay = delay !== undefined ? delay : this.delay;
+
+    if (effectiveDelay === 0 || forceReannounce) {
       // If the delay is 0, just skip the timeout shenanigans and update the
       // element synchronously. Great for tests.
       return this._updateElement(forceReannounce);
     }
 
-    if (this._timeoutId === undefined) {
-      this._timeoutId = setTimeout(() => this._updateElement(false), this.delay * 1000);
+    // Clear any existing timeout to ensure the latest announcement is used.
+    if (this._timeoutId !== undefined) {
+      clearTimeout(this._timeoutId);
     }
+
+    // Calculate when this announcement wants to happen
+    const now = Date.now();
+    const requestedTime = now + effectiveDelay * 1000;
+
+    // Check if we need to stagger to avoid collision with other announcements.
+    // When multiple LiveRegion instances announce simultaneously, screen readers
+    // may drop some announcements. We automatically stagger them with a minimum
+    // gap to ensure all are heard.
+    let actualAnnouncementTime = requestedTime;
+
+    if (requestedTime < LiveRegionController._nextAvailableSlot) {
+      // Another announcement is scheduled too close - stagger this one
+      actualAnnouncementTime = LiveRegionController._nextAvailableSlot;
+    }
+
+    // Reserve this time slot for this announcement
+    LiveRegionController._nextAvailableSlot = actualAnnouncementTime + LiveRegionController.MIN_ANNOUNCEMENT_GAP_MS;
+
+    // Calculate the actual delay needed (may be longer than requested due to staggering)
+    const actualDelay = actualAnnouncementTime - now;
+
+    // Create timeout with potentially adjusted delay
+    this._timeoutId = setTimeout(() => this._updateElement(false), actualDelay);
   }
 
   private _updateElement(forceReannounce: boolean) {
