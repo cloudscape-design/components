@@ -137,17 +137,22 @@ interface AbstractTokenGroup<T extends AbstractToken> {
   tokens: readonly (T | AbstractTokenGroup<T>)[];
 }
 
+function isAbstractToken<T extends AbstractToken>(tokenOrGroup: T | AbstractTokenGroup<T>): tokenOrGroup is T {
+  const key: keyof AbstractToken = 'operator';
+  return key in tokenOrGroup;
+}
+
 /**
  * Transforms query token groups to tokens (only taking 1 level of nesting).
  */
 export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonly (T | AbstractTokenGroup<T>)[]): T[] {
   const tokens: T[] = [];
   for (const tokenOrGroup of tokenGroups) {
-    if ('operator' in tokenOrGroup) {
+    if (isAbstractToken(tokenOrGroup)) {
       tokens.push(tokenOrGroup);
     } else {
       for (const nestedTokenOrGroup of tokenOrGroup.tokens) {
-        if ('operator' in nestedTokenOrGroup) {
+        if (isAbstractToken(nestedTokenOrGroup)) {
           tokens.push(nestedTokenOrGroup);
         } else {
           // Ignore deeply nested tokens
