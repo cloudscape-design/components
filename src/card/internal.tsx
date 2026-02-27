@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 
 export default function InternalCard({
   actions,
-  selected,
+  highlighted,
   children,
   className,
   header,
@@ -33,7 +33,7 @@ export default function InternalCard({
       className={clsx(
         className,
         styles.root,
-        selected && styles.selected,
+        highlighted && styles.highlighted,
         headerRowEmpty && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
