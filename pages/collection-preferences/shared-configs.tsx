@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import Checkbox from '~components/checkbox';
-import { CollectionPreferencesProps } from '~components/collection-preferences';
+import { type CollectionPreferencesProps } from '~components/collection-preferences';
 
 export const baseProperties: CollectionPreferencesProps<boolean> = {
   title: 'Preferences',

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutProps, Box, Drawer, SpaceBetween } from '~components';
+import { type AppLayoutProps, Box, Drawer, SpaceBetween } from '~components';
 
 import { drawerIds } from './drawer-ids';
 

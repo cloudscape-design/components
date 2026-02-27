@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 
 import { AppLayout, ContentLayout, Header } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers } from './utils/content-blocks';

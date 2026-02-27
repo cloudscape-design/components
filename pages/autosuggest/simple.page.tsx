@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { Autosuggest, AutosuggestProps, Box, SpaceBetween } from '~components';
+import { Autosuggest, type AutosuggestProps, Box, SpaceBetween } from '~components';
 
 const empty = <span>Nothing found</span>;
 const options = [

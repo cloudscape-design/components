@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import range from 'lodash/range';
 
-import { AutosuggestProps } from '~components/autosuggest/interfaces';
-import Cards, { CardsProps } from '~components/cards/index';
+import { type AutosuggestProps } from '~components/autosuggest/interfaces';
+import Cards, { type CardsProps } from '~components/cards/index';
 import FormField from '~components/form-field/index';
 import Header from '~components/header/index';
 import Select from '~components/select/index';

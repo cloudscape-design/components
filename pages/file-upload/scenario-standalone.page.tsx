@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Alert, Box, Checkbox, FileUpload, FileUploadProps, FormField, Header } from '~components';
+import { Alert, Box, Checkbox, FileUpload, type FileUploadProps, FormField, Header } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 import SpaceBetween from '~components/space-between';

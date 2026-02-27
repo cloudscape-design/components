@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import AppLayout, { type AppLayoutProps } from '~components/app-layout';
 import Box from '~components/box';
 import Button from '~components/button';
 import SpaceBetween from '~components/space-between';
 
+import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
-import ContentType = AppLayoutProps.ContentType;
-import ScreenshotArea from '../utils/screenshot-area';
+
+type ContentType = AppLayoutProps.ContentType;
 
 import styles from './styles.scss';
 

@@ -82,8 +82,7 @@ Then, start the dev-server by running:
 npm start
 ```
 
-This will open a webpack-dev-server at http://localhost:8080 and watch
-for file changes.
+This will start the vite dev server at http://localhost:8080 with HMR.
 
 ### Quick rebuild
 

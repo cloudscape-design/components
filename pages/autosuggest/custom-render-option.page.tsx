@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { Autosuggest, AutosuggestProps, Toggle } from '~components';
+import { Autosuggest, type AutosuggestProps, Toggle } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';

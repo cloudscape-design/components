@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AreaChartProps } from '~components/area-chart';
+import { type AreaChartProps } from '~components/area-chart';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

@@ -3,7 +3,7 @@
 
 import React, { useRef, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
+import { Box, DateRangePicker, type DateRangePickerProps, FormField, Link } from '~components';
 
 import { SimplePage } from '../app/templates';
 import { Settings, useDateRangePickerSettings } from './common';
