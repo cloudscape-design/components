@@ -2,36 +2,36 @@
 
 exports[`getSliderStyles handles all possible style configurations 1`] = `
 {
-  "--awsui-style-slider-handle-background-active-c5ek4l": undefined,
-  "--awsui-style-slider-handle-background-default-c5ek4l": undefined,
-  "--awsui-style-slider-handle-background-hover-c5ek4l": undefined,
-  "--awsui-style-slider-handle-border-radius-c5ek4l": undefined,
-  "--awsui-style-slider-range-background-active-c5ek4l": undefined,
-  "--awsui-style-slider-range-background-default-c5ek4l": undefined,
-  "--awsui-style-slider-track-background-color-c5ek4l": undefined,
+  "--awsui-style-slider-handle-background-active-n6lfw8": undefined,
+  "--awsui-style-slider-handle-background-default-n6lfw8": undefined,
+  "--awsui-style-slider-handle-background-hover-n6lfw8": undefined,
+  "--awsui-style-slider-handle-border-radius-n6lfw8": undefined,
+  "--awsui-style-slider-range-background-active-n6lfw8": undefined,
+  "--awsui-style-slider-range-background-default-n6lfw8": undefined,
+  "--awsui-style-slider-track-background-color-n6lfw8": undefined,
 }
 `;
 
 exports[`getSliderStyles handles all possible style configurations 2`] = `
 {
-  "--awsui-style-slider-handle-background-active-c5ek4l": undefined,
-  "--awsui-style-slider-handle-background-default-c5ek4l": undefined,
-  "--awsui-style-slider-handle-background-hover-c5ek4l": undefined,
-  "--awsui-style-slider-handle-border-radius-c5ek4l": undefined,
-  "--awsui-style-slider-range-background-active-c5ek4l": undefined,
-  "--awsui-style-slider-range-background-default-c5ek4l": undefined,
-  "--awsui-style-slider-track-background-color-c5ek4l": undefined,
+  "--awsui-style-slider-handle-background-active-n6lfw8": undefined,
+  "--awsui-style-slider-handle-background-default-n6lfw8": undefined,
+  "--awsui-style-slider-handle-background-hover-n6lfw8": undefined,
+  "--awsui-style-slider-handle-border-radius-n6lfw8": undefined,
+  "--awsui-style-slider-range-background-active-n6lfw8": undefined,
+  "--awsui-style-slider-range-background-default-n6lfw8": undefined,
+  "--awsui-style-slider-track-background-color-n6lfw8": undefined,
 }
 `;
 
 exports[`getSliderStyles handles all possible style configurations 3`] = `
 {
-  "--awsui-style-slider-handle-background-active-c5ek4l": "#1d4ed8",
-  "--awsui-style-slider-handle-background-default-c5ek4l": "#3b82f6",
-  "--awsui-style-slider-handle-background-hover-c5ek4l": "#2563eb",
-  "--awsui-style-slider-handle-border-radius-c5ek4l": "50%",
-  "--awsui-style-slider-range-background-active-c5ek4l": "#2563eb",
-  "--awsui-style-slider-range-background-default-c5ek4l": "#3b82f6",
-  "--awsui-style-slider-track-background-color-c5ek4l": "#dbeafe",
+  "--awsui-style-slider-handle-background-active-n6lfw8": "#1d4ed8",
+  "--awsui-style-slider-handle-background-default-n6lfw8": "#3b82f6",
+  "--awsui-style-slider-handle-background-hover-n6lfw8": "#2563eb",
+  "--awsui-style-slider-handle-border-radius-n6lfw8": "50%",
+  "--awsui-style-slider-range-background-active-n6lfw8": "#2563eb",
+  "--awsui-style-slider-range-background-default-n6lfw8": "#3b82f6",
+  "--awsui-style-slider-track-background-color-n6lfw8": "#dbeafe",
 }
 `;

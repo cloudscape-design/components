@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -25,10 +25,12 @@ import { ButtonContext, ButtonContextProps } from '../internal/context/button-co
 import { ModalContext } from '../internal/context/modal-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../internal/events';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isDevelopment } from '../internal/is-development';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
 import {
@@ -73,6 +75,8 @@ type InternalModalProps = SomeRequired<ModalProps, 'size'> &
     __injectAnalyticsComponentMetadata?: boolean;
     onButtonClick?: ButtonContextProps['onClick'];
     referrerId?: string;
+    width?: number;
+    height?: number;
   };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
@@ -94,8 +98,11 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  position = 'center',
   onButtonClick = () => {},
   onDismiss,
+  width,
+  height,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   __funnelProps,
@@ -156,7 +163,7 @@ function PortaledModal({
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,
         instanceIdentifier: instanceUniqueId,
-        componentIdentifier: headerRef.current?.textContent || '',
+        componentIdentifier: headerTextRef.current?.textContent || '',
       });
       performanceMetricLogged.current = true;
     }
@@ -216,8 +223,45 @@ function PortaledModal({
   // Add extra scroll padding to account for the height of the sticky footer,
   // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, headerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+  const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
+
+  // Minimum content height is twice the height of the largest type style in Cloudscape (60px)
+  // to ensure content remains scrollable and accessible even with custom heights.
+  const MIN_CONTENT_HEIGHT = 60;
+  const MIN_MODAL_WIDTH = 320; // Matches smallest predefined size (small)
+
+  // Calculate minimum modal height based on header, footer, and content
+  const minModalHeight = (headerHeight ?? 0) + (footer ? (footerHeight ?? 0) : 0) + MIN_CONTENT_HEIGHT;
+
+  // Constrain dimensions to minimum values
+  const constrainedHeight = Math.max(height ?? 0, minModalHeight);
+  const constrainedWidth = Math.max(width ?? 0, MIN_MODAL_WIDTH);
+
+  const hasCustomHeight = height !== undefined && !Number.isNaN(height);
+  const hasCustomWidth = width !== undefined && !Number.isNaN(width);
+  // Development warnings for adjusted values
+  if (isDevelopment) {
+    if (hasCustomHeight && constrainedHeight !== height) {
+      warnOnce(
+        'Modal',
+        `Height (${height}px) is too small. Modal requires at least ${MIN_CONTENT_HEIGHT}px for content plus header/footer space (total: ${minModalHeight}px). Height will be adjusted to ${constrainedHeight}px.`
+      );
+    }
+    if (hasCustomWidth && constrainedWidth !== width) {
+      warnOnce(
+        'Modal',
+        `Width (${width}px) is below minimum (${MIN_MODAL_WIDTH}px) and will be adjusted to ${constrainedWidth}px.`
+      );
+    }
+  }
+
+  // Apply custom dimensions via CSS custom properties
+  const dialogCustomStyles: React.CSSProperties = {
+    ...(hasCustomWidth && { [customCssProps.modalCustomWidth]: `${constrainedWidth}px` }),
+    ...(hasCustomHeight && { [customCssProps.modalCustomHeight]: `${constrainedHeight}px` }),
+  };
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
@@ -247,19 +291,27 @@ function PortaledModal({
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
             data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
-            <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+            <FocusLock
+              disabled={!visible}
+              autoFocus={true}
+              restoreFocus={true}
+              className={clsx(styles['focus-lock'], styles[`position-${position}`])}
+            >
               <div
                 className={clsx(
                   styles.dialog,
-                  styles[size],
+                  !hasCustomWidth && styles[size],
                   styles[`breakpoint-${breakpoint}`],
-                  isRefresh && styles.refresh
+                  isRefresh && styles.refresh,
+                  hasCustomWidth && styles['custom-width'],
+                  hasCustomHeight && styles['custom-height']
                 )}
+                style={dialogCustomStyles}
                 onKeyDown={escKeyHandler}
                 {...metadataAttribute}
               >
-                <div className={styles.container}>
-                  <div className={clsx(styles.header, analyticsSelectors.header)}>
+                <div className={clsx(styles.container, hasCustomHeight && styles['custom-height-container'])}>
+                  <div ref={headerRef} className={clsx(styles.header, analyticsSelectors.header)}>
                     <InternalHeader
                       variant="h2"
                       __disableActionsWrapping={true}
@@ -280,7 +332,7 @@ function PortaledModal({
                         </div>
                       }
                     >
-                      <span ref={headerRef} id={headerId} className={styles['header--text']}>
+                      <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
                         {header}
                       </span>
                     </InternalHeader>
@@ -291,14 +343,30 @@ function PortaledModal({
                     <div
                       ref={__subStepRef}
                       {...__subStepFunnelProps}
-                      className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
+                      className={clsx(
+                        styles.content,
+                        { [styles['no-paddings']]: disableContentPaddings },
+                        hasCustomHeight && styles['custom-height-content']
+                      )}
+                      {...(hasCustomHeight && {
+                        tabIndex: 0,
+                        role: 'region',
+                        'aria-labelledby': headerId,
+                      })}
                     >
                       {children}
                       <div ref={stickySentinelRef} />
                     </div>
                     {footer && (
                       <ButtonContext.Provider value={{ onClick: onButtonClick }}>
-                        <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                        <div
+                          ref={footerRef}
+                          className={clsx(
+                            styles.footer,
+                            footerStuck && styles['footer--stuck'],
+                            hasCustomHeight && styles['custom-height']
+                          )}
+                        >
                           {footer}
                         </div>
                       </ButtonContext.Provider>
