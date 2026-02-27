@@ -77,15 +77,24 @@ export default function () {
               {
                 id: 'd1',
                 content: (
-                  <Drawer header={<Header variant="h2">Drawer 1</Header>}>
-                    <SpaceBetween size="s">
-                      <Box variant="p">
-                        The drawers have built-in error boundary in the content slot. An error in one drawer does not
-                        affect other drawers.
-                      </Box>
-                      <BrokenButton />
-                    </SpaceBetween>
-                  </Drawer>
+                  <>
+                    <BrokenButton />
+                    <Drawer
+                      header={
+                        <Header variant="h2">
+                          Drawer 1 <BrokenButton />
+                        </Header>
+                      }
+                    >
+                      <SpaceBetween size="s">
+                        <Box variant="p">
+                          The drawers have built-in error boundary in the content slot. An error in one drawer does not
+                          affect other drawers.
+                        </Box>
+                        <BrokenButton />
+                      </SpaceBetween>
+                    </Drawer>
+                  </>
                 ),
                 trigger: { iconName: 'bug' },
                 ariaLabels: { drawerName: 'Drawer 1', triggerButton: 'Open drawer 1', closeButton: 'Close drawer 1' },
