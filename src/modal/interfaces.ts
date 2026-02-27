@@ -26,10 +26,21 @@ export interface BaseModalProps {
 export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
    * Sets the width of the modal. `max` uses variable width up to the
-   * largest size allowed by the design guidelines. Other sizes
-   * (`small`/`medium`/`large`) have fixed widths.
+   * largest size allowed by the design guidelines. Other sizes have fixed widths:
+   * `small` (320px), `medium` (600px), `large` (820px), `x-large` (1024px), `xx-large` (1280px).
    */
   size?: ModalProps.Size;
+  /**
+   * Controls the vertical positioning of the modal.
+   *
+   * - `center` (default) - The modal is vertically centered in the viewport and re-centers
+   *   when content height changes. Use for dialogs with static, predictable content.
+   *
+   * - `top` - The modal anchors at fixed distance and grows downward
+   *   as content expands. Use when the content changes dynamically to prevent disruptive
+   *   vertical repositioning that can cause users to lose context.
+   */
+  position?: ModalProps.Position;
   /**
    * Determines whether the modal is displayed on the screen. Modals are hidden by default.
    * Set this property to `true` to show them.
@@ -81,7 +92,8 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
 }
 
 export namespace ModalProps {
-  export type Size = 'small' | 'medium' | 'large' | 'max';
+  export type Size = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'max';
+  export type Position = 'center' | 'top';
 
   export interface DismissDetail {
     reason: string;

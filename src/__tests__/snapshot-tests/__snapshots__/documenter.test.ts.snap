@@ -17521,6 +17521,28 @@ render to an element under \`document.body\`.",
       "type": "HTMLElement",
     },
     {
+      "defaultValue": "'center'",
+      "description": "Controls the vertical positioning of the modal.
+
+- \`center\` (default) - The modal is vertically centered in the viewport and re-centers
+  when content height changes. Use for dialogs with static, predictable content.
+
+- \`top\` - The modal anchors at fixed distance and grows downward
+  as content expands. Use when the content changes dynamically to prevent disruptive
+  vertical repositioning that can cause users to lose context.",
+      "inlineType": {
+        "name": "ModalProps.Position",
+        "type": "union",
+        "values": [
+          "center",
+          "top",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
 element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
@@ -17542,8 +17564,8 @@ of the most recent getModalRoot call as an argument.",
     {
       "defaultValue": "'medium'",
       "description": "Sets the width of the modal. \`max\` uses variable width up to the
-largest size allowed by the design guidelines. Other sizes
-(\`small\`/\`medium\`/\`large\`) have fixed widths.",
+largest size allowed by the design guidelines. Other sizes have fixed widths:
+\`small\` (320px), \`medium\` (600px), \`large\` (820px), \`x-large\` (1024px), \`xx-large\` (1280px).",
       "inlineType": {
         "name": "ModalProps.Size",
         "type": "union",
@@ -17552,6 +17574,8 @@ largest size allowed by the design guidelines. Other sizes
           "max",
           "medium",
           "large",
+          "x-large",
+          "xx-large",
         ],
       },
       "name": "size",

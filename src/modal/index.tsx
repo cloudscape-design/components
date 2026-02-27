@@ -70,7 +70,7 @@ function ModalWithAnalyticsFunnel({
   );
 }
 
-export default function Modal({ size = 'medium', ...props }: ModalProps) {
+export default function Modal({ size = 'medium', position = 'center', ...props }: ModalProps) {
   const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
@@ -78,6 +78,7 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
     {
       props: {
         size,
+        position,
         disableContentPaddings: props.disableContentPaddings,
         flowType: analyticsMetadata.flowType,
       },
@@ -95,12 +96,21 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
         analyticsMetadata={analyticsMetadata}
         baseComponentProps={baseComponentProps}
         size={size}
+        position={position}
         {...props}
       />
     );
   }
 
-  return <InternalModal size={size} {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} />;
+  return (
+    <InternalModal
+      size={size}
+      position={position}
+      {...props}
+      {...baseComponentProps}
+      __injectAnalyticsComponentMetadata={true}
+    />
+  );
 }
 
 applyDisplayName(Modal, 'Modal');
