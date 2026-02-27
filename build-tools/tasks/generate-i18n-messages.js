@@ -53,7 +53,7 @@ module.exports = function generateI18nMessages() {
   const dynamicFile = [
     `import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { isDevelopment } from '../internal/is-development';
-import { getMatchableLocales } from './get-matchable-locales';
+import { getMatchableLocales } from './utils/locales';
 
 export function importMessages(locale) {
   for (const matchableLocale of getMatchableLocales(locale)) {
