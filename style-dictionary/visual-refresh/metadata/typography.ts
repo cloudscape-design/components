@@ -125,6 +125,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  letterSpacingHeadingXs: {
+    description: 'The default letter spacing for h5s.',
+    themeable: true,
+    public: true,
+  },
   lineHeightBodyM: {
     description: 'The default line height for regular body text.',
     themeable: true,

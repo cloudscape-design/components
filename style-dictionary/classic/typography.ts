@@ -41,6 +41,7 @@ const tokens: StyleDictionary.TypographyDictionary = {
   letterSpacingHeadingL: 'normal',
   letterSpacingHeadingM: 'normal',
   letterSpacingHeadingS: 'normal',
+  letterSpacingHeadingXs: 'normal',
   lineHeightBodyM: '22px',
   lineHeightDisplayL: '56px',
   lineHeightHeadingXl: '36px',
