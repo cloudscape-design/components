@@ -17,9 +17,11 @@ import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import {
   defaultIsSuppressed,
+  findClosestCellByAriaColIndex,
   findTableRowByAriaRowIndex,
   findTableRowCellByAriaColIndex,
   focusNextElement,
+  getAllCellsInRow,
   getClosestCell,
   isElementDisabled,
   isTableCell,
@@ -330,16 +332,48 @@ export class GridNavigationProcessor {
       return cellFocusables[nextElementIndex];
     }
 
-    // Find next cell to focus or move focus into (can be null if the left/right edge is reached).
+    // Find next cell to focus or move focus into.
+    // Use getAllCellsInRow to include cells from earlier rows that span into the target row via rowspan.
     const targetAriaColIndex = from.colIndex + delta.x;
-    const targetCell = findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
+    const targetRowAriaIndex = parseInt(targetRow.getAttribute('aria-rowindex') ?? '');
+    let allVisibleCells = getAllCellsInRow(this.table, targetRowAriaIndex);
+    let targetCell =
+      allVisibleCells.length > 0
+        ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
+        : findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
+
+    // When vertical movement lands on the same cell (due to rowspan), skip past it.
+    if (targetCell === cellElement && delta.y !== 0 && cellElement) {
+      const cellRow = cellElement.closest('tr');
+      const cellRowIndex = parseInt(cellRow?.getAttribute('aria-rowindex') ?? '0');
+      const cellRowSpan = (cellElement as HTMLTableCellElement).rowSpan || 1;
+      // Jump to the first row after this cell's span (↓) or one row before the cell's start (↑).
+      const skipToRowIndex = delta.y > 0 ? cellRowIndex + cellRowSpan : cellRowIndex - 1;
+      const skipRow = findTableRowByAriaRowIndex(this.table, skipToRowIndex, delta.y);
+      if (!skipRow) {
+        return null;
+      }
+      const skipRowAriaIndex = parseInt(skipRow.getAttribute('aria-rowindex') ?? '');
+      allVisibleCells = getAllCellsInRow(this.table, skipRowAriaIndex);
+      targetCell =
+        allVisibleCells.length > 0
+          ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
+          : findTableRowCellByAriaColIndex(skipRow, targetAriaColIndex, delta.x);
+    }
+
     if (!targetCell) {
       return null;
     }
 
-    // When target cell matches the current cell it means we reached the left or right boundary.
-    if (targetCell === cellElement && delta.x !== 0) {
-      return null;
+    // When horizontal movement lands on the same cell (due to colspan), skip past it.
+    if (targetCell === cellElement && delta.x !== 0 && cellElement) {
+      const cellColIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '0');
+      const cellColSpan = (cellElement as HTMLTableCellElement).colSpan || 1;
+      const skipToColIndex = delta.x > 0 ? cellColIndex + cellColSpan : cellColIndex - 1;
+      targetCell = findClosestCellByAriaColIndex(allVisibleCells, skipToColIndex, delta.x);
+      if (!targetCell || targetCell === cellElement) {
+        return null;
+      }
     }
 
     const targetCellFocusables = this.getFocusablesFrom(targetCell);

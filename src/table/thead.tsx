@@ -6,7 +6,10 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { TableGroupedTypes } from './column-grouping-utils';
 import { TableHeaderCell } from './header-cell';
+import { TableGroupHeaderCell } from './header-cell/group-header-cell';
+import { TableHiddenHeaderCell } from './header-cell/hidden-header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
@@ -20,6 +23,8 @@ import styles from './styles.css.js';
 export interface TheadProps {
   selectionType: undefined | InternalSelectionType;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
+  columnGroupingDefinitions?: ReadonlyArray<TableProps.ColumnGroupsDefinition<any>>;
+  hierarchicalStructure?: TableGroupedTypes.HierarchicalStructure<any>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;
   sortingDisabled: boolean | undefined;
@@ -53,6 +58,7 @@ const Thead = React.forwardRef(
       selectionType,
       getSelectAllProps,
       columnDefinitions,
+      hierarchicalStructure: h,
       sortingColumn,
       sortingDisabled,
       sortingDescending,
@@ -80,7 +86,42 @@ const Thead = React.forwardRef(
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
-    const { getColumnStyles, columnWidths, updateColumn, setCell } = useColumnWidths();
+    const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
+
+    const hierarchicalStructure: TableGroupedTypes.HierarchicalStructure<any> | undefined = h;
+
+    // Helper to get child column IDs for a group (for getting minWidths)
+    const getChildColumnIds = (groupId: string): string[] => {
+      if (!hierarchicalStructure) {
+        return [];
+      }
+
+      const childIds: string[] = [];
+      const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+
+      leafRow.columns.forEach(col => {
+        if (!col.isGroup && col.parentGroupIds.includes(groupId)) {
+          childIds.push(col.id);
+        }
+      });
+
+      return childIds;
+    };
+
+    // Helper to get minWidth for columns
+    const getColumnMinWidths = (columnIds: string[]): Map<string, number> => {
+      const minWidths = new Map<string, number>();
+
+      columnIds.forEach(colId => {
+        const col = columnDefinitions.find((c, idx) => (c.id || `column-${idx}`) === colId);
+        if (col && col.minWidth) {
+          const minWidth = typeof col.minWidth === 'string' ? parseInt(col.minWidth) : col.minWidth;
+          minWidths.set(colId, minWidth);
+        }
+      });
+
+      return minWidths;
+    };
 
     const commonCellProps = {
       stuck,
@@ -93,67 +134,213 @@ const Thead = React.forwardRef(
       stickyState,
     };
 
+    // No grouping - render single row
+    if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+      return (
+        <thead className={clsx(!hidden && styles['thead-active'])}>
+          <tr
+            {...focusMarkers.all}
+            ref={outerRef}
+            aria-rowindex={1}
+            {...getTableHeaderRowRoleProps({ tableRole })}
+            onFocus={event => {
+              const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
+              const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
+              onFocusedComponentChange?.(focusId);
+            }}
+            onBlur={() => onFocusedComponentChange?.(null)}
+          >
+            {selectionType ? (
+              <TableHeaderSelectionCell
+                {...commonCellProps}
+                focusedComponent={focusedComponent}
+                columnId={selectionColumnId}
+                getSelectAllProps={getSelectAllProps}
+                onFocusMove={onFocusMove}
+                singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+              />
+            ) : null}
+
+            {columnDefinitions.map((column, colIndex) => {
+              const columnId = getColumnKey(column, colIndex);
+              return (
+                <TableHeaderCell
+                  {...commonCellProps}
+                  key={columnId}
+                  tabIndex={sticky ? -1 : 0}
+                  focusedComponent={focusedComponent}
+                  column={column}
+                  activeSortingColumn={sortingColumn}
+                  sortingDescending={sortingDescending}
+                  sortingDisabled={sortingDisabled}
+                  wrapLines={wrapLines}
+                  colIndex={selectionType ? colIndex + 1 : colIndex}
+                  columnId={columnId}
+                  updateColumn={updateColumn}
+                  onResizeFinish={() => onResizeFinish(columnWidths)}
+                  resizableColumns={resizableColumns}
+                  resizableStyle={getColumnStyles(sticky, columnId)}
+                  onClick={detail => {
+                    setLastUserAction('sorting');
+                    fireNonCancelableEvent(onSortingChange, detail);
+                  }}
+                  isEditable={!!column.editConfig}
+                  cellRef={node => setCell(sticky, columnId, node)}
+                  tableRole={tableRole}
+                  resizerRoleDescription={resizerRoleDescription}
+                  resizerTooltipText={resizerTooltipText}
+                  isExpandable={colIndex === 0 && isExpandable}
+                  hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
+                />
+              );
+            })}
+          </tr>
+        </thead>
+      );
+    }
+
+    // Grouped columns
+    console.log(hierarchicalStructure.rows);
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
-        <tr
-          {...focusMarkers.all}
-          ref={outerRef}
-          aria-rowindex={1}
-          {...getTableHeaderRowRoleProps({ tableRole })}
-          onFocus={event => {
-            const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
-            const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
-            onFocusedComponentChange?.(focusId);
-          }}
-          onBlur={() => onFocusedComponentChange?.(null)}
-        >
-          {selectionType ? (
-            <TableHeaderSelectionCell
-              {...commonCellProps}
-              focusedComponent={focusedComponent}
-              columnId={selectionColumnId}
-              getSelectAllProps={getSelectAllProps}
-              onFocusMove={onFocusMove}
-              singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
-            />
-          ) : null}
-
-          {columnDefinitions.map((column, colIndex) => {
-            const columnId = getColumnKey(column, colIndex);
-            return (
-              <TableHeaderCell
+        {hierarchicalStructure.rows.map((row, rowIndex) => (
+          <tr
+            key={rowIndex}
+            {...(rowIndex === 0 ? focusMarkers.all : {})}
+            ref={rowIndex === 0 ? outerRef : undefined}
+            aria-rowindex={rowIndex + 1}
+            {...getTableHeaderRowRoleProps({ tableRole, rowIndex })}
+            onFocus={
+              rowIndex === 0
+                ? event => {
+                    const focusControlElement = findUpUntil(
+                      event.target,
+                      element => !!element.getAttribute('data-focus-id')
+                    );
+                    const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
+                    onFocusedComponentChange?.(focusId);
+                  }
+                : undefined
+            }
+            onBlur={rowIndex === 0 ? () => onFocusedComponentChange?.(null) : undefined}
+          >
+            {/* Selection column only in first row */}
+            {rowIndex === 0 && selectionType ? (
+              <TableHeaderSelectionCell
                 {...commonCellProps}
-                key={columnId}
-                tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
-                column={column}
-                activeSortingColumn={sortingColumn}
-                sortingDescending={sortingDescending}
-                sortingDisabled={sortingDisabled}
-                wrapLines={wrapLines}
-                colIndex={selectionType ? colIndex + 1 : colIndex}
-                columnId={columnId}
-                updateColumn={updateColumn}
-                onResizeFinish={() => onResizeFinish(columnWidths)}
-                resizableColumns={resizableColumns}
-                resizableStyle={getColumnStyles(sticky, columnId)}
-                onClick={detail => {
-                  setLastUserAction('sorting');
-                  fireNonCancelableEvent(onSortingChange, detail);
-                }}
-                isEditable={!!column.editConfig}
-                cellRef={node => setCell(sticky, columnId, node)}
-                tableRole={tableRole}
-                resizerRoleDescription={resizerRoleDescription}
-                resizerTooltipText={resizerTooltipText}
-                // Expandable option is only applicable to the first data column of the table.
-                // When present, the header content receives extra padding to match the first offset in the data cells.
-                isExpandable={colIndex === 0 && isExpandable}
-                hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
+                columnId={selectionColumnId}
+                getSelectAllProps={getSelectAllProps}
+                onFocusMove={onFocusMove}
+                singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+                rowSpan={hierarchicalStructure.maxDepth}
               />
-            );
-          })}
-        </tr>
+            ) : null}
+
+            {row.columns.map(col => {
+              // Hidden placeholder cell — fills gaps where rowspan > 1 would have been
+              if (col.isHidden) {
+                const columnDef = col.columnDefinition;
+                const minWidth = columnDef?.minWidth
+                  ? typeof columnDef.minWidth === 'string'
+                    ? parseInt(columnDef.minWidth)
+                    : columnDef.minWidth
+                  : undefined;
+
+                return (
+                  <TableHiddenHeaderCell
+                    {...commonCellProps}
+                    key={`${col.id}-hidden-${col.rowIndex}`}
+                    columnId={col.id}
+                    colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
+                    colspan={col.colspan}
+                    tabIndex={sticky ? -1 : 0}
+                    focusedComponent={focusedComponent}
+                    resizableColumns={resizableColumns}
+                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
+                    onResizeFinish={() => onResizeFinish(columnWidths)}
+                    updateColumn={updateColumn}
+                    cellRef={node => setCell(sticky, col.id, node)}
+                    resizerRoleDescription={resizerRoleDescription}
+                    resizerTooltipText={resizerTooltipText}
+                    minWidth={minWidth}
+                  />
+                );
+              }
+
+              if (col.isGroup) {
+                // Group header cell
+                const groupDefinition = col.groupDefinition!;
+                const childIds = getChildColumnIds(col.id);
+
+                return (
+                  <TableGroupHeaderCell
+                    {...commonCellProps}
+                    key={col.id}
+                    tabIndex={sticky ? -1 : 0}
+                    focusedComponent={focusedComponent}
+                    group={groupDefinition}
+                    colspan={col.colspan}
+                    rowspan={col.rowspan}
+                    colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
+                    groupId={col.id}
+                    resizableColumns={resizableColumns}
+                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
+                    onResizeFinish={() => onResizeFinish(columnWidths)}
+                    updateGroupWidth={(groupId, newWidth) => {
+                      updateGroup(groupId, newWidth);
+                    }}
+                    childColumnIds={childIds}
+                    childColumnMinWidths={getColumnMinWidths(childIds)}
+                    cellRef={node => setCell(sticky, col.id, node)}
+                    resizerRoleDescription={resizerRoleDescription}
+                    resizerTooltipText={resizerTooltipText}
+                  />
+                );
+              } else {
+                // Regular column cell
+                const column = col.columnDefinition!;
+                const columnId = col.id;
+                const colIndex = col.colIndex;
+
+                return (
+                  <TableHeaderCell
+                    {...commonCellProps}
+                    key={columnId}
+                    tabIndex={sticky ? -1 : 0}
+                    focusedComponent={focusedComponent}
+                    column={column}
+                    activeSortingColumn={sortingColumn}
+                    sortingDescending={sortingDescending}
+                    sortingDisabled={sortingDisabled}
+                    wrapLines={wrapLines}
+                    colIndex={selectionType ? colIndex + 1 : colIndex}
+                    columnId={columnId}
+                    updateColumn={updateColumn}
+                    onResizeFinish={() => onResizeFinish(columnWidths)}
+                    resizableColumns={resizableColumns}
+                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, columnId)}
+                    onClick={detail => {
+                      setLastUserAction('sorting');
+                      fireNonCancelableEvent(onSortingChange, detail);
+                    }}
+                    isEditable={!!column.editConfig}
+                    cellRef={node => {
+                      setCell(sticky, columnId, node);
+                    }}
+                    tableRole={tableRole}
+                    resizerRoleDescription={resizerRoleDescription}
+                    resizerTooltipText={resizerTooltipText}
+                    isExpandable={colIndex === 0 && isExpandable}
+                    hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
+                    colSpan={col.colspan}
+                    rowSpan={col.rowspan}
+                  />
+                );
+              }
+            })}
+          </tr>
+        ))}
       </thead>
     );
   }
