@@ -64,9 +64,9 @@ export interface InternalCardProps extends BaseCardProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
 
   /**
-   * Specifies whether the card is in active state.
+   * Specifies whether the card is in highlighted state.
    */
-  selected?: boolean;
+  highlighted?: boolean;
 
   metadataAttributes?: Record<string, string | undefined>;
 }

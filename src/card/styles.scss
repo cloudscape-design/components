@@ -115,7 +115,7 @@ $padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-ver
   }
 }
 
-.selected {
+.highlighted {
   background-color: awsui.$color-background-item-selected;
   &::before {
     border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
