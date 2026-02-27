@@ -107,15 +107,23 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   letterSpacingHeadingXl: {
     description: 'The default letter spacing for h1s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingL: {
     description: 'The default letter spacing for h2s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingM: {
     description: 'The default letter spacing for h3s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingS: {
     description: 'The default letter spacing for h4s.',
+    themeable: true,
+    public: true,
   },
   lineHeightBodyM: {
     description: 'The default line height for regular body text.',
