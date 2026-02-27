@@ -137,6 +137,36 @@ test('should use the fallback value for columns without explicit width', () => {
   ]);
 });
 
+test('should respect minWidth when dynamically adding columns via visibleColumns', () => {
+  const columns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: '', cell: item => item.id, width: 100 },
+    { id: 'small-width', header: '', cell: () => '-', width: 80, minWidth: 150 },
+    { id: 'width-only', header: '', cell: () => '-', width: 180 },
+    { id: 'minWidth-larger', header: '', cell: () => '-', width: 180, minWidth: 200 },
+  ];
+  const { wrapper, rerender } = renderTable(
+    <Table columnDefinitions={columns} visibleColumns={['id']} items={defaultItems} resizableColumns={true} />
+  );
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual(['100px']);
+
+  // Dynamically add columns with various width/minWidth configurations
+  rerender(
+    <Table
+      columnDefinitions={columns}
+      visibleColumns={['id', 'small-width', 'width-only', 'minWidth-larger']}
+      items={defaultItems}
+      resizableColumns={true}
+    />
+  );
+
+  expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
+    '100px', // original column unchanged
+    '150px', // use minWidth because 150 > 80
+    '180px', // use width (minWidth defaults to width)
+    '200px', // use minWidth because 200 > 180
+  ]);
+});
+
 describe('reading widths from the DOM', () => {
   const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
   beforeEach(() => {
