@@ -358,7 +358,7 @@ const getInteriorDropdownPosition = (
 
 export const calculatePosition = (
   dropdownElement: HTMLDivElement,
-  triggerElement: HTMLDivElement,
+  triggerElement: HTMLElement,
   verticalContainerElement: HTMLDivElement,
   interior: boolean,
   expandToViewport: boolean,
