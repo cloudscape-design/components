@@ -10,10 +10,10 @@
 @use './motion';
 
 @mixin card-style {
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: awsui.$border-radius-card;
+  border-start-end-radius: awsui.$border-radius-card;
+  border-end-start-radius: awsui.$border-radius-card;
+  border-end-end-radius: awsui.$border-radius-card;
   box-sizing: border-box;
   block-size: 100%;
 
@@ -21,27 +21,27 @@
     @include styles.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-block-start: awsui.$border-width-card solid awsui.$color-border-card;
+    border-start-start-radius: awsui.$border-radius-card;
+    border-start-end-radius: awsui.$border-radius-card;
+    border-end-start-radius: awsui.$border-radius-card;
+    border-end-end-radius: awsui.$border-radius-card;
     z-index: 1;
   }
 
   &::after {
     @include styles.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-card;
+    border-start-end-radius: awsui.$border-radius-card;
+    border-end-start-radius: awsui.$border-radius-card;
+    border-end-end-radius: awsui.$border-radius-card;
   }
   &:not(.refresh)::after {
     box-shadow: awsui.$shadow-container;
   }
   &.refresh::after {
-    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
-    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid awsui.$border-width-card awsui.$color-border-card;
+    border-inline: solid awsui.$border-width-card awsui.$color-border-card;
   }
 }
 
@@ -49,7 +49,7 @@
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
-  background-color: awsui.$color-background-container-content;
+  background-color: awsui.$color-background-card;
   min-inline-size: 0;
   @include card-style;
 }
@@ -84,8 +84,8 @@ $padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-ver
     padding-inline: awsui.$space-card-horizontal;
   }
   &.no-padding {
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-card;
+    border-end-end-radius: awsui.$border-radius-card;
   }
 }
 
@@ -118,8 +118,8 @@ $padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-ver
 .highlighted {
   background-color: awsui.$color-background-item-selected;
   &::before {
-    border-block: awsui.$border-item-width solid awsui.$color-border-item-selected;
-    border-inline: awsui.$border-item-width solid awsui.$color-border-item-selected;
+    border-block: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
+    border-inline: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
   }
 }
 
