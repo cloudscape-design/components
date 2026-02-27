@@ -50,20 +50,21 @@ export class LiveRegionController {
   }
 
   announce({ message, forceReannounce = false }: { message?: string; forceReannounce?: boolean }) {
-    if (!message) {
-      return;
-    }
-
-    const trimmedMessage = message.trim();
+    const trimmedMessage = message?.trim() ?? '';
 
     // If the message before and after the throttle period is the same, we shouldn't
     // announce anything. But if the component was rerendered with different content
     // in the meantime, it's an indication that state changed enough that the same
     // message should be reannounced.
-    if (trimmedMessage !== this._nextAnnouncement) {
+    if (trimmedMessage !== this._lastAnnouncement) {
       this._contentChangedSinceLastAnnouncement = true;
     }
     this._nextAnnouncement = trimmedMessage;
+
+    // We're done with internal state updates. If there's nothing to actually announce, bail.
+    if (!message) {
+      return;
+    }
 
     // If the delay is 0, just skip the timeout shenanigans and update the
     // element synchronously. Great for tests.

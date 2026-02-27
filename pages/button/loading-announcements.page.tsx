@@ -30,7 +30,6 @@ export default function ButtonIntegrationPage() {
         loadingText="Loading"
         onClick={() => setLoadingState('loading')}
       />
-      <LiveRegion hidden={true}>{loadingState === 'success' && 'Loading complete'}</LiveRegion>
       <LiveRegion>
         {loadingState === 'success' && (
           <div data-testid="success-message">
