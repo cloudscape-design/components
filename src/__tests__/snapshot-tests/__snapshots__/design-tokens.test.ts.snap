@@ -5,6 +5,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
   "contexts": {
     "alert": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -77,6 +81,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -120,6 +136,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#f1faff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -581,6 +618,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-button-normal-active": {
@@ -2585,6 +2643,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -2738,6 +2810,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "app-layout-tools-drawer-trigger": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -2810,6 +2886,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -2853,6 +2941,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#f1faff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -3314,6 +3423,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-button-normal-active": {
@@ -5318,6 +5448,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -5471,6 +5615,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "compact-table": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -5543,6 +5691,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -5586,6 +5746,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#f1faff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -6047,6 +6228,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-button-normal-active": {
@@ -8053,6 +8255,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -8204,6 +8420,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "flashbar": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -8276,6 +8496,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -8319,6 +8551,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#f1faff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -8782,6 +9035,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#99cbe4",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -10786,6 +11060,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -10937,6 +11225,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "flashbar-warning": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -11009,6 +11301,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -11052,6 +11356,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#f1faff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -11515,6 +11840,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#99cbe4",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -13519,6 +13865,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -13670,6 +14030,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "top-navigation": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "0px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -13742,6 +14106,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "1px",
@@ -13785,6 +14161,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "1px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#21252c",
+            "light": "#21252c",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -14246,6 +14643,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#0073bb",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-border-button-normal-active": {
@@ -16252,6 +16670,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -16403,6 +16835,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
   },
   "tokens": {
+    "border-radius-action-card": {
+      "$description": "The border radius of action cards.",
+      "$value": "0px",
+    },
     "border-radius-alert": {
       "$description": "The border radius of alerts.",
       "$value": "2px",
@@ -16475,6 +16911,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "2px",
     },
+    "border-width-action-card-active": {
+      "$description": "The border width of action cards in active/pressed state.",
+      "$value": "2px",
+    },
+    "border-width-action-card-default": {
+      "$description": "The border width of action cards in default state.",
+      "$value": "1px",
+    },
+    "border-width-action-card-hover": {
+      "$description": "The border width of action cards in hover state.",
+      "$value": "2px",
+    },
     "border-width-alert": {
       "$description": "The border width of alerts.",
       "$value": "1px",
@@ -16518,6 +16966,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-token": {
       "$description": "The border width of tokens.",
       "$value": "1px",
+    },
+    "color-background-action-card-active": {
+      "$description": "The background color of action cards in active/pressed state.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#d1f1ff",
+      },
+    },
+    "color-background-action-card-default": {
+      "$description": "The default background color of action cards.",
+      "$value": {
+        "dark": "#1a2029",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-action-card-hover": {
+      "$description": "The background color of action cards in hover state.",
+      "$value": {
+        "dark": "#21252c",
+        "light": "#f1faff",
+      },
     },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
@@ -16979,6 +17448,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#0073bb",
         "light": "#99cbe4",
+      },
+    },
+    "color-border-action-card-active": {
+      "$description": "The border color of action cards in active/pressed state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#002b66",
+      },
+    },
+    "color-border-action-card-default": {
+      "$description": "The default border color of action cards.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#aab7b8",
+      },
+    },
+    "color-border-action-card-hover": {
+      "$description": "The border color of action cards in hover state.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-button-normal-active": {
@@ -18985,6 +19475,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "space-action-card-padding-horizontal": {
+      "$description": "The horizontal padding inside action cards.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-action-card-padding-vertical": {
+      "$description": "The vertical padding inside action cards.",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "16px",
+      },
+    },
     "space-container-horizontal": {
       "$description": "The horizontal padding inside a container.",
       "$value": {
@@ -19141,6 +19645,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
   "contexts": {
     "alert": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -19213,6 +19721,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -19256,6 +19776,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -19717,6 +20258,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#d1f1ff",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#002b66",
           },
         },
         "color-border-button-normal-active": {
@@ -21723,6 +22285,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -21874,6 +22450,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "alert-header": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -21946,6 +22526,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -21989,6 +22581,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -22450,6 +23063,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-button-normal-active": {
@@ -24456,6 +25090,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -24607,6 +25255,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "app-layout-toolbar": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -24679,6 +25331,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -24722,6 +25386,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -25185,6 +25870,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#002b66",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -27189,6 +27895,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -27340,6 +28060,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "compact-table": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -27412,6 +28136,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -27455,6 +28191,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -27918,6 +28675,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#002b66",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -29922,6 +30700,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -30073,6 +30865,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "flashbar": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -30145,6 +30941,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -30188,6 +30996,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -30651,6 +31480,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#002b66",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -32655,6 +33505,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -32806,6 +33670,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "flashbar-warning": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -32878,6 +33746,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -32921,6 +33801,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#d1f1ff",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#f0fbff",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -33384,6 +34285,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#002b66",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -35388,6 +36310,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -35539,6 +36475,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "header": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -35611,6 +36551,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -35654,6 +36606,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -36115,6 +37088,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-button-normal-active": {
@@ -38121,6 +39115,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -38272,6 +39280,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "top-navigation": {
       "tokens": {
+        "border-radius-action-card": {
+          "$description": "The border radius of action cards.",
+          "$value": "16px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -38344,6 +39356,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-action-card-active": {
+          "$description": "The border width of action cards in active/pressed state.",
+          "$value": "2px",
+        },
+        "border-width-action-card-default": {
+          "$description": "The border width of action cards in default state.",
+          "$value": "1px",
+        },
+        "border-width-action-card-hover": {
+          "$description": "The border width of action cards in hover state.",
+          "$value": "2px",
+        },
         "border-width-alert": {
           "$description": "The border width of alerts.",
           "$value": "2px",
@@ -38387,6 +39411,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-token": {
           "$description": "The border width of tokens.",
           "$value": "2px",
+        },
+        "color-background-action-card-active": {
+          "$description": "The background color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-action-card-default": {
+          "$description": "The default background color of action cards.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-action-card-hover": {
+          "$description": "The background color of action cards in hover state.",
+          "$value": {
+            "dark": "#1b232d",
+            "light": "#1b232d",
+          },
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -38848,6 +39893,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-action-card-active": {
+          "$description": "The border color of action cards in active/pressed state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-border-action-card-default": {
+          "$description": "The default border color of action cards.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-border-action-card-hover": {
+          "$description": "The border color of action cards in hover state.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-button-normal-active": {
@@ -40854,6 +41920,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "space-action-card-padding-horizontal": {
+          "$description": "The horizontal padding inside action cards.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-action-card-padding-vertical": {
+          "$description": "The vertical padding inside action cards.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -41005,6 +42085,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
   },
   "tokens": {
+    "border-radius-action-card": {
+      "$description": "The border radius of action cards.",
+      "$value": "16px",
+    },
     "border-radius-alert": {
       "$description": "The border radius of alerts.",
       "$value": "12px",
@@ -41077,6 +42161,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "8px",
     },
+    "border-width-action-card-active": {
+      "$description": "The border width of action cards in active/pressed state.",
+      "$value": "2px",
+    },
+    "border-width-action-card-default": {
+      "$description": "The border width of action cards in default state.",
+      "$value": "1px",
+    },
+    "border-width-action-card-hover": {
+      "$description": "The border width of action cards in hover state.",
+      "$value": "2px",
+    },
     "border-width-alert": {
       "$description": "The border width of alerts.",
       "$value": "2px",
@@ -41120,6 +42216,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-token": {
       "$description": "The border width of tokens.",
       "$value": "2px",
+    },
+    "color-background-action-card-active": {
+      "$description": "The background color of action cards in active/pressed state.",
+      "$value": {
+        "dark": "#333843",
+        "light": "#d1f1ff",
+      },
+    },
+    "color-background-action-card-default": {
+      "$description": "The default background color of action cards.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-action-card-hover": {
+      "$description": "The background color of action cards in hover state.",
+      "$value": {
+        "dark": "#1b232d",
+        "light": "#f0fbff",
+      },
     },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
@@ -41581,6 +42698,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#006ce0",
         "light": "#d1f1ff",
+      },
+    },
+    "color-border-action-card-active": {
+      "$description": "The border color of action cards in active/pressed state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
+    "color-border-action-card-default": {
+      "$description": "The default border color of action cards.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#006ce0",
+      },
+    },
+    "color-border-action-card-hover": {
+      "$description": "The border color of action cards in hover state.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#002b66",
       },
     },
     "color-border-button-normal-active": {
@@ -43585,6 +44723,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "space-action-card-padding-horizontal": {
+      "$description": "The horizontal padding inside action cards.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-action-card-padding-vertical": {
+      "$description": "The vertical padding inside action cards.",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "12px",
       },
     },
     "space-container-horizontal": {

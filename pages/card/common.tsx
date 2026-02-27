@@ -3,6 +3,7 @@
 import { ReactNode, useContext } from 'react';
 import React from 'react';
 
+import { Box, Button } from '~components';
 import ButtonGroup from '~components/button-group';
 import FormField from '~components/form-field';
 import Icon from '~components/icon';
@@ -53,6 +54,18 @@ export const longDescription =
 
 export const longContent =
   'This is long card content with multiple sentences. It provides more detailed information and might wrap across several lines.';
+
+export const longFooter =
+  'Long card footer with multiple sentences. It provides more detailed information and might wrap across several lines.';
+
+export const shortFooter = 'Short card footer';
+
+export const reactNodeContent = (
+  <Box padding="xs">
+    <div>This is a React Node</div>
+    <Button>Test Button</Button>
+  </Box>
+);
 
 export const actions = (
   <ButtonGroup

@@ -3,24 +3,26 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import InternalStructuredItem from '../structured-item';
+import InternalStructuredItem from '../internal/components/structured-item';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalCardProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function Card({
+export default function InternalCard({
   actions,
-  selected,
+  highlighted,
   children,
   className,
   header,
   description,
+  footer,
   icon,
   metadataAttributes,
   onClick,
   disableHeaderPaddings,
   disableContentPaddings,
+  disableFooterPaddings,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
@@ -31,7 +33,7 @@ export default function Card({
       className={clsx(
         className,
         styles.root,
-        selected && styles.selected,
+        highlighted && styles.highlighted,
         headerRowEmpty && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
@@ -55,7 +57,8 @@ export default function Card({
           wrapActions={false}
         />
       </div>
-      <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>
+      {children && <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>}
+      {footer && <div className={clsx(styles.footer, disableFooterPaddings && styles['no-padding'])}>{footer}</div>}
     </div>
   );
 }
