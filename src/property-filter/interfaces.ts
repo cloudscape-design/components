@@ -416,3 +416,19 @@ export type ParsedText =
   | { step: 'property'; property: InternalFilteringProperty; operator: ComparisonOperator; value: string }
   | { step: 'operator'; property: InternalFilteringProperty; operatorPrefix: string }
   | { step: 'free-text'; operator?: ComparisonOperator; value: string };
+
+// Type guards for InternalToken | InternalTokenGroup union discrimination.
+// Using keyof ensures compile-time validation of the discriminant property name.
+// See AWSUI-59006 for context.
+
+export function isInternalToken(tokenOrGroup: InternalToken | InternalTokenGroup): tokenOrGroup is InternalToken {
+  const key: keyof InternalToken = 'operator';
+  return key in tokenOrGroup;
+}
+
+export function isInternalTokenGroup(
+  tokenOrGroup: InternalToken | InternalTokenGroup
+): tokenOrGroup is InternalTokenGroup {
+  const key: keyof InternalTokenGroup = 'operation';
+  return key in tokenOrGroup;
+}

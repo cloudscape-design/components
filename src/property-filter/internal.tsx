@@ -161,7 +161,11 @@ const PropertyFilterInternal = React.forwardRef(
         tokenOrGroup: Token | TokenGroup,
         standaloneIndex?: number
       ): InternalToken | InternalTokenGroup {
-        return 'operation' in tokenOrGroup
+        const isTokenGroup = (t: Token | TokenGroup): t is TokenGroup => {
+          const key: keyof TokenGroup = 'operation';
+          return key in t;
+        };
+        return isTokenGroup(tokenOrGroup)
           ? {
               operation: tokenOrGroup.operation,
               tokens: tokenOrGroup.tokens.map(token => transformToken(token)),
@@ -316,6 +320,7 @@ const PropertyFilterInternal = React.forwardRef(
         return;
       }
 
+      // eslint-disable-next-line no-restricted-syntax -- Runtime property not in TS type
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;

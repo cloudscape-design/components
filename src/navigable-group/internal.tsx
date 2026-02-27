@@ -133,6 +133,7 @@ const InternalNavigableGroup = forwardRef(
       }
 
       function isElementDisabled(element: HTMLElement) {
+        // eslint-disable-next-line no-restricted-syntax -- DOM element capability check
         if ('disabled' in element) {
           return element.disabled;
         }
