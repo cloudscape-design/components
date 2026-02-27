@@ -3,6 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../error-boundary/internal';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutVisibilityContext } from './contexts';
@@ -76,7 +77,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             <AppLayoutVisibilityContext.Provider value={appLayoutState.isIntersecting}>
               {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
               {(embeddedViewMode || !toolbarProps) && props.breadcrumbs ? (
-                <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
+                <AppLayoutBuiltInErrorBoundary>
+                  <ScreenreaderOnly>{props.breadcrumbs}</ScreenreaderOnly>
+                </AppLayoutBuiltInErrorBoundary>
               ) : null}
               <SkeletonLayout
                 registered={registered}

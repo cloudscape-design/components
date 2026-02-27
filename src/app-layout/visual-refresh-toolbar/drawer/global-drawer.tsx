@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -112,104 +113,106 @@ function AppLayoutGlobalDrawerImplementation({
     <Transition nodeRef={drawerRef} in={show || isExpanded} appear={show || isExpanded} timeout={0}>
       {state => {
         return (
-          <aside
-            id={activeDrawerId}
-            aria-hidden={!show}
-            aria-label={computedAriaLabels.content}
-            className={clsx(
-              styles.drawer,
-              styles['drawer-global'],
-              styles[state],
-              !animationDisabled && sharedStyles['with-motion-horizontal'],
-              !animationDisabled && isExpanded && styles['with-expanded-motion'],
-              {
-                [styles['drawer-hidden']]: !show,
-                [styles['last-opened']]: (!activeAiDrawer && lastOpenedDrawerId === activeDrawerId) || isExpanded,
-                [testutilStyles['active-drawer']]: show,
-                [styles['drawer-expanded']]: isExpanded,
-                [styles['has-next-siblings']]:
-                  activeGlobalDrawers.findIndex(drawer => drawer.id === activeDrawerId) + 1 <
-                  activeGlobalDrawers.length,
-              }
-            )}
-            ref={drawerRef}
-            onBlur={e => {
-              // Drawers with trigger buttons follow this restore focus logic:
-              // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
-              // This function resets the previously focused element.
-              // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
-              // which ideally should never happen.
-              if (!hasTriggerButton) {
-                return;
-              }
-
-              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-                globalDrawersFocusControl.loseFocus();
-              }
-            }}
-            style={{
-              blockSize: drawerHeight,
-              insetBlockStart: drawerTopOffset,
-              ...(!isMobile && {
-                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}`,
-              }),
-            }}
-            data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
-          >
-            <div className={clsx(styles['global-drawer-wrapper'])}>
-              {!isMobile && <div className={styles['drawer-gap']}></div>}
-              {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
-                <div className={styles['drawer-slider']}>
-                  <PanelResizeHandle
-                    ref={refs?.slider}
-                    position="side"
-                    className={testutilStyles['drawers-slider']}
-                    ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
-                    tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
-                    ariaValuenow={resizeProps.relativeSize}
-                    onKeyDown={resizeProps.onKeyDown}
-                    onDirectionClick={resizeProps.onDirectionClick}
-                    onPointerDown={resizeProps.onPointerDown}
-                  />
-                </div>
+          <AppLayoutBuiltInErrorBoundary>
+            <aside
+              id={activeDrawerId}
+              aria-hidden={!show}
+              aria-label={computedAriaLabels.content}
+              className={clsx(
+                styles.drawer,
+                styles['drawer-global'],
+                styles[state],
+                !animationDisabled && sharedStyles['with-motion-horizontal'],
+                !animationDisabled && isExpanded && styles['with-expanded-motion'],
+                {
+                  [styles['drawer-hidden']]: !show,
+                  [styles['last-opened']]: (!activeAiDrawer && lastOpenedDrawerId === activeDrawerId) || isExpanded,
+                  [testutilStyles['active-drawer']]: show,
+                  [styles['drawer-expanded']]: isExpanded,
+                  [styles['has-next-siblings']]:
+                    activeGlobalDrawers.findIndex(drawer => drawer.id === activeDrawerId) + 1 <
+                    activeGlobalDrawers.length,
+                }
               )}
+              ref={drawerRef}
+              onBlur={e => {
+                // Drawers with trigger buttons follow this restore focus logic:
+                // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
+                // This function resets the previously focused element.
+                // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
+                // which ideally should never happen.
+                if (!hasTriggerButton) {
+                  return;
+                }
 
-              <div
-                className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
-                data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
-              >
-                <div className={styles['drawer-actions']}>
-                  <ButtonGroup
-                    dropdownExpandToViewport={false}
-                    variant="icon"
-                    onItemClick={event => {
-                      switch (event.detail.id) {
-                        case 'close':
-                          onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true });
-                          break;
-                        case 'expand':
-                          setExpandedDrawerId(isExpanded ? null : activeDrawerId);
-                          break;
-                        default:
-                          activeGlobalDrawer?.onHeaderActionClick?.(event);
-                      }
-                    }}
-                    ariaLabel="Global panel actions"
-                    items={drawerActions}
-                    __internalRootRef={(root: HTMLElement) => {
-                      if (!root) {
-                        return;
-                      }
-                      refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
-                    }}
-                  />
-                </div>
-                <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                  {activeGlobalDrawer?.content}
+                if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                  globalDrawersFocusControl.loseFocus();
+                }
+              }}
+              style={{
+                blockSize: drawerHeight,
+                insetBlockStart: drawerTopOffset,
+                ...(!isMobile && {
+                  [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? '100%' : size + 'px') : 0}`,
+                }),
+              }}
+              data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
+            >
+              <div className={clsx(styles['global-drawer-wrapper'])}>
+                {!isMobile && <div className={styles['drawer-gap']}></div>}
+                {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
+                  <div className={styles['drawer-slider']}>
+                    <PanelResizeHandle
+                      ref={refs?.slider}
+                      position="side"
+                      className={testutilStyles['drawers-slider']}
+                      ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                      tooltipText={activeGlobalDrawer?.ariaLabels?.resizeHandleTooltipText}
+                      ariaValuenow={resizeProps.relativeSize}
+                      onKeyDown={resizeProps.onKeyDown}
+                      onDirectionClick={resizeProps.onDirectionClick}
+                      onPointerDown={resizeProps.onPointerDown}
+                    />
+                  </div>
+                )}
+
+                <div
+                  className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+                  data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
+                >
+                  <div className={styles['drawer-actions']}>
+                    <ButtonGroup
+                      dropdownExpandToViewport={false}
+                      variant="icon"
+                      onItemClick={event => {
+                        switch (event.detail.id) {
+                          case 'close':
+                            onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true });
+                            break;
+                          case 'expand':
+                            setExpandedDrawerId(isExpanded ? null : activeDrawerId);
+                            break;
+                          default:
+                            activeGlobalDrawer?.onHeaderActionClick?.(event);
+                        }
+                      }}
+                      ariaLabel="Global panel actions"
+                      items={drawerActions}
+                      __internalRootRef={(root: HTMLElement) => {
+                        if (!root) {
+                          return;
+                        }
+                        refs.close = { current: root.querySelector('[data-itemid="close"]') as unknown as Focusable };
+                      }}
+                    />
+                  </div>
+                  <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+                    {activeGlobalDrawer?.content}
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </AppLayoutBuiltInErrorBoundary>
         );
       }}
     </Transition>

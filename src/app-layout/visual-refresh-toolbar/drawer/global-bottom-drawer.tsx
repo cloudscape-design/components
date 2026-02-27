@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -18,7 +19,6 @@ import { useResize } from './use-resize';
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
-
 export function AppLayoutBottomDrawerWrapper({ widgetizedState }: { widgetizedState: AppLayoutWidgetizedState }) {
   const { activeGlobalBottomDrawerId, bottomDrawers } = widgetizedState;
   const openBottomDrawersHistory = useRef<Set<string>>(new Set());
@@ -198,118 +198,120 @@ function AppLayoutGlobalBottomDrawerImplementation({
     >
       {state => {
         return (
-          <aside
-            id={activeDrawerId}
-            aria-hidden={!show}
-            aria-label={computedAriaLabels.content}
-            className={clsx(
-              styles.drawer,
-              styles['bottom-drawer'],
-              styles[state],
-              !animationDisabled && sharedStyles['with-motion-vertical'],
-              !animationDisabled && isExpanded && styles['with-expanded-motion'],
-              {
-                [styles['drawer-hidden']]: !show && state === 'exited',
-                [styles['last-opened']]: (!activeAiDrawer && lastOpenedDrawerId === activeDrawerId) || isExpanded,
-                [testutilStyles['active-drawer']]: show,
-                [styles['drawer-expanded']]: isExpanded,
-              }
-            )}
-            ref={drawerRef}
-            onBlur={e => {
-              // Drawers with trigger buttons follow this restore focus logic:
-              // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
-              // This function resets the previously focused element.
-              // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
-              // which ideally should never happen.
-              if (!hasTriggerButton) {
-                return;
-              }
-
-              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-                bottomDrawersFocusControl.loseFocus();
-              }
-            }}
-            style={{
-              ...(isMobile && {
-                blockSize: drawerFullScreenHeight,
-                insetBlockStart: mobileDrawerTopOffset,
-              }),
-              ...(!isMobile && {
-                [customCssProps.bottomDrawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? drawerFullScreenHeight : size + 'px') : 0}`,
-              }),
-            }}
-            data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
-          >
-            <div className={clsx(styles['global-drawer-wrapper'])}>
-              {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
-              {!isMobile && activeDrawer?.resizable && !isExpanded && (
-                // Prevents receiving focus in Firefox
-                <div className={styles['drawer-slider']} tabIndex={-1}>
-                  <PanelResizeHandle
-                    ref={refs?.slider}
-                    position="bottom"
-                    className={testutilStyles['drawers-slider']}
-                    ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-                    tooltipText={activeDrawer?.ariaLabels?.resizeHandleTooltipText}
-                    ariaValuenow={resizeProps.relativeSize}
-                    onKeyDown={resizeProps.onKeyDown}
-                    onDirectionClick={resizeProps.onDirectionClick}
-                    onPointerDown={resizeProps.onPointerDown}
-                  />
-                </div>
+          <AppLayoutBuiltInErrorBoundary>
+            <aside
+              id={activeDrawerId}
+              aria-hidden={!show}
+              aria-label={computedAriaLabels.content}
+              className={clsx(
+                styles.drawer,
+                styles['bottom-drawer'],
+                styles[state],
+                !animationDisabled && sharedStyles['with-motion-vertical'],
+                !animationDisabled && isExpanded && styles['with-expanded-motion'],
+                {
+                  [styles['drawer-hidden']]: !show && state === 'exited',
+                  [styles['last-opened']]: (!activeAiDrawer && lastOpenedDrawerId === activeDrawerId) || isExpanded,
+                  [testutilStyles['active-drawer']]: show,
+                  [styles['drawer-expanded']]: isExpanded,
+                }
               )}
-              <header className={styles['bottom-drawer-content-header']} ref={headerRef}>
-                <div className={styles['bottom-drawer-content-header-content']}>
-                  {activeDrawer?.header ?? <div />}
-                  <div className={styles['bottom-drawer-actions']}>
-                    <ButtonGroup
-                      dropdownExpandToViewport={false}
-                      variant="icon"
-                      onItemClick={event => {
-                        switch (event.detail.id) {
-                          case 'close':
-                            onActiveGlobalBottomDrawerChange(null, { initiatedByUserAction: true });
-                            break;
-                          case 'expand':
-                            setExpandedDrawerId(isExpanded ? null : activeDrawerId);
-                            break;
-                          default:
-                            activeDrawer?.onHeaderActionClick?.(event);
-                        }
-                      }}
-                      ariaLabel="Global panel actions"
-                      items={drawerActions}
-                      __internalRootRef={(root: HTMLElement) => {
-                        if (!root) {
-                          return;
-                        }
-                        refs.close = {
-                          current: root.querySelector('[data-itemid="close"]') as unknown as Focusable,
-                        };
-                      }}
+              ref={drawerRef}
+              onBlur={e => {
+                // Drawers with trigger buttons follow this restore focus logic:
+                // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
+                // This function resets the previously focused element.
+                // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
+                // which ideally should never happen.
+                if (!hasTriggerButton) {
+                  return;
+                }
+
+                if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                  bottomDrawersFocusControl.loseFocus();
+                }
+              }}
+              style={{
+                ...(isMobile && {
+                  blockSize: drawerFullScreenHeight,
+                  insetBlockStart: mobileDrawerTopOffset,
+                }),
+                ...(!isMobile && {
+                  [customCssProps.bottomDrawerSize]: `${['entering', 'entered'].includes(state) ? (isExpanded ? drawerFullScreenHeight : size + 'px') : 0}`,
+                }),
+              }}
+              data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
+            >
+              <div className={clsx(styles['global-drawer-wrapper'])}>
+                {!isMobile && !isExpanded && <div className={styles['drawer-gap']} />}
+                {!isMobile && activeDrawer?.resizable && !isExpanded && (
+                  // Prevents receiving focus in Firefox
+                  <div className={styles['drawer-slider']} tabIndex={-1}>
+                    <PanelResizeHandle
+                      ref={refs?.slider}
+                      position="bottom"
+                      className={testutilStyles['drawers-slider']}
+                      ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+                      tooltipText={activeDrawer?.ariaLabels?.resizeHandleTooltipText}
+                      ariaValuenow={resizeProps.relativeSize}
+                      onKeyDown={resizeProps.onKeyDown}
+                      onDirectionClick={resizeProps.onDirectionClick}
+                      onPointerDown={resizeProps.onPointerDown}
                     />
                   </div>
-                </div>
-              </header>
-              <div
-                className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
-                data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
-              >
+                )}
+                <header className={styles['bottom-drawer-content-header']} ref={headerRef}>
+                  <div className={styles['bottom-drawer-content-header-content']}>
+                    {activeDrawer?.header ?? <div />}
+                    <div className={styles['bottom-drawer-actions']}>
+                      <ButtonGroup
+                        dropdownExpandToViewport={false}
+                        variant="icon"
+                        onItemClick={event => {
+                          switch (event.detail.id) {
+                            case 'close':
+                              onActiveGlobalBottomDrawerChange(null, { initiatedByUserAction: true });
+                              break;
+                            case 'expand':
+                              setExpandedDrawerId(isExpanded ? null : activeDrawerId);
+                              break;
+                            default:
+                              activeDrawer?.onHeaderActionClick?.(event);
+                          }
+                        }}
+                        ariaLabel="Global panel actions"
+                        items={drawerActions}
+                        __internalRootRef={(root: HTMLElement) => {
+                          if (!root) {
+                            return;
+                          }
+                          refs.close = {
+                            current: root.querySelector('[data-itemid="close"]') as unknown as Focusable,
+                          };
+                        }}
+                      />
+                    </div>
+                  </div>
+                </header>
                 <div
-                  className={styles['drawer-content']}
-                  style={{
-                    blockSize:
-                      isMobile || isExpanded
-                        ? drawerFullScreenHeight
-                        : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT - (headerRef?.current?.clientHeight ?? 0)}px`,
-                  }}
+                  className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+                  data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
                 >
-                  {activeDrawer?.content}
+                  <div
+                    className={styles['drawer-content']}
+                    style={{
+                      blockSize:
+                        isMobile || isExpanded
+                          ? drawerFullScreenHeight
+                          : `${size - GAP_HEIGHT - RESIZE_HANDLER_HEIGHT - (headerRef?.current?.clientHeight ?? 0)}px`,
+                    }}
+                  >
+                    {activeDrawer?.content}
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </AppLayoutBuiltInErrorBoundary>
         );
       }}
     </Transition>

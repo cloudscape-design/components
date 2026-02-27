@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
@@ -55,7 +56,7 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
   const drawerExpandedModeInChildLayout = !!toolbarProps?.expandedDrawerId;
   const { __embeddedViewMode: embeddedViewMode } = appLayoutProps as any;
   return (
-    <>
+    <AppLayoutBuiltInErrorBoundary>
       {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
         <AppLayoutToolbar
           appLayoutInternals={appLayoutState.appLayoutInternals}
@@ -108,13 +109,15 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <AppLayoutNavigation
-            appLayoutInternals={appLayoutState.appLayoutInternals}
-            bottomDrawerReportedSize={bottomDrawerReportedSize}
-          />
+          <AppLayoutBuiltInErrorBoundary>
+            <AppLayoutNavigation
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={bottomDrawerReportedSize}
+            />
+          </AppLayoutBuiltInErrorBoundary>
         </div>
       )}
-    </>
+    </AppLayoutBuiltInErrorBoundary>
   );
 };
 

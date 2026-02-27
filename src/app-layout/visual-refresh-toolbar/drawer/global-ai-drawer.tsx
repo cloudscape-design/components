@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { InternalItemOrGroup } from '../../../button-group/interfaces';
 import ButtonGroup from '../../../button-group/internal';
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
@@ -136,116 +137,124 @@ export function AppLayoutGlobalAiDrawerImplementation({
           <Transition nodeRef={drawerRef} in={isExpanded} timeout={250}>
             {expandedTransitionState => {
               return (
-                <aside
-                  id={activeAiDrawer?.id}
-                  aria-hidden={!activeAiDrawer}
-                  aria-label={computedAriaLabels.content}
-                  className={clsx(
-                    styles.drawer,
-                    styles['ai-drawer'],
-                    !animationDisabled && isExpanded && styles['with-expanded-motion'],
-                    {
-                      [sharedStyles['with-motion-horizontal']]: !animationDisabled,
-                      [testutilStyles['active-drawer']]: show,
-                      [styles['drawer-hidden']]: !show && drawerTransitionState === 'exited',
-                      [testutilStyles['drawer-closed']]: !activeAiDrawer,
-                      [styles['drawer-expanded']]: isExpanded,
-                    }
-                  )}
-                  ref={drawerRef}
-                  onBlur={e => {
-                    if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-                      aiDrawerFocusControl?.loseFocus();
-                    }
-                  }}
-                  style={{
-                    blockSize: drawerHeight,
-                    insetBlockStart: `${placement.insetBlockStart}px`,
-                    ...(!isMobile && {
-                      [customCssProps.drawerMinSize]: `${size}px`,
-                      [customCssProps.drawerSize]: `${['entering', 'entered'].includes(drawerTransitionState) ? size : 0}px`,
-                    }),
-                  }}
-                  data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
-                >
-                  {!isMobile && activeAiDrawer?.resizable && (!isExpanded || expandedTransitionState !== 'entered') && (
-                    <div className={styles['drawer-slider']}>
-                      <PanelResizeHandle
-                        ref={aiDrawerFocusControl?.refs.slider}
-                        position="side-start"
-                        className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
-                        ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
-                        tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
-                        ariaValuenow={resizeProps.relativeSize}
-                        onKeyDown={resizeProps.onKeyDown}
-                        onPointerDown={resizeProps.onPointerDown}
-                        onDirectionClick={resizeProps.onDirectionClick}
-                        disabled={isResizingDisabled}
-                      />
-                    </div>
-                  )}
-                  <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
-                    <div className={styles['drawer-content']}>
-                      <header className={styles['drawer-content-header']}>
-                        <div className={styles['drawer-content-header-content']}>
-                          {activeAiDrawer?.header ?? <div />}
-                          <div className={styles['drawer-actions']}>
-                            <ButtonGroup
-                              dropdownExpandToViewport={false}
-                              variant="icon"
-                              onItemClick={event => {
-                                switch (event.detail.id) {
-                                  case 'close':
-                                    onActiveAiDrawerChange?.(null, { initiatedByUserAction: true });
-                                    break;
-                                  case 'expand':
-                                    setExpandedDrawerId(isExpanded ? null : activeDrawerId!);
-                                    break;
-                                  default:
-                                    activeAiDrawer?.onHeaderActionClick?.(event);
-                                }
-                              }}
-                              ariaLabel="Left panel actions"
-                              items={drawerActions}
-                            />
-                          </div>
+                <AppLayoutBuiltInErrorBoundary>
+                  <aside
+                    id={activeAiDrawer?.id}
+                    aria-hidden={!activeAiDrawer}
+                    aria-label={computedAriaLabels.content}
+                    className={clsx(
+                      styles.drawer,
+                      styles['ai-drawer'],
+                      !animationDisabled && isExpanded && styles['with-expanded-motion'],
+                      {
+                        [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+                        [testutilStyles['active-drawer']]: show,
+                        [styles['drawer-hidden']]: !show && drawerTransitionState === 'exited',
+                        [testutilStyles['drawer-closed']]: !activeAiDrawer,
+                        [styles['drawer-expanded']]: isExpanded,
+                      }
+                    )}
+                    ref={drawerRef}
+                    onBlur={e => {
+                      if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                        aiDrawerFocusControl?.loseFocus();
+                      }
+                    }}
+                    style={{
+                      blockSize: drawerHeight,
+                      insetBlockStart: `${placement.insetBlockStart}px`,
+                      ...(!isMobile && {
+                        [customCssProps.drawerMinSize]: `${size}px`,
+                        [customCssProps.drawerSize]: `${['entering', 'entered'].includes(drawerTransitionState) ? size : 0}px`,
+                      }),
+                    }}
+                    data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
+                  >
+                    {!isMobile &&
+                      activeAiDrawer?.resizable &&
+                      (!isExpanded || expandedTransitionState !== 'entered') && (
+                        <div className={styles['drawer-slider']}>
+                          <PanelResizeHandle
+                            ref={aiDrawerFocusControl?.refs.slider}
+                            position="side-start"
+                            className={clsx(testutilStyles['drawers-slider'], styles['ai-drawer-slider-handle'])}
+                            ariaLabel={activeAiDrawer?.ariaLabels?.resizeHandle}
+                            tooltipText={activeAiDrawer?.ariaLabels?.resizeHandleTooltipText}
+                            ariaValuenow={resizeProps.relativeSize}
+                            onKeyDown={resizeProps.onKeyDown}
+                            onPointerDown={resizeProps.onPointerDown}
+                            onDirectionClick={resizeProps.onDirectionClick}
+                            disabled={isResizingDisabled}
+                          />
                         </div>
-                        {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
-                          <div className={styles['drawer-back-to-console-slot']}>
-                            <div className={styles['drawer-back-to-console-button-wrapper']}>
-                              {activeAiDrawer?.exitExpandedModeTrigger?.customIcon ? (
-                                <button
-                                  className={clsx(
-                                    testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
-                                    styles['drawer-back-to-console-custom-button']
-                                  )}
-                                  formAction="none"
-                                  onClick={() => setExpandedDrawerId(null)}
-                                  aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                                >
-                                  {activeAiDrawer?.exitExpandedModeTrigger?.customIcon}
-                                </button>
-                              ) : (
-                                <button
-                                  className={clsx(
-                                    testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
-                                    styles['drawer-back-to-console-button']
-                                  )}
-                                  formAction="none"
-                                  onClick={() => setExpandedDrawerId(null)}
-                                  aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                                >
-                                  {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
-                                </button>
-                              )}
+                      )}
+                    <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
+                      <div className={styles['drawer-content']}>
+                        <header className={styles['drawer-content-header']}>
+                          <div className={styles['drawer-content-header-content']}>
+                            <AppLayoutBuiltInErrorBoundary renderFallback={() => <div />}>
+                              {activeAiDrawer?.header ?? <div />}
+                            </AppLayoutBuiltInErrorBoundary>
+                            <div className={styles['drawer-actions']}>
+                              <ButtonGroup
+                                dropdownExpandToViewport={false}
+                                variant="icon"
+                                onItemClick={event => {
+                                  switch (event.detail.id) {
+                                    case 'close':
+                                      onActiveAiDrawerChange?.(null, { initiatedByUserAction: true });
+                                      break;
+                                    case 'expand':
+                                      setExpandedDrawerId(isExpanded ? null : activeDrawerId!);
+                                      break;
+                                    default:
+                                      activeAiDrawer?.onHeaderActionClick?.(event);
+                                  }
+                                }}
+                                ariaLabel="Left panel actions"
+                                items={drawerActions}
+                              />
                             </div>
                           </div>
-                        )}
-                      </header>
-                      <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
+                          {!isMobile && isExpanded && activeAiDrawer?.ariaLabels?.exitExpandedModeButton && (
+                            <div className={styles['drawer-back-to-console-slot']}>
+                              <div className={styles['drawer-back-to-console-button-wrapper']}>
+                                {activeAiDrawer?.exitExpandedModeTrigger?.customIcon ? (
+                                  <button
+                                    className={clsx(
+                                      testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
+                                      styles['drawer-back-to-console-custom-button']
+                                    )}
+                                    formAction="none"
+                                    onClick={() => setExpandedDrawerId(null)}
+                                    aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                  >
+                                    {activeAiDrawer?.exitExpandedModeTrigger?.customIcon}
+                                  </button>
+                                ) : (
+                                  <button
+                                    className={clsx(
+                                      testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
+                                      styles['drawer-back-to-console-button']
+                                    )}
+                                    formAction="none"
+                                    onClick={() => setExpandedDrawerId(null)}
+                                    aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                  >
+                                    {activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </header>
+                        <AppLayoutBuiltInErrorBoundary>
+                          <div className={styles['drawer-content-content']}>{activeAiDrawer?.content}</div>
+                        </AppLayoutBuiltInErrorBoundary>
+                      </div>
                     </div>
-                  </div>
-                </aside>
+                  </aside>
+                </AppLayoutBuiltInErrorBoundary>
               );
             }}
           </Transition>
