@@ -11,6 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
+import { useTokenInlineContext } from '../internal/context/token-inline-context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
@@ -131,13 +132,14 @@ function InternalPopover(
   }, []);
 
   const popoverClasses = usePortalModeClasses(triggerRef, { resetVisualContext: true });
+  const { isInlineToken } = useTokenInlineContext();
 
   const triggerProps = {
     // https://github.com/microsoft/TypeScript/issues/36659
     ref: triggerRef as any,
     onClick: onTriggerClick,
     onKeyDown: onTriggerKeyDown,
-    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`]),
+    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`], isInlineToken && styles['in-inline-token']),
   };
   const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
 

@@ -8,6 +8,7 @@ import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
+import { TokenInlineContext } from '../internal/context/token-inline-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
@@ -98,78 +99,80 @@ function InternalToken({
   };
 
   return (
-    <div
-      {...baseProps}
-      ref={__internalRootRef}
-      className={clsx(
-        styles.root,
-        legacyTestingStyles.token,
-        testUtilStyles.root,
-        !isInline ? styles['token-normal'] : styles['token-inline'],
-        analyticsSelectors.token,
-        baseProps.className
-      )}
-      aria-label={ariaLabel}
-      aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
-      aria-disabled={!!disabled}
-      role={role ?? 'group'}
-      onFocus={() => {
-        setShowTooltip(true);
-      }}
-      onBlur={() => {
-        setShowTooltip(false);
-      }}
-      onMouseEnter={() => {
-        setShowTooltip(true);
-      }}
-      onMouseLeave={() => {
-        setShowTooltip(false);
-      }}
-      tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
-    >
+    <TokenInlineContext.Provider value={{ isInlineToken: isInline }}>
       <div
+        {...baseProps}
+        ref={__internalRootRef}
         className={clsx(
-          !isInline ? styles['token-box'] : styles['token-box-inline'],
-          disabled && styles['token-box-disabled'],
-          readOnly && styles['token-box-readonly'],
-          !isInline && !onDismiss && styles['token-box-without-dismiss'],
-          disableInnerPadding && styles['disable-padding']
+          styles.root,
+          legacyTestingStyles.token,
+          testUtilStyles.root,
+          !isInline ? styles['token-normal'] : styles['token-inline'],
+          analyticsSelectors.token,
+          baseProps.className
         )}
+        aria-label={ariaLabel}
+        aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
+        aria-disabled={!!disabled}
+        role={role ?? 'group'}
+        onFocus={() => {
+          setShowTooltip(true);
+        }}
+        onBlur={() => {
+          setShowTooltip(false);
+        }}
+        onMouseEnter={() => {
+          setShowTooltip(true);
+        }}
+        onMouseLeave={() => {
+          setShowTooltip(false);
+        }}
+        tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       >
-        <Option
-          className={clsx(isInline && styles['token-option-inline'])}
-          triggerVariant={isInline}
-          option={buildOptionDefinition()}
-          disableTitleTooltip={!!tooltipContent}
-          labelContainerRef={labelContainerRef}
-          labelRef={labelRef}
-          labelId={ariaLabelledbyId}
-        />
-        {onDismiss && (
-          <DismissButton
-            disabled={disabled}
-            dismissLabel={dismissLabel}
-            onDismiss={onDismiss}
-            readOnly={readOnly}
-            inline={isInline}
+        <div
+          className={clsx(
+            !isInline ? styles['token-box'] : styles['token-box-inline'],
+            disabled && styles['token-box-disabled'],
+            readOnly && styles['token-box-readonly'],
+            !isInline && !onDismiss && styles['token-box-without-dismiss'],
+            disableInnerPadding && styles['disable-padding']
+          )}
+        >
+          <Option
+            className={clsx(isInline && styles['token-option-inline'])}
+            triggerVariant={isInline}
+            option={buildOptionDefinition()}
+            disableTitleTooltip={!!tooltipContent}
+            labelContainerRef={labelContainerRef}
+            labelRef={labelRef}
+            labelId={ariaLabelledbyId}
+          />
+          {onDismiss && (
+            <DismissButton
+              disabled={disabled}
+              dismissLabel={dismissLabel}
+              onDismiss={onDismiss}
+              readOnly={readOnly}
+              inline={isInline}
+            />
+          )}
+        </div>
+        {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
+          <Tooltip
+            data-testid="token-tooltip"
+            getTrack={() => labelContainerRef.current}
+            content={
+              <LiveRegion>
+                <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
+              </LiveRegion>
+            }
+            onEscape={() => {
+              setShowTooltip(false);
+            }}
           />
         )}
       </div>
-      {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
-        <Tooltip
-          data-testid="token-tooltip"
-          getTrack={() => labelContainerRef.current}
-          content={
-            <LiveRegion>
-              <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
-            </LiveRegion>
-          }
-          onEscape={() => {
-            setShowTooltip(false);
-          }}
-        />
-      )}
-    </div>
+    </TokenInlineContext.Provider>
   );
 }
 
