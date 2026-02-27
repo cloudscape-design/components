@@ -57,6 +57,10 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
   spaceTableHorizontal: '0px',
+  spaceActionCardPaddingHorizontal: '{spaceL}',
+  spaceActionCardPaddingVertical: '{spaceM}',
+  spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
+  spaceActionCardContentPaddingTop: '{spaceScaledS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

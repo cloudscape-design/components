@@ -1,0 +1,116 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  border-start-start-radius: awsui.$border-radius-action-card;
+  border-start-end-radius: awsui.$border-radius-action-card;
+  border-end-start-radius: awsui.$border-radius-action-card;
+  border-end-end-radius: awsui.$border-radius-action-card;
+
+  padding-block: awsui.$space-action-card-padding-vertical;
+  padding-inline: awsui.$space-action-card-padding-horizontal;
+  background-color: awsui.$color-background-action-card-default;
+  text-align: start;
+  inline-size: 100%;
+
+  &.has-icon {
+    display: flex;
+    gap: awsui.$space-action-card-padding-horizontal;
+  }
+
+  &.icon-vertical-align-top {
+    align-items: flex-start;
+  }
+
+  &.icon-vertical-align-center {
+    align-items: center;
+  }
+
+  &.icon-vertical-align-bottom {
+    align-items: flex-end;
+  }
+
+  // Use pseudo-element for border to allow for variable border width on different states
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: 0 0 0 awsui.$border-width-action-card-default awsui.$color-border-action-card-default inset;
+
+    border-start-start-radius: awsui.$border-radius-action-card;
+    border-start-end-radius: awsui.$border-radius-action-card;
+    border-end-start-radius: awsui.$border-radius-action-card;
+    border-end-end-radius: awsui.$border-radius-action-card;
+
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: awsui.$color-background-action-card-hover;
+
+    &::before {
+      box-shadow: 0 0 0 awsui.$border-width-action-card-hover awsui.$color-border-action-card-hover inset;
+    }
+  }
+
+  &:active {
+    background-color: awsui.$color-background-action-card-active;
+
+    &::before {
+      box-shadow: 0 0 0 awsui.$border-width-action-card-active awsui.$color-border-action-card-active inset;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+
+  &.disabled {
+    cursor: default;
+    pointer-events: none;
+    background-color: awsui.$color-background-action-card-default;
+
+    &::before {
+      box-shadow: 0 0 0 awsui.$border-width-action-card-default awsui.$color-border-control-disabled inset;
+    }
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  color: awsui.$color-text-interactive-default;
+}
+
+.body {
+  flex-grow: 1;
+  min-inline-size: 0;
+}
+
+.header {
+  @include styles.font-heading-s;
+  color: awsui.$color-text-heading-default;
+}
+
+.description {
+  @include styles.font-body-m;
+  color: awsui.$color-text-body-secondary;
+  padding-block-start: awsui.$space-action-card-description-padding-top;
+}
+
+.content {
+  padding-block-start: awsui.$space-action-card-content-padding-top;
+}

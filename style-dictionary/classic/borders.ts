@@ -42,6 +42,10 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthField: '1px',
   borderWidthPopover: '1px',
   borderWidthToken: '1px',
+  borderRadiusActionCard: '{borderRadiusContainer}',
+  borderWidthActionCardDefault: '1px',
+  borderWidthActionCardHover: '2px',
+  borderWidthActionCardActive: '2px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
