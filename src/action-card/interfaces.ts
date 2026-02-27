@@ -87,16 +87,16 @@ export interface ActionCardProps extends BaseComponentProps {
   iconAlt?: string;
 
   /**
-   * Specifies the horizontal alignment of the icon.
+   * Specifies the horizontal position of the icon.
    * @default 'left'
    */
-  iconAlign?: ActionCardProps.IconAlign;
+  iconPosition?: ActionCardProps.IconAlign;
 
   /**
    * Specifies the vertical alignment of the icon.
    * @default 'top'
    */
-  iconVerticalAlign?: ActionCardProps.IconVerticalAlign;
+  iconVerticalAlignment?: ActionCardProps.IconVerticalAlign;
 }
 
 export namespace ActionCardProps {

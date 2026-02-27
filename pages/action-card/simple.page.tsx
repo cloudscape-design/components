@@ -20,24 +20,24 @@ export default function ActionCardSimplePage() {
               header={<b>EC2 access to S3</b>}
               description="A description of the template/icebreaker"
               iconName="angle-right"
-              iconAlign="right"
-              iconVerticalAlign="top"
+              iconPosition="right"
+              iconVerticalAlignment="top"
               onClick={() => setClickedCard('Basic')}
             ></ActionCard>
             <ActionCard
               header={<b>EC2 access to S3</b>}
               description="A description of the template/icebreaker"
               iconName="arrow-right"
-              iconAlign="right"
-              iconVerticalAlign="top"
+              iconPosition="right"
+              iconVerticalAlignment="top"
               onClick={() => setClickedCard('Basic')}
             ></ActionCard>
             <ActionCard
               header={<b>Account alias (111112222233333)</b>}
               description="Dev/john.doe@amazon.com"
               iconName="angle-right"
-              iconAlign="right"
-              iconVerticalAlign="top"
+              iconPosition="right"
+              iconVerticalAlignment="top"
               onClick={() => setClickedCard('Basic')}
             >
               Logged in 1 minute ago

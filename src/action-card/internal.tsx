@@ -27,8 +27,8 @@ const InternalActionCard = React.forwardRef(
       iconUrl,
       iconSvg,
       iconAlt,
-      iconAlign = 'left',
-      iconVerticalAlign = 'top',
+      iconPosition = 'left',
+      iconVerticalAlignment = 'top',
       ...rest
     }: InternalActionCardPropsWithRef,
     ref: React.Ref<ActionCardProps.Ref>
@@ -84,8 +84,8 @@ const InternalActionCard = React.forwardRef(
           styles.root,
           disabled && styles.disabled,
           hasIcon && styles['has-icon'],
-          hasIcon && styles[`icon-align-${iconAlign}`],
-          hasIcon && styles[`icon-vertical-align-${iconVerticalAlign}`],
+          hasIcon && styles[`icon-align-${iconPosition}`],
+          hasIcon && styles[`icon-vertical-align-${iconVerticalAlignment}`],
           baseProps.className
         )}
         onClick={handleClick}
@@ -95,9 +95,9 @@ const InternalActionCard = React.forwardRef(
         aria-disabled={disabled}
         disabled={disabled}
       >
-        {iconAlign === 'left' && iconElement}
+        {iconPosition === 'left' && iconElement}
         {contentElement}
-        {iconAlign === 'right' && iconElement}
+        {iconPosition === 'right' && iconElement}
       </button>
     );
   }
