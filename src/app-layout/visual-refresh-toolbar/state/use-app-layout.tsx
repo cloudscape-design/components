@@ -254,6 +254,7 @@ export const useAppLayout = (
       return;
     }
 
+    // eslint-disable-next-line no-restricted-syntax -- postMessage validation: runtime data shape check
     if (!('payload' in message && 'id' in message.payload)) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,

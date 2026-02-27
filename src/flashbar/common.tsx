@@ -81,6 +81,7 @@ export function useFlashbar({
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
+  // eslint-disable-next-line no-restricted-syntax -- Optional property existence check
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
