@@ -50,14 +50,16 @@ export function checkDuplicateHrefs(items: ReadonlyArray<SideNavigationProps.Ite
     const item = queue.shift()!;
 
     // Check duplicated hrefs
-    if ('href' in item) {
+    const hrefKey: keyof SideNavigationProps.Link = 'href';
+    if (hrefKey in item) {
       if (hrefs.has(item.href)) {
         warnOnce('SideNavigation', `duplicate href in "${item.text}": ${item.href}`);
       }
       hrefs.add(item.href);
     }
 
-    if ('items' in item) {
+    const itemsKey: keyof SideNavigationProps.Section = 'items';
+    if (itemsKey in item) {
       queue.push(...item.items);
     }
   }

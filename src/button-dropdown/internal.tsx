@@ -22,7 +22,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
+import { ButtonDropdownProps, InternalButtonDropdownProps, InternalItem } from './interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';
@@ -180,18 +180,20 @@ const InternalButtonDropdown = React.forwardRef(
     const triggerId = useUniqueId('awsui-button-dropdown__trigger');
 
     const triggerHasBadge = () => {
+      const groupKey: keyof ButtonDropdownProps.ItemGroup = 'items';
       const flatItems = items.flatMap(item => {
-        if ('items' in item) {
+        if (groupKey in item) {
           return item.items;
         }
         return item;
       });
 
+      const badgeKey: keyof InternalItem = 'badge';
       return (
         variant === 'icon' &&
         !!flatItems?.find(item => {
-          if ('badge' in item) {
-            return item.badge;
+          if (badgeKey in item) {
+            return (item as InternalItem).badge;
           }
         })
       );
