@@ -3,7 +3,7 @@
 'use client';
 import React from 'react';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import {
   AnalyticsFunnel,
@@ -14,8 +14,9 @@ import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { ModalProps } from './interfaces';
+import { hasSizeProp, ModalProps } from './interfaces';
 import InternalModal, { InternalModalAsFunnel } from './internal';
 
 import styles from './styles.css.js';
@@ -70,7 +71,12 @@ function ModalWithAnalyticsFunnel({
   );
 }
 
-export default function Modal({ size = 'medium', position = 'center', width, height, ...props }: ModalProps) {
+export default function Modal(allProps: ModalProps) {
+  const { size = 'medium', position = 'center', width, height, ...props } = allProps;
+  if (isDevelopment && hasSizeProp(allProps) && width !== undefined) {
+    warnOnce('Modal', 'Both `size` and `width` exist. `size` will not be used for width calculations.');
+  }
+
   const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
