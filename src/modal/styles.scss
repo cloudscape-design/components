@@ -95,7 +95,6 @@ $modal-z-index: 5000;
 
   &.custom-height {
     block-size: var(#{custom-props.$modalCustomHeight});
-    max-block-size: calc(100vh - (2 * #{awsui.$space-s}));
   }
 }
 

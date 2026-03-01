@@ -18,6 +18,7 @@ interface UseModalDimensionsProps {
 export function useModalDimensions({ height, width, hasFooter }: UseModalDimensionsProps) {
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
   const [headerHeight, headerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+  const [rootHeight, rootRef] = useContainerQuery(rect => rect.borderBoxHeight);
 
   const minModalHeight = (headerHeight ?? 0) + (hasFooter ? (footerHeight ?? 0) : 0) + MIN_CONTENT_HEIGHT;
   const constrainedHeight = Math.max(height ?? 0, minModalHeight);
@@ -25,6 +26,9 @@ export function useModalDimensions({ height, width, hasFooter }: UseModalDimensi
 
   const hasCustomHeight = height !== undefined && !Number.isNaN(height);
   const hasCustomWidth = width !== undefined && !Number.isNaN(width);
+
+  // Only apply custom height when it fits within viewport; otherwise use natural document scroll
+  const shouldApplyCustomHeight = hasCustomHeight && constrainedHeight <= (rootHeight ?? Infinity);
 
   if (isDevelopment) {
     if (hasCustomHeight && constrainedHeight !== height) {
@@ -44,12 +48,13 @@ export function useModalDimensions({ height, width, hasFooter }: UseModalDimensi
   return {
     footerRef,
     headerRef,
+    rootRef,
     footerHeight,
-    hasCustomHeight,
+    hasCustomHeight: shouldApplyCustomHeight,
     hasCustomWidth,
     dialogCustomStyles: {
       ...(hasCustomWidth && { [customCssProps.modalCustomWidth]: `${constrainedWidth}px` }),
-      ...(hasCustomHeight && { [customCssProps.modalCustomHeight]: `${constrainedHeight}px` }),
+      ...(shouldApplyCustomHeight && { [customCssProps.modalCustomHeight]: `${constrainedHeight}px` }),
     },
   };
 }

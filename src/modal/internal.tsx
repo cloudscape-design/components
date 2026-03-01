@@ -221,7 +221,7 @@ function PortaledModal({
   const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
 
-  const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
+  const { footerRef, headerRef, rootRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
     useModalDimensions({
       height,
       width,
@@ -252,7 +252,7 @@ function PortaledModal({
             aria-labelledby={headerId}
             onMouseDown={onOverlayMouseDown}
             onClick={onOverlayClick}
-            ref={mergedRef}
+            ref={useMergeRefs(mergedRef, rootRef)}
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
             data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
