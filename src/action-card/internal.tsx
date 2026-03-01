@@ -3,15 +3,17 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ActionCardProps, InternalActionCardProps } from './interfaces';
+import { type ActionCardProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalActionCardPropsWithRef = InternalActionCardProps & InternalBaseComponentProps;
+export type InternalActionCardProps = ActionCardProps & InternalBaseComponentProps;
 
 const InternalActionCard = React.forwardRef(
   (
@@ -29,8 +31,9 @@ const InternalActionCard = React.forwardRef(
       iconAlt,
       iconPosition = 'left',
       iconVerticalAlignment = 'top',
+      __internalRootRef,
       ...rest
-    }: InternalActionCardPropsWithRef,
+    }: InternalActionCardProps,
     ref: React.Ref<ActionCardProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
@@ -74,11 +77,12 @@ const InternalActionCard = React.forwardRef(
         {children && <div className={styles.content}>{children}</div>}
       </div>
     );
+    const rootRef = useMergeRefs(buttonRef, __internalRootRef);
 
     return (
       <button
         {...baseProps}
-        ref={buttonRef}
+        ref={rootRef}
         type="button"
         className={clsx(
           styles.root,

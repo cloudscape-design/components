@@ -6,8 +6,6 @@ import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler } from '../internal/events';
 
-export type InternalActionCardProps = ActionCardProps;
-
 export interface ActionCardProps extends BaseComponentProps {
   /**
    * The header content displayed at the top of the action card.
