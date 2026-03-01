@@ -249,9 +249,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   flex-grow: 0;
   flex-shrink: 1;
   box-sizing: border-box;
-  // Just like styles.text-flex-wrapping without the overflow: hidden to prevent focus rings on action buttons from being clipped.
-  word-wrap: break-word;
-  max-inline-size: 100%;
+  @include styles.text-flex-wrapping;
   &.with-paddings {
     padding-inline: styles.$control-padding-horizontal;
     padding-block-start: awsui.$space-scaled-s;
