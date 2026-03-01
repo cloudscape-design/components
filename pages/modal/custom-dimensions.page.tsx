@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Button, Checkbox, FormField, Input, Modal, SpaceBetween } from '~components';
+import { Box, Button, Checkbox, FormField, Input, Modal, SpaceBetween } from '~components';
 
 import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -12,7 +12,11 @@ export default function () {
   const { urlParams, setUrlParams } = useAppContext();
   const [visible, setVisible] = useState(false);
   const showFooter = urlParams.footer ? true : false;
-  const footer = <Button variant="primary">OK</Button>;
+  const footer = (
+    <Box float="right">
+      <Button variant="primary">Ok</Button>
+    </Box>
+  );
 
   return (
     <SimplePage
