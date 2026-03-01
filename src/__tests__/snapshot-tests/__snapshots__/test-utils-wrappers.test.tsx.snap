@@ -9,6 +9,7 @@ import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
 
 export { ElementWrapper };
 
+import ActionCardWrapper from './action-card';
 import AlertWrapper from './alert';
 import AnchorNavigationWrapper from './anchor-navigation';
 import AnnotationWrapper from './annotation';
@@ -99,6 +100,7 @@ import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
 
 
+export { ActionCardWrapper };
 export { AlertWrapper };
 export { AnchorNavigationWrapper };
 export { AnnotationWrapper };
@@ -191,6 +193,25 @@ export { WizardWrapper };
 declare module '@cloudscape-design/test-utils-core/dist/dom' {
    interface ElementWrapper {
     
+/**
+ * Returns the wrapper of the first ActionCard that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ActionCard.
+ * If no matching ActionCard is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ActionCardWrapper | null}
+ */
+findActionCard(selector?: string): ActionCardWrapper | null;
+
+/**
+ * Returns an array of ActionCard wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ActionCards inside the current wrapper.
+ * If no matching ActionCard is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ActionCardWrapper>}
+ */
+findAllActionCards(selector?: string): Array<ActionCardWrapper>;
 /**
  * Returns the wrapper of the first Alert that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Alert.
@@ -1867,6 +1888,19 @@ findAllWizards(selector?: string): Array<WizardWrapper>;
 }
 
 
+ElementWrapper.prototype.findActionCard = function(selector) {
+  let rootSelector = \`.\${ActionCardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ActionCardWrapper && ActionCardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ActionCardWrapper.rootSelector}, .\${ActionCardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ActionCardWrapper);
+};
+
+ElementWrapper.prototype.findAllActionCards = function(selector) {
+  return this.findAllComponents(ActionCardWrapper, selector);
+};
 ElementWrapper.prototype.findAlert = function(selector) {
   let rootSelector = \`.\${AlertWrapper.rootSelector}\`;
   if("legacyRootSelector" in AlertWrapper && AlertWrapper.legacyRootSelector){
@@ -3031,6 +3065,7 @@ import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
 
 export { ElementWrapper };
 
+import ActionCardWrapper from './action-card';
 import AlertWrapper from './alert';
 import AnchorNavigationWrapper from './anchor-navigation';
 import AnnotationWrapper from './annotation';
@@ -3121,6 +3156,7 @@ import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
 
 
+export { ActionCardWrapper };
 export { AlertWrapper };
 export { AnchorNavigationWrapper };
 export { AnnotationWrapper };
@@ -3213,6 +3249,23 @@ export { WizardWrapper };
 declare module '@cloudscape-design/test-utils-core/dist/selectors' {
    interface ElementWrapper {
     
+/**
+ * Returns a wrapper that matches the ActionCards with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ActionCards.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ActionCardWrapper}
+ */
+findActionCard(selector?: string): ActionCardWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ActionCards with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ActionCards.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ActionCardWrapper>}
+ */
+findAllActionCards(selector?: string): MultiElementWrapper<ActionCardWrapper>;
 /**
  * Returns a wrapper that matches the Alerts with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Alerts.
@@ -4713,6 +4766,19 @@ findAllWizards(selector?: string): MultiElementWrapper<WizardWrapper>;
 }
 
 
+ElementWrapper.prototype.findActionCard = function(selector) {
+  let rootSelector = \`.\${ActionCardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ActionCardWrapper && ActionCardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ActionCardWrapper.rootSelector}, .\${ActionCardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ActionCardWrapper);
+};
+
+ElementWrapper.prototype.findAllActionCards = function(selector) {
+  return this.findAllComponents(ActionCardWrapper, selector);
+};
 ElementWrapper.prototype.findAlert = function(selector) {
   let rootSelector = \`.\${AlertWrapper.rootSelector}\`;
   if("legacyRootSelector" in AlertWrapper && AlertWrapper.legacyRootSelector){

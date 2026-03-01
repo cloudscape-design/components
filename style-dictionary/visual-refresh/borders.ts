@@ -52,4 +52,8 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthIconMedium: '2px',
   borderWidthIconBig: '3px',
   borderWidthIconLarge: '4px',
+  borderRadiusActionCard: '{borderRadiusContainer}',
+  borderWidthActionCardDefault: '1px',
+  borderWidthActionCardHover: '1px',
+  borderWidthActionCardActive: '1px',
 };
