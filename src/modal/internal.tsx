@@ -3,8 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { Portal, useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
@@ -25,12 +24,10 @@ import { ButtonContext, ButtonContextProps } from '../internal/context/button-co
 import { ModalContext } from '../internal/context/modal-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../internal/events';
-import customCssProps from '../internal/generated/custom-css-properties';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
 import {
@@ -39,6 +36,7 @@ import {
 } from './analytics-metadata/interfaces';
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
+import { useModalDimensions } from './use-modal-dimensions';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -220,48 +218,15 @@ function PortaledModal({
   // to detect when the user has scrolled to the bottom.
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
-  // Add extra scroll padding to account for the height of the sticky footer,
-  // to prevent it from covering focused elements.
-  const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
-  const [headerHeight, headerRef] = useContainerQuery(rect => rect.borderBoxHeight);
   const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
 
-  // Minimum content height is twice the height of the largest type style in Cloudscape (60px)
-  // to ensure content remains scrollable and accessible even with custom heights.
-  const MIN_CONTENT_HEIGHT = 60;
-  const MIN_MODAL_WIDTH = 320; // Matches smallest predefined size (small)
-
-  // Calculate minimum modal height based on header, footer, and content
-  const minModalHeight = (headerHeight ?? 0) + (footer ? (footerHeight ?? 0) : 0) + MIN_CONTENT_HEIGHT;
-
-  // Constrain dimensions to minimum values
-  const constrainedHeight = Math.max(height ?? 0, minModalHeight);
-  const constrainedWidth = Math.max(width ?? 0, MIN_MODAL_WIDTH);
-
-  const hasCustomHeight = height !== undefined && !Number.isNaN(height);
-  const hasCustomWidth = width !== undefined && !Number.isNaN(width);
-  // Development warnings for adjusted values
-  if (isDevelopment) {
-    if (hasCustomHeight && constrainedHeight !== height) {
-      warnOnce(
-        'Modal',
-        `Height (${height}px) is too small. Modal requires at least ${MIN_CONTENT_HEIGHT}px for content plus header/footer space (total: ${minModalHeight}px). Height will be adjusted to ${constrainedHeight}px.`
-      );
-    }
-    if (hasCustomWidth && constrainedWidth !== width) {
-      warnOnce(
-        'Modal',
-        `Width (${width}px) is below minimum (${MIN_MODAL_WIDTH}px) and will be adjusted to ${constrainedWidth}px.`
-      );
-    }
-  }
-
-  // Apply custom dimensions via CSS custom properties
-  const dialogCustomStyles: React.CSSProperties = {
-    ...(hasCustomWidth && { [customCssProps.modalCustomWidth]: `${constrainedWidth}px` }),
-    ...(hasCustomHeight && { [customCssProps.modalCustomHeight]: `${constrainedHeight}px` }),
-  };
+  const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
+    useModalDimensions({
+      height,
+      width,
+      hasFooter: !!footer,
+    });
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>

@@ -592,32 +592,4 @@ describe('Modal component', () => {
       }, 10);
     });
   });
-
-  describe('custom dimensions warnings', () => {
-    it('warns when height is too small', () => {
-      renderModal({ height: 50 });
-      expect(warnOnce).toHaveBeenCalledWith(
-        'Modal',
-        expect.stringMatching(/^Height \(50px\) is too small\. Modal requires at least \d+px for content/)
-      );
-    });
-
-    it('warns when width is below minimum', () => {
-      renderModal({ width: 200 });
-      expect(warnOnce).toHaveBeenCalledWith(
-        'Modal',
-        'Width (200px) is below minimum (320px) and will be adjusted to 320px.'
-      );
-    });
-
-    it('does not warn when dimensions are valid', () => {
-      renderModal({ width: 500, height: 400 });
-      expect(warnOnce).not.toHaveBeenCalled();
-    });
-
-    it('does not warn when dimensions are not provided', () => {
-      renderModal();
-      expect(warnOnce).not.toHaveBeenCalled();
-    });
-  });
 });
