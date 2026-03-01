@@ -31387,6 +31387,76 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the icon element of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns whether the action card is disabled.",
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the action button.
 
 The action button is only rendered when the \`buttonText\` property is set.",
@@ -43085,6 +43155,47 @@ Supported options:
 exports[`Test-utils selectors definitions match the snapshot 1`] = `
 {
   "classes": [
+    {
+      "methods": [
+        {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the icon element of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
     {
       "methods": [
         {

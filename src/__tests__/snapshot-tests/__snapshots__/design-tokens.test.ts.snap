@@ -83,7 +83,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -91,7 +91,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -2888,7 +2888,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -2896,7 +2896,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -5693,7 +5693,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -5701,7 +5701,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -8498,7 +8498,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -8506,7 +8506,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -11303,7 +11303,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -11311,7 +11311,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -14108,7 +14108,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -14116,7 +14116,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -16913,7 +16913,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-action-card-active": {
       "$description": "The border width of action cards in active/pressed state.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-action-card-default": {
       "$description": "The border width of action cards in default state.",
@@ -16921,7 +16921,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-action-card-hover": {
       "$description": "The border width of action cards in hover state.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-alert": {
       "$description": "The border width of alerts.",
@@ -19723,7 +19723,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -19731,7 +19731,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -22528,7 +22528,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -22536,7 +22536,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -25333,7 +25333,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -25341,7 +25341,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -28138,7 +28138,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -28146,7 +28146,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -30943,7 +30943,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -30951,7 +30951,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -33748,7 +33748,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -33756,7 +33756,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -36553,7 +36553,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -36561,7 +36561,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -39358,7 +39358,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-active": {
           "$description": "The border width of action cards in active/pressed state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-action-card-default": {
           "$description": "The border width of action cards in default state.",
@@ -39366,7 +39366,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-action-card-hover": {
           "$description": "The border width of action cards in hover state.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
@@ -42163,7 +42163,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-action-card-active": {
       "$description": "The border width of action cards in active/pressed state.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-action-card-default": {
       "$description": "The border width of action cards in default state.",
@@ -42171,7 +42171,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-action-card-hover": {
       "$description": "The border width of action cards in hover state.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-alert": {
       "$description": "The border width of alerts.",
