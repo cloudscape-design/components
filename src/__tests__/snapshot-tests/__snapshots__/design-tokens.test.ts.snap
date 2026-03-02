@@ -2645,14 +2645,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -5450,14 +5450,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -8255,14 +8255,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -11060,14 +11060,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -13865,14 +13865,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -16670,14 +16670,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -19475,14 +19475,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
-    "space-action-card-padding-horizontal": {
+    "space-action-card-horizontal": {
       "$description": "The horizontal padding inside action cards.",
       "$value": {
         "comfortable": "20px",
         "compact": "20px",
       },
     },
-    "space-action-card-padding-vertical": {
+    "space-action-card-vertical": {
       "$description": "The vertical padding inside action cards.",
       "$value": {
         "comfortable": "16px",
@@ -22285,14 +22285,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -25090,14 +25090,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -27895,14 +27895,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -30700,14 +30700,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "12px",
@@ -33505,14 +33505,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -36310,14 +36310,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -39115,14 +39115,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -41920,14 +41920,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "space-action-card-padding-horizontal": {
+        "space-action-card-horizontal": {
           "$description": "The horizontal padding inside action cards.",
           "$value": {
             "comfortable": "20px",
             "compact": "20px",
           },
         },
-        "space-action-card-padding-vertical": {
+        "space-action-card-vertical": {
           "$description": "The vertical padding inside action cards.",
           "$value": {
             "comfortable": "16px",
@@ -44725,14 +44725,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },
-    "space-action-card-padding-horizontal": {
+    "space-action-card-horizontal": {
       "$description": "The horizontal padding inside action cards.",
       "$value": {
         "comfortable": "20px",
         "compact": "20px",
       },
     },
-    "space-action-card-padding-vertical": {
+    "space-action-card-vertical": {
       "$description": "The vertical padding inside action cards.",
       "$value": {
         "comfortable": "16px",

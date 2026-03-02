@@ -53,7 +53,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
       "type": "string",
     },
     {
-      "description": "Displays an icon next to the content. You can use the \`iconAlign\` and \`iconVerticalAlign\` properties to position the icon.",
+      "description": "Displays an icon next to the content. You can use the \`iconPosition\` and \`iconVerticalAlignment\` properties to position the icon.",
       "inlineType": {
         "name": "IconProps.Name",
         "type": "union",
@@ -202,7 +202,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
     {
       "description": "Specifies the horizontal position of the icon.",
       "inlineType": {
-        "name": "ActionCardProps.IconAlign",
+        "name": "ActionCardProps.IconPosition",
         "type": "union",
         "values": [
           "left",
@@ -224,7 +224,7 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.",
     {
       "description": "Specifies the vertical alignment of the icon.",
       "inlineType": {
-        "name": "ActionCardProps.IconVerticalAlign",
+        "name": "ActionCardProps.IconVerticalAlignment",
         "type": "union",
         "values": [
           "center",
