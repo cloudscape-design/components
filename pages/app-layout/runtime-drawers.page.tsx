@@ -15,8 +15,10 @@ import {
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
+import { updateDrawer } from '~components/internal/plugins/widget';
 
 import './utils/external-widget';
+import './utils/external-global-left-panel-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
@@ -129,6 +131,13 @@ export default function WithDrawers() {
                   </Button>
                   <Button onClick={() => registerRuntimeBottomDrawer()} data-testid="button-register-bottom-drawer">
                     Register a bottom drawer
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      updateDrawer({ type: 'openDrawer', payload: { id: 'ai-panel' } });
+                    }}
+                  >
+                    Open left drawer
                   </Button>
                 </SpaceBetween>
               </SpaceBetween>
