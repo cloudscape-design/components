@@ -120,3 +120,8 @@ export namespace ModalProps {
     resourceType?: string;
   }
 }
+
+export function hasSizeProp(props: ModalProps): boolean {
+  const key: keyof ModalProps = 'size';
+  return key in props;
+}
