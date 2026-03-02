@@ -168,9 +168,9 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
         const column = visibleColumns[index];
         if (!columnWidths?.get(column.id) && lastVisible.indexOf(column.id) === -1) {
           updated = true;
-          const width = (column.width as number) || 0;
-          const minWidth = (column.minWidth as number) || width || DEFAULT_COLUMN_WIDTH;
-          newColumnWidths.set(column.id, Math.max(width || DEFAULT_COLUMN_WIDTH, minWidth));
+          const width = (column.width as number) || DEFAULT_COLUMN_WIDTH;
+          const minWidth = (column.minWidth as number) || width;
+          newColumnWidths.set(column.id, Math.max(width, minWidth));
         }
       }
       if (updated) {
