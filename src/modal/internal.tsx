@@ -94,6 +94,7 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  position = 'center',
   onButtonClick = () => {},
   onDismiss,
   __internalRootRef,
@@ -247,7 +248,12 @@ function PortaledModal({
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
             data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
-            <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+            <FocusLock
+              disabled={!visible}
+              autoFocus={true}
+              restoreFocus={true}
+              className={clsx(styles['focus-lock'], styles[`position-${position}`])}
+            >
               <div
                 className={clsx(
                   styles.dialog,
