@@ -250,6 +250,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   flex-shrink: 1;
   box-sizing: border-box;
   @include styles.text-flex-wrapping;
+  padding-inline-end: awsui.$space-scaled-xxs;
   &.with-paddings {
     padding-inline: styles.$control-padding-horizontal;
     padding-block-start: awsui.$space-scaled-s;
