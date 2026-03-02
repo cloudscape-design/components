@@ -10,13 +10,13 @@ const storageKeyReadyDeferCallbacks = Symbol.for('awsui-widget-api-ready-defer')
 
 interface WindowWithApi extends Window {
   [storageKeyMessageHandler]: MessageHandler | undefined;
-  [storageKeyInitialMessages]: Array<InitialMessage> | undefined;
+  [storageKeyInitialMessages]: Array<InitialMessage<unknown>> | undefined;
   [storageKeyReadyDeferCallbacks]: Array<(value?: unknown) => void> | undefined;
 }
 
 const oneTimeMessageTypes = ['emit-notification'];
 
-type MessageHandler = (event: WidgetMessage) => void;
+type MessageHandler = (event: WidgetMessage<unknown>) => void;
 
 function getWindow() {
   return window as Window as WindowWithApi;
@@ -27,18 +27,18 @@ export function getAppLayoutMessageHandler() {
   return win[storageKeyMessageHandler];
 }
 
-export function getAppLayoutInitialMessages(): Array<InitialMessage> {
+export function getAppLayoutInitialMessages<T>(): Array<InitialMessage<T>> {
   const initialMessages = getWindow()[storageKeyInitialMessages] ?? [];
   getWindow()[storageKeyInitialMessages] = initialMessages.filter(
     message => !oneTimeMessageTypes.includes(message.type)
   );
-  return initialMessages;
+  return initialMessages as Array<InitialMessage<T>>;
 }
 
-export function pushInitialMessage(message: InitialMessage) {
+export function pushInitialMessage<T>(message: InitialMessage<T>) {
   const win = getWindow();
   win[storageKeyInitialMessages] = win[storageKeyInitialMessages] ?? [];
-  win[storageKeyInitialMessages].push(message);
+  win[storageKeyInitialMessages].push(message as InitialMessage<unknown>);
 }
 
 export function registerAppLayoutHandler(handler: MessageHandler) {

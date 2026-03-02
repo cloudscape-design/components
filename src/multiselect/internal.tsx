@@ -115,6 +115,7 @@ const InternalMultiselect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}

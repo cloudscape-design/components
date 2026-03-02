@@ -24,7 +24,7 @@ export interface ChartPopoverProps extends PopoverProps {
   getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
-    
+
     const trackRef = useRef<Element>(null)
     return (<>
       <Track style={getPosition(selectedItemId)} ref={trackRef} />
@@ -153,7 +153,7 @@ function ChartPopover(
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
           header={<span className={testClasses.header}>{title}</span>}
-          onDismiss={onDismiss}
+          onDismiss={() => onDismiss()}
           overflowVisible="content"
           className={styles['popover-body']}
           variant="chart"
