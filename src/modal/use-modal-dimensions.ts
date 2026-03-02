@@ -27,13 +27,18 @@ export function useModalDimensions({ height, width, hasFooter }: UseModalDimensi
   const hasCustomWidth = width !== undefined && !Number.isNaN(width);
 
   if (isDevelopment) {
-    if (hasCustomHeight && constrainedHeight !== height) {
+    if (Number.isNaN(height)) {
+      warnOnce('Modal', 'Height is NaN and will not be set. This is likely a bug in your code.');
+    } else if (hasCustomHeight && constrainedHeight !== height) {
       warnOnce(
         'Modal',
         `Height (${height}px) is too small. Modal requires at least ${MIN_CONTENT_HEIGHT}px for content plus header/footer space (total: ${minModalHeight}px). Height will be adjusted to ${constrainedHeight}px.`
       );
     }
-    if (hasCustomWidth && constrainedWidth !== width) {
+
+    if (Number.isNaN(width)) {
+      warnOnce('Modal', 'Width is NaN and will not be set. This is likely a bug in your code.');
+    } else if (hasCustomWidth && constrainedWidth !== width) {
       warnOnce(
         'Modal',
         `Width (${width}px) is below minimum (${MIN_MODAL_WIDTH}px) and will be adjusted to ${constrainedWidth}px.`
