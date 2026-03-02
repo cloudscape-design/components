@@ -44,7 +44,7 @@ export interface ActionCardProps extends BaseComponentProps {
   disabled?: boolean;
 
   /**
-   * Displays an icon next to the content. You can use the `iconAlign` and `iconVerticalAlign` properties to position the icon.
+   * Displays an icon next to the content. You can use the `iconPosition` and `iconVerticalAlignment` properties to position the icon.
    */
   iconName?: IconProps.Name;
 
@@ -88,21 +88,21 @@ export interface ActionCardProps extends BaseComponentProps {
    * Specifies the horizontal position of the icon.
    * @default 'left'
    */
-  iconPosition?: ActionCardProps.IconAlign;
+  iconPosition?: ActionCardProps.IconPosition;
 
   /**
    * Specifies the vertical alignment of the icon.
    * @default 'top'
    */
-  iconVerticalAlignment?: ActionCardProps.IconVerticalAlign;
+  iconVerticalAlignment?: ActionCardProps.IconVerticalAlignment;
 }
 
 export namespace ActionCardProps {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface ClickDetail {}
 
-  export type IconAlign = 'left' | 'right';
-  export type IconVerticalAlign = 'top' | 'center' | 'bottom';
+  export type IconPosition = 'left' | 'right';
+  export type IconVerticalAlignment = 'top' | 'center' | 'bottom';
 
   export interface Ref {
     /**

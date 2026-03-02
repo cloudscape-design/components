@@ -1035,8 +1035,8 @@ export type SpacingTokenName =
   | 'spaceXxs'
   | 'spaceXxxl'
   | 'spaceXxxs'
-  | 'spaceActionCardPaddingHorizontal'
-  | 'spaceActionCardPaddingVertical'
+  | 'spaceActionCardHorizontal'
+  | 'spaceActionCardVertical'
   | 'spaceActionCardDescriptionPaddingTop'
   | 'spaceActionCardContentPaddingTop';
 export type ShadowsTokenName =

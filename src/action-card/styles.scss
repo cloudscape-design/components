@@ -18,15 +18,15 @@
   border-end-end-radius: awsui.$border-radius-action-card;
   border-width: 0;
 
-  padding-block: awsui.$space-action-card-padding-vertical;
-  padding-inline: awsui.$space-action-card-padding-horizontal;
+  padding-block: awsui.$space-action-card-vertical;
+  padding-inline: awsui.$space-action-card-horizontal;
   background-color: awsui.$color-background-action-card-default;
   text-align: start;
   inline-size: 100%;
 
   &.has-icon {
     display: flex;
-    gap: awsui.$space-action-card-padding-horizontal;
+    gap: awsui.$space-action-card-horizontal;
   }
 
   &.icon-vertical-align-top {

@@ -65,8 +65,8 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHorizontal: '{spaceContainerHorizontal}',
   spaceTreeViewIndentation: '{spaceXl}',
   spaceTileGutter: { comfortable: '{spaceXl}', compact: '{spaceM}' },
-  spaceActionCardPaddingHorizontal: '{spaceContainerHorizontal}',
-  spaceActionCardPaddingVertical: '{spaceScaledM}',
+  spaceActionCardHorizontal: '{spaceContainerHorizontal}',
+  spaceActionCardVertical: '{spaceScaledM}',
   spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
   spaceActionCardContentPaddingTop: '{spaceScaledXs}',
 
