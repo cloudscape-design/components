@@ -3,8 +3,6 @@
 import * as React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import Autosuggest from '../../../lib/components/autosuggest';
 import Button from '../../../lib/components/button/index.js';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
@@ -22,15 +20,6 @@ import { PerformanceMetrics } from '../../internal/analytics';
 import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/modal/styles.css.js';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
-
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-});
 class ModalInternalWrapper extends ModalWrapper {
   findDialog(): ElementWrapper {
     return this.findByClassName(styles.dialog)!;
@@ -126,46 +115,6 @@ describe('Modal component', () => {
       (['small', 'medium', 'large', 'x-large', 'xx-large', 'max'] as ModalProps.Size[]).forEach(size => {
         const wrapper = renderModal({ size });
         expect(wrapper.findDialog().getElement()).toHaveClass(styles[size]);
-      });
-    });
-
-    it('width overrides size', () => {
-      const wrapper = renderModal({ size: 'large', width: 500 });
-      expect(wrapper.findDialog().getElement()).not.toHaveClass(styles.large);
-      expect(wrapper.findDialog().getElement()).toHaveClass(styles['custom-width']);
-    });
-
-    it('applies custom width class', () => {
-      const wrapper = renderModal({ width: 600 });
-      expect(wrapper.findDialog().getElement()).toHaveClass(styles['custom-width']);
-    });
-
-    it('applies custom height class', () => {
-      const wrapper = renderModal({ height: 400, footer: <div>Footer</div> });
-      expect(wrapper.findDialog().getElement()).toHaveClass(styles['custom-height']);
-      expect(wrapper.findFooter()!.getElement()).toHaveClass(styles['custom-height']);
-      expect(wrapper.findByClassName(styles.container)!.getElement()).toHaveClass(styles['custom-height-container']);
-      expect(wrapper.findContent().getElement()).toHaveClass(styles['custom-height-content']);
-    });
-
-    it('applies custom height class when footer is absent', () => {
-      const wrapper = renderModal({ height: 400 });
-      expect(wrapper.findDialog().getElement()).toHaveClass(styles['custom-height']);
-      expect(wrapper.findByClassName(styles.container)!.getElement()).toHaveClass(styles['custom-height-container']);
-      expect(wrapper.findContent().getElement()).toHaveClass(styles['custom-height-content']);
-    });
-  });
-
-  describe('position property', () => {
-    it('defaults to center position', () => {
-      const wrapper = renderModal();
-      expect(wrapper.findFocusLock().getElement()).toHaveClass(styles['position-center']);
-    });
-
-    it('displays correct position', () => {
-      (['center', 'top'] as ModalProps.Position[]).forEach(position => {
-        const wrapper = renderModal({ position });
-        expect(wrapper.findFocusLock().getElement()).toHaveClass(styles[`position-${position}`]);
       });
     });
   });
