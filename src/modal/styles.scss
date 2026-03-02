@@ -47,6 +47,10 @@ $modal-z-index: 5000;
   &.position-center {
     margin-block: auto;
   }
+
+  &.full-height {
+    padding-block-end: 0;
+  }
 }
 
 .dialog {
@@ -95,7 +99,7 @@ $modal-z-index: 5000;
 
   &.custom-height {
     block-size: var(#{custom-props.$modalCustomHeight});
-    max-block-size: calc(100vh - (2 * #{awsui.$space-s}));
+    max-block-size: calc(100vh - #{awsui.$space-s});
   }
 }
 
@@ -165,6 +169,11 @@ $modal-z-index: 5000;
   &.custom-height {
     border-end-start-radius: awsui.$border-radius-container;
     border-end-end-radius: awsui.$border-radius-container;
+  }
+
+  &.full-height {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
   }
 
   &--stuck {

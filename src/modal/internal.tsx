@@ -221,12 +221,20 @@ function PortaledModal({
   const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
 
-  const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
-    useModalDimensions({
-      height,
-      width,
-      hasFooter: !!footer,
-    });
+  const {
+    footerRef,
+    headerRef,
+    rootRef,
+    hasCustomHeight,
+    hasCustomWidth,
+    dialogCustomStyles,
+    footerHeight,
+    isFullHeight,
+  } = useModalDimensions({
+    height,
+    width,
+    hasFooter: !!footer,
+  });
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
@@ -252,7 +260,7 @@ function PortaledModal({
             aria-labelledby={headerId}
             onMouseDown={onOverlayMouseDown}
             onClick={onOverlayClick}
-            ref={mergedRef}
+            ref={useMergeRefs(mergedRef, rootRef)}
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
             data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
@@ -260,7 +268,11 @@ function PortaledModal({
               disabled={!visible}
               autoFocus={true}
               restoreFocus={true}
-              className={clsx(styles['focus-lock'], styles[`position-${position}`])}
+              className={clsx(
+                styles['focus-lock'],
+                styles[`position-${position}`],
+                isFullHeight && styles['full-height']
+              )}
             >
               <div
                 className={clsx(
@@ -329,7 +341,8 @@ function PortaledModal({
                           className={clsx(
                             styles.footer,
                             footerStuck && styles['footer--stuck'],
-                            hasCustomHeight && styles['custom-height']
+                            hasCustomHeight && styles['custom-height'],
+                            isFullHeight && styles['full-height']
                           )}
                         >
                           {footer}
