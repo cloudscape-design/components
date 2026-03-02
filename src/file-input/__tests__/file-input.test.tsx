@@ -135,6 +135,16 @@ describe('FileInput input', () => {
   });
 });
 
+describe('decorative button', () => {
+  test('does not receive focus when clicked', () => {
+    const wrapper = render({});
+    const triggerButton = wrapper.findTrigger().getElement();
+    fireEvent.mouseDown(triggerButton);
+    // focus must not land on the aria-hidden decorative button
+    expect(document.activeElement).not.toBe(triggerButton);
+  });
+});
+
 describe('ref', () => {
   test('can be used to focus the component', () => {
     const ref = React.createRef<FileInputProps.Ref>();
