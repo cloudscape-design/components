@@ -25,6 +25,21 @@ export interface BaseModalProps {
 
 export interface ModalProps extends BaseComponentProps, BaseModalProps {
   /**
+   * Specifies the width of the modal. When provided, takes precedence over the `size` property.
+   * If the specified width exceeds available viewport space, the modal will use the maximum available space.
+   * The minimum width is 320px (equivalent to the `small` size).
+   */
+  width?: number;
+
+  /**
+   * Specifies the height of the modal. When provided, the modal content becomes scrollable if it exceeds the specified height.
+   * If the specified height exceeds available viewport space, the modal will use the maximum available space.
+   * To make sure the content is accessible, the component will apply a minimum height of 60px for the content area,
+   * plus the header height and the footer height.
+   */
+  height?: number;
+
+  /**
    * Sets the width of the modal. `max` uses variable width up to the
    * largest size allowed by the design guidelines. Other sizes have fixed widths:
    * `small` (320px), `medium` (600px), `large` (820px), `x-large` (1024px), `xx-large` (1280px).
