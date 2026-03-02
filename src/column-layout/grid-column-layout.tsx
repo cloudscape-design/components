@@ -42,7 +42,7 @@ export default function GridColumnLayout({
   const shouldHaveVerticalBorders = !isTextGridVariant && (borders === 'vertical' || borders === 'all');
 
   // Flattening the children allows us to "see through" React Fragments and nested arrays.
-  const flattenedChildren = flattenChildren(children);
+  const flattenedChildren = flattenChildren(children, 'ColumnLayout');
 
   const [breakpoint, ref] = useContainerBreakpoints(COLUMN_TRIGGERS);
 

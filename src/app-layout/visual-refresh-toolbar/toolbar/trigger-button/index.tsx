@@ -110,7 +110,11 @@ function TriggerButton(
     setShowTooltip(false);
   };
 
-  const handlePointerEnter = () => {
+  const handlePointerEnter = (event: React.MouseEvent) => {
+    const suppressedTooltip = event.currentTarget.querySelector('button')?.dataset?.awsuiSuppressTooltip === 'true';
+    if (suppressedTooltip) {
+      return;
+    }
     setSupressTooltip(false);
     setShowTooltip(true);
   };
@@ -125,6 +129,7 @@ function TriggerButton(
       let shouldShowTooltip = false;
       const eventWithRelatedTarget = event as any;
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
+      const isSuppressedOnTarget = eventWithRelatedTarget?.target?.dataset?.awsuiSuppressTooltip === 'true';
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
       if (
         (isForSplitPanel && !!relatedTarget) || // relatedTarget is null when split panel is closed
@@ -133,6 +138,9 @@ function TriggerButton(
             !isForPreviousActiveDrawer)) // for when the drawer was not opened recently
       ) {
         shouldShowTooltip = true;
+      }
+      if (isSuppressedOnTarget) {
+        shouldShowTooltip = false;
       }
       setSupressTooltip(!shouldShowTooltip);
       setShowTooltip(true);
@@ -205,7 +213,7 @@ function TriggerButton(
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => handlePointerEnter(),
+        onPointerEnter: event => handlePointerEnter(event),
         onPointerLeave: () => handleBlur(true),
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
