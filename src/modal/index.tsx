@@ -15,7 +15,7 @@ import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { hasSizeProp, ModalProps } from './interfaces';
+import { ModalProps } from './interfaces';
 import InternalModal, { InternalModalAsFunnel } from './internal';
 
 import styles from './styles.css.js';
@@ -72,7 +72,7 @@ function ModalWithAnalyticsFunnel({
 
 export default function Modal({ position = 'center', width, height, ...rest }: ModalProps) {
   const { size = 'medium', ...props } = rest;
-  if (hasSizeProp(rest) && width !== undefined) {
+  if (rest.size !== undefined && width !== undefined) {
     warnOnce('Modal', 'Both `size` and `width` exist. `size` will not be used for width calculations.');
   }
 
