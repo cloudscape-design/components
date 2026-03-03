@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalStructuredItem from '../internal/components/structured-item';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { processAttributes } from '../internal/utils/with-native-attributes';
 import { InternalCardProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -19,6 +20,7 @@ export default function InternalCard({
   footer,
   icon,
   metadataAttributes,
+  nativeAttributes,
   onClick,
   disableHeaderPaddings,
   disableContentPaddings,
@@ -28,19 +30,25 @@ export default function InternalCard({
 
   const headerRowEmpty = !header && !description && !icon && !actions;
 
-  return (
-    <div
-      className={clsx(
+  const rootAttributes = processAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+    {
+      className: clsx(
         className,
         styles.root,
         highlighted && styles.highlighted,
         headerRowEmpty && styles['no-header'],
         !children && styles['no-content'],
         isRefresh && styles.refresh
-      )}
-      {...metadataAttributes}
-      onClick={onClick}
-    >
+      ),
+      ...metadataAttributes,
+      onClick,
+    },
+    nativeAttributes,
+    'Card'
+  );
+
+  return (
+    <div {...rootAttributes}>
       <div
         className={clsx(
           styles.header,
