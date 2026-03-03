@@ -76,6 +76,19 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     background: awsui.$color-background-layout-main;
   }
 
+  // Group header cells are sticky so the label stays visible while any child column
+  // is on screen. JS applies clip-path imperatively on scroll to clip the right edge
+  // as children scroll away — so the right border behaves naturally.
+  // When sticky columns are active, JS also overrides inset-inline-start.
+  &-group {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    // overflow:hidden is required so that max-width constraint (applied imperatively on scroll)
+    // clips the right border and content when children scroll out of view.
+    overflow: hidden;
+  }
+
   // Hidden placeholder cells for grouped column headers.
   // These cells have no content — they exist purely to maintain column width alignment.
   // We use :has(.header-cell-hidden-content) because the `hidden` prop on TableThElement

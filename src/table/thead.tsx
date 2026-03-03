@@ -200,7 +200,7 @@ const Thead = React.forwardRef(
     }
 
     // Grouped columns
-    console.log(hierarchicalStructure.rows);
+    // console.log(hierarchicalStructure.rows);
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         {hierarchicalStructure.rows.map((row, rowIndex) => (
@@ -291,6 +291,8 @@ const Thead = React.forwardRef(
                       updateGroup(groupId, newWidth);
                     }}
                     childColumnIds={childIds}
+                    firstChildColumnId={childIds[0]}
+                    lastChildColumnId={childIds[childIds.length - 1]}
                     childColumnMinWidths={getColumnMinWidths(childIds)}
                     cellRef={node => setCell(sticky, col.id, node)}
                     resizerRoleDescription={resizerRoleDescription}
