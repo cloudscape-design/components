@@ -261,7 +261,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     }
   }
   &.with-paddings-and-actions {
-    padding-inline-end: awsui.$space-scaled-s;
+    padding-inline-end: 0;
   }
 }
 
