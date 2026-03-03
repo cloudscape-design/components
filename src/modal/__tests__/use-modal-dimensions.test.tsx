@@ -20,8 +20,10 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 describe('useModalDimensions', () => {
   const mockFooterRef = jest.fn();
   const mockHeaderRef = jest.fn();
+  const mockRootRef = jest.fn();
   const defaultFooterHeight = 66;
   const defaultHeaderHeight = 52;
+  const defaultRootHeight = 1000;
 
   const minContentHeight = 60; // MIN_CONTENT_HEIGHT from hook
   const minModalWidth = 320; // MIN_MODAL_WIDTH from hook
@@ -31,7 +33,8 @@ describe('useModalDimensions', () => {
     jest
       .mocked(useContainerQuery)
       .mockReturnValueOnce([defaultFooterHeight, mockFooterRef])
-      .mockReturnValueOnce([defaultHeaderHeight, mockHeaderRef]);
+      .mockReturnValueOnce([defaultHeaderHeight, mockHeaderRef])
+      .mockReturnValueOnce([defaultRootHeight, mockRootRef]);
   });
 
   test('returns refs, boolean flags, and dialogCustomStyles', () => {
