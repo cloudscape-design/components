@@ -16568,7 +16568,7 @@ For other options see the documentation for <a> tag's
 - \`primary\` - Displays the link text with an underline for sufficient contrast with surrounding text.
     Use this for links adjacent to other text, such as inside a paragraph, a "Learn more" link,
     an item ID in a table, a link in a key-value pair, or a link in an alert.
-- \`secondary\` - Uses regular font weight without additional interactivity indicators.
+- \`secondary\` - Uses regular font weight without additional interactivity indicators (except for an underline on hover).
     Use this where context implies interactivity and users can identify links easily,
     such as in a list of links inside a container.
 - \`info\` - Use for "info" links that link to content in a help panel.
