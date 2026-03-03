@@ -158,6 +158,7 @@ const InternalFileInput = React.forwardRef(
           nativeButtonAttributes={{
             tabIndex: -1,
             'aria-hidden': true,
+            // AWSUI-61771 Prevent focus on the decorative button to avoid aria-hidden focus warning
             onMouseDown: (event: React.MouseEvent) => event.preventDefault(),
           }}
           __skipNativeAttributesWarnings={true}
