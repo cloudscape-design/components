@@ -3,6 +3,10 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BaseCardProps extends BaseComponentProps {
   /**
@@ -54,10 +58,21 @@ export interface BaseCardProps extends BaseComponentProps {
   disableFooterPaddings?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardProps extends BaseCardProps {}
+export interface CardProps extends BaseCardProps {
+  /**
+   * Attributes to add to the native root element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
+}
 
-export interface InternalCardProps extends BaseCardProps {
+export interface InternalCardProps extends BaseCardProps, Pick<CardProps, 'nativeAttributes'> {
   /**
    * Called when the user clicks on the card.
    */
