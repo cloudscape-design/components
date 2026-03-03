@@ -38,6 +38,7 @@
   }
   font-size: awsui.$font-size-heading-xs;
   line-height: awsui.$line-height-heading-xs;
+  letter-spacing: awsui.$letter-spacing-heading-xs;
   @if $weight {
     font-weight: awsui.$font-weight-heading-xs;
     @include font-smoothing;
