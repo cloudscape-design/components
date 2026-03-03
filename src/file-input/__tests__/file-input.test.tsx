@@ -136,12 +136,13 @@ describe('FileInput input', () => {
 });
 
 describe('decorative button', () => {
-  test('does not receive focus when clicked', () => {
+  test('prevents default on mousedown to avoid focus', () => {
     const wrapper = render({});
     const triggerButton = wrapper.findTrigger().getElement();
-    fireEvent.mouseDown(triggerButton);
-    // focus must not land on the aria-hidden decorative button
-    expect(document.activeElement).not.toBe(triggerButton);
+    const mouseDownEvent = new MouseEvent('mousedown', { bubbles: true });
+    Object.assign(mouseDownEvent, { preventDefault: jest.fn() });
+    fireEvent(triggerButton, mouseDownEvent);
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalledTimes(1);
   });
 });
 
