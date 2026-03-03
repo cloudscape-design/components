@@ -124,6 +124,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceActionCardHorizontal: {
+    description: 'The horizontal padding inside action cards.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVertical: {
+    description: 'The vertical padding inside action cards.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
