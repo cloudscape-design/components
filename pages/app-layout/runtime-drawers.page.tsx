@@ -15,13 +15,13 @@ import {
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
-import { updateDrawer } from '~components/internal/plugins/widget';
+import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
 import './utils/external-widget';
-import './utils/external-global-left-panel-widget';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
+import { leftDrawerPayload } from './utils/external-global-left-panel-widget';
 import { registerRuntimeBottomDrawer } from './utils/external-widget';
 import appLayoutLabels from './utils/labels';
 import { splitPaneli18nStrings } from './utils/strings';
@@ -33,6 +33,8 @@ type DemoContext = React.Context<
     splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
+
+registerLeftDrawer(leftDrawerPayload);
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
