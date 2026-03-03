@@ -143,6 +143,10 @@ test('should respect minWidth when dynamically adding columns via visibleColumns
     { id: 'small-width', header: '', cell: () => '-', width: 80, minWidth: 150 },
     { id: 'width-only', header: '', cell: () => '-', width: 180 },
     { id: 'minWidth-larger', header: '', cell: () => '-', width: 180, minWidth: 200 },
+    { id: 'no-width-no-minWidth', header: '', cell: () => '-' },
+    { id: 'no-width-minWidth-large', header: '', cell: () => '-', minWidth: 200 },
+    { id: 'no-width-minWidth-small', header: '', cell: () => '-', minWidth: 80 },
+    { id: 'width-larger-than-minWidth', header: '', cell: () => '-', width: 200, minWidth: 100 },
   ];
   const { wrapper, rerender } = renderTable(
     <Table columnDefinitions={columns} visibleColumns={['id']} items={defaultItems} resizableColumns={true} />
@@ -153,7 +157,16 @@ test('should respect minWidth when dynamically adding columns via visibleColumns
   rerender(
     <Table
       columnDefinitions={columns}
-      visibleColumns={['id', 'small-width', 'width-only', 'minWidth-larger']}
+      visibleColumns={[
+        'id',
+        'small-width',
+        'width-only',
+        'minWidth-larger',
+        'no-width-no-minWidth',
+        'no-width-minWidth-large',
+        'no-width-minWidth-small',
+        'width-larger-than-minWidth',
+      ]}
       items={defaultItems}
       resizableColumns={true}
     />
@@ -161,9 +174,13 @@ test('should respect minWidth when dynamically adding columns via visibleColumns
 
   expect(wrapper.findColumnHeaders().map(column => column.getElement().style.width)).toEqual([
     '100px', // original column unchanged
-    '150px', // use minWidth because 150 > 80
-    '180px', // use width (minWidth defaults to width)
-    '200px', // use minWidth because 200 > 180
+    '150px', // width=80, minWidth=150 -> use minWidth because 150 > 80
+    '180px', // width=180, no minWidth -> minWidth defaults to width, use 180
+    '200px', // width=180, minWidth=200 -> use minWidth because 200 > 180
+    '120px', // no width, no minWidth -> width defaults to DEFAULT (120), minWidth defaults to width
+    '200px', // no width, minWidth=200 -> width defaults to DEFAULT (120), minWidth=200 -> use 200
+    '120px', // no width, minWidth=80 -> width defaults to DEFAULT (120), minWidth=80 -> use 120
+    '200px', // width=200, minWidth=100 -> use width because 200 > 100
   ]);
 });
 
