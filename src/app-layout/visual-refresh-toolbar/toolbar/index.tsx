@@ -197,7 +197,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
       </Transition>
-      <ToolbarContainer hasAiDrawer={!!aiDrawer?.trigger}>
+      <ToolbarContainer hasAiDrawer={!!activeAiDrawerId}>
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
