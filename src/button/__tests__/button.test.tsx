@@ -184,6 +184,44 @@ describe('Button Component', () => {
     });
   });
 
+  describe.each(['link', 'inline-link'] as const)(
+    'disabled with reason ignored for %s variant (not applicable)',
+    variant => {
+      test('does not make a link button focusable when disabledReason is set', () => {
+        const wrapper = renderButton({
+          variant,
+          href: 'https://example.com',
+          disabled: true,
+          disabledReason: 'reason',
+        });
+        expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+      });
+
+      test('does not show tooltip on focus for link variant with disabledReason', () => {
+        const wrapper = renderButton({
+          variant,
+          href: 'https://example.com',
+          disabled: true,
+          disabledReason: 'reason',
+        });
+
+        wrapper.getElement()!.focus();
+
+        expect(wrapper.findDisabledReason()).toBeNull();
+      });
+
+      test('does not have aria-describedby for link variant with disabledReason', () => {
+        const wrapper = renderButton({
+          variant,
+          href: 'https://example.com',
+          disabled: true,
+          disabledReason: 'reason',
+        });
+        expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+      });
+    }
+  );
+
   describe.each(['primary', 'normal', 'icon'] as const)('disabled with reason %s variant', variant => {
     describe.each([true, false] as const)('with href %s', withHref => {
       const defaultProps = {

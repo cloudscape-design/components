@@ -298,7 +298,7 @@ export const InternalButton = React.forwardRef(
         if (isNotInteractive) {
           // If disabled with a reason, make it focusable so users can access the tooltip
           // Otherwise, resolve to the default button props tabIndex.
-          return disabledReason ? 0 : buttonProps.tabIndex;
+          return isDisabledWithReason ? 0 : buttonProps.tabIndex;
         }
         return buttonProps.tabIndex;
       };
