@@ -115,6 +115,13 @@ export default tsEslint.config(
         'line',
         [' Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.', ' SPDX-License-Identifier: Apache-2.0'],
       ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'BinaryExpression[operator="in"][left.type="Literal"]',
+          message: 'Prefer a type guard function with `keyof` instead of raw `in` checks. See AWSUI-59006.',
+        },
+      ],
       'no-warning-comments': 'warn',
       'simple-import-sort/imports': [
         'error',

@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
 import { IconProps } from '../icon/interfaces';
 import { FlashbarProps } from './interfaces';
 
@@ -11,6 +13,16 @@ export const FOCUS_DEBOUNCE_DELAY = 500;
 export interface StackableItem extends FlashbarProps.MessageDefinition {
   expandedIndex: number;
   collapsedIndex?: number;
+}
+
+export function isStackableItem(item: StackableItem | FlashbarProps.MessageDefinition): item is StackableItem {
+  const key: keyof StackableItem = 'expandedIndex';
+  return key in item;
+}
+
+export function isRefObject<T>(ref: React.Ref<T>): ref is React.RefObject<T> {
+  const key: keyof React.RefObject<T> = 'current';
+  return ref !== null && typeof ref === 'object' && key in ref;
 }
 
 const typesToColors: Record<FlashbarProps.Type, string> = {
