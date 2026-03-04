@@ -3,8 +3,6 @@
 import * as React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import Autosuggest from '../../../lib/components/autosuggest';
 import Button from '../../../lib/components/button/index.js';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
@@ -22,11 +20,6 @@ import { PerformanceMetrics } from '../../internal/analytics';
 import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/modal/styles.css.js';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
 class ModalInternalWrapper extends ModalWrapper {
   findDialog(): ElementWrapper {
     return this.findByClassName(styles.dialog)!;
@@ -560,30 +553,6 @@ describe('Modal component', () => {
       setTimeout(() => {
         expect(modalPerformanceDataSpy).toHaveBeenCalled();
       }, 10);
-    });
-  });
-
-  describe('development warnings', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('warns when both size and width are provided', () => {
-      renderModal({ size: 'large', width: 500 });
-      expect(warnOnce).toHaveBeenCalledWith(
-        'Modal',
-        'Both `size` and `width` exist. `size` will not be used for width calculations.'
-      );
-    });
-
-    it('does not warn when only size is provided', () => {
-      renderModal({ size: 'large' });
-      expect(warnOnce).not.toHaveBeenCalled();
-    });
-
-    it('does not warn when only width is provided', () => {
-      renderModal({ width: 500 });
-      expect(warnOnce).not.toHaveBeenCalled();
     });
   });
 });

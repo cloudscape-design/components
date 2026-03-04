@@ -40,11 +40,9 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
   height?: number;
 
   /**
-   * Sets the width of the modal. Defaults to `medium`.
-   *
-   * `max` uses variable width up to the largest size allowed by the design guidelines.
-   * Other sizes have fixed widths: `small` (320px), `medium` (600px), `large` (820px),
-   * `x-large` (1024px), `xx-large` (1280px).
+   * Sets the width of the modal. `max` uses variable width up to the
+   * largest size allowed by the design guidelines. Other sizes have fixed widths:
+   * `small` (320px), `medium` (600px), `large` (820px), `x-large` (1024px), `xx-large` (1280px).
    */
   size?: ModalProps.Size;
   /**

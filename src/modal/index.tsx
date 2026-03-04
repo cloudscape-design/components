@@ -3,7 +3,7 @@
 'use client';
 import React from 'react';
 
-import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import {
   AnalyticsFunnel,
@@ -70,12 +70,7 @@ function ModalWithAnalyticsFunnel({
   );
 }
 
-export default function Modal({ position = 'center', width, height, ...rest }: ModalProps) {
-  const { size = 'medium', ...props } = rest;
-  if (rest.size !== undefined && width !== undefined) {
-    warnOnce('Modal', 'Both `size` and `width` exist. `size` will not be used for width calculations.');
-  }
-
+export default function Modal({ size = 'medium', position = 'center', width, height, ...props }: ModalProps) {
   const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
