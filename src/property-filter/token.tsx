@@ -19,13 +19,11 @@ import {
   InternalQuery,
   InternalToken,
   InternalTokenGroup,
-  isInternalToken,
-  isInternalTokenGroup,
   JoinOperation,
   LoadItemsDetail,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
-import { tokenGroupToTokens } from './utils';
+import { isInternalToken, isInternalTokenGroup, tokenGroupToTokens } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

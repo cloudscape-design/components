@@ -14,7 +14,6 @@ import {
   InternalQuery,
   InternalToken,
   InternalTokenGroup,
-  isInternalToken,
   JoinOperation,
   ParsedText,
   Query,
@@ -22,6 +21,7 @@ import {
   TokenGroup,
 } from './interfaces';
 import {
+  isInternalToken,
   matchFilteringProperty,
   matchOperator,
   matchOperatorPrefix,

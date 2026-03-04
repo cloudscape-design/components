@@ -6,8 +6,25 @@ import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalToken,
+  InternalTokenGroup,
   Token,
 } from './interfaces';
+
+// Type guards for InternalToken | InternalTokenGroup union discrimination.
+// Using keyof ensures compile-time validation of the discriminant property name.
+// See AWSUI-59006 for context.
+
+export function isInternalToken(tokenOrGroup: InternalToken | InternalTokenGroup): tokenOrGroup is InternalToken {
+  const key: keyof InternalToken = 'operator';
+  return key in tokenOrGroup;
+}
+
+export function isInternalTokenGroup(
+  tokenOrGroup: InternalToken | InternalTokenGroup
+): tokenOrGroup is InternalTokenGroup {
+  const key: keyof InternalTokenGroup = 'operation';
+  return key in tokenOrGroup;
+}
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
