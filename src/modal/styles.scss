@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../container/shared' as container;
 @use './motion';
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $modal-z-index: 5000;
 
@@ -33,12 +34,19 @@ $modal-z-index: 5000;
 
 .focus-lock {
   align-self: flex-start;
-  margin-block: auto;
   margin-inline: auto;
   padding-block: awsui.$space-s;
   padding-inline: 0;
   z-index: $modal-z-index;
   pointer-events: none;
+
+  &.position-top {
+    margin-block-start: 0;
+  }
+
+  &.position-center {
+    margin-block: auto;
+  }
 }
 
 .dialog {
@@ -66,11 +74,28 @@ $modal-z-index: 5000;
     max-inline-size: 820px;
   }
 
+  &.x-large {
+    max-inline-size: 1024px;
+  }
+
+  &.xx-large {
+    max-inline-size: 1280px;
+  }
+
+  &.custom-width {
+    max-inline-size: var(#{custom-props.$modalCustomWidth});
+  }
+
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
     max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
     margin-block: auto;
     margin-inline: auto;
+  }
+
+  &.custom-height {
+    block-size: var(#{custom-props.$modalCustomHeight});
+    max-block-size: calc(100vh - (2 * #{awsui.$space-s}));
   }
 }
 
@@ -85,6 +110,12 @@ $modal-z-index: 5000;
   border-end-start-radius: awsui.$border-radius-container;
   border-end-end-radius: awsui.$border-radius-container;
   box-shadow: awsui.$shadow-modal;
+
+  &.custom-height-container {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+  }
 }
 
 .content {
@@ -95,6 +126,12 @@ $modal-z-index: 5000;
   &.no-paddings {
     padding-block: 0;
     padding-inline: 0;
+  }
+
+  // When custom height is set, make content scrollable
+  &.custom-height-content {
+    flex-grow: 1;
+    overflow-y: auto;
   }
 }
 
@@ -124,6 +161,11 @@ $modal-z-index: 5000;
   position: sticky;
   inset-block-end: 0;
   z-index: 800;
+
+  &.custom-height {
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
 
   &--stuck {
     border-start-start-radius: 0;

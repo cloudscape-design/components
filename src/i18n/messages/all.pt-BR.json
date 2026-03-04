@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Atualize para tentar novamente. Estamos rastreando esse problema, mas você pode compartilhar <Feedback>mais informações aqui</Feedback>.} other {Atualize para tentar novamente.}}",
     "i18nStrings.refreshActionText": "Atualizar página"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lançamentos de atributos",
+    "i18nStrings.viewAll": "Visualizar todos os lançamentos de atributos",
+    "ariaLabels.closeButton": "Fechar notificações",
+    "ariaLabels.content": "Notificações de recursos",
+    "ariaLabels.triggerButton": "Mostrar notificações de recursos",
+    "ariaLabels.resizeHandle": "Redimensionar notificações de recursos"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar mais",

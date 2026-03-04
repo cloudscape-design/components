@@ -488,3 +488,11 @@ $ai-drawer-heider-height: 42px;
     }
   }
 }
+
+.runtime-feature-notifications-drawer-content {
+  border-block-start: 1px solid awsui.$color-border-divider-default;
+}
+
+.runtime-feature-notifications-footer {
+  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+}

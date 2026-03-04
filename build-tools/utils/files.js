@@ -22,6 +22,7 @@ function listPublicItems(baseDir) {
         elem !== 'test-utils' &&
         elem !== 'i18n' &&
         elem !== 'theming' &&
+        elem !== 'plugins' &&
         elem !== 'contexts'
     );
 }

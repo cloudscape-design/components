@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Aktualisieren Sie die Seite, um es erneut zu versuchen. Wir verfolgen dieses Problem nach, Sie können aber <Feedback>hier zusätzliche Informationen mitteilen</Feedback>.} other {Aktualisieren Sie die Seite, um es erneut zu versuchen.}}",
     "i18nStrings.refreshActionText": "Seite aktualisieren"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Neueste Feature-Versionen",
+    "i18nStrings.viewAll": "Alle Feature-Versionen anzeigen",
+    "ariaLabels.closeButton": "Benachrichtigungen schließen",
+    "ariaLabels.content": "Benachrichtigungen über Funktionen",
+    "ariaLabels.triggerButton": "Funktionsbenachrichtigungen anzeigen",
+    "ariaLabels.resizeHandle": "Größe von Funktionsbenachrichtigungen ändern"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Weniger anzeigen",
     "i18nStrings.limitShowMore": "Mehr anzeigen",

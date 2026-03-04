@@ -18,12 +18,12 @@ import styles from './styles.css.js';
 export interface PopoverBodyProps {
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
-  onDismiss: (() => void) | undefined;
+  onDismiss: ((method?: 'escape' | 'close-button') => void) | undefined;
   onBlur?: (event: React.FocusEvent) => void;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  variant?: 'annotation' | 'chart';
+  variant?: 'annotation' | 'chart' | 'feature-prompt';
   overflowVisible?: 'content' | 'both';
 
   className?: string;
@@ -58,7 +58,7 @@ const PopoverBody = React.forwardRef(
       (event: React.KeyboardEvent) => {
         if (event.keyCode === KeyCode.escape) {
           event.stopPropagation();
-          onDismiss?.();
+          onDismiss?.('escape');
         }
       },
       [onDismiss]
@@ -85,7 +85,7 @@ const PopoverBody = React.forwardRef(
           iconName="close"
           className={styles['dismiss-control']}
           ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
-          onClick={() => onDismiss?.()}
+          onClick={() => onDismiss?.('close-button')}
           ref={dismissButtonRef}
         />
       </div>

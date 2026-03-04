@@ -44,7 +44,7 @@ export interface BaseLayoutProps extends BaseComponentProps {
    * #### DrawerAriaLabels
    * - `drawerName` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
    * - `closeButton` (string) - (Optional) Label for the close button.
-   * - `triggerButton` (string) - (Optional) Label for the trigger button.
+   * - `triggerButton` (string) - (Optional) Label for the trigger button. When `badge` is true, include the badge information in the label (for example, "Notifications, has unread messages").
    * - `resizeHandle` (string) - (Optional) Label for the resize handle.
    */
   drawers?: Array<AppLayoutProps.Drawer>;

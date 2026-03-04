@@ -184,6 +184,14 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.} other {Aggiorna la pagina per riprovare.}}",
     "i18nStrings.refreshActionText": "Aggiorna pagina"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Ultime versioni delle funzionalità",
+    "i18nStrings.viewAll": "Visualizza tutte le versioni delle funzionalità",
+    "ariaLabels.closeButton": "Chiudi notifiche",
+    "ariaLabels.content": "Notifiche delle funzionalità",
+    "ariaLabels.triggerButton": "Mostra le notifiche delle funzionalità",
+    "ariaLabels.resizeHandle": "Ridimensiona le notifiche delle funzionalità"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",
     "i18nStrings.limitShowMore": "Mostra altro",

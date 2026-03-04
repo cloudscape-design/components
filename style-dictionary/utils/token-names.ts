@@ -814,6 +814,7 @@ export type TypographyTokenName =
   | 'letterSpacingHeadingL'
   | 'letterSpacingHeadingM'
   | 'letterSpacingHeadingS'
+  | 'letterSpacingHeadingXs'
   | 'lineHeightBodyM'
   | 'lineHeightBodyS'
   | 'lineHeightDisplayL'
