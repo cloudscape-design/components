@@ -104,6 +104,7 @@ const DateRangePicker = React.forwardRef(
       isValidRange = () => ({ valid: true }),
       showClearButton = true,
       dateOnly = false,
+      ariaLabel,
       timeOffset,
       getTimeOffset,
       timeInputFormat = 'hh:mm:ss',
@@ -143,12 +144,22 @@ const DateRangePicker = React.forwardRef(
       ? { startDate: undefined, endDate: undefined }
       : normalizeTimeOffset(value, getTimeOffset, timeOffset);
     value = formatInitialValue(value, dateOnly, isMonthOnly, normalizedTimeOffset);
+
     const baseProps = getBaseProps(rest);
-    const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
+    const ariaLabelId = useUniqueId('date-range-picker-arialabel-');
+    const {
+      invalid,
+      warning,
+      controlId,
+      ariaDescribedby,
+      ariaLabelledby: contextAriaLabelledby,
+    } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
       ariaDescribedby: rest.ariaDescribedby ?? i18nStrings?.ariaDescribedby,
       ...rest,
     });
+    const ariaLabelledby = joinStrings(contextAriaLabelledby, ariaLabelId);
+
     const isSingleGrid = useMobile();
 
     const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -275,7 +286,6 @@ const DateRangePicker = React.forwardRef(
         invalid={invalid}
         warning={warning}
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
-        ariaLabel={i18nStrings?.ariaLabel}
         ariaDescribedby={ariaDescribedby}
         className={clsx(testutilStyles.label, styles.label, {
           [styles['label-enabled']]: !readOnly && !disabled,
@@ -354,6 +364,9 @@ const DateRangePicker = React.forwardRef(
             </ResetContextsForModal>
           }
         />
+        <div id={ariaLabelId} hidden={true}>
+          {ariaLabel || i18nStrings?.ariaLabel}
+        </div>
       </div>
     );
   }
