@@ -10801,6 +10801,12 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     {
+      "description": "Adds \`aria-label\` to the trigger and dropdown.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 
