@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import { Input, LiveRegion } from '~components';
+import { FormField, Input, LiveRegion } from '~components';
 import Button from '~components/button';
 
 export default function ButtonIntegrationPage() {
@@ -21,8 +21,14 @@ export default function ButtonIntegrationPage() {
   return (
     <article>
       <h1>Button with loading text and result</h1>
-      <Input value={loadingTime.toString()} onChange={e => setLoadingTime(parseInt(e.detail.value) || 0)} />
-      Click to reload:
+      <FormField label="Loading duration">
+        <Input
+          type="number"
+          value={loadingTime.toString()}
+          onChange={e => setLoadingTime(parseInt(e.detail.value) || 0)}
+        />
+      </FormField>
+      Trigger reload:
       <Button
         ariaLabel="Reload"
         iconName="refresh"
