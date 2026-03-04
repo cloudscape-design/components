@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -19,6 +19,7 @@ import {
   getTextFromSelector,
 } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -41,6 +42,8 @@ interface FormFieldWarningProps {
   children?: React.ReactNode;
   warningIconAriaLabel?: string;
 }
+
+const CHARACTER_COUNT_DEBOUNCE_MS = 1000;
 
 export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
   const i18n = useInternalI18n('form-field');
@@ -114,6 +117,7 @@ export default function InternalFormField({
   secondaryControl,
   description,
   constraintText,
+  characterCountText,
   errorText,
   warningText,
   __hideLabel,
@@ -147,6 +151,7 @@ export default function InternalFormField({
     label,
     description,
     constraintText,
+    characterCountText,
     errorText,
     showWarning ? warningText : undefined
   );
@@ -173,6 +178,16 @@ export default function InternalFormField({
     [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
     [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
   };
+
+  const debounceTimeoutRef = useRef<number | undefined>();
+  const [debouncedCharacterCountText, setDebouncedCharacterCountText] = useState(characterCountText);
+
+  useEffect(() => {
+    debounceTimeoutRef.current = setTimeout(() => {
+      setDebouncedCharacterCountText(characterCountText);
+    }, CHARACTER_COUNT_DEBOUNCE_MS);
+    return () => clearTimeout(debounceTimeoutRef.current);
+  }, [characterCountText]);
 
   useEffect(() => {
     if (funnelInteractionId && errorText && funnelState.current !== 'complete') {
@@ -275,8 +290,15 @@ export default function InternalFormField({
             </FormFieldWarning>
           )}
           {constraintText && (
-            <ConstraintText id={slotIds.constraint} hasValidationText={!!errorText || !!warningText}>
-              {constraintText}
+            <ConstraintText hasValidationText={!!errorText || !!warningText}>
+              <span id={slotIds.constraint}>{constraintText}</span>
+              {characterCountText && (
+                <>
+                  {' '}
+                  <span aria-hidden={true}>{characterCountText}</span>
+                  <ScreenreaderOnly id={slotIds.characterCount}>{debouncedCharacterCountText}</ScreenreaderOnly>
+                </>
+              )}
             </ConstraintText>
           )}
         </div>
