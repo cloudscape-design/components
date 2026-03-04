@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useContext } from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { I18nProvider } from '../../../../lib/components/i18n';
 import { FormatFunction, InternalI18nContext } from '../../../../lib/components/i18n/context';
@@ -41,9 +41,8 @@ describe('RemoteI18nProvider', () => {
       </RemoteI18nProvider>
     );
 
-    await waitFor(() => {
-      expect(getByTestId('locale')).toHaveTextContent('es');
-    });
+    await jest.runAllTimersAsync();
+    expect(getByTestId('locale')).toHaveTextContent('es');
     expect(loadFormatter).toHaveBeenCalledWith({ locale: 'es' });
   });
 
@@ -56,9 +55,8 @@ describe('RemoteI18nProvider', () => {
       </RemoteI18nProvider>
     );
 
-    await waitFor(() => {
-      expect(getByTestId('locale')).toHaveTextContent('en');
-    });
+    await jest.runAllTimersAsync();
+    expect(getByTestId('locale')).toHaveTextContent('en');
     expect(loadFormatter).toHaveBeenCalledWith({ locale: 'en' });
   });
 
@@ -71,9 +69,8 @@ describe('RemoteI18nProvider', () => {
       </RemoteI18nProvider>
     );
 
-    await waitFor(() => {
-      expect(loadFormatter).toHaveBeenCalled();
-    });
+    await jest.runAllTimersAsync();
+    expect(loadFormatter).toHaveBeenCalled();
     expect(getByTestId('locale')).toHaveTextContent('no-context');
   });
 
@@ -86,9 +83,8 @@ describe('RemoteI18nProvider', () => {
       </RemoteI18nProvider>
     );
 
-    await waitFor(() => {
-      expect(loadFormatter).toHaveBeenCalled();
-    });
+    await jest.runAllTimersAsync();
+    expect(loadFormatter).toHaveBeenCalled();
     expect(getByTestId('locale')).toHaveTextContent('no-context');
   });
 
