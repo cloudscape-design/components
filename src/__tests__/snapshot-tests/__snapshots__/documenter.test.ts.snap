@@ -33463,6 +33463,19 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     {
       "methods": [
         {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findConstraint",
           "parameters": [],
           "returnType": {
@@ -44499,6 +44512,14 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],

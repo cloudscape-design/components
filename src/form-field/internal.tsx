@@ -92,7 +92,7 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
   );
 }
 
-export function ConstraintText({
+export function ConstraintTextArea({
   id,
   hasValidationText,
   children,
@@ -291,7 +291,7 @@ export default function InternalFormField({
             </FormFieldWarning>
           )}
           {(constraintText || characterCountText) && (
-            <ConstraintText hasValidationText={!!errorText || !!warningText}>
+            <ConstraintTextArea hasValidationText={!!errorText || !!warningText}>
               {constraintText && (
                 <span id={slotIds.constraint} className={testStyles.constraint}>
                   {constraintText}
@@ -299,14 +299,14 @@ export default function InternalFormField({
               )}
               {characterCountText && (
                 <>
-                  {' '}
+                  {!!constraintText && ' '}
                   <span className={testStyles['character-count']} aria-hidden={true}>
                     {characterCountText}
                   </span>
                   <ScreenreaderOnly id={slotIds.characterCount}>{debouncedCharacterCountText}</ScreenreaderOnly>
                 </>
               )}
-            </ConstraintText>
+            </ConstraintTextArea>
           )}
         </div>
       )}

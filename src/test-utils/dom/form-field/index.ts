@@ -21,9 +21,7 @@ export default class FormFieldWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findConstraint(): ElementWrapper | null {
-    return this.find(
-      `:scope > .${styles.hints} .${styles.constraint}, :scope > .${styles.hints} .${testStyles.constraint}`
-    );
+    return this.find(`:scope > .${styles.hints} .${testStyles.constraint}`);
   }
 
   findCharacterCount(): ElementWrapper | null {
