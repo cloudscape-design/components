@@ -129,12 +129,19 @@ describe('useModalDimensions', () => {
       expect(warnOnce).not.toHaveBeenCalled();
     });
 
-    test('does not warn when dimensions are NaN', () => {
+    test('warns when dimensions are NaN', () => {
       renderHook(useModalDimensions, {
         initialProps: { height: NaN, width: NaN, hasFooter: false },
       });
 
-      expect(warnOnce).not.toHaveBeenCalled();
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Modal',
+        'Height is NaN and will not be set. This is likely a bug in your code.'
+      );
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Modal',
+        'Width is NaN and will not be set. This is likely a bug in your code.'
+      );
     });
   });
 });
