@@ -31,6 +31,7 @@ export default function InternalCard({
   disableHeaderPaddings,
   disableContentPaddings,
   disableFooterPaddings,
+  fullHeight,
   __internalRootRef,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
@@ -48,7 +49,8 @@ export default function InternalCard({
         highlighted && styles.highlighted,
         headerRowEmpty && styles['no-header'],
         !children && styles['no-content'],
-        isRefresh && styles.refresh
+        isRefresh && styles.refresh,
+        fullHeight && styles['full-height']
       ),
       ...metadataAttributes,
       onClick,
@@ -60,23 +62,25 @@ export default function InternalCard({
 
   return (
     <div ref={__internalRootRef} {...rootAttributes}>
-      <div
-        className={clsx(
-          styles.header,
-          disableHeaderPaddings && styles['no-padding'],
-          !!actions && styles['with-actions']
-        )}
-        style={getHeaderStyles(style)}
-      >
-        <InternalStructuredItem
-          content={header && <div className={styles['header-inner']}>{header}</div>}
-          secondaryContent={description && <div className={styles.description}>{description}</div>}
-          icon={iconElement}
-          actions={actions}
-          disablePaddings={disableHeaderPaddings}
-          wrapActions={false}
-        />
-      </div>
+      {(header || description || iconElement || actions) && (
+        <div
+          className={clsx(
+            styles.header,
+            disableHeaderPaddings && styles['no-padding'],
+            !!actions && styles['with-actions']
+          )}
+          style={getHeaderStyles(style)}
+        >
+          <InternalStructuredItem
+            content={header && <div className={styles['header-inner']}>{header}</div>}
+            secondaryContent={description && <div className={styles.description}>{description}</div>}
+            icon={iconElement}
+            actions={actions}
+            disablePaddings={disableHeaderPaddings}
+            wrapActions={false}
+          />
+        </div>
+      )}
       {children && (
         <div
           className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}

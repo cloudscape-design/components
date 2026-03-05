@@ -16,7 +16,6 @@
   border-end-start-radius: awsui.$border-radius-card;
   border-end-end-radius: awsui.$border-radius-card;
   box-sizing: border-box;
-  block-size: 100%;
 
   &::before {
     @include styles.base-pseudo-element;
@@ -126,6 +125,10 @@ $padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-ver
     border-block: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
     border-inline: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
   }
+}
+
+.full-height {
+  block-size: 100%;
 }
 
 .description {

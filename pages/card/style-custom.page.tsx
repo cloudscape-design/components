@@ -16,6 +16,7 @@ export default function CustomCard() {
 
       <SpaceBetween size="m" direction="horizontal">
         <Card
+          disableHeaderPaddings={true}
           style={{
             root: {
               background,
