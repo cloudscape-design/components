@@ -5,7 +5,7 @@ import { AutosuggestItem } from '../interfaces';
 type SearchableFields = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagFields = 'tags' | 'filteringTags';
 
-const isGroup = (option: AutosuggestItem) => 'type' in option && option.type === 'parent';
+const isGroup = (option: AutosuggestItem) => option.type === 'parent';
 
 const popLastGroup = (options: AutosuggestItem[]) => {
   if (options.length) {

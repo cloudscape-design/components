@@ -326,11 +326,7 @@ function PortaledModal({
                       <ButtonContext.Provider value={{ onClick: onButtonClick }}>
                         <div
                           ref={footerRef}
-                          className={clsx(
-                            styles.footer,
-                            footerStuck && styles['footer--stuck'],
-                            hasCustomHeight && styles['custom-height']
-                          )}
+                          className={clsx(styles.footer, (footerStuck || hasCustomHeight) && styles['footer--rounded'])}
                         >
                           {footer}
                         </div>
