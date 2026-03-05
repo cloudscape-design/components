@@ -69,11 +69,11 @@ test('style API', () => {
   const outerCircle = wrapper.findByClassName(styles['styled-circle-border'])!.getElement();
   const innerCircle = wrapper.findByClassName(styles['styled-circle-fill'])!.getElement();
 
-  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('blue');
-  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('green');
-  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('blue');
+  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('rgb(0, 0, 255)');
+  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('rgb(0, 128, 0)');
+  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('rgb(0, 0, 255)');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('orange');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('1px');
-  expect(getComputedStyle(label).getPropertyValue('color')).toBe('brown');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('rgb(165, 42, 42)');
 });

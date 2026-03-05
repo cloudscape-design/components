@@ -91,7 +91,7 @@ describe('Style API', () => {
     );
 
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('background')).toBe('rgb(240, 240, 235)');
-    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('purple');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-color')).toBe('rgb(128, 0, 128)');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-radius')).toBe('240px');
     expect(getComputedStyle(wrapper.getElement()).getPropertyValue('border-width')).toBe('6px');
     expect(
@@ -104,7 +104,9 @@ describe('Style API', () => {
     ).toBe('140px');
     expect(getComputedStyle(wrapper.findHeader()!.getElement()).getPropertyValue('padding-block')).toBe('20px 0px');
     expect(getComputedStyle(wrapper.findHeader()!.getElement()).getPropertyValue('padding-inline')).toBe('140px');
-    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('border-color')).toBe('purple');
+    expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('border-color')).toBe(
+      'rgb(128, 0, 128)'
+    );
     expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('border-width')).toBe('6px');
     expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-block')).toBe('40px');
     expect(getComputedStyle(wrapper.findFooter()!.getElement()).getPropertyValue('padding-inline')).toBe('140px');
