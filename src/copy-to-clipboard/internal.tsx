@@ -52,6 +52,14 @@ export default function InternalCopyToClipboard({
   }, [copyErrorText]);
 
   const baseProps = getBaseProps(restProps);
+
+  // Extract data-* attributes to forward to the inner button for analytics support.
+  const dataAttributes: Record<string, string> = {};
+  Object.keys(restProps).forEach(key => {
+    if (key.match(/^data-/)) {
+      dataAttributes[key] = (restProps as Record<string, string>)[key];
+    }
+  });
   const onClick = () => {
     if (!navigator.clipboard) {
       // The clipboard API is not available in insecure contexts.
@@ -87,6 +95,7 @@ export default function InternalCopyToClipboard({
 
   const button = (
     <InternalButton
+      {...dataAttributes}
       ariaLabel={copyButtonAriaLabel ?? copyButtonText}
       iconName="copy"
       variant={triggerVariant}
