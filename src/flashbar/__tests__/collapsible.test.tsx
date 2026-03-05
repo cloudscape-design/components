@@ -499,7 +499,7 @@ describe('Collapsible Flashbar', () => {
         });
 
         expect(getComputedStyle(flashbar.findItems()[0].find('li > div')?.getElement() as HTMLElement).background).toBe(
-          'rgb(255, 255, 0)'
+          'yellow'
         );
 
         findNotificationBar(flashbar)!.click();
@@ -508,52 +508,52 @@ describe('Collapsible Flashbar', () => {
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBackgroundActive
           )
-        ).toBe('#ff00ff');
+        ).toBe('magenta');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBackgroundDefault
           )
-        ).toBe('#ff0000');
+        ).toBe('red');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBackgroundHover
           )
-        ).toBe('#a52a2a');
+        ).toBe('brown');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBorderColorActive
           )
-        ).toBe('#ff00ff');
+        ).toBe('magenta');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBorderColorDefault
           )
-        ).toBe('#800080');
+        ).toBe('purple');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleBorderColorHover
           )
-        ).toBe('#0000ff');
+        ).toBe('blue');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleColorActive
           )
-        ).toBe('#ff00ff');
+        ).toBe('magenta');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleColorDefault
           )
-        ).toBe('#ffa500');
+        ).toBe('orange');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleColorHover
           )
-        ).toBe('#008000');
+        ).toBe('green');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderColor
           )
-        ).toBe('#ff00ff');
+        ).toBe('magenta');
         expect(
           getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderRadius
@@ -568,12 +568,12 @@ describe('Collapsible Flashbar', () => {
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorActive
           )
-        ).toBe('#ffff00');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderColor
           )
-        ).toBe('#ffff00');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
             customCssProps.styleFocusRingBorderRadius
@@ -588,17 +588,17 @@ describe('Collapsible Flashbar', () => {
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorDefault
           )
-        ).toBe('#ffff00');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleColorHover
           )
-        ).toBe('#ffff00');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleFocusRingBorderColor
           )
-        ).toBe('#ffff00');
+        ).toBe('yellow');
         expect(
           getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
             customCssProps.styleFocusRingBorderRadius
