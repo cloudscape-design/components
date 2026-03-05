@@ -107,10 +107,25 @@ describe('findMonthToDisplay', () => {
     const result = findMonthToDisplay(value, true); // isSingleGrid doesn't matter in this case
     expect(result).toEqual(createDate('2023-07-01'));
   });
-  test('should return current month when both start and end dates are null', () => {
+  test('should return current month when both start and end dates are null for single grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findMonthToDisplay(value, true); // isSingleGrid doesn't matter in this case
+    const result = findMonthToDisplay(value, true);
     expect(result).toEqual(createDate('2023-06-01')); // Based on the mocked current date
+  });
+  test('should return current month (default previous-and-current) when both dates are null for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findMonthToDisplay(value, false);
+    expect(result).toEqual(createDate('2023-06-01')); // Default: current month as baseDate (right grid)
+  });
+  test('should return current month with startCurrentMonth=false when both dates are null for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findMonthToDisplay(value, false, false);
+    expect(result).toEqual(createDate('2023-06-01'));
+  });
+  test('should return next month with startCurrentMonth=true when both dates are null for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findMonthToDisplay(value, false, true);
+    expect(result).toEqual(createDate('2023-07-01')); // Next month as baseDate so current month appears on the left
   });
   test('should handle leap years correctly', () => {
     jest.setSystemTime(createDate('2024-02-15').getTime());
@@ -151,10 +166,25 @@ describe('findYearToDisplay', () => {
     const result = findYearToDisplay(value, true); // isSingleGrid doesn't matter in this case
     expect(result).toEqual(createDate('2024-01-01'));
   });
-  test('should return current year when both start and end dates are empty', () => {
+  test('should return current year when both start and end dates are empty for single grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findYearToDisplay(value, true); // isSingleGrid doesn't matter in this case
+    const result = findYearToDisplay(value, true);
     expect(result).toEqual(createDate('2023-01-01')); // Based on the mocked current date
+  });
+  test('should return current year (default previous-and-current) when both dates are empty for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findYearToDisplay(value, false);
+    expect(result).toEqual(createDate('2023-01-01')); // Default: current year as baseDate (right grid)
+  });
+  test('should return current year with startCurrentMonth=false when both dates are empty for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findYearToDisplay(value, false, false);
+    expect(result).toEqual(createDate('2023-01-01'));
+  });
+  test('should return next year with startCurrentMonth=true when both dates are empty for double grid', () => {
+    const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
+    const result = findYearToDisplay(value, false, true);
+    expect(result).toEqual(createDate('2024-01-01')); // Next year as baseDate so current year appears on the left
   });
   test('should handle leap years correctly', () => {
     const value = { start: { date: '2024-02-29', time: '00:00' }, end: { date: '', time: '' } };
