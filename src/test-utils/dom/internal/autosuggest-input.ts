@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import { InputWrapper } from '../index.js';
+import InputWrapper from '../input';
 import DropdownWrapper from './dropdown.js';
 
 import inputStyles from '../../../input/styles.selectors.js';

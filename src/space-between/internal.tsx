@@ -34,7 +34,7 @@ const InternalSpaceBetween = forwardRef(
     /*
    Flattening the children allows us to "see through" React Fragments and nested arrays.
    */
-    const flattenedChildren = flattenChildren(children);
+    const flattenedChildren = flattenChildren(children, 'SpaceBetween');
 
     return (
       <WithNativeAttributes

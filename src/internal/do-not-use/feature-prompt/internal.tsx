@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
@@ -13,6 +13,7 @@ import ResetContextsForModal from '../../context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { SomeRequired } from '../../types';
+import { nodeBelongs } from '../../utils/node-belongs';
 import { FeaturePromptProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -53,6 +54,37 @@ function InternalFeaturePrompt(
     },
   }));
 
+  useEffect(() => {
+    if (!show) {
+      return;
+    }
+    const clickListener = (event: MouseEvent) => {
+      // Since the listener is registered on the window, `event.target` will incorrectly point at the
+      // shadow root if the component is rendered inside shadow DOM.
+      const target = event.composedPath ? event.composedPath()[0] : event.target;
+      if (!nodeBelongs(popoverBodyRef.current, target)) {
+        setShow(false);
+        fireNonCancelableEvent(onDismiss, { method: 'click-outside' });
+      }
+    };
+
+    // Listen for blur events on the window to detect clicks in iframes
+    const blurListener = () => {
+      if (document.activeElement?.tagName === 'IFRAME') {
+        setShow(false);
+        fireNonCancelableEvent(onDismiss, { method: 'click-outside' });
+      }
+    };
+
+    const controller = new AbortController();
+    window.addEventListener('click', clickListener, { signal: controller.signal, capture: true });
+    window.addEventListener('blur', blurListener, { signal: controller.signal, capture: true });
+
+    return () => {
+      controller.abort();
+    };
+  }, [show, onDismiss]);
+
   return (
     <span {...baseProps} className={styles.root} ref={__internalRootRef}>
       {show && (
@@ -74,20 +106,18 @@ function InternalFeaturePrompt(
                 dismissButton={true}
                 dismissAriaLabel={i18nStrings?.dismissAriaLabel}
                 header={header}
-                onDismiss={() => {
+                onDismiss={method => {
                   setShow(false);
-                  fireNonCancelableEvent(onDismiss);
+                  fireNonCancelableEvent(onDismiss, { method });
                 }}
-                variant="annotation"
-                overflowVisible="content"
                 onBlur={event => {
-                  const relatedTarget = event.relatedTarget;
-                  if (relatedTarget && popoverBodyRef.current?.contains(relatedTarget)) {
-                    return;
+                  if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                    setShow(false);
+                    fireNonCancelableEvent(onDismiss, { method: 'blur' });
                   }
-                  setShow(false);
-                  fireNonCancelableEvent(onDismiss);
                 }}
+                variant="feature-prompt"
+                overflowVisible="content"
               >
                 {content}
               </PopoverBody>
