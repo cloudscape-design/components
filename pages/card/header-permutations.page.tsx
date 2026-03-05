@@ -10,7 +10,7 @@ import PermutationsView from '../utils/permutations-view';
 import {
   actions,
   CardPage,
-  icon,
+  iconName,
   longContent,
   longDescription,
   longFooter,
@@ -28,7 +28,7 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     children: [longContent],
     description: [undefined, longDescription],
     actions: [undefined, actions],
-    icon: [undefined, icon],
+    iconName: [undefined, iconName],
   },
   // Without header and without description
   {
@@ -36,7 +36,7 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     children: [longContent],
     description: [undefined],
     actions: [undefined, actions],
-    icon: [undefined, icon],
+    iconName: [undefined, iconName],
   },
   // Without header but with description
   {
@@ -44,7 +44,7 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     children: [longContent],
     description: [longDescription],
     actions: [undefined, actions],
-    icon: [undefined],
+    iconName: [undefined],
   },
   // Without footer
   {
@@ -52,7 +52,7 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
     children: [longContent],
     description: [shortDescription],
     actions: [actions],
-    icon: [undefined],
+    iconName: [undefined],
     footer: [shortFooter, longFooter],
   },
   // With custom paddings
