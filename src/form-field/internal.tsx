@@ -30,6 +30,7 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -277,7 +278,7 @@ export default function InternalFormField({
         </InternalGrid>
       </div>
 
-      {(constraintText || errorText || warningText) && (
+      {(constraintText || characterCountText || errorText || warningText) && (
         <div className={styles.hints}>
           {errorText && (
             <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
@@ -289,13 +290,19 @@ export default function InternalFormField({
               {warningText}
             </FormFieldWarning>
           )}
-          {constraintText && (
+          {(constraintText || characterCountText) && (
             <ConstraintText hasValidationText={!!errorText || !!warningText}>
-              <span id={slotIds.constraint}>{constraintText}</span>
+              {constraintText && (
+                <span id={slotIds.constraint} className={testStyles.constraint}>
+                  {constraintText}
+                </span>
+              )}
               {characterCountText && (
                 <>
                   {' '}
-                  <span aria-hidden={true}>{characterCountText}</span>
+                  <span className={testStyles['character-count']} aria-hidden={true}>
+                    {characterCountText}
+                  </span>
                   <ScreenreaderOnly id={slotIds.characterCount}>{debouncedCharacterCountText}</ScreenreaderOnly>
                 </>
               )}
