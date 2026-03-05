@@ -440,12 +440,12 @@ test('all style api properties', function () {
   const description = wrapper.findByClassName(abstractSwitchStyles.description)!.getElement();
   const control = wrapper.findByClassName(abstractSwitchStyles.control)!.getElement();
 
-  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('blue');
-  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('green');
-  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('blue');
-  expect(getComputedStyle(label).getPropertyValue('color')).toBe('brown');
-  expect(getComputedStyle(description).getPropertyValue('color')).toBe('yellow');
-  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('orange');
+  expect(getComputedStyle(outerCircle).getPropertyValue('fill')).toBe('rgb(0, 0, 255)');
+  expect(getComputedStyle(outerCircle).getPropertyValue('stroke')).toBe('rgb(0, 128, 0)');
+  expect(getComputedStyle(innerCircle).getPropertyValue('stroke')).toBe('rgb(0, 0, 255)');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('rgb(165, 42, 42)');
+  expect(getComputedStyle(description).getPropertyValue('color')).toBe('rgb(255, 255, 0)');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('#ffa500');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('2px');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('1px');
 });
