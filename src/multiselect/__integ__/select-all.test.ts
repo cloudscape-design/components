@@ -22,8 +22,8 @@ function setup(
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 950, height: 300 });
-    const params = new URLSearchParams({ visualRefresh: String(visualRefresh) }).toString();
-    await browser.url(`/#/light/multiselect/select-all?${params}`);
+    const params = new URLSearchParams({ visualRefresh: String(visualRefresh), enableSelectAll: 'true' }).toString();
+    await browser.url(`/#/light/multiselect/screenshot?${params}`);
     await page.click(multiselect.findTrigger().toSelector());
     await testFn(page);
   });
