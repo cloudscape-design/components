@@ -225,12 +225,12 @@ test('all style api properties', () => {
   const toggleHandle = wrapper.findByClassName(styles['toggle-handle'])!.getElement();
   const toggleLabel = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
 
-  expect(getComputedStyle(toggleControl).getPropertyValue('background-color')).toBe('green');
+  expect(getComputedStyle(toggleControl).getPropertyValue('background-color')).toBe('rgb(0, 128, 0)');
   expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('magenta');
   expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('10px');
   expect(getComputedStyle(toggleControl).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('5px');
-  expect(getComputedStyle(toggleHandle).getPropertyValue('background-color')).toBe('blue');
-  expect(getComputedStyle(toggleLabel).getPropertyValue('color')).toBe('orange');
+  expect(getComputedStyle(toggleHandle).getPropertyValue('background-color')).toBe('rgb(0, 0, 255)');
+  expect(getComputedStyle(toggleLabel).getPropertyValue('color')).toBe('rgb(255, 165, 0)');
 });
 
 describe('native attributes', () => {
