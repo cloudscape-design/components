@@ -162,12 +162,7 @@ $modal-z-index: 5000;
   inset-block-end: 0;
   z-index: 800;
 
-  &.custom-height {
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
-  }
-
-  &--stuck {
+  &--rounded {
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: awsui.$border-radius-container;
