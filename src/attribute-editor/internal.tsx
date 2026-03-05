@@ -93,7 +93,7 @@ const InternalAttributeEditor = React.forwardRef(
     }, [items, i18nStrings?.itemRemovedAriaLive]);
 
     for (const def of definition) {
-      if (!def.label) {
+      if (def && !def.label) {
         warnOnce(
           'AttributeEditor',
           'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
