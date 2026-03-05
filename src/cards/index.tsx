@@ -337,6 +337,7 @@ const CardsList = <T,>({
             })}
           >
             <InternalCard
+              fullHeight={true}
               highlighted={selectable && selected}
               header={
                 <div className={styles['card-header']}>

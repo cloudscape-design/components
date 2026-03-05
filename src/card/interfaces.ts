@@ -164,5 +164,10 @@ export interface InternalCardProps
    */
   highlighted?: boolean;
 
+  /**
+   * Makes the card stretch to fill the full height of its container.
+   */
+  fullHeight?: boolean;
+
   metadataAttributes?: Record<string, string | undefined>;
 }
