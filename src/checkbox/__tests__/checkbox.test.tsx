@@ -318,13 +318,13 @@ test('all style api properties', () => {
   const styledBox = wrapper.findByClassName(styles['styled-box'])!.getElement();
   const styledLine = wrapper.findByClassName(styles['styled-line'])!.getElement();
 
-  expect(getComputedStyle(styledBox).getPropertyValue('fill')).toBe('rgb(255, 0, 255)');
-  expect(getComputedStyle(styledBox).getPropertyValue('stroke')).toBe('rgb(0, 128, 0)');
-  expect(getComputedStyle(styledLine).getPropertyValue('stroke')).toBe('rgb(165, 42, 42)');
-  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('#0000ff');
+  expect(getComputedStyle(styledBox).getPropertyValue('fill')).toBe('magenta');
+  expect(getComputedStyle(styledBox).getPropertyValue('stroke')).toBe('green');
+  expect(getComputedStyle(styledLine).getPropertyValue('stroke')).toBe('brown');
+  expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('blue');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('1px');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
-  expect(getComputedStyle(label).getPropertyValue('color')).toBe('rgb(255, 165, 0)');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('orange');
 });
 
 describe('native attributes', () => {
