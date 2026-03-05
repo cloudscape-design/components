@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 /**
  * @awsuiSystem core
  */
@@ -35,9 +37,45 @@ export interface BaseCardProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Icon displayed in the card header.
+   * Displays an icon next to the content. You can use the `iconPosition` and `iconVerticalAlignment` properties to position the icon.
    */
-  icon?: React.ReactNode;
+  iconName?: IconProps.Name;
+
+  /**
+   * Specifies the URL of a custom icon. Use this property if the icon you want isn't available.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconUrl?: string;
+
+  /**
+   * Specifies the SVG of a custom icon.
+   *
+   * Use this property if you want your custom icon to inherit colors dictated by variant or hover states.
+   * When this property is set, the component will be decorated with `aria-hidden="true"`. Ensure that the `svg` element:
+   * - has attribute `focusable="false"`.
+   * - has `viewBox="0 0 16 16"`.
+   *
+   * If you set the `svg` element as the root node of the slot, the component will automatically
+   * - set `stroke="currentColor"`, `fill="none"`, and `vertical-align="top"`.
+   * - set the stroke width based on the size of the icon.
+   * - set the width and height of the SVG element based on the size of the icon.
+   *
+   * If you don't want these styles to be automatically set, wrap the `svg` element into a `span`.
+   * You can still set the stroke to `currentColor` to inherit the color of the surrounding elements.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   *
+   * *Note:* Remember to remove any additional elements (for example: `defs`) and related CSS classes from SVG files exported from design software.
+   * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
+   */
+  iconSvg?: React.ReactNode;
+
+  /**
+   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+   * This property is ignored if you use a predefined icon or if you set your custom icon using the `iconSvg` slot.
+   */
+  iconAlt?: string;
 
   /**
    * Removes the default padding from the header area.
@@ -56,6 +94,13 @@ export interface BaseCardProps extends BaseComponentProps {
    * @default false
    */
   disableFooterPaddings?: boolean;
+
+  /**
+   * An object containing CSS properties to customize the card's visual appearance.
+   * Refer to the [style](/components/card/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: CardProps.Style;
 }
 
 export interface CardProps extends BaseCardProps {
@@ -72,7 +117,43 @@ export interface CardProps extends BaseCardProps {
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
 }
 
-export interface InternalCardProps extends BaseCardProps, Pick<CardProps, 'nativeAttributes'> {
+export namespace CardProps {
+  export type IconPosition = 'left' | 'right';
+  export type IconVerticalAlignment = 'top' | 'center';
+
+  export interface Style {
+    root?: {
+      background?: string;
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: string;
+    };
+    content?: {
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    header?: {
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    footer?: {
+      root?: {
+        paddingBlock?: string;
+        paddingInline?: string;
+      };
+      divider?: {
+        borderColor?: string;
+        borderWidth?: string;
+      };
+    };
+  }
+}
+
+export interface InternalCardProps
+  extends BaseCardProps,
+    InternalBaseComponentProps,
+    Pick<CardProps, 'nativeAttributes'> {
   /**
    * Called when the user clicks on the card.
    */

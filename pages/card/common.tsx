@@ -6,7 +6,7 @@ import React from 'react';
 import { Box, Button } from '~components';
 import ButtonGroup from '~components/button-group';
 import FormField from '~components/form-field';
-import Icon from '~components/icon';
+import { IconProps } from '~components/icon/interfaces';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 
@@ -77,4 +77,4 @@ export const actions = (
   />
 );
 
-export const icon = <Icon name="settings" />;
+export const iconName: IconProps.Name = 'settings';

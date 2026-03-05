@@ -7,6 +7,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './motion';
 
 @mixin card-style {
@@ -21,27 +22,31 @@
     @include styles.base-pseudo-element;
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
-    border-block-start: awsui.$border-width-card solid awsui.$color-border-card;
-    border-start-start-radius: awsui.$border-radius-card;
-    border-start-end-radius: awsui.$border-radius-card;
-    border-end-start-radius: awsui.$border-radius-card;
-    border-end-end-radius: awsui.$border-radius-card;
+    border-block-start: awsui.$border-width-card solid
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
+    border-start-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-start-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
     z-index: 1;
   }
 
   &::after {
     @include styles.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-card;
-    border-start-end-radius: awsui.$border-radius-card;
-    border-end-start-radius: awsui.$border-radius-card;
-    border-end-end-radius: awsui.$border-radius-card;
+    border-start-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-start-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
   }
   &:not(.refresh)::after {
-    box-shadow: awsui.$shadow-container;
+    box-shadow: var(#{custom-props.$styleBoxShadowDefault}, awsui.$shadow-container);
   }
   &.refresh::after {
-    border-block: solid awsui.$border-width-card awsui.$color-border-card;
-    border-inline: solid awsui.$border-width-card awsui.$color-border-card;
+    box-shadow: var(#{custom-props.$styleBoxShadowDefault}, none);
+    border-block: solid var(#{custom-props.$styleBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
+    border-inline: solid var(#{custom-props.$styleBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
   }
 }
 
@@ -49,7 +54,7 @@
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
-  background-color: awsui.$color-background-card;
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-card);
   min-inline-size: 0;
   @include card-style;
 }

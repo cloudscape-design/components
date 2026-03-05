@@ -3,10 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalIcon from '../icon/internal';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { processAttributes } from '../internal/utils/with-native-attributes';
 import { InternalCardProps } from './interfaces';
+import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -18,17 +20,25 @@ export default function InternalCard({
   header,
   description,
   footer,
-  icon,
+  iconName,
+  iconUrl,
+  iconSvg,
+  iconAlt,
+  style,
   metadataAttributes,
   nativeAttributes,
   onClick,
   disableHeaderPaddings,
   disableContentPaddings,
   disableFooterPaddings,
+  __internalRootRef,
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
 
-  const headerRowEmpty = !header && !description && !icon && !actions;
+  const hasIcon = iconName || iconUrl || iconSvg;
+  const iconElement = hasIcon ? <InternalIcon name={iconName} url={iconUrl} svg={iconSvg} alt={iconAlt} /> : undefined;
+
+  const headerRowEmpty = !header && !description && !hasIcon && !actions;
 
   const rootAttributes = processAttributes<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     {
@@ -42,31 +52,47 @@ export default function InternalCard({
       ),
       ...metadataAttributes,
       onClick,
+      style: getRootStyles(style),
     },
     nativeAttributes,
     'Card'
   );
 
   return (
-    <div {...rootAttributes}>
+    <div ref={__internalRootRef} {...rootAttributes}>
       <div
         className={clsx(
           styles.header,
           disableHeaderPaddings && styles['no-padding'],
           !!actions && styles['with-actions']
         )}
+        style={getHeaderStyles(style)}
       >
         <InternalStructuredItem
           content={header && <div className={styles['header-inner']}>{header}</div>}
           secondaryContent={description && <div className={styles.description}>{description}</div>}
-          icon={icon}
+          icon={iconElement}
           actions={actions}
           disablePaddings={disableHeaderPaddings}
           wrapActions={false}
         />
       </div>
-      {children && <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}>{children}</div>}
-      {footer && <div className={clsx(styles.footer, disableFooterPaddings && styles['no-padding'])}>{footer}</div>}
+      {children && (
+        <div
+          className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}
+          style={getContentStyles(style)}
+        >
+          {children}
+        </div>
+      )}
+      {footer && (
+        <div
+          className={clsx(styles.footer, disableFooterPaddings && styles['no-padding'])}
+          style={getFooterStyles(style)}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 }
