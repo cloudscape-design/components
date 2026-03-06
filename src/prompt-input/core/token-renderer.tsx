@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { createRoot, Root } from 'react-dom/client';
 
+import { createRoot, Root } from '../../internal/vendor/react-dom-client-stub';
 import Token from '../../token/internal';
 import { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
