@@ -17,6 +17,7 @@ const defaultProps: DateRangePickerProps = {
   granularity: 'day',
   i18nStrings,
   value: null,
+  ariaLabel: 'Date range picker',
   placeholder: 'Test Placeholder',
   onChange: () => {},
   relativeOptions: [],

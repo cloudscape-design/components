@@ -208,6 +208,11 @@ export interface DateRangePickerProps
    * Defaults to `false`.
    */
   hideTimeOffset?: boolean;
+
+  /**
+   * Adds `aria-label` to the trigger and dropdown.
+   */
+  ariaLabel?: string;
 }
 
 export namespace DateRangePickerProps {
@@ -310,16 +315,19 @@ export namespace DateRangePickerProps {
   export interface I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
+     * @deprecated Use `ariaLabel` on the component instead.
      */
     ariaLabel?: string;
 
     /**
      * Adds `aria-labelledby` to the trigger and dropdown.
+     * @deprecated Use `ariaLabelledby` on the component instead.
      */
     ariaLabelledby?: string;
 
     /**
      * Adds `aria-describedby` to the trigger and dropdown.
+     * @deprecated Use `ariaDescribedby` on the component instead.
      */
     ariaDescribedby?: string;
 
