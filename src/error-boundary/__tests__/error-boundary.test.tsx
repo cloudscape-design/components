@@ -614,7 +614,7 @@ describe('built-in error boundaries', () => {
 describe('default behaviors', () => {
   test('window reload is called when the refresh action is clicked', () => {
     const mockReload = jest.fn();
-    jest.spyOn(window.location, 'reload').mockImplementation(mockReload);
+    Object.defineProperty(window.location, 'reload', { configurable: true, writable: true, value: mockReload });
 
     renderWithErrorBoundary(<b>{{}}</b>);
     findRefreshAction()!.click();
@@ -622,8 +622,11 @@ describe('default behaviors', () => {
   });
 
   test('hides default refresh in cross-origin iframes', () => {
-    jest.spyOn(window.location, 'href', 'get').mockImplementation(() => {
-      throw new Error();
+    Object.defineProperty(window.location, 'href', {
+      configurable: true,
+      get() {
+        throw new Error();
+      },
     });
 
     renderWithErrorBoundary(<b>{{}}</b>);

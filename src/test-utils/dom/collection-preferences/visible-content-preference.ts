@@ -31,7 +31,7 @@ export default class VisibleContentPreferenceWrapper extends ComponentWrapper {
    */
   findToggleByIndex(groupIndex: number, optionIndex: number): ToggleWrapper | null {
     const groupSelector = `.${getClassName('groups')} > *:nth-child(${groupIndex})`;
-    const optionSelector = `.${getClassName('option')}:nth-child(${optionIndex})`;
+    const optionSelector = `*:nth-child(${optionIndex}).${getClassName('option')}`;
     return this.findComponent(`${groupSelector} ${optionSelector} .${getClassName('toggle')}`, ToggleWrapper);
   }
 }
