@@ -6,19 +6,19 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
-import { CardProps } from './interfaces';
-import InternalCard from './internal';
+import { ItemCardProps } from './interfaces';
+import InternalItemCard from './internal';
 
-export { CardProps };
-const Card = ({
+export { ItemCardProps };
+const ItemCard = ({
   disableHeaderPaddings,
   disableContentPaddings,
   disableFooterPaddings,
   iconName,
   style,
   ...props
-}: CardProps) => {
-  const baseComponentProps = useBaseComponent('Card', {
+}: ItemCardProps) => {
+  const baseComponentProps = useBaseComponent('ItemCard', {
     props: {
       disableHeaderPaddings,
       disableContentPaddings,
@@ -30,7 +30,7 @@ const Card = ({
   const externalProps = getExternalProps(props);
 
   return (
-    <InternalCard
+    <InternalItemCard
       disableHeaderPaddings={disableHeaderPaddings}
       disableContentPaddings={disableContentPaddings}
       disableFooterPaddings={disableFooterPaddings}
@@ -42,5 +42,5 @@ const Card = ({
   );
 };
 
-applyDisplayName(Card, 'Card');
-export default Card;
+applyDisplayName(ItemCard, 'ItemCard');
+export default ItemCard;

@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../icon/internal';
+import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { processAttributes } from '../internal/utils/with-native-attributes';
@@ -12,7 +13,7 @@ import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } fro
 
 import styles from './styles.css.js';
 
-export default function InternalCard({
+export default function InternalItemCard({
   actions,
   highlighted,
   children,
@@ -33,8 +34,10 @@ export default function InternalCard({
   disableFooterPaddings,
   fullHeight,
   __internalRootRef,
+  ...restProps
 }: InternalCardProps) {
   const isRefresh = useVisualRefresh();
+  const baseProps = getBaseProps(restProps);
 
   const hasIcon = iconName || iconUrl || iconSvg;
   const iconElement = hasIcon ? <InternalIcon name={iconName} url={iconUrl} svg={iconSvg} alt={iconAlt} /> : undefined;
@@ -61,7 +64,7 @@ export default function InternalCard({
   );
 
   return (
-    <div ref={__internalRootRef} {...rootAttributes}>
+    <div ref={__internalRootRef} {...rootAttributes} {...baseProps}>
       {(header || description || iconElement || actions) && (
         <div
           className={clsx(

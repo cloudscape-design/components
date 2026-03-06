@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { SpaceBetween } from '~components';
-import Card from '~components/card';
+import ItemCard from '~components/item-card';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -15,7 +15,7 @@ export default function CustomCard() {
       <h1>Custom Card</h1>
 
       <SpaceBetween size="m" direction="horizontal">
-        <Card
+        <ItemCard
           disableHeaderPaddings={true}
           style={{
             root: {
@@ -32,9 +32,9 @@ export default function CustomCard() {
           }}
         >
           Card content
-        </Card>
+        </ItemCard>
 
-        <Card
+        <ItemCard
           header="Card header"
           style={{
             root: {
@@ -55,9 +55,9 @@ export default function CustomCard() {
           }}
         >
           Card content
-        </Card>
+        </ItemCard>
 
-        <Card
+        <ItemCard
           footer="Card footer"
           style={{
             root: {
@@ -84,9 +84,9 @@ export default function CustomCard() {
           }}
         >
           Card content
-        </Card>
+        </ItemCard>
 
-        <Card
+        <ItemCard
           header="Card header"
           footer="Card footer"
           style={{
@@ -113,7 +113,7 @@ export default function CustomCard() {
           }}
         />
 
-        <Card
+        <ItemCard
           header="Card header"
           footer="Card footer"
           style={{
@@ -145,7 +145,7 @@ export default function CustomCard() {
           }}
         >
           Card content
-        </Card>
+        </ItemCard>
       </SpaceBetween>
     </ScreenshotArea>
   );

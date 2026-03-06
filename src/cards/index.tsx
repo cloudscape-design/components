@@ -8,7 +8,6 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalCard from '../card/internal';
 import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
@@ -20,6 +19,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalItemCard from '../item-card/internal';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import {
@@ -336,7 +336,7 @@ const CardsList = <T,>({
               },
             })}
           >
-            <InternalCard
+            <InternalItemCard
               fullHeight={true}
               highlighted={selectable && selected}
               header={
@@ -382,7 +382,7 @@ const CardsList = <T,>({
                     {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
                   </div>
                 ))}
-            </InternalCard>
+            </InternalItemCard>
           </li>
         );
       })}

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { CardProps } from './interfaces';
+import { ItemCardProps } from './interfaces';
 
-export function getRootStyles(style: CardProps.Style | undefined) {
+export function getRootStyles(style: ItemCardProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
   }
@@ -19,7 +19,7 @@ export function getRootStyles(style: CardProps.Style | undefined) {
   };
 }
 
-export function getContentStyles(style: CardProps.Style | undefined) {
+export function getContentStyles(style: ItemCardProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
   }
@@ -30,7 +30,7 @@ export function getContentStyles(style: CardProps.Style | undefined) {
   };
 }
 
-export function getHeaderStyles(style: CardProps.Style | undefined) {
+export function getHeaderStyles(style: ItemCardProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
   }
@@ -41,7 +41,7 @@ export function getHeaderStyles(style: CardProps.Style | undefined) {
   };
 }
 
-export function getFooterStyles(style: CardProps.Style | undefined) {
+export function getFooterStyles(style: ItemCardProps.Style | undefined) {
   if (SYSTEM !== 'core') {
     return {};
   }
