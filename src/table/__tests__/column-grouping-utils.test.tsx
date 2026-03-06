@@ -418,13 +418,18 @@ describe('column-grouping-utils', () => {
 
         expect(result?.maxDepth).toBe(3);
 
-        console.log(JSON.stringify(result?.rows));
-
-        // Row 0: metrics and config
+        // Row 0: metrics and a hidden placeholder for config (config had rowspan=2, now expanded)
         expect(result?.rows[0].columns.map(c => c.id)).toEqual(['metrics', 'config']);
+        const configRow0 = result?.rows[0].columns.find(c => c.id === 'config');
+        expect(configRow0?.isHidden).toBe(true);
+        expect(configRow0?.rowspan).toBe(1);
 
-        // Row 1: perf only (config's children in row 2)
-        expect(result?.rows[1].columns.map(c => c.id)).toEqual(['perf']);
+        // Row 1: perf and the real config (dropped down from row 0)
+        expect(result?.rows[1].columns.map(c => c.id)).toEqual(['perf', 'config']);
+        const configRow1 = result?.rows[1].columns.find(c => c.id === 'config');
+        expect(configRow1?.isHidden).toBe(false);
+        expect(configRow1?.isGroup).toBe(true);
+        expect(configRow1?.rowspan).toBe(1);
 
         // Row 2: both leaf columns
         expect(result?.rows[2].columns.map(c => c.id)).toEqual(['cpu', 'type']);

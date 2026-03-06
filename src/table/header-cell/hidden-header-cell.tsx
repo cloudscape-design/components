@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
@@ -63,6 +64,9 @@ export function TableHiddenHeaderCell({
   const cellRefObject = useRef<HTMLElement>(null);
   const cellRefCombined = useMergeRefs(cellRef, cellRefObject);
 
+  const focusableRef = useRef<HTMLDivElement>(null);
+  const { tabIndex: focusableTabIndex } = useSingleTabStopNavigation(focusableRef, { tabIndex });
+
   return (
     <TableThElement
       resizableStyle={resizableStyle}
@@ -83,8 +87,13 @@ export function TableHiddenHeaderCell({
       scope="col"
       ariaLabel=""
     >
-      {/* Empty content — this is a hidden placeholder cell */}
-      <div className={styles['header-cell-hidden-content']} aria-hidden="true" />
+      {/* Empty but focusable content — allows keyboard navigation through placeholder cells */}
+      <div
+        ref={focusableRef}
+        className={styles['header-cell-hidden-content']}
+        tabIndex={focusableTabIndex}
+        data-focus-id={`header-hidden-${columnId}`}
+      />
       {resizableColumns ? (
         <Resizer
           tabIndex={tabIndex}

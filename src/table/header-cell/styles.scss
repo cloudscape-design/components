@@ -95,12 +95,13 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   // is the table-level visibility prop (for the measurement thead), not our placeholder concept.
   &:has(.header-cell-hidden-content) {
     border-block-end-color: transparent;
+  }
 
-    // Complete divider styles for hidden placeholder cells.
-    // The normal divider rule `th:not(:last-child) > .divider` fails when hidden cells
-    // end up as :last-child (due to rowspan siblings not being in the same <tr>).
-    // We replicate the full divider positioning here with the same block-gap
-    // to keep divider heights visually consistent with normal header cells.
+  // Divider styles for hidden placeholder cells (only when NOT the last cell in the row).
+  // The normal divider rule `th:not(:last-child) > .divider` doesn't apply here because
+  // hidden cells use `.resize-divider` instead of `.divider`. We replicate the positioning
+  // with the same block-gap to keep divider heights visually consistent.
+  &:not(:last-child):has(.header-cell-hidden-content) {
     > .resize-divider {
       position: absolute;
       outline: none;
@@ -111,7 +112,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       min-block-size: awsui.$line-height-heading-xs;
       // Use the same block-gap as normal dividers (from resizer/styles.scss)
       // to keep divider heights visually consistent across the header row.
-      max-block-size: calc(100% - 2 * #{awsui.$space-xs} - #{awsui.$space-xxxs});
+      // stylelint-disable-next-line custom-property-pattern
+      max-block-size: calc(100% - var(--awsui-table-resizer-block-gap, 0px));
       margin-block: auto;
       margin-inline: auto;
       border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-default;
@@ -156,6 +158,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
 
+      // stylelint-disable-next-line no-descending-specificity
       & > .resize-divider {
         display: none;
       }
