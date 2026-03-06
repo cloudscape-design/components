@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getContentStyles handles all possible style configurations 1`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getContentStyles handles all possible style configurations 2`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getContentStyles handles all possible style configurations 3`] = `
+{
+  "paddingBlock": "16px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 1`] = `
+{
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 2`] = `
+{
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 3`] = `
+{
+  "borderColor": "#e0e0e0",
+  "borderWidth": "1px",
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 1`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 2`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 3`] = `
+{
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 1`] = `
+{
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 2`] = `
+{
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-style-background-default-m3n46o": "#ffffff",
+  "--awsui-style-border-color-default-m3n46o": "#e0e0e0",
+  "--awsui-style-border-radius-m3n46o": "8px",
+  "--awsui-style-border-width-default-m3n46o": "1px",
+  "--awsui-style-box-shadow-default-m3n46o": "0 1px 3px rgba(0,0,0,0.1)",
+  "borderRadius": "8px",
+}
+`;
