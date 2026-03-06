@@ -95,6 +95,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   // is the table-level visibility prop (for the measurement thead), not our placeholder concept.
   &:has(.header-cell-hidden-content) {
     border-block-end-color: transparent;
+
+    // Show focus ring on the th when the inner focusable div receives focus.
+    &:focus-within {
+      @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+    }
   }
 
   // Divider styles for hidden placeholder cells (only when NOT the last cell in the row).
@@ -295,9 +300,10 @@ settings icon in the pagination slot.
   }
 }
 
-// Hidden placeholder cell content — empty but maintains cell structure
+// Hidden placeholder cell content — empty but focusable for keyboard navigation.
 .header-cell-hidden-content {
-  // No padding or visible content — the cell is purely structural
-  // Height is determined by sibling cells in the same row
-  inline-size: 100%;
+  // No visible content — purely a focus target for grid navigation.
+  &:focus {
+    outline: none;
+  }
 }

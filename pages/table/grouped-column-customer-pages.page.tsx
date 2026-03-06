@@ -685,7 +685,7 @@ export default function CustomerPagesDemo() {
   const stickyColumns = { first: +firstSticky, last: +lastSticky };
 
   return (
-    <SimplePage title="Column Grouping — Customer Use Cases" i18n={{}} screenshotArea={{}}>
+    <SimplePage title="Column Grouping Customer Use Cases" i18n={{}} screenshotArea={{}}>
       <SpaceBetween size="xxl">
         <SpaceBetween size="m" direction="horizontal" alignItems="end">
           <Toggle onChange={({ detail }) => setUrlParams({ resizable: detail.checked })} checked={resizable}>
