@@ -357,12 +357,12 @@ export namespace PromptInputProps {
 
   export interface ChangeDetail {
     value: string;
-    tokens: InputToken[];
+    tokens?: InputToken[];
   }
 
   export interface ActionDetail {
     value: string;
-    tokens: InputToken[];
+    tokens?: InputToken[];
   }
 
   export interface MenuItemSelectDetail {

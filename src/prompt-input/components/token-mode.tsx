@@ -97,7 +97,6 @@ export default function TokenMode({
           className={testutilStyles['content-editable']}
           aria-controls={menuIsOpen ? menuListId : undefined}
           aria-activedescendant={highlightedMenuOptionId}
-          aria-expanded={menuIsOpen}
           onInput={handleInput}
           {...editableElementAttributes}
         />
