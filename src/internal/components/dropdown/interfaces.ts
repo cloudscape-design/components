@@ -64,6 +64,11 @@ export interface DropdownProps extends ExpandToViewport {
   trigger: React.ReactNode;
 
   /**
+   * Optional ref to an element that should be used for positioning calculations.
+   */
+  triggerRef?: React.RefObject<HTMLElement>;
+
+  /**
    * "Sticky" header of the dropdown content
    */
   header?: React.ReactNode;
@@ -130,6 +135,12 @@ export interface DropdownProps extends ExpandToViewport {
    * - undefined: fit to content width (no max constraint)
    */
   maxWidth?: DropdownWidthConstraint;
+
+  /**
+   * Maximum height constraint for the dropdown content in pixels.
+   * When set, constrains the calculated height to not exceed this value.
+   */
+  maxHeight?: number;
 
   /**
    * Preferred alignment of the dropdown relative to its trigger.
