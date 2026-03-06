@@ -15,7 +15,10 @@
 
 $handle-width: awsui.$space-xl;
 $active-separator-width: 2px;
-$block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+// $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+// Use a CSS custom property so the gap can be overridden at runtime (demo/playground for designers).
+// stylelint-disable-next-line custom-property-pattern
+$block-gap: var(--awsui-table-resizer-block-gap, 0px);
 
 .resizer-wrapper {
   inset-block: 0;

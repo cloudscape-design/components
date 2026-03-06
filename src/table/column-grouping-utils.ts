@@ -312,11 +312,6 @@ function expandRowspansToHiddenNodes<T>(node: TableHeaderNode<T>): void {
     return;
   }
 
-  // Only expand leaf columns — groups keep their natural HTML rowspan
-  if (node.isGroup) {
-    return;
-  }
-
   const originalRowspan = node.rowspan;
   const originalRowIndex = node.rowIndex;
   const parentNode = node.parentNode!;
