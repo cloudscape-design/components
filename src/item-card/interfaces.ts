@@ -10,9 +10,9 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
-export interface BaseCardProps extends BaseComponentProps {
+export interface BaseItemCardProps extends BaseComponentProps {
   /**
-   * Heading element of the card. Use this to add a title or header text.
+   * Heading element of the item card. Use this to add a title or header text.
    */
   header?: React.ReactNode;
 
@@ -22,17 +22,17 @@ export interface BaseCardProps extends BaseComponentProps {
   description?: React.ReactNode;
 
   /**
-   * Footer content displayed at the bottom of the card.
+   * Footer content displayed at the bottom of the item card.
    */
   footer?: React.ReactNode;
 
   /**
-   * Actions to display in the card header area, typically buttons or links.
+   * Actions to display in the item card header area, typically buttons or links.
    */
   actions?: React.ReactNode;
 
   /**
-   * Main content of the card.
+   * Main content of the item card.
    */
   children?: React.ReactNode;
 
@@ -100,10 +100,10 @@ export interface BaseCardProps extends BaseComponentProps {
    * Refer to the [style](/components/card/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
-  style?: CardProps.Style;
+  style?: ItemCardProps.Style;
 }
 
-export interface CardProps extends BaseCardProps {
+export interface ItemCardProps extends BaseItemCardProps {
   /**
    * Attributes to add to the native root element.
    * Some attributes will be automatically combined with internal attribute values:
@@ -117,7 +117,7 @@ export interface CardProps extends BaseCardProps {
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
 }
 
-export namespace CardProps {
+export namespace ItemCardProps {
   export type IconPosition = 'left' | 'right';
   export type IconVerticalAlignment = 'top' | 'center';
 
@@ -151,21 +151,21 @@ export namespace CardProps {
 }
 
 export interface InternalCardProps
-  extends BaseCardProps,
+  extends BaseItemCardProps,
     InternalBaseComponentProps,
-    Pick<CardProps, 'nativeAttributes'> {
+    Pick<ItemCardProps, 'nativeAttributes'> {
   /**
-   * Called when the user clicks on the card.
+   * Called when the user clicks on the item card.
    */
   onClick?: React.MouseEventHandler<HTMLElement>;
 
   /**
-   * Specifies whether the card is in highlighted state.
+   * Specifies whether the item card is in highlighted state.
    */
   highlighted?: boolean;
 
   /**
-   * Makes the card stretch to fill the full height of its container.
+   * Makes the item card stretch to fill the full height of its container.
    */
   fullHeight?: boolean;
 

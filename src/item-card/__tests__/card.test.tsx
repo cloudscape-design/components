@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Card from '../../../lib/components/card';
+import ItemCard from '../../../lib/components/item-card';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import styles from '../../../lib/components/card/styles.css.js';
+import styles from '../../../lib/components/item-card/styles.css.js';
 
-function renderCard(jsx: React.ReactElement) {
+function renderItemCard(jsx: React.ReactElement) {
   const { container } = render(jsx);
   const wrapper = createWrapper(container);
   const root = wrapper.findByClassName(styles.root)!;
@@ -16,36 +16,36 @@ function renderCard(jsx: React.ReactElement) {
 }
 
 test('renders children content', () => {
-  const { root } = renderCard(<Card>test content</Card>);
+  const { root } = renderItemCard(<ItemCard>test content</ItemCard>);
   expect(root.getElement()).toHaveTextContent('test content');
 });
 
 test('renders without header, footer, or actions by default', () => {
-  const { root } = renderCard(<Card>content only</Card>);
+  const { root } = renderItemCard(<ItemCard>content only</ItemCard>);
   expect(root.findByClassName(styles.header)).toBeNull();
   expect(root.findByClassName(styles.footer)).toBeNull();
   expect(root.getElement()).toHaveTextContent('content only');
 });
 
 test('renders header when provided', () => {
-  const { root } = renderCard(<Card header="Card title">content</Card>);
+  const { root } = renderItemCard(<ItemCard header="Card title">content</ItemCard>);
   const header = root.findByClassName(styles.header);
   expect(header).not.toBeNull();
   expect(header!.getElement()).toHaveTextContent('Card title');
 });
 
 test('renders header-inner element for header text', () => {
-  const { root } = renderCard(<Card header="My Header">content</Card>);
+  const { root } = renderItemCard(<ItemCard header="My Header">content</ItemCard>);
   const headerInner = root.findByClassName(styles['header-inner']);
   expect(headerInner).not.toBeNull();
   expect(headerInner!.getElement()).toHaveTextContent('My Header');
 });
 
 test('renders description when provided', () => {
-  const { root } = renderCard(
-    <Card header="Title" description="A description">
+  const { root } = renderItemCard(
+    <ItemCard header="Title" description="A description">
       content
-    </Card>
+    </ItemCard>
   );
   const description = root.findByClassName(styles.description);
   expect(description).not.toBeNull();
@@ -53,22 +53,22 @@ test('renders description when provided', () => {
 });
 
 test('renders footer when provided', () => {
-  const { root } = renderCard(<Card footer="Footer text">content</Card>);
+  const { root } = renderItemCard(<ItemCard footer="Footer text">content</ItemCard>);
   const footer = root.findByClassName(styles.footer);
   expect(footer).not.toBeNull();
   expect(footer!.getElement()).toHaveTextContent('Footer text');
 });
 
 test('does not render footer element when footer is not provided', () => {
-  const { root } = renderCard(<Card>content</Card>);
+  const { root } = renderItemCard(<ItemCard>content</ItemCard>);
   expect(root.findByClassName(styles.footer)).toBeNull();
 });
 
 test('renders actions in the header area', () => {
-  const { root } = renderCard(
-    <Card header="Title" actions={<button>Action</button>}>
+  const { root } = renderItemCard(
+    <ItemCard header="Title" actions={<button>Action</button>}>
       content
-    </Card>
+    </ItemCard>
   );
   const header = root.findByClassName(styles.header);
   expect(header).not.toBeNull();
@@ -76,26 +76,26 @@ test('renders actions in the header area', () => {
 });
 
 test('renders header with with-actions class when actions are provided', () => {
-  const { root } = renderCard(
-    <Card header="Title" actions={<button>Action</button>}>
+  const { root } = renderItemCard(
+    <ItemCard header="Title" actions={<button>Action</button>}>
       content
-    </Card>
+    </ItemCard>
   );
   const header = root.findByClassName(styles.header);
   expect(header!.getElement()).toHaveClass(styles['with-actions']);
 });
 
 test('renders header without with-actions class when no actions', () => {
-  const { root } = renderCard(<Card header="Title">content</Card>);
+  const { root } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
   const header = root.findByClassName(styles.header);
   expect(header!.getElement()).not.toHaveClass(styles['with-actions']);
 });
 
 test('renders all parts together: header, description, actions, children, footer', () => {
-  const { root } = renderCard(
-    <Card header="Header" description="Description" actions={<button>Act</button>} footer="Footer">
+  const { root } = renderItemCard(
+    <ItemCard header="Header" description="Description" actions={<button>Act</button>} footer="Footer">
       Body
-    </Card>
+    </ItemCard>
   );
   expect(root.findByClassName(styles.header)).not.toBeNull();
   expect(root.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Header');
@@ -105,53 +105,53 @@ test('renders all parts together: header, description, actions, children, footer
 });
 
 test('applies no-header class when header row is empty', () => {
-  const { root } = renderCard(<Card>content only</Card>);
+  const { root } = renderItemCard(<ItemCard>content only</ItemCard>);
   expect(root.getElement()).toHaveClass(styles['no-header']);
 });
 
 test('does not apply no-header class when header is provided', () => {
-  const { root } = renderCard(<Card header="Title">content</Card>);
+  const { root } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
   expect(root.getElement()).not.toHaveClass(styles['no-header']);
 });
 
 test('does not apply no-header class when only actions are provided', () => {
-  const { root } = renderCard(<Card actions={<button>Act</button>}>content</Card>);
+  const { root } = renderItemCard(<ItemCard actions={<button>Act</button>}>content</ItemCard>);
   expect(root.getElement()).not.toHaveClass(styles['no-header']);
 });
 
 test('does not apply no-header class when only description is provided', () => {
-  const { root } = renderCard(<Card description="Desc">content</Card>);
+  const { root } = renderItemCard(<ItemCard description="Desc">content</ItemCard>);
   expect(root.getElement()).not.toHaveClass(styles['no-header']);
 });
 
 test('applies no-content class when children are not provided', () => {
-  const { root } = renderCard(<Card header="Title" />);
+  const { root } = renderItemCard(<ItemCard header="Title" />);
   expect(root.getElement()).toHaveClass(styles['no-content']);
 });
 
 test('does not apply no-content class when children are provided', () => {
-  const { root } = renderCard(<Card header="Title">content</Card>);
+  const { root } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
   expect(root.getElement()).not.toHaveClass(styles['no-content']);
 });
 
 test('does not render body when children are not provided', () => {
-  const { root } = renderCard(<Card header="Title" />);
+  const { root } = renderItemCard(<ItemCard header="Title" />);
   expect(root.findByClassName(styles.body)).toBeNull();
 });
 
 describe('disableHeaderPaddings', () => {
   test('applies no-padding class to header when disableHeaderPaddings is true', () => {
-    const { root } = renderCard(
-      <Card header="Title" disableHeaderPaddings={true}>
+    const { root } = renderItemCard(
+      <ItemCard header="Title" disableHeaderPaddings={true}>
         content
-      </Card>
+      </ItemCard>
     );
     const header = root.findByClassName(styles.header);
     expect(header!.getElement()).toHaveClass(styles['no-padding']);
   });
 
   test('does not apply no-padding class to header by default', () => {
-    const { root } = renderCard(<Card header="Title">content</Card>);
+    const { root } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
     const header = root.findByClassName(styles.header);
     expect(header!.getElement()).not.toHaveClass(styles['no-padding']);
   });
@@ -159,13 +159,13 @@ describe('disableHeaderPaddings', () => {
 
 describe('disableContentPaddings', () => {
   test('applies no-padding class to body when disableContentPaddings is true', () => {
-    const { root } = renderCard(<Card disableContentPaddings={true}>content</Card>);
+    const { root } = renderItemCard(<ItemCard disableContentPaddings={true}>content</ItemCard>);
     const body = root.findByClassName(styles.body);
     expect(body!.getElement()).toHaveClass(styles['no-padding']);
   });
 
   test('does not apply no-padding class to body by default', () => {
-    const { root } = renderCard(<Card>content</Card>);
+    const { root } = renderItemCard(<ItemCard>content</ItemCard>);
     const body = root.findByClassName(styles.body);
     expect(body!.getElement()).not.toHaveClass(styles['no-padding']);
   });
@@ -173,17 +173,17 @@ describe('disableContentPaddings', () => {
 
 describe('disableFooterPaddings', () => {
   test('applies no-padding class to footer when disableFooterPaddings is true', () => {
-    const { root } = renderCard(
-      <Card footer="Footer" disableFooterPaddings={true}>
+    const { root } = renderItemCard(
+      <ItemCard footer="Footer" disableFooterPaddings={true}>
         content
-      </Card>
+      </ItemCard>
     );
     const footer = root.findByClassName(styles.footer);
     expect(footer!.getElement()).toHaveClass(styles['no-padding']);
   });
 
   test('does not apply no-padding class to footer by default', () => {
-    const { root } = renderCard(<Card footer="Footer">content</Card>);
+    const { root } = renderItemCard(<ItemCard footer="Footer">content</ItemCard>);
     const footer = root.findByClassName(styles.footer);
     expect(footer!.getElement()).not.toHaveClass(styles['no-padding']);
   });
@@ -191,17 +191,17 @@ describe('disableFooterPaddings', () => {
 
 describe('icon', () => {
   test('renders icon when iconName is provided', () => {
-    const { root } = renderCard(
-      <Card header="Title" iconName="settings">
+    const { root } = renderItemCard(
+      <ItemCard header="Title" iconName="settings">
         content
-      </Card>
+      </ItemCard>
     );
     // The header area should be rendered when an icon is present
     expect(root.findByClassName(styles.header)).not.toBeNull();
   });
 
   test('renders header area even without header text when icon is provided', () => {
-    const { root } = renderCard(<Card iconName="settings">content</Card>);
+    const { root } = renderItemCard(<ItemCard iconName="settings">content</ItemCard>);
     expect(root.findByClassName(styles.header)).not.toBeNull();
     expect(root.getElement()).not.toHaveClass(styles['no-header']);
   });
@@ -212,19 +212,19 @@ describe('icon', () => {
         <circle cx="8" cy="8" r="7" />
       </svg>
     );
-    const { root } = renderCard(
-      <Card header="Title" iconSvg={svgElement}>
+    const { root } = renderItemCard(
+      <ItemCard header="Title" iconSvg={svgElement}>
         content
-      </Card>
+      </ItemCard>
     );
     expect(root.findByClassName(styles.header)).not.toBeNull();
   });
 
   test('renders icon from iconUrl', () => {
-    const { root } = renderCard(
-      <Card header="Title" iconUrl="/icon.png" iconAlt="custom icon">
+    const { root } = renderItemCard(
+      <ItemCard header="Title" iconUrl="/icon.png" iconAlt="custom icon">
         content
-      </Card>
+      </ItemCard>
     );
     expect(root.findByClassName(styles.header)).not.toBeNull();
   });
@@ -232,8 +232,8 @@ describe('icon', () => {
 
 describe('Style API', () => {
   test('applies style properties to root element', () => {
-    const { root } = renderCard(
-      <Card
+    const { root } = renderItemCard(
+      <ItemCard
         header="Header"
         footer="Footer"
         style={{
@@ -261,7 +261,7 @@ describe('Style API', () => {
         }}
       >
         Content
-      </Card>
+      </ItemCard>
     );
 
     expect(getComputedStyle(root.getElement()).getPropertyValue('border-radius')).toBe('20px');
@@ -283,29 +283,29 @@ describe('Style API', () => {
 });
 
 test('renders with empty header still shows header area when actions provided', () => {
-  const { root } = renderCard(<Card actions={<button>Click</button>}>content</Card>);
+  const { root } = renderItemCard(<ItemCard actions={<button>Click</button>}>content</ItemCard>);
   expect(root.findByClassName(styles.header)).not.toBeNull();
 });
 
 test('renders with only footer and children', () => {
-  const { root } = renderCard(<Card footer="Some footer">content</Card>);
+  const { root } = renderItemCard(<ItemCard footer="Some footer">content</ItemCard>);
   expect(root.findByClassName(styles.header)).toBeNull();
   expect(root.findByClassName(styles.footer)).not.toBeNull();
   expect(root.findByClassName(styles.body)).not.toBeNull();
 });
 
 test('renders with only header and no children', () => {
-  const { root } = renderCard(<Card header="Title" />);
+  const { root } = renderItemCard(<ItemCard header="Title" />);
   expect(root.findByClassName(styles.header)).not.toBeNull();
   expect(root.findByClassName(styles.body)).toBeNull();
   expect(root.findByClassName(styles.footer)).toBeNull();
 });
 
 test('renders with React nodes as header and footer', () => {
-  const { root } = renderCard(
-    <Card header={<span data-testid="custom-header">Custom Header</span>} footer={<div>Custom Footer</div>}>
+  const { root } = renderItemCard(
+    <ItemCard header={<span data-testid="custom-header">Custom Header</span>} footer={<div>Custom Footer</div>}>
       content
-    </Card>
+    </ItemCard>
   );
   expect(root.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Custom Header');
   expect(root.findByClassName(styles.footer)!.getElement()).toHaveTextContent('Custom Footer');

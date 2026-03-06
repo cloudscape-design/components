@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Card from '~components/card';
-import { InternalCardProps } from '~components/card/interfaces';
+import ItemCard from '~components/item-card';
+import { InternalCardProps } from '~components/item-card/interfaces';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -25,7 +25,7 @@ const permutations = createPermutations<InternalCardProps & { width?: number }>(
 export default function CardPermutations() {
   return (
     <CardPage title="Card permutations">
-      <PermutationsView permutations={permutations} render={permutation => <Card {...permutation} />} />
+      <PermutationsView permutations={permutations} render={permutation => <ItemCard {...permutation} />} />
     </CardPage>
   );
 }

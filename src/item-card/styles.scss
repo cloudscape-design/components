@@ -19,7 +19,7 @@
 
   &::before {
     @include styles.base-pseudo-element;
-    // Reset border color to prevent it from flashing black during card selection animation
+    // Reset border color to prevent it from flashing black during item card selection animation
     border-color: transparent;
     border-block-start: awsui.$border-width-card solid
       var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
