@@ -48,10 +48,10 @@ module.exports = ({
               react: 'react18',
               'react-dom': 'react-dom18',
               'react-dom/client': 'react-dom18/client',
+              [path.resolve(componentsPath, 'internal/vendor/react-dom-client-stub.js')]: 'react-dom18/client',
             }
           : {
               '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
-              'react-dom/client': path.resolve(componentsPath, 'internal/vendor/react-dom-client-stub.js'),
             }),
       },
     },
