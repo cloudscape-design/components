@@ -10,32 +10,37 @@ import { CardProps } from './interfaces';
 import InternalCard from './internal';
 
 export { CardProps };
-const Card = React.forwardRef(
-  ({ disableHeaderPaddings, disableContentPaddings, disableFooterPaddings, iconName, style, ...props }: CardProps) => {
-    const baseComponentProps = useBaseComponent('Card', {
-      props: {
-        disableHeaderPaddings,
-        disableContentPaddings,
-        disableFooterPaddings,
-        iconName,
-      },
-    });
+const Card = ({
+  disableHeaderPaddings,
+  disableContentPaddings,
+  disableFooterPaddings,
+  iconName,
+  style,
+  ...props
+}: CardProps) => {
+  const baseComponentProps = useBaseComponent('Card', {
+    props: {
+      disableHeaderPaddings,
+      disableContentPaddings,
+      disableFooterPaddings,
+      iconName,
+    },
+  });
 
-    const externalProps = getExternalProps(props);
+  const externalProps = getExternalProps(props);
 
-    return (
-      <InternalCard
-        disableHeaderPaddings={disableHeaderPaddings}
-        disableContentPaddings={disableContentPaddings}
-        disableFooterPaddings={disableFooterPaddings}
-        iconName={iconName}
-        style={style}
-        {...externalProps}
-        {...baseComponentProps}
-      />
-    );
-  }
-);
+  return (
+    <InternalCard
+      disableHeaderPaddings={disableHeaderPaddings}
+      disableContentPaddings={disableContentPaddings}
+      disableFooterPaddings={disableFooterPaddings}
+      iconName={iconName}
+      style={style}
+      {...externalProps}
+      {...baseComponentProps}
+    />
+  );
+};
 
 applyDisplayName(Card, 'Card');
 export default Card;
