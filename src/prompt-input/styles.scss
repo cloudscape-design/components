@@ -325,6 +325,11 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   padding-inline: awsui.$space-xxxs;
 }
 
+.trigger-token {
+  font-style: italic;
+  text-decoration: underline dashed;
+}
+
 // Paragraph elements - reset browser default margins/padding
 .paragraph {
   @include styles.styles-reset;

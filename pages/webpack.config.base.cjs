@@ -51,6 +51,7 @@ module.exports = ({
             }
           : {
               '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
+              'react-dom/client': path.resolve(__dirname, '../lib/components/internal/vendor/react-dom-client-stub.js'),
             }),
       },
     },

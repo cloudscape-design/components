@@ -19707,7 +19707,9 @@ Use this to filter the options based on the filtering text.
 
 The detail object contains:
 - \`menuId\` - The ID of the menu that triggered the event.
-- \`filteringText\` - The text to use for filtering options.",
+- \`filteringText\` - The text to use for filtering options.
+
+Requires React 18.",
       "detailInlineType": {
         "name": "PromptInputProps.MenuFilterDetail",
         "properties": [
@@ -19729,7 +19731,9 @@ The detail object contains:
     },
     {
       "cancelable": false,
-      "description": "Called whenever a user selects an option in a menu.",
+      "description": "Called whenever a user selects an option in a menu.
+
+Requires React 18.",
       "detailInlineType": {
         "name": "PromptInputProps.MenuItemSelectDetail",
         "properties": [
@@ -19990,7 +19994,9 @@ The detail object contains the following properties:
 - \`menuId\` - The ID of the menu that triggered the event.
 - \`filteringText\` - The value to use to fetch options (undefined for pagination).
 - \`firstPage\` - Indicates that you should fetch the first page of options.
-- \`samePage\` - Indicates that you should fetch the same page (for example, when clicking recovery button).",
+- \`samePage\` - Indicates that you should fetch the same page (for example, when clicking recovery button).
+
+Requires React 18.",
       "detailInlineType": {
         "name": "PromptInputProps.MenuLoadItemsDetail",
         "properties": [
@@ -20420,9 +20426,52 @@ receive focus.",
             "type": "string",
           },
           {
-            "name": "selectedMenuItemAriaLabel",
+            "inlineType": {
+              "name": "(token: { label?: string | undefined; value: string; }) => string",
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": "{ label?: string | undefined; value: string; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenInsertedAriaLabel",
             "optional": true,
-            "type": "string",
+            "type": "((token: { label?: string | undefined; value: string; }) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(token: { label?: string | undefined; value: string; }) => string",
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": "{ label?: string | undefined; value: string; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenPinnedAriaLabel",
+            "optional": true,
+            "type": "((token: { label?: string | undefined; value: string; }) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(token: { label?: string | undefined; value: string; }) => string",
+              "parameters": [
+                {
+                  "name": "token",
+                  "type": "{ label?: string | undefined; value: string; }",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenRemovedAriaLabel",
+            "optional": true,
+            "type": "((token: { label?: string | undefined; value: string; }) => string)",
           },
         ],
         "type": "object",
@@ -20452,7 +20501,9 @@ single form field.",
     },
     {
       "description": "Maximum height of the menu dropdown in pixels.
-When not specified, the menu will grow to fit its content.",
+When not specified, the menu will grow to fit its content.
+
+Requires React 18.",
       "name": "maxMenuHeight",
       "optional": true,
       "type": "number",
@@ -20467,7 +20518,9 @@ Defaults to 3. Use -1 for infinite rows.",
     },
     {
       "description": "Menus that can be triggered via specific symbols (e.g., "/" or "@").
-For menus only relevant to triggers at the start of the input, set \`useAtStart: true\`, defaults to \`false\`.",
+For menus only relevant to triggers at the start of the input, set \`useAtStart: true\`, defaults to \`false\`.
+
+Requires React 18.",
       "name": "menus",
       "optional": true,
       "type": "Array<PromptInputProps.MenuDefinition>",
@@ -20523,35 +20576,6 @@ Don't use read-only inputs outside a form.",
       "name": "readOnly",
       "optional": true,
       "type": "boolean",
-    },
-    {
-      "description": "Overrides the element that is announced to screen readers in menus
-when the highlighted option changes. By default, this announces
-the option's name and properties, and its selected state if
-the \`selectedLabel\` property is defined.
-The highlighted option is provided, and its group (if groups
-are used and it differs from the group of the previously highlighted option).
-
-For more information, see the
-[accessibility guidelines](/components/prompt-input/?tabId=usage#accessibility-guidelines).",
-      "inlineType": {
-        "name": "AutosuggestProps.ContainingOptionAndGroupString",
-        "parameters": [
-          {
-            "name": "option",
-            "type": "OptionDefinition",
-          },
-          {
-            "name": "group",
-            "type": "AutosuggestProps.OptionGroup",
-          },
-        ],
-        "returnType": "string",
-        "type": "function",
-      },
-      "name": "renderHighlightedMenuItemAriaLive",
-      "optional": true,
-      "type": "AutosuggestProps.ContainingOptionAndGroupString",
     },
     {
       "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
@@ -20804,7 +20828,9 @@ All tokens use the same unified structure with a \`value\` property:
 - Reference tokens: \`value\` contains the reference value, \`label\` for display (e.g., '@john')
 - Trigger tokens: \`value\` contains the filter text, \`triggerChar\` for the trigger character
 
-When \`menus\` is defined, you should use \`tokens\` to control the content instead of \`value\`.",
+When \`menus\` is defined, you should use \`tokens\` to control the content instead of \`value\`.
+
+Requires React 18.",
       "name": "tokens",
       "optional": true,
       "type": "ReadonlyArray<PromptInputProps.InputToken>",
@@ -20820,7 +20846,9 @@ tokens.map(token => token.value).join('');
 
 Use this to customize serialization, for example:
 - Using \`label\` instead of \`value\` for reference tokens
-- Adding custom formatting or separators between tokens",
+- Adding custom formatting or separators between tokens
+
+Requires React 18.",
       "inlineType": {
         "name": "(tokens: ReadonlyArray<PromptInputProps.InputToken>) => string",
         "parameters": [

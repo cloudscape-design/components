@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot, Root } from 'react-dom/client';
 
 import Token from '../../token/internal';
 import { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { isBreakToken, isBRElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 import {
   createParagraph,
   createTrailingBreak,
@@ -17,35 +16,32 @@ import {
   generateTokenId,
   getTokenType,
   insertAfter,
-} from './utils';
+} from './dom-utils';
+import { isBreakToken, isBRElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
 import styles from '../styles.css.js';
 
 // REACT COMPONENT MANAGEMENT
 
-const rootsMap = new Map<HTMLElement, any>();
+const rootsMap = new Map<HTMLElement, Root>();
 
 function renderComponent(element: React.ReactElement, container: HTMLElement): void {
-  if ('createRoot' in ReactDOM) {
-    const ReactDOMClient = ReactDOM as any;
-    let root = rootsMap.get(container);
-    if (!root) {
-      root = ReactDOMClient.createRoot(container);
-      rootsMap.set(container, root);
-    }
-    root.render(element);
-  } else {
-    ReactDOM.render(element, container);
+  let root = rootsMap.get(container);
+  if (!root) {
+    root = createRoot(container);
+    rootsMap.set(container, root);
   }
+
+  queueMicrotask(() => {
+    root!.render(element);
+  });
 }
 
 export function unmountComponent(container: HTMLElement): void {
   const root = rootsMap.get(container);
-  if (root && 'unmount' in root) {
+  if (root) {
     root.unmount();
     rootsMap.delete(container);
-  } else {
-    ReactDOM.unmountComponentAtNode(container);
   }
 }
 
@@ -270,8 +266,6 @@ export function renderTokensToDOM(
     const instanceId = container.getAttribute('data-id');
     if (instanceId && container.isConnected) {
       existingContainers.set(instanceId, container);
-    } else if (container.isConnected) {
-      unmountComponent(container);
     }
   });
   reactContainers.clear();
@@ -321,11 +315,13 @@ export function renderTokensToDOM(
           // Reuse existing trigger element and update its content
           span = existingTriggers.get(token.id)!;
           span.textContent = token.triggerChar + token.value;
+          span.className = styles['trigger-token'];
           existingTriggers.delete(token.id);
         } else {
           // Create new trigger element
           span = document.createElement('span');
           span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+          span.className = styles['trigger-token'];
           if (token.id) {
             span.setAttribute('data-id', token.id);
           }
@@ -379,7 +375,16 @@ export function renderTokensToDOM(
         continue;
       }
 
-      if (existingNode) {
+      // Check if existingNode was moved (is now in newNodes at a different position)
+      if (existingNode && newNodes.includes(existingNode)) {
+        // Don't replace - the existing node was moved elsewhere
+        // Just append the new node
+        if (i < p.childNodes.length) {
+          p.insertBefore(newNode, p.childNodes[i]);
+        } else {
+          p.appendChild(newNode);
+        }
+      } else if (existingNode) {
         // Replace existing node with new node
         p.replaceChild(newNode, existingNode);
       } else {
@@ -393,15 +398,7 @@ export function renderTokensToDOM(
     targetElement.removeChild(targetElement.lastChild!);
   }
 
-  existingContainers.forEach(container => {
-    if (container.isConnected) {
-      unmountComponent(container);
-    }
-  });
-
   normalizeParagraphsAfterRender(targetElement);
-
-  // Cursor restoration is handled by the unified system in use-editable-tokens
 
   return { newTriggerElement, lastReferenceWithZwnj };
 }

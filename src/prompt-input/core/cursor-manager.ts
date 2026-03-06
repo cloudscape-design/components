@@ -3,8 +3,8 @@
 
 import type { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
+import { findAllParagraphs, findElement, getTokenType } from './dom-utils';
 import { isBreakToken, isHTMLElement, isTextNode, isTextToken, isTriggerToken } from './type-guards';
-import { findAllParagraphs, getTokenType } from './utils';
 
 // HELPER FUNCTIONS
 
@@ -106,8 +106,8 @@ function countUpToCursor(p: Element, range: Range): number {
             count += range.startOffset;
           }
         } else if (tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED) {
-          const cursorSpotBefore = child.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_BEFORE}"]`);
-          const cursorSpotAfter = child.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_AFTER}"]`);
+          const cursorSpotBefore = findElement(child, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_BEFORE });
+          const cursorSpotAfter = findElement(child, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_AFTER });
 
           const cursorInBefore =
             cursorSpotBefore &&
@@ -307,7 +307,7 @@ export function getTokenCursorLength(token: PromptInputProps.InputToken): number
     return token.value.length;
   }
   if (isBreakToken(token)) {
-    return 0;
+    return 1; // Line break counts as 1 position
   }
   if (isTriggerToken(token)) {
     return 1 + token.value.length; // trigger char + value
