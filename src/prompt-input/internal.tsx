@@ -227,7 +227,6 @@ const InternalPromptInput = React.forwardRef(
             textarea.dispatchEvent(new Event('input', { bubbles: true }));
             fireNonCancelableEvent(onChange, {
               value: newValue,
-              tokens: [],
             });
           }
         },
@@ -272,8 +271,10 @@ const InternalPromptInput = React.forwardRef(
       if (isTokenMode) {
         // Use requestAnimationFrame to ensure DOM has updated
         requestAnimationFrame(() => adjustInputHeight());
+      } else {
+        adjustInputHeight();
       }
-    }, [isTokenMode, tokens, adjustInputHeight]);
+    }, [isTokenMode, tokens, adjustInputHeight, value]);
 
     // Helper to get plain text value from tokens or value prop
     const getPlainTextValue = useStableCallback(() => {
@@ -380,17 +381,24 @@ const InternalPromptInput = React.forwardRef(
           event.currentTarget.form.requestSubmit();
         }
         event.preventDefault();
-        fireNonCancelableEvent(onAction, { value: getPlainTextValue(), tokens: [...(tokens ?? [])] });
+        fireNonCancelableEvent(onAction, {
+          value: getPlainTextValue(),
+          ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
+        });
       }
     };
 
     const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const newTokens = isTokenMode ? [...(tokens ?? [])] : [];
-      markTokensAsSent(newTokens);
-      fireNonCancelableEvent(onChange, {
+      if (isTokenMode) {
+        markTokensAsSent([...(tokens ?? [])]);
+      }
+      const detail: PromptInputProps.ChangeDetail = {
         value: event.target.value,
-        tokens: newTokens,
-      });
+      };
+      if (isTokenMode) {
+        detail.tokens = [...(tokens ?? [])];
+      }
+      fireNonCancelableEvent(onChange, detail);
       adjustInputHeight();
     };
 
@@ -783,6 +791,9 @@ const InternalPromptInput = React.forwardRef(
       isEmpty: !menuItemsState || menuItemsState.items.length === 0,
       recoveryText: i18nStrings?.menuRecoveryText,
       errorIconAriaLabel: i18nStrings?.menuErrorIconAriaLabel,
+      loadingText: i18nStrings?.menuLoadingText,
+      finishedText: i18nStrings?.menuFinishedText,
+      errorText: i18nStrings?.menuErrorText,
       onRecoveryClick: () => {
         if (menuLoadMoreHandlers) {
           menuLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
@@ -812,7 +823,10 @@ const InternalPromptInput = React.forwardRef(
             iconSvg={actionButtonIconSvg}
             iconAlt={actionButtonIconAlt}
             onClick={() => {
-              fireNonCancelableEvent(onAction, { value: getPlainTextValue(), tokens: [...(tokens ?? [])] });
+              fireNonCancelableEvent(onAction, {
+                value: getPlainTextValue(),
+                ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
+              });
             }}
             variant="icon"
           />

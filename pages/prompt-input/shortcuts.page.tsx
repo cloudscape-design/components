@@ -492,14 +492,14 @@ export default function PromptInputShortcutsPage() {
                     tokens={tokens}
                     maxMenuHeight={400}
                     onChange={event => {
-                      setTokens(event.detail.tokens);
+                      setTokens(event.detail.tokens ?? []);
                       setPlainTextValue(event.detail.value ?? '');
                     }}
                     onAction={({ detail }) => {
                       setExtractedText(detail.value ?? '');
 
                       // Keep mode token (first pinned reference from useAtStart menu) after submission
-                      const modeToken = detail.tokens.find(
+                      const modeToken = detail.tokens?.find(
                         (token): token is PromptInputProps.ReferenceToken =>
                           token.type === 'reference' && token.pinned === true
                       );
