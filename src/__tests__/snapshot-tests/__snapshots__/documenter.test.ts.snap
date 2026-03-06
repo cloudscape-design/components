@@ -38221,6 +38221,20 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Finds the footer slot of the card",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds the header slot of the card.",
           "name": "findHeader",
           "parameters": [],
@@ -47988,6 +48002,15 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         {
           "description": "Finds the description slot of the card.",
           "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the card",
+          "name": "findFooter",
           "parameters": [],
           "returnType": {
             "isNullable": false,
