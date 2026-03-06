@@ -35,4 +35,11 @@ export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
   findHeader(): ElementWrapper | null {
     return this.findByClassName(styles.header);
   }
+
+  /**
+   * Finds the footer slot of the card
+   */
+  findFooter(): ElementWrapper | null {
+    return this.findByClassName(styles.footer);
+  }
 }

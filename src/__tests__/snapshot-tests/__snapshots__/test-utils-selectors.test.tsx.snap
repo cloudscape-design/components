@@ -425,6 +425,7 @@ exports[`test-utils selectors 1`] = `
   "item-card": [
     "awsui_body_n1fwt",
     "awsui_description_n1fwt",
+    "awsui_footer_n1fwt",
     "awsui_header_n1fwt",
     "awsui_root_n1fwt",
   ],

@@ -23,7 +23,7 @@ test('renders children content', () => {
 test('renders without header, footer, or actions by default', () => {
   const { itemCard } = renderItemCard(<ItemCard>content only</ItemCard>);
   expect(itemCard.findHeader()).toBeNull();
-  expect(itemCard.findByClassName(styles.footer)).toBeNull();
+  expect(itemCard.findFooter()).toBeNull();
   expect(itemCard.getElement()).toHaveTextContent('content only');
 });
 
@@ -54,14 +54,14 @@ test('renders description when provided', () => {
 
 test('renders footer when provided', () => {
   const { itemCard } = renderItemCard(<ItemCard footer="Footer text">content</ItemCard>);
-  const footer = itemCard.findByClassName(styles.footer);
+  const footer = itemCard.findFooter();
   expect(footer).not.toBeNull();
   expect(footer!.getElement()).toHaveTextContent('Footer text');
 });
 
 test('does not render footer element when footer is not provided', () => {
   const { itemCard } = renderItemCard(<ItemCard>content</ItemCard>);
-  expect(itemCard.findByClassName(styles.footer)).toBeNull();
+  expect(itemCard.findFooter()).toBeNull();
 });
 
 test('renders actions in the header area', () => {
@@ -101,7 +101,7 @@ test('renders all parts together: header, description, actions, children, footer
   expect(itemCard.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Header');
   expect(itemCard.findDescription()!.getElement()).toHaveTextContent('Description');
   expect(itemCard.findContent()!.getElement()).toHaveTextContent('Body');
-  expect(itemCard.findByClassName(styles.footer)!.getElement()).toHaveTextContent('Footer');
+  expect(itemCard.findFooter()!.getElement()).toHaveTextContent('Footer');
 });
 
 test('applies no-header class when header row is empty', () => {
@@ -136,7 +136,7 @@ test('does not apply no-content class when children are provided', () => {
 
 test('does not render body when children are not provided', () => {
   const { itemCard } = renderItemCard(<ItemCard header="Title" />);
-  expect(itemCard.findByClassName(styles.body)).toBeNull();
+  expect(itemCard.findContent()).toBeNull();
 });
 
 describe('disableHeaderPaddings', () => {
@@ -178,13 +178,13 @@ describe('disableFooterPaddings', () => {
         content
       </ItemCard>
     );
-    const footer = itemCard.findByClassName(styles.footer);
+    const footer = itemCard.findFooter();
     expect(footer!.getElement()).toHaveClass(styles['no-padding']);
   });
 
   test('does not apply no-padding class to footer by default', () => {
     const { itemCard } = renderItemCard(<ItemCard footer="Footer">content</ItemCard>);
-    const footer = itemCard.findByClassName(styles.footer);
+    const footer = itemCard.findFooter();
     expect(footer!.getElement()).not.toHaveClass(styles['no-padding']);
   });
 });
@@ -274,7 +274,7 @@ describe('Style API', () => {
     expect(getComputedStyle(header.getElement()).getPropertyValue('padding-block')).toBe('10px');
     expect(getComputedStyle(header.getElement()).getPropertyValue('padding-inline')).toBe('20px');
 
-    const footer = itemCard.findByClassName(styles.footer)!;
+    const footer = itemCard.findFooter()!;
     expect(getComputedStyle(footer.getElement()).getPropertyValue('border-color')).toBe('red');
     expect(getComputedStyle(footer.getElement()).getPropertyValue('border-width')).toBe('2px');
     expect(getComputedStyle(footer.getElement()).getPropertyValue('padding-block')).toBe('15px');
@@ -290,15 +290,15 @@ test('renders with empty header still shows header area when actions provided', 
 test('renders with only footer and children', () => {
   const { itemCard } = renderItemCard(<ItemCard footer="Some footer">content</ItemCard>);
   expect(itemCard.findHeader()).toBeNull();
-  expect(itemCard.findByClassName(styles.footer)).not.toBeNull();
+  expect(itemCard.findFooter()).not.toBeNull();
   expect(itemCard.findContent()).not.toBeNull();
 });
 
 test('renders with only header and no children', () => {
   const { itemCard } = renderItemCard(<ItemCard header="Title" />);
   expect(itemCard.findHeader()).not.toBeNull();
-  expect(itemCard.findByClassName(styles.body)).toBeNull();
-  expect(itemCard.findByClassName(styles.footer)).toBeNull();
+  expect(itemCard.findContent()).toBeNull();
+  expect(itemCard.findFooter()).toBeNull();
 });
 
 test('renders with React nodes as header and footer', () => {
@@ -308,5 +308,5 @@ test('renders with React nodes as header and footer', () => {
     </ItemCard>
   );
   expect(itemCard.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Custom Header');
-  expect(itemCard.findByClassName(styles.footer)!.getElement()).toHaveTextContent('Custom Footer');
+  expect(itemCard.findFooter()!.getElement()).toHaveTextContent('Custom Footer');
 });
