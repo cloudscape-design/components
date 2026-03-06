@@ -135,6 +135,17 @@ describe('FileInput input', () => {
   });
 });
 
+describe('decorative button', () => {
+  test('prevents default on mousedown to avoid focus', () => {
+    const wrapper = render({});
+    const triggerButton = wrapper.findTrigger().getElement();
+    const mouseDownEvent = new MouseEvent('mousedown', { bubbles: true });
+    Object.assign(mouseDownEvent, { preventDefault: jest.fn() });
+    fireEvent(triggerButton, mouseDownEvent);
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('ref', () => {
   test('can be used to focus the component', () => {
     const ref = React.createRef<FileInputProps.Ref>();
