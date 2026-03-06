@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PromptInputProps } from '../interfaces';
+import { EditableState } from '../tokens/use-editable-tokens';
 import { ELEMENT_TYPES } from './constants';
 import { getTokenCursorLength, positionAfter, positionBefore } from './cursor-manager';
-import { MenuItemsHandlers, MenuItemsState } from './menu-state';
-import { extractTokensFromDOM } from './token-extractor';
-import { isBRElement, isHTMLElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
+import { calculateTokenPosition, setCursorOverride } from './cursor-utils';
 import {
   createParagraph,
   createTrailingBreak,
@@ -14,9 +13,15 @@ import {
   getTokenType,
   insertAfter,
   isElementEffectivelyEmpty,
-} from './utils';
+} from './dom-utils';
+import { MenuItemsHandlers, MenuItemsState } from './menu-state';
+import { extractTokensFromDOM, getPromptText } from './token-operations';
+import { findAdjacentToken } from './token-utils';
+import { isBreakToken, isHTMLElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
 // TYPES
+
+export type { EditableState };
 
 export interface KeyboardHandlerDeps {
   getMenuOpen: () => boolean;
@@ -25,40 +30,11 @@ export interface KeyboardHandlerDeps {
   onAction?: (detail: PromptInputProps.ActionDetail) => void;
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   tokens?: readonly PromptInputProps.InputToken[];
-  getPromptText: (tokens: readonly PromptInputProps.InputToken[]) => string;
   closeMenu: () => void;
   announceTokenOperation?: (message: string) => void;
   i18nStrings?: PromptInputProps.I18nStrings;
-}
-
-interface DeletionContext {
-  cursorPosition: number;
-  paragraphId: string | null;
-}
-
-/**
- * Shared state for coordinating between event handlers and input processing
- */
-export interface EditableState {
-  skipNextZwnjUpdate: boolean;
-  skipNormalization: boolean;
-  skipCursorRestore: boolean;
-  targetParagraphId: string | null;
-  deletionContext: DeletionContext | null;
-  menuSelectionTokenId: string | null;
-  menuSelectionIsPinned: boolean;
-}
-
-export function createEditableState(): EditableState {
-  return {
-    skipNextZwnjUpdate: false,
-    skipNormalization: false,
-    skipCursorRestore: false,
-    targetParagraphId: null,
-    deletionContext: null,
-    menuSelectionTokenId: null,
-    menuSelectionIsPinned: false,
-  };
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 // KEYBOARD HANDLERS
@@ -100,6 +76,12 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
       return;
     }
 
+    // Don't submit if disabled or readonly (match textarea behavior)
+    if (deps.disabled || deps.readOnly) {
+      event.preventDefault();
+      return;
+    }
+
     const currentTarget = event.currentTarget;
     if (!isHTMLElement(currentTarget)) {
       return;
@@ -111,7 +93,7 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
     }
     event.preventDefault();
 
-    const plainText = deps.tokensToText ? deps.tokensToText(deps.tokens ?? []) : deps.getPromptText(deps.tokens ?? []);
+    const plainText = deps.tokensToText ? deps.tokensToText(deps.tokens ?? []) : getPromptText(deps.tokens ?? []);
 
     if (deps.onAction) {
       deps.onAction({ value: plainText, tokens: [...(deps.tokens ?? [])] });
@@ -122,156 +104,6 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
     handleMenuNavigation,
     handleEnterKey,
   };
-}
-
-// PARAGRAPH MERGING
-
-export function handleBackspaceAtParagraphStart(
-  event: React.KeyboardEvent<HTMLDivElement>,
-  editableElement: HTMLDivElement,
-  tokens: readonly PromptInputProps.InputToken[],
-  tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
-  getPromptText: (tokens: readonly PromptInputProps.InputToken[]) => string,
-  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
-  setCursorPosition: (element: HTMLElement, position: number) => void,
-  state?: EditableState
-): boolean {
-  const selection = window.getSelection();
-  if (!selection?.rangeCount) {
-    return false;
-  }
-
-  const range = selection.getRangeAt(0);
-
-  if (range.startOffset !== 0 || range.startContainer.nodeName !== 'P') {
-    return false;
-  }
-
-  const paragraphs = findAllParagraphs(editableElement);
-  const currentP = range.startContainer;
-  const pIndex = Array.from(paragraphs).indexOf(currentP as HTMLParagraphElement);
-
-  if (pIndex <= 0) {
-    return false;
-  }
-
-  event.preventDefault();
-
-  let breakCount = 0;
-  let cursorPosition = 0;
-
-  const newTokens = tokens.filter(token => {
-    if (token.type === 'break') {
-      breakCount++;
-      if (breakCount === pIndex) {
-        return false;
-      }
-      cursorPosition += 1;
-    } else {
-      if (breakCount < pIndex) {
-        cursorPosition += getTokenCursorLength(token);
-      }
-    }
-    return true;
-  });
-
-  const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
-  onChange({ value, tokens: newTokens });
-
-  // Store the target position for restoration after re-render
-  if (state) {
-    state.deletionContext = {
-      cursorPosition,
-      paragraphId: null,
-    };
-    state.skipCursorRestore = false;
-  } else {
-    // Fallback for backward compatibility
-    requestAnimationFrame(() => {
-      setCursorPosition(editableElement, cursorPosition);
-    });
-  }
-
-  return true;
-}
-
-export function handleDeleteAtParagraphEnd(
-  event: React.KeyboardEvent<HTMLDivElement>,
-  editableElement: HTMLDivElement,
-  tokens: readonly PromptInputProps.InputToken[],
-  tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
-  getPromptText: (tokens: readonly PromptInputProps.InputToken[]) => string,
-  cursorPosition: number,
-  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
-  setCursorPosition: (element: HTMLElement, position: number) => void,
-  state?: EditableState
-): boolean {
-  const selection = window.getSelection();
-  if (!selection?.rangeCount) {
-    return false;
-  }
-
-  const range = selection.getRangeAt(0);
-  const container = range.startContainer;
-
-  let isAtEndOfParagraph = false;
-  let currentP: HTMLParagraphElement | null = null;
-
-  if (container.nodeName === 'P') {
-    currentP = container as HTMLParagraphElement;
-    const hasOnlyTrailingBR =
-      currentP.childNodes.length === 1 && isBRElement(currentP.firstChild, ELEMENT_TYPES.TRAILING_BREAK);
-    isAtEndOfParagraph = hasOnlyTrailingBR || range.startOffset === currentP.childNodes.length;
-  } else if (isTextNode(container)) {
-    isAtEndOfParagraph = range.startOffset === (container.textContent?.length || 0) && !container.nextSibling;
-    let node: Node | null = container;
-    while (node && node.nodeName !== 'P') {
-      node = node.parentNode;
-    }
-    currentP = node as HTMLParagraphElement;
-  }
-
-  if (!isAtEndOfParagraph || !currentP) {
-    return false;
-  }
-
-  const paragraphs = findAllParagraphs(editableElement);
-  const pIndex = Array.from(paragraphs).indexOf(currentP);
-
-  if (pIndex < 0 || pIndex >= paragraphs.length - 1) {
-    return false;
-  }
-
-  event.preventDefault();
-
-  let breakCount = 0;
-
-  const newTokens = tokens.filter(token => {
-    if (token.type === 'break') {
-      breakCount++;
-      return breakCount !== pIndex + 1;
-    }
-    return true;
-  });
-
-  const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
-  onChange({ value, tokens: newTokens });
-
-  // Store the target position for restoration after re-render
-  if (state) {
-    state.deletionContext = {
-      cursorPosition,
-      paragraphId: null,
-    };
-    state.skipCursorRestore = false;
-  } else {
-    // Fallback for backward compatibility
-    requestAnimationFrame(() => {
-      setCursorPosition(editableElement, cursorPosition);
-    });
-  }
-
-  return true;
 }
 
 // PARAGRAPH OPERATIONS
@@ -301,14 +133,17 @@ export function splitParagraphAtCursor(
     return;
   }
 
+  // Extract content after cursor
   const afterRange = document.createRange();
   afterRange.setStart(range.startContainer, range.startOffset);
   afterRange.setEndAfter(currentP.lastChild || currentP);
   const afterContent = afterRange.extractContents();
 
+  // Create new paragraph with the extracted content
   const newP = createParagraph();
   newP.appendChild(afterContent);
 
+  // Ensure both paragraphs have proper structure
   if (isElementEffectivelyEmpty(newP)) {
     newP.appendChild(createTrailingBreak());
   }
@@ -320,7 +155,6 @@ export function splitParagraphAtCursor(
   currentP.parentNode.insertBefore(newP, currentP.nextSibling);
 
   // Calculate cursor position for the new paragraph (at its start)
-  // Count all tokens before the split point
   const paragraphs = findAllParagraphs(editableElement);
   const currentPIndex = paragraphs.findIndex(p => p === currentP);
 
@@ -329,7 +163,7 @@ export function splitParagraphAtCursor(
   let breakCount = 0;
 
   for (const token of tokens) {
-    if (token.type === 'break') {
+    if (isBreakToken(token)) {
       breakCount++;
       cursorPosition += 1;
       if (breakCount > currentPIndex) {
@@ -342,8 +176,7 @@ export function splitParagraphAtCursor(
 
   state.skipCursorRestore = false;
   state.targetParagraphId = newP.getAttribute('data-paragraph-id');
-  // Store the calculated position for unified restoration
-  state.deletionContext = {
+  state.cursorPositionOverride = {
     cursorPosition,
     paragraphId: newP.getAttribute('data-paragraph-id'),
   };
@@ -360,47 +193,25 @@ interface TokenElementResult {
   wrapperElement: HTMLElement | null;
 }
 
-function findTokenElementForBackspace(container: Node, offset: number): TokenElementResult {
-  if (isTextNode(container) && offset === 0) {
-    const prev = container.previousSibling;
-    const prevType = isHTMLElement(prev) ? getTokenType(prev) : null;
-    if (prevType === ELEMENT_TYPES.REFERENCE || prevType === ELEMENT_TYPES.PINNED) {
-      return {
-        wrapperElement: prev as HTMLElement,
-        targetElement: prev as HTMLElement,
-      };
-    }
-  } else if (isHTMLElement(container) && offset > 0) {
-    const prev = container.childNodes[offset - 1];
-    const prevType = isHTMLElement(prev) ? getTokenType(prev) : null;
-    if (prevType === ELEMENT_TYPES.REFERENCE || prevType === ELEMENT_TYPES.PINNED) {
-      return {
-        wrapperElement: prev as HTMLElement,
-        targetElement: prev as HTMLElement,
-      };
-    }
-  }
+function findTokenElementForDeletion(container: Node, offset: number, isBackspace: boolean): TokenElementResult {
+  let adjacent: Node | null = null;
 
-  return { targetElement: null, wrapperElement: null };
-}
-
-function findTokenElementForDelete(container: Node, offset: number): TokenElementResult {
-  if (isTextNode(container) && offset === (container.textContent?.length || 0)) {
-    const next = container.nextSibling;
-    const nextType = isHTMLElement(next) ? getTokenType(next) : null;
-    if (nextType === ELEMENT_TYPES.REFERENCE || nextType === ELEMENT_TYPES.PINNED) {
-      return {
-        wrapperElement: next as HTMLElement,
-        targetElement: next as HTMLElement,
-      };
+  if (isTextNode(container)) {
+    const isAtEdge = isBackspace ? offset === 0 : offset === (container.textContent?.length || 0);
+    if (isAtEdge) {
+      adjacent = isBackspace ? container.previousSibling : container.nextSibling;
     }
   } else if (isHTMLElement(container)) {
-    const next = container.childNodes[offset];
-    const nextType = isHTMLElement(next) ? getTokenType(next) : null;
-    if (nextType === ELEMENT_TYPES.REFERENCE || nextType === ELEMENT_TYPES.PINNED) {
+    const childIndex = isBackspace ? offset - 1 : offset;
+    adjacent = container.childNodes[childIndex];
+  }
+
+  if (isHTMLElement(adjacent)) {
+    const adjacentType = getTokenType(adjacent);
+    if (adjacentType === ELEMENT_TYPES.REFERENCE || adjacentType === ELEMENT_TYPES.PINNED) {
       return {
-        wrapperElement: next as HTMLElement,
-        targetElement: next as HTMLElement,
+        wrapperElement: adjacent,
+        targetElement: adjacent,
       };
     }
   }
@@ -437,27 +248,29 @@ export function handleReferenceTokenDeletion(
     return false;
   }
 
-  const { targetElement, wrapperElement } = isBackspace
-    ? findTokenElementForBackspace(range.startContainer, range.startOffset)
-    : findTokenElementForDelete(range.startContainer, range.startOffset);
+  const { targetElement, wrapperElement } = findTokenElementForDeletion(
+    range.startContainer,
+    range.startOffset,
+    isBackspace
+  );
 
-  const finalTarget = targetElement || wrapperElement || null;
+  const tokenElement = targetElement || wrapperElement || null;
 
-  if (!isValidTokenForDeletion(finalTarget)) {
+  if (!isValidTokenForDeletion(tokenElement)) {
     return false;
   }
 
   event.preventDefault();
 
   // Announce token removal
-  const tokenLabel = finalTarget!.textContent?.trim() || '';
+  const tokenLabel = tokenElement!.textContent?.trim() || '';
   if (announceTokenOperation && tokenLabel) {
     const announcement =
       i18nStrings?.tokenRemovedAriaLabel?.({ label: tokenLabel, value: tokenLabel }) ?? `${tokenLabel} removed`;
     announceTokenOperation(announcement);
   }
 
-  const elementToRemove = (wrapperElement || finalTarget)!;
+  const elementToRemove = (wrapperElement || tokenElement)!;
   const paragraph = elementToRemove.parentNode;
   if (!isHTMLElement(paragraph)) {
     return true;
@@ -468,34 +281,19 @@ export function handleReferenceTokenDeletion(
 
   // Find the reference token's position in the token array
   // This gives us the correct position independent of DOM structure
-  const instanceId = finalTarget!.getAttribute('data-id');
+  const instanceId = tokenElement!.getAttribute('data-id');
   const tokens = extractTokensFromDOM(editableElement);
   const referenceIndex = tokens.findIndex(t => isReferenceToken(t) && t.id === instanceId);
 
-  let targetCursorPosition = 0;
+  let cursorPosition = 0;
   if (referenceIndex >= 0) {
     // Calculate position up to (but not including) the reference
-    for (let i = 0; i < referenceIndex; i++) {
-      const token = tokens[i];
-      if (isTextToken(token)) {
-        targetCursorPosition += token.value.length;
-      } else if (isTriggerToken(token)) {
-        targetCursorPosition += 1 + token.value.length;
-      } else {
-        targetCursorPosition += 1; // other references
-      }
-    }
-
-    // For delete, cursor stays before the reference (already calculated)
-    // For backspace, cursor also goes before the reference (same position)
+    cursorPosition = calculateTokenPosition(tokens, referenceIndex, false);
   }
 
-  // Store the target position for restoration after re-render
-  state.deletionContext = {
-    cursorPosition: targetCursorPosition,
-    paragraphId: null,
-  };
-  state.skipCursorRestore = false; // Allow restoration with our calculated position
+  // Store the position for restoration after re-render
+  setCursorOverride(state, cursorPosition);
+  state.isDeleteOperation = true; // Mark as deletion for Safari ghost cursor fix
 
   elementToRemove.remove();
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
@@ -505,60 +303,19 @@ export function handleReferenceTokenDeletion(
 
 // ARROW KEY NAVIGATION
 
-function handleArrowInElementNode(
+function handleArrowNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
   container: Node,
   offset: number,
   skipNormalizationRef: React.MutableRefObject<boolean>
 ): boolean {
-  if (!isHTMLElement(container)) {
-    return false;
-  }
+  const direction = event.key === 'ArrowLeft' ? 'left' : 'right';
+  const { sibling, isReferenceToken } = findAdjacentToken(container, offset, direction);
 
-  const isLeftArrow = event.key === 'ArrowLeft';
-  const sibling = isLeftArrow
-    ? offset > 0
-      ? container.childNodes[offset - 1]
-      : container.previousSibling
-    : offset < container.childNodes.length
-      ? container.childNodes[offset]
-      : container.nextSibling;
-
-  const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
-  if (siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED) {
+  if (isReferenceToken && sibling) {
     event.preventDefault();
     skipNormalizationRef.current = true;
-    isLeftArrow ? positionBefore(sibling as HTMLElement) : positionAfter(sibling as HTMLElement);
-    return true;
-  }
-
-  return false;
-}
-
-function handleArrowInTextNode(
-  event: React.KeyboardEvent<HTMLDivElement>,
-  container: Node,
-  offset: number,
-  skipNormalizationRef: React.MutableRefObject<boolean>
-): boolean {
-  if (!isTextNode(container)) {
-    return false;
-  }
-
-  const isLeftArrow = event.key === 'ArrowLeft';
-  const isAtBoundary = isLeftArrow ? offset === 0 : offset === (container.textContent?.length || 0);
-
-  if (!isAtBoundary) {
-    return false;
-  }
-
-  const sibling = isLeftArrow ? container.previousSibling : container.nextSibling;
-
-  const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
-  if (siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED) {
-    event.preventDefault();
-    skipNormalizationRef.current = true;
-    isLeftArrow ? positionBefore(sibling as HTMLElement) : positionAfter(sibling as HTMLElement);
+    direction === 'left' ? positionBefore(sibling) : positionAfter(sibling);
     return true;
   }
 
@@ -579,18 +336,13 @@ export function handleArrowKeyNavigation(
   }
 
   const range = selection.getRangeAt(0);
-  const container = range.startContainer;
-  const offset = range.startOffset;
 
   // Handle Shift+Arrow for selection across reference tokens
   if (event.shiftKey) {
     return handleShiftArrowAcrossTokens(event, selection, range);
   }
 
-  return (
-    handleArrowInElementNode(event, container, offset, skipNormalizationRef) ||
-    handleArrowInTextNode(event, container, offset, skipNormalizationRef)
-  );
+  return handleArrowNavigation(event, range.startContainer, range.startOffset, skipNormalizationRef);
 }
 
 function handleShiftArrowAcrossTokens(
@@ -717,100 +469,6 @@ export function createCursorNormalizationHandler(
   };
 }
 
-// SELECTION NORMALIZATION
-
-/**
- * Normalizes selection to include entire reference tokens when selection boundary is in cursor spots.
- * If selection starts or ends in a cursor spot, expands to include the entire reference wrapper.
- */
-function normalizeSelectionAroundReferences(): void {
-  const selection = window.getSelection();
-  if (!selection?.rangeCount) {
-    return;
-  }
-
-  const range = selection.getRangeAt(0);
-
-  // Only normalize non-collapsed selections
-  if (range.collapsed) {
-    return;
-  }
-
-  let modified = false;
-  let newStartContainer = range.startContainer;
-  let newStartOffset = range.startOffset;
-  let newEndContainer = range.endContainer;
-  let newEndOffset = range.endOffset;
-
-  // Check if start is in a cursor spot
-  if (isTextNode(range.startContainer)) {
-    const startParent = range.startContainer.parentElement;
-    if (startParent) {
-      const startParentType = getTokenType(startParent);
-      if (startParentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || startParentType === ELEMENT_TYPES.CURSOR_SPOT_AFTER) {
-        const wrapper = startParent.parentElement;
-        const wrapperType = wrapper ? getTokenType(wrapper) : null;
-        if (wrapper && (wrapperType === ELEMENT_TYPES.REFERENCE || wrapperType === ELEMENT_TYPES.PINNED)) {
-          const paragraph = wrapper.parentElement;
-          if (paragraph) {
-            // If in cursor-spot-before, expand to before wrapper
-            // If in cursor-spot-after, expand to after wrapper
-            if (startParentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
-              newStartContainer = paragraph;
-              newStartOffset = Array.from(paragraph.childNodes).indexOf(wrapper);
-            } else {
-              newStartContainer = paragraph;
-              newStartOffset = Array.from(paragraph.childNodes).indexOf(wrapper) + 1;
-            }
-            modified = true;
-          }
-        }
-      }
-    }
-  }
-
-  // Check if end is in a cursor spot
-  if (isTextNode(range.endContainer)) {
-    const endParent = range.endContainer.parentElement;
-    if (endParent) {
-      const endParentType = getTokenType(endParent);
-      if (endParentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || endParentType === ELEMENT_TYPES.CURSOR_SPOT_AFTER) {
-        const wrapper = endParent.parentElement;
-        const wrapperType = wrapper ? getTokenType(wrapper) : null;
-        if (wrapper && (wrapperType === ELEMENT_TYPES.REFERENCE || wrapperType === ELEMENT_TYPES.PINNED)) {
-          const paragraph = wrapper.parentElement;
-          if (paragraph) {
-            // If in cursor-spot-before, expand to before wrapper
-            // If in cursor-spot-after, expand to after wrapper
-            if (endParentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
-              newEndContainer = paragraph;
-              newEndOffset = Array.from(paragraph.childNodes).indexOf(wrapper);
-            } else {
-              newEndContainer = paragraph;
-              newEndOffset = Array.from(paragraph.childNodes).indexOf(wrapper) + 1;
-            }
-            modified = true;
-          }
-        }
-      }
-    }
-  }
-
-  if (modified) {
-    const newRange = document.createRange();
-    newRange.setStart(newStartContainer, newStartOffset);
-    newRange.setEnd(newEndContainer, newEndOffset);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-  }
-}
-
-export function createSelectionNormalizationHandler(): () => void {
-  return () => {
-    normalizeSelectionAroundReferences();
-  };
-}
-
 // SPACE AFTER CLOSED TRIGGER
 
 export function handleSpaceAfterClosedTrigger(
@@ -818,7 +476,8 @@ export function handleSpaceAfterClosedTrigger(
   editableElement: HTMLDivElement,
   menuOpen: boolean,
   triggerValueWhenClosed: string,
-  editableState: EditableState
+  editableState: EditableState,
+  menus?: readonly PromptInputProps.MenuDefinition[]
 ): boolean {
   // Only handle space key when menu is closed and we have a saved trigger length
   if (event.key !== ' ' || menuOpen || !triggerValueWhenClosed) {
@@ -878,22 +537,43 @@ export function handleSpaceAfterClosedTrigger(
   insertAfter(spaceNode, triggerElement);
 
   // Calculate cursor position: after trigger + after space
-  const tokens = extractTokensFromDOM(editableElement);
+  const tokens = extractTokensFromDOM(editableElement, menus);
+
+  // Find the trigger element's ID to locate the correct trigger token
+  const triggerElementId = triggerElement.getAttribute('data-id');
+
   let cursorPosition = 0;
-  let foundTrigger = false;
+  let foundTargetTrigger = false;
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
-    if (token.type === 'trigger' && !foundTrigger) {
-      foundTrigger = true;
-      cursorPosition += getTokenCursorLength(token);
+    // Find the specific trigger that matches our trigger element
+    if (isTriggerToken(token) && !foundTargetTrigger) {
+      // Match by ID if available, otherwise by being the first unmatched trigger
+      if (triggerElementId && token.id === triggerElementId) {
+        foundTargetTrigger = true;
+        cursorPosition += getTokenCursorLength(token);
 
-      // Check if next token is the space we just inserted
-      const nextToken = tokens[i + 1];
-      if (nextToken && nextToken.type === 'text' && nextToken.value.startsWith(' ')) {
-        cursorPosition += 1; // Position after the space
-        break;
+        // Check if next token is the space we just inserted
+        const nextToken = tokens[i + 1];
+        if (nextToken && isTextToken(nextToken) && nextToken.value.startsWith(' ')) {
+          cursorPosition += 1; // Position after the space
+          break;
+        }
+      } else if (!triggerElementId) {
+        // Fallback: use first trigger
+        foundTargetTrigger = true;
+        cursorPosition += getTokenCursorLength(token);
+
+        const nextToken = tokens[i + 1];
+        if (nextToken && isTextToken(nextToken) && nextToken.value.startsWith(' ')) {
+          cursorPosition += 1;
+          break;
+        }
+      } else {
+        // Not the target trigger, keep counting
+        cursorPosition += getTokenCursorLength(token);
       }
     } else {
       cursorPosition += getTokenCursorLength(token);
@@ -901,11 +581,23 @@ export function handleSpaceAfterClosedTrigger(
   }
 
   // Store position for unified restoration
-  editableState.deletionContext = {
+  editableState.cursorPositionOverride = {
     cursorPosition,
     paragraphId: null,
   };
   editableState.skipCursorRestore = false;
+
+  // Position cursor immediately to prevent it from jumping to position 0
+  // This prevents menu from flickering open
+  const cursorRange = document.createRange();
+  const spaceTextNode = spaceNode;
+  cursorRange.setStart(spaceTextNode, 1); // After the space
+  cursorRange.collapse(true);
+  const sel = window.getSelection();
+  if (sel) {
+    sel.removeAllRanges();
+    sel.addRange(cursorRange);
+  }
 
   // Trigger input event to extract tokens and update state
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));

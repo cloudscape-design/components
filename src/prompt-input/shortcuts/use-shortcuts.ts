@@ -8,10 +8,11 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import { ELEMENT_TYPES } from '../core/constants';
-import { processTokens, type UpdateSource } from '../core/token-engine';
-import { getPromptText } from '../core/token-extractor';
+import { getCurrentSelection, getFirstRange } from '../core/cursor-utils';
+import { findElement } from '../core/dom-utils';
+import { processTokens, type UpdateSource } from '../core/token-operations';
+import { getPromptText } from '../core/token-operations';
 import { isHTMLElement, isTextNode, isTriggerToken } from '../core/type-guards';
-import { findElement, getCurrentSelection, getFirstRange } from '../core/utils';
 import type { PromptInputProps } from '../interfaces';
 
 // ============================================================================

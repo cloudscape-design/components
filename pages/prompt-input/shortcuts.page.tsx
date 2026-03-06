@@ -223,6 +223,7 @@ export default function PromptInputShortcutsPage() {
       trigger: '@',
       options: mentionOptions,
       filteringType: 'auto',
+      empty: 'No mentions found',
     },
     {
       id: 'mode',
@@ -230,12 +231,14 @@ export default function PromptInputShortcutsPage() {
       options: commandOptions,
       filteringType: 'auto',
       useAtStart: true,
+      empty: 'No commands found',
     },
     {
       id: 'topics',
       trigger: '#',
       options: topicOptions,
       filteringType: 'auto',
+      empty: 'No topics found',
     },
   ];
 
@@ -575,7 +578,19 @@ export default function PromptInputShortcutsPage() {
                             onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
                             onItemClick={({ detail }) => {
                               if (detail.id === 'slash') {
-                                ref.current?.insertText('/', 0);
+                                // Filter out only pinned references to check content after them
+                                const nonPinnedTokens = tokens.filter(
+                                  token => !(token.type === 'reference' && token.pinned)
+                                );
+
+                                // Determine if we need to add space before slash
+                                let needsSpace = false;
+                                if (nonPinnedTokens.length > 0) {
+                                  const firstToken = nonPinnedTokens[0];
+                                  needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
+                                }
+
+                                ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
                               }
                               if (detail.id === 'at') {
                                 ref.current?.insertText('@');

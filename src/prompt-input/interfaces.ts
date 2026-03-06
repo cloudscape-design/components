@@ -61,6 +61,8 @@ export interface PromptInputProps
    * - Trigger tokens: `value` contains the filter text, `triggerChar` for the trigger character
    *
    * When `menus` is defined, you should use `tokens` to control the content instead of `value`.
+   *
+   * Requires React 18.
    */
   tokens?: readonly PromptInputProps.InputToken[];
 
@@ -76,6 +78,8 @@ export interface PromptInputProps
    * Use this to customize serialization, for example:
    * - Using `label` instead of `value` for reference tokens
    * - Adding custom formatting or separators between tokens
+   *
+   * Requires React 18.
    */
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
 
@@ -191,17 +195,23 @@ export interface PromptInputProps
   /**
    * Menus that can be triggered via specific symbols (e.g., "/" or "@").
    * For menus only relevant to triggers at the start of the input, set `useAtStart: true`, defaults to `false`.
+   *
+   * Requires React 18.
    */
   menus?: PromptInputProps.MenuDefinition[];
 
   /**
    * Maximum height of the menu dropdown in pixels.
    * When not specified, the menu will grow to fit its content.
+   *
+   * Requires React 18.
    */
   maxMenuHeight?: number;
 
   /**
    * Called whenever a user selects an option in a menu.
+   *
+   * Requires React 18.
    */
   onMenuItemSelect?: NonCancelableEventHandler<PromptInputProps.MenuItemSelectDetail>;
 
@@ -219,6 +229,8 @@ export interface PromptInputProps
    * - `filteringText` - The value to use to fetch options (undefined for pagination).
    * - `firstPage` - Indicates that you should fetch the first page of options.
    * - `samePage` - Indicates that you should fetch the same page (for example, when clicking recovery button).
+   *
+   * Requires React 18.
    */
   onMenuLoadItems?: NonCancelableEventHandler<PromptInputProps.MenuLoadItemsDetail>;
 
@@ -229,6 +241,8 @@ export interface PromptInputProps
    * The detail object contains:
    * - `menuId` - The ID of the menu that triggered the event.
    * - `filteringText` - The text to use for filtering options.
+   *
+   * Requires React 18.
    */
   onMenuFilter?: NonCancelableEventHandler<PromptInputProps.MenuFilterDetail>;
 
