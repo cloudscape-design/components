@@ -38179,6 +38179,67 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [
         {
+          "description": "Finds the action slot of the card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the content slot of the card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the description slot of the card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the header slot of the card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findItems",
           "parameters": [],
           "returnType": {
@@ -47903,6 +47964,47 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [],
       "name": "IconWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the action slot of the card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the content slot of the card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the description slot of the card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header slot of the card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
     },
     {
       "methods": [
