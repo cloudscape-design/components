@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
@@ -21,6 +21,7 @@ import {
   Toggle,
 } from '~components';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
 interface EC2Instance {
@@ -258,6 +259,16 @@ function EmptyState({ title, subtitle, action }: { title: string; subtitle?: str
   );
 }
 
+type DemoContext = React.Context<
+  AppContextType<{
+    resizable: boolean;
+    firstSticky: number;
+    lastSticky: number;
+    customGap: boolean;
+    gap: number;
+  }>
+>;
+
 export default function EC2TableDemo() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps['preferences']>({
     pageSize: 10,
@@ -314,25 +325,30 @@ export default function EC2TableDemo() {
 
   const { selectedItems } = collectionProps;
 
-  const [firstSticky, setFirstSticky] = useState('0');
-  const [lastSticky, setLastSticky] = useState('0');
-  const [resizable, setResizable] = useState(true);
+  const {
+    urlParams: { resizable = true, firstSticky = 0, lastSticky = 0, customGap = false, gap = 0 },
+    setUrlParams,
+  } = useContext(AppContext as DemoContext);
+
+  // Build the CSS custom property style for the resizer gap
+  const tableWrapperStyle: React.CSSProperties = customGap
+    ? ({ '--awsui-table-resizer-block-gap': `${gap}px` } as React.CSSProperties)
+    : {};
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
       <h1>EC2 Instances Table</h1>
 
       <SpaceBetween size="m" direction="horizontal" alignItems="end">
-        <Toggle onChange={({ detail }) => setResizable(detail.checked)} checked={resizable}>
+        <Toggle onChange={({ detail }) => setUrlParams({ resizable: detail.checked })} checked={resizable}>
           Resizable
         </Toggle>
 
-        {/* first */}
         <FormField label="Sticky First">
           <Input
             ariaLabel="First sticky column count"
-            onChange={({ detail }) => setFirstSticky(detail.value)}
-            value={firstSticky}
+            onChange={({ detail }) => setUrlParams({ firstSticky: +detail.value })}
+            value={String(firstSticky)}
             name="first"
             inputMode="numeric"
             type="number"
@@ -341,57 +357,75 @@ export default function EC2TableDemo() {
         <FormField label="Sticky Last">
           <Input
             ariaLabel="Last sticky column count"
-            onChange={({ detail }) => setLastSticky(detail.value)}
-            value={lastSticky}
+            onChange={({ detail }) => setUrlParams({ lastSticky: +detail.value })}
+            value={String(lastSticky)}
             name="last"
+            inputMode="numeric"
+            type="number"
+          />
+        </FormField>
+
+        <Toggle onChange={({ detail }) => setUrlParams({ customGap: detail.checked })} checked={customGap}>
+          Custom resizer gap
+        </Toggle>
+
+        <FormField label="Resizer gap (px)">
+          <Input
+            disabled={!customGap}
+            ariaLabel="Resizer block gap in pixels"
+            onChange={({ detail }) => setUrlParams({ gap: +detail.value })}
+            value={String(gap)}
+            name="gap"
             inputMode="numeric"
             type="number"
           />
         </FormField>
       </SpaceBetween>
 
-      <Table
-        {...collectionProps}
-        selectionType="multi"
-        resizableColumns={resizable}
-        stickyColumns={{
-          first: +firstSticky,
-          last: +lastSticky,
-        }}
-        variant="stacked"
-        enableKeyboardNavigation={true}
-        ariaLabels={ariaLabels}
-        header={
-          <Header
-            counter={
-              selectedItems && selectedItems.length
-                ? `(${selectedItems.length}/${allInstances.length})`
-                : `(${allInstances.length})`
-            }
-          >
-            EC2 Instances
-          </Header>
-        }
-        columnDefinitions={columnDefinitions}
-        columnGroupingDefinitions={columnGroupingDefinitions}
-        columnDisplay={preferences?.contentDisplay}
-        items={items}
-        pagination={<Pagination {...paginationProps} />}
-        filter={
-          <TextFilter
-            {...filterProps}
-            countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
-            filteringPlaceholder="Find instances"
-          />
-        }
-        preferences={
-          <CollectionPreferences
-            {...collectionPreferencesProps}
-            preferences={preferences}
-            onConfirm={({ detail }) => setPreferences(detail)}
-          />
-        }
-      />
+      <div style={tableWrapperStyle}>
+        <Table
+          {...collectionProps}
+          selectionType="multi"
+          resizableColumns={resizable}
+          stickyColumns={{
+            first: +firstSticky,
+            last: +lastSticky,
+          }}
+          variant="stacked"
+          enableKeyboardNavigation={true}
+          ariaLabels={ariaLabels}
+          header={
+            <Header
+              counter={
+                selectedItems && selectedItems.length
+                  ? `(${selectedItems.length}/${allInstances.length})`
+                  : `(${allInstances.length})`
+              }
+            >
+              EC2 Instances
+            </Header>
+          }
+          columnDefinitions={columnDefinitions}
+          columnGroupingDefinitions={columnGroupingDefinitions}
+          columnDisplay={preferences?.contentDisplay}
+          items={items}
+          pagination={<Pagination {...paginationProps} />}
+          filter={
+            <TextFilter
+              {...filterProps}
+              countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
+              filteringPlaceholder="Find instances"
+            />
+          }
+          preferences={
+            <CollectionPreferences
+              {...collectionPreferencesProps}
+              preferences={preferences}
+              onConfirm={({ detail }) => setPreferences(detail)}
+            />
+          }
+        />
+      </div>
     </SimplePage>
   );
 }
