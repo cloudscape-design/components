@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 
 import { useDensityMode, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -21,29 +20,24 @@ import TextareaMode from './components/textarea-mode';
 import TokenMode from './components/token-mode';
 import { CURSOR_DETECTION_DELAY, DEFAULT_MAX_ROWS, NEXT_TICK_TIMEOUT } from './core/constants';
 import { isCursorInTriggerToken, setCursorPosition, setCursorRange } from './core/cursor-manager';
+import { normalizeSelection, selectAllContent } from './core/cursor-utils';
 import {
   createCursorNormalizationHandler,
   createKeyboardHandlers,
-  createSelectionNormalizationHandler,
-  handleSpaceAfterClosedTrigger,
-} from './core/event-handlers';
-import { createEditableState } from './core/event-handlers';
-import {
   handleArrowKeyNavigation,
-  handleBackspaceAtParagraphStart,
-  handleDeleteAtParagraphEnd,
   handleReferenceTokenDeletion,
+  handleSpaceAfterClosedTrigger,
   splitParagraphAtCursor,
 } from './core/event-handlers';
 import { MenuItem, useMenuItems } from './core/menu-state';
 import { useMenuLoadMore } from './core/menu-state';
-import { handleMenuSelection } from './core/token-engine';
-import { getPromptText } from './core/token-extractor';
-import { selectAllContent } from './core/utils';
+import { handleMenuSelection } from './core/token-operations';
+import { getPromptText } from './core/token-operations';
+import { handleBackspaceAtParagraphStart, handleDeleteAtParagraphEnd } from './core/token-utils';
 import { PromptInputProps } from './interfaces';
 import { useShortcuts } from './shortcuts/use-shortcuts';
 import { getPromptInputStyles } from './styles';
-import { useEditableTokens } from './tokens/use-editable-tokens';
+import { createEditableState, useEditableTokens } from './tokens/use-editable-tokens';
 import { insertTextIntoContentEditable } from './utils/insert-text-content-editable';
 
 import styles from './styles.css.js';
@@ -196,22 +190,22 @@ const InternalPromptInput = React.forwardRef(
           }
 
           if (isTokenMode) {
-            if (!editableElementRef.current || !tokens || !menus) {
+            if (!editableElementRef.current || !tokens) {
               return;
             }
 
-            insertTextIntoContentEditable(
-              editableElementRef.current,
-              text,
-              cursorStart,
-              cursorEnd,
-              tokens,
-              menus,
-              detail => fireNonCancelableEvent(onChange, detail),
-              tokensToText ?? getPromptText,
-              lastKnownCursorPositionRef.current,
-              lastKnownCursorPositionRef
+            // Calculate offset for pinned references
+            // Pinned references are always at the start and can't have content inserted before/between them
+            const pinnedTokens = tokens.filter(
+              (token): token is PromptInputProps.ReferenceToken => token.type === 'reference' && token.pinned === true
             );
+            const pinnedOffset = pinnedTokens.length;
+
+            // Adjust cursor positions to account for pinned tokens
+            const adjustedCursorStart = cursorStart !== undefined ? cursorStart + pinnedOffset : undefined;
+            const adjustedCursorEnd = cursorEnd !== undefined ? cursorEnd + pinnedOffset : undefined;
+
+            insertTextIntoContentEditable(editableElementRef.current, text, adjustedCursorStart, adjustedCursorEnd);
           } else {
             // Textarea mode
             if (!textareaRef.current) {
@@ -238,7 +232,8 @@ const InternalPromptInput = React.forwardRef(
           }
         },
       }),
-      [getActiveElement, isTokenMode, disabled, readOnly, tokens, menus, onChange, tokensToText]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [getActiveElement, isTokenMode, disabled, readOnly]
     );
 
     /**
@@ -323,8 +318,32 @@ const InternalPromptInput = React.forwardRef(
         editableState
       );
 
-      document.addEventListener('selectionchange', normalizeCursorPosition);
-      return () => document.removeEventListener('selectionchange', normalizeCursorPosition);
+      // Track mouse state to skip normalization during/after mouse clicks
+      const handleMouseDown = () => {
+        window.isMouseDownForCursor = true;
+      };
+      const handleMouseUp = () => {
+        // Delay clearing the flag to allow the click to complete
+        setTimeout(() => {
+          window.isMouseDownForCursor = false;
+        }, 100);
+      };
+
+      const normalizeIfNotMouse = () => {
+        if (!window.isMouseDownForCursor) {
+          normalizeCursorPosition();
+        }
+      };
+
+      document.addEventListener('selectionchange', normalizeIfNotMouse);
+      document.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        document.removeEventListener('selectionchange', normalizeIfNotMouse);
+        document.removeEventListener('mousedown', handleMouseDown);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
     }, [isTokenMode, editableState]);
 
     // Normalize selection to include entire reference tokens when boundary is in cursor spots
@@ -333,10 +352,24 @@ const InternalPromptInput = React.forwardRef(
         return;
       }
 
-      const normalizeSelection = createSelectionNormalizationHandler();
+      const handleSelectionChange = () => normalizeSelection(window.getSelection());
+      const handleMouseDown = () => {
+        window.isMouseDown = true;
+      };
+      const handleMouseUp = () => {
+        window.isMouseDown = false;
+        normalizeSelection(window.getSelection());
+      };
 
-      document.addEventListener('selectionchange', normalizeSelection);
-      return () => document.removeEventListener('selectionchange', normalizeSelection);
+      document.addEventListener('selectionchange', handleSelectionChange);
+      document.addEventListener('mousedown', handleMouseDown);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      return () => {
+        document.removeEventListener('selectionchange', handleSelectionChange);
+        document.removeEventListener('mousedown', handleMouseDown);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
     }, [isTokenMode]);
 
     const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -402,18 +435,22 @@ const InternalPromptInput = React.forwardRef(
       }
 
       if (event.key === 'Backspace' && tokens && editableElementRef.current) {
+        // Prevent backspace in completely empty input
+        if (tokens.length === 0) {
+          event.preventDefault();
+          return;
+        }
+
         if (
           handleBackspaceAtParagraphStart(
             event,
             editableElementRef.current,
             tokens,
             tokensToText,
-            getPromptText,
             (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
               markTokensAsSent(detail.tokens);
               fireNonCancelableEvent(onChange, detail);
             },
-            setCursorPosition,
             editableState
           )
         ) {
@@ -428,13 +465,11 @@ const InternalPromptInput = React.forwardRef(
             editableElementRef.current,
             tokens,
             tokensToText,
-            getPromptText,
             lastKnownCursorPositionRef.current,
             (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
               markTokensAsSent(detail.tokens);
               fireNonCancelableEvent(onChange, detail);
             },
-            setCursorPosition,
             editableState
           )
         ) {
@@ -454,7 +489,8 @@ const InternalPromptInput = React.forwardRef(
           editableElementRef.current,
           shortcuts.menuIsOpen,
           shortcuts.triggerValueWhenClosed,
-          editableState
+          editableState,
+          menus
         )
       ) {
         return;
@@ -497,7 +533,6 @@ const InternalPromptInput = React.forwardRef(
       // Cleanup on unmount
       return () => {
         window.removeEventListener('resize', handleResize);
-        containers.forEach(container => ReactDOM.unmountComponentAtNode(container));
         containers.clear();
       };
     }, [adjustInputHeight]);
@@ -587,7 +622,6 @@ const InternalPromptInput = React.forwardRef(
         onAction: onAction ? detail => fireNonCancelableEvent(onAction, detail) : undefined,
         tokensToText,
         tokens,
-        getPromptText,
         closeMenu: () => {
           ignoreCursorDetection.current = true;
           shortcuts.setCursorInTrigger(false);
@@ -601,8 +635,10 @@ const InternalPromptInput = React.forwardRef(
           setTimeout(() => setTokenOperationAnnouncement(''), 100);
         },
         i18nStrings,
+        disabled,
+        readOnly,
       });
-    }, [onAction, tokensToText, tokens, ignoreCursorDetection, shortcuts, i18nStrings]);
+    }, [onAction, tokensToText, tokens, ignoreCursorDetection, shortcuts, i18nStrings, disabled, readOnly]);
 
     // Menu load more controller
     const menuLoadMoreResult = useMenuLoadMore({

@@ -3,21 +3,63 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
-import { ELEMENT_TYPES, SPECIAL_CHARS } from '../core/constants';
-import { getCursorPosition, getTokenCursorLength, setCursorPosition } from '../core/cursor-manager';
-import { type EditableState } from '../core/event-handlers';
-import { extractTokensFromDOM, getPromptText, moveForbiddenTextAfterPinnedTokens } from '../core/token-extractor';
+import { ELEMENT_TYPES } from '../core/constants';
+import { getCursorPosition, getCursorPositionAtIndex, setCursorPosition } from '../core/cursor-manager';
+import {
+  applySafariCursorFix,
+  calculateEndPosition,
+  extractTextFromCursorSpots,
+  positionCursorAfterMovedText,
+} from '../core/cursor-utils';
+import {
+  createParagraph,
+  ensureValidEmptyState,
+  findAllParagraphs,
+  findElements,
+  isEmptyState,
+} from '../core/dom-utils';
+import { extractTokensFromDOM, getPromptText } from '../core/token-operations';
 import { renderTokensToDOM } from '../core/token-renderer';
+import { enforcePinnedTokenOrdering } from '../core/token-utils';
 import {
   isBreakToken,
   isBRElement,
+  isPinnedReferenceToken,
   isReferenceToken,
   isTextNode,
   isTextToken,
   isTriggerToken,
 } from '../core/type-guards';
-import { createParagraph, ensureEmptyState, findAllParagraphs, findElements, insertAfter } from '../core/utils';
 import { PromptInputProps } from '../interfaces';
+
+interface CursorPositionOverride {
+  cursorPosition: number;
+  paragraphId: string | null;
+}
+
+export interface EditableState {
+  skipNextZwnjUpdate: boolean;
+  skipNormalization: boolean;
+  skipCursorRestore: boolean;
+  targetParagraphId: string | null;
+  cursorPositionOverride: CursorPositionOverride | null;
+  menuSelectionTokenId: string | null;
+  menuSelectionIsPinned: boolean;
+  isDeleteOperation: boolean;
+}
+
+export function createEditableState(): EditableState {
+  return {
+    skipNextZwnjUpdate: false,
+    skipNormalization: false,
+    skipCursorRestore: false,
+    targetParagraphId: null,
+    cursorPositionOverride: null,
+    menuSelectionTokenId: null,
+    menuSelectionIsPinned: false,
+    isDeleteOperation: false,
+  };
+}
 
 function shouldRerender(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -89,13 +131,25 @@ export function useEditableTokens({
   const lastReadOnlyRef = useRef(readOnly);
   const skipNextZwnjUpdateRef = useRef(false);
   const skipCursorRestoreRef = useRef(false);
+  const lastInputTimeRef = useRef<number>(0);
+  const isTypingIntoEmptyLineRef = useRef(false);
 
   const handleInput = useCallback(() => {
+    lastInputTimeRef.current = Date.now();
+
     if (!elementRef.current) {
       return;
     }
 
-    // Capture cursor position BEFORE any DOM manipulation
+    // Remove trailing BRs FIRST, before capturing cursor
+    const allParagraphs = findAllParagraphs(elementRef.current);
+    allParagraphs.forEach(p => {
+      if (p.childNodes.length > 1 && isBRElement(p.firstChild, ELEMENT_TYPES.TRAILING_BREAK)) {
+        p.firstChild.remove();
+      }
+    });
+
+    // Capture cursor position AFTER BR removal
     const cursorPos = getCursorPosition(elementRef.current);
     lastKnownCursorPositionRef.current = cursorPos;
 
@@ -111,33 +165,18 @@ export function useEditableTokens({
     }
 
     if (elementRef.current.children.length === 0) {
-      ensureEmptyState(elementRef.current);
+      ensureValidEmptyState(elementRef.current);
     }
 
     const paragraphs = findAllParagraphs(elementRef.current);
 
-    paragraphs.forEach(p => {
-      const cursorSpots = findElements(p, {
-        tokenType: [ELEMENT_TYPES.CURSOR_SPOT_BEFORE, ELEMENT_TYPES.CURSOR_SPOT_AFTER],
-      });
-      cursorSpots.forEach(spot => {
-        const content = spot.textContent || '';
-        const cleanContent = content.replace(new RegExp(SPECIAL_CHARS.ZWNJ, 'g'), '');
+    // Extract text from cursor spots and track moved text node
+    const { movedTextNode } = extractTextFromCursorSpots(paragraphs, true);
 
-        if (cleanContent) {
-          const textNode = document.createTextNode(cleanContent);
-          const wrapper = spot.parentElement;
-          if (wrapper) {
-            if (spot.getAttribute('data-type') === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
-              wrapper.parentNode?.insertBefore(textNode, wrapper);
-            } else {
-              insertAfter(textNode, wrapper);
-            }
-          }
-        }
-        spot.textContent = SPECIAL_CHARS.ZWNJ;
-      });
-    });
+    // If cursor was in a spot, position it at the end of the moved text
+    if (movedTextNode) {
+      positionCursorAfterMovedText(movedTextNode, elementRef.current, lastKnownCursorPositionRef);
+    }
 
     const directTextNodes = Array.from(elementRef.current.childNodes).filter(
       node => isTextNode(node) && node.textContent?.trim()
@@ -160,30 +199,62 @@ export function useEditableTokens({
     // Extract tokens
     let extractedTokens = extractTokensFromDOM(elementRef.current, menus);
 
-    // If all content was deleted or only breaks remain, ensure proper empty state
-    const onlyBreaks = extractedTokens.every(isBreakToken);
+    // If a new trigger was just created, render immediately to create the trigger element
+    // This minimizes the window where cursor is at wrong position
+    const newTriggers = extractedTokens.filter(isTriggerToken);
+    const oldTriggers = lastEmittedTokensRef.current?.filter(isTriggerToken) || [];
 
-    if (extractedTokens.length === 0 || onlyBreaks) {
+    if (newTriggers.length > oldTriggers.length) {
+      // New trigger detected - render immediately to create trigger element
+      renderTokensToDOM(extractedTokens, elementRef.current, reactContainersRef.current, { disabled, readOnly });
+
+      // Find the new trigger (not in oldTriggers)
+      const oldTriggerIds = new Set(oldTriggers.map(t => (isTriggerToken(t) ? t.id : undefined)));
+      const newTrigger = newTriggers.find(t => isTriggerToken(t) && !oldTriggerIds.has(t.id));
+
+      // Position cursor inside the new trigger element
+      if (newTrigger && isTriggerToken(newTrigger) && newTrigger.id) {
+        const triggerElements = findElements(elementRef.current, {
+          tokenType: ELEMENT_TYPES.TRIGGER,
+          tokenId: newTrigger.id,
+        });
+        if (triggerElements.length > 0) {
+          const triggerElement = triggerElements[0];
+          const triggerTextNode = triggerElement.firstChild;
+          if (triggerTextNode && isTextNode(triggerTextNode)) {
+            const range = document.createRange();
+            range.setStart(triggerTextNode, triggerTextNode.textContent?.length || 0);
+            range.collapse(true);
+            const selection = window.getSelection();
+            if (selection) {
+              selection.removeAllRanges();
+              selection.addRange(range);
+            }
+          }
+        }
+      }
+    }
+
+    // If all content was deleted, ensure proper empty state
+    // Note: break tokens are valid content (newlines), don't clear them
+    if (extractedTokens.length === 0) {
       // Ensure we have exactly one paragraph with BR
-      const paragraphs = findAllParagraphs(elementRef.current);
-      const hasValidEmptyState =
-        paragraphs.length === 1 && isBRElement(paragraphs[0].firstChild, ELEMENT_TYPES.TRAILING_BREAK);
-      if (!hasValidEmptyState) {
-        ensureEmptyState(elementRef.current);
+      if (!isEmptyState(elementRef.current)) {
+        ensureValidEmptyState(elementRef.current);
         // Cursor will be restored by unified restoration to position 0
         lastKnownCursorPositionRef.current = 0;
       }
       extractedTokens = [];
     }
 
-    const movedTokens = moveForbiddenTextAfterPinnedTokens(extractedTokens);
+    const movedTokens = enforcePinnedTokenOrdering(extractedTokens);
     const tokensWereMoved = movedTokens.some((t, i) => t !== extractedTokens[i]);
 
     if (tokensWereMoved) {
       extractedTokens = movedTokens;
 
       // When tokens are moved, position cursor after all content
-      const position = movedTokens.reduce((sum, token) => sum + getTokenCursorLength(token), 0);
+      const position = calculateEndPosition(movedTokens);
       lastKnownCursorPositionRef.current = position;
 
       // Render immediately to avoid showing intermediate state
@@ -275,17 +346,90 @@ export function useEditableTokens({
     skipCursorRestoreRef.current = false;
 
     let savedCursorPosition = 0;
+    let hasCursorOverride = false;
+
     if (shouldRestoreCursor) {
-      // Check if we have a deletion context with a pre-calculated position
-      if (editableState.deletionContext) {
-        savedCursorPosition = editableState.deletionContext.cursorPosition;
-        editableState.deletionContext = null;
+      // Check if we have a cursor position override with a pre-calculated position
+      if (editableState.cursorPositionOverride) {
+        savedCursorPosition = editableState.cursorPositionOverride.cursorPosition;
+        hasCursorOverride = true;
+        editableState.cursorPositionOverride = null;
       } else {
         savedCursorPosition = lastKnownCursorPositionRef.current;
       }
     }
 
+    // Special case: typing into empty line OR typing after a reference
+    // These cases need immediate cursor restoration to prevent jumping
+    const prevLastToken = lastRenderedTokensRef.current?.[lastRenderedTokensRef.current.length - 1];
+    const justStartedNewLine = prevLastToken && isBreakToken(prevLastToken);
+    const wasCompletelyEmpty = !lastRenderedTokensRef.current || lastRenderedTokensRef.current.length === 0;
+    const justAfterReference = prevLastToken && isReferenceToken(prevLastToken);
+
+    // Check if CURRENT LINE (after last break) is only text
+    let currentLineIsText = false;
+    if (tokens && tokens.length > 0) {
+      let lastBreakIndex = -1;
+      for (let i = tokens.length - 1; i >= 0; i--) {
+        if (isBreakToken(tokens[i])) {
+          lastBreakIndex = i;
+          break;
+        }
+      }
+      const currentLineTokens = tokens.slice(lastBreakIndex + 1);
+      currentLineIsText = currentLineTokens.length > 0 && currentLineTokens.every(isTextToken);
+    }
+
+    // Start tracking when typing into empty line OR after reference
+    if ((justStartedNewLine || wasCompletelyEmpty || justAfterReference) && currentLineIsText) {
+      isTypingIntoEmptyLineRef.current = true;
+    }
+
+    // Stop tracking when current line has non-text tokens
+    if (!currentLineIsText && tokens && tokens.length > 0) {
+      isTypingIntoEmptyLineRef.current = false;
+    }
+
+    // Reset when empty
+    if (!tokens || tokens.length === 0) {
+      isTypingIntoEmptyLineRef.current = false;
+    }
+
+    const isTypingIntoEmptyLine = isTypingIntoEmptyLineRef.current;
+
     lastRenderedTokensRef.current = tokens;
+
+    if (isTypingIntoEmptyLine) {
+      const renderResult = renderTokensToDOM(tokens ?? [], elementRef.current, reactContainersRef.current, {
+        disabled,
+        readOnly,
+      });
+
+      // If a new trigger was just created, position cursor inside it immediately
+      if (renderResult.newTriggerElement) {
+        const triggerTextNode = renderResult.newTriggerElement.firstChild;
+        if (triggerTextNode && isTextNode(triggerTextNode)) {
+          const range = document.createRange();
+          range.setStart(triggerTextNode, triggerTextNode.textContent?.length || 0);
+          range.collapse(true);
+          const selection = window.getSelection();
+          if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          adjustInputHeight();
+          return;
+        }
+      }
+
+      // Otherwise restore cursor immediately (synchronously) to prevent jumping
+      if (document.activeElement === elementRef.current && shouldRestoreCursor) {
+        setCursorPosition(elementRef.current, savedCursorPosition);
+      }
+
+      adjustInputHeight();
+      return;
+    }
 
     // Calculate cursor position for space-after-trigger case
     let cursorPositionToRestore: number | null = null;
@@ -296,7 +440,7 @@ export function useEditableTokens({
         const nextToken = tokens[i + 1];
 
         if (isTriggerToken(token) && nextToken && isTextToken(nextToken) && nextToken.value.startsWith('  ')) {
-          cursorPositionToRestore = tokens.slice(0, i + 1).reduce((sum, t) => sum + getTokenCursorLength(t), 0) + 1;
+          cursorPositionToRestore = calculateEndPosition(tokens.slice(0, i + 1)) + 1;
           break;
         }
       }
@@ -304,8 +448,27 @@ export function useEditableTokens({
 
     renderTokensToDOM(tokens ?? [], elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
+    // Check if we have only pinned references (after submit)
+    const onlyPinnedReferences = tokens && tokens.length > 0 && tokens.every(isPinnedReferenceToken);
+
+    // Check if this is a special case that needs custom cursor positioning
+    const needsCalculatedCursorPosition =
+      editableState.menuSelectionTokenId ||
+      hasCursorOverride ||
+      cursorPositionToRestore !== null ||
+      onlyPinnedReferences;
+
+    // For normal structural changes, restore cursor immediately using lastKnownCursorPositionRef
+    // This allows insertText and handleInput to control the final cursor position
+    // For special cases, use RAF restoration with calculated position
+    if (!needsCalculatedCursorPosition && document.activeElement === elementRef.current) {
+      setCursorPosition(elementRef.current, lastKnownCursorPositionRef.current);
+      adjustInputHeight();
+      return;
+    }
+
     // ============================================================================
-    // UNIFIED CURSOR RESTORATION
+    // UNIFIED CURSOR RESTORATION (RAF-based, for special cases)
     // ============================================================================
     // After renderTokensToDOM, always restore cursor position using lastKnownCursorPositionRef
     // Special cases update the ref before restoration, not position directly
@@ -346,9 +509,7 @@ export function useEditableTokens({
             const refIndex = tokens.findIndex(t => isReferenceToken(t) && t.id === tokenId);
             if (refIndex >= 0) {
               // Calculate position after this reference
-              targetPosition = tokens
-                .slice(0, refIndex + 1)
-                .reduce((sum, token) => sum + getTokenCursorLength(token), 0);
+              targetPosition = getCursorPositionAtIndex(tokens, refIndex);
             }
           }
 
@@ -360,10 +521,19 @@ export function useEditableTokens({
           targetPosition = cursorPositionToRestore;
         }
 
+        // Special case 3: Only pinned references (after submit)
+        // Position cursor after all pinned references
+        if (onlyPinnedReferences && tokens) {
+          targetPosition = calculateEndPosition(tokens);
+        }
+
         // Unified restoration: only restore if element has focus
         // This prevents stealing focus from other elements
         if (document.activeElement === elementRef.current) {
           setCursorPosition(elementRef.current, targetPosition);
+
+          // Apply Safari ghost cursor fix if needed
+          applySafariCursorFix(elementRef.current, editableState, targetPosition);
         }
       })
     );

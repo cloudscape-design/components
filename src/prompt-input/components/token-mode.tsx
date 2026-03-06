@@ -89,9 +89,9 @@ export default function TokenMode({
           role="textbox"
           aria-multiline="true"
           contentEditable={
-            (!editableElementAttributes['aria-disabled'] && !editableElementAttributes['aria-readonly']
+            !editableElementAttributes['aria-disabled'] && !editableElementAttributes['aria-readonly']
               ? 'true'
-              : 'false') as any
+              : 'false'
           }
           suppressContentEditableWarning={true}
           className={testutilStyles['content-editable']}
@@ -112,7 +112,7 @@ export default function TokenMode({
               triggerWrapperReady &&
               menuIsOpen &&
               menuItemsState &&
-              menuItemsState.items.length > 0
+              (menuItemsState.items.length > 0 || menuDropdownStatus?.content)
             )
           }
           trigger={null}

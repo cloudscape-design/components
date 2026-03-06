@@ -12,7 +12,10 @@
     "jsx": "react",
     "rootDir": "src",
     "outDir": "lib/components",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "react-dom/client": ["./src/internal/vendor/react-dom-client-stub"]
+    }
   },
   "include": ["src", "types"],
   "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**", "**/__motion__/**"]
