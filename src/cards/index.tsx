@@ -12,7 +12,6 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
-import Card from '../internal/components/card';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -20,6 +19,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalItemCard from '../item-card/internal';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import {
@@ -336,8 +336,9 @@ const CardsList = <T,>({
               },
             })}
           >
-            <Card
-              selected={selectable && selected}
+            <InternalItemCard
+              fullHeight={true}
+              highlighted={selectable && selected}
               header={
                 <div className={styles['card-header']}>
                   <div
@@ -381,7 +382,7 @@ const CardsList = <T,>({
                     {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
                   </div>
                 ))}
-            </Card>
+            </InternalItemCard>
           </li>
         );
       })}
