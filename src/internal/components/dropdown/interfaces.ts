@@ -64,6 +64,13 @@ export interface DropdownProps extends ExpandToViewport {
   trigger: React.ReactNode;
 
   /**
+   * Optional ref to the trigger element. When provided, the trigger will not be wrapped in a div,
+   * and the element's `id` attribute will be used as the referrer ID for portal-mode dropdowns.
+   * The trigger element must have a unique `id` set.
+   */
+  triggerRef?: React.RefObject<HTMLElement>;
+
+  /**
    * "Sticky" header of the dropdown content
    */
   header?: React.ReactNode;

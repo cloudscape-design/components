@@ -4,7 +4,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 
-import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
@@ -170,6 +170,7 @@ const TransitionContent = ({
 const Dropdown = ({
   content,
   trigger,
+  triggerRef: externalTriggerRef,
   open,
   onOutsideClick,
   onMouseDown,
@@ -199,7 +200,8 @@ const Dropdown = ({
   ariaDescribedby,
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const internalTriggerRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = externalTriggerRef || internalTriggerRef;
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   const verticalContainerRef = useRef<HTMLDivElement>(null);
@@ -411,7 +413,7 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick]);
+  }, [open, onOutsideClick, triggerRef]);
 
   // subscribe to Escape key press
   useEffect(() => {
@@ -457,9 +459,23 @@ const Dropdown = ({
     return () => {
       controller.abort();
     };
-  }, [open, expandToViewport, isMobile]);
+  }, [open, expandToViewport, isMobile, triggerRef]);
 
-  const referrerId = useUniqueId();
+  const generatedReferrerId = useUniqueId();
+
+  // Warn when an external triggerRef is provided but the trigger element has no id
+  useEffect(() => {
+    if (externalTriggerRef && !externalTriggerRef.current?.id) {
+      warnOnce(
+        'Dropdown',
+        'triggerRef was provided but the trigger element has no `id` attribute. A unique `id` on the trigger element is required for the dropdown to work correctly.'
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // When an external triggerRef is provided, we use the trigger element's id as the referrer id.
+  const referrerId = externalTriggerRef ? externalTriggerRef.current?.id : generatedReferrerId;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
@@ -496,9 +512,17 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
-        {trigger}
-      </div>
+      {externalTriggerRef ? (
+        trigger
+      ) : (
+        <div
+          id={generatedReferrerId}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
+          ref={internalTriggerRef}
+        >
+          {trigger}
+        </div>
+      )}
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}

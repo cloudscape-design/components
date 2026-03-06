@@ -1,11 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
 import customCssProps from '../../../../../lib/components/internal/generated/custom-css-properties';
+import { nodeBelongs } from '../../../../../lib/components/internal/utils/node-belongs';
 import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
 
 const outsideId = 'outside';
@@ -430,6 +433,85 @@ describe('Dropdown Component', () => {
       const dropdown = wrapper.findOpenDropdown()!.getElement();
       expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMaxWidth)).toBe('250px');
     });
+  });
+});
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
+
+describe('triggerRef prop', () => {
+  test('renders trigger without a wrapper div when triggerRef is provided', () => {
+    function TestComponent() {
+      const ref = useRef<HTMLButtonElement>(null);
+      return (
+        <Dropdown trigger={<button id="my-trigger" ref={ref} data-testid="trigger" />} triggerRef={ref} open={false} />
+      );
+    }
+    const { container } = render(<TestComponent />);
+    // The trigger should be a direct child of the root div, not wrapped in another div
+    const root = container.firstElementChild!;
+    expect(root.firstElementChild!.tagName).toBe('BUTTON');
+  });
+
+  test('wraps trigger in a div when triggerRef is not provided', () => {
+    const { container } = render(<Dropdown trigger={<button data-testid="trigger" />} open={false} />);
+    const root = container.firstElementChild!;
+    expect(root.firstElementChild!.tagName).toBe('DIV');
+  });
+
+  test('warns when triggerRef is provided but trigger element has no id', async () => {
+    function TestComponent() {
+      const ref = useRef<HTMLButtonElement>(null);
+      return <Dropdown trigger={<button ref={ref} />} triggerRef={ref} open={false} />;
+    }
+    render(<TestComponent />);
+    await act(() => Promise.resolve());
+    expect(warnOnce).toHaveBeenCalledWith('Dropdown', expect.stringContaining('id'));
+  });
+
+  test('does not warn when triggerRef is provided and trigger element has an id', async () => {
+    function TestComponent() {
+      const ref = useRef<HTMLButtonElement>(null);
+      return <Dropdown trigger={<button id="my-trigger" ref={ref} />} triggerRef={ref} open={false} />;
+    }
+    render(<TestComponent />);
+    await act(() => Promise.resolve());
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('portal container references the trigger id via data-awsui-referrer-id when expandToViewport is used', () => {
+    function TestComponent() {
+      const ref = useRef<HTMLButtonElement>(null);
+      const [open, setOpen] = useState(false);
+      return (
+        <>
+          <button data-testid="open-btn" onClick={() => setOpen(true)} />
+          <Dropdown
+            trigger={<button id="my-trigger" ref={ref} data-testid="trigger" />}
+            triggerRef={ref}
+            open={open}
+            expandToViewport={true}
+            content={<div data-testid="dropdown-content">content</div>}
+          />
+        </>
+      );
+    }
+    render(<TestComponent />);
+
+    act(() => screen.getByTestId('open-btn').click());
+
+    const trigger = screen.getByTestId('trigger');
+    const content = screen.getByTestId('dropdown-content');
+
+    // The portal container should have data-awsui-referrer-id pointing to the trigger's id,
+    // allowing nodeBelongs to trace the portaled content back to the trigger
+    expect(nodeBelongs(trigger, content)).toBe(true);
   });
 });
 
