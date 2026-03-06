@@ -40,6 +40,27 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+export const style_api = {
+  elements: {
+    root: {
+      className: 'awsui-style-button-root',
+      dataAttributes: {},
+    },
+    anchor: {
+      className: 'awsui-style-button-anchor',
+      dataAttributes: {},
+    },
+    button: {
+      className: 'awsui-style-button-button',
+      dataAttributes: {},
+    },
+    icon: {
+      className: 'awsui-style-button-icon',
+      dataAttributes: {},
+    },
+  },
+};
+
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?:
     | ButtonProps['variant']
@@ -220,7 +241,11 @@ export const InternalButton = React.forwardRef(
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: __title ?? ariaLabel,
-      className: buttonClass,
+      className: clsx(
+        buttonClass,
+        style_api.elements.root.className,
+        isAnchor ? style_api.elements.anchor.className : style_api.elements.button.className
+      ),
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),
@@ -236,7 +261,7 @@ export const InternalButton = React.forwardRef(
       iconAlt,
       variant,
       badge,
-      iconClass: __iconClass,
+      iconClass: clsx(__iconClass, style_api.elements.icon.className),
       iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
     };
     const buttonContent = (

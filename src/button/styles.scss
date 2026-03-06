@@ -53,140 +53,158 @@
   /* used in test-utils */
 }
 
-.button {
-  @include styles.styles-reset;
-  @include styles.text-wrapping;
-  @include styles.font-button;
-  letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
-  border-block: awsui.$border-width-button solid;
-  border-inline: awsui.$border-width-button solid;
-  padding-block: awsui.$space-button-vertical;
-  padding-inline: awsui.$space-button-horizontal;
-  display: inline-block; // for <a> as a button
-  text-decoration: none;
-  cursor: pointer;
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-
-  @each $variant in map.keys(constants.$variants) {
-    &.variant-#{$variant} {
-      @include adjust-for-variant(map.get(constants.$variants, $variant));
-    }
-  }
-
-  &:focus {
-    outline: none;
+@layer awsui-components {
+  .button {
+    @include styles.styles-reset;
+    @include styles.text-wrapping;
+    @include styles.font-button;
+    letter-spacing: awsui.$font-button-letter-spacing;
+    border-start-start-radius: awsui.$border-radius-button;
+    border-start-end-radius: awsui.$border-radius-button;
+    border-end-start-radius: awsui.$border-radius-button;
+    border-end-end-radius: awsui.$border-radius-button;
+    border-block: awsui.$border-width-button solid;
+    border-inline: awsui.$border-width-button solid;
+    padding-block: awsui.$space-button-vertical;
+    padding-inline: awsui.$space-button-horizontal;
+    display: inline-block; // for <a> as a button
     text-decoration: none;
-  }
+    cursor: pointer;
+    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0 var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width) var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
-    );
-
-    &.variant-icon,
-    &.variant-modal-dismiss,
-    &.variant-flashbar-icon {
-      @include styles.focus-highlight(
-        (
-          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-          'horizontal': awsui.$space-button-focus-outline-gutter,
-        ),
-        $border-radius: var(
-            #{custom-props.$styleFocusRingBorderRadius},
-            awsui.$border-radius-control-default-focus-ring
-          ),
-        $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
-      );
+    @each $variant in map.keys(constants.$variants) {
+      &.variant-#{$variant} {
+        @include adjust-for-variant(map.get(constants.$variants, $variant));
+      }
     }
 
-    &.variant-inline-icon,
-    &.variant-inline-icon-pointer-target {
-      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+    .button {
+      @include styles.styles-reset;
+      @include styles.text-wrapping;
+      @include styles.font-button;
+      letter-spacing: awsui.$font-button-letter-spacing;
+      border-start-start-radius: awsui.$border-radius-button;
+      border-start-end-radius: awsui.$border-radius-button;
+      border-end-start-radius: awsui.$border-radius-button;
+      border-end-end-radius: awsui.$border-radius-button;
+      border-block: awsui.$border-width-button solid;
+      border-inline: awsui.$border-width-button solid;
+      padding-block: styles.$control-padding-vertical;
+      padding-inline: awsui.$space-button-horizontal;
+      display: inline-block; // for <a> as a button
+      text-decoration: none;
+      cursor: pointer;
+      #{custom-props.$styleFocusRingBoxShadow}: 0 0 0 var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width) var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
+      @each $variant in map.keys(constants.$variants) {
+        &.variant-#{$variant} {
+          @include adjust-for-variant(map.get(constants.$variants, $variant));
+        }
+      }
+
+      &:focus {
+        outline: none;
+        text-decoration: none;
+      }
+
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight($gutter: awsui.$space-button-focus-outline-gutter,
+          $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+          $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}));
+
+        &.variant-icon,
+        &.variant-modal-dismiss,
+        &.variant-flashbar-icon {
+          @include styles.focus-highlight(('vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
+              'horizontal': awsui.$space-button-focus-outline-gutter,
+            ),
+            $border-radius: var(#{custom-props.$styleFocusRingBorderRadius},
+              awsui.$border-radius-control-default-focus-ring ),
+            $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}));
+        }
+
+        &.variant-inline-icon,
+        &.variant-inline-icon-pointer-target {
+          @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+        }
+      }
+
+      &.button-no-text {
+        padding-inline-start: awsui.$space-button-icon-only-horizontal;
+        padding-inline-end: awsui.$space-button-icon-only-horizontal;
+      }
+
+      &.button-no-wrap {
+        white-space: nowrap;
+      }
+
+      &.full-width {
+        inline-size: 100%;
+        text-align: center;
+      }
+
+      &.variant-icon,
+      &.variant-inline-icon,
+      &.variant-inline-icon-pointer-target,
+      &.variant-flashbar-icon {
+        // Icon has vertical padding, but no horizontal, we need to conpensate this
+        // in order to have equal height and width
+        padding-inline: awsui.$space-xxs;
+      }
+
+      &.variant-modal-dismiss {
+        padding-block: awsui.$space-button-modal-dismiss-vertical;
+        padding-inline: awsui.$space-xxs;
+        margin-inline-end: calc(-1 * #{awsui.$space-xxs});
+      }
+
+      &.variant-inline-icon {
+        padding-block: 0;
+        border-block-width: 0;
+        border-inline-width: 0;
+      }
+
+      &.variant-inline-icon-pointer-target {
+        padding-block: awsui.$space-xxxs;
+        border-block-width: 0;
+        border-inline-width: 0;
+      }
+
+      >.icon-left {
+        position: relative;
+        // margin-left was breaking layout on firefox
+        inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+        margin-inline-end: awsui.$space-xxs;
+      }
+
+      >.icon-right {
+        position: relative;
+        // margin-right was breaking layout on firefox
+        inset-inline-end: calc(-1 * #{awsui.$space-xxs});
+        margin-inline-start: awsui.$space-xxs;
+      }
+
+      &.variant-inline-link {
+        >.icon-left {
+          inset-inline-start: 0;
+          margin-inline-end: awsui.$space-xs;
+        }
+
+        >.icon-right {
+          inset-inline-end: 0;
+          margin-inline-start: awsui.$space-xs;
+        }
+      }
+
+      &.button-no-text>.icon {
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+        inset-inline: 0;
+      }
+    }
+
+    .link.disabled:not(.disabled-with-reason) {
+      pointer-events: none;
     }
   }
-
-  &.button-no-text {
-    padding-inline-start: awsui.$space-button-icon-only-horizontal;
-    padding-inline-end: awsui.$space-button-icon-only-horizontal;
-  }
-
-  &.button-no-wrap {
-    white-space: nowrap;
-  }
-
-  &.full-width {
-    inline-size: 100%;
-    text-align: center;
-  }
-
-  &.variant-icon,
-  &.variant-inline-icon,
-  &.variant-inline-icon-pointer-target,
-  &.variant-flashbar-icon {
-    // Icon has vertical padding, but no horizontal, we need to conpensate this
-    // in order to have equal height and width
-    padding-inline: awsui.$space-xxs;
-  }
-
-  &.variant-modal-dismiss {
-    padding-block: awsui.$space-button-modal-dismiss-vertical;
-    padding-inline: awsui.$space-xxs;
-    margin-inline-end: calc(-1 * #{awsui.$space-xxs});
-  }
-
-  &.variant-inline-icon {
-    padding-block: 0;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  &.variant-inline-icon-pointer-target {
-    padding-block: awsui.$space-xxxs;
-    border-block-width: 0;
-    border-inline-width: 0;
-  }
-
-  > .icon-left {
-    position: relative;
-    // margin-left was breaking layout on firefox
-    inset-inline-start: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-end: awsui.$space-xxs;
-  }
-
-  > .icon-right {
-    position: relative;
-    // margin-right was breaking layout on firefox
-    inset-inline-end: calc(-1 * #{awsui.$space-xxs});
-    margin-inline-start: awsui.$space-xxs;
-  }
-
-  &.variant-inline-link {
-    > .icon-left {
-      inset-inline-start: 0;
-      margin-inline-end: awsui.$space-xs;
-    }
-
-    > .icon-right {
-      inset-inline-end: 0;
-      margin-inline-start: awsui.$space-xs;
-    }
-  }
-
-  &.button-no-text > .icon {
-    margin-inline-start: auto;
-    margin-inline-end: auto;
-    inset-inline: 0;
-  }
-}
-
-.link.disabled:not(.disabled-with-reason) {
-  pointer-events: none;
 }

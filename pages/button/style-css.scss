@@ -1,0 +1,34 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@layer awsui-components, application;
+
+@mixin normal-button {
+  color: darkgreen;
+  border-color: darkgreen;
+  background-color: lightgreen;
+
+  &:hover {
+    background-color: greenyellow;
+
+    :global(.awsui-style-button-icon) {
+      color: purple;
+    }
+  }
+}
+
+.my-normal-button:global(.awsui-style-button-root) {
+  @include normal-button;
+}
+
+@layer application {
+  .with-normal-button {
+    :global(.awsui-style-button-root):not(.reset-normal-button *) {
+      @include normal-button;
+    }
+  }
+}
+
+.reset-normal-button {}

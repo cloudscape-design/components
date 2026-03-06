@@ -6,43 +6,50 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
-.root {
-  position: absolute;
-  inline-size: 100%;
-  block-size: 100%;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+@layer awsui-components {
+  .root {
+    position: absolute;
+    inline-size: 100%;
+    block-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
 
-  > .styled-box {
-    fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
-    stroke-width: awsui.$border-width-field;
-    @include styles.with-motion {
-      transition:
-        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
-        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
-    }
-    &-checked,
-    &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
-    }
-    &-disabled,
-    &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
-    }
-  }
+    >.styled-box {
+      fill: awsui.$color-background-control-default;
+      stroke: awsui.$color-border-control-default;
+      stroke-width: awsui.$border-width-field;
 
-  > .styled-line {
-    stroke: awsui.$color-foreground-control-default;
-    stroke-width: 2;
-    fill: none;
-    &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+      @include styles.with-motion {
+        transition:
+          fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+          stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+      }
+
+      &-checked,
+      &-indeterminate {
+        fill: awsui.$color-background-control-checked;
+        stroke: awsui.$color-border-control-checked;
+      }
+
+      &-disabled,
+      &-readonly {
+        fill: awsui.$color-background-control-disabled;
+        stroke: awsui.$color-border-control-disabled;
+      }
     }
-    &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+
+    >.styled-line {
+      stroke: awsui.$color-foreground-control-default;
+      stroke-width: 2;
+      fill: none;
+
+      &-disabled {
+        stroke: awsui.$color-foreground-control-disabled;
+      }
+
+      &-readonly {
+        stroke: awsui.$color-foreground-control-read-only;
+      }
     }
   }
 }

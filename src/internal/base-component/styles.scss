@@ -11,6 +11,8 @@
 @use '../styles/global';
 @use '../generated/custom-css-properties' as custom-styles;
 
+@layer awsui-components;
+
 :root {
   --awsui-version-info-#{custom-styles.$awsui-commit-hash}: true;
 }

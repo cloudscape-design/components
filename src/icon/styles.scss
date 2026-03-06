@@ -7,63 +7,64 @@
 @use '../internal/styles' as styles;
 @use './mixins' as mixins;
 
-.icon {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  &-flex-height {
-    display: inline-flex;
-    align-items: center;
-  }
+@layer awsui-components {
+  .icon {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
 
-  /* stylelint-disable-next-line selector-max-type */
-  > svg {
-    // SVG is focusable by default
-    // https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element
-    pointer-events: none;
-  }
+    &-flex-height {
+      display: inline-flex;
+      align-items: center;
+    }
 
-  @include mixins.style-svg();
+    /* stylelint-disable-next-line selector-max-type */
+    >svg {
+      // SVG is focusable by default
+      // https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element
+      pointer-events: none;
+    }
 
-  @include mixins.make-icon-sizes;
-  @include mixins.make-icon-variants;
+    @include mixins.style-svg();
 
-  &:is(
-    .name-angle-left-double,
-    .name-angle-left,
-    .name-angle-right-double,
-    .name-angle-right,
-    .name-arrow-left,
-    .name-arrow-right,
-    .name-caret-left-filled,
-    .name-caret-right-filled,
-    .name-audio-full,
-    .name-audio-half,
-    .name-audio-off,
-    .name-external,
-    .name-redo,
-    .name-resize-area,
-    .name-send,
-    .name-shrink,
-    .name-undo,
-    .name-view-vertical
-  ) {
-    @include styles.with-direction('rtl') {
-      transform: scaleX(-1);
+    @include mixins.make-icon-sizes;
+    @include mixins.make-icon-variants;
+
+    &:is(.name-angle-left-double,
+      .name-angle-left,
+      .name-angle-right-double,
+      .name-angle-right,
+      .name-arrow-left,
+      .name-arrow-right,
+      .name-caret-left-filled,
+      .name-caret-right-filled,
+      .name-audio-full,
+      .name-audio-half,
+      .name-audio-off,
+      .name-external,
+      .name-redo,
+      .name-resize-area,
+      .name-send,
+      .name-shrink,
+      .name-undo,
+      .name-view-vertical) {
+      @include styles.with-direction('rtl') {
+        transform: scaleX(-1);
+      }
     }
   }
-}
 
-.badge::after {
-  content: '';
-  position: absolute;
-  inline-size: 6px;
-  block-size: 6px;
-  border-start-start-radius: 4px;
-  border-start-end-radius: 4px;
-  border-end-start-radius: 4px;
-  border-end-end-radius: 4px;
-  background-color: awsui.$color-background-badge-icon;
-  inset-block-start: 0px;
-  inset-inline-end: -3px;
+  .badge::after {
+    content: '';
+    position: absolute;
+    inline-size: 6px;
+    block-size: 6px;
+    border-start-start-radius: 4px;
+    border-start-end-radius: 4px;
+    border-end-start-radius: 4px;
+    border-end-end-radius: 4px;
+    background-color: awsui.$color-background-badge-icon;
+    inset-block-start: 0px;
+    inset-inline-end: -3px;
+  }
 }
