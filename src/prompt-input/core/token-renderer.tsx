@@ -310,18 +310,19 @@ export function renderTokensToDOM(
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
         const isNewTrigger = !token.id || !existingTriggers.has(token.id);
+        const hasFilterText = token.value.length > 0;
 
         if (token.id && existingTriggers.has(token.id)) {
           // Reuse existing trigger element and update its content
           span = existingTriggers.get(token.id)!;
           span.textContent = token.triggerChar + token.value;
-          span.className = styles['trigger-token'];
+          span.className = hasFilterText ? styles['trigger-token'] : '';
           existingTriggers.delete(token.id);
         } else {
           // Create new trigger element
           span = document.createElement('span');
           span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
-          span.className = styles['trigger-token'];
+          span.className = hasFilterText ? styles['trigger-token'] : '';
           if (token.id) {
             span.setAttribute('data-id', token.id);
           }

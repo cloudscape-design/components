@@ -17,16 +17,18 @@ import {
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { extractTokensFromDOM, getPromptText } from './token-operations';
 import { findAdjacentToken } from './token-utils';
+import { handleSpaceInOpenMenu } from './trigger-utils';
 import { isBreakToken, isHTMLElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
 // TYPES
 
 export type { EditableState };
 
-export interface KeyboardHandlerDeps {
+export interface KeyboardHandlerProps {
   getMenuOpen: () => boolean;
   getMenuItemsState: () => MenuItemsState | null;
   getMenuItemsHandlers: () => MenuItemsHandlers | null;
+  getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
   onAction?: (detail: PromptInputProps.ActionDetail) => void;
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   tokens?: readonly PromptInputProps.InputToken[];
@@ -35,15 +37,18 @@ export interface KeyboardHandlerDeps {
   i18nStrings?: PromptInputProps.I18nStrings;
   disabled?: boolean;
   readOnly?: boolean;
+  editableState?: EditableState;
+  editableElementRef?: React.RefObject<HTMLDivElement>;
+  lastKnownCursorPositionRef?: React.MutableRefObject<number>;
 }
 
 // KEYBOARD HANDLERS
 
-export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
+export function createKeyboardHandlers(props: KeyboardHandlerProps) {
   function handleMenuNavigation(event: React.KeyboardEvent): boolean {
-    const menuItemsState = deps.getMenuItemsState();
-    const menuItemsHandlers = deps.getMenuItemsHandlers();
-    const menuOpen = deps.getMenuOpen();
+    const menuItemsState = props.getMenuItemsState();
+    const menuItemsHandlers = props.getMenuItemsHandlers();
+    const menuOpen = props.getMenuOpen();
 
     if (!menuOpen || !menuItemsHandlers || !menuItemsState) {
       return false;
@@ -62,9 +67,21 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
       return menuItemsHandlers.selectHighlightedOptionWithKeyboard();
     }
 
+    if (event.key === ' ') {
+      return handleSpaceInOpenMenu(event, {
+        menuItemsState,
+        menuItemsHandlers,
+        getMenuStatusType: props.getMenuStatusType,
+        closeMenu: props.closeMenu,
+        editableElementRef: props.editableElementRef,
+        lastKnownCursorPositionRef: props.lastKnownCursorPositionRef,
+        editableState: props.editableState,
+      });
+    }
+
     if (event.key === 'Escape') {
       event.preventDefault();
-      deps.closeMenu();
+      props.closeMenu();
       return true;
     }
 
@@ -77,7 +94,7 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
     }
 
     // Don't submit if disabled or readonly (match textarea behavior)
-    if (deps.disabled || deps.readOnly) {
+    if (props.disabled || props.readOnly) {
       event.preventDefault();
       return;
     }
@@ -93,10 +110,10 @@ export function createKeyboardHandlers(deps: KeyboardHandlerDeps) {
     }
     event.preventDefault();
 
-    const plainText = deps.tokensToText ? deps.tokensToText(deps.tokens ?? []) : getPromptText(deps.tokens ?? []);
+    const plainText = props.tokensToText ? props.tokensToText(props.tokens ?? []) : getPromptText(props.tokens ?? []);
 
-    if (deps.onAction) {
-      deps.onAction({ value: plainText, tokens: [...(deps.tokens ?? [])] });
+    if (props.onAction) {
+      props.onAction({ value: plainText, tokens: [...(props.tokens ?? [])] });
     }
   }
 
@@ -477,10 +494,12 @@ export function handleSpaceAfterClosedTrigger(
   menuOpen: boolean,
   triggerValueWhenClosed: string,
   editableState: EditableState,
+  ignoreCursorDetection: React.MutableRefObject<boolean>,
   menus?: readonly PromptInputProps.MenuDefinition[]
 ): boolean {
-  // Only handle space key when menu is closed and we have a saved trigger length
-  if (event.key !== ' ' || menuOpen || !triggerValueWhenClosed) {
+  // Only handle space key when menu is closed
+  // triggerValueWhenClosed can be empty string (trigger with no filter) or non-empty (trigger with filter)
+  if (event.key !== ' ' || menuOpen) {
     return false;
   }
 
@@ -506,15 +525,15 @@ export function handleSpaceAfterClosedTrigger(
       triggerElement = parent;
       const textLength = range.startContainer.textContent?.length || 0;
       cursorAtEnd = range.startOffset === textLength;
-
-      // Extract filter text (everything after trigger char)
-      const fullText = triggerElement.textContent || '';
-      const filterText = fullText.substring(1);
-
-      // Only handle if filter text matches saved length (space hasn't been added yet)
-      // If it's longer, the space was already added and we shouldn't handle it again
-      if (filterText.length !== triggerValueWhenClosed.length) {
-        return false;
+    }
+  } else if (isHTMLElement(range.startContainer)) {
+    // Cursor might be positioned in the paragraph after the trigger
+    const container = range.startContainer;
+    if (range.startOffset > 0) {
+      const prevNode = container.childNodes[range.startOffset - 1];
+      if (isHTMLElement(prevNode) && getTokenType(prevNode) === ELEMENT_TYPES.TRIGGER) {
+        triggerElement = prevNode;
+        cursorAtEnd = true;
       }
     }
   }
@@ -598,6 +617,12 @@ export function handleSpaceAfterClosedTrigger(
     sel.removeAllRanges();
     sel.addRange(cursorRange);
   }
+
+  // Prevent cursor detection from reopening the menu
+  ignoreCursorDetection.current = true;
+  setTimeout(() => {
+    ignoreCursorDetection.current = false;
+  }, 100);
 
   // Trigger input event to extract tokens and update state
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
