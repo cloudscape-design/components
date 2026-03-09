@@ -119,7 +119,7 @@ export default tsEslint.config(
         'error',
         {
           selector: 'BinaryExpression[operator="in"][left.type="Literal"]',
-          message: 'Prefer a type guard function with `keyof` instead of raw `in` checks. See AWSUI-59006.',
+          message: 'Prefer a type guard function with `keyof` instead of raw `in` checks.',
         },
       ],
       'no-warning-comments': 'warn',
