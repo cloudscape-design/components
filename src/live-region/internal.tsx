@@ -76,13 +76,13 @@ export default React.forwardRef(function InternalLiveRegion(
   // server.
   const liveRegionControllerRef = useRef<LiveRegionController | undefined>();
   useEffect(() => {
-    const liveRegionController = new LiveRegionController(assertive ? 'assertive' : 'polite');
+    const liveRegionController = new LiveRegionController(assertive ? 'assertive' : 'polite', delay);
     liveRegionControllerRef.current = liveRegionController;
     return () => {
       liveRegionController.destroy();
       liveRegionControllerRef.current = undefined;
     };
-  }, [assertive]);
+  }, [assertive, delay]);
 
   const getContent = () => {
     if (sources) {
@@ -96,12 +96,12 @@ export default React.forwardRef(function InternalLiveRegion(
   // Call the controller on every render. The controller will deduplicate the
   // message against the previous announcement internally.
   useEffect(() => {
-    liveRegionControllerRef.current?.announce({ message: getContent(), delay });
+    liveRegionControllerRef.current?.announce({ message: getContent() });
   });
 
   useImperativeHandle(ref, () => ({
     reannounce() {
-      liveRegionControllerRef.current?.announce({ message: getContent(), delay, forceReannounce: true });
+      liveRegionControllerRef.current?.announce({ message: getContent(), forceReannounce: true });
     },
   }));
 
