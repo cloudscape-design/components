@@ -46,7 +46,7 @@ export function findMonthToFocus(
 export function findMonthToDisplay(
   value: DateRangePickerProps.PendingAbsoluteValue,
   isSingleGrid: boolean,
-  startCurrentMonth = false
+  startMonth: DateRangePickerProps.StartMonth | undefined = 'previous'
 ) {
   if (value.start.date) {
     const startDate = parseDate(value.start.date);
@@ -58,7 +58,7 @@ export function findMonthToDisplay(
   if (value.end.date) {
     return startOfMonth(parseDate(value.end.date));
   }
-  if (isSingleGrid || !startCurrentMonth) {
+  if (isSingleGrid || startMonth !== 'current') {
     return startOfMonth(Date.now());
   }
   return startOfMonth(addMonths(Date.now(), 1));
@@ -67,7 +67,7 @@ export function findMonthToDisplay(
 export function findYearToDisplay(
   value: DateRangePickerProps.PendingAbsoluteValue,
   isSingleGrid: boolean,
-  startCurrentMonth = false
+  startMonth: DateRangePickerProps.StartMonth | undefined = 'previous'
 ) {
   if (value.start.date) {
     const startDate = parseDate(value.start.date);
@@ -79,7 +79,7 @@ export function findYearToDisplay(
   if (value.end.date) {
     return startOfYear(parseDate(value.end.date));
   }
-  if (isSingleGrid || !startCurrentMonth) {
+  if (isSingleGrid || startMonth !== 'current') {
     return startOfYear(Date.now());
   }
   return startOfYear(addYears(Date.now(), 1));

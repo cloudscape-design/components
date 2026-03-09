@@ -117,14 +117,14 @@ describe('findMonthToDisplay', () => {
     const result = findMonthToDisplay(value, false);
     expect(result).toEqual(createDate('2023-06-01')); // Default: current month as baseDate (right grid)
   });
-  test('should return current month with startCurrentMonth=false when both dates are null for double grid', () => {
+  test('should return current month with startMonth="previous" when both dates are null for double grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findMonthToDisplay(value, false, false);
+    const result = findMonthToDisplay(value, false, 'previous');
     expect(result).toEqual(createDate('2023-06-01'));
   });
-  test('should return next month with startCurrentMonth=true when both dates are null for double grid', () => {
+  test('should return next month with startMonth="current" when both dates are null for double grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findMonthToDisplay(value, false, true);
+    const result = findMonthToDisplay(value, false, 'current');
     expect(result).toEqual(createDate('2023-07-01')); // Next month as baseDate so current month appears on the left
   });
   test('should handle leap years correctly', () => {
@@ -176,14 +176,14 @@ describe('findYearToDisplay', () => {
     const result = findYearToDisplay(value, false);
     expect(result).toEqual(createDate('2023-01-01')); // Default: current year as baseDate (right grid)
   });
-  test('should return current year with startCurrentMonth=false when both dates are empty for double grid', () => {
+  test('should return current year with startMonth="previous" when both dates are empty for double grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findYearToDisplay(value, false, false);
+    const result = findYearToDisplay(value, false, 'previous');
     expect(result).toEqual(createDate('2023-01-01'));
   });
-  test('should return next year with startCurrentMonth=true when both dates are empty for double grid', () => {
+  test('should return next year with startMonth="current" when both dates are empty for double grid', () => {
     const value = { start: { date: '', time: '' }, end: { date: '', time: '' } };
-    const result = findYearToDisplay(value, false, true);
+    const result = findYearToDisplay(value, false, 'current');
     expect(result).toEqual(createDate('2024-01-01')); // Next year as baseDate so current year appears on the left
   });
   test('should handle leap years correctly', () => {
