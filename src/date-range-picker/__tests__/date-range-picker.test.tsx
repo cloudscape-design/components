@@ -99,7 +99,16 @@ describe('Date range picker', () => {
         );
 
         wrapper.openDropdown();
-        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
+        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute(
+          'aria-labelledby',
+          expect.stringContaining('#element')
+        );
+      });
+
+      test('aria-label', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaLabel: 'Custom label' });
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('Custom label');
       });
 
       test('aria-invalid', () => {
@@ -110,6 +119,33 @@ describe('Date range picker', () => {
       test('controlId', () => {
         const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, controlId: 'test' });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+      });
+
+      test('appends ariaLabel to the form field label', () => {
+        const { container } = render(
+          <FormField label="form-field-label">
+            <DateRangePicker {...currentModeDefaultProps} ariaLabel="aria-label" />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('form-field-label aria-label');
+      });
+
+      test('appends ariaLabel to the ariaLabelledby prop', () => {
+        const { container } = render(
+          <FormField label="form-field-label">
+            <div id="custom-arialabelledby">custom-aria-labelledby</div>
+            <DateRangePicker
+              {...currentModeDefaultProps}
+              ariaLabelledby="custom-arialabelledby"
+              ariaLabel="aria-label"
+            />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        const trigger = wrapper.findTrigger().getElement();
+        expect(trigger).toHaveAccessibleName('custom-aria-labelledby aria-label');
       });
 
       test('correctly labels the dropdown trigger with the selected value', () => {

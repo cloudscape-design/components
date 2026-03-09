@@ -20,7 +20,7 @@ export function isStackableItem(item: StackableItem | FlashbarProps.MessageDefin
   return key in item;
 }
 
-export function isRefObject<T>(ref: React.Ref<T>): ref is React.RefObject<T> {
+export function isRefObject<T>(ref: unknown): ref is React.RefObject<T> {
   const key: keyof React.RefObject<T> = 'current';
   return ref !== null && typeof ref === 'object' && key in ref;
 }

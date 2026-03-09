@@ -44,6 +44,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   letterSpacingHeadingL: '-0.015em',
   letterSpacingHeadingM: '-0.010em',
   letterSpacingHeadingS: '-0.005em',
+  letterSpacingHeadingXs: 'normal',
   lineHeightBodyM: '20px',
   lineHeightBodyS: '16px',
   lineHeightDisplayL: '48px',
