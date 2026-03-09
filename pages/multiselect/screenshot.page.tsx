@@ -50,6 +50,7 @@ export default function MultiselectPage() {
         ...option,
         disabled: false,
         options:
+          // eslint-disable-next-line no-restricted-syntax -- Page demo: option/group discrimination
           'options' in option && option.options.length
             ? option.options.map(childOption => ({ ...childOption, disabled: false }))
             : undefined,
@@ -59,6 +60,7 @@ export default function MultiselectPage() {
     ? groupedOptions
     : groupedOptions.reduce(
         (previousValue: MultiselectProps.Options, currentValue: MultiselectProps.Option) =>
+          // eslint-disable-next-line no-restricted-syntax -- Page demo: option/group discrimination
           'options' in currentValue && (currentValue as OptionGroup).options?.length
             ? [...previousValue, ...(currentValue as OptionGroup).options]
             : [...previousValue, currentValue],
