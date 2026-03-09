@@ -23,8 +23,6 @@ exports[`getContentStyles handles all possible style configurations 3`] = `
 
 exports[`getFooterStyles handles all possible style configurations 1`] = `
 {
-  "borderColor": undefined,
-  "borderWidth": undefined,
   "paddingBlock": undefined,
   "paddingInline": undefined,
 }
@@ -32,8 +30,6 @@ exports[`getFooterStyles handles all possible style configurations 1`] = `
 
 exports[`getFooterStyles handles all possible style configurations 2`] = `
 {
-  "borderColor": undefined,
-  "borderWidth": undefined,
   "paddingBlock": undefined,
   "paddingInline": undefined,
 }
@@ -41,8 +37,9 @@ exports[`getFooterStyles handles all possible style configurations 2`] = `
 
 exports[`getFooterStyles handles all possible style configurations 3`] = `
 {
-  "borderColor": "#e0e0e0",
-  "borderWidth": "1px",
+  "borderBlockStartColor": "#e0e0e0",
+  "borderBlockStartStyle": "solid",
+  "borderBlockStartWidth": "1px",
   "paddingBlock": "12px",
   "paddingInline": "20px",
 }

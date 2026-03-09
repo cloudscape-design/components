@@ -5,7 +5,6 @@ import { ThemeBuilder } from '@cloudscape-design/theming-build';
 import {
   createAlertContext,
   createAppLayoutToolbarContext,
-  createChatComponentsContext,
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
@@ -53,7 +52,6 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
   builder.addContext(createHeaderAlertContext((await import('./contexts/header-alert.js')).tokens));
   builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
-  builder.addContext(createChatComponentsContext((await import('./contexts/chat-components.js')).tokens));
 
   return builder.build();
 }

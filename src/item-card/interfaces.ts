@@ -37,7 +37,7 @@ export interface BaseItemCardProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Displays an icon next to the content. You can use the `iconPosition` and `iconVerticalAlignment` properties to position the icon.
+   * Displays an icon next to the content.
    */
   iconName?: IconProps.Name;
 
@@ -118,9 +118,6 @@ export interface ItemCardProps extends BaseItemCardProps {
 }
 
 export namespace ItemCardProps {
-  export type IconPosition = 'left' | 'right';
-  export type IconVerticalAlignment = 'top' | 'center';
-
   export interface Style {
     root?: {
       background?: string;

@@ -18,14 +18,14 @@ export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
   /**
    * Finds the content slot of the card.
    */
-  findContent(): ElementWrapper {
+  findContent(): ElementWrapper | null {
     return this.findByClassName(styles.body)!;
   }
 
   /**
    * Finds the description slot of the card.
    */
-  findDescription(): ElementWrapper {
+  findDescription(): ElementWrapper | null {
     return this.findByClassName(styles.description)!;
   }
 

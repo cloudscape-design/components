@@ -46,9 +46,12 @@ export function getFooterStyles(style: ItemCardProps.Style | undefined) {
     return {};
   }
 
+  const hasDivider = style?.footer?.divider?.borderColor || style?.footer?.divider?.borderWidth;
+
   return {
-    borderColor: style?.footer?.divider?.borderColor,
-    borderWidth: style?.footer?.divider?.borderWidth,
+    ...(hasDivider && { borderBlockStartStyle: 'solid' as const }),
+    ...(style?.footer?.divider?.borderColor && { borderBlockStartColor: style.footer.divider.borderColor }),
+    ...(style?.footer?.divider?.borderWidth && { borderBlockStartWidth: style.footer.divider.borderWidth }),
     paddingBlock: style?.footer?.root?.paddingBlock,
     paddingInline: style?.footer?.root?.paddingInline,
   };
