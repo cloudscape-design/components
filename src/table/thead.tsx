@@ -224,17 +224,35 @@ const Thead = React.forwardRef(
             }
             onBlur={rowIndex === 0 ? () => onFocusedComponentChange?.(null) : undefined}
           >
-            {/* Selection column only in first row */}
-            {rowIndex === 0 && selectionType ? (
-              <TableHeaderSelectionCell
-                {...commonCellProps}
-                focusedComponent={focusedComponent}
-                columnId={selectionColumnId}
-                getSelectAllProps={getSelectAllProps}
-                onFocusMove={onFocusMove}
-                singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
-                rowSpan={hierarchicalStructure.maxDepth}
-              />
+            {/* Selection column — render empty placeholder cells on top rows, actual cell in last row */}
+            {selectionType ? (
+              rowIndex < hierarchicalStructure.rows.length - 1 ? (
+                <TableHiddenHeaderCell
+                  {...commonCellProps}
+                  key={`selection-hidden-${rowIndex}`}
+                  columnId={String(selectionColumnId)}
+                  colIndex={0}
+                  colspan={1}
+                  tabIndex={sticky ? -1 : 0}
+                  focusedComponent={focusedComponent}
+                  resizableColumns={false}
+                  resizableStyle={{}}
+                  onResizeFinish={() => onResizeFinish(columnWidths)}
+                  updateColumn={() => {}}
+                  cellRef={() => {}}
+                  resizerRoleDescription={resizerRoleDescription}
+                  resizerTooltipText={resizerTooltipText}
+                />
+              ) : (
+                <TableHeaderSelectionCell
+                  {...commonCellProps}
+                  focusedComponent={focusedComponent}
+                  columnId={selectionColumnId}
+                  getSelectAllProps={getSelectAllProps}
+                  onFocusMove={onFocusMove}
+                  singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+                />
+              )
             ) : null}
 
             {row.columns.map(col => {
