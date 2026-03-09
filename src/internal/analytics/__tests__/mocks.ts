@@ -45,6 +45,7 @@ export function mockComponentMetrics() {
 }
 
 export function mockInnerText() {
+  // eslint-disable-next-line no-restricted-syntax -- Test mock: browser API feature detection
   if (!('innerText' in HTMLElement.prototype)) {
     // JSDom does not support the `innerText` property. For tests, `textContent` is usually close enough.
 
