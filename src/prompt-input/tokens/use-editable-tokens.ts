@@ -21,6 +21,7 @@ import {
 import { extractTokensFromDOM, getPromptText } from '../core/token-operations';
 import { renderTokensToDOM } from '../core/token-renderer';
 import { enforcePinnedTokenOrdering } from '../core/token-utils';
+import { needsImmediateRenderForStyling } from '../core/trigger-utils';
 import {
   isBreakToken,
   isBRElement,
@@ -204,34 +205,49 @@ export function useEditableTokens({
     const newTriggers = extractedTokens.filter(isTriggerToken);
     const oldTriggers = lastEmittedTokensRef.current?.filter(isTriggerToken) || [];
 
-    if (newTriggers.length > oldTriggers.length) {
-      // New trigger detected - render immediately to create trigger element
+    // Check if we need immediate rendering
+    const isNewTrigger = newTriggers.length > oldTriggers.length;
+    const hasStylingChange = needsImmediateRenderForStyling(
+      newTriggers.filter(isTriggerToken),
+      oldTriggers.filter(isTriggerToken)
+    );
+
+    if (isNewTrigger || hasStylingChange) {
+      // Save cursor position before rendering
+      const savedCursorPos = getCursorPosition(elementRef.current);
+
+      // Render immediately to update trigger element
       renderTokensToDOM(extractedTokens, elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
-      // Find the new trigger (not in oldTriggers)
-      const oldTriggerIds = new Set(oldTriggers.map(t => (isTriggerToken(t) ? t.id : undefined)));
-      const newTrigger = newTriggers.find(t => isTriggerToken(t) && !oldTriggerIds.has(t.id));
+      if (isNewTrigger) {
+        // Find the new trigger (not in oldTriggers)
+        const oldTriggerIds = new Set(oldTriggers.map(t => (isTriggerToken(t) ? t.id : undefined)));
+        const newTrigger = newTriggers.find(t => isTriggerToken(t) && !oldTriggerIds.has(t.id));
 
-      // Position cursor inside the new trigger element
-      if (newTrigger && isTriggerToken(newTrigger) && newTrigger.id) {
-        const triggerElements = findElements(elementRef.current, {
-          tokenType: ELEMENT_TYPES.TRIGGER,
-          tokenId: newTrigger.id,
-        });
-        if (triggerElements.length > 0) {
-          const triggerElement = triggerElements[0];
-          const triggerTextNode = triggerElement.firstChild;
-          if (triggerTextNode && isTextNode(triggerTextNode)) {
-            const range = document.createRange();
-            range.setStart(triggerTextNode, triggerTextNode.textContent?.length || 0);
-            range.collapse(true);
-            const selection = window.getSelection();
-            if (selection) {
-              selection.removeAllRanges();
-              selection.addRange(range);
+        // Position cursor inside the new trigger element
+        if (newTrigger && isTriggerToken(newTrigger) && newTrigger.id) {
+          const triggerElements = findElements(elementRef.current, {
+            tokenType: ELEMENT_TYPES.TRIGGER,
+            tokenId: newTrigger.id,
+          });
+          if (triggerElements.length > 0) {
+            const triggerElement = triggerElements[0];
+            const triggerTextNode = triggerElement.firstChild;
+            if (triggerTextNode && isTextNode(triggerTextNode)) {
+              const range = document.createRange();
+              range.setStart(triggerTextNode, triggerTextNode.textContent?.length || 0);
+              range.collapse(true);
+              const selection = window.getSelection();
+              if (selection) {
+                selection.removeAllRanges();
+                selection.addRange(range);
+              }
             }
           }
         }
+      } else {
+        // Styling change only - restore cursor to saved position
+        setCursorPosition(elementRef.current, savedCursorPos);
       }
     }
 

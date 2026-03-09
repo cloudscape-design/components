@@ -326,8 +326,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 }
 
 .trigger-token {
-  font-style: italic;
-  text-decoration: underline dashed;
+  text-decoration: underline dashed currentColor;
+  text-decoration-thickness: awsui.$border-divider-list-width;
+  text-underline-offset: awsui.$space-xxxs;
 }
 
 // Paragraph elements - reset browser default margins/padding

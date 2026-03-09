@@ -498,6 +498,7 @@ const InternalPromptInput = React.forwardRef(
           shortcuts.menuIsOpen,
           shortcuts.triggerValueWhenClosed,
           editableState,
+          ignoreCursorDetection,
           menus
         )
       ) {
@@ -627,6 +628,7 @@ const InternalPromptInput = React.forwardRef(
         getMenuOpen: () => menuStateRef.current.isOpen,
         getMenuItemsState: () => menuStateRef.current.itemsState,
         getMenuItemsHandlers: () => menuStateRef.current.itemsHandlers,
+        getMenuStatusType: () => activeMenu?.statusType,
         onAction: onAction ? detail => fireNonCancelableEvent(onAction, detail) : undefined,
         tokensToText,
         tokens,
@@ -645,8 +647,23 @@ const InternalPromptInput = React.forwardRef(
         i18nStrings,
         disabled,
         readOnly,
+        editableState,
+        editableElementRef,
+        lastKnownCursorPositionRef,
       });
-    }, [onAction, tokensToText, tokens, ignoreCursorDetection, shortcuts, i18nStrings, disabled, readOnly]);
+    }, [
+      onAction,
+      tokensToText,
+      tokens,
+      ignoreCursorDetection,
+      shortcuts,
+      i18nStrings,
+      disabled,
+      readOnly,
+      activeMenu,
+      editableState,
+      lastKnownCursorPositionRef,
+    ]);
 
     // Menu load more controller
     const menuLoadMoreResult = useMenuLoadMore({
