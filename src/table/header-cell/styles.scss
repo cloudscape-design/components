@@ -77,16 +77,15 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 
   // Group header cells are sticky so the label stays visible while any child column
-  // is on screen. JS applies clip-path imperatively on scroll to clip the right edge
-  // as children scroll away — so the right border behaves naturally.
+  // is on screen. JS applies max-width imperatively on scroll to clip the right edge
+  // as children scroll away.
   // When sticky columns are active, JS also overrides inset-inline-start.
+  // NOTE: overflow must NOT be set here — the resizer handle is absolutely positioned
+  // and overflows the cell's right edge; clipping it would hide the resize handle.
   &-group {
     position: sticky;
     inset-inline-start: 0;
     z-index: 1;
-    // overflow:hidden is required so that max-width constraint (applied imperatively on scroll)
-    // clips the right border and content when children scroll out of view.
-    overflow: hidden;
   }
 
   // Hidden placeholder cells for grouped column headers.
@@ -95,11 +94,13 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   // is the table-level visibility prop (for the measurement thead), not our placeholder concept.
   &:has(.header-cell-hidden-content) {
     border-block-end-color: transparent;
+  }
 
-    // Show focus ring on the th when the inner focusable div receives focus.
-    &:focus-within {
-      @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
-    }
+  // Show focus ring on the th ONLY when the placeholder div itself is focused —
+  // NOT when a descendant like the resizer button is focused.
+  // :focus-within would be too broad and fires for the resizer button focus too.
+  &:has(.header-cell-hidden-content:focus) {
+    @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
   }
 
   // Divider styles for hidden placeholder cells (only when NOT the last cell in the row).
