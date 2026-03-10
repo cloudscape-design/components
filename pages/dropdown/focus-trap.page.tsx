@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { useState } from 'react';
 
 import { Box, Button, SpaceBetween } from '~components';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import AppContext, { AppContextType } from '../app/app-context';
 

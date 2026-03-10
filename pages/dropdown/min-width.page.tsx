@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import ListContent from './list-content';
 
