@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles' as styles;
-@use '../../styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
 @use './motion';
-@use '../../generated/custom-css-properties/index' as custom-props;
+@use '../internal/generated/custom-css-properties/index' as custom-props;
 
 .root {
   @include styles.styles-reset;

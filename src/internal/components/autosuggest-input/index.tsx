@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
+import { ExpandToViewport } from '../../../dropdown/interfaces';
+import InternalDropdown from '../../../dropdown/internal';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -19,8 +21,6 @@ import InternalInput from '../../../input/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { getBreakpointValue } from '../../breakpoints';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
-import { ExpandToViewport } from '../../dropdown/interfaces';
-import InternalDropdown from '../../dropdown/internal';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
