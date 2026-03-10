@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { act, renderHook } from '../../__tests__/render-hook';
-import { OptionsLoadItemsDetail } from '../../internal/components/dropdown/interfaces';
+import { OptionsLoadItemsDetail } from '../../dropdown/interfaces';
 import { useAutosuggestLoadMore } from '../load-more-controller';
 
 describe('Autosuggest load-more-controller', () => {

@@ -79,11 +79,6 @@ export interface DropdownProps extends ExpandToViewport {
   content?: React.ReactNode;
 
   /**
-   * Updating content key triggers dropdown position re-evaluation.
-   */
-  contentKey?: string;
-
-  /**
    * Open state of the dropdown.
    */
   open?: boolean;
@@ -99,21 +94,6 @@ export interface DropdownProps extends ExpandToViewport {
    * Called when a mouse button is pressed inside the dropdown content.
    */
   onMouseDown?: React.MouseEventHandler;
-
-  /**
-   * Dropdown id
-   */
-  dropdownId?: string;
-
-  /**
-   * Stretches dropdown to occupy entire height.
-   */
-  stretchHeight?: boolean;
-
-  /**
-   * Stretches the trigger to the height of the dropdown container.
-   */
-  stretchTriggerHeight?: boolean;
 
   /**
    * Minimum width constraint for the dropdown.
@@ -144,6 +124,50 @@ export interface DropdownProps extends ExpandToViewport {
   hideBlockBorder?: boolean;
 
   /**
+   * Called when focus enters the trigger or dropdown content.
+   */
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when focus leaves the trigger or dropdown content.
+   */
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+  /**
+   * Called when the user presses the Escape key while the dropdown is open.
+   * The dropdown does not close automatically - the parent component
+   * must update the `open` prop to close the dropdown.
+   */
+  onEscape?: NonCancelableEventHandler;
+}
+
+export interface InternalDropdownProps extends DropdownProps {
+  /**
+   * Updating content key triggers dropdown position re-evaluation.
+   */
+  contentKey?: string;
+
+  /**
+   * Dropdown id
+   */
+  dropdownId?: string;
+
+  /**
+   * ID for the dropdown content wrapper
+   */
+  dropdownContentId?: string;
+
+  /**
+   * Stretches dropdown to occupy entire height.
+   */
+  stretchHeight?: boolean;
+
+  /**
+   * Stretches the trigger to the height of the dropdown container.
+   */
+  stretchTriggerHeight?: boolean;
+
+  /**
    * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
    */
   interior?: boolean;
@@ -159,18 +183,7 @@ export interface DropdownProps extends ExpandToViewport {
   loopFocus?: boolean;
 
   /**
-   * Called when focus enters the trigger or dropdown content.
-   */
-  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
-   * Called when focus leaves the trigger or dropdown content.
-   */
-  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
    * Called when focus enters the dropdown content from outside.
-   * This fires only once when focus moves into the dropdown, not when moving between elements within it.
    */
   onFocusEnter?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
@@ -178,18 +191,6 @@ export interface DropdownProps extends ExpandToViewport {
    * Called when focus leaves the dropdown content entirely.
    */
   onFocusLeave?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
-   * Called when the user presses the Escape key while the dropdown is open.
-   * The dropdown does not close automatically - the parent component
-   * must update the `open` prop to close the dropdown.
-   */
-  onEscape?: NonCancelableEventHandler;
-
-  /**
-   * ID for the dropdown content wrapper
-   */
-  dropdownContentId?: string;
 
   /**
    * HTML role for the dropdown content wrapper
