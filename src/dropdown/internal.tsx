@@ -8,11 +8,13 @@ import clsx from 'clsx';
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
+import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
 import TabTrap from '../internal/components/tab-trap/index.js';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -27,7 +29,7 @@ import {
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
 import { DropdownProps } from './interfaces';
 
-interface InternalDropdownProps extends DropdownProps {
+interface InternalDropdownProps extends DropdownProps, InternalBaseComponentProps {
   onMouseDown?: React.MouseEventHandler;
   contentKey?: string;
   dropdownId?: string;
@@ -210,8 +212,12 @@ const InternalDropdown = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  __internalRootRef,
+  ...restProps
 }: InternalDropdownProps) => {
+  const baseProps = getBaseProps(restProps);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const mergedRef = useMergeRefs(wrapperRef, __internalRootRef);
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
@@ -500,12 +506,14 @@ const InternalDropdown = ({
 
   return (
     <div
+      {...baseProps}
       className={clsx(
         styles.root,
         interior && styles.interior,
-        stretchTriggerHeight && styles['stretch-trigger-height']
+        stretchTriggerHeight && styles['stretch-trigger-height'],
+        baseProps.className
       )}
-      ref={wrapperRef}
+      ref={mergedRef}
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
