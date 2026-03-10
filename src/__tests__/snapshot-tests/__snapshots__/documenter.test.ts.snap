@@ -11561,6 +11561,311 @@ It should contain the only \`h2\` used in the drawer.",
 }
 `;
 
+exports[`Components definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "dashCaseName": "dropdown",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when focus leaves the trigger or dropdown content.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onBlur",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user presses the Escape key while the dropdown is open.
+The dropdown does not close automatically - the parent component
+must update the \`open\` prop to close the dropdown.",
+      "name": "onEscape",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus enters the trigger or dropdown content.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocus",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus enters the dropdown content from outside.
+This fires only once when focus moves into the dropdown, not when moving between elements within it.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusEnter",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus leaves the dropdown content entirely.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusLeave",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user clicks outside the dropdown and trigger.
+The dropdown does not close automatically - the parent component
+must update the \`open\` prop to close the dropdown.",
+      "name": "onOutsideClick",
+    },
+  ],
+  "functions": [],
+  "name": "Dropdown",
+  "properties": [
+    {
+      "description": "Describedby for the dropdown (recommended when role="dialog")",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Aria label for the dropdown content wrapper",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Labelledby for the dropdown (required when role="dialog")",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "HTML role for the dropdown content wrapper",
+      "name": "ariaRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+      "name": "expandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Hides the block (top/bottom) borders of the dropdown content wrapper.",
+      "name": "hideBlockBorder",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Maximum width constraint for the dropdown.
+- Number: maximum width in pixels
+- 'trigger': dropdown cannot exceed the trigger width
+- undefined: fit to content width (no max constraint)",
+      "inlineType": {
+        "name": "DropdownWidthConstraint",
+        "type": "union",
+        "values": [
+          "number",
+          ""trigger"",
+        ],
+      },
+      "name": "maxWidth",
+      "optional": true,
+      "type": "DropdownWidthConstraint",
+    },
+    {
+      "description": "Minimum width constraint for the dropdown.
+- Number: minimum width in pixels
+- 'trigger': dropdown will be at least as wide as the trigger
+- undefined: no minimum constraint (fits content)",
+      "inlineType": {
+        "name": "DropdownWidthConstraint",
+        "type": "union",
+        "values": [
+          "number",
+          ""trigger"",
+        ],
+      },
+      "name": "minWidth",
+      "optional": true,
+      "type": "DropdownWidthConstraint",
+    },
+    {
+      "description": "Open state of the dropdown.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Preferred alignment of the dropdown relative to its trigger.
+The dropdown will attempt this alignment first, but will automatically
+adjust if there's insufficient space on the preferred side.",
+      "inlineType": {
+        "name": "DropdownAlignment",
+        "type": "union",
+        "values": [
+          "center",
+          "start",
+        ],
+      },
+      "name": "preferredAlignment",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Dropdown content elements.",
+      "isDefault": false,
+      "name": "content",
+    },
+    {
+      "description": "Footer slot fixed at the bottom of the dropdown",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": ""Sticky" header of the dropdown content",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Trigger element.",
+      "isDefault": false,
+      "name": "trigger",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
 {
   "dashCaseName": "error-boundary",
@@ -36956,6 +37261,10 @@ wrapper.selectOptionByValue('option_1');
       "name": "DrawerWrapper",
     },
     {
+      "methods": [],
+      "name": "DropdownWrapper",
+    },
+    {
       "methods": [
         {
           "name": "findAction",
@@ -46902,6 +47211,10 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [],
+      "name": "DropdownWrapper",
     },
     {
       "methods": [

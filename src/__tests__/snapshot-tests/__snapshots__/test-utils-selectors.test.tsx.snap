@@ -251,6 +251,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
+  "dropdown": [
+    "awsui_dropdown_9duf6",
+    "awsui_root_9duf6",
+  ],
   "error-boundary": [
     "awsui_action_11u4a",
     "awsui_description_11u4a",
@@ -376,7 +380,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_direction-button-inline-start_8k1rt",
     "awsui_direction-button-visible_8k1rt",
     "awsui_disabled_15o6u",
-    "awsui_dropdown_qwoo0",
     "awsui_expand-toggle_1xe88",
     "awsui_filter-container_z5mul",
     "awsui_filtering-match-highlight_1p2cx",
@@ -407,7 +410,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1om0h",
     "awsui_root_1qprf",
     "awsui_root_1t44z",
-    "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_screenreader-content_15o6u",
     "awsui_secondary_x6dl3",
