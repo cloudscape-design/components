@@ -19,6 +19,7 @@ import {
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
 import { i18nStrings } from '../file-upload/shared';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const MAX_CHARS = 2000;
 
@@ -187,93 +188,95 @@ export default function PromptInputPage() {
                 label={<span>User prompt</span>}
                 i18nStrings={{ errorIconAriaLabel: 'Error' }}
               >
-                <PromptInput
-                  data-testid="prompt-input"
-                  ariaLabel="Chat input"
-                  actionButtonIconName="send"
-                  actionButtonAriaLabel="Submit prompt"
-                  value={textareaValue}
-                  onChange={(event: any) => setTextareaValue(event.detail.value)}
-                  onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-                  placeholder="Ask a question"
-                  maxRows={hasInfiniteMaxRows ? -1 : 4}
-                  disabled={isDisabled}
-                  readOnly={isReadOnly}
-                  invalid={isInvalid || textareaValue.length > MAX_CHARS}
-                  warning={hasWarning}
-                  ref={ref}
-                  disableSecondaryActionsPaddings={true}
-                  customPrimaryAction={
-                    hasPrimaryActions ? (
-                      <ButtonGroup
-                        variant="icon"
-                        items={[
-                          {
-                            type: 'icon-button',
-                            id: 'record',
-                            text: 'Record',
-                            iconName: 'microphone',
-                            disabled: isDisabled || isReadOnly,
-                          },
-                          {
-                            type: 'icon-button',
-                            id: 'submit',
-                            text: 'Submit',
-                            iconName: 'send',
-                            disabled: isDisabled || isReadOnly,
-                          },
-                        ]}
-                      />
-                    ) : undefined
-                  }
-                  secondaryActions={
-                    hasSecondaryActions ? (
-                      <Box padding={{ left: 'xxs', top: 'xs' }}>
+                <ScreenshotArea disableAnimations={true}>
+                  <PromptInput
+                    data-testid="prompt-input"
+                    ariaLabel="Chat input"
+                    actionButtonIconName="send"
+                    actionButtonAriaLabel="Submit prompt"
+                    value={textareaValue}
+                    onChange={(event: any) => setTextareaValue(event.detail.value)}
+                    onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+                    placeholder="Ask a question"
+                    maxRows={hasInfiniteMaxRows ? -1 : 4}
+                    disabled={isDisabled}
+                    readOnly={isReadOnly}
+                    invalid={isInvalid || textareaValue.length > MAX_CHARS}
+                    warning={hasWarning}
+                    ref={ref}
+                    disableSecondaryActionsPaddings={true}
+                    customPrimaryAction={
+                      hasPrimaryActions ? (
                         <ButtonGroup
-                          ref={buttonGroupRef}
-                          ariaLabel="Chat actions"
-                          onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                          variant="icon"
                           items={[
                             {
-                              type: 'icon-file-input',
-                              id: 'files',
-                              text: 'Upload files',
-                              multiple: true,
-                            },
-                            {
                               type: 'icon-button',
-                              id: 'expand',
-                              iconName: 'expand',
-                              text: 'Go full page',
+                              id: 'record',
+                              text: 'Record',
+                              iconName: 'microphone',
                               disabled: isDisabled || isReadOnly,
                             },
                             {
                               type: 'icon-button',
-                              id: 'remove',
-                              iconName: 'remove',
-                              text: 'Remove',
+                              id: 'submit',
+                              text: 'Submit',
+                              iconName: 'send',
                               disabled: isDisabled || isReadOnly,
                             },
                           ]}
-                          variant="icon"
                         />
-                      </Box>
-                    ) : undefined
-                  }
-                  secondaryContent={
-                    hasSecondaryContent && files.length > 0 ? (
-                      <FileTokenGroup
-                        items={files.map(file => ({
-                          file,
-                        }))}
-                        showFileThumbnail={true}
-                        onDismiss={onDismiss}
-                        i18nStrings={i18nStrings}
-                        alignment="horizontal"
-                      />
-                    ) : undefined
-                  }
-                />
+                      ) : undefined
+                    }
+                    secondaryActions={
+                      hasSecondaryActions ? (
+                        <Box padding={{ left: 'xxs', top: 'xs' }}>
+                          <ButtonGroup
+                            ref={buttonGroupRef}
+                            ariaLabel="Chat actions"
+                            onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                            items={[
+                              {
+                                type: 'icon-file-input',
+                                id: 'files',
+                                text: 'Upload files',
+                                multiple: true,
+                              },
+                              {
+                                type: 'icon-button',
+                                id: 'expand',
+                                iconName: 'expand',
+                                text: 'Go full page',
+                                disabled: isDisabled || isReadOnly,
+                              },
+                              {
+                                type: 'icon-button',
+                                id: 'remove',
+                                iconName: 'remove',
+                                text: 'Remove',
+                                disabled: isDisabled || isReadOnly,
+                              },
+                            ]}
+                            variant="icon"
+                          />
+                        </Box>
+                      ) : undefined
+                    }
+                    secondaryContent={
+                      hasSecondaryContent && files.length > 0 ? (
+                        <FileTokenGroup
+                          items={files.map(file => ({
+                            file,
+                          }))}
+                          showFileThumbnail={true}
+                          onDismiss={onDismiss}
+                          i18nStrings={i18nStrings}
+                          alignment="horizontal"
+                        />
+                      ) : undefined
+                    }
+                  />
+                </ScreenshotArea>
               </FormField>
               <div />
             </ColumnLayout>
