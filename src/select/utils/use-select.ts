@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalDropdownProps } from '../../dropdown/interfaces';
+import { DropdownProps } from '../../dropdown/interfaces';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
@@ -174,10 +174,10 @@ export function useSelect({
     goHome: goHomeWithKeyboard,
   });
 
-  const getDropdownProps: () => Pick<
-    InternalDropdownProps,
-    'onFocus' | 'onBlur' | 'dropdownContentId' | 'ariaRole'
-  > = () => ({
+  const getDropdownProps: () => Pick<DropdownProps, 'onFocus' | 'onBlur'> & {
+    dropdownContentId?: string;
+    ariaRole?: string;
+  } = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
