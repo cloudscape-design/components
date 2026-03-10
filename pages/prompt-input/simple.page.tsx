@@ -71,7 +71,7 @@ export default function PromptInputPage() {
   }, [hasText]);
 
   useEffect(() => {
-    if (textareaValue !== placeholderText) {
+    if (hasText && textareaValue !== placeholderText) {
       setUrlParams({ hasText: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
