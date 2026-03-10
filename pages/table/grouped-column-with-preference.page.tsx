@@ -264,7 +264,6 @@ type DemoContext = React.Context<
     resizable: boolean;
     firstSticky: number;
     lastSticky: number;
-    customGap: boolean;
     gap: number;
   }>
 >;
@@ -276,10 +275,10 @@ export default function EC2TableDemo() {
       { id: 'cpuUtilization', visible: true },
       { id: 'memoryUtilization', visible: true },
       { id: 'networkIn', visible: true },
+      { id: 'instanceType', visible: true },
       { id: 'networkOut', visible: true },
       { id: 'id', visible: true },
       { id: 'name', visible: true },
-      { id: 'instanceType', visible: true },
       { id: 'az', visible: true },
       { id: 'state', visible: true },
       { id: 'monthlyCost', visible: false },
@@ -326,14 +325,11 @@ export default function EC2TableDemo() {
   const { selectedItems } = collectionProps;
 
   const {
-    urlParams: { resizable = true, firstSticky = 0, lastSticky = 0, customGap = false, gap = 0 },
+    urlParams: { resizable = true, firstSticky = 0, lastSticky = 0 },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
 
   // Build the CSS custom property style for the resizer gap
-  const tableWrapperStyle: React.CSSProperties = customGap
-    ? ({ '--awsui-table-resizer-block-gap': `${gap}px` } as React.CSSProperties)
-    : {};
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
@@ -364,68 +360,50 @@ export default function EC2TableDemo() {
             type="number"
           />
         </FormField>
-
-        <Toggle onChange={({ detail }) => setUrlParams({ customGap: detail.checked })} checked={customGap}>
-          Custom resizer gap
-        </Toggle>
-
-        <FormField label="Resizer gap (px)">
-          <Input
-            disabled={!customGap}
-            ariaLabel="Resizer block gap in pixels"
-            onChange={({ detail }) => setUrlParams({ gap: +detail.value })}
-            value={String(gap)}
-            name="gap"
-            inputMode="numeric"
-            type="number"
-          />
-        </FormField>
       </SpaceBetween>
 
-      <div style={tableWrapperStyle}>
-        <Table
-          {...collectionProps}
-          selectionType="multi"
-          resizableColumns={resizable}
-          stickyColumns={{
-            first: +firstSticky,
-            last: +lastSticky,
-          }}
-          variant="stacked"
-          enableKeyboardNavigation={true}
-          ariaLabels={ariaLabels}
-          header={
-            <Header
-              counter={
-                selectedItems && selectedItems.length
-                  ? `(${selectedItems.length}/${allInstances.length})`
-                  : `(${allInstances.length})`
-              }
-            >
-              EC2 Instances
-            </Header>
-          }
-          columnDefinitions={columnDefinitions}
-          columnGroupingDefinitions={columnGroupingDefinitions}
-          columnDisplay={preferences?.contentDisplay}
-          items={items}
-          pagination={<Pagination {...paginationProps} />}
-          filter={
-            <TextFilter
-              {...filterProps}
-              countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
-              filteringPlaceholder="Find instances"
-            />
-          }
-          preferences={
-            <CollectionPreferences
-              {...collectionPreferencesProps}
-              preferences={preferences}
-              onConfirm={({ detail }) => setPreferences(detail)}
-            />
-          }
-        />
-      </div>
+      <Table
+        {...collectionProps}
+        selectionType="multi"
+        resizableColumns={resizable}
+        stickyColumns={{
+          first: +firstSticky,
+          last: +lastSticky,
+        }}
+        variant="stacked"
+        enableKeyboardNavigation={true}
+        ariaLabels={ariaLabels}
+        header={
+          <Header
+            counter={
+              selectedItems && selectedItems.length
+                ? `(${selectedItems.length}/${allInstances.length})`
+                : `(${allInstances.length})`
+            }
+          >
+            EC2 Instances
+          </Header>
+        }
+        columnDefinitions={columnDefinitions}
+        columnGroupingDefinitions={columnGroupingDefinitions}
+        columnDisplay={preferences?.contentDisplay}
+        items={items}
+        pagination={<Pagination {...paginationProps} />}
+        filter={
+          <TextFilter
+            {...filterProps}
+            countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
+            filteringPlaceholder="Find instances"
+          />
+        }
+        preferences={
+          <CollectionPreferences
+            {...collectionPreferencesProps}
+            preferences={preferences}
+            onConfirm={({ detail }) => setPreferences(detail)}
+          />
+        }
+      />
     </SimplePage>
   );
 }
