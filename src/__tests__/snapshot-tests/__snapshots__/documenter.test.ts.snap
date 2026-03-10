@@ -37261,7 +37261,113 @@ wrapper.selectOptionByValue('option_1');
       "name": "DrawerWrapper",
     },
     {
-      "methods": [],
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "name": "findFooter",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "openDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+      ],
       "name": "DropdownWrapper",
     },
     {
@@ -47213,7 +47319,93 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
       "name": "DrawerWrapper",
     },
     {
-      "methods": [],
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "name": "findFooter",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
       "name": "DropdownWrapper",
     },
     {
