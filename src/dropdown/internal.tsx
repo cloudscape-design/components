@@ -25,7 +25,19 @@ import {
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { InternalDropdownProps } from './interfaces';
+import { DropdownProps } from './interfaces';
+
+interface InternalDropdownProps extends DropdownProps {
+  onMouseDown?: React.MouseEventHandler;
+  contentKey?: string;
+  dropdownId?: string;
+  dropdownContentId?: string;
+  stretchHeight?: boolean;
+  stretchTriggerHeight?: boolean;
+  interior?: boolean;
+  scrollable?: boolean;
+  loopFocus?: boolean;
+}
 
 import styles from './styles.css.js';
 

@@ -91,11 +91,6 @@ export interface DropdownProps extends ExpandToViewport {
   onOutsideClick?: NonCancelableEventHandler<null>;
 
   /**
-   * Called when a mouse button is pressed inside the dropdown content.
-   */
-  onMouseDown?: React.MouseEventHandler;
-
-  /**
    * Minimum width constraint for the dropdown.
    * - Number: minimum width in pixels
    * - 'trigger': dropdown will be at least as wide as the trigger
@@ -139,51 +134,10 @@ export interface DropdownProps extends ExpandToViewport {
    * must update the `open` prop to close the dropdown.
    */
   onEscape?: NonCancelableEventHandler;
-}
-
-export interface InternalDropdownProps extends DropdownProps {
-  /**
-   * Updating content key triggers dropdown position re-evaluation.
-   */
-  contentKey?: string;
-
-  /**
-   * Dropdown id
-   */
-  dropdownId?: string;
-
-  /**
-   * ID for the dropdown content wrapper
-   */
-  dropdownContentId?: string;
-
-  /**
-   * Stretches dropdown to occupy entire height.
-   */
-  stretchHeight?: boolean;
-
-  /**
-   * Stretches the trigger to the height of the dropdown container.
-   */
-  stretchTriggerHeight?: boolean;
-
-  /**
-   * Indicates if this dropdown lies within a parent dropdown and positions itself relative to it (as a fly out).
-   */
-  interior?: boolean;
-
-  /**
-   * Whether the dropdown will have a scrollbar or not
-   */
-  scrollable?: boolean;
-
-  /**
-   * Whether the dropdown will have a focus loop including trigger, header, content and footer.
-   */
-  loopFocus?: boolean;
 
   /**
    * Called when focus enters the dropdown content from outside.
+   * This fires only once when focus moves into the dropdown, not when moving between elements within it.
    */
   onFocusEnter?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
