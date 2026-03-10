@@ -3,25 +3,19 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import AttributeEditor from '../../../lib/components/attribute-editor';
 
-jest.mock('@cloudscape-design/component-toolkit', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: jest.fn().mockImplementation(() => ['m', () => {}]),
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
 }));
 
-let consoleWarnSpy: jest.SpyInstance;
-beforeEach(() => {
-  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-});
 afterEach(() => {
-  consoleWarnSpy?.mockRestore();
+  (warnOnce as jest.Mock).mockReset();
 });
 
-/**
- * This test suite is in a separate file, because it needs a clean messageCache (inside `warnOnce()`).
- * Otherwise, warnings would not appear at the expected time in the test, because they have been issued before.
- */
 describe('AttributeEditor component', () => {
   test('warns when a definition has no label', () => {
     render(
@@ -33,7 +27,7 @@ describe('AttributeEditor component', () => {
         gridLayout={[{ rows: [[1]] }]}
       />
     );
-    expect(console.warn).not.toHaveBeenCalled();
+    expect(warnOnce).not.toHaveBeenCalled();
 
     render(
       <AttributeEditor
@@ -45,9 +39,10 @@ describe('AttributeEditor component', () => {
       />
     );
 
-    expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith(
-      '[AwsUi] [AttributeEditor] A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'AttributeEditor',
+      'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
     );
   });
 });
