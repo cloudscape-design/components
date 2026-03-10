@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getDropdownPosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
+import { getDropdownPosition } from '../../../lib/components/dropdown/dropdown-fit-handler';
 
 const windowSize = {
   insetBlockStart: 0,
