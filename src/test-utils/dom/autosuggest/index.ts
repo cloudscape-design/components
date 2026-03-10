@@ -10,7 +10,7 @@ import OptionWrapper from '../internal/option';
 import OptionsListWrapper from '../internal/options-list';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
-import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';

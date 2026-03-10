@@ -5,8 +5,8 @@ import { useEffect, useRef } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { DropdownProps } from '../../dropdown/interfaces';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { DropdownProps } from '../../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../../internal/components/dropdown-status';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';

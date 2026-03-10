@@ -8,8 +8,8 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useDropdownContext } from '../../dropdown/context';
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
-import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { getDataAttributes } from '../../internal/utils/data-attributes';

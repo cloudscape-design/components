@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
@@ -7,15 +8,15 @@ import clsx from 'clsx';
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../events';
-import customCssProps from '../../generated/custom-css-properties';
-import { useMobile } from '../../hooks/use-mobile';
-import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import { nodeBelongs } from '../../utils/node-belongs';
-import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
-import TabTrap from '../tab-trap/index.js';
-import { Transition, TransitionStatus } from '../transition';
+import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
+import TabTrap from '../internal/components/tab-trap/index.js';
+import { Transition, TransitionStatus } from '../internal/components/transition';
+import { fireNonCancelableEvent } from '../internal/events';
+import customCssProps from '../internal/generated/custom-css-properties';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,
@@ -24,7 +25,7 @@ import {
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { DropdownProps } from './interfaces';
+import { InternalDropdownProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -167,7 +168,7 @@ const TransitionContent = ({
   );
 };
 
-const Dropdown = ({
+const InternalDropdown = ({
   content,
   trigger,
   open,
@@ -197,7 +198,7 @@ const Dropdown = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
-}: DropdownProps) => {
+}: InternalDropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -564,4 +565,4 @@ const isInteriorPosition = (
   position: DropdownPosition | InteriorDropdownPosition
 ): position is InteriorDropdownPosition => (position as InteriorDropdownPosition).insetBlockEnd !== undefined;
 
-export default Dropdown;
+export default InternalDropdown;
