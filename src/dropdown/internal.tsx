@@ -42,6 +42,7 @@ interface InternalDropdownProps extends DropdownProps, InternalBaseComponentProp
 }
 
 import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 
 interface DropdownContainerProps {
   triggerRef: React.RefObject<HTMLElement>;
@@ -172,9 +173,9 @@ const TransitionContent = ({
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
-            {header}
+            {header && <div className={testutilStyles.header}>{header}</div>}
             {content}
-            {footer}
+            {footer && <div className={testutilStyles.footer}>{footer}</div>}
           </DropdownContextProvider>
         </div>
       </div>
@@ -517,7 +518,11 @@ const InternalDropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div id={referrerId} className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
+      <div
+        id={referrerId}
+        className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testutilStyles.trigger)}
+        ref={triggerRef}
+      >
         {trigger}
       </div>
 
