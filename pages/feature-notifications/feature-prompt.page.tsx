@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   AppLayoutProps,
@@ -191,6 +191,7 @@ type DemoContext = React.Context<
 >;
 
 export default function () {
+  const [mountApp, setMountApp] = useState(true);
   const featurePromptRef = useRef<FeaturePromptProps.Ref>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
@@ -213,6 +214,10 @@ export default function () {
       unmount(root);
     };
   }, []);
+
+  if (!mountApp) {
+    return null;
+  }
 
   return (
     <ScreenshotArea gutters={false}>
@@ -359,6 +364,16 @@ export default function () {
                       }}
                     >
                       Override
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setMountApp(false);
+                        setTimeout(() => {
+                          setMountApp(true);
+                        }, 100);
+                      }}
+                    >
+                      Remount application
                     </Button>
                   </SpaceBetween>
                 </Container>
