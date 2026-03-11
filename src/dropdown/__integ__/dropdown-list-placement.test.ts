@@ -4,7 +4,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const autosuggest = createWrapper().findAutosuggest();
 const select = createWrapper().findSelect();
