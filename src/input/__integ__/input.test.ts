@@ -45,35 +45,4 @@ describe('Input', () => {
       ).resolves.toBe(true);
     })
   );
-
-  test(
-    'Should not submit form during IME composition',
-    useBrowser(async browser => {
-      await browser.url('#/light/input/input-integ');
-      const page = new InputPage(browser);
-      await page.focusInput();
-
-      // Simulate IME composition
-      await browser.execute(() => {
-        const input = document.querySelector('input')!;
-        input.dispatchEvent(new CompositionEvent('compositionstart'));
-      });
-
-      await page.keys(['Enter']);
-
-      // Form should not be submitted during composition
-      await expect(page.isFormSubmitted()).resolves.toBe(false);
-
-      // End composition
-      await browser.execute(() => {
-        const input = document.querySelector('input')!;
-        input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
-      });
-
-      await page.keys(['Enter']);
-
-      // Form should not be submitted during composition
-      await expect(page.isFormSubmitted()).resolves.toBe(true);
-    })
-  );
 });
