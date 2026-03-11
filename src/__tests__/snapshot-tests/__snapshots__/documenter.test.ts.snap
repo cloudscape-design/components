@@ -11567,86 +11567,10 @@ exports[`Components definition for dropdown matches the snapshot: dropdown 1`] =
   "events": [
     {
       "cancelable": false,
-      "description": "Called when focus leaves the trigger or dropdown content.",
-      "detailInlineType": {
-        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-        "properties": [
-          {
-            "inlineType": {
-              "name": "EventTarget & RelatedTarget",
-              "type": "union",
-              "values": [
-                "EventTarget",
-                "RelatedTarget",
-              ],
-            },
-            "name": "relatedTarget",
-            "optional": false,
-            "type": "EventTarget & RelatedTarget",
-          },
-          {
-            "inlineType": {
-              "name": "EventTarget & Target",
-              "type": "union",
-              "values": [
-                "EventTarget",
-                "Target",
-              ],
-            },
-            "name": "target",
-            "optional": false,
-            "type": "EventTarget & Target",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-      "name": "onBlur",
-    },
-    {
-      "cancelable": false,
       "description": "Called when the user presses the Escape key while the dropdown is open.
 The dropdown does not close automatically - the parent component
 must update the \`open\` prop to close the dropdown.",
       "name": "onEscape",
-    },
-    {
-      "cancelable": false,
-      "description": "Called when focus enters the trigger or dropdown content.",
-      "detailInlineType": {
-        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-        "properties": [
-          {
-            "inlineType": {
-              "name": "EventTarget & RelatedTarget",
-              "type": "union",
-              "values": [
-                "EventTarget",
-                "RelatedTarget",
-              ],
-            },
-            "name": "relatedTarget",
-            "optional": false,
-            "type": "EventTarget & RelatedTarget",
-          },
-          {
-            "inlineType": {
-              "name": "EventTarget & Target",
-              "type": "union",
-              "values": [
-                "EventTarget",
-                "Target",
-              ],
-            },
-            "name": "target",
-            "optional": false,
-            "type": "EventTarget & Target",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
-      "name": "onFocus",
     },
     {
       "cancelable": false,
@@ -11775,66 +11699,22 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Hides the block (top/bottom) borders of the dropdown content wrapper.",
-      "name": "hideBlockBorder",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Maximum width constraint for the dropdown.
-- Number: maximum width in pixels
-- 'trigger': dropdown cannot exceed the trigger width
-- undefined: fit to content width (no max constraint)",
-      "inlineType": {
-        "name": "DropdownWidthConstraint",
-        "type": "union",
-        "values": [
-          "number",
-          ""trigger"",
-        ],
-      },
+      "description": "Maximum width constraint for the dropdown in pixels.",
       "name": "maxWidth",
       "optional": true,
-      "type": "DropdownWidthConstraint",
+      "type": "number",
     },
     {
-      "description": "Minimum width constraint for the dropdown.
-- Number: minimum width in pixels
-- 'trigger': dropdown will be at least as wide as the trigger
-- undefined: no minimum constraint (fits content)",
-      "inlineType": {
-        "name": "DropdownWidthConstraint",
-        "type": "union",
-        "values": [
-          "number",
-          ""trigger"",
-        ],
-      },
+      "description": "Minimum width constraint for the dropdown in pixels.",
       "name": "minWidth",
       "optional": true,
-      "type": "DropdownWidthConstraint",
+      "type": "number",
     },
     {
       "description": "Open state of the dropdown.",
       "name": "open",
       "optional": true,
       "type": "boolean",
-    },
-    {
-      "description": "Preferred alignment of the dropdown relative to its trigger.
-The dropdown will attempt this alignment first, but will automatically
-adjust if there's insufficient space on the preferred side.",
-      "inlineType": {
-        "name": "DropdownAlignment",
-        "type": "union",
-        "values": [
-          "center",
-          "start",
-        ],
-      },
-      "name": "preferredAlignment",
-      "optional": true,
-      "type": "string",
     },
   ],
   "regions": [
