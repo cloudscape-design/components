@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getExternalProps } from '../../utils/external-props';
-import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage } from './core';
+import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
   DrawerPayload,
@@ -62,12 +62,17 @@ export function clearFeatureNotifications() {
  * @param message
  */
 export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
+  const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
-    getAppLayoutInitialMessages().forEach(initialMessage => {
+    initialMessages.forEach(initialMessage => {
       if (initialMessage.payload.id === message.payload.id) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });
+  }
+
+  if (message.type === 'clearFeatureNotifications') {
+    setInitialMessage(initialMessages.filter(initialMessage => initialMessage.type !== 'registerFeatureNotifications'));
   }
   getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
 }
