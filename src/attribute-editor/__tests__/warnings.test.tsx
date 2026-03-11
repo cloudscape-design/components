@@ -7,6 +7,11 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import AttributeEditor from '../../../lib/components/attribute-editor';
 
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: jest.fn().mockImplementation(() => ['m', () => {}]),
+}));
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -39,6 +44,7 @@ describe('AttributeEditor component', () => {
       />
     );
 
+    expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(
       'AttributeEditor',
       'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
