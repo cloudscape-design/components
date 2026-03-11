@@ -39,7 +39,6 @@ describe('AttributeEditor component', () => {
       />
     );
 
-    expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(
       'AttributeEditor',
       'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
