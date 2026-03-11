@@ -37205,6 +37205,7 @@ wrapper.selectOptionByValue('option_1');
           "parameters": [
             {
               "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
@@ -37245,6 +37246,7 @@ wrapper.selectOptionByValue('option_1');
           "parameters": [
             {
               "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
@@ -37267,6 +37269,31 @@ wrapper.selectOptionByValue('option_1');
           "parameters": [
             {
               "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the open dropdown element.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
@@ -47273,6 +47300,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
               "defaultValue": "{
     expandToViewport: false
   }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
@@ -47312,6 +47340,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
               "defaultValue": "{
     expandToViewport: false
   }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
@@ -47331,6 +47360,28 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
               "defaultValue": "{
     expandToViewport: false
   }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the open dropdown element.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
               "flags": {
                 "isOptional": false,
               },
