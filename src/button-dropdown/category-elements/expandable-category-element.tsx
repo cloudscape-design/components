@@ -140,8 +140,8 @@ const ExpandableCategoryElement = ({
     content = (
       <Dropdown
         open={expanded}
-        stretchWidth={false}
         interior={true}
+        hideBlockBorder={false}
         expandToViewport={expandToViewport}
         trigger={trigger}
         content={

@@ -129,6 +129,7 @@ const InternalLink = React.forwardRef(
 
     const fireClickEvent = (event: React.MouseEvent | React.KeyboardEvent) => {
       const { altKey, ctrlKey, metaKey, shiftKey } = event;
+      // eslint-disable-next-line no-restricted-syntax -- MouseEvent vs KeyboardEvent discrimination
       const button = 'button' in event ? event.button : 0;
       // make onClick non-cancelable to prevent it from being used to block full page reload
       // for navigation use `onFollow` event instead

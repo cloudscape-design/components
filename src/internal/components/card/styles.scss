@@ -15,6 +15,7 @@
   border-end-start-radius: awsui.$border-radius-container;
   border-end-end-radius: awsui.$border-radius-container;
   box-sizing: border-box;
+  block-size: 100%;
 
   &::before {
     @include styles.base-pseudo-element;

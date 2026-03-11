@@ -16,7 +16,7 @@ export function SampleDropdown({ id, children }: { id: string; children: React.R
         </Button>
       }
       open={isOpened}
-      onDropdownClose={() => setOpened(false)}
+      onOutsideClick={() => setOpened(false)}
       content={children}
     />
   );

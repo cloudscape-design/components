@@ -35,7 +35,7 @@ export default function OptionsListScenario() {
             Dropdown trigger
           </Button>
         }
-        onDropdownClose={toggleDropdown}
+        onOutsideClick={toggleDropdown}
         content={
           <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
             {[...Array(50)].map((_, index) => (

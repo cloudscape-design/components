@@ -17,6 +17,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontFamilyHeading: {
+    description: 'The font family for headings and component headers. Defaults to the base font family.',
+    themeable: true,
+    public: true,
+  },
   fontFamilyMonospace: {
     description: 'The monospace font family that will be applied globally to the product interface.',
     themeable: true,
@@ -102,15 +107,28 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   letterSpacingHeadingXl: {
     description: 'The default letter spacing for h1s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingL: {
     description: 'The default letter spacing for h2s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingM: {
     description: 'The default letter spacing for h3s.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingS: {
     description: 'The default letter spacing for h4s.',
+    themeable: true,
+    public: true,
+  },
+  letterSpacingHeadingXs: {
+    description: 'The default letter spacing for h5s.',
+    themeable: true,
+    public: true,
   },
   lineHeightBodyM: {
     description: 'The default line height for regular body text.',

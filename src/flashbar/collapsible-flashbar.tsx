@@ -35,6 +35,8 @@ import {
   getFlashTypeCount,
   getItemColor,
   getVisibleCollapsedItems,
+  isRefObject,
+  isStackableItem,
   StackableItem,
 } from './utils';
 
@@ -214,11 +216,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   // we need to use different, more custom and more controlled animations.
   const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     enteringItems.some(_item => _item.id && _item.id === item.id);
-  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !isStackableItem(item);
   const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
 
   const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
+    isFlashbarStackExpanded || hasLeft(item) || (isStackableItem(item) && item.expandedIndex === 0);
 
   const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
@@ -301,11 +303,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                       if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
                         if (typeof transitionRootElement === 'function') {
                           transitionRootElement(el);
-                        } else if (
-                          transitionRootElement &&
-                          typeof transitionRootElement === 'object' &&
-                          'current' in transitionRootElement
-                        ) {
+                        } else if (isRefObject(transitionRootElement)) {
                           (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
                         }
                       }

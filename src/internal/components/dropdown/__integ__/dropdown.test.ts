@@ -79,7 +79,7 @@ describe('Dropdown', () => {
       })
     );
     test(
-      'does nothing, if trigger width is smaller than the provided minWidth',
+      'is respected even when larger than trigger width',
       setupTest('#/light/dropdown/min-width', 'minWidthDropdown', async page => {
         await page.setWindowSize({ width: 600, height: 600 });
         // reopen the dropdown after the window got resized
@@ -87,8 +87,8 @@ describe('Dropdown', () => {
         await page.click(page.getTrigger());
         const { width: dropdownWidth } = await page.getBoundingBox(page.getOpenDropdown());
         const { width: triggerWidth } = await page.getBoundingBox(page.getTrigger());
-        expect(dropdownWidth).toBeLessThan(MIN_WIDTH);
-        expect(dropdownWidth).toBeLessThanOrEqual(triggerWidth);
+        expect(triggerWidth).toBeLessThan(MIN_WIDTH);
+        expect(dropdownWidth).toEqual(MIN_WIDTH);
       })
     );
   });

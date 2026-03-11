@@ -179,5 +179,6 @@ function createItems(options: Options) {
 }
 
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
-  return 'options' in optionOrGroup;
+  const key: keyof AutosuggestProps.OptionGroup = 'options';
+  return key in optionOrGroup;
 }

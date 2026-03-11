@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
@@ -15,7 +16,11 @@ import { AppLayoutToolbarImplementation as AppLayoutToolbar } from '../toolbar';
 import sharedStyles from '../../resize/styles.css.js';
 import styles from '../skeleton/styles.css.js';
 
-export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, appLayoutProps }: SkeletonPartProps) => {
+export const BeforeMainSlotImplementationInternal = ({
+  toolbarProps,
+  appLayoutState,
+  appLayoutProps,
+}: SkeletonPartProps) => {
   const wasAiDrawerOpenRef = useRef(false);
   if (!isWidgetReady(appLayoutState)) {
     return (
@@ -47,6 +52,7 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
     onActiveAiDrawerChange,
     activeAiDrawer,
     bottomDrawerReportedSize,
+    featureNotificationsProps,
   } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
   const toolsOpen = !!activeDrawer;
@@ -56,7 +62,11 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
   return (
     <>
       {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
-        <AppLayoutToolbar appLayoutInternals={appLayoutState.appLayoutInternals} toolbarProps={toolbarProps} />
+        <AppLayoutToolbar
+          appLayoutInternals={appLayoutState.appLayoutInternals}
+          toolbarProps={toolbarProps}
+          featureNotificationsProps={featureNotificationsProps}
+        />
       )}
       {aiDrawer && (
         <div
@@ -103,15 +113,23 @@ export const BeforeMainSlotImplementation = ({ toolbarProps, appLayoutState, app
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <AppLayoutNavigation
-            appLayoutInternals={appLayoutState.appLayoutInternals}
-            bottomDrawerReportedSize={bottomDrawerReportedSize}
-          />
+          <AppLayoutBuiltInErrorBoundary>
+            <AppLayoutNavigation
+              appLayoutInternals={appLayoutState.appLayoutInternals}
+              bottomDrawerReportedSize={bottomDrawerReportedSize}
+            />
+          </AppLayoutBuiltInErrorBoundary>
         </div>
       )}
     </>
   );
 };
+
+export const BeforeMainSlotImplementation = (props: SkeletonPartProps) => (
+  <AppLayoutBuiltInErrorBoundary>
+    <BeforeMainSlotImplementationInternal {...props} />
+  </AppLayoutBuiltInErrorBoundary>
+);
 
 export const createWidgetizedAppLayoutBeforeMainSlot = createWidgetizedComponent(
   BeforeMainSlotImplementation,

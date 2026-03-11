@@ -23,7 +23,7 @@ import {
   LoadItemsDetail,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
-import { tokenGroupToTokens } from './utils';
+import { isInternalToken, isInternalTokenGroup, tokenGroupToTokens } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -71,20 +71,24 @@ export const TokenButton = ({
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
 
-  const hasGroups = query.tokens.some(tokenOrGroup => 'operation' in tokenOrGroup);
+  const hasGroups = query.tokens.some(isInternalTokenGroup);
   const first = tokenIndex === 0;
 
   const tokenOrGroup = query.tokens[tokenIndex];
   const tokens = tokenGroupToTokens<InternalToken>([tokenOrGroup]).map(t => ({ ...t, standaloneIndex: undefined }));
   const operation = query.operation;
-  const groupOperation = 'operation' in tokenOrGroup ? tokenOrGroup.operation : operation === 'and' ? 'or' : 'and';
+  const groupOperation = isInternalTokenGroup(tokenOrGroup)
+    ? tokenOrGroup.operation
+    : operation === 'and'
+      ? 'or'
+      : 'and';
 
   const [tempTokens, setTempTokens] = useState<InternalToken[]>(tokens);
   const capturedTokenIndices = tempTokens.map(token => token.standaloneIndex).filter(index => index !== undefined);
   const tokensToCapture: InternalToken[] = [];
   for (let index = 0; index < query.tokens.length; index++) {
     const token = query.tokens[index];
-    if ('operator' in token && token !== tokenOrGroup && !capturedTokenIndices.includes(index)) {
+    if (isInternalToken(token) && token !== tokenOrGroup && !capturedTokenIndices.includes(index)) {
       tokensToCapture.push(token);
     }
   }

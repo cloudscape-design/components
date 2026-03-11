@@ -30,27 +30,27 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '100px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpenParent5(!openParent5)}>
                 Scenario 5
               </Button>
             }
             open={openParent5}
-            onDropdownClose={() => setOpenParent5(false)}
+            onOutsideClick={() => setOpenParent5(false)}
             content={
               <ul className={styles.list}>
                 <li id="childDropdown5">
                   <Dropdown
                     interior={true}
-                    stretchWidth={false}
+                    minWidth="trigger"
                     trigger={
                       <div className="trigger" onClick={() => setOpenChild5(!openChild5)}>
                         Expandable trigger
                       </div>
                     }
                     open={openChild5}
-                    onDropdownClose={() => setOpenChild5(false)}
+                    onOutsideClick={() => setOpenChild5(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={18} />}
                   />
                 </li>
@@ -66,27 +66,27 @@ export default function DropdownScenario() {
           style={{ insetBlockStart: '170px', insetInlineStart: '190px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpenParent6(!openParent6)}>
                 Scenario 6
               </Button>
             }
             open={openParent6}
-            onDropdownClose={() => setOpenParent6(false)}
+            onOutsideClick={() => setOpenParent6(false)}
             content={
               <ul className={styles.list}>
                 <li id="childDropdown6">
                   <Dropdown
                     interior={true}
-                    stretchWidth={false}
+                    minWidth="trigger"
                     trigger={
                       <div className="trigger" onClick={() => setOpenChild6(!openChild6)}>
                         Expandable trigger
                       </div>
                     }
                     open={openChild6}
-                    onDropdownClose={() => setOpenChild6(false)}
+                    onOutsideClick={() => setOpenChild6(false)}
                     content={<ListContent n={5} withSpaces={true} repeat={18} />}
                   />
                 </li>

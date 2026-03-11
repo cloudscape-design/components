@@ -2393,6 +2393,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -2452,6 +2456,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -5122,6 +5146,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -5181,6 +5209,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -7851,6 +7899,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -7910,6 +7962,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -10580,6 +10652,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -10639,6 +10715,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -13309,6 +13405,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -13368,6 +13468,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -16038,6 +16158,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -16097,6 +16221,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -18767,6 +18911,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
+      "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-monospace": {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -18826,6 +18974,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "400",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -21501,6 +21669,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -21560,6 +21732,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -24230,6 +24422,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -24289,6 +24485,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -26959,6 +27175,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -27018,6 +27238,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -29688,6 +29928,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -29747,6 +29991,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -32417,6 +32681,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -32476,6 +32744,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -35146,6 +35434,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -35205,6 +35497,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -37875,6 +38187,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -37934,6 +38250,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -40604,6 +40940,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -40663,6 +41003,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -43333,6 +43693,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
+      "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-monospace": {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -43392,6 +43756,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "700",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "-0.015em",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "-0.010em",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "-0.005em",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "-0.02em",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",

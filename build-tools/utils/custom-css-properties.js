@@ -50,6 +50,10 @@ const customCssPropertiesList = [
   'stackedNotificationsDefaultBottomMargin',
   // Dropdown Custom Properties
   'dropdownDefaultMaxWidth',
+  'dropdownDefaultMinWidth',
+  // Modal Custom Properties
+  'modalCustomWidth',
+  'modalCustomHeight',
   // Spinner Custom Properties
   'spinnerRotatorFrom',
   'spinnerRotatorTo',

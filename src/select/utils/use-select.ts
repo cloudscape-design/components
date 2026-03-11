@@ -174,14 +174,11 @@ export function useSelect({
     goHome: goHomeWithKeyboard,
   });
 
-  const getDropdownProps: () => Pick<
-    DropdownProps,
-    'onFocus' | 'onBlur' | 'dropdownContentId' | 'dropdownContentRole'
-  > = () => ({
+  const getDropdownProps: () => Pick<DropdownProps, 'onFocus' | 'onBlur' | 'dropdownContentId' | 'ariaRole'> = () => ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     dropdownContentId: dialogId,
-    dropdownContentRole: hasFilter ? 'dialog' : undefined,
+    ariaRole: hasFilter ? 'dialog' : undefined,
   });
 
   const getTriggerProps = (disabled = false, autoFocus = false) => {

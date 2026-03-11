@@ -3,11 +3,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalBox from '../box/internal';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import InternalLink from '../link/internal';
 import { getNavigationActionDetail } from './analytics-metadata/utils';
 import { WizardProps } from './interfaces';
+import WizardStepList, { getStepStatus, StepStatus, StepStatusValues } from './wizard-step-list';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -29,15 +32,8 @@ interface NavigationStepProps {
   index: number;
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
-  status: string;
+  status: StepStatus;
   step: WizardProps.Step;
-}
-
-enum Statuses {
-  Active = 'active',
-  Unvisited = 'unvisited',
-  Visited = 'visited',
-  Next = 'next',
 }
 
 export default function Navigation({
@@ -52,152 +48,63 @@ export default function Navigation({
   steps,
 }: NavigationProps) {
   const isVisualRefresh = useVisualRefresh();
+
   return (
     <nav
       className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
     >
-      <ul className={clsx(isVisualRefresh && styles.refresh)}>
-        {steps.map((step, index: number) =>
-          isVisualRefresh ? (
-            <NavigationStepVisualRefresh
-              i18nStrings={i18nStrings}
-              index={index}
-              key={index}
-              onStepClick={onStepClick}
-              onSkipToClick={onSkipToClick}
-              status={getStatus(index)}
-              step={step}
-            />
-          ) : (
-            <NavigationStepClassic
-              i18nStrings={i18nStrings}
-              index={index}
-              key={index}
-              onStepClick={onStepClick}
-              onSkipToClick={onSkipToClick}
-              status={getStatus(index)}
-              step={step}
-            />
-          )
-        )}
-      </ul>
+      {isVisualRefresh ? (
+        <WizardStepList
+          activeStepIndex={activeStepIndex}
+          farthestStepIndex={farthestStepIndex}
+          allowSkipTo={allowSkipTo}
+          i18nStrings={i18nStrings}
+          isLoadingNextStep={isLoadingNextStep}
+          onStepClick={onStepClick}
+          onSkipToClick={onSkipToClick}
+          steps={steps}
+        />
+      ) : (
+        <ul>
+          {steps.map((step, index: number) => {
+            const status = getStepStatus(
+              index,
+              activeStepIndex,
+              farthestStepIndex,
+              isLoadingNextStep,
+              allowSkipTo,
+              steps
+            );
+            return (
+              <NavigationStepClassic
+                i18nStrings={i18nStrings}
+                index={index}
+                key={index}
+                onStepClick={onStepClick}
+                onSkipToClick={onSkipToClick}
+                status={status}
+                step={step}
+              />
+            );
+          })}
+        </ul>
+      )}
     </nav>
-  );
-
-  function getStatus(index: number) {
-    if (activeStepIndex === index) {
-      return Statuses.Active;
-    }
-    if (isLoadingNextStep) {
-      return Statuses.Unvisited;
-    }
-    if (farthestStepIndex >= index) {
-      return Statuses.Visited;
-    }
-    if (allowSkipTo && canSkip(activeStepIndex + 1, index)) {
-      return Statuses.Next;
-    }
-    return Statuses.Unvisited;
-  }
-
-  function canSkip(fromIndex: number, toIndex: number) {
-    let index = fromIndex;
-    do {
-      if (!steps[index].isOptional) {
-        return false;
-      }
-      index++;
-    } while (index < toIndex);
-    return true;
-  }
-}
-
-function NavigationStepVisualRefresh({
-  i18nStrings,
-  index,
-  onStepClick,
-  onSkipToClick,
-  status,
-  step,
-}: NavigationStepProps) {
-  function handleStepInteraction() {
-    if (status === Statuses.Visited) {
-      onStepClick(index);
-    }
-    if (status === Statuses.Next) {
-      onSkipToClick(index);
-    }
-  }
-
-  const state = {
-    active: 'active',
-    unvisited: 'disabled',
-    visited: 'enabled',
-    next: 'enabled',
-  }[status];
-
-  const linkClassName = clsx(styles['navigation-link'], {
-    [styles['navigation-link-active']]: status === Statuses.Active,
-    [styles['navigation-link-disabled']]: status === Statuses.Unvisited,
-  });
-
-  return (
-    <li className={clsx(styles[`${state}`], styles['navigation-link-item'])}>
-      <hr />
-
-      <span className={clsx(styles.number, styles['navigation-link-label'])}>
-        {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-      </span>
-
-      <a
-        className={linkClassName}
-        aria-current={status === Statuses.Active ? 'step' : undefined}
-        aria-disabled={status === Statuses.Unvisited ? 'true' : undefined}
-        onClick={event => {
-          event.preventDefault();
-          handleStepInteraction();
-        }}
-        onKeyDown={event => {
-          if (event.key === ' ' || event.key === 'Enter') {
-            event.preventDefault();
-          }
-          // Enter activates the button on key down instead of key up.
-          if (event.key === 'Enter') {
-            handleStepInteraction();
-          }
-        }}
-        onKeyUp={event => {
-          // Emulate button behavior, which also fires on space.
-          if (event.key === ' ') {
-            handleStepInteraction();
-          }
-        }}
-        role="button"
-        tabIndex={status === Statuses.Visited || status === Statuses.Next ? 0 : undefined}
-        {...(status === Statuses.Unvisited
-          ? {}
-          : getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`))}
-      >
-        <div className={styles.circle} />
-
-        <span className={clsx(styles.title, analyticsSelectors['step-title'])}>{step.title}</span>
-      </a>
-    </li>
   );
 }
 
 function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick, status, step }: NavigationStepProps) {
   const spanClassName = clsx(
     styles['navigation-link'],
-    status === Statuses.Active ? styles['navigation-link-active'] : styles['navigation-link-disabled']
+    status === StepStatusValues.Active ? styles['navigation-link-active'] : styles['navigation-link-disabled']
   );
+  const optionalDescriptionId = useUniqueId('wizard-step-optional-');
 
   return (
     <li
       className={styles['navigation-link-item']}
-      {...(status === Statuses.Unvisited
+      {...(status === StepStatusValues.Unvisited
         ? {}
         : getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`))}
     >
@@ -208,29 +115,31 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
         margin={{ bottom: 'xxs' }}
       >
         {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+        {step.isOptional && <i id={optionalDescriptionId}>{` - ${i18nStrings.optional}`}</i>}
       </InternalBox>
       <div>
-        {status === Statuses.Visited || status === Statuses.Next ? (
+        {status === StepStatusValues.Visited || status === StepStatusValues.Next ? (
           <InternalLink
             className={clsx(styles['navigation-link'], analyticsSelectors['step-title'])}
             onFollow={evt => {
               evt.preventDefault();
-              if (status === Statuses.Visited) {
+              if (status === StepStatusValues.Visited) {
                 onStepClick(index);
               } else {
                 onSkipToClick(index);
               }
             }}
             variant="primary"
+            nativeAttributes={step.isOptional ? { 'aria-describedby': optionalDescriptionId } : undefined}
           >
             {step.title}
           </InternalLink>
         ) : (
           <span
             className={clsx(spanClassName, analyticsSelectors['step-title'])}
-            aria-current={status === Statuses.Active ? 'step' : undefined}
-            aria-disabled={status === Statuses.Active ? undefined : 'true'}
+            aria-current={status === StepStatusValues.Active ? 'step' : undefined}
+            aria-disabled={status === StepStatusValues.Active ? undefined : 'true'}
+            aria-describedby={step.isOptional ? optionalDescriptionId : undefined}
           >
             {step.title}
           </span>

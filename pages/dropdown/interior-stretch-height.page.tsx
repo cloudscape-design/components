@@ -33,7 +33,7 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '100px', blockSize: '800px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             stretchHeight={true}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent1(!openParent1)}>
@@ -41,7 +41,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent1}
-            onDropdownClose={() => setOpenParent1(false)}
+            onOutsideClick={() => setOpenParent1(false)}
             content={<ListContent n={15} withSpaces={true} repeat={20} />}
           />
         </div>
@@ -52,7 +52,7 @@ export default function DropdownScenario() {
       >
         <div id="dropdown2" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             stretchHeight={false}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent2(!openParent2)}>
@@ -60,7 +60,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent2}
-            onDropdownClose={() => setOpenParent2(false)}
+            onOutsideClick={() => setOpenParent2(false)}
             content={<ListContent n={15} withSpaces={true} repeat={20} />}
           />
         </div>
@@ -71,7 +71,8 @@ export default function DropdownScenario() {
       >
         <div id="dropdown3" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={true}
+            minWidth="trigger"
+            maxWidth="trigger"
             stretchHeight={true}
             trigger={
               <Button className="trigger" onClick={() => setOpenParent3(!openParent3)}>
@@ -79,7 +80,7 @@ export default function DropdownScenario() {
               </Button>
             }
             open={openParent3}
-            onDropdownClose={() => setOpenParent3(false)}
+            onOutsideClick={() => setOpenParent3(false)}
             content={
               <div style={{ inlineSize: '400px' }}>
                 <ListContent n={15} withSpaces={true} repeat={20} />

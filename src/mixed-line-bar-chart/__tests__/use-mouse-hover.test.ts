@@ -41,8 +41,11 @@ describe('Mouse hover hook', () => {
 
   test('returns correct properties', () => {
     const { hook } = renderMouseHoverHook();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
     expect('onSVGMouseMove' in hook.current).toBeTruthy();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
     expect('onSVGMouseOut' in hook.current).toBeTruthy();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
     expect('onPopoverLeave' in hook.current).toBeTruthy();
   });
 

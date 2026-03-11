@@ -17,13 +17,13 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs awsui.$space-l;
   padding-block-start: awsui.$space-scaled-xs;
   padding-block-end: awsui.$space-table-header-tools-bottom;
   padding-inline: 0;
 
   &-filtering {
     max-inline-size: 100%;
-    margin-inline-end: awsui.$space-l;
     @supports (flex-basis: fit-content) {
       flex: 1 1 fit-content;
     }
@@ -45,8 +45,6 @@
   }
 
   &-small > &-filtering {
-    margin-inline-end: 0;
-    margin-block-end: awsui.$space-scaled-xs;
     flex-basis: 100%;
   }
 }

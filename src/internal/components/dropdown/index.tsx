@@ -19,9 +19,8 @@ import { Transition, TransitionStatus } from '../transition';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,
-  defaultMaxDropdownWidth,
   DropdownPosition,
-  hasEnoughSpaceToStretchBeyondTriggerWidth,
+  hasEnoughSpaceForFlexibleWidth,
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
@@ -65,21 +64,26 @@ interface TransitionContentProps {
   state: TransitionStatus;
   transitionRef: React.MutableRefObject<any>;
   dropdownClasses: string;
-  stretchWidth: boolean;
+  matchTriggerWidth: boolean;
+  hideBlockBorder: boolean;
   interior: boolean;
   isRefresh: boolean;
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
-  stretchBeyondTriggerWidth?: boolean;
+  minWidth?: string;
+  maxWidth?: string;
   header?: React.ReactNode;
   content?: React.ReactNode;
   footer?: React.ReactNode;
   position?: DropdownContextProviderProps['position'];
   open?: boolean;
   onMouseDown?: React.MouseEventHandler<Element>;
+  onFocusEnter?: React.FocusEventHandler<Element>;
+  onFocusLeave?: React.FocusEventHandler<Element>;
   id?: string;
-  role?: string;
+  ariaRole?: string;
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
 }
@@ -88,48 +92,61 @@ const TransitionContent = ({
   state,
   transitionRef,
   dropdownClasses,
-  stretchWidth,
+  matchTriggerWidth,
+  hideBlockBorder,
   interior,
   isRefresh,
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
-  stretchBeyondTriggerWidth,
+  minWidth,
+  maxWidth,
   header,
   content,
   footer,
   position,
   open,
   onMouseDown,
+  onFocusEnter,
+  onFocusLeave,
   id,
-  role,
+  ariaRole,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
+  const dropdownStyles: Record<string, string> = {};
+  if (minWidth) {
+    dropdownStyles[customCssProps.dropdownDefaultMinWidth] = minWidth;
+  }
+  if (maxWidth) {
+    dropdownStyles[customCssProps.dropdownDefaultMaxWidth] = maxWidth;
+  }
   return (
     <div
       className={clsx(styles.dropdown, dropdownClasses, {
         [styles.open]: open,
-        [styles['with-limited-width']]: !stretchWidth,
-        [styles['hide-block-border']]: stretchWidth,
+        [styles['with-limited-width']]: !matchTriggerWidth,
+        [styles['hide-block-border']]: hideBlockBorder,
         [styles.interior]: interior,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
-        [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
+        [styles['use-flexible-width']]: !matchTriggerWidth && !interior,
       })}
       ref={contentRef}
       id={id}
-      role={role}
+      role={ariaRole}
+      aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
       data-open={open}
       data-animating={state !== 'exited'}
       aria-hidden={!open}
-      style={
-        stretchBeyondTriggerWidth ? { [customCssProps.dropdownDefaultMaxWidth]: `${defaultMaxDropdownWidth}px` } : {}
-      }
+      style={dropdownStyles}
       onMouseDown={onMouseDown}
+      onFocus={onFocusEnter}
+      onBlur={onFocusLeave}
     >
       <div
         className={clsx(
@@ -154,27 +171,30 @@ const Dropdown = ({
   content,
   trigger,
   open,
-  onDropdownClose,
+  onOutsideClick,
   onMouseDown,
   header,
   footer,
   dropdownId,
   stretchTriggerHeight = false,
-  stretchWidth = true,
   stretchHeight = false,
-  stretchToTriggerWidth = true,
-  stretchBeyondTriggerWidth = false,
-  expandToViewport = false,
-  preferCenter = false,
-  interior = false,
   minWidth,
+  maxWidth,
+  hideBlockBorder = true,
+  expandToViewport = false,
+  preferredAlignment = 'start',
+  interior = false,
   scrollable = true,
   loopFocus = expandToViewport,
   onFocus,
   onBlur,
+  onFocusEnter,
+  onFocusLeave,
+  onEscape,
   contentKey,
   dropdownContentId,
-  dropdownContentRole,
+  ariaRole,
+  ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
 }: DropdownProps) => {
@@ -193,24 +213,24 @@ const Dropdown = ({
 
   const isMobile = useMobile();
 
+  // Derive if dropdown should match trigger width exactly
+  // This happens when both minWidth and maxWidth are explicitly set to 'trigger'
+  const matchTriggerWidth = minWidth === 'trigger' && maxWidth === 'trigger';
+
+  // Convert preferredAlignment to boolean for internal positioning logic
+  const preferCenter = preferredAlignment === 'center';
+
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,
     triggerBox: LogicalDOMRect,
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    const entireWidth = !interior && stretchWidth;
-    if (!stretchWidth) {
-      // 1px offset for dropdowns where the dropdown itself needs a border, rather than on the items
-      verticalContainer.style.maxBlockSize = `${parseInt(position.blockSize) + 1}px`;
-    } else {
-      verticalContainer.style.maxBlockSize = position.blockSize;
-    }
+    verticalContainer.style.maxBlockSize = position.blockSize;
 
-    if (entireWidth && !expandToViewport) {
-      if (stretchToTriggerWidth) {
-        target.classList.add(styles['occupy-entire-width']);
-      }
+    // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
+    if (!interior && matchTriggerWidth && !expandToViewport) {
+      target.classList.add(styles['occupy-entire-width']);
     } else {
       target.style.inlineSize = position.inlineSize;
     }
@@ -283,22 +303,36 @@ const Dropdown = ({
     }
   };
 
-  // Prevent the dropdown width from stretching beyond the trigger width
-  // if that is going to cause the dropdown to be cropped because of overflow
+  const isOutsideDropdownContent = (element: Element) =>
+    !dropdownRef.current || !nodeBelongs(dropdownRef.current, element);
+
+  const focusEnterHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusEnter, event);
+    }
+  };
+
+  const focusLeaveHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdownContent(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocusLeave, event);
+    }
+  };
+
+  // Check if the dropdown has enough space to fit with its desired width constraints
+  // If not, remove the class that allows flexible width sizing
   const fixStretching = () => {
-    const classNameToRemove = styles['stretch-beyond-trigger-width'];
+    const classNameToRemove = styles['use-flexible-width'];
     if (
       open &&
-      stretchBeyondTriggerWidth &&
       dropdownRef.current &&
       triggerRef.current &&
       dropdownRef.current.classList.contains(classNameToRemove) &&
-      !hasEnoughSpaceToStretchBeyondTriggerWidth({
+      !hasEnoughSpaceForFlexibleWidth({
         triggerElement: triggerRef.current,
         dropdownElement: dropdownRef.current,
-        desiredMinWidth: minWidth,
+        minWidthConstraint: minWidth,
+        maxWidthConstraint: maxWidth,
         expandToViewport,
-        stretchWidth,
         stretchHeight,
         isMobile,
       })
@@ -312,10 +346,10 @@ const Dropdown = ({
   useLayoutEffect(() => {
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-        // calculate scroll width only for dropdowns that has a scrollbar and ignore it for date picker components
         if (scrollable) {
           dropdownRef.current.classList.add(styles.nowrap);
         }
+
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -324,15 +358,16 @@ const Dropdown = ({
             interior,
             expandToViewport,
             preferCenter,
-            stretchWidth,
+            matchTriggerWidth,
             stretchHeight,
             isMobile,
             minWidth,
-            stretchBeyondTriggerWidth
+            maxWidth
           ),
           dropdownRef.current,
           verticalContainerRef.current
         );
+
         if (scrollable) {
           dropdownRef.current.classList.remove(styles.nowrap);
         }
@@ -356,7 +391,7 @@ const Dropdown = ({
     }
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
+  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, matchTriggerWidth, isMobile, contentKey]);
 
   // subscribe to outside click
   useEffect(() => {
@@ -368,7 +403,7 @@ const Dropdown = ({
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
       if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
-        fireNonCancelableEvent(onDropdownClose);
+        fireNonCancelableEvent(onOutsideClick);
       }
     };
     window.addEventListener('click', clickListener, true);
@@ -376,7 +411,27 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onDropdownClose]);
+  }, [open, onOutsideClick]);
+
+  // subscribe to Escape key press
+  useEffect(() => {
+    // Only add the listener if onEscape callback is provided
+    if (!open || !onEscape) {
+      return;
+    }
+    const keydownListener = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Prevent any surrounding modals or dialogs from acting on this Escape key
+        event.stopPropagation();
+        fireNonCancelableEvent(onEscape);
+      }
+    };
+    window.addEventListener('keydown', keydownListener, true);
+
+    return () => {
+      window.removeEventListener('keydown', keydownListener, true);
+    };
+  }, [open, onEscape]);
 
   // sync dropdown position on scroll and resize
   useLayoutEffect(() => {
@@ -405,6 +460,30 @@ const Dropdown = ({
   }, [open, expandToViewport, isMobile]);
 
   const referrerId = useUniqueId();
+
+  // Compute CSS variable values for min/max width
+  // These will be used by the use-flexible-width CSS class
+  const getMinWidthCssValue = (): string | undefined => {
+    if (minWidth === undefined) {
+      return undefined;
+    }
+    if (typeof minWidth === 'number') {
+      return `${minWidth}px`;
+    }
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
+  };
+
+  const getMaxWidthCssValue = (): string | undefined => {
+    if (maxWidth === undefined) {
+      return 'none';
+    }
+    if (typeof maxWidth === 'number') {
+      return `${maxWidth}px`;
+    }
+    // 'trigger' maps to 100% (relative to parent)
+    return '100%';
+  };
 
   return (
     <div
@@ -446,20 +525,25 @@ const Dropdown = ({
                 transitionRef={ref}
                 dropdownClasses={dropdownClasses}
                 open={open}
-                stretchWidth={stretchWidth}
+                matchTriggerWidth={matchTriggerWidth}
+                hideBlockBorder={hideBlockBorder}
                 interior={interior}
                 header={header}
                 content={content}
                 expandToViewport={expandToViewport}
-                stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
+                minWidth={getMinWidthCssValue()}
+                maxWidth={getMaxWidthCssValue()}
                 footer={footer}
                 onMouseDown={onMouseDown}
+                onFocusEnter={focusEnterHandler}
+                onFocusLeave={focusLeaveHandler}
                 isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}
                 position={position}
                 id={dropdownContentId}
-                role={dropdownContentRole}
+                ariaRole={ariaRole}
+                ariaLabel={ariaLabel}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
               />

@@ -42,7 +42,10 @@ export function applyDropdownPositionRelativeToViewport({
     dropdownElement.style.insetBlockStart = `${verticalScrollOffset + triggerRect.insetBlockEnd}px`;
   }
   if (position.dropInlineStart) {
-    dropdownElement.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerRect.insetInlineEnd}px - ${position.inlineSize})`;
+    // For right-aligned dropdowns, use the actual rendered width when flexible width is enabled
+    // to ensure proper alignment even when CSS constraints differ from calculated inlineSize
+    const actualWidth = dropdownElement.getBoundingClientRect().width;
+    dropdownElement.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerRect.insetInlineEnd}px - ${actualWidth}px)`;
   } else {
     dropdownElement.style.insetInlineStart = `${horizontalScrollOffset + triggerRect.insetInlineStart}px`;
   }
