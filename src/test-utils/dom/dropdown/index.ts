@@ -47,14 +47,26 @@ export default class DropdownWrapper extends ComponentWrapper {
       : new DropdownContentWrapper(this.getElement());
   }
 
+  /**
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
   findContent(options = { expandToViewport: false }): ElementWrapper | null {
     return this.findDropdown(options).findContent();
   }
 
+  /**
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
   findHeader(options = { expandToViewport: false }): ElementWrapper | null {
     return this.findDropdown(options).findHeader();
   }
 
+  /**
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
   findFooter(options = { expandToViewport: false }): ElementWrapper | null {
     return this.findDropdown(options).findFooter();
   }
