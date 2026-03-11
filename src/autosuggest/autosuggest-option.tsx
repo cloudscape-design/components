@@ -108,9 +108,9 @@ const AutosuggestOption = (
   ref: React.Ref<HTMLDivElement>
 ) => {
   const baseProps = getBaseProps(rest);
-  const useEntered = option.type === 'use-entered';
-  const isParent = option.type === 'parent';
-  const isChild = option.type === 'child';
+  const useEntered = option?.type === 'use-entered';
+  const isParent = option?.type === 'parent';
+  const isChild = option?.type === 'child';
   const { throughIndex, inGroupIndex, groupIndex } = getTestOptionIndexes(option) || {};
 
   let optionContent;

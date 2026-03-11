@@ -225,11 +225,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
   test('clears feature notifications correctly', () => {
     featureNotifications.registerFeatureNotifications({ ...featureNotificationsDefaults, mountItem: undefined });
-    const { wrapper } = renderComponent(<AppLayout />);
+    const { wrapper, unmount } = renderComponent(<AppLayout />);
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
 
     featureNotifications.clearFeatureNotifications();
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeFalsy();
+
+    unmount();
+
+    const { wrapper: wrapperAfterRemount } = renderComponent(<AppLayout />);
+
+    expect(wrapperAfterRemount.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeFalsy();
   });
 
   test('supports custom filterFeatures function', () => {

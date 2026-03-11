@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../button/internal';
+import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import { isLinkItem } from '../../button-dropdown/utils/utils';
 import InternalIcon from '../../icon/internal';
 import MenuDropdown, { MenuDropdownProps } from '../../internal/components/menu-dropdown';
@@ -133,7 +134,8 @@ function checkSafeUrlRecursively(itemOrGroup: MenuDropdownProps['items']) {
       checkSafeUrl('TopNavigation', item.href);
     }
 
-    if ('items' in item) {
+    const itemsKey: keyof ButtonDropdownProps.ItemGroup = 'items';
+    if (itemsKey in item) {
       checkSafeUrlRecursively(item.items);
     }
   }

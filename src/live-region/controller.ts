@@ -18,11 +18,12 @@ export class LiveRegionController {
    * During internal unit testing, you can import this and explicitly set it to
    * 0 to make the live region update the DOM without waiting for a timer.
    */
-  public static defaultDelay = 2;
+  public static defaultDelay = 1;
 
   private _element: HTMLElement;
   private _timeoutId: number | undefined;
   private _lastAnnouncement: string | undefined;
+  private _contentChangedSinceLastAnnouncement = false;
   private _addedTerminalPeriod = false;
   private _nextAnnouncement = '';
 
@@ -48,16 +49,26 @@ export class LiveRegionController {
     }
   }
 
-  announce({ message, forceReannounce = false }: { message?: string; delay?: number; forceReannounce?: boolean }) {
+  announce({ message, forceReannounce = false }: { message?: string; forceReannounce?: boolean }) {
+    const trimmedMessage = message?.trim() ?? '';
+
+    // If the message before and after the throttle period is the same, we shouldn't
+    // announce anything. But if the component was rerendered with different content
+    // in the meantime, it's an indication that state changed enough that the same
+    // message should be reannounced.
+    if (trimmedMessage !== this._lastAnnouncement) {
+      this._contentChangedSinceLastAnnouncement = true;
+    }
+    this._nextAnnouncement = trimmedMessage;
+
+    // We're done with internal state updates. If there's nothing to actually announce, bail.
     if (!message) {
       return;
     }
 
-    this._nextAnnouncement = message.trim();
-
+    // If the delay is 0, just skip the timeout shenanigans and update the
+    // element synchronously. Great for tests.
     if (this.delay === 0 || forceReannounce) {
-      // If the delay is 0, just skip the timeout shenanigans and update the
-      // element synchronously. Great for tests.
       return this._updateElement(forceReannounce);
     }
 
@@ -73,7 +84,7 @@ export class LiveRegionController {
       // we assign the source text content as a single node.
       this._element.textContent = this._nextAnnouncement;
       this._addedTerminalPeriod = false;
-    } else if (forceReannounce) {
+    } else if (forceReannounce || this._contentChangedSinceLastAnnouncement) {
       // A (generally) safe way of forcing re-announcements is toggling the
       // terminal period. If we only keep adding periods, it's going to be
       // eventually interpreted as an ellipsis.
@@ -85,6 +96,7 @@ export class LiveRegionController {
     this._lastAnnouncement = this._nextAnnouncement;
 
     // Reset the state for the next announcement.
+    this._contentChangedSinceLastAnnouncement = false;
     this._timeoutId = undefined;
   }
 }
