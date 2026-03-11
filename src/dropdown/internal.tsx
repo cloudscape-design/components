@@ -27,9 +27,11 @@ import {
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { DropdownProps } from './interfaces';
+import { DropdownAlignment, DropdownProps, DropdownWidthConstraint } from './interfaces';
 
-interface InternalDropdownProps extends DropdownProps, InternalBaseComponentProps {
+interface InternalDropdownProps
+  extends Omit<DropdownProps, 'minWidth' | 'maxWidth' | 'preferredAlignment'>,
+    InternalBaseComponentProps {
   onMouseDown?: React.MouseEventHandler;
   contentKey?: string;
   dropdownId?: string;
@@ -39,6 +41,9 @@ interface InternalDropdownProps extends DropdownProps, InternalBaseComponentProp
   interior?: boolean;
   scrollable?: boolean;
   loopFocus?: boolean;
+  minWidth?: DropdownWidthConstraint;
+  maxWidth?: DropdownWidthConstraint;
+  preferredAlignment?: DropdownAlignment;
 }
 
 import styles from './styles.css.js';

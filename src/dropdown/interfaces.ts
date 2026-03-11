@@ -91,27 +91,14 @@ export interface DropdownProps extends ExpandToViewport {
   onOutsideClick?: NonCancelableEventHandler<null>;
 
   /**
-   * Minimum width constraint for the dropdown.
-   * - Number: minimum width in pixels
-   * - 'trigger': dropdown will be at least as wide as the trigger
-   * - undefined: no minimum constraint (fits content)
+   * Minimum width constraint for the dropdown in pixels.
    */
-  minWidth?: DropdownWidthConstraint;
+  minWidth?: number;
 
   /**
-   * Maximum width constraint for the dropdown.
-   * - Number: maximum width in pixels
-   * - 'trigger': dropdown cannot exceed the trigger width
-   * - undefined: fit to content width (no max constraint)
+   * Maximum width constraint for the dropdown in pixels.
    */
-  maxWidth?: DropdownWidthConstraint;
-
-  /**
-   * Preferred alignment of the dropdown relative to its trigger.
-   * The dropdown will attempt this alignment first, but will automatically
-   * adjust if there's insufficient space on the preferred side.
-   */
-  preferredAlignment?: DropdownAlignment;
+  maxWidth?: number;
 
   /**
    * Hides the block (top/bottom) borders of the dropdown content wrapper.
