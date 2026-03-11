@@ -266,41 +266,13 @@ function isBoundary(element: HTMLElement) {
   return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(value, max));
-}
-
 function getClampedTrackRect(track: HTMLElement | SVGElement, parentRef?: HTMLElement | null) {
   const trackRect = getLogicalBoundingClientRect(track);
   if (!parentRef) {
     return trackRect;
   }
-
   const parentRect = getLogicalBoundingClientRect(parentRef);
-  const parentInlineEnd = parentRect.insetInlineStart + parentRect.inlineSize;
-  const parentBlockEnd = parentRect.insetBlockStart + parentRect.blockSize;
-
-  // Find where the arrow should point (closest visible point to actual track center)
-  const trackCenterInline = trackRect.insetInlineStart + trackRect.inlineSize / 2;
-  const trackCenterBlock = trackRect.insetBlockStart + trackRect.blockSize / 2;
-  const arrowTargetInline = clamp(trackCenterInline, parentRect.insetInlineStart, parentInlineEnd);
-  const arrowTargetBlock = clamp(trackCenterBlock, parentRect.insetBlockStart, parentBlockEnd);
-
-  // Position track rect around arrow target, ensuring it doesn't overflow parent
-  const idealInlineStart = arrowTargetInline - trackRect.inlineSize / 2;
-  const idealBlockStart = arrowTargetBlock - trackRect.blockSize / 2;
-  const finalInsetInlineStart = clamp(
-    idealInlineStart,
-    parentRect.insetInlineStart,
-    parentInlineEnd - trackRect.inlineSize
-  );
-  const finalInsetBlockStart = clamp(idealBlockStart, parentRect.insetBlockStart, parentBlockEnd - trackRect.blockSize);
-
-  return {
-    ...trackRect,
-    insetInlineStart: finalInsetInlineStart,
-    insetBlockStart: finalInsetBlockStart,
-    insetInlineEnd: finalInsetInlineStart + trackRect.inlineSize,
-    insetBlockEnd: finalInsetBlockStart + trackRect.blockSize,
-  };
+  trackRect.insetInlineStart = Math.max(trackRect.insetInlineStart, parentRect.insetInlineStart);
+  trackRect.insetBlockStart = Math.max(trackRect.insetBlockStart, parentRect.insetBlockStart);
+  return trackRect;
 }
