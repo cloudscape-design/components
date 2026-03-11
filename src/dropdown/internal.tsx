@@ -29,7 +29,9 @@ import {
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
 import { DropdownAlignment, DropdownProps, DropdownWidthConstraint } from './interfaces';
 
-interface InternalDropdownProps extends Omit<DropdownProps, 'minWidth' | 'maxWidth'>, InternalBaseComponentProps {
+export interface InternalDropdownProps
+  extends Omit<DropdownProps, 'minWidth' | 'maxWidth'>,
+    InternalBaseComponentProps {
   onMouseDown?: React.MouseEventHandler;
   contentKey?: string;
   dropdownId?: string;
