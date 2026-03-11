@@ -20,6 +20,7 @@ export default function usePopoverPosition({
   bodyRef,
   arrowRef,
   getTrack,
+  parentRef,
   contentRef,
   allowScrollToFit,
   allowVerticalOverflow,
@@ -34,6 +35,7 @@ export default function usePopoverPosition({
   arrowRef: React.RefObject<HTMLDivElement | null>;
   getTrack: () => null | HTMLElement | SVGElement;
   contentRef: React.RefObject<HTMLDivElement | null>;
+  parentRef?: React.RefObject<HTMLElement>;
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
   preferredPosition: PopoverProps.Position;
@@ -88,7 +90,7 @@ export default function usePopoverPosition({
       // Get rects representing key elements
       // Use getComputedStyle for arrowRect to avoid modifications made by transform
       const viewportRect = getViewportRect(document.defaultView!);
-      const trackRect = getLogicalBoundingClientRect(track);
+      const trackRect = getClampedTrackRect(track, parentRef?.current);
       const arrowRect = getDimensions(arrow);
       const { containingBlock, boundary } = findUpUntilMultiple({
         startElement: popover,
@@ -183,7 +185,7 @@ export default function usePopoverPosition({
         if (!track) {
           return;
         }
-        const trackRect = getLogicalBoundingClientRect(track);
+        const trackRect = getClampedTrackRect(track, parentRef?.current);
 
         const newTrackOffset = toRelativePosition(
           trackRect,
@@ -209,13 +211,14 @@ export default function usePopoverPosition({
       bodyRef,
       contentRef,
       arrowRef,
+      parentRef,
       keepPosition,
       preferredPosition,
       renderWithPortal,
       allowVerticalOverflow,
+      minVisibleBlockSize,
       allowScrollToFit,
       hideOnOverscroll,
-      minVisibleBlockSize,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };
@@ -261,4 +264,41 @@ function getDocumentRect(document: Document): BoundingBox {
 function isBoundary(element: HTMLElement) {
   const computedStyle = getComputedStyle(element);
   return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
+}
+
+function getClampedTrackRect(track: HTMLElement | SVGElement, parentRef?: HTMLElement | null) {
+  const trackRect = getLogicalBoundingClientRect(track);
+  if (!parentRef) {
+    return trackRect;
+  }
+
+  // If parentRef is provided, clamp the track center point to the closest position within parent boundaries
+  // This ensures the arrow points to the closest possible position to the actual track
+  const parentRect = getLogicalBoundingClientRect(parentRef);
+
+  // Calculate track center point
+  const trackCenterInline = trackRect.insetInlineStart + trackRect.inlineSize / 2;
+  const trackCenterBlock = trackRect.insetBlockStart + trackRect.blockSize / 2;
+
+  // Clamp the track center to parent boundaries
+  const clampedCenterInline = Math.max(
+    parentRect.insetInlineStart,
+    Math.min(trackCenterInline, parentRect.insetInlineStart + parentRect.inlineSize)
+  );
+  const clampedCenterBlock = Math.max(
+    parentRect.insetBlockStart,
+    Math.min(trackCenterBlock, parentRect.insetBlockStart + parentRect.blockSize)
+  );
+
+  // Calculate new track position based on clamped center
+  const clampedInsetInlineStart = clampedCenterInline - trackRect.inlineSize / 2;
+  const clampedInsetBlockStart = clampedCenterBlock - trackRect.blockSize / 2;
+
+  return {
+    ...trackRect,
+    insetInlineStart: clampedInsetInlineStart,
+    insetBlockStart: clampedInsetBlockStart,
+    insetInlineEnd: clampedInsetInlineStart + trackRect.inlineSize,
+    insetBlockEnd: clampedInsetBlockStart + trackRect.blockSize,
+  };
 }
