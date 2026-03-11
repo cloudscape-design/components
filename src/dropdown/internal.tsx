@@ -12,7 +12,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
 import TabTrap from '../internal/components/tab-trap/index.js';
 import { Transition, TransitionStatus } from '../internal/components/transition';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -29,9 +29,7 @@ import {
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
 import { DropdownAlignment, DropdownProps, DropdownWidthConstraint } from './interfaces';
 
-interface InternalDropdownProps
-  extends Omit<DropdownProps, 'minWidth' | 'maxWidth' | 'preferredAlignment'>,
-    InternalBaseComponentProps {
+interface InternalDropdownProps extends Omit<DropdownProps, 'minWidth' | 'maxWidth'>, InternalBaseComponentProps {
   onMouseDown?: React.MouseEventHandler;
   contentKey?: string;
   dropdownId?: string;
@@ -44,6 +42,9 @@ interface InternalDropdownProps
   minWidth?: DropdownWidthConstraint;
   maxWidth?: DropdownWidthConstraint;
   preferredAlignment?: DropdownAlignment;
+  hideBlockBorder?: boolean;
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 }
 
 import styles from './styles.css.js';
