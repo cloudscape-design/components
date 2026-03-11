@@ -101,21 +101,6 @@ export interface DropdownProps extends ExpandToViewport {
   maxWidth?: number;
 
   /**
-   * Hides the block (top/bottom) borders of the dropdown content wrapper.
-   */
-  hideBlockBorder?: boolean;
-
-  /**
-   * Called when focus enters the trigger or dropdown content.
-   */
-  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
-   * Called when focus leaves the trigger or dropdown content.
-   */
-  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
-
-  /**
    * Called when the user presses the Escape key while the dropdown is open.
    * The dropdown does not close automatically - the parent component
    * must update the `open` prop to close the dropdown.
