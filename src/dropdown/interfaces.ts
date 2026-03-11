@@ -59,22 +59,25 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
 
 export interface DropdownProps extends ExpandToViewport {
   /**
-   * Trigger element.
+   * The trigger element that opens/closes the dropdown
    */
   trigger: React.ReactNode;
 
   /**
-   * "Sticky" header of the dropdown content
+   * Optional header content that stays fixed at the top while
+   * scrolling dropdown content
    */
   header?: React.ReactNode;
 
   /**
-   * Footer slot fixed at the bottom of the dropdown
+   * Optional footer content that stays fixed at the bottom while
+   * scrolling dropdown content.
+   * Typically used to display loading status or action buttons.
    */
   footer?: React.ReactNode;
 
   /**
-   * Dropdown content elements.
+   * Main content of the dropdown
    */
   content?: React.ReactNode;
 
@@ -84,19 +87,23 @@ export interface DropdownProps extends ExpandToViewport {
   open?: boolean;
 
   /**
-   * Called when the user clicks outside the dropdown and trigger.
-   * The dropdown does not close automatically - the parent component
-   * must update the `open` prop to close the dropdown.
+   * Called when the user clicks outside the dropdown. The dropdown does not
+   * close automatically - the parent component must update the `open` prop to
+   * actually close the dropdown.
    */
   onOutsideClick?: NonCancelableEventHandler<null>;
 
   /**
-   * Minimum width constraint for the dropdown in pixels.
+   * Minimum width constraint for the dropdown.
+   * - Number: minimum width in pixels
+   * - undefined: no maximum constraint (natural content sizing)
    */
   minWidth?: number;
 
   /**
-   * Maximum width constraint for the dropdown in pixels.
+   * Maximum width constraint for the dropdown.
+   * - Number: maximum width in pixels
+   * - undefined: no maximum constraint (natural content sizing)
    */
   maxWidth?: number;
 
@@ -108,8 +115,8 @@ export interface DropdownProps extends ExpandToViewport {
   onEscape?: NonCancelableEventHandler;
 
   /**
-   * Called when focus enters the dropdown content from outside.
-   * This fires only once when focus moves into the dropdown, not when moving between elements within it.
+   * Called when any element inside the dropdown content gains focus.
+   * This includes nested interactive elements like buttons, links, or inputs.
    */
   onFocusEnter?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
@@ -119,22 +126,24 @@ export interface DropdownProps extends ExpandToViewport {
   onFocusLeave?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
-   * HTML role for the dropdown content wrapper
+   * ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')
    */
   ariaRole?: string;
 
   /**
-   * Aria label for the dropdown content wrapper
+   * ARIA label for the dropdown content.
+   * Use either this or ariaLabelledby, not both.
    */
   ariaLabel?: string;
 
   /**
-   * Labelledby for the dropdown (required when role="dialog")
+   * ARIA labelledby attribute for the dropdown content.
+   * Use either this or ariaLabel, not both.
    */
   ariaLabelledby?: string;
 
   /**
-   * Describedby for the dropdown (recommended when role="dialog")
+   * ARIA describedby attribute for the dropdown content
    */
   ariaDescribedby?: string;
 }

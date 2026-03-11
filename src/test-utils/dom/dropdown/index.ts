@@ -38,6 +38,8 @@ export default class DropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the dropdown wrapper.
+   *
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
@@ -48,6 +50,8 @@ export default class DropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the dropdown content element.
+   *
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
@@ -66,6 +70,8 @@ export default class DropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the dropdown header element.
+   *
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
@@ -74,6 +80,8 @@ export default class DropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the dropdown footer element.
+   *
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
