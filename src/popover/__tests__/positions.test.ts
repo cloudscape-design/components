@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   calculatePosition,
+  clampRectStart,
   intersectRectangles,
   isCenterOutside,
   PRIORITY_MAPPING,
@@ -278,5 +279,50 @@ describe('isCenterOutside', () => {
         parentRect
       )
     ).toBe(false);
+  });
+});
+
+describe('clampRectStart', () => {
+  const parent = { insetInlineStart: 100, insetBlockStart: 100, inlineSize: 400, blockSize: 300 };
+
+  test('clamps insetInlineStart to parent start when track is before parent', () => {
+    const track = { insetInlineStart: 50, insetBlockStart: 200, inlineSize: 20, blockSize: 20 };
+    expect(clampRectStart(track, parent).insetInlineStart).toBe(100);
+  });
+
+  test('clamps insetBlockStart to parent start when track is above parent', () => {
+    const track = { insetInlineStart: 200, insetBlockStart: 50, inlineSize: 20, blockSize: 20 };
+    expect(clampRectStart(track, parent).insetBlockStart).toBe(100);
+  });
+
+  test('clamps insetInlineStart to parent end when track is past parent', () => {
+    const track = { insetInlineStart: 600, insetBlockStart: 200, inlineSize: 20, blockSize: 20 };
+    expect(clampRectStart(track, parent).insetInlineStart).toBe(500);
+  });
+
+  test('clamps insetBlockStart to parent end when track is below parent', () => {
+    const track = { insetInlineStart: 200, insetBlockStart: 500, inlineSize: 20, blockSize: 20 };
+    expect(clampRectStart(track, parent).insetBlockStart).toBe(400);
+  });
+
+  test('does not clamp when track is within parent bounds', () => {
+    const track = { insetInlineStart: 200, insetBlockStart: 250, inlineSize: 20, blockSize: 20 };
+    const result = clampRectStart(track, parent);
+    expect(result.insetInlineStart).toBe(200);
+    expect(result.insetBlockStart).toBe(250);
+  });
+
+  test('clamps both axes simultaneously', () => {
+    const track = { insetInlineStart: 10, insetBlockStart: 500, inlineSize: 20, blockSize: 20 };
+    const result = clampRectStart(track, parent);
+    expect(result.insetInlineStart).toBe(100);
+    expect(result.insetBlockStart).toBe(400);
+  });
+
+  test('preserves inlineSize and blockSize of the track', () => {
+    const track = { insetInlineStart: 50, insetBlockStart: 50, inlineSize: 20, blockSize: 30 };
+    const result = clampRectStart(track, parent);
+    expect(result.inlineSize).toBe(20);
+    expect(result.blockSize).toBe(30);
   });
 });
