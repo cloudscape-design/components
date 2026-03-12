@@ -235,7 +235,7 @@ export interface BaseLayoutProps extends BaseComponentProps {
    *
    * By default, the preference is `{ position: 'bottom' }`.
    *
-   * On smaller screens, the panel is forced to the `'bottom'` position and the "Side" preference becomes disabled.
+   * On smaller screens, the panel is forced to the `'bottom'` position and the `'side'` preference becomes disabled.
    */
   splitPanelPreferences?: AppLayoutProps.SplitPanelPreferences;
   /**
