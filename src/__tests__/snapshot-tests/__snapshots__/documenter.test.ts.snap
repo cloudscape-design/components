@@ -11600,8 +11600,8 @@ must update the \`open\` prop to close the dropdown.",
     },
     {
       "cancelable": false,
-      "description": "Called when focus enters the dropdown content from outside.
-This fires only once when focus moves into the dropdown, not when moving between elements within it.",
+      "description": "Called when any element inside the dropdown content gains focus.
+This includes nested interactive elements like buttons, links, or inputs.",
       "detailInlineType": {
         "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
         "properties": [
@@ -11677,9 +11677,9 @@ This fires only once when focus moves into the dropdown, not when moving between
     },
     {
       "cancelable": false,
-      "description": "Called when the user clicks outside the dropdown and trigger.
-The dropdown does not close automatically - the parent component
-must update the \`open\` prop to close the dropdown.",
+      "description": "Called when the user clicks outside the dropdown. The dropdown does not
+close automatically - the parent component must update the \`open\` prop to
+actually close the dropdown.",
       "name": "onOutsideClick",
     },
   ],
@@ -11687,25 +11687,27 @@ must update the \`open\` prop to close the dropdown.",
   "name": "Dropdown",
   "properties": [
     {
-      "description": "Describedby for the dropdown (recommended when role="dialog")",
+      "description": "ARIA describedby attribute for the dropdown content",
       "name": "ariaDescribedby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "Aria label for the dropdown content wrapper",
+      "description": "ARIA label for the dropdown content.
+Use either this or ariaLabelledby, not both.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "Labelledby for the dropdown (required when role="dialog")",
+      "description": "ARIA labelledby attribute for the dropdown content.
+Use either this or ariaLabel, not both.",
       "name": "ariaLabelledby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "HTML role for the dropdown content wrapper",
+      "description": "ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')",
       "name": "ariaRole",
       "optional": true,
       "type": "string",
@@ -11725,13 +11727,17 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Maximum width constraint for the dropdown in pixels.",
+      "description": "Maximum width constraint for the dropdown.
+- Number: maximum width in pixels
+- undefined: no maximum constraint (natural content sizing)",
       "name": "maxWidth",
       "optional": true,
       "type": "number",
     },
     {
-      "description": "Minimum width constraint for the dropdown in pixels.",
+      "description": "Minimum width constraint for the dropdown.
+- Number: minimum width in pixels
+- undefined: no maximum constraint (natural content sizing)",
       "name": "minWidth",
       "optional": true,
       "type": "number",
@@ -11745,22 +11751,25 @@ because fixed positioning results in a slight, visible lag when scrolling comple
   ],
   "regions": [
     {
-      "description": "Dropdown content elements.",
+      "description": "Main content of the dropdown",
       "isDefault": false,
       "name": "content",
     },
     {
-      "description": "Footer slot fixed at the bottom of the dropdown",
+      "description": "Optional footer content that stays fixed at the bottom while
+scrolling dropdown content.
+Typically used to display loading status or action buttons.",
       "isDefault": false,
       "name": "footer",
     },
     {
-      "description": ""Sticky" header of the dropdown content",
+      "description": "Optional header content that stays fixed at the top while
+scrolling dropdown content",
       "isDefault": false,
       "name": "header",
     },
     {
-      "description": "Trigger element.",
+      "description": "The trigger element that opens/closes the dropdown",
       "isDefault": false,
       "name": "trigger",
     },
@@ -32937,7 +32946,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -33286,7 +33295,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -36934,7 +36943,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -37201,6 +37210,7 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the dropdown content element.",
           "name": "findContent",
           "parameters": [
             {
@@ -37224,6 +37234,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the dropdown wrapper.",
           "name": "findDropdown",
           "parameters": [
             {
@@ -37242,6 +37253,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the dropdown footer element.",
           "name": "findFooter",
           "parameters": [
             {
@@ -37265,6 +37277,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the dropdown header element.",
           "name": "findHeader",
           "parameters": [
             {
@@ -37334,6 +37347,63 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -38964,7 +39034,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44341,7 +44411,7 @@ Supported options:
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44561,7 +44631,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -47163,7 +47233,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -47294,6 +47364,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
+          "description": "Returns the dropdown content element.",
           "name": "findContent",
           "parameters": [
             {
@@ -47314,6 +47385,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the dropdown wrapper.",
           "name": "findDropdown",
           "parameters": [
             {
@@ -47334,6 +47406,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the dropdown footer element.",
           "name": "findFooter",
           "parameters": [
             {
@@ -47354,6 +47427,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the dropdown header element.",
           "name": "findHeader",
           "parameters": [
             {
@@ -47404,6 +47478,43 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findOpenDropdown",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -48607,7 +48718,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
