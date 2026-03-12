@@ -79,13 +79,29 @@ describe('test utils', () => {
     });
   });
 
-  describe('openDropdown', () => {
-    test('opens the dropdown on trigger click', () => {
+  describe('isOpen', () => {
+    test('returns true when dropdown is open', () => {
+      const { wrapper } = renderDropdown({ open: true });
+      expect(wrapper.isOpen()).toBe(true);
+    });
+
+    test('returns false when dropdown is closed', () => {
       const { wrapper } = renderDropdown({ open: false });
-      expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
-      wrapper.openDropdown();
-      // openDropdown fires a click event; open state is controlled externally
-      expect(wrapper.findTrigger().getElement()).toBeTruthy();
+      expect(wrapper.isOpen()).toBe(false);
+    });
+
+    test('returns true when dropdown is open with expandToViewport', () => {
+      const { wrapper } = renderDropdown({ open: true, expandToViewport: true });
+      expect(wrapper.isOpen({ expandToViewport: true })).toBe(true);
+    });
+  });
+
+  describe('clickTrigger', () => {
+    test('fires a click event on the trigger element', () => {
+      const onClick = jest.fn();
+      const { wrapper } = renderDropdown({ trigger: <button onClick={onClick} /> });
+      wrapper.clickTrigger();
+      expect(onClick).toHaveBeenCalledTimes(1);
     });
   });
 });
