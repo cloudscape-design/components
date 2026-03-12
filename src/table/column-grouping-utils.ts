@@ -14,8 +14,6 @@ export namespace TableGroupedTypes {
     rowspan: number;
     isGroup: boolean;
     isHidden: boolean; // True for placeholder cells that fill gaps where rowspan > 1 would have been
-    // TODO: I could find a better way to make this modular instead of 2 props
-    // for column and column-group
     columnDefinition?: TableProps.ColumnDefinition<T>;
     groupDefinition?: TableProps.GroupDefinition<T>;
     parentGroupIds: string[]; // Chain of parent group IDs for ARIA headers attribute
@@ -60,7 +58,7 @@ function buildTreeFromColumnDisplay<T>(
   parentNode: TableHeaderNode<T>
 ): void {
   for (const item of displayItems) {
-    if ('children' in item) {
+    if (item.type === 'group') {
       // ColumnDisplayGroup — only add it if it has at least one visible descendant
       const groupNode = idToNodeMap.get(item.id);
       if (!groupNode) {
