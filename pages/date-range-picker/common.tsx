@@ -27,6 +27,7 @@ interface DateRangePickerPageSettings {
   disabledDates?: DisabledDate;
   showDisabledReason?: boolean;
   hasValue?: boolean;
+  startMonth?: DateRangePickerProps.StartMonth;
 }
 
 const defaultSettings: Required<DateRangePickerPageSettings> = {
@@ -45,6 +46,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   disabledDates: 'none',
   showDisabledReason: true,
   hasValue: true,
+  startMonth: 'previous',
 };
 
 export function useDateRangePickerSettings(
@@ -89,6 +91,7 @@ export function useDateRangePickerSettings(
   const disabledDates = urlParams.disabledDates ?? def('disabledDates');
   const showDisabledReason = parseBoolean(def('showDisabledReason'), urlParams.showDisabledReason);
   const hasValue = parseBoolean(def('hasValue'), urlParams.hasValue);
+  const startMonth = urlParams.startMonth ?? def('startMonth');
   const settings: Required<DateRangePickerPageSettings> = {
     dateOnly,
     monthOnly,
@@ -105,6 +108,7 @@ export function useDateRangePickerSettings(
     disabledDates,
     showDisabledReason,
     hasValue,
+    startMonth,
   };
   const setSettings = (settings: DateRangePickerPageSettings) => setUrlParams(settings);
 
@@ -212,6 +216,7 @@ export function useDateRangePickerSettings(
     placeholder,
     i18nStrings,
     locale: 'en-GB',
+    startMonth,
   };
 
   return { props, settings, setSettings };
@@ -256,6 +261,7 @@ export function Settings({
     disabledDates,
     showDisabledReason,
     hasValue,
+    startMonth,
   },
   setSettings,
 }: {
@@ -274,6 +280,7 @@ export function Settings({
   const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
   const inputDateFormat = [{ value: 'iso' }, { value: 'slashed' }];
   const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
+  const startMonthOptions = [{ value: 'previous' }, { value: 'current' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
       <FormField label="Range selector mode">
@@ -329,6 +336,16 @@ export function Settings({
           type="number"
           value={`${timeOffset}`}
           onChange={({ detail }) => setSettings({ timeOffset: parseInt(detail.value) })}
+        />
+      </FormField>
+
+      <FormField label="Start month">
+        <Select
+          options={startMonthOptions}
+          selectedOption={startMonthOptions.find(o => o.value === startMonth) ?? null}
+          onChange={({ detail }) =>
+            setSettings({ startMonth: detail.selectedOption.value as DateRangePickerProps.StartMonth })
+          }
         />
       </FormField>
 
