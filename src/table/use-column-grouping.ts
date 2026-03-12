@@ -14,7 +14,7 @@ import { TableProps } from './interfaces';
  * @param visibleColumnIds - Optional set of visible column IDs for filtering
  */
 export function useColumnGrouping<T>(
-  columnGroupingDefinitions: ReadonlyArray<TableProps.ColumnGroupsDefinition<T>> | undefined,
+  columnGroupingDefinitions: ReadonlyArray<TableProps.GroupDefinition<T>> | undefined,
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
   visibleColumnIds?: Set<string>,
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>

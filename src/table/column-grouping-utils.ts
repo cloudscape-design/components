@@ -17,7 +17,7 @@ export namespace TableGroupedTypes {
     // TODO: I could find a better way to make this modular instead of 2 props
     // for column and column-group
     columnDefinition?: TableProps.ColumnDefinition<T>;
-    groupDefinition?: TableProps.ColumnGroupsDefinition<T>;
+    groupDefinition?: TableProps.GroupDefinition<T>;
     parentGroupIds: string[]; // Chain of parent group IDs for ARIA headers attribute
     rowIndex: number;
     colIndex: number;
@@ -42,83 +42,66 @@ export namespace TableGroupedTypes {
 //         rowspan?: number;  /// same -1 for phantom
 //         columnDefinition?: TableProps.ColumnDefinition<T>;
 //         subtreeHeight?: number;
-//         groupDefinition?: TableProps.ColumnGroupsDefinition<T>;
+//         groupDefinition?: TableProps.GroupDefinition<T>;
 //         parentNode?: TableHeaderNode<T>;
 //         children?: TableHeaderNode<T>[]; // order here implies actual render order
 //         colIndex?: number; // Absolute column index for aria-colindex
 //     }
 // }
 
-// creates the connection between nodes going from child to root
-function createNodeConnections<T>(
+/**
+ * Recursively builds the tree from the nested columnDisplay structure.
+ * Each ColumnDisplayGroup becomes a group node whose children are built recursively.
+ * Each ColumnDisplayItem (visible leaf) becomes a leaf column node.
+ */
+function buildTreeFromColumnDisplay<T>(
+  displayItems: ReadonlyArray<TableProps.ColumnDisplayProperties>,
+  idToNodeMap: Map<string, TableHeaderNode<T>>,
+  parentNode: TableHeaderNode<T>
+): void {
+  for (const item of displayItems) {
+    if ('children' in item) {
+      // ColumnDisplayGroup — only add it if it has at least one visible descendant
+      const groupNode = idToNodeMap.get(item.id);
+      if (!groupNode) {
+        warnOnceInDev(`Group "${item.id}" referenced in columnDisplay not found in groupDefinitions. Skipping.`);
+        continue;
+      }
+      // Recursively build children first, then only attach the group if it got any children
+      buildTreeFromColumnDisplay(item.children, idToNodeMap, groupNode);
+      if (groupNode.children.length > 0) {
+        parentNode.addChild(groupNode);
+      }
+    } else {
+      // ColumnDisplayItem — leaf column
+      if (!item.visible) {
+        continue;
+      }
+      const colNode = idToNodeMap.get(item.id);
+      if (!colNode) {
+        continue;
+      }
+      parentNode.addChild(colNode);
+    }
+  }
+}
+
+/**
+ * Fallback: when no columnDisplay is provided, connect all visible columns directly
+ * to root (flat, no grouping).
+ */
+function connectFlatColumns<T>(
   visibleLeafColumns: Readonly<TableProps.ColumnDefinition<T>[]>,
   idToNodeMap: Map<string, TableHeaderNode<T>>,
   rootNode: TableHeaderNode<T>
 ): void {
-  const visitedNodesIdSet = new Set<string>();
-
   visibleLeafColumns.forEach(column => {
     if (!column.id) {
       return;
     }
-
-    let currentNode = idToNodeMap.get(column.id);
-    if (!currentNode) {
-      return;
-    }
-
-    // Track nodes visited in this single leaf-to-root path to detect cycles
-    const pathVisited = new Set<string>();
-
-    while (currentNode) {
-      // Cycle detection: if we've seen this node in the current path, we have a circular reference
-      if (pathVisited.has(currentNode.id)) {
-        warnOnceInDev(`Circular reference detected in column group definitions involving "${currentNode.id}".`);
-        // Connect the node to root to prevent orphaning
-        if (!visitedNodesIdSet.has(currentNode.id)) {
-          rootNode.addChild(currentNode);
-          visitedNodesIdSet.add(currentNode.id);
-        }
-        break;
-      }
-      pathVisited.add(currentNode.id);
-
-      const groupDef = currentNode.groupDefinition;
-      const colDef = currentNode.columnDefinition;
-
-      // Find parent ID from either groupDefinition or columnDefinition
-      const parentId = groupDef?.groupId || colDef?.groupId;
-
-      if (!parentId) {
-        // No parent means this connects to root
-        if (!visitedNodesIdSet.has(currentNode.id)) {
-          rootNode.addChild(currentNode);
-          visitedNodesIdSet.add(currentNode.id);
-        }
-        break;
-      }
-
-      const parentNode = idToNodeMap.get(parentId);
-      if (!parentNode) {
-        // Parent not found, connect to root
-        warnOnceInDev(
-          `Group "${currentNode.id}" references non-existent parent group "${parentId}". Treating as top-level.`
-        );
-        if (!visitedNodesIdSet.has(currentNode.id)) {
-          rootNode.addChild(currentNode);
-          visitedNodesIdSet.add(currentNode.id);
-        }
-        break;
-      }
-
-      // Connect child to parent (only if not already connected)
-      if (!visitedNodesIdSet.has(currentNode.id)) {
-        parentNode.addChild(currentNode);
-        visitedNodesIdSet.add(currentNode.id);
-      }
-
-      // Move up the tree
-      currentNode = parentNode;
+    const node = idToNodeMap.get(column.id);
+    if (node) {
+      rootNode.addChild(node);
     }
   });
 }
@@ -129,7 +112,7 @@ export class TableHeaderNode<T> {
   rowspan: number = 1;
   subtreeHeight: number = 1;
   columnDefinition?: TableProps.ColumnDefinition<T>;
-  groupDefinition?: TableProps.ColumnGroupsDefinition<T>;
+  groupDefinition?: TableProps.GroupDefinition<T>;
   parentNode?: TableHeaderNode<T>;
   children: TableHeaderNode<T>[] = [];
   rowIndex: number = -1;
@@ -143,7 +126,7 @@ export class TableHeaderNode<T> {
       colspan?: number;
       rowspan?: number;
       columnDefinition?: TableProps.ColumnDefinition<T>;
-      groupDefinition?: TableProps.ColumnGroupsDefinition<T>;
+      groupDefinition?: TableProps.GroupDefinition<T>;
       parentNode?: TableHeaderNode<T>;
       rowIndex?: number;
       colIndex?: number;
@@ -193,7 +176,7 @@ export function warnOnceInDev(message: string): void {
 export function CalculateHierarchyTree<T>(
   columnDefinitions: TableProps.ColumnDefinition<T>[],
   visibleColumnIds: string[],
-  columnGroupingDefinitions: TableProps.ColumnGroupsDefinition<T>[],
+  columnGroupingDefinitions: TableProps.GroupDefinition<T>[],
   columnDisplayProperties?: TableProps.ColumnDisplayProperties[]
 ): TableGroupedTypes.HierarchicalStructure<T> {
   // filtering by visible columns
@@ -217,7 +200,7 @@ export function CalculateHierarchyTree<T>(
     );
   });
 
-  columnGroupingDefinitions.forEach((groupDefinition: TableProps.ColumnGroupsDefinition<T>) => {
+  columnGroupingDefinitions.forEach((groupDefinition: TableProps.GroupDefinition<T>) => {
     if (groupDefinition.id === undefined) {
       return;
     }
@@ -232,8 +215,12 @@ export function CalculateHierarchyTree<T>(
 
   const rootNode = new TableHeaderNode<T>('*', { isRoot: true });
 
-  // create connection 0(N)ish pass leaf to root
-  createNodeConnections(visibleColumns, idToNodeMap, rootNode);
+  // Build tree: use columnDisplay hierarchy if provided, otherwise flat
+  if (columnDisplayProperties && columnDisplayProperties.length > 0) {
+    buildTreeFromColumnDisplay(columnDisplayProperties, idToNodeMap, rootNode);
+  } else {
+    connectFlatColumns(visibleColumns, idToNodeMap, rootNode);
+  }
 
   // traversal for SubTreeHeight
   traverseForSubtreeHeight(rootNode);

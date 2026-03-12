@@ -256,10 +256,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
   columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
-   * Add grouping for the columns define groups for columns to be under and also nested groups for which
-   * other groups will be nested under.
+   * Defines the column groups. Each group has an `id` and `header` used to label the group header cell.
+   * The hierarchy is encoded in the `columnDisplay` property via nested `ColumnDisplayGroup` entries.
    */
-  columnGroupingDefinitions?: ReadonlyArray<TableProps.ColumnGroupsDefinition<T>>;
+  groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition<T>>;
 
   /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
@@ -500,7 +500,6 @@ export namespace TableProps {
 
   export type ColumnDefinition<T> = {
     id?: string;
-    groupId?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
@@ -520,10 +519,12 @@ export namespace TableProps {
     selectedItemsCount?: number;
   }
 
-  export type ColumnGroupsDefinition<ItemType> = Pick<
-    ColumnDefinition<ItemType>,
-    'id' | 'header' | 'groupId' | 'ariaLabel'
-  >;
+  // eslint-disable-next-line
+  export interface GroupDefinition<T> {
+    id: string;
+    header: React.ReactNode;
+    ariaLabel?: (data: LabelData) => string;
+  }
 
   export interface StickyColumns {
     first?: number;
@@ -614,10 +615,18 @@ export namespace TableProps {
     newValue: ValueType
   ) => Promise<void> | void;
 
-  export interface ColumnDisplayProperties {
+  export interface ColumnDisplayItem {
     id: string;
     visible: boolean;
   }
+
+  export interface ColumnDisplayGroup {
+    type: 'group';
+    id: string;
+    children: ReadonlyArray<ColumnDisplayProperties>;
+  }
+
+  export type ColumnDisplayProperties = ColumnDisplayItem | ColumnDisplayGroup;
 
   export interface ExpandableRows<T> {
     getItemChildren: (item: T) => readonly T[];

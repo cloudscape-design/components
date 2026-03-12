@@ -71,7 +71,7 @@ export function TableHiddenHeaderCell({
     <TableThElement
       resizableStyle={resizableStyle}
       cellRef={cellRefCombined}
-      focusedComponent={focusedComponent}
+      focusedComponent={undefined}
       stuck={stuck}
       sticky={sticky}
       resizable={resizableColumns}
@@ -86,6 +86,7 @@ export function TableHiddenHeaderCell({
       colSpan={colspan}
       scope="col"
       ariaLabel=""
+      isPlaceholder={true}
     >
       {/* Empty but focusable content — allows keyboard navigation through placeholder cells */}
       <div
