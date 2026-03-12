@@ -143,7 +143,8 @@ const InternalPagination = React.forwardRef(
     const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? '';
     const previousPageLabel = i18n('ariaLabels.previousPageLabel', ariaLabels?.previousPageLabel) ?? '';
     const pageNumberLabelFn =
-      i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ?? (() => '');
+      i18n('ariaLabels.pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
+      ((pageNumber: number) => `${pageNumber}`);
 
     const jumpToPageLabel = i18n('i18nStrings.jumpToPageInputLabel', i18nStrings?.jumpToPageInputLabel) ?? '';
     const jumpToPageButtonLabel = i18n('ariaLabels.jumpToPageButtonLabel', ariaLabels?.jumpToPageButton) ?? '';
@@ -318,7 +319,7 @@ const InternalPagination = React.forwardRef(
                 <InternalPopover
                   size="medium"
                   dismissButton={false}
-                  __visible={hasError}
+                  __visible={hasError && !jumpToPage?.loading}
                   content={jumpToPageError}
                   position="bottom"
                   triggerType="custom"
