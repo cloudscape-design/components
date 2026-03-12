@@ -66,7 +66,7 @@ export default class DropdownWrapper extends ComponentWrapper {
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   findOpenDropdown(options = { expandToViewport: false }): ElementWrapper | null {
-    return this.findDropdown(options).findOpenDropdown();
+    return this.findDropdown(options)?.findOpenDropdown() ?? null;
   }
 
   /**
