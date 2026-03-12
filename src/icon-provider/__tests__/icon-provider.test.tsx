@@ -137,4 +137,83 @@ describe('Icon Provider', () => {
     expect(secondAddPlus).toStrictEqual(expectedAddPlusSvg);
     expect(secondSettings).toStrictEqual(customSvg);
   });
+
+  describe('custom icons', () => {
+    const CUSTOM_ROCKET_SVG = (
+      <svg focusable={false} data-testid="rocket-svg">
+        <path d="M0 0 L16 16" />
+      </svg>
+    );
+
+    it('renders a custom icon through provider context', () => {
+      const customIcons = { rocket: CUSTOM_ROCKET_SVG } as IconProviderProps.Icons;
+      const { container } = render(
+        <>
+          <IconProvider icons={customIcons}>
+            <Icon name={'rocket' as IconProps.Name} />
+          </IconProvider>
+          <div data-testid="expectedSvg">{CUSTOM_ROCKET_SVG}</div>
+        </>
+      );
+
+      const actualSvg = wrapper(container).findIcon()!.find('svg');
+      const expectedSvg = wrapper(container).find('[data-testid=expectedSvg]')!.find('svg');
+
+      expect(actualSvg).toStrictEqual(expectedSvg);
+    });
+
+    it('preserves custom icon from parent context when set to null (no built-in default exists)', () => {
+      const customIcons = { rocket: CUSTOM_ROCKET_SVG } as IconProviderProps.Icons;
+      const { container } = render(
+        <>
+          <IconProvider icons={customIcons}>
+            <IconProvider icons={{ rocket: null } as IconProviderProps.Icons}>
+              <Icon name={'rocket' as IconProps.Name} />
+            </IconProvider>
+          </IconProvider>
+          <div data-testid="expectedSvg">{CUSTOM_ROCKET_SVG}</div>
+        </>
+      );
+
+      const actualSvg = wrapper(container).findIcon()!.find('svg');
+      const expectedSvg = wrapper(container).find('[data-testid=expectedSvg]')!.find('svg');
+
+      expect(actualSvg).toStrictEqual(expectedSvg);
+    });
+
+    it('warns when a custom icon is set to null with no parent context to fall back to', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      render(
+        <IconProvider icons={{ rocket: null } as IconProviderProps.Icons}>
+          <Icon name={'rocket' as IconProps.Name} />
+        </IconProvider>
+      );
+
+      expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('no icon with that name was found'));
+      consoleWarnSpy.mockRestore();
+    });
+
+    it('custom icons inherit across nested providers', () => {
+      const customIcons = { rocket: CUSTOM_ROCKET_SVG } as IconProviderProps.Icons;
+      const { container } = render(
+        <>
+          <IconProvider icons={customIcons}>
+            <Icon data-testid="firstIcon" name={'rocket' as IconProps.Name} />
+            <IconProvider icons={{ 'add-plus': CUSTOM_SVG }}>
+              <Icon data-testid="secondIcon" name={'rocket' as IconProps.Name} />
+            </IconProvider>
+          </IconProvider>
+          <div data-testid="expectedSvg">{CUSTOM_ROCKET_SVG}</div>
+        </>
+      );
+
+      const firstIcon = wrapper(container).find('[data-testid=firstIcon]')!.find('svg');
+      const secondIcon = wrapper(container).find('[data-testid=secondIcon]')!.find('svg');
+      const expectedSvg = wrapper(container).find('[data-testid=expectedSvg]')!.find('svg');
+
+      expect(firstIcon).toStrictEqual(expectedSvg);
+      expect(secondIcon).toStrictEqual(expectedSvg);
+    });
+  });
 });
