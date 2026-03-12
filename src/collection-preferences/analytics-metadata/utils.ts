@@ -43,7 +43,7 @@ export const getComponentAnalyticsMetadata = (
     }
   }
   if (preferences.contentDisplay) {
-    metadata.properties.contentDisplayVisibleCount = `${preferences.contentDisplay.filter(item => !('children' in item) && !!item.visible).length}`;
+    metadata.properties.contentDisplayVisibleCount = `${preferences.contentDisplay.filter(item => item.type !== 'group' && !!item.visible).length}`;
   }
   return metadata;
 };
