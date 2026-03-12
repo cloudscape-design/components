@@ -4,10 +4,11 @@
 import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import type { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { getCursorPositionAtIndex, getTokenCursorLength } from './cursor-manager';
+import { TOKEN_LENGTHS } from './cursor-controller';
 import { findAllParagraphs, findElement, generateTokenId, getTokenType } from './dom-utils';
 import { detectTriggersInText } from './token-utils';
 import {
+  isBreakToken,
   isBRElement,
   isHTMLElement,
   isPinnedReferenceToken,
@@ -16,10 +17,6 @@ import {
   isTextToken,
   isTriggerToken,
 } from './type-guards';
-
-// ============================================================================
-// TYPES
-// ============================================================================
 
 export type UpdateSource = 'user-input' | 'external' | 'menu-selection' | 'internal';
 
@@ -39,10 +36,6 @@ export interface MenuSelectionResult {
   cursorPosition: number;
   insertedToken: PromptInputProps.ReferenceToken;
 }
-
-// ============================================================================
-// HELPER FUNCTIONS
-// ============================================================================
 
 // DOM EXTRACTION HELPERS
 
@@ -129,7 +122,7 @@ function extractTokensFromParagraph(
 
       if (tokenType === ELEMENT_TYPES.TRIGGER) {
         flushText();
-        const id = node.getAttribute('data-id') || generateTokenId('trigger');
+        const id = node.id || generateTokenId('trigger');
         const fullText = node.textContent || '';
 
         // Check if there's text before the trigger character (corruption case)
@@ -238,7 +231,7 @@ function extractTokensFromParagraph(
         }
         label = label.replace(new RegExp(SPECIAL_CHARS.ZWNJ, 'g'), '').trim();
 
-        const instanceId = node.getAttribute('data-id') || '';
+        const instanceId = node.id || '';
         const menuId = node.getAttribute('data-menu-id') || '';
 
         // Look up option from menu definition using the label
@@ -309,12 +302,6 @@ export function findLastPinnedTokenIndex(tokens: readonly PromptInputProps.Input
   return -1;
 }
 
-// ============================================================================
-// TRIGGER DETECTION (text-based)
-// ============================================================================
-
-export { detectTriggersInText } from './token-utils';
-
 export function detectTriggersInTokens(
   tokens: readonly PromptInputProps.InputToken[],
   menus: readonly PromptInputProps.MenuDefinition[]
@@ -332,10 +319,6 @@ export function detectTriggersInTokens(
 
   return result;
 }
-
-// ============================================================================
-// MENU SELECTION
-// ============================================================================
 
 export function handleMenuSelection(
   tokens: readonly PromptInputProps.InputToken[],
@@ -368,7 +351,22 @@ export function handleMenuSelection(
     }
 
     newTokens.splice(insertIndex, 0, pinnedToken);
-    const cursorPos = getCursorPositionAtIndex(newTokens, insertIndex);
+
+    // Calculate cursor position: sum of all tokens before insert + the inserted token
+    let cursorPos = 0;
+    for (let i = 0; i <= insertIndex; i++) {
+      const token = newTokens[i];
+      if (isTextToken(token)) {
+        cursorPos += TOKEN_LENGTHS.text(token.value);
+      } else if (isBreakToken(token)) {
+        cursorPos += TOKEN_LENGTHS.LINE_BREAK;
+      } else if (isTriggerToken(token)) {
+        cursorPos += TOKEN_LENGTHS.trigger(token.value);
+      } else {
+        cursorPos += TOKEN_LENGTHS.REFERENCE;
+      }
+    }
+
     return { tokens: newTokens, cursorPosition: cursorPos, insertedToken: pinnedToken };
   } else {
     const referenceToken: PromptInputProps.ReferenceToken = {
@@ -381,10 +379,21 @@ export function handleMenuSelection(
 
     newTokens.splice(triggerIndex, 1, referenceToken);
 
+    // Calculate cursor position after inserted reference using TOKEN_LENGTHS
     let cursorPos = 0;
     for (const token of newTokens) {
-      cursorPos += getTokenCursorLength(token);
-      if (isReferenceToken(token) && token.id === selectedOption.value) {
+      if (isTextToken(token)) {
+        cursorPos += TOKEN_LENGTHS.text(token.value);
+      } else if (isBreakToken(token)) {
+        cursorPos += TOKEN_LENGTHS.LINE_BREAK;
+      } else if (isTriggerToken(token)) {
+        cursorPos += TOKEN_LENGTHS.trigger(token.value);
+      } else {
+        cursorPos += TOKEN_LENGTHS.REFERENCE;
+      }
+
+      // Stop after the inserted reference token
+      if (isReferenceToken(token) && token.id === referenceToken.id) {
         break;
       }
     }
@@ -392,10 +401,6 @@ export function handleMenuSelection(
     return { tokens: newTokens, cursorPosition: cursorPos, insertedToken: referenceToken };
   }
 }
-
-// ============================================================================
-// TOKEN PROCESSING
-// ============================================================================
 
 export function processTokens(
   tokens: readonly PromptInputProps.InputToken[],
@@ -410,6 +415,17 @@ export function processTokens(
   if (options.detectTriggers && config.menus) {
     result = detectTriggersInTokens(result, config.menus);
   }
+
+  // Ensure all tokens have IDs
+  result = result.map(token => {
+    if (isTriggerToken(token) && (!token.id || token.id === '')) {
+      return { ...token, id: generateTokenId('trigger') };
+    }
+    if (isReferenceToken(token) && (!token.id || token.id === '')) {
+      return { ...token, id: generateTokenId('ref') };
+    }
+    return token;
+  });
 
   return result;
 }

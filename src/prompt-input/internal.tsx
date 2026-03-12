@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useDensityMode, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -19,10 +19,8 @@ import InternalLiveRegion from '../live-region/internal';
 import TextareaMode from './components/textarea-mode';
 import TokenMode from './components/token-mode';
 import { CURSOR_DETECTION_DELAY, DEFAULT_MAX_ROWS, NEXT_TICK_TIMEOUT } from './core/constants';
-import { isCursorInTriggerToken, setCursorPosition, setCursorRange } from './core/cursor-manager';
-import { normalizeSelection, selectAllContent } from './core/cursor-utils';
+import { CursorController, normalizeSelection } from './core/cursor-controller';
 import {
-  createCursorNormalizationHandler,
   createKeyboardHandlers,
   handleArrowKeyNavigation,
   handleReferenceTokenDeletion,
@@ -110,7 +108,14 @@ const InternalPromptInput = React.forwardRef(
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const editableElementRef = useRef<HTMLDivElement>(null);
     const reactContainersRef = useRef<Set<HTMLElement>>(new Set());
-    const lastKnownCursorPositionRef = useRef<number>(0);
+    const cursorControllerRef = useRef<CursorController | null>(null);
+
+    // Initialize controller when element is available
+    useLayoutEffect(() => {
+      if (isTokenMode && editableElementRef.current && !cursorControllerRef.current) {
+        cursorControllerRef.current = new CursorController(editableElementRef.current);
+      }
+    }, [isTokenMode]);
 
     // Initialize consolidated shortcuts system
     const shortcuts = useShortcuts({
@@ -122,6 +127,7 @@ const InternalPromptInput = React.forwardRef(
         fireNonCancelableEvent(onChange, detail);
       },
       editableElementRef,
+      cursorController: cursorControllerRef,
     });
 
     // Extract shortcuts state for easier access
@@ -163,22 +169,20 @@ const InternalPromptInput = React.forwardRef(
         },
         select() {
           if (isTokenMode) {
-            if (editableElementRef.current) {
-              selectAllContent(editableElementRef.current);
+            if (editableElementRef.current && cursorControllerRef.current) {
+              cursorControllerRef.current.selectAll();
             }
           } else {
             textareaRef.current?.select();
           }
         },
         setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
-          if (isTokenMode && editableElementRef.current) {
+          if (isTokenMode && cursorControllerRef.current) {
             const [start, end] = args;
-
-            if (end !== undefined && end !== null && end !== start) {
-              setCursorRange(editableElementRef.current, start ?? 0, end);
-            } else {
-              setCursorPosition(editableElementRef.current, start ?? 0);
-            }
+            const actualEnd = end ?? undefined;
+            cursorControllerRef.current.setPosition(start ?? 0, actualEnd);
+            // Fire selectionchange so menu state and other listeners can update
+            document.dispatchEvent(new Event('selectionchange'));
           } else {
             textareaRef.current?.setSelectionRange(...args);
           }
@@ -190,7 +194,7 @@ const InternalPromptInput = React.forwardRef(
           }
 
           if (isTokenMode) {
-            if (!editableElementRef.current || !tokens) {
+            if (!editableElementRef.current || !tokens || !cursorControllerRef.current) {
               return;
             }
 
@@ -205,7 +209,13 @@ const InternalPromptInput = React.forwardRef(
             const adjustedCursorStart = cursorStart !== undefined ? cursorStart + pinnedOffset : undefined;
             const adjustedCursorEnd = cursorEnd !== undefined ? cursorEnd + pinnedOffset : undefined;
 
-            insertTextIntoContentEditable(editableElementRef.current, text, adjustedCursorStart, adjustedCursorEnd);
+            insertTextIntoContentEditable(
+              editableElementRef.current,
+              text,
+              adjustedCursorStart,
+              adjustedCursorEnd,
+              cursorControllerRef.current // Guaranteed non-null by guard above
+            );
           } else {
             // Textarea mode
             if (!textareaRef.current) {
@@ -299,53 +309,10 @@ const InternalPromptInput = React.forwardRef(
       readOnly,
       editableState,
       ignoreCursorDetection,
-      lastKnownCursorPositionRef,
+      cursorController: cursorControllerRef.current,
     });
 
     const handleInput = handleInputBase;
-
-    // Track if we're in the middle of arrow key navigation to avoid cursor trapping
-    const skipNormalizationRef = React.useRef(false);
-
-    // Normalize cursor position: if cursor is right after a wrapper, move it into the cursor spot
-    React.useEffect(() => {
-      if (!isTokenMode || !editableElementRef.current) {
-        return;
-      }
-
-      const normalizeCursorPosition = createCursorNormalizationHandler(
-        editableElementRef,
-        skipNormalizationRef,
-        editableState
-      );
-
-      // Track mouse state to skip normalization during/after mouse clicks
-      const handleMouseDown = () => {
-        window.isMouseDownForCursor = true;
-      };
-      const handleMouseUp = () => {
-        // Delay clearing the flag to allow the click to complete
-        setTimeout(() => {
-          window.isMouseDownForCursor = false;
-        }, 100);
-      };
-
-      const normalizeIfNotMouse = () => {
-        if (!window.isMouseDownForCursor) {
-          normalizeCursorPosition();
-        }
-      };
-
-      document.addEventListener('selectionchange', normalizeIfNotMouse);
-      document.addEventListener('mousedown', handleMouseDown);
-      document.addEventListener('mouseup', handleMouseUp);
-
-      return () => {
-        document.removeEventListener('selectionchange', normalizeIfNotMouse);
-        document.removeEventListener('mousedown', handleMouseDown);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }, [isTokenMode, editableState]);
 
     // Normalize selection to include entire reference tokens when boundary is in cursor spots
     React.useEffect(() => {
@@ -404,8 +371,8 @@ const InternalPromptInput = React.forwardRef(
 
     // Keyboard handler for contentEditable
     const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
-      // Handle arrow key navigation to skip ZWNJ in cursor spots
-      if (handleArrowKeyNavigation(event, skipNormalizationRef)) {
+      // Handle arrow key navigation across reference tokens
+      if (handleArrowKeyNavigation(event, cursorControllerRef.current)) {
         return;
       }
 
@@ -413,12 +380,12 @@ const InternalPromptInput = React.forwardRef(
         event.preventDefault();
 
         // Block action if cursor is inside a trigger token
-        if (editableElementRef.current && isCursorInTriggerToken(editableElementRef.current)) {
+        if (cursorControllerRef.current?.isInTrigger()) {
           return;
         }
 
         if (editableElementRef.current) {
-          splitParagraphAtCursor(editableElementRef.current, editableState);
+          splitParagraphAtCursor(editableElementRef.current, cursorControllerRef.current);
         }
         return;
       }
@@ -435,7 +402,8 @@ const InternalPromptInput = React.forwardRef(
               setTokenOperationAnnouncement(message);
               setTimeout(() => setTokenOperationAnnouncement(''), 100);
             },
-            i18nStrings
+            i18nStrings,
+            cursorControllerRef.current
           )
         ) {
           return;
@@ -459,7 +427,8 @@ const InternalPromptInput = React.forwardRef(
               markTokensAsSent(detail.tokens);
               fireNonCancelableEvent(onChange, detail);
             },
-            editableState
+            editableState,
+            cursorControllerRef.current
           )
         ) {
           return;
@@ -473,12 +442,12 @@ const InternalPromptInput = React.forwardRef(
             editableElementRef.current,
             tokens,
             tokensToText,
-            lastKnownCursorPositionRef.current,
             (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
               markTokensAsSent(detail.tokens);
               fireNonCancelableEvent(onChange, detail);
             },
-            editableState
+            editableState,
+            cursorControllerRef.current
           )
         ) {
           return;
@@ -496,10 +465,8 @@ const InternalPromptInput = React.forwardRef(
           event,
           editableElementRef.current,
           shortcuts.menuIsOpen,
-          shortcuts.triggerValueWhenClosed,
-          editableState,
           ignoreCursorDetection,
-          menus
+          cursorControllerRef.current
         )
       ) {
         return;
@@ -552,7 +519,6 @@ const InternalPromptInput = React.forwardRef(
         return;
       }
 
-      ignoreCursorDetection.current = true;
       shortcuts.setCursorInTrigger(false);
       setUpdateSource('menu-selection');
 
@@ -570,6 +536,7 @@ const InternalPromptInput = React.forwardRef(
       const value = tokensToText ? tokensToText(result.tokens) : getPromptText(result.tokens);
       markTokensAsSent(result.tokens);
 
+      // Set menu selection token ID BEFORE onChange so useEffect can see it
       editableState.menuSelectionTokenId = result.insertedToken.id || null;
       editableState.menuSelectionIsPinned = activeMenu.useAtStart ?? false;
 
@@ -649,20 +616,19 @@ const InternalPromptInput = React.forwardRef(
         readOnly,
         editableState,
         editableElementRef,
-        lastKnownCursorPositionRef,
+        cursorController: cursorControllerRef.current || undefined,
       });
     }, [
       onAction,
       tokensToText,
       tokens,
-      ignoreCursorDetection,
-      shortcuts,
       i18nStrings,
       disabled,
       readOnly,
-      activeMenu,
       editableState,
-      lastKnownCursorPositionRef,
+      activeMenu?.statusType,
+      ignoreCursorDetection,
+      shortcuts,
     ]);
 
     // Menu load more controller
@@ -822,10 +788,10 @@ const InternalPromptInput = React.forwardRef(
 
     const menuDropdownStatus = activeMenu ? menuDropdownStatusResult : null;
 
-    const shouldRenderMenuDropdown = useMemo(
-      () => !!(menuIsOpen && activeMenu && menuItemsState),
-      [menuIsOpen, activeMenu, menuItemsState]
-    );
+    const shouldRenderMenuDropdown = useMemo(() => {
+      const result = !!(menuIsOpen && activeMenu && menuItemsState);
+      return result;
+    }, [menuIsOpen, activeMenu, menuItemsState]);
 
     const actionButton = (
       <div className={clsx(styles['primary-action'], testutilStyles['primary-action'])}>
