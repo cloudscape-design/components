@@ -33,6 +33,9 @@ class PortalDropdownContentWrapper extends DropdownContentWrapper {
 export default class DropdownWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
+  /**
+   * Returns the trigger element.
+   */
   findTrigger(): ElementWrapper {
     return this.findByClassName(testutilStyles.trigger)!;
   }
@@ -89,8 +92,18 @@ export default class DropdownWrapper extends ComponentWrapper {
     return this.findDropdown(options).findFooter();
   }
 
+  /**
+   * Returns whether the dropdown is open.
+   */
+  isOpen(options = { expandToViewport: false }): boolean {
+    return this.findOpenDropdown(options) !== null;
+  }
+
+  /**
+   * Clicks the trigger element.
+   */
   @usesDom
-  openDropdown(): void {
+  clickTrigger(): void {
     act(() => {
       this.findTrigger().fireEvent(new MouseEvent('click', { bubbles: true }));
     });
