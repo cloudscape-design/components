@@ -266,7 +266,30 @@ const permutations = createPermutations<PromptInputProps>([
     disabled: [false, true],
     readOnly: [false, true],
     invalid: [false, true],
-    warning: [false, true],
+  },
+  // Token mode: Warning state (separate from invalid to avoid duplicates)
+  {
+    tokens: [
+      [
+        { type: 'text', value: 'Text with ' },
+        { type: 'reference', id: '', label: 'Reference', value: 'ref1', menuId: 'mentions' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+    disabled: [false, true],
+    readOnly: [false, true],
+    warning: [true],
   },
 ]);
 
@@ -279,7 +302,6 @@ export default function PromptInputPermutations() {
           permutations={permutations}
           render={(permutation, index) => (
             <PromptInput
-              key={index ?? 0}
               ariaLabel={`Prompt input test ${index ?? 0}`}
               actionButtonAriaLabel="Action button aria label"
               onChange={() => {

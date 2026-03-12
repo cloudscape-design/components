@@ -90,6 +90,12 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
+    
+    // When disabled, keep validation border (including thick left border) but remove focus box-shadow
+    &.disabled:focus-within,
+    &.disabled:focus {
+      box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    }
   }
 
   &.textarea-warning {
@@ -112,10 +118,17 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
+    
+    // When disabled, keep validation border (including thick left border) but remove focus box-shadow
+    &.disabled:focus-within,
+    &.disabled:focus {
+      box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    }
   }
 
-  &:focus-within,
-  &:focus {
+  // General focus styles (only when not invalid/warning)
+  &:focus-within:not(.textarea-invalid):not(.textarea-warning),
+  &:focus:not(.textarea-invalid):not(.textarea-warning) {
     @include styles.form-focus-element(
       $border-color: var(#{custom-props.$promptInputStyleBorderColorFocus}, awsui.$color-border-input-focused),
       $box-shadow: var(#{custom-props.$promptInputStyleBoxShadowFocus}, foundation.$box-shadow-focused-light)
@@ -123,9 +136,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     background-color: var(#{custom-props.$promptInputStyleBackgroundFocus}, awsui.$color-background-input-default);
   }
 
-  // Prevent focus styles when disabled
-  &.disabled:focus-within,
-  &.disabled:focus {
+  // Prevent general focus styles when disabled
+  &.disabled:focus-within:not(.textarea-invalid):not(.textarea-warning),
+  &.disabled:focus:not(.textarea-invalid):not(.textarea-warning) {
     @include styles.form-disabled-element(
       $background-color: var(
           #{custom-props.$promptInputStyleBackgroundDisabled},
@@ -196,6 +209,17 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     box-shadow: none;
   }
 
+  // Native placeholder for textarea element
+  &::placeholder {
+    @include styles.form-placeholder(
+      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
+      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
+      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
+      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+    );
+    opacity: 1;
+  }
+
   &.invalid,
   &.warning {
     padding-inline-start: $invalid-border-offset;
@@ -227,11 +251,24 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
-  // Placeholder for disabled contentEditable div
-  &.placeholder-visible::before {
+  
+  // Placeholder for disabled contentEditable div (token mode)
+  &.textarea-disabled.placeholder-visible::before {
     @include styles.form-placeholder-disabled;
     opacity: 1;
-    pointer-events: none; // Prevent cursor from getting stuck on placeholder in Safari
+    pointer-events: none;
+  }
+  
+  // Placeholder for contentEditable div (token mode) - readonly and normal states
+  &.placeholder-visible::before {
+    @include styles.form-placeholder(
+      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
+      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
+      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
+      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+    );
+    opacity: 1;
+    pointer-events: none;
   }
 
   &-wrapper {
