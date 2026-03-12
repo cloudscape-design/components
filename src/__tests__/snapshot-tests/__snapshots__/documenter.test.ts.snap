@@ -11661,27 +11661,25 @@ actually close the dropdown.",
   "name": "Dropdown",
   "properties": [
     {
-      "description": "ARIA describedby attribute for the dropdown content",
+      "description": "Adds \`aria-describedby\` to the dropdown content element.",
       "name": "ariaDescribedby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "ARIA label for the dropdown content.
-Use either this or ariaLabelledby, not both.",
+      "description": "Adds \`aria-label\` to the dropdown content element.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "ARIA labelledby attribute for the dropdown content.
-Use either this or ariaLabel, not both.",
+      "description": "Adds \`aria-labelledby\` to the dropdown content element.",
       "name": "ariaLabelledby",
       "optional": true,
       "type": "string",
     },
     {
-      "description": "ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')",
+      "description": "Adds \`role\` to the dropdown content element.",
       "name": "ariaRole",
       "optional": true,
       "type": "string",
@@ -37152,6 +37150,15 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Clicks the trigger element.",
+          "name": "clickTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
           "description": "Returns the dropdown content element.",
           "name": "findContent",
           "parameters": [
@@ -37267,6 +37274,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the trigger element.",
           "name": "findTrigger",
           "parameters": [],
           "returnType": {
@@ -37280,11 +37288,21 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "name": "openDropdown",
-          "parameters": [],
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
-            "name": "void",
+            "name": "boolean",
           },
         },
       ],
@@ -47403,11 +47421,32 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the trigger element.",
           "name": "findTrigger",
           "parameters": [],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
           },
         },
       ],
