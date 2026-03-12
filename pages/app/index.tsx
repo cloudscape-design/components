@@ -48,6 +48,7 @@ function isAppLayoutPage(pageId?: string) {
     'container/sticky-permutations',
     'copy-to-clipboard/scenario-split-panel',
     'prompt-input/simple',
+    'prompt-input/shortcuts',
     'funnel-analytics/static-single-page-flow',
     'funnel-analytics/static-multi-page-flow',
     'charts.test',
