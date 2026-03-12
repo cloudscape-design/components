@@ -113,7 +113,6 @@ const columnDefinitions: TableProps<EC2Instance>['columnDefinitions'] = [
     cell: (item: EC2Instance) => item.id,
     sortingField: 'id',
     isRowHeader: true,
-    groupId: 'metrics',
   },
   {
     id: 'name',
@@ -126,84 +125,62 @@ const columnDefinitions: TableProps<EC2Instance>['columnDefinitions'] = [
     header: 'CPU (%)',
     cell: (item: EC2Instance) => `${item.cpuUtilization.toFixed(1)}%`,
     sortingField: 'cpuUtilization',
-    groupId: 'performance',
   },
   {
     id: 'memoryUtilization',
     header: 'Memory (%)',
     cell: (item: EC2Instance) => `${item.memoryUtilization.toFixed(1)}%`,
     sortingField: 'memoryUtilization',
-    groupId: 'performance',
   },
   {
     id: 'networkIn',
     header: 'Network In (MB/s)',
     cell: (item: EC2Instance) => item.networkIn.toString(),
     sortingField: 'networkIn',
-    groupId: 'performance',
   },
   {
     id: 'networkOut',
     header: 'Network Out (MB/s)',
     cell: (item: EC2Instance) => item.networkOut.toString(),
     sortingField: 'networkOut',
-    groupId: 'performance',
   },
   {
     id: 'instanceType',
     header: 'Instance Type',
     cell: (item: EC2Instance) => item.instanceType,
     sortingField: 'instanceType',
-    groupId: 'configuration',
   },
   {
     id: 'az',
     header: 'Availability Zone',
     cell: (item: EC2Instance) => item.az,
     sortingField: 'az',
-    groupId: 'configuration',
   },
   {
     id: 'state',
     header: 'State',
     cell: (item: EC2Instance) => item.state,
     sortingField: 'state',
-    groupId: 'configuration',
   },
   {
     id: 'monthlyCost',
     header: 'Monthly Cost ($)',
     cell: (item: EC2Instance) => `$${item.monthlyCost.toFixed(2)}`,
     sortingField: 'monthlyCost',
-    groupId: 'cost',
   },
   {
     id: 'spotPrice',
     header: 'Spot Price ($/hr)',
     cell: (item: EC2Instance) => `$${item.spotPrice.toFixed(4)}`,
     sortingField: 'spotPrice',
-    groupId: 'cost',
   },
 ];
 
-const columnGroupingDefinitions: TableProps<EC2Instance>['columnGroupingDefinitions'] = [
-  {
-    id: 'cost',
-    header: 'Cost',
-  },
-  {
-    id: 'configuration',
-    header: 'Configuration',
-  },
-  {
-    id: 'performance',
-    header: 'Performance',
-    groupId: 'metrics',
-  },
-  {
-    id: 'metrics',
-    header: 'Metrics',
-  },
+const groupDefinitions: TableProps<EC2Instance>['groupDefinitions'] = [
+  { id: 'cost', header: 'Cost' },
+  { id: 'configuration', header: 'Configuration' },
+  { id: 'performance', header: 'Performance' },
+  { id: 'metrics', header: 'Metrics' },
 ];
 
 const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
@@ -222,22 +199,22 @@ const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
     title: 'Column preferences',
     description: 'Customize the columns visibility and order.',
     options: [
+      { id: 'id', label: 'Instance ID', alwaysVisible: true },
       { id: 'name', label: 'Name' },
-      { id: 'cpuUtilization', label: 'CPU (%)', groupId: 'performance' },
-      { id: 'memoryUtilization', label: 'Memory (%)', groupId: 'performance' },
-      { id: 'networkIn', label: 'Network In (MB/s)', groupId: 'performance' },
-      { id: 'networkOut', label: 'Network Out (MB/s)', groupId: 'performance' },
-      { id: 'instanceType', label: 'Instance Type', groupId: 'configuration' },
-      { id: 'id', label: 'Instance ID', alwaysVisible: true, groupId: 'metrics' },
-      { id: 'az', label: 'Availability Zone', groupId: 'configuration' },
-      { id: 'state', label: 'State', groupId: 'configuration' },
-      { id: 'monthlyCost', label: 'Monthly Cost ($)', groupId: 'cost' },
-      { id: 'spotPrice', label: 'Spot Price ($/hr)', groupId: 'cost' },
+      { id: 'cpuUtilization', label: 'CPU (%)' },
+      { id: 'memoryUtilization', label: 'Memory (%)' },
+      { id: 'networkIn', label: 'Network In (MB/s)' },
+      { id: 'networkOut', label: 'Network Out (MB/s)' },
+      { id: 'instanceType', label: 'Instance Type' },
+      { id: 'az', label: 'Availability Zone' },
+      { id: 'state', label: 'State' },
+      { id: 'monthlyCost', label: 'Monthly Cost ($)' },
+      { id: 'spotPrice', label: 'Spot Price ($/hr)' },
     ],
     groups: [
       { id: 'cost', label: 'Cost' },
       { id: 'configuration', label: 'Configuration' },
-      { id: 'performance', label: 'Performance', groupId: 'metrics' },
+      { id: 'performance', label: 'Performance' },
       { id: 'metrics', label: 'Metrics' },
     ],
   },
@@ -272,17 +249,41 @@ export default function EC2TableDemo() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps['preferences']>({
     pageSize: 10,
     contentDisplay: [
-      { id: 'cpuUtilization', visible: true },
-      { id: 'memoryUtilization', visible: true },
-      { id: 'networkIn', visible: true },
-      { id: 'instanceType', visible: true },
-      { id: 'networkOut', visible: true },
       { id: 'id', visible: true },
       { id: 'name', visible: true },
-      { id: 'az', visible: true },
-      { id: 'state', visible: true },
-      { id: 'monthlyCost', visible: false },
-      { id: 'spotPrice', visible: false },
+      {
+        type: 'group',
+        id: 'metrics',
+        children: [
+          {
+            type: 'group',
+            id: 'performance',
+            children: [
+              { id: 'cpuUtilization', visible: true },
+              { id: 'memoryUtilization', visible: true },
+              { id: 'networkIn', visible: true },
+              { id: 'networkOut', visible: true },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'group',
+        id: 'configuration',
+        children: [
+          { id: 'instanceType', visible: true },
+          { id: 'az', visible: true },
+          { id: 'state', visible: true },
+        ],
+      },
+      {
+        type: 'group',
+        id: 'cost',
+        children: [
+          { id: 'monthlyCost', visible: false },
+          { id: 'spotPrice', visible: false },
+        ],
+      },
     ],
   });
 
@@ -328,8 +329,6 @@ export default function EC2TableDemo() {
     urlParams: { resizable = true, firstSticky = 0, lastSticky = 0 },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
-
-  // Build the CSS custom property style for the resizer gap
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
@@ -385,7 +384,7 @@ export default function EC2TableDemo() {
           </Header>
         }
         columnDefinitions={columnDefinitions}
-        columnGroupingDefinitions={columnGroupingDefinitions}
+        groupDefinitions={groupDefinitions}
         columnDisplay={preferences?.contentDisplay}
         items={items}
         pagination={<Pagination {...paginationProps} />}
