@@ -119,7 +119,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       // Use the same block-gap as normal dividers (from resizer/styles.scss)
       // to keep divider heights visually consistent across the header row.
       // stylelint-disable-next-line custom-property-pattern
-      max-block-size: calc(100% - var(--awsui-table-resizer-block-gap, 0px));
+      max-block-size: calc(100% - var(--awsui-table-resizer-block-gap, 18px));
       margin-block: auto;
       margin-inline: auto;
       border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-default;

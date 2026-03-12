@@ -140,7 +140,7 @@ const InternalTable = React.forwardRef(
       preferences,
       items,
       columnDefinitions,
-      columnGroupingDefinitions,
+      groupDefinitions,
       trackBy,
       loading,
       loadingText,
@@ -338,7 +338,7 @@ const InternalTable = React.forwardRef(
     const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => col.id || `column-${idx}`));
 
     const hierarchicalStructure = useColumnGrouping(
-      columnGroupingDefinitions,
+      groupDefinitions,
       columnDefinitions,
       visibleColumnIds,
       columnDisplay
@@ -438,7 +438,7 @@ const InternalTable = React.forwardRef(
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
-      columnGroupingDefinitions,
+      groupDefinitions,
       hierarchicalStructure,
       variant: computedVariant,
       tableVariant: computedVariant,

@@ -139,7 +139,7 @@ export default function CollectionPreferences({
       // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
       if (preferences?.contentDisplay) {
         tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
-          .filter(column => column.visible)
+          .filter(column => !('children' in column) && column.visible)
           .map(column => column.id);
       } else if (preferences?.visibleContent) {
         tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];

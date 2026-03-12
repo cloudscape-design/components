@@ -68,6 +68,24 @@ export function getVisibleColumnDefinitions<T>({
   }
 }
 
+/**
+ * Recursively flattens a nested ColumnDisplayProperties array into an ordered list
+ * of visible leaf column IDs.
+ */
+function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): string[] {
+  const ids: string[] = [];
+  for (const item of items) {
+    if ('children' in item) {
+      // ColumnDisplayGroup — recurse into children
+      ids.push(...flattenVisibleColumnIds(item.children));
+    } else if (item.visible) {
+      // ColumnDisplayItem — include if visible
+      ids.push(item.id);
+    }
+  }
+  return ids;
+}
+
 function getVisibleColumnDefinitionsFromColumnDisplay<T>({
   columnDisplay,
   columnDefinitions,
@@ -79,10 +97,8 @@ function getVisibleColumnDefinitionsFromColumnDisplay<T>({
     (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
     {}
   );
-  return columnDisplay
-    .filter(item => item.visible)
-    .map(item => columnDefinitionsById[item.id])
-    .filter(Boolean);
+  const visibleIds = flattenVisibleColumnIds(columnDisplay);
+  return visibleIds.map(id => columnDefinitionsById[id]).filter(Boolean);
 }
 
 function getVisibleColumnDefinitionsFromVisibleColumns<T>({

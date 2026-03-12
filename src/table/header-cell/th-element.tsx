@@ -41,6 +41,13 @@ export interface TableThElementProps {
   colSpan?: number;
   rowSpan?: number;
   scope?: 'col' | 'colgroup';
+  /**
+   * When true, the cell is a hidden placeholder (not a real header).
+   * A distinct data-focus-id prefix ("header-placeholder-") is used so that
+   * focusedComponent matching never accidentally triggers header-cell-fake-focus
+   * on the real leaf cell that shares the same columnId.
+   */
+  isPlaceholder?: boolean;
 }
 
 export function TableThElement({
@@ -66,6 +73,7 @@ export function TableThElement({
   colSpan,
   rowSpan,
   scope,
+  isPlaceholder,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -82,7 +90,7 @@ export function TableThElement({
 
   return (
     <th
-      data-focus-id={`header-${String(columnId)}`}
+      data-focus-id={isPlaceholder ? `header-placeholder-${String(columnId)}` : `header-${String(columnId)}`}
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],

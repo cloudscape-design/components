@@ -17,7 +17,7 @@ import { TableThElement } from './th-element';
 import styles from './styles.css.js';
 
 export interface TableGroupHeaderCellProps {
-  group: TableProps.ColumnGroupsDefinition<any>;
+  group: TableProps.GroupDefinition<any>;
   colspan: number;
   rowspan: number;
   colIndex: number;
@@ -98,8 +98,13 @@ export function TableGroupHeaderCell({
    * When all children are off-screen, width collapses to 0.
    * When all children are fully visible, width is cleared so colspan drives layout.
    */
+  // Ref to the inner content wrapper div — this is what we constrain with maxWidth
+  // so that overflow:hidden clips the label/border without affecting the sibling resizer.
+  const innerWrapperRef = useRef<HTMLDivElement>(null);
+
   const computeWidth = () => {
     const groupEl = cellRefObject.current;
+    const innerEl = innerWrapperRef.current;
     if (!groupEl) {
       return;
     }
@@ -114,7 +119,9 @@ export function TableGroupHeaderCell({
     }
 
     if (!lastChildEl) {
-      groupEl.style.maxWidth = '';
+      if (innerEl) {
+        innerEl.style.maxWidth = '';
+      }
       return;
     }
 
@@ -123,12 +130,15 @@ export function TableGroupHeaderCell({
     // Width from our stuck left edge to the last child's current right edge
     const constrainedWidth = lastChildRect.right - groupRect.left;
 
-    if (constrainedWidth >= groupEl.offsetWidth) {
-      // All children fully visible — release constraint
-      groupEl.style.maxWidth = '';
-    } else {
-      // Constrain right edge: overflow:hidden on the th clips the border/content
-      groupEl.style.maxWidth = `${Math.max(0, constrainedWidth)}px`;
+    if (innerEl) {
+      if (constrainedWidth >= groupEl.offsetWidth) {
+        // All children fully visible — release constraint
+        innerEl.style.maxWidth = '';
+      } else {
+        // Constrain inner wrapper's right edge so label/border clips without
+        // affecting the absolutely-positioned resizer handle.
+        innerEl.style.maxWidth = `${Math.max(0, constrainedWidth)}px`;
+      }
     }
   };
 
@@ -205,10 +215,16 @@ export function TableGroupHeaderCell({
         return;
       }
 
-      // Apply sticky offset to the <th> itself
+      // Apply sticky offset to the <th> itself.
+      // We also need position:sticky so the element actually sticks during horizontal scroll;
+      // without it, insetInlineStart is written but has no effect.
       if (firstState?.offset.insetInlineStart !== undefined) {
+        thEl.style.position = 'sticky';
+        thEl.style.zIndex = '800'; // same z-index as header-cell-stuck leaf cells
         thEl.style.insetInlineStart = `${firstState.offset.insetInlineStart}px`;
       } else {
+        thEl.style.position = '';
+        thEl.style.zIndex = '';
         thEl.style.insetInlineStart = '';
       }
 
@@ -274,17 +290,19 @@ export function TableGroupHeaderCell({
       rowSpan={rowspan}
       scope="colgroup"
     >
-      <div
-        ref={clickableHeaderRef}
-        data-focus-id={`group-header-${groupId}`}
-        className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent === `group-header-${groupId}`,
-        })}
-        aria-label={group.ariaLabel?.({ sorted: false, descending: false, disabled: true })}
-        tabIndex={clickableHeaderTabIndex}
-      >
-        <div className={styles['header-cell-text']} id={headerId}>
-          {group.header}
+      <div ref={innerWrapperRef} className={styles['header-cell-content-group-inner']}>
+        <div
+          ref={clickableHeaderRef}
+          data-focus-id={`group-header-${groupId}`}
+          className={clsx(styles['header-cell-content'], {
+            [styles['header-cell-fake-focus']]: focusedComponent === `group-header-${groupId}`,
+          })}
+          aria-label={group.ariaLabel?.({ sorted: false, descending: false, disabled: true })}
+          tabIndex={clickableHeaderTabIndex}
+        >
+          <div className={styles['header-cell-text']} id={headerId}>
+            {group.header}
+          </div>
         </div>
       </div>
       {resizableColumns ? (

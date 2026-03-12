@@ -23,7 +23,7 @@ import styles from './styles.css.js';
 export interface TheadProps {
   selectionType: undefined | InternalSelectionType;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
-  columnGroupingDefinitions?: ReadonlyArray<TableProps.ColumnGroupsDefinition<any>>;
+  groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition<any>>;
   hierarchicalStructure?: TableGroupedTypes.HierarchicalStructure<any>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;

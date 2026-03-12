@@ -34,8 +34,8 @@ const componentPrefix = 'content-display';
 const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
-  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
-  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
+  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>) => void;
+  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>;
 }
 
 interface HierarchicalContentDisplayProps {
@@ -129,14 +129,24 @@ export default function ContentDisplayPreference({
   const [sortedOptions, sortedAndFilteredOptions, optionTree] = useMemo(() => {
     const sorted = getSortedOptions({ options, contentDisplay: value });
     const filtered = getFilteredOptions(sorted, columnFilteringText);
-    const tree = groups && groups.length > 0 ? buildOptionTree(sorted, groups) : null;
+    const tree = groups && groups.length > 0 ? buildOptionTree(sorted, groups, value) : null;
     return [sorted, filtered, tree];
   }, [columnFilteringText, groups, options, value]);
 
   const onToggle = (option: OptionWithVisibility) => {
-    // We use sortedOptions as base and not value because there might be options that
-    // are not in the value yet, so they're added as non-visible after the known ones.
-    onChange(sortedOptions.map(({ id, visible }) => ({ id, visible: id === option.id ? !option.visible : visible })));
+    // Re-build the hierarchical contentDisplay with the toggled visibility.
+    // We use sortedOptions (which carries groupId) to reconstruct the tree and then
+    // flatten it back to ContentDisplayProperties[] preserving the hierarchy.
+    const updatedOptions = sortedOptions.map(opt => ({
+      ...opt,
+      visible: opt.id === option.id ? !option.visible : opt.visible,
+    }));
+    const updatedTree = groups && groups.length > 0 ? buildOptionTree(updatedOptions, groups, value) : null;
+    if (updatedTree) {
+      onChange(flattenOptionTree(updatedTree));
+    } else {
+      onChange(updatedOptions.map(({ id, visible }) => ({ id, visible })));
+    }
   };
 
   return (
@@ -244,7 +254,9 @@ export default function ContentDisplayPreference({
           sortable={true}
           sortDisabled={columnFilteringText.trim().length > 0}
           onSortingChange={({ detail: { items } }) => {
-            onChange(items);
+            // items is a flat OptionWithVisibility[] — no group hierarchy in flat/filtered view,
+            // so we emit flat ContentDisplayItem entries.
+            onChange(items.map(({ id, visible }) => ({ id, visible })));
           }}
           ariaDescribedby={descriptionId}
           ariaLabelledby={titleId}
