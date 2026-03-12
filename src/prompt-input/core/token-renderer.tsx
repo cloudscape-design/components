@@ -224,13 +224,14 @@ function createReferenceWithCursorSpots(
   const wrapper = document.createElement('span');
   wrapper.setAttribute('data-type', token.pinned ? ELEMENT_TYPES.PINNED : ELEMENT_TYPES.REFERENCE);
   const instanceId = token.id && token.id !== '' ? token.id : generateTokenId('ref');
+  wrapper.id = instanceId; // Set id on wrapper so it can be extracted later
   wrapper.setAttribute('data-menu-id', token.menuId);
 
   const cursorSpotBefore = createCursorSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
   const container = document.createElement('span');
   container.className = styles['token-container'];
   container.setAttribute('contenteditable', 'false');
-  container.setAttribute('data-id', instanceId); // Set data-id on container, not wrapper
+  container.setAttribute('data-id', instanceId); // Also keep data-id on container for React key
 
   reactContainers.add(container);
   renderComponent(
@@ -337,24 +338,21 @@ export function renderTokensToDOM(
           newTriggerElement = span;
         }
       } else if (isReferenceToken(token)) {
-        const existingWrapper = token.id ? existingContainers.get(token.id) : undefined;
-        if (existingWrapper) {
-          const tokenType = getTokenType(existingWrapper);
-          if (tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED) {
-            // Reuse existing wrapper but update Token component with current disabled/readOnly
-            const tokenContainer = existingWrapper.querySelector(`.${styles['token-container']}`) as HTMLElement;
-            if (tokenContainer) {
-              renderComponent(
-                <Token key={token.id} variant="inline" label={token.label} disabled={disabled} readOnly={readOnly} />,
-                tokenContainer
-              );
-              reactContainers.add(tokenContainer); // Add the container, not the wrapper
-            }
+        const existingContainer = token.id ? existingContainers.get(token.id) : undefined;
+        if (existingContainer) {
+          // Get the wrapper from the container (container.parentElement should be the wrapper)
+          const existingWrapper = existingContainer.parentElement;
+          if (existingWrapper) {
+            const tokenType = getTokenType(existingWrapper);
+            if (tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED) {
+              // Reuse existing wrapper completely - don't re-render React component
+              reactContainers.add(existingContainer); // Keep tracking the container
 
-            newNodes.push(existingWrapper);
-            existingContainers.delete(token.id!);
-            lastReferenceWithZwnj = existingWrapper;
-            continue;
+              newNodes.push(existingWrapper);
+              existingContainers.delete(token.id!);
+              lastReferenceWithZwnj = existingWrapper;
+              continue;
+            }
           }
         }
 
@@ -370,6 +368,22 @@ export function renderTokensToDOM(
 
     // Efficiently update paragraph children by comparing with existing nodes
     const existingNodes = Array.from(p.childNodes);
+
+    // Check if nodes are already in the correct order
+    let nodesMatch = existingNodes.length === newNodes.length;
+    if (nodesMatch) {
+      for (let i = 0; i < newNodes.length; i++) {
+        if (existingNodes[i] !== newNodes[i]) {
+          nodesMatch = false;
+          break;
+        }
+      }
+    }
+
+    // Skip DOM manipulation if nodes are already correct
+    if (nodesMatch) {
+      continue;
+    }
 
     // Remove nodes that are no longer needed
     for (let i = newNodes.length; i < existingNodes.length; i++) {
