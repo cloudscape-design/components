@@ -671,15 +671,20 @@ describe('column-grouping-utils', () => {
 
       it('handles column referencing non-existent group', () => {
         const columns: TableProps.ColumnDefinition<any>[] = [{ id: 'orphan', header: 'Orphan', cell: () => 'orphan' }];
-        // columnDisplay references a group not in groupDefinitions — entire subtree is skipped
+        // columnDisplay references a group not in groupDefinitions
         const display: TableProps.ColumnDisplayProperties[] = [
           { type: 'group', id: 'nonexistent', children: [{ id: 'orphan', visible: true }] },
         ];
 
         const result = CalculateHierarchyTree(columns, ['orphan'], [], display);
 
-        // Group node not found → warnOnce is called and the subtree (including 'orphan') is skipped → no rows
-        expect(result?.rows).toHaveLength(0);
+        // Should treat as ungrouped
+        expect(result?.rows).toHaveLength(1);
+        expect(result?.rows[0].columns[0]).toMatchObject({
+          id: 'orphan',
+          rowspan: 1,
+          isGroup: false,
+        });
         expect(result?.columnToParentIds.has('orphan')).toBe(false);
       });
 

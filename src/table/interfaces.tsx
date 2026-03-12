@@ -615,18 +615,19 @@ export namespace TableProps {
     newValue: ValueType
   ) => Promise<void> | void;
 
-  export interface ColumnDisplayItem {
+  export interface ColumnDisplay {
+    type?: 'column' | undefined;
     id: string;
     visible: boolean;
   }
 
-  export interface ColumnDisplayGroup {
+  export interface GroupDisplay {
     type: 'group';
     id: string;
     children: ReadonlyArray<ColumnDisplayProperties>;
   }
 
-  export type ColumnDisplayProperties = ColumnDisplayItem | ColumnDisplayGroup;
+  export type ColumnDisplayProperties = ColumnDisplay | GroupDisplay;
 
   export interface ExpandableRows<T> {
     getItemChildren: (item: T) => readonly T[];
