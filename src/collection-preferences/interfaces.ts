@@ -235,6 +235,7 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface ContentDisplayItem {
+    type?: 'column' | undefined;
     id: string;
     visible: boolean;
   }

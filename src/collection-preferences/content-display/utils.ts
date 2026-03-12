@@ -34,7 +34,7 @@ function walkLeaves(
   const result: { id: string; visible: boolean }[] = [];
   const walk = (nodes: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>) => {
     for (const node of nodes) {
-      if ('children' in node) {
+      if (node.type === 'group') {
         walk(node.children);
       } else {
         result.push({ id: node.id, visible: node.visible });
@@ -85,7 +85,7 @@ function convertTree(
 ): OptionTreeNode[] {
   const result: OptionTreeNode[] = [];
   for (const item of items) {
-    if ('children' in item) {
+    if (item.type === 'group') {
       const groupDef = groupByKey.get(item.id);
       result.push({
         id: item.id,
