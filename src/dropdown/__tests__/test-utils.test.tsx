@@ -31,6 +31,11 @@ describe('test utils', () => {
       const { wrapper } = renderDropdown({ open: false });
       expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
     });
+
+    test('returns the open dropdown with expandToViewport', () => {
+      const { wrapper } = renderDropdown({ expandToViewport: true });
+      expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
+    });
   });
 
   describe('findContent', () => {
@@ -42,6 +47,11 @@ describe('test utils', () => {
     test('returns null when dropdown is closed', () => {
       const { wrapper } = renderDropdown({ open: false, content: <div>content</div> });
       expect(wrapper.findContent()).toBeNull();
+    });
+
+    test('returns the dropdown content with expandToViewport', () => {
+      const { wrapper } = renderDropdown({ expandToViewport: true, content: <div>content</div> });
+      expect(wrapper.findContent({ expandToViewport: true })).not.toBeNull();
     });
   });
 
