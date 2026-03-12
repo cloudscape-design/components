@@ -1350,9 +1350,7 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`.
-
-On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
+By default, the preference is \`{ position: 'bottom' }\`",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -1906,9 +1904,7 @@ while navigation drawer might be displayed, but opened using a custom trigger.",
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`.
-
-On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
+By default, the preference is \`{ position: 'bottom' }\`",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -20570,6 +20566,44 @@ Requires React 18.",
       },
       "detailType": "PromptInputProps.MenuLoadItemsDetail",
       "name": "onMenuLoadItems",
+    },
+    {
+      "cancelable": true,
+      "description": "Called when a trigger character is detected and about to be converted to a trigger token.
+This event is cancellable - return \`preventDefault()\` to prevent the trigger from being created.
+
+The detail object contains:
+- \`menuId\` - The ID of the menu associated with the trigger.
+- \`triggerChar\` - The trigger character that was detected.
+- \`position\` - The position in the text where the trigger was detected.
+
+Use this to implement custom validation logic for triggers, such as preventing
+triggers that don't meet certain conditions (e.g., only allow at start when certain tokens are present).
+
+Requires React 18.",
+      "detailInlineType": {
+        "name": "PromptInputProps.TriggerDetectedDetail",
+        "properties": [
+          {
+            "name": "menuId",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "position",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "triggerChar",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PromptInputProps.TriggerDetectedDetail",
+      "name": "onTriggerDetected",
     },
   ],
   "functions": [
