@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTokenRootStyles handles all possible style configurations 1`] = `
+{
+  "--awsui-style-focus-ring-border-color-ffxlcc": "#6366f1",
+  "--awsui-style-focus-ring-border-radius-ffxlcc": "12px",
+  "--awsui-style-focus-ring-border-width-ffxlcc": "2px",
+  "--awsui-token-style-background-default-ffxlcc": "#eef2ff",
+  "--awsui-token-style-background-disabled-ffxlcc": "#f1f5f9",
+  "--awsui-token-style-background-hover-ffxlcc": "#dbeafe",
+  "--awsui-token-style-border-color-default-ffxlcc": "#c7d2fe",
+  "--awsui-token-style-border-color-disabled-ffxlcc": "#e2e8f0",
+  "--awsui-token-style-border-color-hover-ffxlcc": "#93c5fd",
+  "--awsui-token-style-color-default-ffxlcc": "#4338ca",
+  "--awsui-token-style-color-disabled-ffxlcc": "#94a3b8",
+  "--awsui-token-style-color-hover-ffxlcc": "#3730a3",
+  "--awsui-token-style-dismiss-color-default-ffxlcc": "#6366f1",
+  "--awsui-token-style-dismiss-color-disabled-ffxlcc": "#cbd5e1",
+  "--awsui-token-style-dismiss-color-hover-ffxlcc": "#4338ca",
+  "borderRadius": "24px",
+  "paddingBlock": "4px",
+  "paddingInline": "12px",
+}
+`;
+
+exports[`getTokenRootStyles returns empty object when SYSTEM is not core 1`] = `{}`;
