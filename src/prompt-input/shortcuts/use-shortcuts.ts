@@ -18,6 +18,7 @@ export interface UseShortcutsConfig {
   menus?: readonly PromptInputProps.MenuDefinition[];
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean;
   editableElementRef: React.RefObject<HTMLDivElement>;
   cursorController: React.RefObject<CursorController | null>;
 }
@@ -103,12 +104,13 @@ interface ProcessorConfig {
   menus?: readonly PromptInputProps.MenuDefinition[];
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean;
   editableElementRef: React.RefObject<HTMLDivElement>;
   state: ShortcutsState;
 }
 
 function useTokenProcessor(config: ProcessorConfig) {
-  const { tokens, menus, tokensToText, onChange, state } = config;
+  const { tokens, menus, tokensToText, onChange, onTriggerDetected, state } = config;
   const previousTokensRef = useRef(tokens);
 
   const emitTokenChange = useStableCallback((newTokens: PromptInputProps.InputToken[]) => {
@@ -124,7 +126,8 @@ function useTokenProcessor(config: ProcessorConfig) {
       {
         source: 'user-input',
         detectTriggers: true,
-      }
+      },
+      onTriggerDetected
     );
 
     // Don't preserve cursor during trigger detection - cursor is already correct in DOM
@@ -171,7 +174,8 @@ function useTokenProcessor(config: ProcessorConfig) {
       {
         source: 'external',
         detectTriggers: true,
-      }
+      },
+      onTriggerDetected
     );
 
     const hasChanges = processed.length !== tokens.length || processed.some((t, i) => t !== tokens[i]);
@@ -179,7 +183,7 @@ function useTokenProcessor(config: ProcessorConfig) {
     if (hasChanges) {
       processWithCursor(processed, { source: 'external' });
     }
-  }, [tokens, menus, tokensToText, state, processWithCursor]);
+  }, [tokens, menus, tokensToText, onTriggerDetected, state, processWithCursor]);
 
   return {
     processUserInput,
@@ -259,7 +263,16 @@ function useShortcutsEffects(config: EffectsConfig) {
 // MAIN HOOK
 
 export function useShortcuts(config: UseShortcutsConfig): UseShortcutsResult {
-  const { isTokenMode, tokens, menus, tokensToText, onChange, editableElementRef, cursorController } = config;
+  const {
+    isTokenMode,
+    tokens,
+    menus,
+    tokensToText,
+    onChange,
+    onTriggerDetected,
+    editableElementRef,
+    cursorController,
+  } = config;
 
   // Initialize state
   const state = useShortcutsState();
@@ -323,6 +336,7 @@ export function useShortcuts(config: UseShortcutsConfig): UseShortcutsResult {
     menus,
     tokensToText,
     onChange,
+    onTriggerDetected,
     editableElementRef,
     state,
   });

@@ -305,13 +305,14 @@ export function findLastPinnedTokenIndex(tokens: readonly PromptInputProps.Input
 
 export function detectTriggersInTokens(
   tokens: readonly PromptInputProps.InputToken[],
-  menus: readonly PromptInputProps.MenuDefinition[]
+  menus: readonly PromptInputProps.MenuDefinition[],
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
 ): PromptInputProps.InputToken[] {
   const result: PromptInputProps.InputToken[] = [];
 
   for (const token of tokens) {
     if (isTextToken(token)) {
-      const detectedTokens = detectTriggersInText(token.value, menus, result);
+      const detectedTokens = detectTriggersInText(token.value, menus, result, onTriggerDetected);
       result.push(...detectedTokens);
     } else {
       result.push(token);
@@ -409,12 +410,13 @@ export function processTokens(
   options: {
     source: UpdateSource;
     detectTriggers?: boolean;
-  }
+  },
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
 ): PromptInputProps.InputToken[] {
   let result = [...tokens];
 
   if (options.detectTriggers && config.menus) {
-    result = detectTriggersInTokens(result, config.menus);
+    result = detectTriggersInTokens(result, config.menus, onTriggerDetected);
   }
 
   // Ensure all tokens have IDs

@@ -10,7 +10,7 @@ import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -86,6 +86,7 @@ const InternalPromptInput = React.forwardRef(
       onMenuItemSelect,
       onMenuFilter,
       onMenuLoadItems,
+      onTriggerDetected,
       i18nStrings,
       __internalRootRef,
       ...rest
@@ -126,6 +127,7 @@ const InternalPromptInput = React.forwardRef(
       onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
         fireNonCancelableEvent(onChange, detail);
       },
+      onTriggerDetected: onTriggerDetected ? detail => fireCancelableEvent(onTriggerDetected, detail) : undefined,
       editableElementRef,
       cursorController: cursorControllerRef,
     });

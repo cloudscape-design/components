@@ -19,6 +19,8 @@ import { enforcePinnedTokenOrdering } from '../core/token-utils';
 import {
   isBreakToken,
   isBRElement,
+  isHTMLElement,
+  isPinnedReferenceToken,
   isReferenceToken,
   isTextNode,
   isTextToken,
@@ -138,7 +140,18 @@ export function useEditableTokens({
       editableState.skipNextZwnjUpdate = false;
     }
 
-    if (elementRef.current.children.length === 0) {
+    // Check if content is effectively empty (only whitespace/BRs)
+    const hasRealContent = Array.from(elementRef.current.childNodes).some(node => {
+      if (isTextNode(node)) {
+        return (node.textContent?.trim().length ?? 0) > 0;
+      }
+      if (isHTMLElement(node)) {
+        return node.tagName !== 'BR' && (node.textContent?.trim().length ?? 0) > 0;
+      }
+      return false;
+    });
+
+    if (!hasRealContent || elementRef.current.children.length === 0) {
       ensureValidEmptyState(elementRef.current);
     }
 
@@ -296,6 +309,9 @@ export function useEditableTokens({
       return;
     }
 
+    // Enforce pinned token ordering - pinned tokens must always be first
+    const orderedTokens = tokens ? enforcePinnedTokenOrdering(tokens) : tokens;
+
     // Check if disabled/readOnly changed - force rerender if so
     const stateChanged = lastDisabledRef.current !== disabled || lastReadOnlyRef.current !== readOnly;
     lastDisabledRef.current = disabled;
@@ -305,11 +321,11 @@ export function useEditableTokens({
     // This is a structural change that needs cursor repositioning
     const triggerSplitAndMerged =
       lastRenderedTokensRef.current &&
-      tokens &&
-      lastRenderedTokensRef.current.length === tokens.length &&
-      tokens.some((token, i) => {
+      orderedTokens &&
+      lastRenderedTokensRef.current.length === orderedTokens.length &&
+      orderedTokens.some((token, i) => {
         const oldToken = lastRenderedTokensRef.current![i];
-        const prevToken = i > 0 ? tokens[i - 1] : null;
+        const prevToken = i > 0 ? orderedTokens[i - 1] : null;
         // Detect: text token after trigger, value changed by exactly 1 space at start
         return (
           isTextToken(token) &&
@@ -323,19 +339,19 @@ export function useEditableTokens({
       });
 
     const needsRerender =
-      stateChanged || shouldRerender(lastRenderedTokensRef.current, tokens) || triggerSplitAndMerged;
+      stateChanged || shouldRerender(lastRenderedTokensRef.current, orderedTokens) || triggerSplitAndMerged;
 
     if (!needsRerender) {
       // Even if no rerender, check for menu selection cursor positioning
       if (editableState.menuSelectionTokenId && cursorController) {
-        const insertedTokenIndex = (tokens ?? []).findIndex(
+        const insertedTokenIndex = (orderedTokens ?? []).findIndex(
           t => isReferenceToken(t) && t.id === editableState.menuSelectionTokenId
         );
 
         if (insertedTokenIndex !== -1) {
           let cursorPos = 0;
           for (let i = 0; i <= insertedTokenIndex; i++) {
-            const token = (tokens ?? [])[i];
+            const token = (orderedTokens ?? [])[i];
             if (isTextToken(token)) {
               cursorPos += TOKEN_LENGTHS.text(token.value);
             } else if (isBreakToken(token)) {
@@ -352,18 +368,23 @@ export function useEditableTokens({
         }
       }
 
-      lastRenderedTokensRef.current = tokens;
+      lastRenderedTokensRef.current = orderedTokens;
       return;
     }
 
-    if (lastRenderedTokensRef.current && tokens && lastRenderedTokensRef.current.length === 0 && tokens.length === 0) {
-      lastRenderedTokensRef.current = tokens;
+    if (
+      lastRenderedTokensRef.current &&
+      orderedTokens &&
+      lastRenderedTokensRef.current.length === 0 &&
+      orderedTokens.length === 0
+    ) {
+      lastRenderedTokensRef.current = orderedTokens;
       return;
     }
 
     // Check for menu selection BEFORE any rendering logic
     if (editableState.menuSelectionTokenId && cursorController) {
-      const insertedTokenIndex = (tokens ?? []).findIndex(
+      const insertedTokenIndex = (orderedTokens ?? []).findIndex(
         t => isReferenceToken(t) && t.id === editableState.menuSelectionTokenId
       );
 
@@ -371,7 +392,7 @@ export function useEditableTokens({
         // Calculate position after the inserted token
         let cursorPos = 0;
         for (let i = 0; i <= insertedTokenIndex; i++) {
-          const token = (tokens ?? [])[i];
+          const token = (orderedTokens ?? [])[i];
           if (isTextToken(token)) {
             cursorPos += TOKEN_LENGTHS.text(token.value);
           } else if (isBreakToken(token)) {
@@ -384,13 +405,13 @@ export function useEditableTokens({
         }
 
         // Render first
-        renderTokensToDOM(tokens ?? [], elementRef.current, reactContainersRef.current, { disabled, readOnly });
+        renderTokensToDOM(orderedTokens ?? [], elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
         // Then position cursor
         cursorController.setPosition(cursorPos);
 
         editableState.menuSelectionTokenId = null; // Clear flag
-        lastRenderedTokensRef.current = tokens;
+        lastRenderedTokensRef.current = orderedTokens;
         adjustInputHeight();
         return;
       }
@@ -409,15 +430,15 @@ export function useEditableTokens({
 
     // Check if CURRENT LINE (after last break) is only text
     let currentLineIsText = false;
-    if (tokens && tokens.length > 0) {
+    if (orderedTokens && orderedTokens.length > 0) {
       let lastBreakIndex = -1;
-      for (let i = tokens.length - 1; i >= 0; i--) {
-        if (isBreakToken(tokens[i])) {
+      for (let i = orderedTokens.length - 1; i >= 0; i--) {
+        if (isBreakToken(orderedTokens[i])) {
           lastBreakIndex = i;
           break;
         }
       }
-      const currentLineTokens = tokens.slice(lastBreakIndex + 1);
+      const currentLineTokens = orderedTokens.slice(lastBreakIndex + 1);
       currentLineIsText = currentLineTokens.length > 0 && currentLineTokens.every(isTextToken);
     }
 
@@ -427,18 +448,18 @@ export function useEditableTokens({
     }
 
     // Stop tracking when current line has non-text tokens
-    if (!currentLineIsText && tokens && tokens.length > 0) {
+    if (!currentLineIsText && orderedTokens && orderedTokens.length > 0) {
       isTypingIntoEmptyLineRef.current = false;
     }
 
     // Reset when empty
-    if (!tokens || tokens.length === 0) {
+    if (!orderedTokens || orderedTokens.length === 0) {
       isTypingIntoEmptyLineRef.current = false;
     }
 
     const isTypingIntoEmptyLine = isTypingIntoEmptyLineRef.current;
 
-    lastRenderedTokensRef.current = tokens;
+    lastRenderedTokensRef.current = orderedTokens;
 
     if (isTypingIntoEmptyLine) {
       // Capture cursor before rendering
@@ -446,21 +467,21 @@ export function useEditableTokens({
         cursorController.capture();
       }
 
-      const renderResult = renderTokensToDOM(tokens ?? [], elementRef.current, reactContainersRef.current, {
+      const renderResult = renderTokensToDOM(orderedTokens ?? [], elementRef.current, reactContainersRef.current, {
         disabled,
         readOnly,
       });
 
       // Check for menu selection in isTypingIntoEmptyLine path
       if (editableState.menuSelectionTokenId && cursorController) {
-        const insertedTokenIndex = (tokens ?? []).findIndex(
+        const insertedTokenIndex = (orderedTokens ?? []).findIndex(
           t => isReferenceToken(t) && t.id === editableState.menuSelectionTokenId
         );
 
         if (insertedTokenIndex !== -1) {
           let cursorPos = 0;
           for (let i = 0; i <= insertedTokenIndex; i++) {
-            const token = (tokens ?? [])[i];
+            const token = (orderedTokens ?? [])[i];
             if (isTextToken(token)) {
               cursorPos += TOKEN_LENGTHS.text(token.value);
             } else if (isBreakToken(token)) {
@@ -482,20 +503,20 @@ export function useEditableTokens({
       // If a new trigger was just created (not just filter text added), position cursor
       // Check if this is truly a new trigger by comparing with old triggers
       const oldTriggerIds = new Set((lastRenderedTokensRef.current ?? []).filter(isTriggerToken).map(t => t.id));
-      const newTriggerIds = (tokens ?? []).filter(isTriggerToken).map(t => t.id);
+      const newTriggerIds = (orderedTokens ?? []).filter(isTriggerToken).map(t => t.id);
       const hasNewTriggerId = newTriggerIds.some(id => !oldTriggerIds.has(id));
 
       if (renderResult.newTriggerElement && hasNewTriggerId && cursorController) {
         // Find the trigger token in the tokens array
-        const triggerTokens = (tokens ?? []).filter(isTriggerToken);
+        const triggerTokens = (orderedTokens ?? []).filter(isTriggerToken);
         if (triggerTokens.length > 0) {
           const lastTrigger = triggerTokens[triggerTokens.length - 1];
-          const triggerIndex = (tokens ?? []).indexOf(lastTrigger);
+          const triggerIndex = (orderedTokens ?? []).indexOf(lastTrigger);
 
           // Calculate position before trigger using TOKEN_LENGTHS
           let positionBeforeTrigger = 0;
           for (let i = 0; i < triggerIndex; i++) {
-            const token = (tokens ?? [])[i];
+            const token = (orderedTokens ?? [])[i];
             if (isTextToken(token)) {
               positionBeforeTrigger += TOKEN_LENGTHS.text(token.value);
             } else if (isBreakToken(token)) {
@@ -530,11 +551,11 @@ export function useEditableTokens({
       cursorController.capture();
     }
 
-    renderTokensToDOM(tokens ?? [], elementRef.current, reactContainersRef.current, { disabled, readOnly });
+    renderTokensToDOM(orderedTokens ?? [], elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
     // Check if this is a menu selection - position cursor after inserted token
     if (editableState.menuSelectionTokenId && cursorController) {
-      const insertedTokenIndex = (tokens ?? []).findIndex(
+      const insertedTokenIndex = (orderedTokens ?? []).findIndex(
         t => isReferenceToken(t) && t.id === editableState.menuSelectionTokenId
       );
 
@@ -542,7 +563,7 @@ export function useEditableTokens({
         // Calculate position after the inserted token
         let cursorPos = 0;
         for (let i = 0; i <= insertedTokenIndex; i++) {
-          const token = (tokens ?? [])[i];
+          const token = (orderedTokens ?? [])[i];
           if (isTextToken(token)) {
             cursorPos += TOKEN_LENGTHS.text(token.value);
           } else if (isBreakToken(token)) {
@@ -563,7 +584,35 @@ export function useEditableTokens({
 
     // Restore cursor after rendering
     if (cursorController) {
-      cursorController.restore();
+      const savedPosition = cursorController.getSavedPosition();
+
+      // Check if we just cleared to only pinned tokens (common after submission)
+      const hasPinnedTokens = orderedTokens?.some(isPinnedReferenceToken) ?? false;
+      const hasOnlyPinnedTokens = (hasPinnedTokens && orderedTokens?.every(t => isPinnedReferenceToken(t))) ?? false;
+
+      // Calculate total length of current tokens
+      let totalLength = 0;
+      for (const token of orderedTokens ?? []) {
+        if (isTextToken(token)) {
+          totalLength += TOKEN_LENGTHS.text(token.value);
+        } else if (isBreakToken(token)) {
+          totalLength += TOKEN_LENGTHS.LINE_BREAK;
+        } else if (isTriggerToken(token)) {
+          totalLength += TOKEN_LENGTHS.trigger(token.value);
+        } else {
+          totalLength += TOKEN_LENGTHS.REFERENCE;
+        }
+      }
+
+      // If saved position is beyond current content, position at end
+      const savedPositionInvalid = savedPosition !== null && savedPosition > totalLength;
+
+      if (hasOnlyPinnedTokens || savedPositionInvalid) {
+        // Position cursor at end of content (after all tokens)
+        cursorController.setPosition(totalLength);
+      } else {
+        cursorController.restore();
+      }
     }
 
     adjustInputHeight();

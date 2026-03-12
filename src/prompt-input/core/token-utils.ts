@@ -84,32 +84,69 @@ export function validateTrigger(
 export function detectTriggersInText(
   text: string,
   menus: readonly PromptInputProps.MenuDefinition[],
-  precedingTokens: readonly PromptInputProps.InputToken[]
+  precedingTokens: readonly PromptInputProps.InputToken[],
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
 ): PromptInputProps.InputToken[] {
   const results: PromptInputProps.InputToken[] = [];
   let position = 0;
 
   while (position < text.length) {
-    let foundTrigger = false;
+    let earliestTriggerIndex = -1;
+    let earliestMenu: PromptInputProps.MenuDefinition | null = null;
 
+    // Find the earliest VALID trigger in the remaining text
     for (const menu of menus) {
-      const triggerIndex = text.indexOf(menu.trigger, position);
-      if (triggerIndex === -1) {
-        continue;
-      }
+      let searchPos = position;
 
-      if (!validateTrigger(menu, triggerIndex, text, precedingTokens)) {
-        continue;
-      }
+      // Keep searching for this trigger character until we find a valid one or run out
+      while (searchPos < text.length) {
+        const triggerIndex = text.indexOf(menu.trigger, searchPos);
+        if (triggerIndex === -1) {
+          break;
+        }
 
-      const beforeTrigger = text.substring(position, triggerIndex);
+        const isValid = validateTrigger(menu, triggerIndex, text, precedingTokens);
+
+        if (isValid) {
+          // Fire onTriggerDetected event to allow consumer to cancel
+          if (onTriggerDetected) {
+            const wasPrevented = onTriggerDetected({
+              menuId: menu.id,
+              triggerChar: menu.trigger,
+              position: triggerIndex,
+            });
+
+            if (wasPrevented) {
+              // Consumer cancelled this trigger, continue searching
+              searchPos = triggerIndex + menu.trigger.length;
+              continue;
+            }
+          }
+
+          // Found a valid trigger - check if it's the earliest
+          if (earliestTriggerIndex === -1 || triggerIndex < earliestTriggerIndex) {
+            earliestTriggerIndex = triggerIndex;
+            earliestMenu = menu;
+          }
+          break;
+        }
+
+        // This trigger was invalid, continue searching after it
+        searchPos = triggerIndex + menu.trigger.length;
+      }
+    }
+
+    if (earliestMenu && earliestTriggerIndex !== -1) {
+      // Add text before trigger
+      const beforeTrigger = text.substring(position, earliestTriggerIndex);
       if (beforeTrigger) {
         results.push({ type: 'text', value: beforeTrigger });
       }
 
-      const afterTrigger = text.substring(triggerIndex + menu.trigger.length);
+      // Process trigger
+      const afterTrigger = text.substring(earliestTriggerIndex + earliestMenu.trigger.length);
       let filterText = '';
-      let remainingText = afterTrigger;
+      let endOfTrigger = earliestTriggerIndex + earliestMenu.trigger.length;
 
       if (afterTrigger && !/^\s/.test(afterTrigger)) {
         let endIndex = 0;
@@ -117,26 +154,20 @@ export function detectTriggersInText(
           endIndex++;
         }
         filterText = afterTrigger.substring(0, endIndex);
-        remainingText = afterTrigger.substring(endIndex);
+        endOfTrigger += endIndex;
       }
 
       results.push({
         type: 'trigger',
         value: filterText,
-        triggerChar: menu.trigger,
+        triggerChar: earliestMenu.trigger,
         id: generateTokenId('trigger'),
       });
 
-      if (remainingText) {
-        results.push({ type: 'text', value: remainingText });
-      }
-
-      position = text.length; // Move to end to exit while loop
-      foundTrigger = true;
-      break;
-    }
-
-    if (!foundTrigger) {
+      // Continue from after this trigger
+      position = endOfTrigger;
+    } else {
+      // No valid trigger found from current position - add remaining text and exit
       const remainingText = text.substring(position);
       if (remainingText) {
         results.push({ type: 'text', value: remainingText });
@@ -157,6 +188,22 @@ export interface AdjacentTokenResult {
 
 export function findAdjacentToken(container: Node, offset: number, direction: ArrowDirection): AdjacentTokenResult {
   let sibling: Node | null = null;
+
+  // If we're in a cursor spot, use the wrapper (parent's parent) as the reference point
+  if (isHTMLElement(container.parentElement)) {
+    const parentType = getTokenType(container.parentElement);
+    if (parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || parentType === ELEMENT_TYPES.CURSOR_SPOT_AFTER) {
+      // We're in a cursor spot - get the reference wrapper
+      const wrapper = container.parentElement.parentElement;
+      if (wrapper) {
+        // Find sibling of the wrapper, not the cursor spot
+        sibling = direction === 'left' ? wrapper.previousSibling : wrapper.nextSibling;
+        const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
+        const isReferenceToken = siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED;
+        return { sibling, isReferenceToken };
+      }
+    }
+  }
 
   if (isTextNode(container)) {
     const isAtBoundary = direction === 'left' ? offset === 0 : offset === (container.textContent?.length || 0);
