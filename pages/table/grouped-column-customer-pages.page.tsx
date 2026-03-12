@@ -138,24 +138,36 @@ const patchingColumns: TableProps.ColumnDefinition<PatchingHost>[] = [
     id: 'redHosts',
     header: 'Red hosts',
     cell: item => (item.redHosts === 0 ? '-' : item.redHosts),
-    groupId: 'hostsReporting',
   },
   {
     id: 'yellowHosts',
     header: 'Yellow hosts',
     cell: item => (item.yellowHosts === 0 ? '-' : item.yellowHosts),
-    groupId: 'hostsReporting',
   },
   {
     id: 'greenHosts',
     header: 'Green hosts',
     cell: item => (item.greenHosts === 0 ? '-' : item.greenHosts),
-    groupId: 'hostsReporting',
   },
 ];
 
-const patchingGroups: TableProps.ColumnGroupsDefinition<PatchingHost>[] = [
+const patchingGroups: TableProps.GroupDefinition<PatchingHost>[] = [
   { id: 'hostsReporting', header: 'Hosts reporting' },
+];
+
+const patchingColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'owner', visible: true },
+  { id: 'totalHosts', visible: true },
+  { id: 'hostsNotReporting', visible: true },
+  {
+    type: 'group',
+    id: 'hostsReporting',
+    children: [
+      { id: 'redHosts', visible: true },
+      { id: 'yellowHosts', visible: true },
+      { id: 'greenHosts', visible: true },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -264,21 +276,53 @@ const fmt = (n: number) => n.toLocaleString();
 const forecastColumns: TableProps.ColumnDefinition<ForecastItem>[] = [
   { id: 'ipn', header: 'IPN', cell: item => item.ipn, isRowHeader: true },
   { id: 'metric', header: 'Data', cell: item => item.metric },
-  { id: 'apr23snap1', header: 'Snapshot day 1', cell: item => fmt(item.apr23snap1), groupId: 'apr23' },
-  { id: 'apr23snap2', header: 'Snapshot day 2', cell: item => fmt(item.apr23snap2), groupId: 'apr23' },
-  { id: 'apr23change', header: '% Change', cell: item => item.apr23change, groupId: 'apr23' },
-  { id: 'apr30snap1', header: 'Snapshot day 1', cell: item => fmt(item.apr30snap1), groupId: 'apr30' },
-  { id: 'apr30snap2', header: 'Snapshot day 2', cell: item => fmt(item.apr30snap2), groupId: 'apr30' },
-  { id: 'apr30change', header: '% Change', cell: item => item.apr30change, groupId: 'apr30' },
-  { id: 'may7snap1', header: 'Snapshot day 1', cell: item => fmt(item.may7snap1), groupId: 'may7' },
-  { id: 'may7snap2', header: 'Snapshot day 2', cell: item => fmt(item.may7snap2), groupId: 'may7' },
-  { id: 'may7change', header: '% Change', cell: item => item.may7change, groupId: 'may7' },
+  { id: 'apr23snap1', header: 'Snapshot day 1', cell: item => fmt(item.apr23snap1) },
+  { id: 'apr23snap2', header: 'Snapshot day 2', cell: item => fmt(item.apr23snap2) },
+  { id: 'apr23change', header: '% Change', cell: item => item.apr23change },
+  { id: 'apr30snap1', header: 'Snapshot day 1', cell: item => fmt(item.apr30snap1) },
+  { id: 'apr30snap2', header: 'Snapshot day 2', cell: item => fmt(item.apr30snap2) },
+  { id: 'apr30change', header: '% Change', cell: item => item.apr30change },
+  { id: 'may7snap1', header: 'Snapshot day 1', cell: item => fmt(item.may7snap1) },
+  { id: 'may7snap2', header: 'Snapshot day 2', cell: item => fmt(item.may7snap2) },
+  { id: 'may7change', header: '% Change', cell: item => item.may7change },
 ];
 
-const forecastGroups: TableProps.ColumnGroupsDefinition<ForecastItem>[] = [
+const forecastGroups: TableProps.GroupDefinition<ForecastItem>[] = [
   { id: 'apr23', header: 'April 23' },
   { id: 'apr30', header: 'April 30' },
   { id: 'may7', header: 'May 7' },
+];
+
+const forecastColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'ipn', visible: true },
+  { id: 'metric', visible: true },
+  {
+    type: 'group',
+    id: 'apr23',
+    children: [
+      { id: 'apr23snap1', visible: true },
+      { id: 'apr23snap2', visible: true },
+      { id: 'apr23change', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'apr30',
+    children: [
+      { id: 'apr30snap1', visible: true },
+      { id: 'apr30snap2', visible: true },
+      { id: 'apr30change', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'may7',
+    children: [
+      { id: 'may7snap1', visible: true },
+      { id: 'may7snap2', visible: true },
+      { id: 'may7change', visible: true },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -347,29 +391,43 @@ const groceryData: GroceryItem[] = [
 
 const groceryColumns: TableProps.ColumnDefinition<GroceryItem>[] = [
   { id: 'store', header: 'Store', cell: item => item.store, sortingField: 'store', isRowHeader: true },
-  {
-    id: 'salesCoreRanking',
-    header: 'Core Ranking - Recommended Assortment',
-    cell: item => item.salesCoreRanking,
-    groupId: 'sales',
-  },
-  { id: 'salesReference', header: 'Reference Assortment Process', cell: item => item.salesReference, groupId: 'sales' },
-  { id: 'salesDelta', header: 'Delta', cell: item => item.salesDelta, groupId: 'sales' },
-  { id: 'salesDeltaPct', header: 'Delta %', cell: item => item.salesDeltaPct, groupId: 'sales' },
-  {
-    id: 'unitsCoreRanking',
-    header: 'Core Ranking - Recommended Assortment',
-    cell: item => item.unitsCoreRanking,
-    groupId: 'units',
-  },
-  { id: 'unitsReference', header: 'Reference Assortment Process', cell: item => item.unitsReference, groupId: 'units' },
-  { id: 'unitsDelta', header: 'Delta', cell: item => item.unitsDelta, groupId: 'units' },
-  { id: 'unitsDeltaPct', header: 'Delta %', cell: item => item.unitsDeltaPct, groupId: 'units' },
+  { id: 'salesCoreRanking', header: 'Core Ranking - Recommended Assortment', cell: item => item.salesCoreRanking },
+  { id: 'salesReference', header: 'Reference Assortment Process', cell: item => item.salesReference },
+  { id: 'salesDelta', header: 'Delta', cell: item => item.salesDelta },
+  { id: 'salesDeltaPct', header: 'Delta %', cell: item => item.salesDeltaPct },
+  { id: 'unitsCoreRanking', header: 'Core Ranking - Recommended Assortment', cell: item => item.unitsCoreRanking },
+  { id: 'unitsReference', header: 'Reference Assortment Process', cell: item => item.unitsReference },
+  { id: 'unitsDelta', header: 'Delta', cell: item => item.unitsDelta },
+  { id: 'unitsDeltaPct', header: 'Delta %', cell: item => item.unitsDeltaPct },
 ];
 
-const groceryGroups: TableProps.ColumnGroupsDefinition<GroceryItem>[] = [
+const groceryGroups: TableProps.GroupDefinition<GroceryItem>[] = [
   { id: 'sales', header: 'Sales' },
   { id: 'units', header: 'Units' },
+];
+
+const groceryColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'store', visible: true },
+  {
+    type: 'group',
+    id: 'sales',
+    children: [
+      { id: 'salesCoreRanking', visible: true },
+      { id: 'salesReference', visible: true },
+      { id: 'salesDelta', visible: true },
+      { id: 'salesDeltaPct', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'units',
+    children: [
+      { id: 'unitsCoreRanking', visible: true },
+      { id: 'unitsReference', visible: true },
+      { id: 'unitsDelta', visible: true },
+      { id: 'unitsDeltaPct', visible: true },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -466,51 +524,56 @@ const riskData: RiskItem[] = [
 ];
 
 const riskColumns: TableProps.ColumnDefinition<RiskItem>[] = [
-  { id: 'priority', header: 'Priority', cell: item => item.priority, sortingField: 'priority', groupId: 'itemAtRisk' },
-  {
-    id: 'impactedBom',
-    header: 'Impacted BOM',
-    cell: item => item.impactedBom,
-    sortingField: 'impactedBom',
-    groupId: 'itemAtRisk',
-  },
-  { id: 'riskType', header: 'Risk type', cell: item => item.riskType, sortingField: 'riskType', groupId: 'itemAtRisk' },
-  {
-    id: 'bomItemAtRisk',
-    header: 'BOM item at risk',
-    cell: item => item.bomItemAtRisk,
-    sortingField: 'bomItemAtRisk',
-    groupId: 'itemAtRisk',
-  },
-  {
-    id: 'materialClass',
-    header: 'Material class',
-    cell: item => item.materialClass,
-    sortingField: 'materialClass',
-    groupId: 'itemAtRisk',
-  },
+  { id: 'priority', header: 'Priority', cell: item => item.priority, sortingField: 'priority' },
+  { id: 'impactedBom', header: 'Impacted BOM', cell: item => item.impactedBom, sortingField: 'impactedBom' },
+  { id: 'riskType', header: 'Risk type', cell: item => item.riskType, sortingField: 'riskType' },
+  { id: 'bomItemAtRisk', header: 'BOM item at risk', cell: item => item.bomItemAtRisk, sortingField: 'bomItemAtRisk' },
+  { id: 'materialClass', header: 'Material class', cell: item => item.materialClass, sortingField: 'materialClass' },
   {
     id: 'internalRackType',
     header: 'Internal Rack Type',
     cell: item => item.internalRackType,
     sortingField: 'internalRackType',
-    groupId: 'itemAtRisk',
   },
   {
     id: 'externalRackType',
     header: 'External Rack Type',
     cell: item => item.externalRackType,
     sortingField: 'externalRackType',
-    groupId: 'itemAtRisk',
   },
-  { id: 'findNo', header: 'Find No', cell: item => item.findNo, sortingField: 'findNo', groupId: 'itemAtRisk' },
-  { id: 'alternateItem', header: 'Alternate item', cell: item => item.alternateItem, groupId: 'suggestedAlternate' },
-  { id: 'parentItem', header: 'Parent item', cell: item => item.parentItem, groupId: 'suggestedAlternate' },
+  { id: 'findNo', header: 'Find No', cell: item => item.findNo, sortingField: 'findNo' },
+  { id: 'alternateItem', header: 'Alternate item', cell: item => item.alternateItem },
+  { id: 'parentItem', header: 'Parent item', cell: item => item.parentItem },
 ];
 
-const riskGroups: TableProps.ColumnGroupsDefinition<RiskItem>[] = [
+const riskGroups: TableProps.GroupDefinition<RiskItem>[] = [
   { id: 'itemAtRisk', header: 'Item at risk' },
   { id: 'suggestedAlternate', header: 'Suggested alternate' },
+];
+
+const riskColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  {
+    type: 'group',
+    id: 'itemAtRisk',
+    children: [
+      { id: 'priority', visible: true },
+      { id: 'impactedBom', visible: true },
+      { id: 'riskType', visible: true },
+      { id: 'bomItemAtRisk', visible: true },
+      { id: 'materialClass', visible: true },
+      { id: 'internalRackType', visible: true },
+      { id: 'externalRackType', visible: true },
+      { id: 'findNo', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'suggestedAlternate',
+    children: [
+      { id: 'alternateItem', visible: true },
+      { id: 'parentItem', visible: true },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -535,24 +598,25 @@ const mlCostData: MLCostItem[] = [
 
 const mlCostColumns: TableProps.ColumnDefinition<MLCostItem>[] = [
   { id: 'product', header: 'ML Product', cell: item => item.product, sortingField: 'product', isRowHeader: true },
-  {
-    id: 'onDemandCost',
-    header: 'On-Demand',
-    cell: item => item.onDemandCost,
-    sortingField: 'onDemandCost',
-    groupId: 'cost',
-  },
-  {
-    id: 'reservedCost',
-    header: 'Reserved',
-    cell: item => item.reservedCost,
-    sortingField: 'reservedCost',
-    groupId: 'cost',
-  },
-  { id: 'spotCost', header: 'Spot', cell: item => item.spotCost, sortingField: 'spotCost', groupId: 'cost' },
+  { id: 'onDemandCost', header: 'On-Demand', cell: item => item.onDemandCost, sortingField: 'onDemandCost' },
+  { id: 'reservedCost', header: 'Reserved', cell: item => item.reservedCost, sortingField: 'reservedCost' },
+  { id: 'spotCost', header: 'Spot', cell: item => item.spotCost, sortingField: 'spotCost' },
 ];
 
-const mlCostGroups: TableProps.ColumnGroupsDefinition<MLCostItem>[] = [{ id: 'cost', header: 'Cost by pricing type' }];
+const mlCostGroups: TableProps.GroupDefinition<MLCostItem>[] = [{ id: 'cost', header: 'Cost by pricing type' }];
+
+const mlCostColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'product', visible: true },
+  {
+    type: 'group',
+    id: 'cost',
+    children: [
+      { id: 'onDemandCost', visible: true },
+      { id: 'reservedCost', visible: true },
+      { id: 'spotCost', visible: true },
+    ],
+  },
+];
 
 // ============================================================================
 // 6. AWS Region Services — Availability Zones with Partitions
@@ -624,48 +688,46 @@ function StatusCell({ status }: { status: string }) {
 
 const regionColumns: TableProps.ColumnDefinition<RegionService>[] = [
   { id: 'service', header: 'Service', cell: item => item.service, isRowHeader: true },
-  {
-    id: 'usEast1aP1',
-    header: 'Partition 1',
-    cell: item => <StatusCell status={item.usEast1aPartition1} />,
-    groupId: 'usEast1a',
-  },
-  {
-    id: 'usEast1aP2',
-    header: 'Partition 2',
-    cell: item => <StatusCell status={item.usEast1aPartition2} />,
-    groupId: 'usEast1a',
-  },
-  {
-    id: 'usEast1bP1',
-    header: 'Partition 1',
-    cell: item => <StatusCell status={item.usEast1bPartition1} />,
-    groupId: 'usEast1b',
-  },
-  {
-    id: 'usEast1bP2',
-    header: 'Partition 2',
-    cell: item => <StatusCell status={item.usEast1bPartition2} />,
-    groupId: 'usEast1b',
-  },
-  {
-    id: 'usEast1cP1',
-    header: 'Partition 1',
-    cell: item => <StatusCell status={item.usEast1cPartition1} />,
-    groupId: 'usEast1c',
-  },
-  {
-    id: 'usEast1cP2',
-    header: 'Partition 2',
-    cell: item => <StatusCell status={item.usEast1cPartition2} />,
-    groupId: 'usEast1c',
-  },
+  { id: 'usEast1aP1', header: 'Partition 1', cell: item => <StatusCell status={item.usEast1aPartition1} /> },
+  { id: 'usEast1aP2', header: 'Partition 2', cell: item => <StatusCell status={item.usEast1aPartition2} /> },
+  { id: 'usEast1bP1', header: 'Partition 1', cell: item => <StatusCell status={item.usEast1bPartition1} /> },
+  { id: 'usEast1bP2', header: 'Partition 2', cell: item => <StatusCell status={item.usEast1bPartition2} /> },
+  { id: 'usEast1cP1', header: 'Partition 1', cell: item => <StatusCell status={item.usEast1cPartition1} /> },
+  { id: 'usEast1cP2', header: 'Partition 2', cell: item => <StatusCell status={item.usEast1cPartition2} /> },
 ];
 
-const regionGroups: TableProps.ColumnGroupsDefinition<RegionService>[] = [
+const regionGroups: TableProps.GroupDefinition<RegionService>[] = [
   { id: 'usEast1a', header: 'us-east-1a' },
   { id: 'usEast1b', header: 'us-east-1b' },
   { id: 'usEast1c', header: 'us-east-1c' },
+];
+
+const regionColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'service', visible: true },
+  {
+    type: 'group',
+    id: 'usEast1a',
+    children: [
+      { id: 'usEast1aP1', visible: true },
+      { id: 'usEast1aP2', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'usEast1b',
+    children: [
+      { id: 'usEast1bP1', visible: true },
+      { id: 'usEast1bP2', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'usEast1c',
+    children: [
+      { id: 'usEast1cP1', visible: true },
+      { id: 'usEast1cP2', visible: true },
+    ],
+  },
 ];
 
 // ============================================================================
@@ -733,7 +795,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={patchingColumns}
-            columnGroupingDefinitions={patchingGroups}
+            groupDefinitions={patchingGroups}
+            columnDisplay={patchingColumnDisplay}
             items={patchingData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
@@ -755,7 +818,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={forecastColumns}
-            columnGroupingDefinitions={forecastGroups}
+            groupDefinitions={forecastGroups}
+            columnDisplay={forecastColumnDisplay}
             items={forecastData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
@@ -773,7 +837,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={groceryColumns}
-            columnGroupingDefinitions={groceryGroups}
+            groupDefinitions={groceryGroups}
+            columnDisplay={groceryColumnDisplay}
             items={groceryData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
@@ -792,7 +857,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={riskColumns}
-            columnGroupingDefinitions={riskGroups}
+            groupDefinitions={riskGroups}
+            columnDisplay={riskColumnDisplay}
             items={riskData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
@@ -811,7 +877,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={mlCostColumns}
-            columnGroupingDefinitions={mlCostGroups}
+            groupDefinitions={mlCostGroups}
+            columnDisplay={mlCostColumnDisplay}
             items={mlCostData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
@@ -830,7 +897,8 @@ export default function CustomerPagesDemo() {
           <Table
             variant="stacked"
             columnDefinitions={regionColumns}
-            columnGroupingDefinitions={regionGroups}
+            groupDefinitions={regionGroups}
+            columnDisplay={regionColumnDisplay}
             items={regionData}
             resizableColumns={resizable}
             stickyColumns={stickyColumns}
