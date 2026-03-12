@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-  AppLayout,
   Box,
   ButtonGroup,
   ButtonGroupProps,
@@ -19,7 +18,6 @@ import {
 import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import labels from '../app-layout/utils/labels';
 import { i18nStrings } from '../file-upload/shared';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -191,6 +189,7 @@ export default function PromptInputShortcutsPage() {
   const [extractedText, setExtractedText] = useState<string>('');
   const [selectionStart, setSelectionStart] = useState<string>('0');
   const [selectionEnd, setSelectionEnd] = useState<string>('0');
+  const [maxPinnedTokens, setMaxPinnedTokens] = useState<number>(1);
 
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
@@ -284,393 +283,410 @@ export default function PromptInputShortcutsPage() {
   };
 
   return (
-    <AppLayout
-      ariaLabels={labels}
-      content={
-        <div style={{ padding: 10 }}>
-          <h1>PromptInput demo</h1>
-          <SpaceBetween size="xl">
-            <FormField label="Settings">
-              <Checkbox checked={isDisabled} onChange={() => setUrlParams({ isDisabled: !isDisabled })}>
-                Disabled
-              </Checkbox>
-              <Checkbox checked={isReadOnly} onChange={() => setUrlParams({ isReadOnly: !isReadOnly })}>
-                Read-only
-              </Checkbox>
-              <Checkbox checked={isInvalid} onChange={() => setUrlParams({ isInvalid: !isInvalid })}>
-                Invalid
-              </Checkbox>
-              <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
-                Warning
-              </Checkbox>
-              <Checkbox
-                checked={hasSecondaryContent}
-                onChange={() =>
-                  setUrlParams({
-                    hasSecondaryContent: !hasSecondaryContent,
-                  })
-                }
-              >
-                Secondary content
-              </Checkbox>
-              <Checkbox
-                checked={hasSecondaryActions}
-                onChange={() =>
-                  setUrlParams({
-                    hasSecondaryActions: !hasSecondaryActions,
-                  })
-                }
-              >
-                Secondary actions
-              </Checkbox>
-              <Checkbox
-                checked={hasPrimaryActions}
-                onChange={() =>
-                  setUrlParams({
-                    hasPrimaryActions: !hasPrimaryActions,
-                  })
-                }
-              >
-                Custom primary actions
-              </Checkbox>
-              <Checkbox
-                checked={hasInfiniteMaxRows}
-                onChange={() =>
-                  setUrlParams({
-                    hasInfiniteMaxRows: !hasInfiniteMaxRows,
-                  })
-                }
-              >
-                Infinite max rows
-              </Checkbox>
-              <Checkbox
-                checked={disableActionButton}
-                onChange={() =>
-                  setUrlParams({
-                    disableActionButton: !disableActionButton,
-                  })
-                }
-              >
-                Disable action button
-              </Checkbox>
-              <Checkbox
-                checked={disableBrowserAutocorrect}
-                onChange={() =>
-                  setUrlParams({
-                    disableBrowserAutocorrect: !disableBrowserAutocorrect,
-                  })
-                }
-              >
-                Disable browser autocorrect
-              </Checkbox>
-              <Checkbox
-                checked={enableSpellcheck}
-                onChange={() =>
-                  setUrlParams({
-                    enableSpellcheck: !enableSpellcheck,
-                  })
-                }
-              >
-                Enable spellcheck
-              </Checkbox>
-              <Checkbox
-                checked={hasName}
-                onChange={() =>
-                  setUrlParams({
-                    hasName: !hasName,
-                  })
-                }
-              >
-                Has name attribute (for forms)
-              </Checkbox>
-              <Checkbox
-                checked={enableAutoFocus}
-                onChange={() =>
-                  setUrlParams({
-                    enableAutoFocus: !enableAutoFocus,
-                  })
-                }
-              >
-                Enable auto focus
-              </Checkbox>
-            </FormField>
-            <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
-              Fill with placeholder text
-            </button>
+    <div style={{ padding: 10 }}>
+      <h1>PromptInput Shortcuts Demo</h1>
+      <SpaceBetween size="xl">
+        <FormField label="Settings">
+          <Checkbox checked={isDisabled} onChange={() => setUrlParams({ isDisabled: !isDisabled })}>
+            Disabled
+          </Checkbox>
+          <Checkbox checked={isReadOnly} onChange={() => setUrlParams({ isReadOnly: !isReadOnly })}>
+            Read-only
+          </Checkbox>
+          <Checkbox checked={isInvalid} onChange={() => setUrlParams({ isInvalid: !isInvalid })}>
+            Invalid
+          </Checkbox>
+          <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
+            Warning
+          </Checkbox>
+          <Checkbox
+            checked={hasSecondaryContent}
+            onChange={() =>
+              setUrlParams({
+                hasSecondaryContent: !hasSecondaryContent,
+              })
+            }
+          >
+            Secondary content
+          </Checkbox>
+          <Checkbox
+            checked={hasSecondaryActions}
+            onChange={() =>
+              setUrlParams({
+                hasSecondaryActions: !hasSecondaryActions,
+              })
+            }
+          >
+            Secondary actions
+          </Checkbox>
+          <Checkbox
+            checked={hasPrimaryActions}
+            onChange={() =>
+              setUrlParams({
+                hasPrimaryActions: !hasPrimaryActions,
+              })
+            }
+          >
+            Custom primary actions
+          </Checkbox>
+          <Checkbox
+            checked={hasInfiniteMaxRows}
+            onChange={() =>
+              setUrlParams({
+                hasInfiniteMaxRows: !hasInfiniteMaxRows,
+              })
+            }
+          >
+            Infinite max rows
+          </Checkbox>
+          <Checkbox
+            checked={disableActionButton}
+            onChange={() =>
+              setUrlParams({
+                disableActionButton: !disableActionButton,
+              })
+            }
+          >
+            Disable action button
+          </Checkbox>
+          <Checkbox
+            checked={disableBrowserAutocorrect}
+            onChange={() =>
+              setUrlParams({
+                disableBrowserAutocorrect: !disableBrowserAutocorrect,
+              })
+            }
+          >
+            Disable browser autocorrect
+          </Checkbox>
+          <Checkbox
+            checked={enableSpellcheck}
+            onChange={() =>
+              setUrlParams({
+                enableSpellcheck: !enableSpellcheck,
+              })
+            }
+          >
+            Enable spellcheck
+          </Checkbox>
+          <Checkbox
+            checked={hasName}
+            onChange={() =>
+              setUrlParams({
+                hasName: !hasName,
+              })
+            }
+          >
+            Has name attribute (for forms)
+          </Checkbox>
+          <Checkbox
+            checked={enableAutoFocus}
+            onChange={() =>
+              setUrlParams({
+                enableAutoFocus: !enableAutoFocus,
+              })
+            }
+          >
+            Enable auto focus
+          </Checkbox>
+        </FormField>
+        <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
+          Fill with placeholder text
+        </button>
 
-            <button id="focus-button" onClick={() => ref.current?.focus()}>
-              Focus component
-            </button>
+        <button id="focus-button" onClick={() => ref.current?.focus()}>
+          Focus component
+        </button>
 
-            <button onClick={() => buttonGroupRef.current?.focus('files')}>Focus file input</button>
-            <button onClick={() => ref.current?.select()}>Select all text</button>
+        <button onClick={() => buttonGroupRef.current?.focus('files')}>Focus file input</button>
+        <button onClick={() => ref.current?.select()}>Select all text</button>
 
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <label>
-                Start:
-                <input
-                  type="number"
-                  value={selectionStart}
-                  onChange={e => setSelectionStart(e.target.value)}
-                  style={{ width: '60px', marginLeft: '4px' }}
-                />
-              </label>
-              <label>
-                End:
-                <input
-                  type="number"
-                  value={selectionEnd}
-                  onChange={e => setSelectionEnd(e.target.value)}
-                  style={{ width: '60px', marginLeft: '4px' }}
-                />
-              </label>
-              <button
-                onClick={() => {
-                  const start = parseInt(selectionStart, 10);
-                  const end = parseInt(selectionEnd, 10);
-                  if (!isNaN(start) && !isNaN(end)) {
-                    ref.current?.focus();
-                    // Use setTimeout to ensure focus completes before setting selection
-                    setTimeout(() => {
-                      ref.current?.setSelectionRange(start, end);
-                    }, 0);
-                  }
-                }}
-              >
-                Set selection range
-              </button>
-            </div>
-
-            {extractedText || tokens.length > 0 ? (
-              <KeyValuePairs
-                columns={1}
-                items={[
-                  ...(extractedText
-                    ? [
-                        {
-                          label: 'Last submitted text',
-                          value: <code>{extractedText}</code>,
-                        },
-                      ]
-                    : []),
-                  ...(tokens.length > 0
-                    ? [
-                        {
-                          label: 'Current tokens',
-                          value: <code>{JSON.stringify(tokens, null, 2)}</code>,
-                        },
-                      ]
-                    : []),
-                ]}
-              />
-            ) : null}
-
-            <form
-              onSubmit={event => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                console.log('FORM SUBMITTED (fallback):', {
-                  'user-prompt': formData.get('user-prompt'),
-                });
-              }}
-            >
-              <ColumnLayout columns={2}>
-                <FormField
-                  errorText={(plainTextValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
-                  warningText={hasWarning && 'This input has a warning'}
-                  constraintText={
-                    <>
-                      This service is subject to some policy. Character count: {plainTextValue.length}/{MAX_CHARS}
-                    </>
-                  }
-                  i18nStrings={{ errorIconAriaLabel: 'Error' }}
-                >
-                  <ScreenshotArea>
-                    <PromptInput
-                      data-testid="prompt-input"
-                      ariaLabel="Chat input"
-                      actionButtonIconName="send"
-                      actionButtonAriaLabel="Submit prompt"
-                      tokens={tokens}
-                      maxMenuHeight={400}
-                      onChange={event => {
-                        setTokens(event.detail.tokens ?? []);
-                        setPlainTextValue(event.detail.value ?? '');
-                      }}
-                      onAction={({ detail }) => {
-                        setExtractedText(detail.value ?? '');
-
-                        // Keep mode token (first pinned reference from useAtStart menu) after submission
-                        const modeToken = detail.tokens?.find(
-                          (token): token is PromptInputProps.ReferenceToken =>
-                            token.type === 'reference' && token.pinned === true
-                        );
-
-                        setTokens(modeToken ? [modeToken] : []);
-                        setPlainTextValue('');
-
-                        window.alert(
-                          `Submitted:\n\nPlain text: ${detail.value ?? ''}\n\nTokens: ${JSON.stringify(
-                            detail.tokens,
-                            null,
-                            2
-                          )}`
-                        );
-                      }}
-                      placeholder="Ask a question"
-                      maxRows={hasInfiniteMaxRows ? -1 : 4}
-                      disabled={isDisabled}
-                      readOnly={isReadOnly}
-                      invalid={isInvalid || plainTextValue.length > MAX_CHARS}
-                      warning={hasWarning}
-                      ref={ref}
-                      disableSecondaryActionsPaddings={true}
-                      disableActionButton={disableActionButton}
-                      disableBrowserAutocorrect={disableBrowserAutocorrect}
-                      spellcheck={enableSpellcheck}
-                      name={hasName ? 'user-prompt' : undefined}
-                      autoFocus={enableAutoFocus}
-                      menus={menus}
-                      onMenuItemSelect={event => {
-                        console.log('Menu selection:', event.detail);
-                        // Modes are now just reference tokens - no special handling needed
-                      }}
-                      i18nStrings={
-                        {
-                          selectedMenuItemAriaLabel: 'Selected',
-                          menuErrorIconAriaLabel: 'Error',
-                          menuRecoveryText: 'Retry',
-                          tokenInsertedAriaLabel: (token: { label?: string; value: string }) =>
-                            `${token.label || token.value} inserted`,
-                          tokenPinnedAriaLabel: (token: { label?: string; value: string }) =>
-                            `${token.label || token.value} pinned`,
-                          tokenRemovedAriaLabel: (token: { label?: string; value: string }) =>
-                            `${token.label || token.value} removed`,
-                        } as PromptInputProps['i18nStrings']
-                      }
-                      customPrimaryAction={
-                        hasPrimaryActions ? (
-                          <ButtonGroup
-                            variant="icon"
-                            items={[
-                              {
-                                type: 'icon-button',
-                                id: 'record',
-                                text: 'Record',
-                                iconName: 'microphone',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                              {
-                                type: 'icon-button',
-                                id: 'submit',
-                                text: 'Submit',
-                                iconName: 'send',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                            ]}
-                          />
-                        ) : undefined
-                      }
-                      secondaryActions={
-                        hasSecondaryActions ? (
-                          <Box padding={{ left: 'xxs', top: 'xs' }}>
-                            <ButtonGroup
-                              ref={buttonGroupRef}
-                              ariaLabel="Chat actions"
-                              onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
-                              onItemClick={({ detail }) => {
-                                if (detail.id === 'slash') {
-                                  // Filter out only pinned references to check content after them
-                                  const nonPinnedTokens = tokens.filter(
-                                    token => !(token.type === 'reference' && token.pinned)
-                                  );
-
-                                  // Determine if we need to add space before slash
-                                  let needsSpace = false;
-                                  if (nonPinnedTokens.length > 0) {
-                                    const firstToken = nonPinnedTokens[0];
-                                    needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
-                                  }
-
-                                  ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
-                                }
-                                if (detail.id === 'at') {
-                                  ref.current?.insertText('@');
-                                }
-                                if (detail.id === 'debug') {
-                                  ref.current?.insertText('hello');
-                                }
-                              }}
-                              items={[
-                                {
-                                  type: 'icon-file-input',
-                                  id: 'files',
-                                  text: 'Upload files',
-                                  multiple: true,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'expand',
-                                  iconName: 'expand',
-                                  text: 'Go full page',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'remove',
-                                  iconName: 'remove',
-                                  text: 'Remove',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'slash',
-                                  iconName: 'slash',
-                                  text: 'Insert slash',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'at',
-                                  iconName: 'at-symbol',
-                                  text: 'Insert at symbol',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                                {
-                                  type: 'icon-button',
-                                  id: 'debug',
-                                  iconName: 'bug',
-                                  text: 'Insert debug',
-                                  disabled: isDisabled || isReadOnly,
-                                },
-                              ]}
-                              variant="icon"
-                            />
-                          </Box>
-                        ) : undefined
-                      }
-                      secondaryContent={
-                        hasSecondaryContent && files.length > 0 ? (
-                          <FileTokenGroup
-                            items={files.map(file => ({
-                              file,
-                            }))}
-                            showFileThumbnail={true}
-                            onDismiss={onDismiss}
-                            i18nStrings={i18nStrings}
-                            alignment="horizontal"
-                          />
-                        ) : undefined
-                      }
-                    />
-                  </ScreenshotArea>
-                </FormField>
-                <div />
-              </ColumnLayout>
-            </form>
-          </SpaceBetween>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <label>
+            Start:
+            <input
+              type="number"
+              value={selectionStart}
+              onChange={e => setSelectionStart(e.target.value)}
+              style={{ width: '60px', marginLeft: '4px' }}
+            />
+          </label>
+          <label>
+            End:
+            <input
+              type="number"
+              value={selectionEnd}
+              onChange={e => setSelectionEnd(e.target.value)}
+              style={{ width: '60px', marginLeft: '4px' }}
+            />
+          </label>
+          <button
+            onClick={() => {
+              const start = parseInt(selectionStart, 10);
+              const end = parseInt(selectionEnd, 10);
+              if (!isNaN(start) && !isNaN(end)) {
+                ref.current?.focus();
+                // Use setTimeout to ensure focus completes before setting selection
+                setTimeout(() => {
+                  ref.current?.setSelectionRange(start, end);
+                }, 0);
+              }
+            }}
+          >
+            Set selection range
+          </button>
         </div>
-      }
-    />
+
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <label>
+            Max pinned tokens:
+            <input
+              type="number"
+              min="0"
+              value={maxPinnedTokens}
+              onChange={e => setMaxPinnedTokens(Math.max(0, parseInt(e.target.value, 10) || 0))}
+              style={{ width: '60px', marginLeft: '4px' }}
+            />
+          </label>
+        </div>
+
+        {extractedText || tokens.length > 0 ? (
+          <KeyValuePairs
+            columns={1}
+            items={[
+              ...(extractedText
+                ? [
+                    {
+                      label: 'Last submitted text',
+                      value: <code>{extractedText}</code>,
+                    },
+                  ]
+                : []),
+              ...(tokens.length > 0
+                ? [
+                    {
+                      label: 'Current tokens',
+                      value: <code>{JSON.stringify(tokens, null, 2)}</code>,
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        ) : null}
+
+        <form
+          onSubmit={event => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            console.log('FORM SUBMITTED (fallback):', {
+              'user-prompt': formData.get('user-prompt'),
+            });
+          }}
+        >
+          <ColumnLayout columns={2}>
+            <FormField
+              errorText={(plainTextValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
+              warningText={hasWarning && 'This input has a warning'}
+              constraintText={
+                <>
+                  This service is subject to some policy. Character count: {plainTextValue.length}/{MAX_CHARS}
+                </>
+              }
+              i18nStrings={{ errorIconAriaLabel: 'Error' }}
+            >
+              <ScreenshotArea>
+                <PromptInput
+                  data-testid="prompt-input"
+                  ariaLabel="Chat input"
+                  actionButtonIconName="send"
+                  actionButtonAriaLabel="Submit prompt"
+                  tokens={tokens}
+                  maxMenuHeight={400}
+                  onChange={event => {
+                    setTokens(event.detail.tokens ?? []);
+                    setPlainTextValue(event.detail.value ?? '');
+                  }}
+                  onAction={({ detail }) => {
+                    setExtractedText(detail.value ?? '');
+
+                    // Keep all pinned tokens after submission, deduplicated by value
+                    const pinnedTokens = (detail.tokens ?? []).filter(
+                      (token): token is PromptInputProps.ReferenceToken =>
+                        token.type === 'reference' && token.pinned === true
+                    );
+
+                    // Deduplicate by value
+                    const uniquePinnedTokens = pinnedTokens.filter(
+                      (token, index, arr) => arr.findIndex(t => t.value === token.value) === index
+                    );
+
+                    setTokens(uniquePinnedTokens);
+                    setPlainTextValue('');
+
+                    window.alert(
+                      `Submitted:\n\nPlain text: ${detail.value ?? ''}\n\nTokens: ${JSON.stringify(
+                        detail.tokens,
+                        null,
+                        2
+                      )}`
+                    );
+                  }}
+                  placeholder="Ask a question"
+                  maxRows={hasInfiniteMaxRows ? -1 : 4}
+                  disabled={isDisabled}
+                  readOnly={isReadOnly}
+                  invalid={isInvalid || plainTextValue.length > MAX_CHARS}
+                  warning={hasWarning}
+                  ref={ref}
+                  disableSecondaryActionsPaddings={true}
+                  disableActionButton={disableActionButton}
+                  disableBrowserAutocorrect={disableBrowserAutocorrect}
+                  spellcheck={enableSpellcheck}
+                  name={hasName ? 'user-prompt' : undefined}
+                  autoFocus={enableAutoFocus}
+                  menus={menus}
+                  onMenuItemSelect={event => {
+                    console.log('Menu selection:', event.detail);
+                  }}
+                  onTriggerDetected={event => {
+                    // Count current pinned tokens
+                    const currentPinnedCount = tokens.filter(
+                      token => token.type === 'reference' && token.pinned === true
+                    ).length;
+
+                    // Find the menu for this trigger
+                    const menu = menus.find(m => m.trigger === event.detail.triggerChar);
+
+                    // If this is a useAtStart menu and we're at the limit, cancel
+                    if (menu?.useAtStart && currentPinnedCount >= maxPinnedTokens) {
+                      event.preventDefault();
+                    }
+                  }}
+                  i18nStrings={{
+                    actionButtonAriaLabel: 'Submit prompt',
+                    menuErrorIconAriaLabel: 'Error',
+                    menuRecoveryText: 'Retry',
+                    menuLoadingText: 'Loading suggestions...',
+                    menuFinishedText: 'End of results',
+                    menuErrorText: 'Error loading suggestions',
+                    tokenInsertedAriaLabel: (token: { label?: string; value: string }) =>
+                      `${token.label || token.value} inserted`,
+                    tokenPinnedAriaLabel: (token: { label?: string; value: string }) =>
+                      `${token.label || token.value} pinned`,
+                    tokenRemovedAriaLabel: (token: { label?: string; value: string }) =>
+                      `${token.label || token.value} removed`,
+                  }}
+                  customPrimaryAction={
+                    hasPrimaryActions ? (
+                      <ButtonGroup
+                        variant="icon"
+                        items={[
+                          {
+                            type: 'icon-button',
+                            id: 'record',
+                            text: 'Record',
+                            iconName: 'microphone',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                          {
+                            type: 'icon-button',
+                            id: 'submit',
+                            text: 'Submit',
+                            iconName: 'send',
+                            disabled: isDisabled || isReadOnly,
+                          },
+                        ]}
+                      />
+                    ) : undefined
+                  }
+                  secondaryActions={
+                    hasSecondaryActions ? (
+                      <Box padding={{ left: 'xxs', top: 'xs' }}>
+                        <ButtonGroup
+                          ref={buttonGroupRef}
+                          ariaLabel="Chat actions"
+                          onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                          onItemClick={({ detail }) => {
+                            if (detail.id === 'slash') {
+                              // Filter out only pinned references to check content after them
+                              const nonPinnedTokens = tokens.filter(
+                                token => !(token.type === 'reference' && token.pinned)
+                              );
+
+                              // Determine if we need to add space before slash
+                              let needsSpace = false;
+                              if (nonPinnedTokens.length > 0) {
+                                const firstToken = nonPinnedTokens[0];
+                                needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
+                              }
+
+                              ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
+                            }
+                            if (detail.id === 'at') {
+                              ref.current?.insertText('@');
+                            }
+                          }}
+                          items={[
+                            {
+                              type: 'icon-file-input',
+                              id: 'files',
+                              text: 'Upload files',
+                              multiple: true,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'expand',
+                              iconName: 'expand',
+                              text: 'Go full page',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'remove',
+                              iconName: 'remove',
+                              text: 'Remove',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'slash',
+                              iconName: 'slash',
+                              text: 'Insert slash',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'at',
+                              iconName: 'at-symbol',
+                              text: 'Insert at symbol',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                          ]}
+                          variant="icon"
+                        />
+                      </Box>
+                    ) : undefined
+                  }
+                  secondaryContent={
+                    hasSecondaryContent && files.length > 0 ? (
+                      <FileTokenGroup
+                        items={files.map(file => ({
+                          file,
+                        }))}
+                        showFileThumbnail={true}
+                        onDismiss={onDismiss}
+                        i18nStrings={i18nStrings}
+                        alignment="horizontal"
+                      />
+                    ) : undefined
+                  }
+                />
+              </ScreenshotArea>
+            </FormField>
+            <div />
+          </ColumnLayout>
+        </form>
+      </SpaceBetween>
+    </div>
   );
 }

@@ -141,6 +141,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .textarea {
   @include styles.styles-reset;
+  @include styles.control-border-radius-full();
   @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
@@ -148,9 +149,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   cursor: text;
   // Allow multi-line placeholders and word wrapping
   white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  background-color: transparent;
+  background-color: inherit;
 
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
@@ -159,8 +158,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
-  overflow-y: auto;
-  overflow-x: hidden;
 
   border: 0;
 
@@ -247,6 +244,14 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   flex: 1;
   min-inline-size: 0;
   position: relative;
+}
+
+// Token-mode contentEditable element overflow behavior
+.editable-element {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .primary-action {

@@ -9,7 +9,7 @@ import { BaseDropdownHostProps, OptionsFilteringType } from '../internal/compone
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { BaseKeyDetail, NonCancelableEventHandler } from '../internal/events';
+import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 /**
  * @awsuiSystem core
  */
@@ -243,6 +243,22 @@ export interface PromptInputProps
   onMenuFilter?: NonCancelableEventHandler<PromptInputProps.MenuFilterDetail>;
 
   /**
+   * Called when a trigger character is detected and about to be converted to a trigger token.
+   * This event is cancellable - return `preventDefault()` to prevent the trigger from being created.
+   *
+   * The detail object contains:
+   * - `menuId` - The ID of the menu associated with the trigger.
+   * - `triggerChar` - The trigger character that was detected.
+   * - `position` - The position in the text where the trigger was detected.
+   *
+   * Use this to implement custom validation logic for triggers, such as preventing
+   * triggers that don't meet certain conditions (e.g., only allow at start when certain tokens are present).
+   *
+   * Requires React 18.
+   */
+  onTriggerDetected?: CancelableEventHandler<PromptInputProps.TriggerDetectedDetail>;
+
+  /**
    * An object containing all the localized strings required by the component.
    *
    * - `ariaLabel` (string) - Adds an aria-label to the input element.
@@ -379,6 +395,12 @@ export namespace PromptInputProps {
   export interface MenuFilterDetail {
     menuId: string;
     filteringText: string;
+  }
+
+  export interface TriggerDetectedDetail {
+    menuId: string;
+    triggerChar: string;
+    position: number;
   }
 
   export interface MenuDefinition

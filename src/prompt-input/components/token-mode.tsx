@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import Dropdown from '../../internal/components/dropdown';
 import DropdownFooter from '../../internal/components/dropdown-footer';
@@ -93,11 +94,15 @@ export default function TokenMode({
               : 'false'
           }
           suppressContentEditableWarning={true}
-          className={testutilStyles['content-editable']}
           aria-controls={menuIsOpen ? menuListId : undefined}
           aria-activedescendant={highlightedMenuOptionId}
           onInput={handleInput}
           {...editableElementAttributes}
+          className={clsx(
+            editableElementAttributes.className,
+            testutilStyles['content-editable'],
+            styles['editable-element']
+          )}
         />
         <Dropdown
           minWidth={MENU_MIN_WIDTH}
