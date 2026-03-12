@@ -19179,6 +19179,7 @@ from changing page before items are loaded.",
       "type": "boolean",
     },
     {
+      "i18nTag": true,
       "inlineType": {
         "name": "PaginationProps.I18nStrings",
         "properties": [
@@ -19188,7 +19189,12 @@ from changing page before items are loaded.",
             "type": "string",
           },
           {
-            "name": "jumpToPageLabel",
+            "name": "jumpToPageInputLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "jumpToPageLoadingText",
             "optional": true,
             "type": "string",
           },
