@@ -4,7 +4,7 @@
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-editable-tokens';
 import { ELEMENT_TYPES } from './constants';
-import { getCursorPosition, positionAfter } from './cursor-manager';
+import { CursorController } from './cursor-controller';
 import { getTokenType, insertAfter } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { isTextNode } from './type-guards';
@@ -17,8 +17,8 @@ interface TriggerSpaceHandlerProps {
   getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
   closeMenu: () => void;
   editableElementRef?: React.RefObject<HTMLDivElement>;
-  lastKnownCursorPositionRef?: React.MutableRefObject<number>;
   editableState?: EditableState;
+  cursorController?: CursorController;
 }
 
 /**
@@ -40,15 +40,17 @@ export function findTriggerAtCursor(): HTMLElement | null {
  */
 function finalizeSpaceInsertion(
   spaceNode: Text,
-  props: Pick<TriggerSpaceHandlerProps, 'editableElementRef' | 'lastKnownCursorPositionRef' | 'editableState'>
+  props: Pick<TriggerSpaceHandlerProps, 'editableState' | 'cursorController'>
 ): void {
-  positionAfter(spaceNode);
-
-  if (props.editableElementRef?.current && props.lastKnownCursorPositionRef) {
-    props.lastKnownCursorPositionRef.current = getCursorPosition(props.editableElementRef.current);
+  // Constants approach: cursor moves forward by 1 (the space)
+  if (props.cursorController) {
+    const currentPos = props.cursorController.getPosition();
+    props.cursorController.setPosition(currentPos + 1);
   }
+
+  // Cursor positioning is handled explicitly by the operation
   if (props.editableState) {
-    props.editableState.skipCursorRestore = true;
+    // No-op: cursor already positioned
   }
 
   queueMicrotask(() => {
@@ -115,23 +117,4 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
 
   // Default: Allow space in filter for multi-word filtering
   return false;
-}
-
-/**
- * Checks if a trigger needs immediate re-rendering due to styling changes
- */
-export function needsImmediateRenderForStyling(
-  newTriggers: PromptInputProps.TriggerToken[],
-  oldTriggers: PromptInputProps.TriggerToken[]
-): boolean {
-  return newTriggers.some((newT, i) => {
-    const oldT = oldTriggers[i];
-    if (!oldT) {
-      return false;
-    }
-    // Render when transitioning between empty and non-empty filter (styling change)
-    const wasEmpty = oldT.value.length === 0;
-    const isEmpty = newT.value.length === 0;
-    return wasEmpty !== isEmpty;
-  });
 }

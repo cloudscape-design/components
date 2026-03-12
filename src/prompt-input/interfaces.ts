@@ -35,19 +35,18 @@ export interface PromptInputProps
    * You can either provide a boolean value to set the property to "on" or "off", or specify a string value
    * for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.
    *
-   * Note: When `menus` is defined, autocomplete will not function.
+   * Note: When `menus` or `tokens` is defined, autocomplete will not function.
    */
   autoComplete?: boolean | string;
 
   /**
    * Specifies the content of the prompt input.
    *
-   * When `menus` is defined (token mode):
+   * When `menus` or `tokens` is defined (token mode):
    * - This property is optional and defaults to empty string
    * - The actual content is managed via the `tokens` array
-   * - `onChange` and `onAction` events will provide the serialized text value
    *
-   * When `menus` is not defined (text mode):
+   * When `menus` or `tokens` is not defined (text mode):
    * - This property is required
    * - Represents the current text content of the textarea
    */
@@ -70,10 +69,7 @@ export interface PromptInputProps
    * Custom function to transform tokens into plain text for the `value` field in `onChange` and `onAction` events
    * and for the hidden input when `name` is specified.
    *
-   * If not provided, the default implementation is:
-   * ```
-   * tokens.map(token => token.value).join('');
-   * ```
+   * If not provided, falls back to a default simple implementation.
    *
    * Use this to customize serialization, for example:
    * - Using `label` instead of `value` for reference tokens
@@ -87,7 +83,7 @@ export interface PromptInputProps
    * Called whenever a user changes the input value (by typing or pasting).
    * The event `detail` contains the current value as a string and an array of tokens.
    *
-   * When `menus` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default token-to-text conversion.
+   * When `menus` or `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default tokens-to-text conversion.
    */
   onChange?: NonCancelableEventHandler<PromptInputProps.ChangeDetail>;
 
@@ -95,7 +91,7 @@ export interface PromptInputProps
    * Called whenever a user clicks the action button or presses the "Enter" key.
    * The event `detail` contains the current value as a string and an array of tokens.
    *
-   * When `menus` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default token-to-text conversion.
+   * When `menus` or `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default tokens-to-text conversion.
    */
   onAction?: NonCancelableEventHandler<PromptInputProps.ActionDetail>;
 
@@ -257,6 +253,9 @@ export interface PromptInputProps
    * - `menuFinishedText` (string) - Specifies the text to display when menus have finished loading all items.
    * - `menuErrorText` (string) - Specifies the text to display when menus encounter an error while loading.
    * - `selectedMenuItemAriaLabel` (string) - Specifies the localized string that describes an option as being selected.
+   * - `tokenInsertedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is inserted from a menu. Receives the token object with label and value properties.
+   * - `tokenPinnedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is pinned (inserted at the start). Receives the token object with label and value properties.
+   * - `tokenRemovedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is removed. Receives the token object with label and value properties.
    * @i18n
    */
   i18nStrings?: PromptInputProps.I18nStrings;
@@ -268,7 +267,7 @@ export interface PromptInputProps
    * - Event handlers will be chained, unless the default is prevented.
    *
    * We do not support using this attribute to apply custom styling.
-   * If `tokens` is defined, nativeTextareaAttributes will be ignored.
+   * When `menus` or `tokens` is defined, nativeTextareaAttributes will be ignored.
    *
    * @awsuiSystem core
    */
@@ -335,7 +334,7 @@ export namespace PromptInputProps {
   }
 
   /**
-   * Token type for active menu triggers with filter text.
+   * Token type for menu triggers with filter text.
    * Represents a trigger character (e.g., "@" or "/") followed by filtering text.
    * This token type is automatically managed by the component when menus are active.
    *
@@ -372,7 +371,7 @@ export namespace PromptInputProps {
 
   export interface MenuLoadItemsDetail {
     menuId: string;
-    filteringText?: string; // Optional - undefined for pagination (load more)
+    filteringText?: string;
     firstPage: boolean;
     samePage: boolean;
   }
@@ -478,10 +477,10 @@ export namespace PromptInputProps {
     setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
 
     /**
-     * Inserts text at a specified position. Triggers input events and menu detection when `menus` is defined.
+     * Inserts text at a specified position. Triggers input events and menu detection when `menus` or `tokens` is defined.
      *
      * @param text The text to insert.
-     * @param cursorStart Position to insert at. Defaults to end of content.
+     * @param cursorStart Position to insert at. Defaults to current cursor position or 0.
      * @param cursorEnd Cursor position after insertion. Defaults to end of inserted text.
      */
     insertText(text: string, cursorStart?: number, cursorEnd?: number): void;

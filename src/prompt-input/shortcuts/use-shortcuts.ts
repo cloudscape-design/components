@@ -3,21 +3,14 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
-import { ELEMENT_TYPES } from '../core/constants';
-import { getCurrentSelection, getFirstRange } from '../core/cursor-utils';
-import { findElement } from '../core/dom-utils';
+import { CursorController } from '../core/cursor-controller';
 import { processTokens, type UpdateSource } from '../core/token-operations';
 import { getPromptText } from '../core/token-operations';
-import { isHTMLElement, isTextNode, isTriggerToken } from '../core/type-guards';
+import { isTriggerToken } from '../core/type-guards';
 import type { PromptInputProps } from '../interfaces';
-
-// ============================================================================
-// TYPES
-// ============================================================================
 
 export interface UseShortcutsConfig {
   isTokenMode: boolean;
@@ -26,6 +19,7 @@ export interface UseShortcutsConfig {
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
   editableElementRef: React.RefObject<HTMLDivElement>;
+  cursorController: React.RefObject<CursorController | null>;
 }
 
 export interface UseShortcutsResult {
@@ -59,10 +53,6 @@ export interface UseShortcutsResult {
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
   setUpdateSource: (source: UpdateSource) => void;
 }
-
-// ============================================================================
-// STATE MANAGEMENT
-// ============================================================================
 
 interface ShortcutsState {
   cursorInTrigger: boolean;
@@ -107,10 +97,6 @@ function useShortcutsState(): ShortcutsState {
     setUpdateSource,
   };
 }
-
-// ============================================================================
-// TOKEN PROCESSING
-// ============================================================================
 
 interface ProcessorConfig {
   tokens?: readonly PromptInputProps.InputToken[];
@@ -201,88 +187,17 @@ function useTokenProcessor(config: ProcessorConfig) {
   };
 }
 
-// ============================================================================
-// EFFECTS
-// ============================================================================
-
 interface EffectsConfig {
   isTokenMode: boolean;
   tokens?: readonly PromptInputProps.InputToken[];
   editableElementRef: React.RefObject<HTMLDivElement>;
   state: ShortcutsState;
   activeTriggerToken: PromptInputProps.TriggerToken | null;
-}
-
-function isElementInView(element: HTMLElement): boolean {
-  const rect = element.getBoundingClientRect();
-
-  // Find scrollable parent
-  const scrollableParent = getFirstScrollableParent(element);
-
-  if (scrollableParent) {
-    // Check against scrollable parent
-    const parentRect = scrollableParent.getBoundingClientRect();
-
-    // Calculate visible portion
-    const visibleTop = Math.max(rect.top, parentRect.top);
-    const visibleBottom = Math.min(rect.bottom, parentRect.bottom);
-    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-    const totalHeight = rect.height;
-
-    // Consider visible if at least 50% is showing
-    return visibleHeight / totalHeight >= 0.5;
-  }
-
-  // Check against viewport
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const visibleTop = Math.max(rect.top, 0);
-  const visibleBottom = Math.min(rect.bottom, viewportHeight);
-  const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-  const totalHeight = rect.height;
-
-  // Consider visible if at least 50% is showing
-  return visibleHeight / totalHeight >= 0.5;
-}
-
-function isCursorInTriggerElement(): boolean {
-  const selection = getCurrentSelection();
-  if (!selection?.rangeCount) {
-    return false;
-  }
-
-  const range = getFirstRange();
-  if (!range?.collapsed) {
-    return false;
-  }
-
-  let startElement: HTMLElement | null = null;
-  if (isHTMLElement(range.startContainer)) {
-    startElement = range.startContainer;
-  } else if (range.startContainer.parentElement) {
-    startElement = range.startContainer.parentElement;
-  }
-
-  if (!startElement) {
-    return false;
-  }
-
-  const triggerElement = findUpUntil(startElement, node => node.getAttribute('data-type') === ELEMENT_TYPES.TRIGGER);
-
-  if (!triggerElement) {
-    return false;
-  }
-
-  if (isTextNode(range.startContainer) && range.startContainer.parentElement === triggerElement) {
-    // Cursor must be after the trigger character (first character)
-    const result = range.startOffset > 0;
-    return result;
-  }
-
-  return true;
+  cursorController: React.RefObject<CursorController | null>;
 }
 
 function useShortcutsEffects(config: EffectsConfig) {
-  const { activeTriggerToken, editableElementRef, state, tokens } = config;
+  const { activeTriggerToken, editableElementRef, state, tokens, cursorController } = config;
 
   // Effect: Track trigger value when menu closes
   useEffect(() => {
@@ -293,7 +208,7 @@ function useShortcutsEffects(config: EffectsConfig) {
     }
   }, [state.cursorInTrigger, activeTriggerToken, state.triggerValueWhenClosed]);
 
-  // Effect: Menu state management (cursor position + visibility)
+  // Effect: Menu state management using cursor controller
   useEffect(() => {
     const hasTriggers = tokens?.some(isTriggerToken);
 
@@ -302,43 +217,18 @@ function useShortcutsEffects(config: EffectsConfig) {
       return;
     }
 
-    // Unified check for menu state: cursor in trigger AND trigger visible
+    // Check menu state using cursor controller
     const checkMenuState = () => {
-      if (!editableElementRef.current || state.ignoreCursorDetection.current) {
+      const ctrl = cursorController.current;
+      if (!editableElementRef.current || !ctrl || state.ignoreCursorDetection.current) {
         return;
       }
 
-      const isInTrigger = isCursorInTriggerElement();
+      // Use cursor controller to check if in trigger
+      const isInTrigger = ctrl.isInTrigger();
 
-      // When cursor is in a trigger, check if THAT trigger is visible (not necessarily activeTriggerToken)
-      let triggerIsVisible = false;
-      if (isInTrigger) {
-        const selection = getCurrentSelection();
-        if (selection?.rangeCount) {
-          const range = getFirstRange();
-          if (range) {
-            let startElement: HTMLElement | null = null;
-            if (isHTMLElement(range.startContainer)) {
-              startElement = range.startContainer;
-            } else if (range.startContainer.parentElement) {
-              startElement = range.startContainer.parentElement;
-            }
-
-            if (startElement) {
-              const triggerElement = findUpUntil(
-                startElement,
-                node => node.getAttribute('data-type') === ELEMENT_TYPES.TRIGGER
-              );
-              if (triggerElement) {
-                triggerIsVisible = isElementInView(triggerElement);
-              }
-            }
-          }
-        }
-      }
-
-      // Menu should be open if cursor is in trigger AND that trigger is visible
-      const shouldBeOpen = isInTrigger && triggerIsVisible;
+      // Menu should be open if cursor is in trigger
+      const shouldBeOpen = isInTrigger;
 
       if (shouldBeOpen !== state.cursorInTrigger) {
         state.setCursorInTrigger(shouldBeOpen);
@@ -363,85 +253,51 @@ function useShortcutsEffects(config: EffectsConfig) {
         scrollableParent.removeEventListener('scroll', checkMenuState);
       }
     };
-  }, [tokens, state, editableElementRef, activeTriggerToken]);
+  }, [tokens, state, editableElementRef, cursorController, activeTriggerToken]);
 }
 
 // MAIN HOOK
 
 export function useShortcuts(config: UseShortcutsConfig): UseShortcutsResult {
-  const { isTokenMode, tokens, menus, tokensToText, onChange, editableElementRef } = config;
+  const { isTokenMode, tokens, menus, tokensToText, onChange, editableElementRef, cursorController } = config;
 
   // Initialize state
   const state = useShortcutsState();
 
-  // Derive active trigger token - find the one where cursor is located
-  // This needs to update whenever cursor moves, not just when cursorInTrigger changes
+  // Derive active trigger token using cursor controller
   const [cursorUpdateTrigger, setCursorUpdateTrigger] = useState(0);
 
   const activeTriggerToken = useMemo((): PromptInputProps.TriggerToken | null => {
-    if (!tokens) {
+    if (!tokens || !cursorController.current) {
       return null;
     }
 
-    // Always return first trigger for cursor detection effect to work
-    const firstTrigger = tokens.find(isTriggerToken) ?? null;
+    // Get active trigger ID from cursor controller
+    const activeTriggerID = cursorController.current.getActiveTriggerID();
 
-    if (!firstTrigger) {
+    if (!activeTriggerID) {
       return null;
     }
 
-    // If cursor is in trigger and we have DOM access, find the specific trigger at cursor
-    if (state.cursorInTrigger && editableElementRef.current) {
-      const selection = getCurrentSelection();
-      if (selection?.rangeCount) {
-        const range = getFirstRange();
-        if (range?.collapsed) {
-          let startElement: HTMLElement | null = null;
-          if (isHTMLElement(range.startContainer)) {
-            startElement = range.startContainer;
-          } else if (range.startContainer.parentElement) {
-            startElement = range.startContainer.parentElement;
-          }
+    // Find the trigger token with matching ID
+    const matchingTrigger = tokens.find(t => isTriggerToken(t) && t.id === activeTriggerID) as
+      | PromptInputProps.TriggerToken
+      | undefined;
 
-          if (startElement) {
-            const triggerElement = findUpUntil(
-              startElement,
-              node => node.getAttribute('data-type') === ELEMENT_TYPES.TRIGGER
-            );
-
-            if (triggerElement) {
-              const instanceId = triggerElement.getAttribute('data-id');
-              if (instanceId) {
-                // Find trigger with matching instanceId
-                const matchingTrigger = tokens.find(t => isTriggerToken(t) && t.id === instanceId) as
-                  | PromptInputProps.TriggerToken
-                  | undefined;
-                if (matchingTrigger) {
-                  return matchingTrigger;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // Fallback to first trigger
-    return firstTrigger;
+    return matchingTrigger || null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokens, state.cursorInTrigger, editableElementRef, cursorUpdateTrigger]);
+  }, [tokens, cursorController, cursorUpdateTrigger]);
 
   // Listen to cursor changes to update activeTriggerToken
   useEffect(() => {
     const handleSelectionChange = () => {
-      if (state.cursorInTrigger) {
-        setCursorUpdateTrigger(prev => prev + 1);
-      }
+      // Trigger re-evaluation of activeTriggerToken
+      setCursorUpdateTrigger(prev => prev + 1);
     };
 
     document.addEventListener('selectionchange', handleSelectionChange);
     return () => document.removeEventListener('selectionchange', handleSelectionChange);
-  }, [state.cursorInTrigger]);
+  }, []);
 
   // Also trigger update when cursorInTrigger changes to true
   useEffect(() => {
@@ -478,6 +334,7 @@ export function useShortcuts(config: UseShortcutsConfig): UseShortcutsResult {
     editableElementRef,
     state,
     activeTriggerToken,
+    cursorController,
   });
 
   // Manage trigger wrapper ref for dropdown positioning
@@ -487,14 +344,17 @@ export function useShortcuts(config: UseShortcutsConfig): UseShortcutsResult {
   useEffect(() => {
     // Only update ref when menu is actually open (cursor is in a trigger)
     if (activeTriggerToken && menuIsOpen && editableElementRef.current) {
-      const triggerElement = findElement(editableElementRef.current, {
-        tokenType: ELEMENT_TYPES.TRIGGER,
-        tokenId: activeTriggerToken.id,
-      });
+      // Use standard DOM API to find trigger by ID (triggers use standard id attribute)
+      const triggerElement = activeTriggerToken.id
+        ? editableElementRef.current.querySelector<HTMLElement>(`#${CSS.escape(activeTriggerToken.id)}`)
+        : null;
 
       if (triggerElement) {
         triggerWrapperRef.current = triggerElement;
         setTriggerWrapperReady(true);
+      } else {
+        triggerWrapperRef.current = null;
+        setTriggerWrapperReady(false);
       }
     } else if (!menuIsOpen) {
       triggerWrapperRef.current = null;

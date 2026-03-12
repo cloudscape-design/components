@@ -80,10 +80,9 @@ export default function TokenMode({
 }: TokenModeProps) {
   return (
     <>
-      {name && <input key="hidden-input" type="hidden" name={name} value={getPlainTextValue()} />}
+      {name && <input type="hidden" name={name} value={getPlainTextValue()} />}
       <div className={styles['editable-wrapper']}>
         <div
-          key="editable-element"
           id={controlId}
           ref={editableElementRef}
           role="textbox"
@@ -101,7 +100,6 @@ export default function TokenMode({
           {...editableElementAttributes}
         />
         <Dropdown
-          key={`menu-dropdown-${activeTriggerToken?.id}`}
           minWidth={MENU_MIN_WIDTH}
           maxHeight={maxMenuHeight}
           expandToViewport={true}

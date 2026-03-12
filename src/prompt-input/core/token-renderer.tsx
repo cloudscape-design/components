@@ -32,9 +32,8 @@ function renderComponent(element: React.ReactElement, container: HTMLElement): v
     rootsMap.set(container, root);
   }
 
-  queueMicrotask(() => {
-    root!.render(element);
-  });
+  // Render synchronously to avoid timing issues with prop updates
+  root.render(element);
 }
 
 export function unmountComponent(container: HTMLElement): void {
@@ -158,8 +157,6 @@ function moveCursorSpotContentToParagraph(p: HTMLElement): void {
       }
 
       cursorSpot.textContent = SPECIAL_CHARS.ZWNJ;
-
-      // Cursor positioning is handled by unified restoration system in use-editable-tokens
     }
   );
 }
@@ -223,14 +220,14 @@ function createReferenceWithCursorSpots(
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
   wrapper.setAttribute('data-type', token.pinned ? ELEMENT_TYPES.PINNED : ELEMENT_TYPES.REFERENCE);
-  const instanceId = token.id || generateTokenId('ref');
-  wrapper.setAttribute('data-id', instanceId);
+  const instanceId = token.id && token.id !== '' ? token.id : generateTokenId('ref');
   wrapper.setAttribute('data-menu-id', token.menuId);
 
   const cursorSpotBefore = createCursorSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
   const container = document.createElement('span');
   container.className = styles['token-container'];
   container.setAttribute('contenteditable', 'false');
+  container.setAttribute('data-id', instanceId); // Set data-id on container, not wrapper
 
   reactContainers.add(container);
   renderComponent(
@@ -264,7 +261,8 @@ export function renderTokensToDOM(
   const existingContainers = new Map<string, HTMLElement>();
   reactContainers.forEach(container => {
     const instanceId = container.getAttribute('data-id');
-    if (instanceId && container.isConnected) {
+    // Only include containers that are descendants of this targetElement
+    if (instanceId && container.isConnected && targetElement.contains(container)) {
       existingContainers.set(instanceId, container);
     }
   });
@@ -273,7 +271,7 @@ export function renderTokensToDOM(
   // Track existing trigger elements to reuse them
   const existingTriggers = new Map<string, HTMLElement>();
   findElements(targetElement, { tokenType: ELEMENT_TYPES.TRIGGER }).forEach(el => {
-    const id = el.getAttribute('data-id');
+    const id = el.id; // Use standard id attribute
     if (id) {
       existingTriggers.set(id, el);
     }
@@ -309,23 +307,24 @@ export function renderTokensToDOM(
         }
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
-        const isNewTrigger = !token.id || !existingTriggers.has(token.id);
+        const triggerId = token.id && token.id !== '' ? token.id : generateTokenId('trigger');
+        const isNewTrigger = !existingTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
 
-        if (token.id && existingTriggers.has(token.id)) {
+        if (existingTriggers.has(triggerId)) {
           // Reuse existing trigger element and update its content
-          span = existingTriggers.get(token.id)!;
+          span = existingTriggers.get(triggerId)!;
           span.textContent = token.triggerChar + token.value;
+          // Set class only when there's filter text
           span.className = hasFilterText ? styles['trigger-token'] : '';
-          existingTriggers.delete(token.id);
+          existingTriggers.delete(triggerId);
         } else {
           // Create new trigger element
           span = document.createElement('span');
           span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+          // Set class only when there's filter text
           span.className = hasFilterText ? styles['trigger-token'] : '';
-          if (token.id) {
-            span.setAttribute('data-id', token.id);
-          }
+          span.id = triggerId; // Use standard id attribute for dropdown anchoring
           span.textContent = token.triggerChar + token.value;
         }
 
@@ -339,9 +338,17 @@ export function renderTokensToDOM(
         if (existingWrapper) {
           const tokenType = getTokenType(existingWrapper);
           if (tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED) {
-            // Reuse existing wrapper - token props never change
+            // Reuse existing wrapper but update Token component with current disabled/readOnly
+            const tokenContainer = existingWrapper.querySelector(`.${styles['token-container']}`) as HTMLElement;
+            if (tokenContainer) {
+              renderComponent(
+                <Token key={token.id} variant="inline" label={token.label} disabled={disabled} readOnly={readOnly} />,
+                tokenContainer
+              );
+              reactContainers.add(tokenContainer); // Add the container, not the wrapper
+            }
+
             newNodes.push(existingWrapper);
-            reactContainers.add(existingWrapper);
             existingContainers.delete(token.id!);
             lastReferenceWithZwnj = existingWrapper;
             continue;
