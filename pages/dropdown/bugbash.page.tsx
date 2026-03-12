@@ -73,7 +73,7 @@ export default function DropdownBugbash() {
       <div style={{ display: 'flex', gap: '40px', marginTop: '30px', flexWrap: 'wrap' }}>
         <div style={{ minWidth: '300px', flexShrink: 0 }}>
           <SpaceBetween size="m">
-            <h3>Dropdown Props</h3>
+            <h2>Dropdown Props</h2>
 
             <FormField label="Content Size">
               <Select
@@ -122,7 +122,7 @@ export default function DropdownBugbash() {
         </div>
 
         <div style={{ flex: 1 }}>
-          <h3>Test Area</h3>
+          <h2>Test Area</h2>
           <div style={{ marginTop: '100px', display: 'inline-block' }}>
             <Dropdown
               trigger={<Button onClick={() => setOpen(!open)}>{open ? 'Close' : 'Open'} Dropdown</Button>}
