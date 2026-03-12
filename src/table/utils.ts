@@ -75,7 +75,7 @@ export function getVisibleColumnDefinitions<T>({
 function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): string[] {
   const ids: string[] = [];
   for (const item of items) {
-    if ('children' in item) {
+    if (item.type === 'group') {
       // ColumnDisplayGroup — recurse into children
       ids.push(...flattenVisibleColumnIds(item.children));
     } else if (item.visible) {
