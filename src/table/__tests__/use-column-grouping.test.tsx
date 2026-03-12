@@ -9,15 +9,36 @@ describe('useColumnGrouping', () => {
   const mockColumns: TableProps.ColumnDefinition<any>[] = [
     { id: 'id', header: 'ID', cell: () => 'id' },
     { id: 'name', header: 'Name', cell: () => 'name' },
-    { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
-    { id: 'memory', header: 'Memory', groupId: 'performance', cell: () => 'memory' },
-    { id: 'type', header: 'Type', groupId: 'config', cell: () => 'type' },
-    { id: 'az', header: 'AZ', groupId: 'config', cell: () => 'az' },
+    { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+    { id: 'memory', header: 'Memory', cell: () => 'memory' },
+    { id: 'type', header: 'Type', cell: () => 'type' },
+    { id: 'az', header: 'AZ', cell: () => 'az' },
   ];
 
-  const mockGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+  const mockGroups: TableProps.GroupDefinition<any>[] = [
     { id: 'performance', header: 'Performance' },
     { id: 'config', header: 'Configuration' },
+  ];
+
+  const mockColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+    { id: 'id', visible: true },
+    { id: 'name', visible: true },
+    {
+      type: 'group',
+      id: 'performance',
+      children: [
+        { id: 'cpu', visible: true },
+        { id: 'memory', visible: true },
+      ],
+    },
+    {
+      type: 'group',
+      id: 'config',
+      children: [
+        { id: 'type', visible: true },
+        { id: 'az', visible: true },
+      ],
+    },
   ];
 
   describe('no grouping', () => {
@@ -45,14 +66,14 @@ describe('useColumnGrouping', () => {
 
   describe('flat grouping', () => {
     it('creates two rows with grouped and ungrouped columns', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       expect(result.current.maxDepth).toBe(2);
       expect(result.current.rows).toHaveLength(2);
     });
 
     it('row 0 contains hidden placeholders for ungrouped columns and group headers', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       const row0 = result.current.rows[0].columns;
 
@@ -78,7 +99,7 @@ describe('useColumnGrouping', () => {
     });
 
     it('row 0 has hidden placeholders at top for ungrouped columns, row 1 has visible cells at bottom', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       // Row 0: hidden placeholders for id, name (at top) + group headers
       const row0 = result.current.rows[0].columns;
@@ -110,8 +131,8 @@ describe('useColumnGrouping', () => {
       });
     });
 
-    it('maintains column order from columnDefinitions', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+    it('maintains column order from columnDisplay', () => {
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       const row0 = result.current.rows[0].columns;
       expect(row0.map((c: any) => c.id)).toEqual(['id', 'name', 'performance', 'config']);
@@ -125,7 +146,18 @@ describe('useColumnGrouping', () => {
   describe('visibility filtering', () => {
     it('filters columns by visibleColumnIds', () => {
       const visibleIds = new Set(['id', 'cpu', 'memory']);
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds));
+      const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        {
+          type: 'group',
+          id: 'performance',
+          children: [
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: true },
+          ],
+        },
+      ];
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds, columnDisplay));
 
       const row0 = result.current.rows[0].columns;
       // Row 0: hidden placeholder for id (top) + performance group
@@ -141,8 +173,28 @@ describe('useColumnGrouping', () => {
     });
 
     it('hides group when all children are hidden', () => {
+      const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        { id: 'name', visible: true },
+        {
+          type: 'group',
+          id: 'performance',
+          children: [
+            { id: 'cpu', visible: false },
+            { id: 'memory', visible: false },
+          ],
+        },
+        {
+          type: 'group',
+          id: 'config',
+          children: [
+            { id: 'type', visible: true },
+            { id: 'az', visible: true },
+          ],
+        },
+      ];
       const visibleIds = new Set(['id', 'name', 'type', 'az']);
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds, columnDisplay));
 
       const row0 = result.current.rows[0].columns;
       const groupIds = row0.filter((c: any) => c.isGroup).map((c: any) => c.id);
@@ -150,8 +202,27 @@ describe('useColumnGrouping', () => {
     });
 
     it('adjusts colspan when some children are hidden', () => {
+      const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        {
+          type: 'group',
+          id: 'performance',
+          children: [
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: false },
+          ],
+        },
+        {
+          type: 'group',
+          id: 'config',
+          children: [
+            { id: 'type', visible: true },
+            { id: 'az', visible: true },
+          ],
+        },
+      ];
       const visibleIds = new Set(['id', 'cpu', 'type', 'az']);
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, visibleIds, columnDisplay));
 
       const row0 = result.current.rows[0].columns;
       const perfGroup = row0.find((c: any) => c.id === 'performance');
@@ -161,7 +232,7 @@ describe('useColumnGrouping', () => {
 
   describe('parent tracking', () => {
     it('tracks parent group IDs for grouped columns', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       expect(result.current.columnToParentIds.get('cpu')).toEqual(['performance']);
       expect(result.current.columnToParentIds.get('memory')).toEqual(['performance']);
@@ -169,12 +240,11 @@ describe('useColumnGrouping', () => {
     });
 
     it('ungrouped columns do not have parent group entries', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
-      // Ungrouped columns may have entries due to hidden node chain, but should not have group IDs
+      // Ungrouped columns should not have group parent entries
       const idParents = result.current.columnToParentIds.get('id');
       const nameParents = result.current.columnToParentIds.get('name');
-      // Either undefined or empty — no group parents
       expect(!idParents || idParents.length === 0).toBe(true);
       expect(!nameParents || nameParents.length === 0).toBe(true);
     });
@@ -182,7 +252,7 @@ describe('useColumnGrouping', () => {
 
   describe('column indices', () => {
     it('assigns sequential colIndex values', () => {
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(mockGroups, mockColumns, undefined, mockColumnDisplay));
 
       const row0 = result.current.rows[0].columns;
       expect(row0[0].colIndex).toBe(0); // hidden id placeholder
@@ -191,7 +261,6 @@ describe('useColumnGrouping', () => {
       expect(row0[3].colIndex).toBe(4); // config group starts at 4
 
       const row1 = result.current.rows[1].columns;
-      // Row 1: visible id + name (at bottom) + leaf columns
       expect(row1[0].colIndex).toBe(0); // visible id
       expect(row1[1].colIndex).toBe(1); // visible name
       expect(row1[2].colIndex).toBe(2); // cpu
@@ -205,24 +274,25 @@ describe('useColumnGrouping', () => {
     it('handles columns without IDs', () => {
       const columnsNoIds: TableProps.ColumnDefinition<any>[] = [
         { header: 'Col1', cell: () => 'col1' },
-        { header: 'Col2', groupId: 'group1', cell: () => 'col2' },
+        { header: 'Col2', cell: () => 'col2' },
       ];
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
 
-      const { result } = renderHook(() => useColumnGrouping(groups, columnsNoIds));
+      const { result } = renderHook(() => useColumnGrouping([], columnsNoIds));
 
-      // Columns without IDs are skipped by CalculateHierarchyTree, resulting in empty rows
+      // Columns without IDs are skipped; resulting in empty rows
       expect(result.current.rows).toBeDefined();
       expect(result.current.rows.length).toBe(0);
     });
 
     it('handles group without header', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'performance', header: undefined }];
+      const groups: TableProps.GroupDefinition<any>[] = [{ id: 'performance', header: undefined }];
+      const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+        { type: 'group', id: 'performance', children: [{ id: 'cpu', visible: true }] },
+      ];
 
-      const { result } = renderHook(() => useColumnGrouping(groups, mockColumns));
+      const { result } = renderHook(() => useColumnGrouping(groups, mockColumns, undefined, columnDisplay));
 
       const perfGroup = result.current.rows[0].columns.find((c: any) => c.id === 'performance');
-      // When header is undefined, it stays undefined (no fallback to id)
       expect(perfGroup?.header).toBeUndefined();
     });
 
@@ -232,9 +302,10 @@ describe('useColumnGrouping', () => {
         { id: 'b', header: 'B', cell: () => 'b' },
       ];
 
+      // No columnDisplay provided → flat, no grouping
       const { result } = renderHook(() => useColumnGrouping(mockGroups, ungroupedCols));
 
-      // When groups are defined but no columns use them, we should have only 1 row
+      // Without columnDisplay, CalculateHierarchyTree uses flat fallback
       expect(result.current.rows).toHaveLength(1);
       expect(result.current.rows[0].columns).toHaveLength(2);
       expect(result.current.rows[0].columns[0].rowspan).toBe(1);
@@ -242,11 +313,22 @@ describe('useColumnGrouping', () => {
 
     it('handles all columns grouped', () => {
       const allGrouped: TableProps.ColumnDefinition<any>[] = [
-        { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
-        { id: 'memory', header: 'Memory', groupId: 'performance', cell: () => 'memory' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'memory', header: 'Memory', cell: () => 'memory' },
+      ];
+      const groups: TableProps.GroupDefinition<any>[] = [{ id: 'performance', header: 'Performance' }];
+      const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'performance',
+          children: [
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: true },
+          ],
+        },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(mockGroups, allGrouped));
+      const { result } = renderHook(() => useColumnGrouping(groups, allGrouped, undefined, columnDisplay));
 
       expect(result.current.rows).toHaveLength(2);
       expect(result.current.rows[0].columns).toHaveLength(1); // only group header
@@ -256,47 +338,83 @@ describe('useColumnGrouping', () => {
 
   describe('nested groups', () => {
     it('handles nested group definitions', () => {
-      const nestedGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const nestedGroups: TableProps.GroupDefinition<any>[] = [
         { id: 'metrics', header: 'Metrics' },
-        { id: 'performance', header: 'Performance', groupId: 'metrics' },
+        { id: 'performance', header: 'Performance' },
       ];
-      const nestedCols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
+      const nestedCols: TableProps.ColumnDefinition<any>[] = [{ id: 'cpu', header: 'CPU', cell: () => 'cpu' }];
+      const nestedDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'metrics',
+          children: [{ type: 'group', id: 'performance', children: [{ id: 'cpu', visible: true }] }],
+        },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols));
+      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols, undefined, nestedDisplay));
 
       expect(result.current.columnToParentIds.get('cpu')).toEqual(['metrics', 'performance']);
     });
 
     it('creates correct number of rows for nested groups', () => {
-      const nestedGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const nestedGroups: TableProps.GroupDefinition<any>[] = [
         { id: 'metrics', header: 'Metrics' },
-        { id: 'performance', header: 'Performance', groupId: 'metrics' },
+        { id: 'performance', header: 'Performance' },
       ];
       const nestedCols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
-        { id: 'memory', header: 'Memory', groupId: 'performance', cell: () => 'memory' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'memory', header: 'Memory', cell: () => 'memory' },
+      ];
+      const nestedDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'metrics',
+          children: [
+            {
+              type: 'group',
+              id: 'performance',
+              children: [
+                { id: 'cpu', visible: true },
+                { id: 'memory', visible: true },
+              ],
+            },
+          ],
+        },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols));
+      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols, undefined, nestedDisplay));
 
-      // Should have 3 rows: row 0 (metrics), row 1 (performance), row 2 (leaf columns)
       expect(result.current.maxDepth).toBe(3);
       expect(result.current.rows).toHaveLength(3);
     });
 
     it('places nested groups in correct rows', () => {
-      const nestedGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const nestedGroups: TableProps.GroupDefinition<any>[] = [
         { id: 'metrics', header: 'Metrics' },
-        { id: 'performance', header: 'Performance', groupId: 'metrics' },
+        { id: 'performance', header: 'Performance' },
       ];
       const nestedCols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
-        { id: 'memory', header: 'Memory', groupId: 'performance', cell: () => 'memory' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'memory', header: 'Memory', cell: () => 'memory' },
+      ];
+      const nestedDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'metrics',
+          children: [
+            {
+              type: 'group',
+              id: 'performance',
+              children: [
+                { id: 'cpu', visible: true },
+                { id: 'memory', visible: true },
+              ],
+            },
+          ],
+        },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols));
+      const { result } = renderHook(() => useColumnGrouping(nestedGroups, nestedCols, undefined, nestedDisplay));
 
       // Row 0 should have metrics group
       expect(result.current.rows[0].columns).toHaveLength(1);
@@ -321,16 +439,27 @@ describe('useColumnGrouping', () => {
     });
 
     it('handles 3-level nesting', () => {
-      const deepGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const deepGroups: TableProps.GroupDefinition<any>[] = [
         { id: 'level1', header: 'Level 1' },
-        { id: 'level2', header: 'Level 2', groupId: 'level1' },
-        { id: 'level3', header: 'Level 3', groupId: 'level2' },
+        { id: 'level2', header: 'Level 2' },
+        { id: 'level3', header: 'Level 3' },
       ];
-      const deepCols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'col1', header: 'Col 1', groupId: 'level3', cell: () => 'col1' },
+      const deepCols: TableProps.ColumnDefinition<any>[] = [{ id: 'col1', header: 'Col 1', cell: () => 'col1' }];
+      const deepDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'level1',
+          children: [
+            {
+              type: 'group',
+              id: 'level2',
+              children: [{ type: 'group', id: 'level3', children: [{ id: 'col1', visible: true }] }],
+            },
+          ],
+        },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(deepGroups, deepCols));
+      const { result } = renderHook(() => useColumnGrouping(deepGroups, deepCols, undefined, deepDisplay));
 
       expect(result.current.maxDepth).toBe(4);
       expect(result.current.rows).toHaveLength(4);
@@ -338,112 +467,75 @@ describe('useColumnGrouping', () => {
     });
 
     it('handles mixed nested and flat groups', () => {
-      const mixedGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const mixedGroups: TableProps.GroupDefinition<any>[] = [
         { id: 'metrics', header: 'Metrics' },
-        { id: 'performance', header: 'Performance', groupId: 'metrics' },
-        { id: 'config', header: 'Configuration' }, // flat group
+        { id: 'performance', header: 'Performance' },
+        { id: 'config', header: 'Configuration' },
       ];
       const mixedCols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'id', header: 'ID', cell: () => 'id' }, // ungrouped
-        { id: 'cpu', header: 'CPU', groupId: 'performance', cell: () => 'cpu' },
-        { id: 'type', header: 'Type', groupId: 'config', cell: () => 'type' },
+        { id: 'id', header: 'ID', cell: () => 'id' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'type', header: 'Type', cell: () => 'type' },
+      ];
+      const mixedDisplay: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        {
+          type: 'group',
+          id: 'metrics',
+          children: [{ type: 'group', id: 'performance', children: [{ id: 'cpu', visible: true }] }],
+        },
+        { type: 'group', id: 'config', children: [{ id: 'type', visible: true }] },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(mixedGroups, mixedCols));
+      const { result } = renderHook(() => useColumnGrouping(mixedGroups, mixedCols, undefined, mixedDisplay));
 
       expect(result.current.maxDepth).toBe(3);
       expect(result.current.rows).toHaveLength(3);
 
-      // Row 0: hidden placeholder for id (top), metrics group, config group
+      // Row 0: hidden placeholder for id (top), metrics group, hidden placeholder for config
       expect(result.current.rows[0].columns).toHaveLength(3);
-      expect(result.current.rows[0].columns[0]).toMatchObject({
-        id: 'id',
-        rowspan: 1,
-        isHidden: true,
-      });
-      expect(result.current.rows[0].columns[1]).toMatchObject({
-        id: 'metrics',
-        isGroup: true,
-      });
-      expect(result.current.rows[0].columns[2]).toMatchObject({
-        id: 'config',
-        isGroup: true,
-      });
+      expect(result.current.rows[0].columns[0]).toMatchObject({ id: 'id', rowspan: 1, isHidden: true });
+      expect(result.current.rows[0].columns[1]).toMatchObject({ id: 'metrics', isGroup: true });
+      expect(result.current.rows[0].columns[2]).toMatchObject({ id: 'config', isHidden: true });
 
-      // Row 1: hidden placeholder for id, performance group, hidden placeholder for config's type
+      // Row 1: hidden placeholder for id, performance group, real config group
       const row1Ids = result.current.rows[1].columns.map(c => c.id);
-      expect(row1Ids).toContain('id'); // hidden placeholder
+      expect(row1Ids).toContain('id');
       expect(row1Ids).toContain('performance');
+      expect(row1Ids).toContain('config');
 
-      // Row 2: leaf columns (hidden placeholder for id, cpu, type)
+      // Row 2: leaf columns
       const row2 = result.current.rows[2].columns;
       const row2NonHidden = row2.filter(c => !c.isHidden);
-      expect(row2NonHidden.length).toBeGreaterThanOrEqual(2); // at least cpu and type
-    });
-
-    it('prevents circular references in nested groups', () => {
-      const circularGroups: TableProps.ColumnGroupsDefinition<any>[] = [
-        { id: 'a', header: 'A', groupId: 'b' },
-        { id: 'b', header: 'B', groupId: 'a' },
-      ];
-      const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', groupId: 'a', cell: () => 'col' }];
-
-      const { result } = renderHook(() => useColumnGrouping(circularGroups, cols));
-
-      // Should not crash and should handle gracefully
-      expect(result.current.rows).toBeDefined();
-      // Circular groups should be detected and one will be marked as circular
-      // The column referencing the circular group will be treated as ungrouped
-      const allGroupIds = result.current.rows.flatMap(row => row.columns.filter(c => c.isGroup).map(c => c.id));
-      // At least one group should be excluded or treated specially
-      expect(allGroupIds.length).toBeLessThanOrEqual(1);
+      expect(row2NonHidden.length).toBeGreaterThanOrEqual(2);
     });
 
     it('handles non-existent parent group reference', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
-        { id: 'child', header: 'Child', groupId: 'nonexistent' },
-      ];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'col', header: 'Col', groupId: 'child', cell: () => 'col' },
-      ];
-
-      const { result } = renderHook(() => useColumnGrouping(groups, cols));
-
-      // Should treat child as top-level group
-      expect(result.current.rows[0].columns.find(c => c.id === 'child')).toBeDefined();
-      // Parent chain should only include 'child', not the non-existent parent
-      expect(result.current.columnToParentIds.get('col')).toEqual(['child']);
-    });
-
-    it('handles column referencing non-existent group', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'col1', header: 'Col 1', groupId: 'nonexistent', cell: () => 'col1' },
-        { id: 'col2', header: 'Col 2', groupId: 'group1', cell: () => 'col2' },
+      const groups: TableProps.GroupDefinition<any>[] = [];
+      const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+      // Display references a group not in groupDefinitions — the whole subtree is skipped
+      const display: TableProps.ColumnDisplayProperties[] = [
+        { type: 'group', id: 'nonexistent', children: [{ id: 'col', visible: true }] },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(groups, cols));
+      const { result } = renderHook(() => useColumnGrouping(groups, cols, undefined, display));
 
-      // col1 should appear with rowspan=1 in the bottom row (visible, not hidden)
-      const allRows = result.current.rows;
-      const lastRow = allRows[allRows.length - 1];
-      const col1Visible = lastRow.columns.find(c => c.id === 'col1' && !c.isHidden);
-      expect(col1Visible).toBeDefined();
-      expect(col1Visible?.rowspan).toBe(1);
+      // Group not found → entire subtree (including col) is skipped → no rows
+      expect(result.current.rows).toHaveLength(0);
     });
 
     it('handles group without id (should be skipped)', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const groups: TableProps.GroupDefinition<any>[] = [
         { id: '', header: 'Invalid Group' } as any,
         { id: 'valid', header: 'Valid Group' },
       ];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'col', header: 'Col', groupId: 'valid', cell: () => 'col' },
+      const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+      const display: TableProps.ColumnDisplayProperties[] = [
+        { type: 'group', id: 'valid', children: [{ id: 'col', visible: true }] },
       ];
 
-      const { result } = renderHook(() => useColumnGrouping(groups, cols));
+      const { result } = renderHook(() => useColumnGrouping(groups, cols, undefined, display));
 
-      // Should only have valid group
       const groupIds = result.current.rows[0].columns.filter(c => c.isGroup).map(c => c.id);
       expect(groupIds).toEqual(['valid']);
     });
@@ -451,21 +543,16 @@ describe('useColumnGrouping', () => {
 
   describe('CalculateHierarchyTree direct tests for edge cases', () => {
     it('skips columns with undefined id in visibleLeafColumns', () => {
-      // Column has no id → line 62 early return in createNodeConnections
       const cols: TableProps.ColumnDefinition<any>[] = [{ header: 'No ID', cell: () => 'x' }];
       const result = CalculateHierarchyTree(cols, ['col-0'], [], undefined);
-      // No columns with ids → empty rows
       expect(result.rows).toHaveLength(0);
     });
 
     it('skips columns whose id is not in the node map (not visible)', () => {
-      // Column has id but is not in visibleColumnIds → getVisibleColumnDefinitions filters it out
-      // Then createNodeConnections iterates visibleColumns but the node is not in idToNodeMap → line 67
       const cols: TableProps.ColumnDefinition<any>[] = [
         { id: 'a', header: 'A', cell: () => 'a' },
         { id: 'b', header: 'B', cell: () => 'b' },
       ];
-      // Only 'a' is visible, so 'b' is filtered out before createNodeConnections
       const result = CalculateHierarchyTree(cols, ['a'], [], undefined);
       expect(result.rows).toHaveLength(1);
       expect(result.rows[0].columns).toHaveLength(1);
@@ -473,98 +560,40 @@ describe('useColumnGrouping', () => {
     });
 
     it('skips group definitions with undefined id', () => {
-      // Group definition has undefined id → line 209 early return
       const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'a', header: 'A', cell: () => 'a' }];
       const groups = [{ id: undefined, header: 'Bad Group' } as any];
       const result = CalculateHierarchyTree(cols, ['a'], groups, undefined);
-      // Should just have column 'a', no group
       expect(result.rows).toHaveLength(1);
       expect(result.rows[0].columns[0].id).toBe('a');
-    });
-
-    it('handles circular reference with already-visited node connecting to root', () => {
-      // Two groups referencing each other: a→b, b→a
-      // When traversing from leaf "col" → group "a" → group "b" → detects cycle at "a"
-      // The circular node gets connected to root (lines 79-80)
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'col-circ', header: 'Col', groupId: 'grp-a-circ', cell: () => 'x' },
-      ];
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
-        { id: 'grp-a-circ', header: 'A', groupId: 'grp-b-circ' },
-        { id: 'grp-b-circ', header: 'B', groupId: 'grp-a-circ' },
-      ];
-      const result = CalculateHierarchyTree(cols, ['col-circ'], groups, undefined);
-      // Should not crash; produces some result
-      expect(result.rows).toBeDefined();
-      expect(result.maxDepth).toBeGreaterThanOrEqual(0);
     });
   });
 
   describe('error handling and warnings', () => {
-    let consoleWarnSpy: jest.SpyInstance;
-    let originalNodeEnv: string | undefined;
-
-    beforeEach(() => {
-      originalNodeEnv = process.env.NODE_ENV;
+    it('warns about non-existent group in columnDisplay', () => {
+      const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = 'development';
-      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-    });
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
-    afterEach(() => {
+      const groups: TableProps.GroupDefinition<any>[] = [];
+      const cols: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+      const display: TableProps.ColumnDisplayProperties[] = [
+        { type: 'group', id: 'warn-nonexistent-99', children: [{ id: 'col', visible: true }] },
+      ];
+
+      renderHook(() => useColumnGrouping(groups, cols, undefined, display));
+
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('warn-nonexistent-99'));
+
       consoleWarnSpy.mockRestore();
-      process.env.NODE_ENV = originalNodeEnv;
-    });
-
-    // Note: warnOnce from the toolkit has global deduplication.
-    // Warnings may already be consumed by earlier tests in the same run.
-    // These tests verify that warnings are called at least once across the suite
-    // by checking console.warn was called with a matching pattern.
-
-    it('warns about circular references in development mode', () => {
-      const circularGroups: TableProps.ColumnGroupsDefinition<any>[] = [
-        { id: 'circ-x', header: 'X', groupId: 'circ-y' },
-        { id: 'circ-y', header: 'Y', groupId: 'circ-x' },
-      ];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'circ-col', header: 'Col', groupId: 'circ-x', cell: () => 'col' },
-      ];
-
-      renderHook(() => useColumnGrouping(circularGroups, cols));
-
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Circular reference detected'));
-    });
-
-    it('warns about non-existent parent group', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
-        { id: 'warn-child', header: 'Child', groupId: 'warn-nonexistent-parent' },
-      ];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'warn-col', header: 'Col', groupId: 'warn-child', cell: () => 'col' },
-      ];
-
-      renderHook(() => useColumnGrouping(groups, cols));
-
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('references non-existent parent group'));
-    });
-
-    it('warns about column referencing non-existent group', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [];
-      const cols: TableProps.ColumnDefinition<any>[] = [
-        { id: 'warn-col2', header: 'Col', groupId: 'warn-nonexistent-group', cell: () => 'col' },
-      ];
-
-      renderHook(() => useColumnGrouping(groups, cols));
-
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('references non-existent parent group'));
+      process.env.NODE_ENV = originalEnv;
     });
 
     it('handles group without id gracefully', () => {
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: '', header: 'Invalid' } as any];
+      const groups: TableProps.GroupDefinition<any>[] = [{ id: '', header: 'Invalid' } as any];
       const cols: TableProps.ColumnDefinition<any>[] = [];
 
       const { result } = renderHook(() => useColumnGrouping(groups, cols));
 
-      // Group with empty id is skipped; no crash
       expect(result.current.rows).toBeDefined();
     });
   });

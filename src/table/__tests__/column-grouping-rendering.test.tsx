@@ -25,18 +25,45 @@ const items: Item[] = [
 const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
   { id: 'id', header: 'ID', cell: item => item.id, isRowHeader: true },
   { id: 'name', header: 'Name', cell: item => item.name },
-  { id: 'cpu', header: 'CPU', cell: item => item.cpu, groupId: 'performance' },
-  { id: 'memory', header: 'Memory', cell: item => item.memory, groupId: 'performance' },
-  { id: 'networkIn', header: 'Network In', cell: item => item.networkIn, groupId: 'performance' },
-  { id: 'type', header: 'Type', cell: item => item.type, groupId: 'config' },
-  { id: 'az', header: 'AZ', cell: item => item.az, groupId: 'config' },
-  { id: 'cost', header: 'Cost', cell: item => `$${item.cost}`, groupId: 'pricing' },
+  { id: 'cpu', header: 'CPU', cell: item => item.cpu },
+  { id: 'memory', header: 'Memory', cell: item => item.memory },
+  { id: 'networkIn', header: 'Network In', cell: item => item.networkIn },
+  { id: 'type', header: 'Type', cell: item => item.type },
+  { id: 'az', header: 'AZ', cell: item => item.az },
+  { id: 'cost', header: 'Cost', cell: item => `$${item.cost}` },
 ];
 
-const columnGroupingDefinitions: TableProps.ColumnGroupsDefinition<Item>[] = [
+const groupDefinitions: TableProps.GroupDefinition<Item>[] = [
   { id: 'performance', header: 'Performance' },
   { id: 'config', header: 'Configuration' },
   { id: 'pricing', header: 'Pricing' },
+];
+
+const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+  { id: 'id', visible: true },
+  { id: 'name', visible: true },
+  {
+    type: 'group',
+    id: 'performance',
+    children: [
+      { id: 'cpu', visible: true },
+      { id: 'memory', visible: true },
+      { id: 'networkIn', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'config',
+    children: [
+      { id: 'type', visible: true },
+      { id: 'az', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'pricing',
+    children: [{ id: 'cost', visible: true }],
+  },
 ];
 
 function renderTable(props: Partial<TableProps<Item>> = {}) {
@@ -44,7 +71,8 @@ function renderTable(props: Partial<TableProps<Item>> = {}) {
     <Table
       items={items}
       columnDefinitions={columnDefinitions}
-      columnGroupingDefinitions={columnGroupingDefinitions}
+      groupDefinitions={groupDefinitions}
+      columnDisplay={columnDisplay}
       {...props}
     />
   );
@@ -53,7 +81,7 @@ function renderTable(props: Partial<TableProps<Item>> = {}) {
 }
 
 describe('Table with column grouping', () => {
-  test('renders multiple header rows when columnGroupingDefinitions are provided', () => {
+  test('renders multiple header rows when groupDefinitions are provided', () => {
     const { wrapper } = renderTable();
     const thead = wrapper.find('thead')!;
     const rows = thead.findAll('tr');
@@ -143,13 +171,14 @@ describe('Table with column grouping', () => {
     const thead = wrapper.find('thead')!;
     const rows = thead.findAll('tr');
     expect(rows.length).toBeGreaterThan(1);
-    // Selection checkbox should be in the first header row
-    const firstRowThs = rows[0].findAll('th');
+    // Selection checkbox should be in the last header row
+    const lastRow = rows[rows.length - 1];
+    const firstRowThs = lastRow.findAll('th');
     expect(firstRowThs.length).toBeGreaterThan(0);
   });
 
-  test('renders single header row when no columnGroupingDefinitions', () => {
-    const { wrapper } = renderTable({ columnGroupingDefinitions: undefined });
+  test('renders single header row when no groupDefinitions', () => {
+    const { wrapper } = renderTable({ groupDefinitions: undefined, columnDisplay: undefined });
     const thead = wrapper.find('thead')!;
     const rows = thead.findAll('tr');
     expect(rows.length).toBe(1);
@@ -167,12 +196,28 @@ describe('Table with column grouping', () => {
       columnDisplay: [
         { id: 'id', visible: true },
         { id: 'name', visible: true },
-        { id: 'cpu', visible: true },
-        { id: 'memory', visible: false },
-        { id: 'networkIn', visible: false },
-        { id: 'type', visible: false },
-        { id: 'az', visible: false },
-        { id: 'cost', visible: false },
+        {
+          type: 'group',
+          id: 'performance',
+          children: [
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: false },
+            { id: 'networkIn', visible: false },
+          ],
+        },
+        {
+          type: 'group',
+          id: 'config',
+          children: [
+            { id: 'type', visible: false },
+            { id: 'az', visible: false },
+          ],
+        },
+        {
+          type: 'group',
+          id: 'pricing',
+          children: [{ id: 'cost', visible: false }],
+        },
       ],
     });
     const thead = wrapper.find('thead')!;
@@ -187,13 +232,45 @@ describe('Table with column grouping', () => {
   });
 
   test('renders with nested column groups', () => {
-    const nestedGroupDefs: TableProps.ColumnGroupsDefinition<Item>[] = [
-      { id: 'performance', header: 'Performance', groupId: 'metrics' },
+    const nestedGroupDefs: TableProps.GroupDefinition<Item>[] = [
+      { id: 'performance', header: 'Performance' },
       { id: 'metrics', header: 'Metrics' },
       { id: 'config', header: 'Configuration' },
       { id: 'pricing', header: 'Pricing' },
     ];
-    const { wrapper } = renderTable({ columnGroupingDefinitions: nestedGroupDefs });
+    const nestedColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+      { id: 'id', visible: true },
+      { id: 'name', visible: true },
+      {
+        type: 'group',
+        id: 'metrics',
+        children: [
+          {
+            type: 'group',
+            id: 'performance',
+            children: [
+              { id: 'cpu', visible: true },
+              { id: 'memory', visible: true },
+              { id: 'networkIn', visible: true },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'group',
+        id: 'config',
+        children: [
+          { id: 'type', visible: true },
+          { id: 'az', visible: true },
+        ],
+      },
+      {
+        type: 'group',
+        id: 'pricing',
+        children: [{ id: 'cost', visible: true }],
+      },
+    ];
+    const { wrapper } = renderTable({ groupDefinitions: nestedGroupDefs, columnDisplay: nestedColumnDisplay });
     const thead = wrapper.find('thead')!;
     const thElements = thead.findAll('th');
     const headerTexts = thElements.map(th => th.getElement().textContent?.trim());

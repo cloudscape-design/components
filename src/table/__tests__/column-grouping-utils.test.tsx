@@ -157,22 +157,36 @@ describe('column-grouping-utils', () => {
       const columns: TableProps.ColumnDefinition<any>[] = [
         { id: 'id', header: 'ID', cell: () => 'id' },
         { id: 'name', header: 'Name', cell: () => 'name' },
-        { id: 'cpu', header: 'CPU', groupId: 'perf', cell: () => 'cpu' },
-        { id: 'memory', header: 'Memory', groupId: 'perf', cell: () => 'memory' },
-        { id: 'type', header: 'Type', groupId: 'config', cell: () => 'type' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'memory', header: 'Memory', cell: () => 'memory' },
+        { id: 'type', header: 'Type', cell: () => 'type' },
       ];
 
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const groups: TableProps.GroupDefinition<any>[] = [
         { id: 'perf', header: 'Performance' },
         { id: 'config', header: 'Configuration' },
+      ];
+
+      const flatColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+        { id: 'id', visible: true },
+        { id: 'name', visible: true },
+        {
+          type: 'group',
+          id: 'perf',
+          children: [
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: true },
+          ],
+        },
+        { type: 'group', id: 'config', children: [{ id: 'type', visible: true }] },
       ];
 
       it('creates two rows', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         expect(result?.maxDepth).toBe(2);
@@ -183,8 +197,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row0 = result?.rows[0].columns;
@@ -205,8 +219,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row0 = result?.rows[0].columns;
@@ -226,8 +240,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row1 = result?.rows[1].columns;
@@ -256,8 +270,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row0 = result?.rows[0].columns;
@@ -268,8 +282,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row0 = result?.rows[0].columns;
@@ -288,8 +302,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         expect(result?.columnToParentIds.get('cpu')).toEqual(['perf']);
@@ -303,8 +317,8 @@ describe('column-grouping-utils', () => {
         const result = CalculateHierarchyTree(
           columns,
           ['id', 'name', 'cpu', 'memory', 'type'],
-          groups
-          // []
+          groups,
+          flatColumnDisplay
         );
 
         const row1 = result?.rows[1].columns;
@@ -316,34 +330,41 @@ describe('column-grouping-utils', () => {
 
     describe('nested grouping', () => {
       const columns: TableProps.ColumnDefinition<any>[] = [
-        { id: 'cpu', header: 'CPU', groupId: 'perf', cell: () => 'cpu' },
-        { id: 'memory', header: 'Memory', groupId: 'perf', cell: () => 'memory' },
+        { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+        { id: 'memory', header: 'Memory', cell: () => 'memory' },
       ];
 
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [
+      const groups: TableProps.GroupDefinition<any>[] = [
         { id: 'metrics', header: 'Metrics' },
-        { id: 'perf', header: 'Performance', groupId: 'metrics' },
+        { id: 'perf', header: 'Performance' },
+      ];
+
+      const nestedColumnDisplay: TableProps.ColumnDisplayProperties[] = [
+        {
+          type: 'group',
+          id: 'metrics',
+          children: [
+            {
+              type: 'group',
+              id: 'perf',
+              children: [
+                { id: 'cpu', visible: true },
+                { id: 'memory', visible: true },
+              ],
+            },
+          ],
+        },
       ];
 
       it('creates correct number of rows for 2-level nesting', () => {
-        const result = CalculateHierarchyTree(
-          columns,
-          ['cpu', 'memory'],
-          groups
-          // []
-        );
+        const result = CalculateHierarchyTree(columns, ['cpu', 'memory'], groups, nestedColumnDisplay);
 
         expect(result?.maxDepth).toBe(3);
         expect(result?.rows).toHaveLength(3);
       });
 
       it('places groups in correct rows', () => {
-        const result = CalculateHierarchyTree(
-          columns,
-          ['cpu', 'memory'],
-          groups
-          // []
-        );
+        const result = CalculateHierarchyTree(columns, ['cpu', 'memory'], groups, nestedColumnDisplay);
 
         // Row 0: metrics (top-level group)
         expect(result?.rows[0].columns).toHaveLength(1);
@@ -361,12 +382,7 @@ describe('column-grouping-utils', () => {
       });
 
       it('calculates correct colspan for nested groups', () => {
-        const result = CalculateHierarchyTree(
-          columns,
-          ['cpu', 'memory'],
-          groups
-          // []
-        );
+        const result = CalculateHierarchyTree(columns, ['cpu', 'memory'], groups, nestedColumnDisplay);
 
         expect(result?.rows[0].columns[0].colspan).toBe(2); // metrics spans both columns
         expect(result?.rows[1].columns[0].colspan).toBe(2); // perf spans both columns
@@ -375,28 +391,34 @@ describe('column-grouping-utils', () => {
       });
 
       it('tracks full parent chain for nested groups', () => {
-        const result = CalculateHierarchyTree(
-          columns,
-          ['cpu', 'memory'],
-          groups
-          // []
-        );
+        const result = CalculateHierarchyTree(columns, ['cpu', 'memory'], groups, nestedColumnDisplay);
 
         expect(result?.columnToParentIds.get('cpu')).toEqual(['metrics', 'perf']);
         expect(result?.columnToParentIds.get('memory')).toEqual(['metrics', 'perf']);
       });
 
       it('handles 3-level nesting', () => {
-        const deepGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+        const deepGroups: TableProps.GroupDefinition<any>[] = [
           { id: 'level1', header: 'Level 1' },
-          { id: 'level2', header: 'Level 2', groupId: 'level1' },
-          { id: 'level3', header: 'Level 3', groupId: 'level2' },
+          { id: 'level2', header: 'Level 2' },
+          { id: 'level3', header: 'Level 3' },
         ];
-        const deepCols: TableProps.ColumnDefinition<any>[] = [
-          { id: 'col', header: 'Col', groupId: 'level3', cell: () => 'col' },
+        const deepCols: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+        const deepDisplay: TableProps.ColumnDisplayProperties[] = [
+          {
+            type: 'group',
+            id: 'level1',
+            children: [
+              {
+                type: 'group',
+                id: 'level2',
+                children: [{ type: 'group', id: 'level3', children: [{ id: 'col', visible: true }] }],
+              },
+            ],
+          },
         ];
 
-        const result = CalculateHierarchyTree(deepCols, ['col'], deepGroups);
+        const result = CalculateHierarchyTree(deepCols, ['col'], deepGroups, deepDisplay);
 
         expect(result?.maxDepth).toBe(4);
         expect(result?.rows).toHaveLength(4);
@@ -404,17 +426,25 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles mixed nested and flat groups', () => {
-        const mixedGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+        const mixedGroups: TableProps.GroupDefinition<any>[] = [
           { id: 'metrics', header: 'Metrics' },
-          { id: 'perf', header: 'Performance', groupId: 'metrics' },
-          { id: 'config', header: 'Config' }, // flat
+          { id: 'perf', header: 'Performance' },
+          { id: 'config', header: 'Config' },
         ];
         const mixedCols: TableProps.ColumnDefinition<any>[] = [
-          { id: 'cpu', header: 'CPU', groupId: 'perf', cell: () => 'cpu' },
-          { id: 'type', header: 'Type', groupId: 'config', cell: () => 'type' },
+          { id: 'cpu', header: 'CPU', cell: () => 'cpu' },
+          { id: 'type', header: 'Type', cell: () => 'type' },
+        ];
+        const mixedDisplay: TableProps.ColumnDisplayProperties[] = [
+          {
+            type: 'group',
+            id: 'metrics',
+            children: [{ type: 'group', id: 'perf', children: [{ id: 'cpu', visible: true }] }],
+          },
+          { type: 'group', id: 'config', children: [{ id: 'type', visible: true }] },
         ];
 
-        const result = CalculateHierarchyTree(mixedCols, ['cpu', 'type'], mixedGroups);
+        const result = CalculateHierarchyTree(mixedCols, ['cpu', 'type'], mixedGroups, mixedDisplay);
 
         expect(result?.maxDepth).toBe(3);
 
@@ -436,18 +466,30 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles multiple trees at same level', () => {
-        const parallelGroups: TableProps.ColumnGroupsDefinition<any>[] = [
+        const parallelGroups: TableProps.GroupDefinition<any>[] = [
           { id: 'tree1', header: 'Tree 1' },
-          { id: 'tree1child', header: 'Tree 1 Child', groupId: 'tree1' },
+          { id: 'tree1child', header: 'Tree 1 Child' },
           { id: 'tree2', header: 'Tree 2' },
-          { id: 'tree2child', header: 'Tree 2 Child', groupId: 'tree2' },
+          { id: 'tree2child', header: 'Tree 2 Child' },
         ];
         const parallelCols: TableProps.ColumnDefinition<any>[] = [
-          { id: 'col1', header: 'Col 1', groupId: 'tree1child', cell: () => 'col1' },
-          { id: 'col2', header: 'Col 2', groupId: 'tree2child', cell: () => 'col2' },
+          { id: 'col1', header: 'Col 1', cell: () => 'col1' },
+          { id: 'col2', header: 'Col 2', cell: () => 'col2' },
+        ];
+        const parallelDisplay: TableProps.ColumnDisplayProperties[] = [
+          {
+            type: 'group',
+            id: 'tree1',
+            children: [{ type: 'group', id: 'tree1child', children: [{ id: 'col1', visible: true }] }],
+          },
+          {
+            type: 'group',
+            id: 'tree2',
+            children: [{ type: 'group', id: 'tree2child', children: [{ id: 'col2', visible: true }] }],
+          },
         ];
 
-        const result = CalculateHierarchyTree(parallelCols, ['col1', 'col2'], parallelGroups);
+        const result = CalculateHierarchyTree(parallelCols, ['col1', 'col2'], parallelGroups, parallelDisplay);
 
         expect(result?.maxDepth).toBe(3);
         expect(result?.rows[0].columns.map(c => c.id)).toEqual(['tree1', 'tree2']);
@@ -458,13 +500,17 @@ describe('column-grouping-utils', () => {
 
     describe('mixed ungrouped and grouped columns', () => {
       it('ungrouped columns are expanded into hidden placeholder in row 0, real cell in row 1', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
+        const groups: TableProps.GroupDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
         const columns: TableProps.ColumnDefinition<any>[] = [
           { id: 'ungrouped', header: 'Ungrouped', cell: () => 'ungrouped' },
-          { id: 'grouped', header: 'Grouped', groupId: 'group1', cell: () => 'grouped' },
+          { id: 'grouped', header: 'Grouped', cell: () => 'grouped' },
+        ];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { id: 'ungrouped', visible: true },
+          { type: 'group', id: 'group1', children: [{ id: 'grouped', visible: true }] },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['ungrouped', 'grouped'], groups);
+        const result = CalculateHierarchyTree(columns, ['ungrouped', 'grouped'], groups, display);
 
         // Row 0 has a hidden placeholder for 'ungrouped'
         const ungroupedRow0 = result?.rows[0].columns.find(c => c.id === 'ungrouped');
@@ -480,15 +526,27 @@ describe('column-grouping-utils', () => {
       });
 
       it('maintains correct column order with mixed types', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
+        const groups: TableProps.GroupDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
         const columns: TableProps.ColumnDefinition<any>[] = [
           { id: 'a', header: 'A', cell: () => 'a' },
-          { id: 'b', header: 'B', groupId: 'group1', cell: () => 'b' },
+          { id: 'b', header: 'B', cell: () => 'b' },
           { id: 'c', header: 'C', cell: () => 'c' },
-          { id: 'd', header: 'D', groupId: 'group1', cell: () => 'd' },
+          { id: 'd', header: 'D', cell: () => 'd' },
+        ];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { id: 'a', visible: true },
+          {
+            type: 'group',
+            id: 'group1',
+            children: [
+              { id: 'b', visible: true },
+              { id: 'd', visible: true },
+            ],
+          },
+          { id: 'c', visible: true },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['a', 'b', 'c', 'd'], groups);
+        const result = CalculateHierarchyTree(columns, ['a', 'b', 'c', 'd'], groups, display);
 
         // Row 0: hidden placeholders for a and c, plus the group header
         expect(result?.rows[0].columns.map(c => c.id)).toEqual(['a', 'group1', 'c']);
@@ -508,14 +566,18 @@ describe('column-grouping-utils', () => {
       const columns: TableProps.ColumnDefinition<any>[] = [
         { id: 'col1', header: 'Col 1', cell: () => 'col1' },
         { id: 'col2', header: 'Col 2', cell: () => 'col2' },
-        { id: 'col3', header: 'Col 3', groupId: 'group1', cell: () => 'col3' },
-        { id: 'col4', header: 'Col 4', groupId: 'group1', cell: () => 'col4' },
+        { id: 'col3', header: 'Col 3', cell: () => 'col3' },
+        { id: 'col4', header: 'Col 4', cell: () => 'col4' },
       ];
 
-      const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
+      const groups: TableProps.GroupDefinition<any>[] = [{ id: 'group1', header: 'Group 1' }];
 
       it('only includes visible columns', () => {
-        const result = CalculateHierarchyTree(columns, ['col1', 'col3'], groups);
+        const partialDisplay: TableProps.ColumnDisplayProperties[] = [
+          { id: 'col1', visible: true },
+          { type: 'group', id: 'group1', children: [{ id: 'col3', visible: true }] },
+        ];
+        const result = CalculateHierarchyTree(columns, ['col1', 'col3'], groups, partialDisplay);
 
         const allColumnIds = result?.rows.flatMap(row => row.columns.map(c => c.id));
         expect(allColumnIds).toContain('col1');
@@ -526,14 +588,22 @@ describe('column-grouping-utils', () => {
       });
 
       it('adjusts group colspan when some children hidden', () => {
-        const result = CalculateHierarchyTree(columns, ['col1', 'col3'], groups);
+        const partialDisplay: TableProps.ColumnDisplayProperties[] = [
+          { id: 'col1', visible: true },
+          { type: 'group', id: 'group1', children: [{ id: 'col3', visible: true }] },
+        ];
+        const result = CalculateHierarchyTree(columns, ['col1', 'col3'], groups, partialDisplay);
 
         const group = result?.rows[0].columns.find(c => c.id === 'group1');
         expect(group?.colspan).toBe(1); // only col3 visible
       });
 
       it('hides group when all children hidden', () => {
-        const result = CalculateHierarchyTree(columns, ['col1', 'col2'], groups);
+        const noGroupDisplay: TableProps.ColumnDisplayProperties[] = [
+          { id: 'col1', visible: true },
+          { id: 'col2', visible: true },
+        ];
+        const result = CalculateHierarchyTree(columns, ['col1', 'col2'], groups, noGroupDisplay);
 
         const allIds = result?.rows[0].columns.map(c => c.id);
         expect(allIds).not.toContain('group1');
@@ -543,8 +613,14 @@ describe('column-grouping-utils', () => {
         const columnDisplay: TableProps.ColumnDisplayProperties[] = [
           { id: 'col1', visible: true },
           { id: 'col2', visible: false },
-          { id: 'col3', visible: true },
-          { id: 'col4', visible: true },
+          {
+            type: 'group',
+            id: 'group1',
+            children: [
+              { id: 'col3', visible: true },
+              { id: 'col4', visible: true },
+            ],
+          },
         ];
 
         const result = CalculateHierarchyTree(columns, ['col1', 'col2', 'col3', 'col4'], groups, columnDisplay);
@@ -577,15 +653,16 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles group without id', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [
+        const groups: TableProps.GroupDefinition<any>[] = [
           { header: 'No ID' } as any,
           { id: 'valid', header: 'Valid' },
         ];
-        const columns: TableProps.ColumnDefinition<any>[] = [
-          { id: 'col', header: 'Col', groupId: 'valid', cell: () => 'col' },
+        const columns: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { type: 'group', id: 'valid', children: [{ id: 'col', visible: true }] },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['col'], groups);
+        const result = CalculateHierarchyTree(columns, ['col'], groups, display);
 
         // Group without id should be skipped
         const groupIds = result?.rows[0].columns.filter(c => c.isGroup).map(c => c.id);
@@ -593,31 +670,27 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles column referencing non-existent group', () => {
-        const columns: TableProps.ColumnDefinition<any>[] = [
-          { id: 'orphan', header: 'Orphan', groupId: 'nonexistent', cell: () => 'orphan' },
+        const columns: TableProps.ColumnDefinition<any>[] = [{ id: 'orphan', header: 'Orphan', cell: () => 'orphan' }];
+        // columnDisplay references a group not in groupDefinitions — entire subtree is skipped
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { type: 'group', id: 'nonexistent', children: [{ id: 'orphan', visible: true }] },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['orphan'], []);
+        const result = CalculateHierarchyTree(columns, ['orphan'], [], display);
 
-        // Should treat as ungrouped
-        expect(result?.rows).toHaveLength(1);
-        expect(result?.rows[0].columns[0]).toMatchObject({
-          id: 'orphan',
-          rowspan: 1,
-          isGroup: false,
-        });
+        // Group node not found → warnOnce is called and the subtree (including 'orphan') is skipped → no rows
+        expect(result?.rows).toHaveLength(0);
         expect(result?.columnToParentIds.has('orphan')).toBe(false);
       });
 
       it('handles group referencing non-existent parent', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [
-          { id: 'orphan', header: 'Orphan', groupId: 'nonexistent' },
-        ];
-        const columns: TableProps.ColumnDefinition<any>[] = [
-          { id: 'col', header: 'Col', groupId: 'orphan', cell: () => 'col' },
+        const groups: TableProps.GroupDefinition<any>[] = [{ id: 'orphan', header: 'Orphan' }];
+        const columns: TableProps.ColumnDefinition<any>[] = [{ id: 'col', header: 'Col', cell: () => 'col' }];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { type: 'group', id: 'orphan', children: [{ id: 'col', visible: true }] },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['col'], groups);
+        const result = CalculateHierarchyTree(columns, ['col'], groups, display);
 
         // Orphan group should be top-level
         expect(result?.rows[0].columns.find(c => c.id === 'orphan')).toBeDefined();
@@ -625,13 +698,23 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles all columns in one group', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'all', header: 'All' }];
+        const groups: TableProps.GroupDefinition<any>[] = [{ id: 'all', header: 'All' }];
         const columns: TableProps.ColumnDefinition<any>[] = [
-          { id: 'a', header: 'A', groupId: 'all', cell: () => 'a' },
-          { id: 'b', header: 'B', groupId: 'all', cell: () => 'b' },
+          { id: 'a', header: 'A', cell: () => 'a' },
+          { id: 'b', header: 'B', cell: () => 'b' },
+        ];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          {
+            type: 'group',
+            id: 'all',
+            children: [
+              { id: 'a', visible: true },
+              { id: 'b', visible: true },
+            ],
+          },
         ];
 
-        const result = CalculateHierarchyTree(columns, ['a', 'b'], groups);
+        const result = CalculateHierarchyTree(columns, ['a', 'b'], groups, display);
 
         expect(result?.rows).toHaveLength(2);
         expect(result?.rows[0].columns).toHaveLength(1); // only group header
@@ -655,12 +738,13 @@ describe('column-grouping-utils', () => {
       });
 
       it('handles group with no visible children', () => {
-        const groups: TableProps.ColumnGroupsDefinition<any>[] = [{ id: 'empty', header: 'Empty' }];
-        const columns: TableProps.ColumnDefinition<any>[] = [
-          { id: 'hidden', header: 'Hidden', groupId: 'empty', cell: () => 'hidden' },
+        const groups: TableProps.GroupDefinition<any>[] = [{ id: 'empty', header: 'Empty' }];
+        const columns: TableProps.ColumnDefinition<any>[] = [{ id: 'hidden', header: 'Hidden', cell: () => 'hidden' }];
+        const display: TableProps.ColumnDisplayProperties[] = [
+          { type: 'group', id: 'empty', children: [{ id: 'hidden', visible: false }] },
         ];
 
-        const result = CalculateHierarchyTree(columns, [], groups);
+        const result = CalculateHierarchyTree(columns, [], groups, display);
 
         // Group with no visible children should not appear
         expect(result?.rows.length).toEqual(0);
