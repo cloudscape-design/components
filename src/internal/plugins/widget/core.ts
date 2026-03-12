@@ -41,6 +41,11 @@ export function pushInitialMessage<T>(message: InitialMessage<T>) {
   win[storageKeyInitialMessages].push(message as InitialMessage<unknown>);
 }
 
+export function setInitialMessage(message: Array<InitialMessage<unknown>>) {
+  const win = getWindow();
+  win[storageKeyInitialMessages] = message;
+}
+
 export function registerAppLayoutHandler(handler: MessageHandler) {
   const win = getWindow();
   if (win[storageKeyMessageHandler]) {

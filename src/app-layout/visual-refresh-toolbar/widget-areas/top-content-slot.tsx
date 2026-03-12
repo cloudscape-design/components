@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutNotificationsImplementation as AppLayoutNotifications } from '../notifications';
@@ -11,7 +12,7 @@ import { isWidgetReady } from '../state/invariants';
 
 import styles from '../skeleton/styles.css.js';
 
-export const TopContentSlotImplementation = ({ appLayoutProps, appLayoutState }: SkeletonPartProps) => {
+export const TopContentSlotImplementationInternal = ({ appLayoutProps, appLayoutState }: SkeletonPartProps) => {
   if (!isWidgetReady(appLayoutState)) {
     return null;
   }
@@ -33,5 +34,11 @@ export const TopContentSlotImplementation = ({ appLayoutProps, appLayoutState }:
     </>
   );
 };
+
+export const TopContentSlotImplementation = (props: SkeletonPartProps) => (
+  <AppLayoutBuiltInErrorBoundary>
+    <TopContentSlotImplementationInternal {...props} />
+  </AppLayoutBuiltInErrorBoundary>
+);
 
 export const createWidgetizedAppLayoutTopContentSlot = createWidgetizedComponent(TopContentSlotImplementation);

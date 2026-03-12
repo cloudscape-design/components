@@ -320,6 +320,7 @@ const PropertyFilterInternal = React.forwardRef(
         return;
       }
 
+      // eslint-disable-next-line no-restricted-syntax -- Runtime property not in TS type
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;

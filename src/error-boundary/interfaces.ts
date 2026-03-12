@@ -109,3 +109,7 @@ export interface BuiltInErrorBoundaryProps {
   wrapper?: (content: React.ReactNode) => React.ReactNode;
   suppressNested?: boolean;
 }
+
+export interface AppLayoutBuiltInErrorBoundaryProps extends BuiltInErrorBoundaryProps {
+  renderFallback?: ErrorBoundaryProps['renderFallback'];
+}

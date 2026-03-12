@@ -1350,7 +1350,9 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`",
+By default, the preference is \`{ position: 'bottom' }\`.
+
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -1904,7 +1906,9 @@ while navigation drawer might be displayed, but opened using a custom trigger.",
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`",
+By default, the preference is \`{ position: 'bottom' }\`.
+
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -10797,6 +10801,12 @@ automatically set by the form field (for example, if you have two components wit
 To use it correctly, define an ID for each element that you want to use as a description
 and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
       "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-label\` to the trigger and dropdown.",
+      "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
