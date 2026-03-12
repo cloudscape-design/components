@@ -28,7 +28,6 @@ type DemoContext = React.Context<
     isReadOnly: boolean;
     isInvalid: boolean;
     hasWarning: boolean;
-    hasText: boolean;
     hasSecondaryContent: boolean;
     hasSecondaryActions: boolean;
     hasPrimaryActions: boolean;
@@ -50,7 +49,6 @@ export default function PromptInputPage() {
     isReadOnly,
     isInvalid,
     hasWarning,
-    hasText,
     hasSecondaryActions,
     hasSecondaryContent,
     hasPrimaryActions,
@@ -62,19 +60,6 @@ export default function PromptInputPage() {
     { label: 'Item 2', dismissLabel: 'Remove item 2', disabled: isDisabled },
     { label: 'Item 3', dismissLabel: 'Remove item 3', disabled: isDisabled },
   ]);
-
-  useEffect(() => {
-    if (hasText) {
-      setTextareaValue(placeholderText);
-    }
-  }, [hasText]);
-
-  useEffect(() => {
-    if (textareaValue !== placeholderText) {
-      setUrlParams({ hasText: false });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [textareaValue]);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -164,7 +149,14 @@ export default function PromptInputPage() {
                 Infinite max rows
               </Checkbox>
             </FormField>
-            <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
+            <button
+              id="placeholder-text-button"
+              onClick={() => {
+                if (textareaValue === '') {
+                  setTextareaValue(placeholderText);
+                }
+              }}
+            >
               Fill with placeholder text
             </button>
 

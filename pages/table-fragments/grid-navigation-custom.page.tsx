@@ -216,7 +216,8 @@ export default function Page() {
                     onConfirm={({ detail }) =>
                       setUrlParams({
                         visibleColumns: (detail.contentDisplay ?? [])
-                          .filter(column => column.visible)
+                          // TODO: Hack, think about this later, ಠ__ಠ this could definitely break some teams' implementation
+                          .filter(column => !('type' in column) && column.visible)
                           .map(column => column.id)
                           .join(','),
                       })
