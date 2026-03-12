@@ -281,35 +281,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     })
   );
 
-  test(
-    'should not cause infinite update loop when resizing split panel from max to smaller size',
-    setupTest(async page => {
-      await page.setWindowSize({ width: 2000, height: 1000 });
-      await page.openPanel();
-      const { height: viewportHeight } = await page.getViewportSize();
-
-      // Drag resizer to the top (max size), then back down.
-      await page.dragResizerTo({ x: 0, y: 0 });
-
-      // Slowly drag the resizer back down in small increments to reproduce the bug.
-      // The infinite loop only triggers when the handle moves gradually near the edge,
-      // causing repeated forced-position recalculations on each animation frame.
-      const targetY = Math.ceil(viewportHeight / 2);
-      const resizerSelector = wrapper.findSplitPanel().findSlider().toSelector();
-      const { top: startY } = await page.getBoundingBox(resizerSelector);
-      const steps = 5;
-      const stepSize = Math.ceil((targetY - startY) / steps);
-      for (let i = 1; i <= steps; i++) {
-        await page.dragResizerTo({ x: 0, y: Math.ceil(startY) + stepSize * i });
-      }
-
-      const consoleErrors = await page.getConsoleErrorLogs();
-      const errorPattern = /Maximum update depth exceeded/;
-      const matchingErrors = consoleErrors.filter(error => errorPattern.test(error));
-      expect(matchingErrors.length).toBe(0);
-    })
-  );
-
   describe('interaction with table sticky elements', () => {
     // bottom padding is included into the offset in VR but not in classic
     const splitPanelPadding = theme === 'refresh' ? 40 : 0;

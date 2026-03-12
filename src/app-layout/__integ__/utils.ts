@@ -168,14 +168,4 @@ export class AppLayoutSplitViewPage extends BasePageObject {
       ? this.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())
       : this.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector());
   }
-
-  async getConsoleErrorLogs() {
-    const total = (await this.browser.getLogs('browser')) as Array<{
-      level: string;
-      message: string;
-      source: string;
-    }>;
-
-    return total.filter(entry => entry.level === 'SEVERE' && entry.source !== 'network').map(entry => entry.message);
-  }
 }
