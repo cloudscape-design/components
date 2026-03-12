@@ -345,11 +345,11 @@ function isTopOrBottom(internalPosition: InternalPosition) {
   return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
 }
 
-export function clampRectStart(rect: Rect, parentRect: BoundingBox) {
-  const parentInlineEnd = parentRect.insetInlineStart + parentRect.inlineSize;
-  const parentBlockEnd = parentRect.insetBlockStart + parentRect.blockSize;
-  rect.insetInlineStart = Math.max(parentRect.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
-  rect.insetBlockStart = Math.max(parentRect.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
+export function clampRectStart(rect: Rect, bounds: BoundingBox) {
+  const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
+  const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
+  rect.insetInlineStart = Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
+  rect.insetBlockStart = Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
   return rect;
 }
 
