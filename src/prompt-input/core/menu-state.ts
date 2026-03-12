@@ -168,7 +168,8 @@ function createItems(options: readonly OptionDefinition[]) {
 }
 
 function isGroup(optionOrGroup: OptionDefinition): optionOrGroup is OptionGroup {
-  return 'options' in optionOrGroup;
+  const key: keyof OptionGroup = 'options';
+  return key in optionOrGroup;
 }
 
 // MENU LOAD MORE
