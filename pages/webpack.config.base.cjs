@@ -48,10 +48,12 @@ module.exports = ({
               react: 'react18',
               'react-dom': 'react-dom18',
               'react-dom/client': 'react-dom18/client',
-              [path.resolve(componentsPath, 'internal/vendor/react-dom-client-stub.js')]: 'react-dom18/client',
             }
           : {
               '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
+              // In React 16/17 mode, alias react-dom/client to our compatibility stub
+              // Point to the compiled .js file in lib, not the source .ts file
+              'react-dom/client': path.resolve(componentsPath, 'internal/vendor/react-dom-client-stub.js'),
             }),
       },
     },

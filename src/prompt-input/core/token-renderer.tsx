@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+// Import from react-dom/client (React 18+)
+// For React 16/17 environments, webpack alias will replace this with the compatibility stub
+// @ts-expect-error - react-dom/client only exists in React 18+, aliased to stub in React 16/17
+import { createRoot, Root } from 'react-dom/client';
 
-import { createRoot, Root } from '../../internal/vendor/react-dom-client-stub';
 import Token from '../../token/internal';
 import { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
