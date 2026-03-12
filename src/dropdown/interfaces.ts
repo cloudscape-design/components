@@ -126,24 +126,22 @@ export interface DropdownProps extends ExpandToViewport {
   onFocusLeave?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
 
   /**
-   * ARIA role for the dropdown content (e.g., 'menu', 'listbox', 'dialog')
+   * Adds `role` to the dropdown content element.
    */
   ariaRole?: string;
 
   /**
-   * ARIA label for the dropdown content.
-   * Use either this or ariaLabelledby, not both.
+   * Adds `aria-label` to the dropdown content element.
    */
   ariaLabel?: string;
 
   /**
-   * ARIA labelledby attribute for the dropdown content.
-   * Use either this or ariaLabel, not both.
+   * Adds `aria-labelledby` to the dropdown content element.
    */
   ariaLabelledby?: string;
 
   /**
-   * ARIA describedby attribute for the dropdown content
+   * Adds `aria-describedby` to the dropdown content element.
    */
   ariaDescribedby?: string;
 }
