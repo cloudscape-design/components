@@ -35,8 +35,11 @@ export function createTrailingBreak(): HTMLBRElement {
   return br;
 }
 
+let idCounter = 0;
+
 export function generateTokenId(prefix: string): string {
-  return `${prefix}-${Date.now()}`;
+  // Follow the same pattern as useRandomId from component-toolkit
+  return `${prefix}-${idCounter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
 }
 
 interface TokenQueryOptions {
@@ -55,7 +58,10 @@ function buildTokenSelector(options: TokenQueryOptions): string {
   }
 
   if (tokenId) {
-    selector += `[data-id="${tokenId}"]`;
+    // For triggers, use standard id attribute; for others use data-id
+    const isTrigger =
+      tokenType === ELEMENT_TYPES.TRIGGER || (Array.isArray(tokenType) && tokenType.includes(ELEMENT_TYPES.TRIGGER));
+    selector += isTrigger ? `#${CSS.escape(tokenId)}` : `[data-id="${tokenId}"]`;
   }
 
   return selector;

@@ -4,21 +4,19 @@
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-editable-tokens';
 import { ELEMENT_TYPES } from './constants';
-import { getTokenCursorLength, positionAfter, positionBefore } from './cursor-manager';
-import { calculateTokenPosition, setCursorOverride } from './cursor-utils';
+import { CursorController, TOKEN_LENGTHS } from './cursor-controller';
 import {
   createParagraph,
   createTrailingBreak,
-  findAllParagraphs,
   getTokenType,
   insertAfter,
   isElementEffectivelyEmpty,
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
-import { extractTokensFromDOM, getPromptText } from './token-operations';
+import { getPromptText } from './token-operations';
 import { findAdjacentToken } from './token-utils';
 import { handleSpaceInOpenMenu } from './trigger-utils';
-import { isBreakToken, isHTMLElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
+import { isHTMLElement, isTextNode } from './type-guards';
 
 // TYPES
 
@@ -39,7 +37,7 @@ export interface KeyboardHandlerProps {
   readOnly?: boolean;
   editableState?: EditableState;
   editableElementRef?: React.RefObject<HTMLDivElement>;
-  lastKnownCursorPositionRef?: React.MutableRefObject<number>;
+  cursorController?: CursorController;
 }
 
 // KEYBOARD HANDLERS
@@ -74,7 +72,7 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
         getMenuStatusType: props.getMenuStatusType,
         closeMenu: props.closeMenu,
         editableElementRef: props.editableElementRef,
-        lastKnownCursorPositionRef: props.lastKnownCursorPositionRef,
+        cursorController: props.cursorController,
         editableState: props.editableState,
       });
     }
@@ -135,7 +133,7 @@ function findParagraphAncestor(node: Node): HTMLElement | null {
 
 export function splitParagraphAtCursor(
   editableElement: HTMLDivElement,
-  state: EditableState,
+  cursorController: CursorController | null,
   suppressInputEvent = false
 ): void {
   const selection = window.getSelection();
@@ -171,35 +169,20 @@ export function splitParagraphAtCursor(
 
   currentP.parentNode.insertBefore(newP, currentP.nextSibling);
 
-  // Calculate cursor position for the new paragraph (at its start)
-  const paragraphs = findAllParagraphs(editableElement);
-  const currentPIndex = paragraphs.findIndex(p => p === currentP);
-
-  let cursorPosition = 0;
-  const tokens = extractTokensFromDOM(editableElement);
-  let breakCount = 0;
-
-  for (const token of tokens) {
-    if (isBreakToken(token)) {
-      breakCount++;
-      cursorPosition += 1;
-      if (breakCount > currentPIndex) {
-        break;
-      }
-    } else {
-      cursorPosition += getTokenCursorLength(token);
-    }
+  // Calculate new cursor position BEFORE input event (if controller exists)
+  let newCursorPos: number | null = null;
+  if (cursorController) {
+    const currentPos = cursorController.getPosition();
+    newCursorPos = currentPos + TOKEN_LENGTHS.LINE_BREAK;
   }
-
-  state.skipCursorRestore = false;
-  state.targetParagraphId = newP.getAttribute('data-paragraph-id');
-  state.cursorPositionOverride = {
-    cursorPosition,
-    paragraphId: newP.getAttribute('data-paragraph-id'),
-  };
 
   if (!suppressInputEvent) {
     editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  // Position cursor at calculated position
+  if (cursorController && newCursorPos !== null) {
+    cursorController.setPosition(newCursorPos);
   }
 }
 
@@ -249,8 +232,9 @@ export function handleReferenceTokenDeletion(
   isBackspace: boolean,
   editableElement: HTMLDivElement,
   state: EditableState,
-  announceTokenOperation?: (message: string) => void,
-  i18nStrings?: PromptInputProps.I18nStrings
+  announceTokenOperation: ((message: string) => void) | undefined,
+  i18nStrings: PromptInputProps.I18nStrings | undefined,
+  cursorController: CursorController | null
 ): boolean {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
@@ -294,26 +278,22 @@ export function handleReferenceTokenDeletion(
   }
 
   state.skipNextZwnjUpdate = true;
-  state.skipNormalization = true;
 
-  // Find the reference token's position in the token array
-  // This gives us the correct position independent of DOM structure
-  const instanceId = tokenElement!.getAttribute('data-id');
-  const tokens = extractTokensFromDOM(editableElement);
-  const referenceIndex = tokens.findIndex(t => isReferenceToken(t) && t.id === instanceId);
-
-  let cursorPosition = 0;
-  if (referenceIndex >= 0) {
-    // Calculate position up to (but not including) the reference
-    cursorPosition = calculateTokenPosition(tokens, referenceIndex, false);
+  // Calculate new cursor position BEFORE removing element
+  let newCursorPos: number | null = null;
+  if (cursorController) {
+    const currentPos = cursorController.getPosition();
+    // For Backspace, move cursor back; for Delete, keep cursor at same position
+    newCursorPos = isBackspace ? Math.max(0, currentPos - TOKEN_LENGTHS.REFERENCE) : currentPos;
   }
-
-  // Store the position for restoration after re-render
-  setCursorOverride(state, cursorPosition);
-  state.isDeleteOperation = true; // Mark as deletion for Safari ghost cursor fix
 
   elementToRemove.remove();
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+  // Position cursor at calculated position
+  if (cursorController && newCursorPos !== null) {
+    cursorController.setPosition(newCursorPos);
+  }
 
   return true;
 }
@@ -324,15 +304,21 @@ function handleArrowNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
   container: Node,
   offset: number,
-  skipNormalizationRef: React.MutableRefObject<boolean>
+  cursorController: CursorController | null
 ): boolean {
   const direction = event.key === 'ArrowLeft' ? 'left' : 'right';
   const { sibling, isReferenceToken } = findAdjacentToken(container, offset, direction);
 
   if (isReferenceToken && sibling) {
     event.preventDefault();
-    skipNormalizationRef.current = true;
-    direction === 'left' ? positionBefore(sibling) : positionAfter(sibling);
+
+    // Jump cursor over reference token
+    if (direction === 'left') {
+      cursorController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
+    } else {
+      cursorController?.moveForward(TOKEN_LENGTHS.REFERENCE);
+    }
+
     return true;
   }
 
@@ -341,7 +327,7 @@ function handleArrowNavigation(
 
 export function handleArrowKeyNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
-  skipNormalizationRef: React.MutableRefObject<boolean>
+  cursorController: CursorController | null
 ): boolean {
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
     return false;
@@ -359,7 +345,7 @@ export function handleArrowKeyNavigation(
     return handleShiftArrowAcrossTokens(event, selection, range);
   }
 
-  return handleArrowNavigation(event, range.startContainer, range.startOffset, skipNormalizationRef);
+  return handleArrowNavigation(event, range.startContainer, range.startOffset, cursorController);
 }
 
 function handleShiftArrowAcrossTokens(
@@ -417,85 +403,14 @@ function handleShiftArrowAcrossTokens(
   return false;
 }
 
-// CURSOR NORMALIZATION
-
-function normalizeCursorInCursorSpot(container: Node): void {
-  if (!isTextNode(container)) {
-    return;
-  }
-
-  const parent = container.parentElement;
-  if (!parent) {
-    return;
-  }
-
-  const parentType = getTokenType(parent);
-  if (parentType !== ELEMENT_TYPES.CURSOR_SPOT_BEFORE && parentType !== ELEMENT_TYPES.CURSOR_SPOT_AFTER) {
-    return;
-  }
-
-  const wrapper = parent.parentElement;
-  const wrapperType = wrapper ? getTokenType(wrapper) : null;
-  if (!wrapper || (wrapperType !== ELEMENT_TYPES.REFERENCE && wrapperType !== ELEMENT_TYPES.PINNED)) {
-    return;
-  }
-
-  const paragraph = wrapper.parentElement;
-  if (paragraph?.nodeName !== 'P') {
-    return;
-  }
-
-  parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE ? positionBefore(wrapper) : positionAfter(wrapper);
-}
-
-export function createCursorNormalizationHandler(
-  editableElementRef: React.RefObject<HTMLDivElement>,
-  skipNormalizationRef: React.MutableRefObject<boolean>,
-  state: EditableState
-): () => void {
-  return () => {
-    if (skipNormalizationRef.current) {
-      skipNormalizationRef.current = false;
-      return;
-    }
-
-    if (state.skipNormalization) {
-      state.skipNormalization = false;
-      return;
-    }
-
-    const editableElement = editableElementRef.current;
-    if (!editableElement) {
-      return;
-    }
-
-    const selection = window.getSelection();
-    if (!selection?.rangeCount) {
-      return;
-    }
-
-    const range = selection.getRangeAt(0);
-
-    // Skip normalization if there's an active selection (not just a collapsed cursor)
-    // This allows text selection including reference tokens to work correctly
-    if (!range.collapsed) {
-      return;
-    }
-
-    normalizeCursorInCursorSpot(range.startContainer);
-  };
-}
-
 // SPACE AFTER CLOSED TRIGGER
 
 export function handleSpaceAfterClosedTrigger(
   event: React.KeyboardEvent<HTMLDivElement>,
   editableElement: HTMLDivElement,
   menuOpen: boolean,
-  triggerValueWhenClosed: string,
-  editableState: EditableState,
   ignoreCursorDetection: React.MutableRefObject<boolean>,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  cursorController: CursorController | null
 ): boolean {
   // Only handle space key when menu is closed
   // triggerValueWhenClosed can be empty string (trigger with no filter) or non-empty (trigger with filter)
@@ -555,67 +470,11 @@ export function handleSpaceAfterClosedTrigger(
   const spaceNode = document.createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
 
-  // Calculate cursor position: after trigger + after space
-  const tokens = extractTokensFromDOM(editableElement, menus);
-
-  // Find the trigger element's ID to locate the correct trigger token
-  const triggerElementId = triggerElement.getAttribute('data-id');
-
-  let cursorPosition = 0;
-  let foundTargetTrigger = false;
-
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-
-    // Find the specific trigger that matches our trigger element
-    if (isTriggerToken(token) && !foundTargetTrigger) {
-      // Match by ID if available, otherwise by being the first unmatched trigger
-      if (triggerElementId && token.id === triggerElementId) {
-        foundTargetTrigger = true;
-        cursorPosition += getTokenCursorLength(token);
-
-        // Check if next token is the space we just inserted
-        const nextToken = tokens[i + 1];
-        if (nextToken && isTextToken(nextToken) && nextToken.value.startsWith(' ')) {
-          cursorPosition += 1; // Position after the space
-          break;
-        }
-      } else if (!triggerElementId) {
-        // Fallback: use first trigger
-        foundTargetTrigger = true;
-        cursorPosition += getTokenCursorLength(token);
-
-        const nextToken = tokens[i + 1];
-        if (nextToken && isTextToken(nextToken) && nextToken.value.startsWith(' ')) {
-          cursorPosition += 1;
-          break;
-        }
-      } else {
-        // Not the target trigger, keep counting
-        cursorPosition += getTokenCursorLength(token);
-      }
-    } else {
-      cursorPosition += getTokenCursorLength(token);
-    }
-  }
-
-  // Store position for unified restoration
-  editableState.cursorPositionOverride = {
-    cursorPosition,
-    paragraphId: null,
-  };
-  editableState.skipCursorRestore = false;
-
-  // Position cursor immediately to prevent it from jumping to position 0
-  // This prevents menu from flickering open
-  const cursorRange = document.createRange();
-  const spaceTextNode = spaceNode;
-  cursorRange.setStart(spaceTextNode, 1); // After the space
-  cursorRange.collapse(true);
-  const sel = window.getSelection();
-  if (sel) {
-    sel.removeAllRanges();
-    sel.addRange(cursorRange);
+  // Calculate new cursor position BEFORE input event (if controller exists)
+  let newCursorPos: number | null = null;
+  if (cursorController) {
+    const currentPos = cursorController.getPosition();
+    newCursorPos = currentPos + 1;
   }
 
   // Prevent cursor detection from reopening the menu
@@ -624,8 +483,13 @@ export function handleSpaceAfterClosedTrigger(
     ignoreCursorDetection.current = false;
   }, 100);
 
-  // Trigger input event to extract tokens and update state
+  // Trigger input event
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+  // Position cursor at calculated position
+  if (cursorController && newCursorPos !== null) {
+    cursorController.setPosition(newCursorPos);
+  }
 
   return true;
 }

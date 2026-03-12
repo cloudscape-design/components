@@ -21,6 +21,7 @@ import { OptionDefinition, OptionGroup } from '~components/internal/components/o
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
 import { i18nStrings } from '../file-upload/shared';
+import ScreenshotArea from '../utils/screenshot-area';
 
 const MAX_CHARS = 2000;
 
@@ -484,173 +485,185 @@ export default function PromptInputShortcutsPage() {
                   }
                   i18nStrings={{ errorIconAriaLabel: 'Error' }}
                 >
-                  <PromptInput
-                    data-testid="prompt-input"
-                    ariaLabel="Chat input"
-                    actionButtonIconName="send"
-                    actionButtonAriaLabel="Submit prompt"
-                    tokens={tokens}
-                    maxMenuHeight={400}
-                    onChange={event => {
-                      setTokens(event.detail.tokens ?? []);
-                      setPlainTextValue(event.detail.value ?? '');
-                    }}
-                    onAction={({ detail }) => {
-                      setExtractedText(detail.value ?? '');
+                  <ScreenshotArea>
+                    <PromptInput
+                      data-testid="prompt-input"
+                      ariaLabel="Chat input"
+                      actionButtonIconName="send"
+                      actionButtonAriaLabel="Submit prompt"
+                      tokens={tokens}
+                      maxMenuHeight={400}
+                      onChange={event => {
+                        setTokens(event.detail.tokens ?? []);
+                        setPlainTextValue(event.detail.value ?? '');
+                      }}
+                      onAction={({ detail }) => {
+                        setExtractedText(detail.value ?? '');
 
-                      // Keep mode token (first pinned reference from useAtStart menu) after submission
-                      const modeToken = detail.tokens?.find(
-                        (token): token is PromptInputProps.ReferenceToken =>
-                          token.type === 'reference' && token.pinned === true
-                      );
+                        // Keep mode token (first pinned reference from useAtStart menu) after submission
+                        const modeToken = detail.tokens?.find(
+                          (token): token is PromptInputProps.ReferenceToken =>
+                            token.type === 'reference' && token.pinned === true
+                        );
 
-                      setTokens(modeToken ? [modeToken] : []);
-                      setPlainTextValue('');
+                        setTokens(modeToken ? [modeToken] : []);
+                        setPlainTextValue('');
 
-                      window.alert(
-                        `Submitted:\n\nPlain text: ${detail.value ?? ''}\n\nTokens: ${JSON.stringify(
-                          detail.tokens,
-                          null,
-                          2
-                        )}`
-                      );
-                    }}
-                    placeholder="Ask a question"
-                    maxRows={hasInfiniteMaxRows ? -1 : 4}
-                    disabled={isDisabled}
-                    readOnly={isReadOnly}
-                    invalid={isInvalid || plainTextValue.length > MAX_CHARS}
-                    warning={hasWarning}
-                    ref={ref}
-                    disableSecondaryActionsPaddings={true}
-                    disableActionButton={disableActionButton}
-                    disableBrowserAutocorrect={disableBrowserAutocorrect}
-                    spellcheck={enableSpellcheck}
-                    name={hasName ? 'user-prompt' : undefined}
-                    autoFocus={enableAutoFocus}
-                    menus={menus}
-                    onMenuItemSelect={event => {
-                      console.log('Menu selection:', event.detail);
-                      // Modes are now just reference tokens - no special handling needed
-                    }}
-                    i18nStrings={
-                      {
-                        selectedMenuItemAriaLabel: 'Selected',
-                        menuErrorIconAriaLabel: 'Error',
-                        menuRecoveryText: 'Retry',
-                        tokenInsertedAriaLabel: (token: { label?: string; value: string }) =>
-                          `${token.label || token.value} inserted`,
-                        tokenPinnedAriaLabel: (token: { label?: string; value: string }) =>
-                          `${token.label || token.value} pinned`,
-                        tokenRemovedAriaLabel: (token: { label?: string; value: string }) =>
-                          `${token.label || token.value} removed`,
-                      } as PromptInputProps['i18nStrings']
-                    }
-                    customPrimaryAction={
-                      hasPrimaryActions ? (
-                        <ButtonGroup
-                          variant="icon"
-                          items={[
-                            {
-                              type: 'icon-button',
-                              id: 'record',
-                              text: 'Record',
-                              iconName: 'microphone',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                            {
-                              type: 'icon-button',
-                              id: 'submit',
-                              text: 'Submit',
-                              iconName: 'send',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                          ]}
-                        />
-                      ) : undefined
-                    }
-                    secondaryActions={
-                      hasSecondaryActions ? (
-                        <Box padding={{ left: 'xxs', top: 'xs' }}>
+                        window.alert(
+                          `Submitted:\n\nPlain text: ${detail.value ?? ''}\n\nTokens: ${JSON.stringify(
+                            detail.tokens,
+                            null,
+                            2
+                          )}`
+                        );
+                      }}
+                      placeholder="Ask a question"
+                      maxRows={hasInfiniteMaxRows ? -1 : 4}
+                      disabled={isDisabled}
+                      readOnly={isReadOnly}
+                      invalid={isInvalid || plainTextValue.length > MAX_CHARS}
+                      warning={hasWarning}
+                      ref={ref}
+                      disableSecondaryActionsPaddings={true}
+                      disableActionButton={disableActionButton}
+                      disableBrowserAutocorrect={disableBrowserAutocorrect}
+                      spellcheck={enableSpellcheck}
+                      name={hasName ? 'user-prompt' : undefined}
+                      autoFocus={enableAutoFocus}
+                      menus={menus}
+                      onMenuItemSelect={event => {
+                        console.log('Menu selection:', event.detail);
+                        // Modes are now just reference tokens - no special handling needed
+                      }}
+                      i18nStrings={
+                        {
+                          selectedMenuItemAriaLabel: 'Selected',
+                          menuErrorIconAriaLabel: 'Error',
+                          menuRecoveryText: 'Retry',
+                          tokenInsertedAriaLabel: (token: { label?: string; value: string }) =>
+                            `${token.label || token.value} inserted`,
+                          tokenPinnedAriaLabel: (token: { label?: string; value: string }) =>
+                            `${token.label || token.value} pinned`,
+                          tokenRemovedAriaLabel: (token: { label?: string; value: string }) =>
+                            `${token.label || token.value} removed`,
+                        } as PromptInputProps['i18nStrings']
+                      }
+                      customPrimaryAction={
+                        hasPrimaryActions ? (
                           <ButtonGroup
-                            ref={buttonGroupRef}
-                            ariaLabel="Chat actions"
-                            onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
-                            onItemClick={({ detail }) => {
-                              if (detail.id === 'slash') {
-                                // Filter out only pinned references to check content after them
-                                const nonPinnedTokens = tokens.filter(
-                                  token => !(token.type === 'reference' && token.pinned)
-                                );
-
-                                // Determine if we need to add space before slash
-                                let needsSpace = false;
-                                if (nonPinnedTokens.length > 0) {
-                                  const firstToken = nonPinnedTokens[0];
-                                  needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
-                                }
-
-                                ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
-                              }
-                              if (detail.id === 'at') {
-                                ref.current?.insertText('@');
-                              }
-                            }}
+                            variant="icon"
                             items={[
                               {
-                                type: 'icon-file-input',
-                                id: 'files',
-                                text: 'Upload files',
-                                multiple: true,
-                              },
-                              {
                                 type: 'icon-button',
-                                id: 'expand',
-                                iconName: 'expand',
-                                text: 'Go full page',
+                                id: 'record',
+                                text: 'Record',
+                                iconName: 'microphone',
                                 disabled: isDisabled || isReadOnly,
                               },
                               {
                                 type: 'icon-button',
-                                id: 'remove',
-                                iconName: 'remove',
-                                text: 'Remove',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                              {
-                                type: 'icon-button',
-                                id: 'slash',
-                                iconName: 'slash',
-                                text: 'Insert slash',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                              {
-                                type: 'icon-button',
-                                id: 'at',
-                                iconName: 'at-symbol',
-                                text: 'Insert at symbol',
+                                id: 'submit',
+                                text: 'Submit',
+                                iconName: 'send',
                                 disabled: isDisabled || isReadOnly,
                               },
                             ]}
-                            variant="icon"
                           />
-                        </Box>
-                      ) : undefined
-                    }
-                    secondaryContent={
-                      hasSecondaryContent && files.length > 0 ? (
-                        <FileTokenGroup
-                          items={files.map(file => ({
-                            file,
-                          }))}
-                          showFileThumbnail={true}
-                          onDismiss={onDismiss}
-                          i18nStrings={i18nStrings}
-                          alignment="horizontal"
-                        />
-                      ) : undefined
-                    }
-                  />
+                        ) : undefined
+                      }
+                      secondaryActions={
+                        hasSecondaryActions ? (
+                          <Box padding={{ left: 'xxs', top: 'xs' }}>
+                            <ButtonGroup
+                              ref={buttonGroupRef}
+                              ariaLabel="Chat actions"
+                              onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                              onItemClick={({ detail }) => {
+                                if (detail.id === 'slash') {
+                                  // Filter out only pinned references to check content after them
+                                  const nonPinnedTokens = tokens.filter(
+                                    token => !(token.type === 'reference' && token.pinned)
+                                  );
+
+                                  // Determine if we need to add space before slash
+                                  let needsSpace = false;
+                                  if (nonPinnedTokens.length > 0) {
+                                    const firstToken = nonPinnedTokens[0];
+                                    needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
+                                  }
+
+                                  ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
+                                }
+                                if (detail.id === 'at') {
+                                  ref.current?.insertText('@');
+                                }
+                                if (detail.id === 'debug') {
+                                  ref.current?.insertText('hello');
+                                }
+                              }}
+                              items={[
+                                {
+                                  type: 'icon-file-input',
+                                  id: 'files',
+                                  text: 'Upload files',
+                                  multiple: true,
+                                },
+                                {
+                                  type: 'icon-button',
+                                  id: 'expand',
+                                  iconName: 'expand',
+                                  text: 'Go full page',
+                                  disabled: isDisabled || isReadOnly,
+                                },
+                                {
+                                  type: 'icon-button',
+                                  id: 'remove',
+                                  iconName: 'remove',
+                                  text: 'Remove',
+                                  disabled: isDisabled || isReadOnly,
+                                },
+                                {
+                                  type: 'icon-button',
+                                  id: 'slash',
+                                  iconName: 'slash',
+                                  text: 'Insert slash',
+                                  disabled: isDisabled || isReadOnly,
+                                },
+                                {
+                                  type: 'icon-button',
+                                  id: 'at',
+                                  iconName: 'at-symbol',
+                                  text: 'Insert at symbol',
+                                  disabled: isDisabled || isReadOnly,
+                                },
+                                {
+                                  type: 'icon-button',
+                                  id: 'debug',
+                                  iconName: 'bug',
+                                  text: 'Insert debug',
+                                  disabled: isDisabled || isReadOnly,
+                                },
+                              ]}
+                              variant="icon"
+                            />
+                          </Box>
+                        ) : undefined
+                      }
+                      secondaryContent={
+                        hasSecondaryContent && files.length > 0 ? (
+                          <FileTokenGroup
+                            items={files.map(file => ({
+                              file,
+                            }))}
+                            showFileThumbnail={true}
+                            onDismiss={onDismiss}
+                            i18nStrings={i18nStrings}
+                            alignment="horizontal"
+                          />
+                        ) : undefined
+                      }
+                    />
+                  </ScreenshotArea>
                 </FormField>
                 <div />
               </ColumnLayout>

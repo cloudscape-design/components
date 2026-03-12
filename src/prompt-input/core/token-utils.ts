@@ -6,8 +6,7 @@ import React from 'react';
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-editable-tokens';
 import { ELEMENT_TYPES } from './constants';
-import { getTokenCursorLength, setCursorPosition } from './cursor-manager';
-import { applySafariCursorFix, setCursorOverride } from './cursor-utils';
+import { CursorController, TOKEN_LENGTHS } from './cursor-controller';
 import { findAllParagraphs, generateTokenId, getTokenType } from './dom-utils';
 import { getPromptText } from './token-operations';
 import { isBreakToken, isHTMLElement, isPinnedReferenceToken, isTextNode } from './type-guards';
@@ -189,10 +188,12 @@ interface MergeParagraphsParams {
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
   state?: EditableState;
+  cursorController?: CursorController | null;
 }
 
 export function mergeParagraphs(params: MergeParagraphsParams): boolean {
-  const { direction, editableElement, tokens, currentParagraphIndex, tokensToText, onChange, state } = params;
+  const { direction, editableElement, tokens, currentParagraphIndex, tokensToText, onChange, cursorController } =
+    params;
 
   const paragraphs = findAllParagraphs(editableElement);
 
@@ -209,18 +210,12 @@ export function mergeParagraphs(params: MergeParagraphsParams): boolean {
   const breakIndexToRemove = direction === 'backward' ? currentParagraphIndex : currentParagraphIndex + 1;
 
   let breakCount = 0;
-  let cursorPosition = 0;
 
   const newTokens = tokens.filter(token => {
     if (isBreakToken(token)) {
       breakCount++;
       if (breakCount === breakIndexToRemove) {
         return false;
-      }
-      cursorPosition += 1;
-    } else {
-      if (breakCount < breakIndexToRemove) {
-        cursorPosition += getTokenCursorLength(token);
       }
     }
     return true;
@@ -229,16 +224,11 @@ export function mergeParagraphs(params: MergeParagraphsParams): boolean {
   const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
   onChange({ value, tokens: newTokens });
 
-  if (state) {
-    setCursorOverride(state, cursorPosition);
-    state.isDeleteOperation = true;
-
-    // Apply Safari cursor fix immediately for line deletions
-    applySafariCursorFix(editableElement, state, cursorPosition);
-  } else {
-    requestAnimationFrame(() => {
-      setCursorPosition(editableElement, cursorPosition);
-    });
+  // Constants approach: cursor moves back by TOKEN_LENGTHS.LINE_BREAK
+  if (cursorController) {
+    const currentPos = cursorController.getPosition();
+    const newCursorPos = currentPos - TOKEN_LENGTHS.LINE_BREAK;
+    cursorController.setPosition(newCursorPos);
   }
 
   return true;
@@ -250,7 +240,8 @@ export function handleBackspaceAtParagraphStart(
   tokens: readonly PromptInputProps.InputToken[],
   tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
-  state?: EditableState
+  state: EditableState | undefined,
+  cursorController: CursorController | null
 ): boolean {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
@@ -281,6 +272,7 @@ export function handleBackspaceAtParagraphStart(
     tokensToText,
     onChange,
     state,
+    cursorController,
   });
 }
 
@@ -289,9 +281,9 @@ export function handleDeleteAtParagraphEnd(
   editableElement: HTMLDivElement,
   tokens: readonly PromptInputProps.InputToken[],
   tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
-  cursorPosition: number,
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
-  state?: EditableState
+  state: EditableState | undefined,
+  cursorController: CursorController | null
 ): boolean {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
@@ -338,5 +330,6 @@ export function handleDeleteAtParagraphEnd(
     tokensToText,
     onChange,
     state,
+    cursorController,
   });
 }
