@@ -43,8 +43,9 @@ function findOptionInMenu(
   options: readonly (OptionDefinition | OptionGroup)[],
   labelOrValue: string
 ): OptionDefinition | undefined {
+  const key: keyof OptionGroup = 'options';
   for (const item of options) {
-    if ('options' in item) {
+    if (key in item) {
       // It's a group, search in its options
       const found = item.options?.find(opt => opt.value === labelOrValue || opt.label === labelOrValue);
       if (found) {
