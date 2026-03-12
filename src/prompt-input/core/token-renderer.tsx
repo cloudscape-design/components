@@ -210,7 +210,7 @@ function createCursorSpot(type: string): HTMLSpanElement {
   const cursorSpot = document.createElement('span');
   cursorSpot.setAttribute('data-type', type);
   cursorSpot.setAttribute('contenteditable', 'true');
-  cursorSpot.setAttribute('aria-hidden', 'true');
+  // Don't use aria-hidden - it conflicts with contenteditable and causes A11Y warnings
   cursorSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZWNJ));
   return cursorSpot;
 }
