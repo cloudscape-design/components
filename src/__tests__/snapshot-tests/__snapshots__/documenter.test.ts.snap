@@ -1352,7 +1352,7 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
 
 By default, the preference is \`{ position: 'bottom' }\`.
 
-On smaller screens, the panel is forced to the \`'bottom'\` position and the "Side" preference becomes disabled.",
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -1908,7 +1908,7 @@ while navigation drawer might be displayed, but opened using a custom trigger.",
 
 By default, the preference is \`{ position: 'bottom' }\`.
 
-On smaller screens, the panel is forced to the \`'bottom'\` position and the "Side" preference becomes disabled.",
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
