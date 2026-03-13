@@ -38,12 +38,8 @@ export function insertTextIntoContentEditable(
   // Fire input event to trigger token extraction
   element.dispatchEvent(new Event('input', { bubbles: true }));
 
-  // Position cursor at final position after input processing
+  // Position cursor at final position
+  // The onChange handler uses flushSync to ensure DOM is updated before this runs
   cursorController.setPosition(finalPosition);
-
-  // Fire selectionchange event asynchronously to allow React state updates and listeners to set up
-  // Use queueMicrotask for minimal delay while ensuring listener setup completes
-  queueMicrotask(() => {
-    document.dispatchEvent(new Event('selectionchange'));
-  });
+  document.dispatchEvent(new Event('selectionchange'));
 }

@@ -15,7 +15,7 @@ import {
 } from '../core/dom-utils';
 import { extractTokensFromDOM, getPromptText } from '../core/token-operations';
 import { renderTokensToDOM } from '../core/token-renderer';
-import { enforcePinnedTokenOrdering } from '../core/token-utils';
+import { enforcePinnedTokenOrdering, mergeConsecutiveTextTokens } from '../core/token-utils';
 import {
   isBreakToken,
   isBRElement,
@@ -254,34 +254,29 @@ export function useEditableTokens({
     const movedTokens = enforcePinnedTokenOrdering(extractedTokens);
     const tokensWereMoved = movedTokens.some((t, i) => t !== extractedTokens[i]);
 
+    // Merge consecutive text tokens to avoid DOM fragmentation
+    const mergedTokens = mergeConsecutiveTextTokens(movedTokens);
+
     if (tokensWereMoved) {
-      extractedTokens = movedTokens;
+      extractedTokens = mergedTokens;
 
-      // When tokens are moved, position cursor after all content
-      // Calculate total length using TOKEN_LENGTHS
-      let position = 0;
-      for (const token of movedTokens) {
-        if (isTextToken(token)) {
-          position += TOKEN_LENGTHS.text(token.value);
-        } else if (isBreakToken(token)) {
-          position += TOKEN_LENGTHS.LINE_BREAK;
-        } else if (isTriggerToken(token)) {
-          position += TOKEN_LENGTHS.trigger(token.value);
-        } else {
-          position += TOKEN_LENGTHS.REFERENCE;
-        }
-      }
+      // When pinned tokens are reordered, adjust cursor position
+      const cursorPosBeforeMove = cursorController?.getPosition() ?? 0;
 
-      if (cursorController) {
-        cursorController.setPosition(position);
-      }
+      // Count how many pinned tokens moved to the start
+      const pinnedCount = mergedTokens.filter(
+        (token): token is PromptInputProps.ReferenceToken => token.type === 'reference' && token.pinned === true
+      ).length;
+
+      // Adjust cursor position to account for pinned tokens moving before it
+      const adjustedPosition = cursorPosBeforeMove + pinnedCount;
 
       // Render immediately to avoid showing intermediate state
-      renderTokensToDOM(movedTokens, elementRef.current, reactContainersRef.current, { disabled, readOnly });
+      renderTokensToDOM(mergedTokens, elementRef.current, reactContainersRef.current, { disabled, readOnly });
 
-      // Position cursor after rendering (if element has focus)
+      // Restore cursor at adjusted position
       if (elementRef.current && document.activeElement === elementRef.current && cursorController) {
-        cursorController.setPosition(position);
+        cursorController.setPosition(adjustedPosition);
       }
     }
 
