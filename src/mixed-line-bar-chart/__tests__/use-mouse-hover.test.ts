@@ -107,18 +107,21 @@ describe('Mouse hover hook', () => {
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
   });
 
-  test('does not clear highlighted X on mouseOut if moving within popover', () => {
+  test('does not clear highlighted X on mouseOut if moving into popover', () => {
     const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 
     SvgElementDummy.appendChild(lineElement);
-    const popoverWrapper = document.createElement('div');
-    const popoverDiv = document.createElement('div');
-    popoverWrapper.appendChild(popoverDiv);
+    // Simulate the real DOM structure: transition wrapper > popover element > popover content
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    const popoverContent = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+    popoverElement.appendChild(popoverContent);
 
     const customProps = {
       highlightX: jest.fn(),
-      popoverRef: { current: popoverWrapper },
+      popoverRef: { current: popoverElement },
       plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
     const { hook } = renderMouseHoverHook(customProps);
@@ -135,36 +138,78 @@ describe('Mouse hover hook', () => {
     expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
 
+    // relatedTarget is inside the popover DOM tree (child of popover)
     const mouseOutEvent = {
-      relatedTarget: popoverWrapper,
-      clientX: 10,
-      clientY: 10,
+      relatedTarget: popoverContent,
     } as any;
 
     act(() => hook.current.onSVGMouseOut(mouseOutEvent));
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
   });
 
-  test('clears highlightX when onPopoverLeave is called', () => {
+  test('does not clear highlighted X on mouseOut if moving into popover transition wrapper', () => {
     const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    SvgElementDummy.appendChild(lineElement);
+
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      popoverRef: { current: popoverElement },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // relatedTarget is the transition wrapper (parent of popoverRef)
+    const mouseOutEvent = {
+      relatedTarget: transitionWrapper,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+  });
+
+  test('clears highlighted X on mouseOut when leaving SVG near popover but not into it', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
 
     const customProps = {
       highlightX: jest.fn(),
       clearHighlightedSeries: jest.fn(),
+      popoverRef: { current: popoverElement },
       plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
     const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: lineElement,
+
+    // relatedTarget is an element outside both SVG and popover (e.g. y-axis area, page body)
+    const outsideElement = document.createElement('div');
+    const mouseOutEvent = {
+      relatedTarget: outsideElement,
     } as any;
-    act(() => hook.current.onPopoverLeave(event));
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
     expect(customProps.highlightX).toHaveBeenCalledWith(null);
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
-  test('does not clear highlightX when onPopoverLeave is called (pointing device exited from the svg)', () => {
+  test('clears highlightX when onPopoverLeave is called', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    act(() => hook.current.onPopoverLeave());
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
     const svgMock = { contains: () => true } as unknown as SVGSVGElement;
     const customProps = {
       highlightX: jest.fn(),
@@ -180,25 +225,7 @@ describe('Mouse hover hook', () => {
     };
 
     const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: null,
-    } as any;
-    act(() => hook.current.onPopoverLeave(event));
-    expect(customProps.highlightX).not.toHaveBeenCalled();
-    expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
-  });
-
-  test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
-    const customProps = {
-      highlightX: jest.fn(),
-      clearHighlightedSeries: jest.fn(),
-      isHandlersDisabled: true,
-    };
-    const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: null,
-    } as any;
-    act(() => hook.current.onPopoverLeave(event));
+    act(() => hook.current.onPopoverLeave());
     expect(customProps.highlightX).not.toHaveBeenCalled();
     expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
   });

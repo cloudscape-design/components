@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { useRef } from 'react';
+
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
 import { ChartPlotRef } from '../../internal/components/chart-plot';
@@ -38,6 +40,10 @@ export function useMouseHover<T>({
   isHandlersDisabled,
   highlightX,
 }: UseMouseHoverProps<T>) {
+  // Suppresses re-hovering for a brief window after leaving the popover,
+  // preventing the tooltip arrow overlap from immediately re-triggering the tooltip.
+  const recentlyLeftPopoverRef = useRef(false);
+
   const isMouseOverPopover = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     if (popoverRef.current?.firstChild) {
       const popoverPosition = (popoverRef.current.firstChild as HTMLElement).getBoundingClientRect();
@@ -111,7 +117,12 @@ export function useMouseHover<T>({
   };
 
   const onSVGMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    if (event.target === plotRef.current!.svg && !isHandlersDisabled && !isMouseOverPopover(event)) {
+    if (
+      event.target === plotRef.current!.svg &&
+      !isHandlersDisabled &&
+      !isMouseOverPopover(event) &&
+      !recentlyLeftPopoverRef.current
+    ) {
       if (isGroupNavigation) {
         onGroupMouseMove(event);
       } else if (scaledSeries.length > 0) {
@@ -121,9 +132,17 @@ export function useMouseHover<T>({
   };
 
   const onSVGMouseOut = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    if (isHandlersDisabled || isMouseOverPopover(event)) {
+    if (isHandlersDisabled) {
       return;
     }
+
+    // If the mouse is moving into the popover or its container (transition wrapper),
+    // let onPopoverLeave handle cleanup.
+    const popoverContainer = popoverRef.current?.parentElement;
+    if (event.relatedTarget && popoverContainer && nodeContains(popoverContainer, event.relatedTarget)) {
+      return;
+    }
+
     if (
       !nodeContains(plotRef.current!.svg, event.relatedTarget) ||
       (event.relatedTarget && (event.relatedTarget as Element).classList.contains(styles.series))
@@ -133,11 +152,19 @@ export function useMouseHover<T>({
     }
   };
 
-  const onPopoverLeave = (event: React.MouseEvent) => {
-    if (!isHandlersDisabled && nodeContains(plotRef.current!.svg, event.relatedTarget)) {
-      highlightX(null);
-      clearHighlightedSeries();
+  const onPopoverLeave = () => {
+    if (isHandlersDisabled) {
+      return;
     }
+    highlightX(null);
+    clearHighlightedSeries();
+
+    // Suppress re-hovering briefly so the tooltip arrow overlap
+    // doesn't immediately re-trigger the tooltip.
+    recentlyLeftPopoverRef.current = true;
+    setTimeout(() => {
+      recentlyLeftPopoverRef.current = false;
+    }, 25);
   };
 
   return { onSVGMouseMove, onSVGMouseOut, onPopoverLeave };
