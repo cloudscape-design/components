@@ -348,10 +348,22 @@ function isTopOrBottom(internalPosition: InternalPosition) {
 export function clampRectStart(rect: Rect, bounds: BoundingBox) {
   const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
   const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
+
+  const clampedInsetInlineStart = Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
+  const clampedInsetBlockStart = Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
+
+  const maxInlineSize = parentInlineEnd - clampedInsetInlineStart;
+  const maxBlockSize = parentBlockEnd - clampedInsetBlockStart;
+  const clampedInlineSize = Math.min(rect.inlineSize, maxInlineSize);
+  const clampedBlockSize = Math.min(rect.blockSize, maxBlockSize);
+
   return {
-    ...rect,
-    insetInlineStart: Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd)),
-    insetBlockStart: Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd)),
+    insetInlineStart: clampedInsetInlineStart,
+    insetBlockStart: clampedInsetBlockStart,
+    inlineSize: clampedInlineSize,
+    blockSize: clampedBlockSize,
+    insetInlineEnd: clampedInsetInlineStart + clampedInlineSize,
+    insetBlockEnd: clampedInsetBlockStart + clampedBlockSize,
   };
 }
 
