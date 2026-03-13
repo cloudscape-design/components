@@ -157,6 +157,11 @@ function extractTokensFromParagraph(
 
           if (menus) {
             for (const menu of menus) {
+              // Skip useAtStart menus - they can never be nested in filter text
+              if (menu.useAtStart) {
+                continue;
+              }
+
               const index = value.indexOf(menu.trigger);
               if (index > 0 && (nestedTriggerIndex === -1 || index < nestedTriggerIndex)) {
                 nestedTriggerIndex = index;
@@ -166,32 +171,46 @@ function extractTokensFromParagraph(
           }
 
           if (nestedTriggerIndex > 0) {
-            // Split: first trigger + space + second trigger
-            const firstValue = value.substring(0, nestedTriggerIndex).trim();
-            const afterFirst = value.substring(nestedTriggerIndex);
+            // Check if there's whitespace before the nested trigger
+            const charBeforeNested = value[nestedTriggerIndex - 1];
+            const hasSpaceBefore = /\s/.test(charBeforeNested);
 
-            // First trigger
-            tokens.push({
-              type: 'trigger',
-              value: firstValue,
-              triggerChar,
-              id,
-            });
+            if (hasSpaceBefore) {
+              // Split: first trigger + space + second trigger
+              const firstValue = value.substring(0, nestedTriggerIndex).trim();
+              const afterFirst = value.substring(nestedTriggerIndex);
 
-            // Space before second trigger
-            const spaceBefore = value.substring(firstValue.length, nestedTriggerIndex);
-            if (spaceBefore) {
-              tokens.push({ type: 'text', value: spaceBefore });
+              // First trigger
+              tokens.push({
+                type: 'trigger',
+                value: firstValue,
+                triggerChar,
+                id,
+              });
+
+              // Space before second trigger
+              const spaceBefore = value.substring(firstValue.length, nestedTriggerIndex);
+              if (spaceBefore) {
+                tokens.push({ type: 'text', value: spaceBefore });
+              }
+
+              // Second trigger (without the trigger char)
+              const secondValue = afterFirst.substring(1);
+              tokens.push({
+                type: 'trigger',
+                value: secondValue,
+                triggerChar: nestedTriggerChar,
+                id: generateTokenId('trigger'),
+              });
+            } else {
+              // No space before nested trigger - treat as part of filter text
+              tokens.push({
+                type: 'trigger',
+                value,
+                triggerChar,
+                id,
+              });
             }
-
-            // Second trigger (without the trigger char)
-            const secondValue = afterFirst.substring(1);
-            tokens.push({
-              type: 'trigger',
-              value: secondValue,
-              triggerChar: nestedTriggerChar,
-              id: generateTokenId('trigger'),
-            });
           } else {
             // Normal trigger, no nesting
             tokens.push({

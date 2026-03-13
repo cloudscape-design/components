@@ -181,6 +181,7 @@ export function splitParagraphAtCursor(
   }
 
   // Position cursor at calculated position
+  // The input event triggers onChange which uses flushSync to update DOM synchronously
   if (cursorController && newCursorPos !== null) {
     cursorController.setPosition(newCursorPos);
   }
@@ -298,6 +299,7 @@ export function handleReferenceTokenDeletion(
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
   // Position cursor at calculated position
+  // The input event triggers onChange which uses flushSync to update DOM synchronously
   if (cursorController && newCursorPos !== null) {
     cursorController.setPosition(newCursorPos);
   }
@@ -321,8 +323,18 @@ function handleArrowNavigation(
 
     // Jump cursor over reference token
     if (direction === 'left') {
-      // Move back by 2 to fully skip over the reference token
-      cursorController?.moveBackward(2);
+      // Check if we're in a text node at offset 0 OR in paragraph right after a reference
+      // This means we just jumped here with right arrow, so only move back by 1
+      const isInTextAtStart = isTextNode(container) && offset === 0;
+      const isInParagraphAfterRef =
+        isHTMLElement(container) &&
+        offset > 0 &&
+        isHTMLElement(container.childNodes[offset - 1]) &&
+        (getTokenType(container.childNodes[offset - 1] as HTMLElement) === ELEMENT_TYPES.REFERENCE ||
+          getTokenType(container.childNodes[offset - 1] as HTMLElement) === ELEMENT_TYPES.PINNED);
+
+      const moveAmount = isInTextAtStart || isInParagraphAfterRef ? 1 : 2;
+      cursorController?.moveBackward(moveAmount);
     } else {
       cursorController?.moveForward(TOKEN_LENGTHS.REFERENCE);
     }
@@ -495,6 +507,7 @@ export function handleSpaceAfterClosedTrigger(
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
   // Position cursor at calculated position
+  // The input event triggers onChange which uses flushSync to update DOM synchronously
   if (cursorController && newCursorPos !== null) {
     cursorController.setPosition(newCursorPos);
   }

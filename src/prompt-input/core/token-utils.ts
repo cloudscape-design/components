@@ -46,6 +46,29 @@ export function enforcePinnedTokenOrdering(
   return [...pinnedTokens, ...forbiddenContent, ...allowedContent];
 }
 
+/**
+ * Merge consecutive text tokens to avoid DOM fragmentation
+ * This prevents issues with cursor positioning when text nodes are split
+ */
+export function mergeConsecutiveTextTokens(
+  tokens: readonly PromptInputProps.InputToken[]
+): PromptInputProps.InputToken[] {
+  const result: PromptInputProps.InputToken[] = [];
+
+  for (const token of tokens) {
+    const lastToken = result[result.length - 1];
+
+    // If both current and last tokens are text tokens, merge them
+    if (lastToken && lastToken.type === 'text' && token.type === 'text') {
+      lastToken.value += token.value;
+    } else {
+      result.push({ ...token });
+    }
+  }
+
+  return result;
+}
+
 export function areAllTokensPinned(tokens: readonly PromptInputProps.InputToken[]): boolean {
   return tokens.every(isPinnedReferenceToken);
 }
@@ -288,7 +311,7 @@ export function mergeParagraphs(params: MergeParagraphsParams): boolean {
   const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
   onChange({ value, tokens: newTokens });
 
-  // Constants approach: cursor moves back by TOKEN_LENGTHS.LINE_BREAK
+  // Position cursor at calculated position
   if (cursorController) {
     const currentPos = cursorController.getPosition();
     const newCursorPos = currentPos - TOKEN_LENGTHS.LINE_BREAK;

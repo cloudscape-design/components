@@ -185,6 +185,46 @@ export class CursorController {
     selection.addRange(range);
 
     this.state = { start, end, isValid: true };
+
+    // Scroll cursor into view if needed (only in real browser, not test environment)
+    if (typeof range.getBoundingClientRect === 'function') {
+      try {
+        const rangeRect = range.getBoundingClientRect();
+        const elementRect = this.element.getBoundingClientRect();
+
+        // Check if cursor is outside the visible area
+        const isOutOfView =
+          rangeRect.top < elementRect.top ||
+          rangeRect.bottom > elementRect.bottom ||
+          rangeRect.left < elementRect.left ||
+          rangeRect.right > elementRect.right;
+
+        if (isOutOfView) {
+          // Scroll the range into view with minimal movement
+          const tempSpan = document.createElement('span');
+          range.insertNode(tempSpan);
+          tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          tempSpan.remove();
+
+          // Restore the range after scrolling
+          range.setStart(startLocation.node, startLocation.offset);
+          if (end !== undefined && end !== start) {
+            const endLocation = this.findDOMLocation(end);
+            if (endLocation) {
+              range.setEnd(endLocation.node, endLocation.offset);
+            } else {
+              range.collapse(true);
+            }
+          } else {
+            range.collapse(true);
+          }
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      } catch {
+        // Ignore scroll errors in test environments
+      }
+    }
   }
 
   /**
@@ -486,6 +526,8 @@ export class CursorController {
 
     return count;
   }
+
+  private autoCapture: boolean = true;
 }
 
 // SELECTION UTILITIES
