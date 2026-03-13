@@ -321,7 +321,8 @@ function handleArrowNavigation(
 
     // Jump cursor over reference token
     if (direction === 'left') {
-      cursorController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
+      // Move back by 2 to fully skip over the reference token
+      cursorController?.moveBackward(2);
     } else {
       cursorController?.moveForward(TOKEN_LENGTHS.REFERENCE);
     }

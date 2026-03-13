@@ -373,6 +373,12 @@ const InternalPromptInput = React.forwardRef(
 
     // Keyboard handler for contentEditable
     const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+      // Handle Ctrl+A / Cmd+A in empty state - prevent selection of trailing break
+      if (event.key === 'a' && (event.ctrlKey || event.metaKey) && tokens?.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
       // Handle arrow key navigation across reference tokens
       if (handleArrowKeyNavigation(event, cursorControllerRef.current)) {
         return;
