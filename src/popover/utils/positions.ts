@@ -348,9 +348,11 @@ function isTopOrBottom(internalPosition: InternalPosition) {
 export function clampRectStart(rect: Rect, bounds: BoundingBox) {
   const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
   const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
-  rect.insetInlineStart = Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
-  rect.insetBlockStart = Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
-  return rect;
+  return {
+    ...rect,
+    insetInlineStart: Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd)),
+    insetBlockStart: Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd)),
+  };
 }
 
 export function isCenterOutside(child: Rect, parent: Rect) {
