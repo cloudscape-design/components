@@ -191,6 +191,83 @@ export default function PromptInputShortcutsPage() {
   const [selectionEnd, setSelectionEnd] = useState<string>('0');
   const [maxPinnedTokens, setMaxPinnedTokens] = useState<number>(1);
 
+  // Async menu with pagination and filtering
+  const asyncAllItems: OptionDefinition[] = Array.from({ length: 500 }, (_, i) => ({
+    value: `async-${i}`,
+    label: `Async Item ${i}`,
+    description: `Simulated async item ${i}`,
+    iconName: 'search',
+  }));
+
+  const [asyncOptions, setAsyncOptions] = useState<OptionDefinition[]>([]);
+  const [asyncMenuStatus, setAsyncMenuStatus] = useState<'pending' | 'loading' | 'finished' | 'error'>('pending');
+  const asyncPageSize = 15;
+  const asyncCurrentPageRef = React.useRef(0);
+  const asyncLoadingRef = React.useRef(false);
+  const asyncLastLoadedFilterRef = React.useRef<string | null>(null);
+  const asyncFilterTimeoutRef = React.useRef<number | null>(null);
+
+  const loadAsyncPage = (firstPage: boolean, filterText: string = '', immediate: boolean = false) => {
+    // Clear any pending filter timeout
+    if (asyncFilterTimeoutRef.current) {
+      clearTimeout(asyncFilterTimeoutRef.current);
+      asyncFilterTimeoutRef.current = null;
+    }
+
+    // Prevent concurrent loads
+    if (asyncLoadingRef.current) {
+      return;
+    }
+
+    // If firstPage and we've already loaded this exact filter, skip
+    if (firstPage && filterText === asyncLastLoadedFilterRef.current) {
+      return;
+    }
+
+    // For filter changes, debounce unless immediate
+    if (firstPage && !immediate && filterText !== asyncLastLoadedFilterRef.current) {
+      asyncFilterTimeoutRef.current = window.setTimeout(() => {
+        loadAsyncPage(firstPage, filterText, true);
+      }, 300);
+      return;
+    }
+
+    asyncLoadingRef.current = true;
+
+    if (firstPage) {
+      asyncCurrentPageRef.current = 0;
+      setAsyncOptions([]);
+      asyncLastLoadedFilterRef.current = filterText;
+    }
+
+    setAsyncMenuStatus('loading');
+
+    // Simulate API delay
+    setTimeout(() => {
+      // Filter items based on filter text
+      const filteredSource = filterText
+        ? asyncAllItems.filter(
+            item =>
+              (item.label?.toLowerCase() || '').includes(filterText.toLowerCase()) ||
+              (item.value?.toLowerCase() || '').includes(filterText.toLowerCase())
+          )
+        : asyncAllItems;
+
+      const startIndex = asyncCurrentPageRef.current * asyncPageSize;
+      const endIndex = startIndex + asyncPageSize;
+      const newItems = filteredSource.slice(startIndex, endIndex);
+
+      setAsyncOptions(prev => (firstPage ? newItems : [...prev, ...newItems]));
+      asyncCurrentPageRef.current++;
+
+      // If no items at all, show finished (not pending)
+      const hasMore = endIndex < filteredSource.length;
+      const newStatus = filteredSource.length === 0 ? 'finished' : hasMore ? 'pending' : 'finished';
+      setAsyncMenuStatus(newStatus);
+      asyncLoadingRef.current = false;
+    }, 800);
+  };
+
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const {
@@ -217,30 +294,56 @@ export default function PromptInputShortcutsPage() {
   ]);
 
   // Define menus for shortcuts
-  const menus: PromptInputProps.MenuDefinition[] = [
-    {
-      id: 'mentions',
-      trigger: '@',
-      options: mentionOptions,
-      filteringType: 'auto',
-      empty: 'No mentions found',
-    },
-    {
-      id: 'mode',
-      trigger: '/',
-      options: commandOptions,
-      filteringType: 'auto',
-      useAtStart: true,
-      empty: 'No commands found',
-    },
-    {
-      id: 'topics',
-      trigger: '#',
-      options: topicOptions,
-      filteringType: 'auto',
-      empty: 'No topics found',
-    },
-  ];
+  const menus: PromptInputProps.MenuDefinition[] = React.useMemo(
+    () => [
+      {
+        id: 'mentions',
+        trigger: '@',
+        options: mentionOptions,
+        filteringType: 'auto',
+        empty: 'No mentions found',
+      },
+      {
+        id: 'mode',
+        trigger: '/',
+        options: commandOptions,
+        filteringType: 'auto',
+        useAtStart: true,
+        empty: 'No commands found',
+      },
+      {
+        id: 'topics',
+        trigger: '#',
+        options: topicOptions,
+        filteringType: 'auto',
+        empty: 'No topics found',
+      },
+      {
+        id: 'async',
+        trigger: '$',
+        options: asyncOptions,
+        filteringType: 'manual',
+        statusType: asyncMenuStatus,
+        empty: 'No async items found',
+      },
+    ],
+    [asyncOptions, asyncMenuStatus]
+  );
+
+  // Reset async menu when trigger is removed
+  useEffect(() => {
+    const hasAsyncTrigger = tokens.some(t => t.type === 'trigger' && t.triggerChar === '$');
+    if (!hasAsyncTrigger && asyncLastLoadedFilterRef.current !== null) {
+      asyncLastLoadedFilterRef.current = null;
+      setAsyncOptions([]);
+      setAsyncMenuStatus('pending');
+      asyncCurrentPageRef.current = 0;
+      if (asyncFilterTimeoutRef.current) {
+        clearTimeout(asyncFilterTimeoutRef.current);
+        asyncFilterTimeoutRef.current = null;
+      }
+    }
+  }, [tokens]);
 
   useEffect(() => {
     if (hasText) {
@@ -562,6 +665,17 @@ export default function PromptInputShortcutsPage() {
                       event.preventDefault();
                     }
                   }}
+                  onMenuLoadItems={event => {
+                    if (event.detail.menuId === 'async' && !event.detail.samePage) {
+                      loadAsyncPage(event.detail.firstPage, event.detail.filteringText || '');
+                    }
+                  }}
+                  onMenuFilter={event => {
+                    if (event.detail.menuId === 'async') {
+                      // Reload with new filter (debounced in loadAsyncPage)
+                      loadAsyncPage(true, event.detail.filteringText);
+                    }
+                  }}
                   i18nStrings={{
                     actionButtonAriaLabel: 'Submit prompt',
                     menuErrorIconAriaLabel: 'Error',
@@ -613,14 +727,14 @@ export default function PromptInputShortcutsPage() {
                                 token => !(token.type === 'reference' && token.pinned)
                               );
 
-                              // Determine if we need to add space before slash
+                              // Determine if we need to add space after slash
                               let needsSpace = false;
                               if (nonPinnedTokens.length > 0) {
                                 const firstToken = nonPinnedTokens[0];
                                 needsSpace = firstToken.type !== 'text' || !firstToken.value.startsWith(' ');
                               }
 
-                              ref.current?.insertText(needsSpace ? '/ ' : '/', 0, needsSpace ? 1 : undefined);
+                              ref.current?.insertText(needsSpace ? '/ ' : '/', 0, 1);
                             }
                             if (detail.id === 'at') {
                               ref.current?.insertText('@');
