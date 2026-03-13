@@ -164,6 +164,27 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+
+  borderRadiusActionCard: {
+    description: 'The border radius of action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardDefault: {
+    description: 'The border width of action cards in default state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardHover: {
+    description: 'The border width of action cards in hover state.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthActionCardActive: {
+    description: 'The border width of action cards in active/pressed state.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

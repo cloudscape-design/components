@@ -289,6 +289,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorGapGlobalDrawer: { light: '{colorNeutral250}', dark: '{colorNeutral950}' },
   colorTreeViewConnectorLine: { light: '{colorNeutral500}', dark: '{colorNeutral300}' },
+  colorBackgroundActionCardDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundActionCardHover: { light: '{colorPrimary50}', dark: '{colorNeutral800}' },
+  colorBackgroundActionCardActive: { light: '{colorPrimary100}', dark: '{colorNeutral700}' },
+  colorBorderActionCardDefault: { light: '{colorPrimary600}', dark: '{colorNeutral600}' },
+  colorBorderActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary400}' },
+  colorBorderActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
