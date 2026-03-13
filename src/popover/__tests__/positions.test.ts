@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { Rect } from '../../../lib/components/popover/interfaces';
 import {
   calculatePosition,
   clampRectStart,
@@ -284,50 +285,47 @@ describe('isCenterOutside', () => {
 
 describe('clampRectStart', () => {
   const parent = { insetInlineStart: 100, insetBlockStart: 100, inlineSize: 400, blockSize: 300 };
+  function rect(insetInlineStart: number, insetBlockStart: number, inlineSize: number, blockSize: number): Rect {
+    return {
+      insetInlineStart,
+      insetBlockStart,
+      inlineSize,
+      blockSize,
+      insetInlineEnd: insetInlineStart + inlineSize,
+      insetBlockEnd: insetBlockStart + blockSize,
+    };
+  }
 
   test('returns rect unchanged when fully inside parent', () => {
-    const rect = { insetInlineStart: 200, insetBlockStart: 200, inlineSize: 50, blockSize: 50 };
-    expect(clampRectStart(rect, parent)).toEqual({
-      insetInlineStart: 200,
-      insetBlockStart: 200,
-      inlineSize: 50,
-      blockSize: 50,
-      insetInlineEnd: 250,
-      insetBlockEnd: 250,
-    });
+    expect(clampRectStart(rect(200, 200, 50, 50), parent)).toEqual(rect(200, 200, 50, 50));
   });
 
   test('clamps start to parent start when rect is before parent', () => {
-    const rect = { insetInlineStart: 50, insetBlockStart: 30, inlineSize: 20, blockSize: 20 };
-    const result = clampRectStart(rect, parent);
+    const result = clampRectStart(rect(50, 30, 20, 20), parent);
     expect(result.insetInlineStart).toBe(100);
     expect(result.insetBlockStart).toBe(100);
   });
 
   test('clamps start to parent end when rect is past parent', () => {
-    const rect = { insetInlineStart: 600, insetBlockStart: 500, inlineSize: 20, blockSize: 20 };
-    const result = clampRectStart(rect, parent);
+    const result = clampRectStart(rect(600, 500, 20, 20), parent);
     expect(result.insetInlineStart).toBe(500);
     expect(result.insetBlockStart).toBe(400);
   });
 
   test('clamps size when rect would overflow parent end', () => {
-    const rect = { insetInlineStart: 400, insetBlockStart: 350, inlineSize: 200, blockSize: 100 };
-    const result = clampRectStart(rect, parent);
+    const result = clampRectStart(rect(400, 350, 200, 100), parent);
     expect(result.inlineSize).toBe(100);
     expect(result.blockSize).toBe(50);
   });
 
   test('reduces size to zero when start is clamped to parent end', () => {
-    const rect = { insetInlineStart: 600, insetBlockStart: 500, inlineSize: 50, blockSize: 50 };
-    const result = clampRectStart(rect, parent);
+    const result = clampRectStart(rect(600, 500, 50, 50), parent);
     expect(result.inlineSize).toBe(0);
     expect(result.blockSize).toBe(0);
   });
 
   test('computes insetInlineEnd and insetBlockEnd correctly', () => {
-    const rect = { insetInlineStart: 150, insetBlockStart: 200, inlineSize: 100, blockSize: 80 };
-    const result = clampRectStart(rect, parent);
+    const result = clampRectStart(rect(150, 200, 100, 80), parent);
     expect(result.insetInlineEnd).toBe(250);
     expect(result.insetBlockEnd).toBe(280);
   });
