@@ -3,7 +3,167 @@
 
 import { ReactNode } from 'react';
 
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+
+// Why not enums? Explained there
+// https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
+export type BuiltInIconName =
+  | 'add-plus'
+  | 'anchor-link'
+  | 'angle-left-double'
+  | 'angle-left'
+  | 'angle-right-double'
+  | 'angle-right'
+  | 'angle-up'
+  | 'angle-down'
+  | 'arrow-left'
+  | 'arrow-right'
+  | 'arrow-up'
+  | 'arrow-down'
+  | 'at-symbol'
+  | 'audio-full'
+  | 'audio-half'
+  | 'audio-off'
+  | 'backward-10-seconds'
+  | 'bug'
+  | 'call'
+  | 'calendar'
+  | 'caret-down-filled'
+  | 'caret-down'
+  | 'caret-left-filled'
+  | 'caret-right-filled'
+  | 'caret-up-filled'
+  | 'caret-up'
+  | 'check'
+  | 'contact'
+  | 'close'
+  | 'closed-caption'
+  | 'closed-caption-unavailable'
+  | 'copy'
+  | 'command-prompt'
+  | 'delete-marker'
+  | 'download'
+  | 'drag-indicator'
+  | 'edit'
+  | 'edit-gen-ai'
+  | 'ellipsis'
+  | 'envelope'
+  | 'exit-full-screen'
+  | 'expand'
+  | 'external'
+  | 'face-happy'
+  | 'face-happy-filled'
+  | 'face-neutral'
+  | 'face-neutral-filled'
+  | 'face-sad'
+  | 'face-sad-filled'
+  | 'file-open'
+  | 'file'
+  | 'filter'
+  | 'flag'
+  | 'folder-open'
+  | 'folder'
+  | 'forward-10-seconds'
+  | 'full-screen'
+  | 'gen-ai'
+  | 'globe'
+  | 'grid-view'
+  | 'group-active'
+  | 'group'
+  | 'heart'
+  | 'heart-filled'
+  | 'history'
+  | 'insert-row'
+  | 'key'
+  | 'keyboard'
+  | 'list-view'
+  | 'location-pin'
+  | 'lock-private'
+  | 'map'
+  | 'menu'
+  | 'microphone'
+  | 'microphone-off'
+  | 'mini-player'
+  | 'multiscreen'
+  | 'notification'
+  | 'pause'
+  | 'play'
+  | 'redo'
+  | 'refresh'
+  | 'remove'
+  | 'resize-area'
+  | 'script'
+  | 'search'
+  | 'search-gen-ai'
+  | 'security'
+  | 'settings'
+  | 'send'
+  | 'share'
+  | 'shrink'
+  | 'slash'
+  | 'star-filled'
+  | 'star-half'
+  | 'star'
+  | 'status-in-progress'
+  | 'status-info'
+  | 'status-negative'
+  | 'status-not-started'
+  | 'status-pending'
+  | 'status-positive'
+  | 'status-stopped'
+  | 'status-warning'
+  | 'stop-circle'
+  | 'subtract-minus'
+  | 'suggestions'
+  | 'suggestions-gen-ai'
+  | 'support'
+  | 'thumbs-down-filled'
+  | 'thumbs-down'
+  | 'thumbs-up-filled'
+  | 'thumbs-up'
+  | 'ticket'
+  | 'transcript'
+  | 'treeview-collapse'
+  | 'treeview-expand'
+  | 'undo'
+  | 'unlocked'
+  | 'upload-download'
+  | 'upload'
+  | 'user-profile-active'
+  | 'user-profile'
+  | 'video-off'
+  | 'video-on'
+  | 'video-unavailable'
+  | 'video-camera-off'
+  | 'video-camera-on'
+  | 'video-camera-unavailable'
+  | 'view-full'
+  | 'view-horizontal'
+  | 'view-vertical'
+  | 'zoom-in'
+  | 'zoom-out'
+  | 'zoom-to-fit';
+
+/**
+ * Augment this interface using `declare module` to register custom icon names.
+ * Registered names become valid across all icon-accepting components.
+ *
+ * @example
+ * declare module "@cloudscape-design/components/icon-provider" {
+ *   interface IconRegistry extends IconMap<typeof myIcons> {}
+ * }
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface IconRegistry {}
+
+/** Union of all icon names in the {@link IconRegistry}. */
+export type IconRegistryIconName = keyof IconRegistry & string;
+
+export type DefineIconsInput = Partial<Record<BuiltInIconName | (string & {}), ReactNode>>;
+
+/** Extracts the keys of a `defineIcons` result into the shape that {@link IconRegistry} expects. */
+export type IconMap<T> = { [K in keyof T & string]: T[K] };
 
 export interface IconProviderProps extends BaseComponentProps {
   children: ReactNode;
@@ -25,144 +185,7 @@ export interface IconProviderProps extends BaseComponentProps {
 }
 
 export namespace IconProviderProps {
-  export interface Icons {
-    // TODO: Update documenter to support mapped types to replace pedantic key declaration with [name in keyof typeof generatedIcons]: AWSUI-61054
-    // Option 1: [name in keyof typeof generatedIcons]?: ReactNode | null;
-    // Option 2: [name in IconProps.Name]?: ReactNode | null;
-    'add-plus'?: ReactNode | null;
-    'anchor-link'?: ReactNode | null;
-    'angle-left-double'?: ReactNode | null;
-    'angle-left'?: ReactNode | null;
-    'angle-right-double'?: ReactNode | null;
-    'angle-right'?: ReactNode | null;
-    'angle-up'?: ReactNode | null;
-    'angle-down'?: ReactNode | null;
-    'arrow-left'?: ReactNode | null;
-    'arrow-right'?: ReactNode | null;
-    'arrow-up'?: ReactNode | null;
-    'arrow-down'?: ReactNode | null;
-    'at-symbol'?: ReactNode | null;
-    'audio-full'?: ReactNode | null;
-    'audio-half'?: ReactNode | null;
-    'audio-off'?: ReactNode | null;
-    'backward-10-seconds'?: ReactNode | null;
-    bug?: ReactNode | null;
-    call?: ReactNode | null;
-    calendar?: ReactNode | null;
-    'caret-down-filled'?: ReactNode | null;
-    'caret-down'?: ReactNode | null;
-    'caret-left-filled'?: ReactNode | null;
-    'caret-right-filled'?: ReactNode | null;
-    'caret-up-filled'?: ReactNode | null;
-    'caret-up'?: ReactNode | null;
-    check?: ReactNode | null;
-    contact?: ReactNode | null;
-    close?: ReactNode | null;
-    'closed-caption'?: ReactNode | null;
-    'closed-caption-unavailable'?: ReactNode | null;
-    copy?: ReactNode | null;
-    'command-prompt'?: ReactNode | null;
-    'delete-marker'?: ReactNode | null;
-    download?: ReactNode | null;
-    'drag-indicator'?: ReactNode | null;
-    edit?: ReactNode | null;
-    'edit-gen-ai'?: ReactNode | null;
-    ellipsis?: ReactNode | null;
-    envelope?: ReactNode | null;
-    'exit-full-screen'?: ReactNode | null;
-    expand?: ReactNode | null;
-    external?: ReactNode | null;
-    'face-happy'?: ReactNode | null;
-    'face-happy-filled'?: ReactNode | null;
-    'face-neutral'?: ReactNode | null;
-    'face-neutral-filled'?: ReactNode | null;
-    'face-sad'?: ReactNode | null;
-    'face-sad-filled'?: ReactNode | null;
-    'file-open'?: ReactNode | null;
-    file?: ReactNode | null;
-    filter?: ReactNode | null;
-    flag?: ReactNode | null;
-    'folder-open'?: ReactNode | null;
-    folder?: ReactNode | null;
-    'forward-10-seconds'?: ReactNode | null;
-    'full-screen'?: ReactNode | null;
-    'gen-ai'?: ReactNode | null;
-    globe?: ReactNode | null;
-    'grid-view'?: ReactNode | null;
-    'group-active'?: ReactNode | null;
-    group?: ReactNode | null;
-    heart?: ReactNode | null;
-    'heart-filled'?: ReactNode | null;
-    history?: ReactNode | null;
-    'insert-row'?: ReactNode | null;
-    key?: ReactNode | null;
-    keyboard?: ReactNode | null;
-    'list-view'?: ReactNode | null;
-    'location-pin'?: ReactNode | null;
-    'lock-private'?: ReactNode | null;
-    map?: ReactNode | null;
-    menu?: ReactNode | null;
-    microphone?: ReactNode | null;
-    'microphone-off'?: ReactNode | null;
-    'mini-player'?: ReactNode | null;
-    multiscreen?: ReactNode | null;
-    notification?: ReactNode | null;
-    pause?: ReactNode | null;
-    play?: ReactNode | null;
-    redo?: ReactNode | null;
-    refresh?: ReactNode | null;
-    remove?: ReactNode | null;
-    'resize-area'?: ReactNode | null;
-    script?: ReactNode | null;
-    search?: ReactNode | null;
-    'search-gen-ai'?: ReactNode | null;
-    security?: ReactNode | null;
-    settings?: ReactNode | null;
-    send?: ReactNode | null;
-    share?: ReactNode | null;
-    shrink?: ReactNode | null;
-    slash?: ReactNode | null;
-    'star-filled'?: ReactNode | null;
-    'star-half'?: ReactNode | null;
-    star?: ReactNode | null;
-    'status-in-progress'?: ReactNode | null;
-    'status-info'?: ReactNode | null;
-    'status-negative'?: ReactNode | null;
-    'status-not-started'?: ReactNode | null;
-    'status-pending'?: ReactNode | null;
-    'status-positive'?: ReactNode | null;
-    'status-stopped'?: ReactNode | null;
-    'status-warning'?: ReactNode | null;
-    'stop-circle'?: ReactNode | null;
-    'subtract-minus'?: ReactNode | null;
-    suggestions?: ReactNode | null;
-    'suggestions-gen-ai'?: ReactNode | null;
-    support?: ReactNode | null;
-    'thumbs-down-filled'?: ReactNode | null;
-    'thumbs-down'?: ReactNode | null;
-    'thumbs-up-filled'?: ReactNode | null;
-    'thumbs-up'?: ReactNode | null;
-    ticket?: ReactNode | null;
-    transcript?: ReactNode | null;
-    'treeview-collapse'?: ReactNode | null;
-    'treeview-expand'?: ReactNode | null;
-    undo?: ReactNode | null;
-    unlocked?: ReactNode | null;
-    'upload-download'?: ReactNode | null;
-    upload?: ReactNode | null;
-    'user-profile-active'?: ReactNode | null;
-    'user-profile'?: ReactNode | null;
-    'video-off'?: ReactNode | null;
-    'video-on'?: ReactNode | null;
-    'video-unavailable'?: ReactNode | null;
-    'video-camera-off'?: ReactNode | null;
-    'video-camera-on'?: ReactNode | null;
-    'video-camera-unavailable'?: ReactNode | null;
-    'view-full'?: ReactNode | null;
-    'view-horizontal'?: ReactNode | null;
-    'view-vertical'?: ReactNode | null;
-    'zoom-in'?: ReactNode | null;
-    'zoom-out'?: ReactNode | null;
-    'zoom-to-fit'?: ReactNode | null;
-  }
+  export type Icons = {
+    [name in IconProps.Name]?: ReactNode | null;
+  };
 }
