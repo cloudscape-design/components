@@ -87,6 +87,8 @@ const customCssPropertiesList = [
   'styleBorderColorDefault',
   'styleBorderColorDisabled',
   'styleBorderColorHover',
+  'styleBorderRadius',
+  'styleBorderWidthDefault',
   'styleColorActive',
   'styleColorDefault',
   'styleColorDisabled',

@@ -1,0 +1,136 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use './motion';
+
+@mixin card-style {
+  border-start-start-radius: awsui.$border-radius-card;
+  border-start-end-radius: awsui.$border-radius-card;
+  border-end-start-radius: awsui.$border-radius-card;
+  border-end-end-radius: awsui.$border-radius-card;
+  box-sizing: border-box;
+
+  &::before {
+    @include styles.base-pseudo-element;
+    // Reset border color to prevent it from flashing black during item card selection animation
+    border-color: transparent;
+    border-block-start: awsui.$border-width-card solid
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
+    border-start-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-start-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    z-index: 1;
+  }
+
+  &::after {
+    @include styles.base-pseudo-element;
+    border-start-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-start-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-start-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+    border-end-end-radius: var(#{custom-props.$styleBorderRadius}, awsui.$border-radius-card);
+  }
+  &:not(.refresh)::after {
+    box-shadow: var(#{custom-props.$styleBoxShadowDefault}, awsui.$shadow-container);
+  }
+  &.refresh::after {
+    box-shadow: var(#{custom-props.$styleBoxShadowDefault}, none);
+    border-block: solid var(#{custom-props.$styleBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
+    border-inline: solid var(#{custom-props.$styleBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-card);
+  }
+}
+
+.root {
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-card);
+  min-inline-size: 0;
+  @include card-style;
+}
+
+$button-padding-vertical: styles.$control-padding-vertical;
+$button-padding-horizontal: awsui.$space-xxs;
+$padding-block-start-base: calc(awsui.$space-card-vertical - $button-padding-vertical);
+
+.header {
+  &:not(.no-padding) {
+    padding-block-end: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-card-horizontal;
+    &:not(.with-actions) {
+      padding-block-start: $padding-block-start-base;
+      padding-inline-end: awsui.$space-card-horizontal;
+    }
+    &.with-actions {
+      // Compensate the padding given by the buttons in the actions slot
+      padding-block-start: calc($padding-block-start-base - $button-padding-vertical);
+      padding-inline-end: calc(awsui.$space-card-horizontal - $button-padding-horizontal);
+    }
+  }
+  &-inner {
+    @include styles.font-heading-s;
+  }
+}
+
+.body {
+  &:not(.no-padding) {
+    padding-block-start: awsui.$space-xxs;
+    padding-block-end: awsui.$space-card-vertical;
+    padding-inline: awsui.$space-card-horizontal;
+  }
+  &.no-padding {
+    border-end-start-radius: awsui.$border-radius-card;
+    border-end-end-radius: awsui.$border-radius-card;
+  }
+}
+
+.no-header,
+.no-content {
+  // No need to preserve the space between header and content when one of them is missing.
+  > .header:not(.no-padding) {
+    padding-block-end: awsui.$space-xxs;
+    &:not(.with-actions) {
+      padding-block-end: $padding-block-start-base;
+    }
+    &.with-actions {
+      padding-block-end: calc($padding-block-start-base - $button-padding-vertical);
+    }
+  }
+  > .body:not(.no-padding) {
+    padding-block-start: 0;
+  }
+}
+
+.footer {
+  padding-block-end: awsui.$space-card-vertical;
+  padding-inline: awsui.$space-card-horizontal;
+  &.no-padding {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+}
+
+.highlighted {
+  background-color: awsui.$color-background-item-selected;
+  &::before {
+    border-block: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
+    border-inline: awsui.$border-width-card-highlighted solid awsui.$color-border-card-highlighted;
+  }
+}
+
+.full-height {
+  block-size: 100%;
+}
+
+.description {
+  color: awsui.$color-text-heading-secondary;
+}

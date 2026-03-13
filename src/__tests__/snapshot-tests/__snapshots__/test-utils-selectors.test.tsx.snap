@@ -422,6 +422,13 @@ exports[`test-utils selectors 1`] = `
     "awsui_value_10ipo",
     "awsui_wrapper_1wepg",
   ],
+  "item-card": [
+    "awsui_body_n1fwt",
+    "awsui_description_n1fwt",
+    "awsui_footer_n1fwt",
+    "awsui_header_n1fwt",
+    "awsui_root_n1fwt",
+  ],
   "key-value-pairs": [
     "awsui_detail_1y9fy",
     "awsui_group-list-item_1y9fy",
