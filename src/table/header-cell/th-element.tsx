@@ -48,6 +48,12 @@ export interface TableThElementProps {
    * on the real leaf cell that shares the same columnId.
    */
   isPlaceholder?: boolean;
+  /**
+   * ID of the direct parent group for this leaf column cell.
+   * Used as a `data-column-group-id` test-utils hook to allow querying columns by group.
+   * Omit for top-level columns that have no group parent.
+   */
+  columnGroupId?: string;
 }
 
 export function TableThElement({
@@ -74,6 +80,7 @@ export function TableThElement({
   rowSpan,
   scope,
   isPlaceholder,
+  columnGroupId,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -122,6 +129,7 @@ export function TableThElement({
       {...(scope ? { scope } : {})}
       {...(colSpan && colSpan > 1 ? { colSpan } : {})}
       {...(rowSpan && rowSpan > 1 ? { rowSpan } : {})}
+      {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
     >
       {children}
     </th>
