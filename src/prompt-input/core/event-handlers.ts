@@ -243,10 +243,17 @@ export function handleReferenceTokenDeletion(
 
   const range = selection.getRangeAt(0);
 
-  // If there's a selection range (not just a cursor), let the browser handle it
-  // The input event will trigger token extraction which will properly handle reference removal
+  // If there's a selection range, delete it and trigger input event
   if (!range.collapsed) {
-    return false;
+    event.preventDefault();
+
+    // Delete the selected content
+    range.deleteContents();
+
+    // Trigger input event to extract tokens from updated DOM
+    editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+    return true;
   }
 
   const { targetElement, wrapperElement } = findTokenElementForDeletion(

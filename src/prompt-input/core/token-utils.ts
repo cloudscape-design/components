@@ -46,10 +46,6 @@ export function enforcePinnedTokenOrdering(
   return [...pinnedTokens, ...forbiddenContent, ...allowedContent];
 }
 
-export function canDeleteToken(token: PromptInputProps.InputToken): boolean {
-  return !isPinnedReferenceToken(token);
-}
-
 export function areAllTokensPinned(tokens: readonly PromptInputProps.InputToken[]): boolean {
   return tokens.every(isPinnedReferenceToken);
 }
