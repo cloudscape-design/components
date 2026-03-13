@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { findAllParagraphs, findElement, getTokenType } from './dom-utils';
+import { findAllParagraphs, findElement, getTokenType, isEmptyState } from './dom-utils';
 import { isHTMLElement, isTextNode } from './type-guards';
 
 // Token length constants
@@ -243,6 +243,11 @@ export class CursorController {
   selectAll(): void {
     const selection = window.getSelection();
     if (!selection) {
+      return;
+    }
+
+    // In empty state (only <p><br></p>), don't select anything
+    if (isEmptyState(this.element)) {
       return;
     }
 
