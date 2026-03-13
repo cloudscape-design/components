@@ -345,6 +345,28 @@ function isTopOrBottom(internalPosition: InternalPosition) {
   return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
 }
 
+export function clampRectStart(rect: Rect, bounds: BoundingBox) {
+  const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
+  const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
+
+  const clampedInsetInlineStart = Math.max(bounds.insetInlineStart, Math.min(rect.insetInlineStart, parentInlineEnd));
+  const clampedInsetBlockStart = Math.max(bounds.insetBlockStart, Math.min(rect.insetBlockStart, parentBlockEnd));
+
+  const maxInlineSize = parentInlineEnd - clampedInsetInlineStart;
+  const maxBlockSize = parentBlockEnd - clampedInsetBlockStart;
+  const clampedInlineSize = Math.min(rect.inlineSize, maxInlineSize);
+  const clampedBlockSize = Math.min(rect.blockSize, maxBlockSize);
+
+  return {
+    insetInlineStart: clampedInsetInlineStart,
+    insetBlockStart: clampedInsetBlockStart,
+    inlineSize: clampedInlineSize,
+    blockSize: clampedBlockSize,
+    insetInlineEnd: clampedInsetInlineStart + clampedInlineSize,
+    insetBlockEnd: clampedInsetBlockStart + clampedBlockSize,
+  };
+}
+
 export function isCenterOutside(child: Rect, parent: Rect) {
   const childCenter = child.insetBlockStart + child.blockSize / 2;
   const overflowsBlockStart = childCenter < parent.insetBlockStart;

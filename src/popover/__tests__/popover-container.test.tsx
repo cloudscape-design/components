@@ -42,3 +42,17 @@ test.each([null, document.createElement('div')])('accepts track element with get
   const getTrack = usePopoverPositionSpy.mock.calls[0][0].getTrack;
   expect(getTrack()).toBe(track);
 });
+
+test.each([null, document.createElement('div')])('passes parentRef=%s to usePopoverPosition', parentRef => {
+  render(
+    <PopoverContainer
+      {...defaultProps}
+      parentRef={{ current: parentRef }}
+      trackRef={{ current: document.createElement('div') }}
+    >
+      content
+    </PopoverContainer>
+  );
+
+  expect(usePopoverPositionSpy.mock.calls[0][0].parentRef?.current).toBe(parentRef);
+});

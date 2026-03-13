@@ -34,6 +34,9 @@ export interface ChartPopoverProps extends PopoverProps {
   trackKey?: string | number;
   minVisibleBlockSize?: number;
 
+  /** Optional parent element to clamp the popover trigger position within its bounds */
+  parentRef?: React.RefObject<HTMLElement>;
+
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
 
@@ -74,6 +77,7 @@ function ChartPopover(
     trackKey,
     onDismiss,
     container,
+    parentRef,
     minVisibleBlockSize,
 
     onMouseEnter,
@@ -137,6 +141,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
+        parentRef={parentRef}
         minVisibleBlockSize={minVisibleBlockSize}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
