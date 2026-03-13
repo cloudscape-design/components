@@ -136,8 +136,10 @@ export function useMouseHover<T>({
       return;
     }
 
-    // If the mouse is moving into the popover element, let onPopoverLeave handle cleanup.
-    if (event.relatedTarget && popoverRef.current && nodeContains(popoverRef.current, event.relatedTarget)) {
+    // If the mouse is moving into the popover or its container (transition wrapper),
+    // let onPopoverLeave handle cleanup.
+    const popoverContainer = popoverRef.current?.parentElement;
+    if (event.relatedTarget && popoverContainer && nodeContains(popoverContainer, event.relatedTarget)) {
       return;
     }
 

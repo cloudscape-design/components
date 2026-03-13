@@ -112,13 +112,16 @@ describe('Mouse hover hook', () => {
     const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 
     SvgElementDummy.appendChild(lineElement);
-    const popoverWrapper = document.createElement('div');
-    const popoverDiv = document.createElement('div');
-    popoverWrapper.appendChild(popoverDiv);
+    // Simulate the real DOM structure: transition wrapper > popover element > popover content
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    const popoverContent = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+    popoverElement.appendChild(popoverContent);
 
     const customProps = {
       highlightX: jest.fn(),
-      popoverRef: { current: popoverWrapper },
+      popoverRef: { current: popoverElement },
       plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
     const { hook } = renderMouseHoverHook(customProps);
@@ -135,26 +138,51 @@ describe('Mouse hover hook', () => {
     expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
 
-    // relatedTarget is inside the popover DOM tree
+    // relatedTarget is inside the popover DOM tree (child of popover)
     const mouseOutEvent = {
-      relatedTarget: popoverDiv,
+      relatedTarget: popoverContent,
     } as any;
 
     act(() => hook.current.onSVGMouseOut(mouseOutEvent));
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
   });
 
+  test('does not clear highlighted X on mouseOut if moving into popover transition wrapper', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      popoverRef: { current: popoverElement },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // relatedTarget is the transition wrapper (parent of popoverRef)
+    const mouseOutEvent = {
+      relatedTarget: transitionWrapper,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+  });
+
   test('clears highlighted X on mouseOut when leaving SVG near popover but not into it', () => {
     const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-    const popoverWrapper = document.createElement('div');
-    const popoverDiv = document.createElement('div');
-    popoverWrapper.appendChild(popoverDiv);
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
 
     const customProps = {
       highlightX: jest.fn(),
       clearHighlightedSeries: jest.fn(),
-      popoverRef: { current: popoverWrapper },
+      popoverRef: { current: popoverElement },
       plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
     const { hook } = renderMouseHoverHook(customProps);
