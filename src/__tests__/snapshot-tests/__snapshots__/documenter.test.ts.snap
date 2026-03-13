@@ -5144,6 +5144,25 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
       "type": "boolean",
     },
     {
+      "description": "Adds \`aria-haspopup\` to the button element. Use when the button triggers a popup element such as a menu, listbox, tree, grid, or dialog.",
+      "inlineType": {
+        "name": "boolean | "grid" | "dialog" | "menu" | "listbox" | "tree"",
+        "type": "union",
+        "values": [
+          "false",
+          "true",
+          ""grid"",
+          ""dialog"",
+          ""menu"",
+          ""listbox"",
+          ""tree"",
+        ],
+      },
+      "name": "ariaHaspopup",
+      "optional": true,
+      "type": "boolean | "grid" | "dialog" | "menu" | "listbox" | "tree"",
+    },
+    {
       "description": "Adds \`aria-label\` to the button element. Use this to provide an accessible name for buttons
 that don't have visible text, and to distinguish between multiple buttons with identical visible text.
 The text will also be added to the \`title\` attribute of the button.",
