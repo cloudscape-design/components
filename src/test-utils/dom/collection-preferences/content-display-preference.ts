@@ -14,6 +14,7 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
   private getListItem(): ListItemWrapper {
     return new ListItemWrapper(this.getElement());
   }
+
   /**
    * Returns the drag handle for the option item.
    */
@@ -29,7 +30,8 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the visibility toggle for the option item. Note that, despite its typings, this may return null for groups since we don't support visibility toggle for groups.
+   * Returns the visibility toggle for the option item.
+   * Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.
    */
   findVisibilityToggle(): ToggleWrapper {
     return this.getListItem()
@@ -37,8 +39,28 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
       .findComponent(`.${styles['content-display-option-toggle']}`, ToggleWrapper)!;
   }
 
+  /**
+   * Returns all child option items nested under this item when it is a group.
+   * Returns `null` when this item is a leaf column (has no nested children).
+   *
+   * The children are the leaf-level `ContentDisplayOptionWrapper`s inside the group's
+   * nested `InternalList` — i.e. they already carry a drag handle and visibility toggle.
+   */
   findChildrenOptions(): Array<ContentDisplayOptionWrapper> | null {
-    return null;
+    // Group items wrap their content in <div data-item-type="group">.
+    // If that wrapper is absent this is a leaf column.
+    const groupWrapper = this.getListItem().findContent().find('[data-item-type="group"]');
+    if (!groupWrapper) {
+      return null;
+    }
+    // The nested list is scoped inside the group wrapper.
+    const nestedList = groupWrapper.find(`.${ListWrapper.rootSelector}`);
+    if (!nestedList) {
+      return null;
+    }
+    return new ListWrapper(nestedList.getElement())
+      .findItems()
+      .map(item => new ContentDisplayOptionWrapper(item.getElement()));
   }
 }
 
@@ -74,23 +96,41 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns options that the user can reorder.
-   * for grouped options returns only top level options and you'd have to dig deep using the .findChildrenOptions
+   * Returns the top-level items in the preference list.
+   *
+   * For tables **without** column grouping this returns all column options.
+   * For tables **with** column grouping this returns the top-level entries only
+   * (which are group items). Use `.findChildrenOptions()` on a group item to
+   * access the leaf columns nested within it.
+   *
+   * @param option.group When `true`, returns only group items. When `false`, returns only leaf column items.
+   *   When omitted, returns all top-level items regardless of type.
+   * @param option.visible When `true`, returns only visible items. When `false`, returns only hidden items.
+   *   Note that group items have no visibility toggle and are excluded when this filter is active.
    */
   findOptions(
     option: {
-      // group, disabled, visible
-      groupId?: string;
-      disabled?: boolean;
-      visible?: boolean;
-    } = {}): Array<ContentDisplayOptionWrapper> {
+      group?: boolean;
+    } = {}
+  ): Array<ContentDisplayOptionWrapper> {
+    if (option.group === true) {
+      // Only group items — identified by the data-item-type="group" wrapper inside the list item
+      return this.getList()
+        .findAll(`li:has([data-item-type="group"])`)
+        .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
+    }
+    if (option.group === false) {
+      // Only leaf column items — identified by the data-item-type="column" wrapper
+      return this.getList()
+        .findAll(`li:has([data-item-type="column"])`)
+        .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
+    }
+
+    // No group filter — return all top-level items
     return this.getList()
       .findItems()
       .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
   }
-
-  // item = group | options
-  // only top level
 
   /**
    * Returns the text filter input.

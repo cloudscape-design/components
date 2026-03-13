@@ -355,6 +355,9 @@ const Thead = React.forwardRef(
                     hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
                     colSpan={col.colspan}
                     rowSpan={col.rowspan}
+                    columnGroupId={
+                      col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
+                    }
                   />
                 );
               }

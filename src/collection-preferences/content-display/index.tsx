@@ -64,29 +64,33 @@ function HierarchicalContentDisplay({
         id: node.id,
         announcementLabel: node.label,
         content: node.isGroup ? (
-          <InternalSpaceBetween size="xxs">
-            {/* Group header — no toggle */}
-            <InternalBox fontWeight="bold" display="inline">
-              {node.label}
-            </InternalBox>
-            {/* Recursively render children (sub-groups or leaf columns) */}
-            {node.children.length > 0 && (
-              <InternalBox padding={{ left: 'l' }}>
-                <HierarchicalContentDisplay
-                  tree={node.children}
-                  onToggle={onToggle}
-                  onTreeChange={newChildren =>
-                    onTreeChange(tree.map(n => (n.id === node.id && n.isGroup ? { ...n, children: newChildren } : n)))
-                  }
-                  i18nStrings={i18nStrings}
-                  depth={depth + 1}
-                />
+          <div data-item-type="group">
+            <InternalSpaceBetween size="xxs">
+              {/* Group header — no toggle */}
+              <InternalBox fontWeight="bold" display="inline">
+                {node.label}
               </InternalBox>
-            )}
-          </InternalSpaceBetween>
+              {/* Recursively render children (sub-groups or leaf columns) */}
+              {node.children.length > 0 && (
+                <InternalBox padding={{ left: 'l' }}>
+                  <HierarchicalContentDisplay
+                    tree={node.children}
+                    onToggle={onToggle}
+                    onTreeChange={newChildren =>
+                      onTreeChange(tree.map(n => (n.id === node.id && n.isGroup ? { ...n, children: newChildren } : n)))
+                    }
+                    i18nStrings={i18nStrings}
+                    depth={depth + 1}
+                  />
+                </InternalBox>
+              )}
+            </InternalSpaceBetween>
+          </div>
         ) : (
           // node is OptionLeafNode — has all OptionWithVisibility fields
-          <ContentDisplayOption option={node} onToggle={onToggle} />
+          <div data-item-type="column">
+            <ContentDisplayOption option={node} onToggle={onToggle} />
+          </div>
         ),
       })}
       disableItemPaddings={true}

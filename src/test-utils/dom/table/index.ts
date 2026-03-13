@@ -46,30 +46,66 @@ export default class TableWrapper extends ComponentWrapper {
     return this.containerWrapper.findFooter();
   }
 
-  // only data level by default meaning the last children not the groups, but when the groupId or level are defined we do the stuff
-  // groupId,
-  // level,
+  /**
+   * Returns all column header cells in the last header row (leaf columns).
+   * For tables without column grouping this is equivalent to querying `tr > *`.
+   * For tables with column grouping this returns only the leaf-level column headers,
+   * not the group header cells above them.
+   *
+   * Pass `{ level }` to target a specific header row (1-based). Level 1 is the
+   * topmost row (group headers); the last level is always the leaf-column row.
+   *
+   * Pass `{ groupId }` to return only the leaf column headers that are direct
+   * children of the specified group. This uses the `data-column-group-id` attribute
+   * set on each leaf `<th>` by the renderer.
+   *
+   * @param option.level 1-based index of the header row to query. Defaults to the last row.
+   * @param option.groupId ID of the parent group whose direct child columns to return.
+   */
   findColumnHeaders(
     option: {
-      groupId?: String;
+      groupId?: string;
       level?: number;
     } = {}
   ): Array<ElementWrapper> {
+    if (option.groupId !== undefined) {
+      return this.findActiveTHead().findAll(`tr:last-child > th[data-column-group-id="${option.groupId}"]`);
+    }
+    if (option.level !== undefined) {
+      return this.findActiveTHead().findAll(`tr:nth-child(${option.level}) > *`);
+    }
     return this.findActiveTHead().findAll('tr:last-child > *');
   }
 
   /**
-   * Returns the element the user clicks when resizing a column.
+   * Returns the element the user clicks when resizing a column or group header.
+   * Targets the leaf-column header row by default.
    *
-   * @param columnIndex 1-based index of the column containing the resizer.
+   * Pass `{ level }` to target a specific header row (1-based).
+   *
+   * Pass `{ groupId }` to return the resizer of the group header cell with that ID.
+   * When `groupId` is provided, `columnIndex` is ignored.
+   *
+   * @param columnIndex 1-based index of the column containing the resizer (ignored when groupId is set).
+   * @param option.level 1-based index of the header row to query. Defaults to the last row.
+   * @param option.groupId ID of the group header whose resizer to return.
    */
-  findColumnResizer(columnIndex: number,
+  findColumnResizer(
+    columnIndex: number,
     option: {
-      groupId?: String;
+      groupId?: string;
       level?: number;
     } = {}
   ): ElementWrapper | null {
-    return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
+    if (option.groupId !== undefined) {
+      // Use a CSS :has() selector to locate the colgroup <th> containing the group focus marker,
+      // then find the resizer inside it.
+      return this.findActiveTHead().find(
+        `th[scope="colgroup"]:has([data-focus-id="group-header-${option.groupId}"]) .${resizerStyles.resizer}`
+      );
+    }
+    const rowSelector = option.level !== undefined ? `tr:nth-child(${option.level})` : 'tr:last-child';
+    return this.findActiveTHead().find(`${rowSelector} th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
   }
 
   /**
@@ -118,9 +154,14 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findByClassName(styles.loading);
   }
 
+  /**
+   * Returns the clickable sorting area of a column header.
+   * Targets the leaf-column header row by default.
+   *
+   * @param colIndex 1-based index of the column.
+   */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    // last tr level
-    return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
+    return this.findActiveTHead().find(`tr:last-child > *:nth-child(${colIndex}) [role=button]`);
   }
 
   /**
