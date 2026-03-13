@@ -29,12 +29,16 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the visibility toggle for the option item.
+   * Returns the visibility toggle for the option item. Note that, despite its typings, this may return null for groups since we don't support visibility toggle for groups.
    */
   findVisibilityToggle(): ToggleWrapper {
     return this.getListItem()
       .findContent()
       .findComponent(`.${styles['content-display-option-toggle']}`, ToggleWrapper)!;
+  }
+
+  findChildrenOptions(): Array<ContentDisplayOptionWrapper> | null {
+    return null;
   }
 }
 
@@ -71,12 +75,22 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
 
   /**
    * Returns options that the user can reorder.
+   * for grouped options returns only top level options and you'd have to dig deep using the .findChildrenOptions
    */
-  findOptions(): Array<ContentDisplayOptionWrapper> {
+  findOptions(
+    option: {
+      // group, disabled, visible
+      groupId?: string;
+      disabled?: boolean;
+      visible?: boolean;
+    } = {}): Array<ContentDisplayOptionWrapper> {
     return this.getList()
       .findItems()
       .map(wrapper => new ContentDisplayOptionWrapper(wrapper.getElement()));
   }
+
+  // item = group | options
+  // only top level
 
   /**
    * Returns the text filter input.

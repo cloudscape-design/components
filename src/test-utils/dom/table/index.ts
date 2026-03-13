@@ -46,8 +46,16 @@ export default class TableWrapper extends ComponentWrapper {
     return this.containerWrapper.findFooter();
   }
 
-  findColumnHeaders(): Array<ElementWrapper> {
-    return this.findActiveTHead().findAll('tr > *');
+  // only data level by default meaning the last children not the groups, but when the groupId or level are defined we do the stuff
+  // groupId,
+  // level,
+  findColumnHeaders(
+    option: {
+      groupId?: String;
+      level?: number;
+    } = {}
+  ): Array<ElementWrapper> {
+    return this.findActiveTHead().findAll('tr:last-child > *');
   }
 
   /**
@@ -55,7 +63,12 @@ export default class TableWrapper extends ComponentWrapper {
    *
    * @param columnIndex 1-based index of the column containing the resizer.
    */
-  findColumnResizer(columnIndex: number): ElementWrapper | null {
+  findColumnResizer(columnIndex: number,
+    option: {
+      groupId?: String;
+      level?: number;
+    } = {}
+  ): ElementWrapper | null {
     return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
   }
 
@@ -106,6 +119,7 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
+    // last tr level
     return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
   }
 
