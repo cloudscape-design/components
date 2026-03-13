@@ -188,7 +188,9 @@ export default function DragHandleWrapper({
   // The position needs to be recalculated as the element may animate into its final position.
   useEffect(() => {
     if (!showButtons || !dragHandleRef.current) {
-      setForcedPosition(null);
+      if (forcedPosition !== null) {
+        setForcedPosition(null);
+      }
       return;
     }
 
@@ -219,7 +221,7 @@ export default function DragHandleWrapper({
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [showButtons, visibleDirections]);
+  }, [forcedPosition, showButtons, visibleDirections]);
 
   return (
     <>
