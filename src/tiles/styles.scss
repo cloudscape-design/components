@@ -89,7 +89,6 @@ $gutter: awsui.$space-tile-gutter;
       & > .tile-container {
         margin-block: calc((#{$gutter} / 4));
         margin-inline: calc((#{$gutter} / 4));
-        box-sizing: border-box;
         @include make-column(12);
         &.breakpoint-xs {
           @include make-column(map.get($columns-setting, 'xs'));
