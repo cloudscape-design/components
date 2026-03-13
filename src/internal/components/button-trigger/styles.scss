@@ -5,7 +5,6 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../../token/constants' as token;
 
 @use './motion';
@@ -46,7 +45,7 @@ $padding-block-inner-filtering-token: 0px;
     block-size: 100%;
     min-block-size: unset;
 
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }
   }
@@ -113,7 +112,7 @@ $padding-block-inner-filtering-token: 0px;
   }
 
   &:not(.in-filtering-token) {
-    @include focus-visible.when-visible {
+    &:focus-visible {
       @include styles.form-focus-element();
     }
 

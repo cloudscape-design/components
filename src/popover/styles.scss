@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './arrow';
 @use './body';
@@ -24,10 +23,8 @@ $trigger-underline-offset: 0.25em;
   // When the trigger text is set to be ellipsized, render the focus ring on the root element instead of the trigger,
   // to prevent it from being cropped by its `overflow: hidden` rule.
   // We do this in only this case because when the trigger has multiple lines of texts its height can differ from the root element.
-  &:has(.trigger-type-text-inline.overflow-ellipsis:focus, .trigger-type-text.overflow-ellipsis:focus) {
-    @include focus-visible.when-visible-unfocused {
-      @include styles.focus-highlight(1px);
-    }
+  &:has(.trigger-type-text-inline.overflow-ellipsis:focus-visible, .trigger-type-text.overflow-ellipsis:focus-visible) {
+    @include styles.focus-highlight(1px);
   }
 }
 
@@ -86,8 +83,8 @@ $trigger-underline-offset: 0.25em;
     outline: none;
   }
 
-  &:not(.overflow-ellipsis) {
-    @include focus-visible.when-visible {
+&:not(.overflow-ellipsis) {
+    &:focus-visible {
       @include styles.focus-highlight(1px);
     }
   }
