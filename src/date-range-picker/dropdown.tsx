@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { AlertProps } from '../alert/interfaces';
 import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
@@ -111,6 +112,7 @@ export function DateRangePickerDropdown({
 
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
+  const alertRef = useRef<AlertProps.Ref>(null);
 
   const [applyClicked, setApplyClicked] = useState<boolean>(false);
 
@@ -166,6 +168,12 @@ export function DateRangePickerDropdown({
     getTimeOffset,
     timeOffset,
   ]);
+
+  useEffect(() => {
+    if (applyClicked && !validationResult.valid) {
+      alertRef.current?.focus();
+    }
+  }, [applyClicked, validationResult]);
 
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);
 
@@ -241,6 +249,7 @@ export function DateRangePickerDropdown({
                   {!validationResult.valid && (
                     <>
                       <InternalAlert
+                        ref={alertRef}
                         type="error"
                         statusIconAriaLabel={i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
                       >
