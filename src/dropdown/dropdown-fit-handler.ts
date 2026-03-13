@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers';
+import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../internal/utils/scrollable-containers';
 import { LogicalDOMRect } from './dropdown-position';
 import { DropdownWidthConstraint } from './interfaces';
 

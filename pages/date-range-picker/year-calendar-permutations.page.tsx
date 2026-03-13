@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';

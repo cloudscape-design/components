@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import Calendar from '~components/calendar';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import i18nStrings from './i18n-strings';
 

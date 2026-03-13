@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 
 import Button from '~components/button';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 import OptionsList from '~components/internal/components/options-list';
 
 interface ExtendedWindow extends Window {

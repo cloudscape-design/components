@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import DropdownWrapper from '../../../../../lib/components/test-utils/selectors/internal/dropdown';
+import DropdownWrapper from '../../../lib/components/test-utils/selectors/internal/dropdown';
 
 export class DropdownPageObject extends BasePageObject {
   private dropdownWrapper: DropdownWrapper;
@@ -24,7 +24,7 @@ export class DropdownPageObject extends BasePageObject {
     return this.dropdownWrapper.toSelector();
   }
   public getTrigger(): string {
-    return this.dropdownWrapper.find('.trigger').toSelector();
+    return this.dropdownWrapper.find('.trigger')!.toSelector();
   }
   public getOpenDropdown(): string {
     return this.dropdownWrapper.findOpenDropdown().toSelector();
