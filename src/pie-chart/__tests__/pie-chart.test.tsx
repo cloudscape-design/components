@@ -483,7 +483,7 @@ describe('Details popover', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
     wrapper.findApplication()!.focus();
     expect(wrapper.findDetailPopover()).toBeTruthy();
-    wrapper.findApplication()!.blur();
+    fireEvent.blur(wrapper.findApplication()!.getElement(), { relatedTarget: document.body });
     expect(wrapper.findDetailPopover()).toBeNull();
   });
 
