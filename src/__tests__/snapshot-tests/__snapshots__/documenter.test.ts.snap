@@ -11407,6 +11407,28 @@ allows the user to clear the selected value.",
       "type": "boolean",
     },
     {
+      "description": "Determines which month is displayed first (on the left) when the calendar
+opens with two grids visible.
+
+* \`previous\` (default) – the left grid shows the previous month and the
+  right grid shows the current month.
+* \`current\` – the left grid shows the current month and the right grid
+  shows the next month.
+
+Has no effect on single-grid (mobile) layout.",
+      "inlineType": {
+        "name": "DateRangePickerProps.StartMonth",
+        "type": "union",
+        "values": [
+          "current",
+          "previous",
+        ],
+      },
+      "name": "startMonth",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Starting day of the week. [0-6] maps to [Sunday-Saturday].
 By default the starting day of the week is defined by the locale,
 but you can override it using this property.",

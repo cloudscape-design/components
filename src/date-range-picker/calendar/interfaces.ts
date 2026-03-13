@@ -49,6 +49,7 @@ export interface DateRangePickerCalendarProps
         | 'customAbsoluteRangeControl'
         | 'isDateEnabled'
         | 'dateDisabledReason'
+        | 'startMonth'
       >,
       'absoluteFormat' | 'timeInputFormat'
     > {

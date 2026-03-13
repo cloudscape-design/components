@@ -117,6 +117,7 @@ const DateRangePicker = React.forwardRef(
       customRelativeRangeUnits,
       renderRelativeRangeContent,
       granularity = 'day',
+      startMonth,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -359,6 +360,7 @@ const DateRangePicker = React.forwardRef(
                   customRelativeRangeUnits={customRelativeRangeUnits}
                   renderRelativeRangeContent={renderRelativeRangeContent}
                   granularity={granularity}
+                  startMonth={startMonth}
                 />
               )}
             </ResetContextsForModal>

@@ -101,6 +101,19 @@ export interface DateRangePickerBaseProps {
   timeInputFormat?: DateRangePickerProps.TimeInputFormat;
 
   /**
+   * Determines which month is displayed first (on the left) when the calendar
+   * opens with two grids visible.
+   *
+   * * `previous` (default) – the left grid shows the previous month and the
+   *   right grid shows the current month.
+   * * `current` – the left grid shows the current month and the right grid
+   *   shows the next month.
+   *
+   * Has no effect on single-grid (mobile) layout.
+   */
+  startMonth?: DateRangePickerProps.StartMonth;
+
+  /**
    * Fired whenever a user changes the component's value.
    * The event `detail` contains the current value of the field.
    */
@@ -302,6 +315,8 @@ export namespace DateRangePickerProps {
     selectedRange: RelativeValue | null,
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
+
+  export type StartMonth = 'current' | 'previous';
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 
