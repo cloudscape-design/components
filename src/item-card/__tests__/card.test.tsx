@@ -275,8 +275,9 @@ describe('Style API', () => {
     expect(getComputedStyle(header.getElement()).getPropertyValue('padding-inline')).toBe('20px');
 
     const footer = itemCard.findFooter()!;
-    expect(getComputedStyle(footer.getElement()).getPropertyValue('border-color')).toBe('red');
-    expect(getComputedStyle(footer.getElement()).getPropertyValue('border-width')).toBe('2px');
+    console.log(getComputedStyle(footer.getElement()));
+    expect(getComputedStyle(footer.getElement()).getPropertyValue('border-block-start-color')).toBe('red');
+    expect(getComputedStyle(footer.getElement()).getPropertyValue('border-block-start-width')).toBe('2px');
     expect(getComputedStyle(footer.getElement()).getPropertyValue('padding-block')).toBe('15px');
     expect(getComputedStyle(footer.getElement()).getPropertyValue('padding-inline')).toBe('25px');
   });

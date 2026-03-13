@@ -15750,7 +15750,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
       "type": "string",
     },
     {
-      "description": "Displays an icon next to the content. You can use the \`iconPosition\` and \`iconVerticalAlignment\` properties to position the icon.",
+      "description": "Displays an icon next to the content.",
       "inlineType": {
         "name": "IconProps.Name",
         "type": "union",
@@ -38197,7 +38197,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           "name": "findContent",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
+            "isNullable": true,
             "name": "ElementWrapper",
             "typeArguments": [
               {
@@ -38211,7 +38211,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           "name": "findDescription",
           "parameters": [],
           "returnType": {
-            "isNullable": false,
+            "isNullable": true,
             "name": "ElementWrapper",
             "typeArguments": [
               {
