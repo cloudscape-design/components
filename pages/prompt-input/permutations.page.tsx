@@ -115,6 +115,182 @@ const permutations = createPermutations<PromptInputProps>([
       />,
     ],
   },
+  // Token mode: Basic text and references
+  {
+    tokens: [
+      [],
+      [{ type: 'text', value: 'Simple text' }],
+      [
+        { type: 'text', value: 'Text with ' },
+        { type: 'reference', id: '', label: 'Reference', value: 'ref1', menuId: 'mentions' },
+      ],
+      [
+        { type: 'reference', id: '', label: 'Ref1', value: 'ref1', menuId: 'mentions' },
+        { type: 'text', value: ' ' },
+        { type: 'reference', id: '', label: 'Ref2', value: 'ref2', menuId: 'mentions' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'John Doe' },
+            { value: 'user2', label: 'Jane Smith' },
+          ],
+        },
+      ],
+    ],
+  },
+  // Token mode: Multiline content
+  {
+    tokens: [
+      [
+        { type: 'text', value: 'Line 1' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'Line 2' },
+      ],
+      [
+        { type: 'text', value: 'A' },
+        { type: 'break', value: '\n' },
+        { type: 'reference', id: '', label: 'Ref', value: 'ref1', menuId: 'mentions' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'B' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [{ value: 'user1', label: 'User' }],
+        },
+      ],
+    ],
+  },
+  // Token mode: Triggers
+  {
+    tokens: [
+      [{ type: 'trigger', triggerChar: '@', value: '', id: '' }],
+      [{ type: 'trigger', triggerChar: '@', value: 'user', id: '' }],
+      [
+        { type: 'text', value: 'Text ' },
+        { type: 'trigger', triggerChar: '@', value: 'User', id: '' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+  },
+  // Token mode: Pinned references
+  {
+    tokens: [
+      [
+        { type: 'reference', id: '', label: 'Pinned', value: 'pin1', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Content' },
+      ],
+      [
+        { type: 'reference', id: '', label: 'Pin1', value: 'pin1', menuId: 'mentions', pinned: true },
+        { type: 'reference', id: '', label: 'Pin2', value: 'pin2', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Text' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [{ value: 'user1', label: 'User' }],
+          useAtStart: true,
+        },
+      ],
+    ],
+  },
+  // Token mode: Complex mixed scenarios
+  {
+    tokens: [
+      [
+        { type: 'reference', id: '', label: 'P1', value: 'p1', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Start ' },
+        { type: 'trigger', triggerChar: '@', value: 'trig', id: '' },
+        { type: 'text', value: ' ' },
+        { type: 'reference', id: '', label: 'Ref', value: 'ref1', menuId: 'mentions' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'Line 2' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+          useAtStart: true,
+        },
+      ],
+    ],
+  },
+  // Token mode: State variations (disabled, readonly, invalid, warning)
+  {
+    tokens: [
+      [
+        { type: 'text', value: 'Text with ' },
+        { type: 'reference', id: '', label: 'Reference', value: 'ref1', menuId: 'mentions' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+    disabled: [false, true],
+    readOnly: [false, true],
+    invalid: [false, true],
+  },
+  // Token mode: Warning state (separate from invalid to avoid duplicates)
+  {
+    tokens: [
+      [
+        { type: 'text', value: 'Text with ' },
+        { type: 'reference', id: '', label: 'Reference', value: 'ref1', menuId: 'mentions' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+    disabled: [false, true],
+    readOnly: [false, true],
+    warning: [true],
+  },
 ]);
 
 export default function PromptInputPermutations() {
@@ -126,7 +302,7 @@ export default function PromptInputPermutations() {
           permutations={permutations}
           render={(permutation, index) => (
             <PromptInput
-              ariaLabel={`Prompt input test ${index}`}
+              ariaLabel={`Prompt input test ${index ?? 0}`}
               actionButtonAriaLabel="Action button aria label"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
