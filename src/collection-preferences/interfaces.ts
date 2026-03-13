@@ -221,7 +221,7 @@ export namespace CollectionPreferencesProps {
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
     stickyColumns?: StickyColumns;
-    contentDisplay?: ReadonlyArray<ContentDisplayItem>;
+    contentDisplay?: ReadonlyArray<ContentDisplayProperties>;
     custom?: CustomPreferenceType;
   }
 
@@ -229,9 +229,24 @@ export namespace CollectionPreferencesProps {
     title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+    groups?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
+
+  export interface ContentDisplayItem {
+    type?: 'column' | undefined;
+    id: string;
+    visible: boolean;
+  }
+
+  export interface ContentDisplayGroup {
+    type: 'group';
+    id: string;
+    children: ReadonlyArray<ContentDisplayProperties>;
+  }
+
+  export type ContentDisplayProperties = ContentDisplayItem | ContentDisplayGroup;
 
   export interface ContentDisplayOption {
     id: string;
@@ -239,9 +254,9 @@ export namespace CollectionPreferencesProps {
     alwaysVisible?: boolean;
   }
 
-  export interface ContentDisplayItem {
+  export interface ContentDisplayOptionGroup {
     id: string;
-    visible: boolean;
+    label: string;
   }
 
   export interface VisibleContentPreference {

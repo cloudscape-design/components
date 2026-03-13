@@ -8624,7 +8624,7 @@ The values for all configured preferences are present even if the user didn't ch
           {
             "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>",
           },
           {
             "inlineType": {
@@ -8799,6 +8799,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "enableColumnFiltering",
             "optional": true,
             "type": "boolean",
+          },
+          {
+            "name": "groups",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
           },
           {
             "inlineType": {
@@ -9071,7 +9076,7 @@ It contains the following:
           {
             "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>",
           },
           {
             "inlineType": {
@@ -25990,6 +25995,13 @@ table with \`item=null\` and then for each expanded item. The function result is
       "type": "TableProps.GetLoadingStatus<T>",
     },
     {
+      "description": "Defines the column groups. Each group has an \`id\` and \`header\` used to label the group header cell.
+The hierarchy is encoded in the \`columnDisplay\` property via nested \`ColumnDisplayGroup\` entries.",
+      "name": "groupDefinitions",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -35574,9 +35586,23 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -35616,6 +35642,24 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -35644,7 +35688,8 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -40380,8 +40425,28 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns all column header cells in the last header row (leaf columns).
+For tables without column grouping this is equivalent to querying \`tr > *\`.
+For tables with column grouping this returns only the leaf-level column headers,
+not the group header cells above them.
+
+Pass \`{ level }\` to target a specific header row (1-based). Level 1 is the
+topmost row (group headers); the last level is always the leaf-column row.
+
+Pass \`{ groupId }\` to return only the leaf column headers that are direct
+children of the specified group. This uses the \`data-column-group-id\` attribute
+set on each leaf \`<th>\` by the renderer.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -40393,16 +40458,30 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns the element the user clicks when resizing a column.",
+          "description": "Returns the element the user clicks when resizing a column or group header.
+Targets the leaf-column header row by default.
+
+Pass \`{ level }\` to target a specific header row (1-based).
+
+Pass \`{ groupId }\` to return the resizer of the group header cell with that ID.
+When \`groupId\` is provided, \`columnIndex\` is ignored.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the column containing the resizer.",
+              "description": "1-based index of the column containing the resizer (ignored when groupId is set).",
               "flags": {
                 "isOptional": false,
               },
               "name": "columnIndex",
               "typeName": "number",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
             },
           ],
           "returnType": {
@@ -40416,9 +40495,12 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.
+Targets the leaf-column header row by default.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -46036,9 +46118,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -46073,6 +46169,24 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -46091,7 +46205,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -49362,8 +49477,28 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "description": "Returns all column header cells in the last header row (leaf columns).
+For tables without column grouping this is equivalent to querying \`tr > *\`.
+For tables with column grouping this returns only the leaf-level column headers,
+not the group header cells above them.
+
+Pass \`{ level }\` to target a specific header row (1-based). Level 1 is the
+topmost row (group headers); the last level is always the leaf-column row.
+
+Pass \`{ groupId }\` to return only the leaf column headers that are direct
+children of the specified group. This uses the \`data-column-group-id\` attribute
+set on each leaf \`<th>\` by the renderer.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -49375,16 +49510,30 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
-          "description": "Returns the element the user clicks when resizing a column.",
+          "description": "Returns the element the user clicks when resizing a column or group header.
+Targets the leaf-column header row by default.
+
+Pass \`{ level }\` to target a specific header row (1-based).
+
+Pass \`{ groupId }\` to return the resizer of the group header cell with that ID.
+When \`groupId\` is provided, \`columnIndex\` is ignored.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the column containing the resizer.",
+              "description": "1-based index of the column containing the resizer (ignored when groupId is set).",
               "flags": {
                 "isOptional": false,
               },
               "name": "columnIndex",
               "typeName": "number",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
             },
           ],
           "returnType": {
@@ -49393,9 +49542,12 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.
+Targets the leaf-column header row by default.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },

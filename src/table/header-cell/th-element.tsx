@@ -38,6 +38,22 @@ export interface TableThElementProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   ariaLabel?: string;
+  colSpan?: number;
+  rowSpan?: number;
+  scope?: 'col' | 'colgroup';
+  /**
+   * When true, the cell is a hidden placeholder (not a real header).
+   * A distinct data-focus-id prefix ("header-placeholder-") is used so that
+   * focusedComponent matching never accidentally triggers header-cell-fake-focus
+   * on the real leaf cell that shares the same columnId.
+   */
+  isPlaceholder?: boolean;
+  /**
+   * ID of the direct parent group for this leaf column cell.
+   * Used as a `data-column-group-id` test-utils hook to allow querying columns by group.
+   * Omit for top-level columns that have no group parent.
+   */
+  columnGroupId?: string;
 }
 
 export function TableThElement({
@@ -60,6 +76,11 @@ export function TableThElement({
   variant,
   ariaLabel,
   tableVariant,
+  colSpan,
+  rowSpan,
+  scope,
+  isPlaceholder,
+  columnGroupId,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -76,7 +97,7 @@ export function TableThElement({
 
   return (
     <th
-      data-focus-id={`header-${String(columnId)}`}
+      data-focus-id={isPlaceholder ? `header-placeholder-${String(columnId)}` : `header-${String(columnId)}`}
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
@@ -87,6 +108,7 @@ export function TableThElement({
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         tableVariant && styles[`table-variant-${tableVariant}`],
+        scope === 'colgroup' && styles['header-cell-group'],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,
@@ -104,6 +126,10 @@ export function TableThElement({
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+      {...(scope ? { scope } : {})}
+      {...(colSpan && colSpan > 1 ? { colSpan } : {})}
+      {...(rowSpan && rowSpan > 1 ? { rowSpan } : {})}
+      {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
     >
       {children}
     </th>

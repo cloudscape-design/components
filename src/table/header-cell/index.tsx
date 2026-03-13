@@ -51,6 +51,10 @@ export interface TableHeaderCellProps<ItemType> {
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
+  colSpan?: number;
+  rowSpan?: number;
+  /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
+  columnGroupId?: string;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -82,6 +86,9 @@ export function TableHeaderCell<ItemType>({
   hasDynamicContent,
   variant,
   tableVariant,
+  colSpan,
+  rowSpan,
+  columnGroupId,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -139,6 +146,9 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
       variant={variant}
       tableVariant={tableVariant}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      columnGroupId={columnGroupId}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({
@@ -210,8 +220,6 @@ export function TableHeaderCell<ItemType>({
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           roleDescription={i18n('ariaLabels.resizerRoleDescription', resizerRoleDescription)}
-          // TODO: Replace with this when strings are available
-          // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
         />
