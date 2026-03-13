@@ -184,6 +184,12 @@ export default function DragHandleWrapper({
   const directionsOrder = forcedPosition === 'bottom' ? [...DIRECTIONS_ORDER].reverse() : DIRECTIONS_ORDER;
   const visibleDirections = directionsOrder.filter(dir => directions[dir]);
 
+  // Keep a ref to visibleDirections so the raf loop can read the latest value
+  // without re-triggering the effect (which would cause an infinite update loop in react 19,
+  // since setForcedPosition -> new visibleDirections array -> effect re-runs).
+  const visibleDirectionsRef = useRef(visibleDirections);
+  visibleDirectionsRef.current = visibleDirections;
+
   // Continuously monitor position while buttons are shown to handle CSS transitions/animations.
   // The position needs to be recalculated as the element may animate into its final position.
   useEffect(() => {
@@ -198,6 +204,7 @@ export default function DragHandleWrapper({
       if (!dragHandleRef.current) {
         return;
       }
+      const currentVisibleDirections = visibleDirectionsRef.current;
       const rect = getLogicalBoundingClientRect(dragHandleRef.current);
       const conflicts = {
         'block-start': rect.insetBlockStart < FORCED_POSITION_PROXIMITY_PX,
@@ -205,8 +212,8 @@ export default function DragHandleWrapper({
         'inline-start': rect.insetInlineStart < FORCED_POSITION_PROXIMITY_PX,
         'inline-end': window.innerWidth - rect.insetInlineEnd < FORCED_POSITION_PROXIMITY_PX,
       };
-      if (visibleDirections.some(direction => conflicts[direction])) {
-        const hasEnoughSpaceAbove = rect.insetBlockStart > visibleDirections.length * UAP_BUTTON_SIZE_PX;
+      if (currentVisibleDirections.some(direction => conflicts[direction])) {
+        const hasEnoughSpaceAbove = rect.insetBlockStart > currentVisibleDirections.length * UAP_BUTTON_SIZE_PX;
         setForcedPosition(hasEnoughSpaceAbove ? 'top' : 'bottom');
       } else {
         setForcedPosition(null);
@@ -219,7 +226,7 @@ export default function DragHandleWrapper({
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [showButtons, visibleDirections]);
+  }, [showButtons]);
 
   return (
     <>

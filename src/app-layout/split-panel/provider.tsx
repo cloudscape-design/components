@@ -48,9 +48,13 @@ export function SplitPanelProvider({
     return () => cancelAnimationFrame(handle);
   }, [size, minSize, position, getMaxHeight]);
 
+  // Round to prevent sub-pixel oscillation during pointer drag.
+  // Without rounding, layout shifts cause pointermove to fire with fractionally
+  // different values on each frame, leading to "Maximum update depth exceeded" in react 19.
+  const roundedCappedSize = Math.round(cappedSize);
   useEffect(() => {
-    reportSize(cappedSize);
-  }, [reportSize, cappedSize]);
+    reportSize(roundedCappedSize);
+  }, [reportSize, roundedCappedSize]);
 
   useEffect(() => {
     if (position !== 'bottom') {
