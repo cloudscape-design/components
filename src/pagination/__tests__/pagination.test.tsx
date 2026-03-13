@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
-import Pagination from '../../../lib/components/pagination';
+import Pagination, { PaginationProps } from '../../../lib/components/pagination';
 import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
 
 const getItemsContent = (wrapper: PaginationWrapper) =>
@@ -299,5 +299,268 @@ describe('open-end pagination', () => {
         },
       })
     );
+  });
+});
+
+describe('jump to page', () => {
+  test('should render jump to page input and button when jumpToPage is provided', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findJumpToPageInput()).toBeTruthy();
+    expect(wrapper.findJumpToPageButton()).toBeTruthy();
+  });
+
+  test('should not render jump to page when jumpToPage is not provided', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} />);
+
+    expect(wrapper.findJumpToPageInput()).toBeNull();
+    expect(wrapper.findJumpToPageButton()).toBeNull();
+  });
+
+  test('should show loading state on jump to page button', () => {
+    const { wrapper } = renderPagination(
+      <Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{ loading: true }} />
+    );
+
+    expect(wrapper.findJumpToPageButton()!.findLoadingIndicator()).toBeTruthy();
+  });
+
+  test('should disable jump to page button when input is empty', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+    wrapper.findJumpToPageInput()!.setInputValue('');
+    expect(wrapper.findJumpToPageButton()!.getElement()).toBeDisabled();
+  });
+
+  test('should disable jump to page button when input equals current page', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findJumpToPageButton()!.getElement()).toBeDisabled();
+  });
+
+  test('should set min attribute to 1 on input', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveAttribute('min', '1');
+  });
+
+  test('should set max attribute to pagesCount in closed mode', () => {
+    const { wrapper } = renderPagination(<Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+    expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveAttribute('max', '10');
+  });
+
+  test('should not set max attribute in open-end mode', () => {
+    const { wrapper } = renderPagination(
+      <Pagination currentPageIndex={1} pagesCount={10} openEnd={true} jumpToPage={{}} />
+    );
+
+    expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).not.toHaveAttribute('max');
+  });
+
+  describe('closed mode validation', () => {
+    test('should navigate to valid page in range', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      wrapper.findJumpToPageInput()!.setInputValue('5');
+      wrapper.findJumpToPageButton()!.click();
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 5 },
+        })
+      );
+    });
+
+    test('should navigate to first page when input is less than 1', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      wrapper.findJumpToPageInput()!.setInputValue('0');
+      wrapper.findJumpToPageButton()!.click();
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 1 },
+        })
+      );
+      expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(1);
+    });
+
+    test('should show error and navigate to last page when input exceeds pagesCount', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      wrapper.findJumpToPageInput()!.setInputValue('15');
+      wrapper.findJumpToPageButton()!.click();
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 10 },
+        })
+      );
+      expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(10);
+    });
+  });
+
+  describe('open-end mode', () => {
+    test('should navigate to any page without validation', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{}} onChange={onChange} />
+      );
+
+      wrapper.findJumpToPageInput()!.setInputValue('100');
+      wrapper.findJumpToPageButton()!.click();
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 100 },
+        })
+      );
+    });
+  });
+
+  describe('error handling via ref', () => {
+    test('should show error popover when setError is called', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />
+      );
+
+      ref.current?.setError(true);
+      rerender(<Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+      // Error popover should be visible
+      expect(wrapper.findJumpToPagePopover()).not.toBeNull();
+    });
+
+    test('should clear error when user types in input', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />
+      );
+
+      ref.current?.setError(true);
+      rerender(<Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
+
+      wrapper.findJumpToPageInput()!.setInputValue('5');
+
+      // Error should be cleared - popover should not be visible
+      expect(wrapper.findJumpToPagePopover()).toBeNull();
+    });
+
+    test('should clear error when user navigates successfully', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const onChange = jest.fn();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      ref.current?.setError(true);
+      rerender(<Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />);
+
+      wrapper.findPageNumberByIndex(3)!.click();
+
+      expect(onChange).toHaveBeenCalled();
+      // Error should be cleared
+      expect(wrapper.findJumpToPagePopover()).toBeNull();
+    });
+  });
+
+  describe('keyboard navigation', () => {
+    test('should submit on Enter key', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      const input = wrapper.findJumpToPageInput()!.findNativeInput().getElement();
+      wrapper.findJumpToPageInput()!.setInputValue('7');
+      fireEvent.keyDown(input, { keyCode: 13, key: 'Enter' });
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 7 },
+        })
+      );
+    });
+
+    test('should not submit on Enter when input equals current page', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      const input = wrapper.findJumpToPageInput()!.findNativeInput().getElement();
+      wrapper.findJumpToPageInput()!.setInputValue('5');
+      fireEvent.keyDown(input, { keyCode: 13, key: 'Enter' });
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    test('should not submit on Enter when input is empty', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      const input = wrapper.findJumpToPageInput()!.findNativeInput().getElement();
+      wrapper.findJumpToPageInput()!.setInputValue('');
+      fireEvent.keyDown(input, { keyCode: 13, key: 'Enter' });
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('open-end error handling', () => {
+    test('should not show error popover content while loading in open-end mode', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      ref.current?.setError(true);
+      rerender(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      // Popover wrapper exists but content should not be visible while loading
+      const popover = wrapper.findJumpToPagePopover();
+      expect(popover).not.toBeNull();
+      expect(popover!.findContent()).toBeNull();
+    });
+
+    test('should show error popover after loading completes in open-end mode', () => {
+      const ref = React.createRef<PaginationProps.Ref>();
+      const { wrapper, rerender } = renderPagination(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      ref.current?.setError(true);
+      rerender(
+        <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: false }} />
+      );
+
+      expect(wrapper.findJumpToPagePopover()).not.toBeNull();
+      expect(wrapper.findJumpToPagePopover()!.findContent()).not.toBeNull();
+    });
+
+    test('should sync input value after loading completes', () => {
+      const { wrapper, rerender } = renderPagination(
+        <Pagination currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
+      );
+
+      rerender(<Pagination currentPageIndex={3} pagesCount={5} openEnd={true} jumpToPage={{ loading: false }} />);
+
+      expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(3);
+    });
   });
 });

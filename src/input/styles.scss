@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/forms/mixins' as forms;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 @mixin placeholder {
@@ -202,4 +203,24 @@
 
 .input-button-right {
   /* used in test-utils */
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
+
+  &-full-width {
+    inline-size: 100%;
+  }
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+
+  &-full-width {
+    inline-size: 100%;
+  }
+}
+
+.inline-label {
+  @include forms.inline-label;
 }
