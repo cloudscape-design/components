@@ -171,10 +171,8 @@ const InternalButtonDropdown = React.forwardRef(
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
       formAction: 'none',
-      nativeButtonAttributes: {
-        'aria-haspopup': true,
-        ...nativeTriggerAttributes,
-      },
+      ariaHaspopup: true,
+      nativeButtonAttributes: nativeTriggerAttributes,
     };
 
     const triggerId = useUniqueId('awsui-button-dropdown__trigger');

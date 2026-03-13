@@ -85,6 +85,7 @@ export const InternalButton = React.forwardRef(
       ariaLabel,
       ariaDescribedby,
       ariaExpanded,
+      ariaHaspopup,
       ariaControls,
       fullWidth,
       badge,
@@ -215,6 +216,7 @@ export const InternalButton = React.forwardRef(
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
+      'aria-haspopup': ariaHaspopup,
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: __title ?? ariaLabel,
