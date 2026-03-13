@@ -107,7 +107,7 @@ describe('Mouse hover hook', () => {
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
   });
 
-  test('does not clear highlighted X on mouseOut if moving within popover', () => {
+  test('does not clear highlighted X on mouseOut if moving into popover', () => {
     const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 
@@ -135,14 +135,39 @@ describe('Mouse hover hook', () => {
     expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
 
+    // relatedTarget is inside the popover DOM tree
     const mouseOutEvent = {
-      relatedTarget: popoverWrapper,
-      clientX: 10,
-      clientY: 10,
+      relatedTarget: popoverDiv,
     } as any;
 
     act(() => hook.current.onSVGMouseOut(mouseOutEvent));
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+  });
+
+  test('clears highlighted X on mouseOut when leaving SVG near popover but not into it', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    const popoverWrapper = document.createElement('div');
+    const popoverDiv = document.createElement('div');
+    popoverWrapper.appendChild(popoverDiv);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      popoverRef: { current: popoverWrapper },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // relatedTarget is an element outside both SVG and popover (e.g. y-axis area, page body)
+    const outsideElement = document.createElement('div');
+    const mouseOutEvent = {
+      relatedTarget: outsideElement,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
   test('clears highlightX when onPopoverLeave is called with relatedTarget inside SVG', () => {
