@@ -53,6 +53,8 @@ export interface TableHeaderCellProps<ItemType> {
   tableVariant?: TableProps.Variant;
   colSpan?: number;
   rowSpan?: number;
+  /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
+  columnGroupId?: string;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -86,6 +88,7 @@ export function TableHeaderCell<ItemType>({
   tableVariant,
   colSpan,
   rowSpan,
+  columnGroupId,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -145,6 +148,7 @@ export function TableHeaderCell<ItemType>({
       tableVariant={tableVariant}
       colSpan={colSpan}
       rowSpan={rowSpan}
+      columnGroupId={columnGroupId}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({
