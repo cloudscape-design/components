@@ -185,18 +185,18 @@ export interface AdjacentTokenResult {
 export function findAdjacentToken(container: Node, offset: number, direction: ArrowDirection): AdjacentTokenResult {
   let sibling: Node | null = null;
 
-  // If we're in a cursor spot, use the wrapper (parent's parent) as the reference point
+  // If we're in a cursor spot, check if we should jump over the wrapper
   if (isHTMLElement(container.parentElement)) {
     const parentType = getTokenType(container.parentElement);
     if (parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || parentType === ELEMENT_TYPES.CURSOR_SPOT_AFTER) {
-      // We're in a cursor spot - get the reference wrapper
+      // We're in a cursor spot - always jump over the entire wrapper
       const wrapper = container.parentElement.parentElement;
-      if (wrapper) {
-        // Find sibling of the wrapper, not the cursor spot
-        sibling = direction === 'left' ? wrapper.previousSibling : wrapper.nextSibling;
-        const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
-        const isReferenceToken = siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED;
-        return { sibling, isReferenceToken };
+      const wrapperType = wrapper ? getTokenType(wrapper as HTMLElement) : null;
+      const isInReferenceWrapper = wrapperType === ELEMENT_TYPES.REFERENCE || wrapperType === ELEMENT_TYPES.PINNED;
+
+      if (isInReferenceWrapper && wrapper) {
+        // Always treat being in a cursor spot as needing to jump over the wrapper
+        return { sibling: wrapper, isReferenceToken: true };
       }
     }
   }
@@ -208,6 +208,9 @@ export function findAdjacentToken(container: Node, offset: number, direction: Ar
       sibling = direction === 'left' ? container.previousSibling : container.nextSibling;
     }
   } else if (isHTMLElement(container)) {
+    // When cursor is in a paragraph at offset N, it's positioned BEFORE childNodes[N]
+    // For left arrow: check childNodes[N-1] (element we're moving away from)
+    // For right arrow: check childNodes[N] (element we're moving into)
     if (direction === 'left') {
       sibling = offset > 0 ? container.childNodes[offset - 1] : container.previousSibling;
     } else {
@@ -218,7 +221,25 @@ export function findAdjacentToken(container: Node, offset: number, direction: Ar
   const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
   const isReferenceToken = siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED;
 
-  return { sibling, isReferenceToken };
+  // If already a reference token, return it
+  if (isReferenceToken) {
+    return { sibling, isReferenceToken: true };
+  }
+
+  // Check if the sibling is a cursor spot (we're about to enter a reference token)
+  if (isHTMLElement(sibling)) {
+    const isCursorSpot =
+      siblingType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || siblingType === ELEMENT_TYPES.CURSOR_SPOT_AFTER;
+    if (isCursorSpot && sibling.parentElement) {
+      const wrapperType = getTokenType(sibling.parentElement);
+      const isInReferenceWrapper = wrapperType === ELEMENT_TYPES.REFERENCE || wrapperType === ELEMENT_TYPES.PINNED;
+      if (isInReferenceWrapper) {
+        return { sibling: sibling.parentElement, isReferenceToken: true };
+      }
+    }
+  }
+
+  return { sibling, isReferenceToken: false };
 }
 
 export type MergeDirection = 'forward' | 'backward';
