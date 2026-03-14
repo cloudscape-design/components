@@ -87,14 +87,14 @@ const Trigger = React.forwardRef(
         ariaLabelledbyIds = ariaLabelledby;
       } else {
         triggerContent = (
-          <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
+          <span className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
             {placeholder}
           </span>
         );
       }
     } else if (!selectedOption) {
       triggerContent = (
-        <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
+        <span className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
           {placeholder}
         </span>
       );
