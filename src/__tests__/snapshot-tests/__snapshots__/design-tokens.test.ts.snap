@@ -2517,23 +2517,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -5370,23 +5370,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -8223,23 +8223,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -11076,23 +11076,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -13929,23 +13929,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -16782,23 +16782,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-m": {
           "$description": "The default letter spacing for h3s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-s": {
           "$description": "The default letter spacing for h4s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xl": {
           "$description": "The default letter spacing for h1s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -19635,23 +19635,23 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "letter-spacing-heading-l": {
       "$description": "The default letter spacing for h2s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "letter-spacing-heading-m": {
       "$description": "The default letter spacing for h3s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "letter-spacing-heading-s": {
       "$description": "The default letter spacing for h4s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "letter-spacing-heading-xl": {
       "$description": "The default letter spacing for h1s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "letter-spacing-heading-xs": {
       "$description": "The default letter spacing for h5s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -22509,7 +22509,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -25362,7 +25362,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -28215,7 +28215,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -31068,7 +31068,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -33921,7 +33921,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -36774,7 +36774,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -39627,7 +39627,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -42480,7 +42480,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "letter-spacing-heading-xs": {
           "$description": "The default letter spacing for h5s.",
-          "$value": "0em",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -45333,7 +45333,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "letter-spacing-heading-xs": {
       "$description": "The default letter spacing for h5s.",
-      "$value": "0em",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
