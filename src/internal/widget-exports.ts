@@ -28,3 +28,6 @@ export { DrawerImplementation as Drawer } from '../drawer/implementation';
 export { FlashbarImplementation as Flashbar } from '../flashbar/implementation';
 export { SideNavigationImplementation as SideNavigation } from '../side-navigation/implementation';
 export { HelpPanelImplementation as HelpPanel } from '../help-panel/implementation';
+
+// Widgetized non-component exports
+export { I18nFormatter } from '../i18n/utils/i18n-formatter';
