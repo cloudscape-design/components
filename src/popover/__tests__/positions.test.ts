@@ -283,7 +283,7 @@ describe('isCenterOutside', () => {
   });
 });
 
-describe('clampRectStart', () => {
+describe('clampStart', () => {
   const parent = { insetInlineStart: 100, insetBlockStart: 100, inlineSize: 400, blockSize: 300 };
   function rect(insetInlineStart: number, insetBlockStart: number, inlineSize: number, blockSize: number): Rect {
     return {
@@ -295,6 +295,11 @@ describe('clampRectStart', () => {
       insetBlockEnd: insetBlockStart + blockSize,
     };
   }
+
+  test('returns rect unchanged when bounds is not provided', () => {
+    const testRect = rect(150, 200, 100, 80);
+    expect(clampRectStart(testRect)).toEqual(testRect);
+  });
 
   test('returns rect unchanged when fully inside parent', () => {
     expect(clampRectStart(rect(200, 200, 50, 50), parent)).toEqual(rect(200, 200, 50, 50));

@@ -13,13 +13,7 @@ import {
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
 import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces';
-import {
-  calculatePosition,
-  clampRectStart,
-  getDimensions,
-  getOffsetDimensions,
-  isCenterOutside,
-} from './utils/positions';
+import { calculatePosition, clampRect, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
 
 export default function usePopoverPosition({
   popoverRef,
@@ -273,9 +267,7 @@ function isBoundary(element: HTMLElement) {
 }
 
 function getClampedTrackRect(track: HTMLElement | SVGElement, parentRef?: HTMLElement | null) {
-  const trackRect = getLogicalBoundingClientRect(track);
-  if (!parentRef) {
-    return trackRect;
-  }
-  return clampRectStart(trackRect, getLogicalBoundingClientRect(parentRef));
+  const rect = getLogicalBoundingClientRect(track);
+  const bounds = parentRef ? getLogicalBoundingClientRect(parentRef) : undefined;
+  return clampRect(rect, bounds);
 }

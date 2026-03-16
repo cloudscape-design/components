@@ -345,7 +345,10 @@ function isTopOrBottom(internalPosition: InternalPosition) {
   return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
 }
 
-export function clampRectStart(rect: Rect, bounds: BoundingBox) {
+export function clampRect(rect: Rect, bounds?: BoundingBox) {
+  if (!bounds) {
+    return rect;
+  }
   const parentInlineEnd = bounds.insetInlineStart + bounds.inlineSize;
   const parentBlockEnd = bounds.insetBlockStart + bounds.blockSize;
 
