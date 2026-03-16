@@ -62,7 +62,7 @@ interface DateRangePickerDropdownProps
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
   renderRelativeRangeContent: DateRangePickerProps.RelativeRangeControl | undefined;
-  startMonth: DateRangePickerProps.StartMonth | undefined;
+  secondaryGrid: DateRangePickerProps.SecondaryGrid | undefined;
 }
 
 export function DateRangePickerDropdown({
@@ -92,7 +92,7 @@ export function DateRangePickerDropdown({
   customRelativeRangeUnits,
   renderRelativeRangeContent,
   granularity = 'day',
-  startMonth,
+  secondaryGrid,
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
@@ -218,7 +218,7 @@ export function DateRangePickerDropdown({
                       dateInputFormat={dateInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
                       granularity={granularity}
-                      startMonth={startMonth}
+                      secondaryGrid={secondaryGrid}
                     />
                   )}
 

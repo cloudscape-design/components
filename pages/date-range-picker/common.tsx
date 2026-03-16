@@ -27,7 +27,7 @@ interface DateRangePickerPageSettings {
   disabledDates?: DisabledDate;
   showDisabledReason?: boolean;
   hasValue?: boolean;
-  startMonth?: DateRangePickerProps.StartMonth;
+  secondaryGrid?: DateRangePickerProps.SecondaryGrid;
 }
 
 const defaultSettings: Required<DateRangePickerPageSettings> = {
@@ -46,7 +46,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   disabledDates: 'none',
   showDisabledReason: true,
   hasValue: true,
-  startMonth: 'previous',
+  secondaryGrid: 'previous',
 };
 
 export function useDateRangePickerSettings(
@@ -91,7 +91,7 @@ export function useDateRangePickerSettings(
   const disabledDates = urlParams.disabledDates ?? def('disabledDates');
   const showDisabledReason = parseBoolean(def('showDisabledReason'), urlParams.showDisabledReason);
   const hasValue = parseBoolean(def('hasValue'), urlParams.hasValue);
-  const startMonth = urlParams.startMonth ?? def('startMonth');
+  const secondaryGrid = urlParams.secondaryGrid ?? def('secondaryGrid');
   const settings: Required<DateRangePickerPageSettings> = {
     dateOnly,
     monthOnly,
@@ -108,7 +108,7 @@ export function useDateRangePickerSettings(
     disabledDates,
     showDisabledReason,
     hasValue,
-    startMonth,
+    secondaryGrid,
   };
   const setSettings = (settings: DateRangePickerPageSettings) => setUrlParams(settings);
 
@@ -216,7 +216,7 @@ export function useDateRangePickerSettings(
     placeholder,
     i18nStrings,
     locale: 'en-GB',
-    startMonth,
+    secondaryGrid,
   };
 
   return { props, settings, setSettings };
@@ -261,7 +261,7 @@ export function Settings({
     disabledDates,
     showDisabledReason,
     hasValue,
-    startMonth,
+    secondaryGrid,
   },
   setSettings,
 }: {
@@ -280,7 +280,7 @@ export function Settings({
   const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
   const inputDateFormat = [{ value: 'iso' }, { value: 'slashed' }];
   const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
-  const startMonthOptions = [{ value: 'previous' }, { value: 'current' }];
+  const secondaryGridOptions = [{ value: 'previous' }, { value: 'next' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
       <FormField label="Range selector mode">
@@ -339,12 +339,12 @@ export function Settings({
         />
       </FormField>
 
-      <FormField label="Start month">
+      <FormField label="Secondary grid">
         <Select
-          options={startMonthOptions}
-          selectedOption={startMonthOptions.find(o => o.value === startMonth) ?? null}
+          options={secondaryGridOptions}
+          selectedOption={secondaryGridOptions.find(o => o.value === secondaryGrid) ?? null}
           onChange={({ detail }) =>
-            setSettings({ startMonth: detail.selectedOption.value as DateRangePickerProps.StartMonth })
+            setSettings({ secondaryGrid: detail.selectedOption.value as DateRangePickerProps.SecondaryGrid })
           }
         />
       </FormField>

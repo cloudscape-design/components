@@ -12,7 +12,7 @@ import { Settings, useDateRangePickerSettings } from './common';
 export default function StartMonthScenario() {
   const { props, settings, setSettings } = useDateRangePickerSettings({
     value: null,
-    startMonth: 'current',
+    secondaryGrid: 'next',
     hasValue: false,
   });
   return (

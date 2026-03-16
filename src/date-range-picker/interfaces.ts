@@ -101,17 +101,20 @@ export interface DateRangePickerBaseProps {
   timeInputFormat?: DateRangePickerProps.TimeInputFormat;
 
   /**
-   * Determines which month is displayed first (on the left) when the calendar
-   * opens with two grids visible.
+   * Determines which period is displayed in the secondary (right) grid
+   * when the calendar opens with two grids visible.
    *
-   * * `previous` (default) – the left grid shows the previous month and the
-   *   right grid shows the current month.
-   * * `current` – the left grid shows the current month and the right grid
-   *   shows the next month.
+   * * `previous` (default) – the secondary grid shows the current period,
+   *   and the primary (left) grid shows the previous period.
+   * * `next` – the secondary grid shows the next period,
+   *   and the primary (left) grid shows the current period.
    *
+   * For day granularity, a "period" is a month. For month granularity, a "period" is a year.
+   *
+   * When a value is selected, the calendar navigates to the selected date instead.
    * Has no effect on single-grid (mobile) layout.
    */
-  startMonth?: DateRangePickerProps.StartMonth;
+  secondaryGrid?: DateRangePickerProps.SecondaryGrid;
 
   /**
    * Fired whenever a user changes the component's value.
@@ -311,7 +314,7 @@ export namespace DateRangePickerProps {
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
 
-  export type StartMonth = 'current' | 'previous';
+  export type SecondaryGrid = 'previous' | 'next';
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 

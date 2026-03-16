@@ -52,7 +52,7 @@ export default function DateRangePickerCalendar({
   dateInputFormat,
   customAbsoluteRangeControl,
   granularity = 'day',
-  startMonth,
+  secondaryGrid,
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
   const isMonthPicker = granularity === 'month';
@@ -67,7 +67,7 @@ export default function DateRangePickerCalendar({
   const addPage = isMonthPicker ? addYears : addMonths;
   const startOfPage = isMonthPicker ? startOfYear : startOfMonth;
   const findItemToFocus = isMonthPicker ? findMonthToFocus : findDateToFocus;
-  const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid, startMonth));
+  const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid, secondaryGrid));
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
     if (value.start.date) {
       const startDate = parseDate(value.start.date);
