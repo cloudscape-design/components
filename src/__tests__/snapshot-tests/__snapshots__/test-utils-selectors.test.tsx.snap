@@ -313,7 +313,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_secondary-actions_1i0s3",
   ],
   "form-field": [
+    "awsui_character-count_6mjrv",
     "awsui_constraint_14mhv",
+    "awsui_constraint_6mjrv",
     "awsui_control_14mhv",
     "awsui_description_14mhv",
     "awsui_error_14mhv",

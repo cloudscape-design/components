@@ -13627,6 +13627,14 @@ exports[`Components definition for form-field matches the snapshot: form-field 1
       "type": "FormFieldProps.AnalyticsMetadata",
     },
     {
+      "description": "Character count constraint displayed adjacent to the constraintText. Use
+this to provide an updated character count on each keypress that is debounced
+for screen reader users.",
+      "name": "characterCountText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -33484,6 +33492,19 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     {
       "methods": [
         {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findConstraint",
           "parameters": [],
           "returnType": {
@@ -44520,6 +44541,14 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],
