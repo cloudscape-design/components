@@ -47,12 +47,12 @@ test.each([null, document.createElement('div')])('passes parentRef=%s to usePopo
   render(
     <PopoverContainer
       {...defaultProps}
-      parentRef={{ current: parentRef }}
+      triggerClampRef={{ current: parentRef }}
       trackRef={{ current: document.createElement('div') }}
     >
       content
     </PopoverContainer>
   );
 
-  expect(usePopoverPositionSpy.mock.calls[0][0].parentRef?.current).toBe(parentRef);
+  expect(usePopoverPositionSpy.mock.calls[0][0].triggerClampRef?.current).toBe(parentRef);
 });
