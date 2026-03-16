@@ -343,6 +343,13 @@ describe('Button Component', () => {
     });
   });
 
+  describe('ariaHaspopup property', () => {
+    test('adds aria-haspopup property to button', () => {
+      const wrapper = renderButton({ ariaHaspopup: 'menu' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-haspopup', 'menu');
+    });
+  });
+
   describe('ariaControls property', () => {
     test('adds aria-controls property to button', () => {
       const wrapper = renderButton({ ariaControls: 'test-element' });
