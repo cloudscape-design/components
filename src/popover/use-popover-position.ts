@@ -20,7 +20,7 @@ export default function usePopoverPosition({
   bodyRef,
   arrowRef,
   getTrack,
-  parentRef,
+  triggerClampRef,
   contentRef,
   allowScrollToFit,
   allowVerticalOverflow,
@@ -35,7 +35,7 @@ export default function usePopoverPosition({
   arrowRef: React.RefObject<HTMLDivElement | null>;
   getTrack: () => null | HTMLElement | SVGElement;
   contentRef: React.RefObject<HTMLDivElement | null>;
-  parentRef?: React.RefObject<HTMLElement>;
+  triggerClampRef?: React.RefObject<HTMLElement>;
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
   preferredPosition: PopoverProps.Position;
@@ -90,7 +90,7 @@ export default function usePopoverPosition({
       // Get rects representing key elements
       // Use getComputedStyle for arrowRect to avoid modifications made by transform
       const viewportRect = getViewportRect(document.defaultView!);
-      const trackRect = getClampedTrackRect(track, parentRef?.current);
+      const trackRect = getClampedTrackRect(track, triggerClampRef?.current);
       const arrowRect = getDimensions(arrow);
       const { containingBlock, boundary } = findUpUntilMultiple({
         startElement: popover,
@@ -185,7 +185,7 @@ export default function usePopoverPosition({
         if (!track) {
           return;
         }
-        const trackRect = getClampedTrackRect(track, parentRef?.current);
+        const trackRect = getClampedTrackRect(track, triggerClampRef?.current);
 
         const newTrackOffset = toRelativePosition(
           trackRect,
@@ -211,7 +211,7 @@ export default function usePopoverPosition({
       bodyRef,
       contentRef,
       arrowRef,
-      parentRef,
+      triggerClampRef,
       keepPosition,
       preferredPosition,
       renderWithPortal,
