@@ -24,7 +24,7 @@ export interface ChartPopoverProps extends PopoverProps {
   getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
-    
+
     const trackRef = useRef<Element>(null)
     return (<>
       <Track style={getPosition(selectedItemId)} ref={trackRef} />
@@ -33,6 +33,9 @@ export interface ChartPopoverProps extends PopoverProps {
   */
   trackKey?: string | number;
   minVisibleBlockSize?: number;
+
+  /** Optional element to clamp the popover trigger position within its bounds */
+  triggerClampRef?: React.RefObject<HTMLElement>;
 
   /** Optional container element that prevents any clicks in there from dismissing the popover */
   container: Element | null;
@@ -74,6 +77,7 @@ function ChartPopover(
     trackKey,
     onDismiss,
     container,
+    triggerClampRef,
     minVisibleBlockSize,
 
     onMouseEnter,
@@ -119,6 +123,7 @@ function ChartPopover(
   return (
     <div
       {...baseProps}
+      role={!dismissButton ? 'tooltip' : undefined}
       className={clsx(popoverStyles.root, styles.root, baseProps.className)}
       ref={popoverRef}
       onMouseEnter={onMouseEnter}
@@ -136,6 +141,7 @@ function ChartPopover(
         trackRef={trackRef}
         getTrack={getTrack}
         trackKey={trackKey}
+        triggerClampRef={triggerClampRef}
         minVisibleBlockSize={minVisibleBlockSize}
         arrow={position => (
           <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
@@ -152,7 +158,7 @@ function ChartPopover(
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
           header={<span className={testClasses.header}>{title}</span>}
-          onDismiss={onDismiss}
+          onDismiss={() => onDismiss()}
           overflowVisible="content"
           className={styles['popover-body']}
           variant="chart"

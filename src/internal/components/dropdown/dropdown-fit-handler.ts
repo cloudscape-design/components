@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBreakpointValue } from '../../breakpoints';
 import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers';
 import { LogicalDOMRect } from './dropdown-position';
+import { DropdownWidthConstraint } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -43,10 +43,6 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 
   return parents.shift();
 };
-
-// By default, most dropdowns should expand their content as necessary, but to a maximum of 465px (the XXS breakpoint).
-// This value was determined by UX but may be subject to change in the future, depending on the feedback.
-export const defaultMaxDropdownWidth = getBreakpointValue('xxs');
 
 const getAvailableSpace = ({
   trigger,
@@ -159,44 +155,55 @@ const getInteriorAvailableSpace = ({
   );
 };
 
+const resolveWidthConstraint = (
+  constraint: DropdownWidthConstraint | undefined,
+  triggerWidth: number,
+  fallback: number
+): number => {
+  if (constraint === 'trigger') {
+    return triggerWidth;
+  }
+  if (typeof constraint === 'number') {
+    return constraint;
+  }
+  return fallback;
+};
+
 const getWidths = ({
   triggerElement,
   dropdownElement,
-  desiredMinWidth,
-  stretchBeyondTriggerWidth = false,
+  minWidthConstraint,
+  maxWidthConstraint,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
-  desiredMinWidth?: number;
-  stretchBeyondTriggerWidth?: boolean;
+  minWidthConstraint?: DropdownWidthConstraint;
+  maxWidthConstraint?: DropdownWidthConstraint;
 }) => {
-  // Determine the width of the trigger
   const { inlineSize: triggerInlineSize } = getLogicalBoundingClientRect(triggerElement);
-  // Minimum width is determined by either an explicit number (desiredMinWidth) or the trigger width
-  const minWidth = desiredMinWidth ? Math.min(triggerInlineSize, desiredMinWidth) : triggerInlineSize;
-  // If stretchBeyondTriggerWidth is true, the maximum width is the XS breakpoint (465px) or the trigger width (if bigger).
-  const maxWidth = stretchBeyondTriggerWidth ? Math.max(defaultMaxDropdownWidth, triggerInlineSize) : Number.MAX_VALUE;
-  // Determine the actual dropdown width, the size that it "wants" to be
   const { inlineSize: requiredWidth } = getLogicalBoundingClientRect(dropdownElement);
-  // Try to achieve the required/desired width within the given parameters
+
+  const minWidth = resolveWidthConstraint(minWidthConstraint, triggerInlineSize, 0);
+  const maxWidth = resolveWidthConstraint(maxWidthConstraint, triggerInlineSize, Number.MAX_VALUE);
+
   const idealWidth = Math.min(Math.max(requiredWidth, minWidth), maxWidth);
   return { idealWidth, minWidth, triggerInlineSize };
 };
 
-export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
+export const hasEnoughSpaceForFlexibleWidth = ({
   triggerElement,
   dropdownElement,
-  desiredMinWidth,
+  minWidthConstraint,
+  maxWidthConstraint,
   expandToViewport,
-  stretchWidth,
   stretchHeight,
   isMobile,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
-  desiredMinWidth?: number;
+  minWidthConstraint?: DropdownWidthConstraint;
+  maxWidthConstraint?: DropdownWidthConstraint;
   expandToViewport: boolean;
-  stretchWidth: boolean;
   stretchHeight: boolean;
   isMobile: boolean;
 }) => {
@@ -209,13 +216,12 @@ export const hasEnoughSpaceToStretchBeyondTriggerWidth = ({
   const { idealWidth } = getWidths({
     triggerElement: triggerElement,
     dropdownElement,
-    desiredMinWidth,
-    stretchBeyondTriggerWidth: true,
+    minWidthConstraint,
+    maxWidthConstraint,
   });
   const availableSpace = getAvailableSpace({
     trigger: triggerElement,
     overflowParents,
-    stretchWidth,
     stretchHeight,
     isMobile,
   });
@@ -226,36 +232,36 @@ export const getDropdownPosition = ({
   triggerElement,
   dropdownElement,
   overflowParents,
-  minWidth: desiredMinWidth,
+  minWidth: minWidthConstraint,
+  maxWidth: maxWidthConstraint,
   preferCenter = false,
-  stretchWidth = false,
+  matchTriggerWidth = false,
   stretchHeight = false,
   isMobile = false,
-  stretchBeyondTriggerWidth = false,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
   overflowParents: ReadonlyArray<BoundingBox>;
-  minWidth?: number;
+  minWidth?: DropdownWidthConstraint;
+  maxWidth?: DropdownWidthConstraint;
   preferCenter?: boolean;
-  stretchWidth?: boolean;
+  matchTriggerWidth?: boolean;
   stretchHeight?: boolean;
   isMobile?: boolean;
-  stretchBeyondTriggerWidth?: boolean;
 }): DropdownPosition => {
   // Determine the space available around the dropdown that it can grow in
   const availableSpace = getAvailableSpace({
     trigger: triggerElement,
     overflowParents,
-    stretchWidth,
+    stretchWidth: matchTriggerWidth,
     stretchHeight,
     isMobile,
   });
   const { idealWidth, minWidth, triggerInlineSize } = getWidths({
     triggerElement,
     dropdownElement,
-    desiredMinWidth,
-    stretchBeyondTriggerWidth,
+    minWidthConstraint,
+    maxWidthConstraint,
   });
 
   let dropInlineStart: boolean;
@@ -357,11 +363,11 @@ export const calculatePosition = (
   interior: boolean,
   expandToViewport: boolean,
   preferCenter: boolean,
-  stretchWidth: boolean,
+  matchTriggerWidth: boolean,
   stretchHeight: boolean,
   isMobile: boolean,
-  minWidth?: number,
-  stretchBeyondTriggerWidth?: boolean
+  minWidth?: DropdownWidthConstraint,
+  maxWidth?: DropdownWidthConstraint
 ): [DropdownPosition, LogicalDOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
@@ -388,11 +394,11 @@ export const calculatePosition = (
         dropdownElement,
         overflowParents,
         minWidth,
+        maxWidth,
         preferCenter,
-        stretchWidth,
+        matchTriggerWidth,
         stretchHeight,
         isMobile,
-        stretchBeyondTriggerWidth,
       });
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
   return [position, triggerBox];

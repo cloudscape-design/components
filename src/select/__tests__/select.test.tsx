@@ -210,6 +210,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       wrapper.openDropdown();
       onLoadItems.mockClear();
       wrapper.findErrorRecoveryButton({ expandToViewport })!.click();
+      expect(wrapper.findFilteringInput()!.findNativeInput()!.getElement()).toHaveFocus();
       expect(onLoadItems).toHaveBeenCalledWith({ filteringText: '', firstPage: false, samePage: true });
     });
 

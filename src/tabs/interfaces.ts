@@ -104,6 +104,8 @@ export interface TabsProps extends BaseComponentProps {
   keyboardActivationMode?: 'automatic' | 'manual';
 
   /**
+   * An object containing CSS properties to customize the tabs' visual appearance.
+   * Refer to the [style](/components/tabs/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: TabsProps.Style;

@@ -11,11 +11,12 @@ import InternalLiveRegion, {
 import styles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
-  const { container } = render(jsx);
+  const { container, rerender } = render(jsx);
   await waitFor(() => expect(document.querySelector('[aria-live]')).toBeTruthy());
   jest.runAllTimers();
 
   return {
+    rerender,
     source: container.querySelector(`.${styles.root}`),
     politeRegion: document.querySelector('[aria-live=polite]')!,
     assertiveRegion: document.querySelector('[aria-live=assertive]')!,
@@ -129,6 +130,48 @@ describe('LiveRegion', () => {
 
     ref.current?.reannounce();
     expect(politeRegion).toHaveTextContent('Announcement');
+  });
+
+  it('updates message after delay period', async () => {
+    jest.useFakeTimers();
+    const { politeRegion, rerender } = await renderLiveRegion(
+      <InternalLiveRegion delay={1} hidden={true}>
+        Announcement
+      </InternalLiveRegion>
+    );
+    // renderLiveRegion automatically advances all timers
+    expect(politeRegion).toHaveTextContent('Announcement');
+    rerender(
+      <InternalLiveRegion delay={1} hidden={true}>
+        Second announcement
+      </InternalLiveRegion>
+    );
+    expect(politeRegion).toHaveTextContent('Announcement');
+    jest.runAllTimers();
+    expect(politeRegion).toHaveTextContent('Second announcement');
+  });
+
+  it('re-announces the message if the content changed between debounce periods', async () => {
+    jest.useFakeTimers();
+    const { politeRegion, rerender } = await renderLiveRegion(
+      <InternalLiveRegion delay={1} hidden={true}>
+        Announcement
+      </InternalLiveRegion>
+    );
+    expect(politeRegion).toHaveTextContent('Announcement');
+    rerender(
+      <InternalLiveRegion delay={1} hidden={true}>
+        Second announcement
+      </InternalLiveRegion>
+    );
+    rerender(
+      <InternalLiveRegion delay={1} hidden={true}>
+        Announcement
+      </InternalLiveRegion>
+    );
+    jest.runAllTimers();
+    // Note the period to force re-announcement.
+    expect(politeRegion).toHaveTextContent('Announcement.');
   });
 });
 

@@ -12,7 +12,7 @@ import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/in
 
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
 import Header from '../../../lib/components/header';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -48,7 +48,7 @@ const globalWithFlags = globalThis as any;
 
 beforeEach(() => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
-  awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
 });
 
 afterEach(() => {

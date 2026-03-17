@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
+import React, { ReactNode, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -17,8 +18,8 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { throttle } from '../internal/utils/throttle';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
   GeneratedAnalyticsMetadataFlashbarExpand,
@@ -34,6 +35,8 @@ import {
   getFlashTypeCount,
   getItemColor,
   getVisibleCollapsedItems,
+  isRefObject,
+  isStackableItem,
   StackableItem,
 } from './utils';
 
@@ -121,28 +124,28 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     }
   }, [isFlashbarStackExpanded]);
 
-  const updateBottomSpacing = useMemo(
-    () =>
-      throttle(() => {
-        // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
-        // otherwise avoid spacing with eventual sticky elements below.
-        const listElement = listElementRef?.current;
-        const flashbar = listElement?.parentElement;
-        if (listElement && flashbar) {
-          // Make sure the bottom padding is present when we make the calculations,
-          // then we might decide to remove it or not.
-          flashbar.classList.remove(styles.floating);
-          const windowHeight = window.innerHeight;
-          // Take the parent region into account if using the App Layout, because it might have additional margins.
-          // Otherwise we use the Flashbar component for this calculation.
-          const outerElement = findUpUntil(flashbar, element => element.getAttribute('role') === 'region') || flashbar;
-          const applySpacing =
-            isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
-          if (!applySpacing) {
-            flashbar.classList.add(styles.floating);
-          }
+  const updateBottomSpacing = useThrottleCallback(
+    () => {
+      // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
+      // otherwise avoid spacing with eventual sticky elements below.
+      const listElement = listElementRef?.current;
+      const flashbar = listElement?.parentElement;
+      if (listElement && flashbar) {
+        // Make sure the bottom padding is present when we make the calculations,
+        // then we might decide to remove it or not.
+        flashbar.classList.remove(styles.floating);
+        const windowHeight = window.innerHeight;
+        // Take the parent region into account if using the App Layout, because it might have additional margins.
+        // Otherwise we use the Flashbar component for this calculation.
+        const outerElement = findUpUntil(flashbar, element => element.getAttribute('role') === 'region') || flashbar;
+        const applySpacing =
+          isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
+        if (!applySpacing) {
+          flashbar.classList.add(styles.floating);
         }
-      }, resizeListenerThrottleDelay),
+      }
+    },
+    resizeListenerThrottleDelay,
     [isFlashbarStackExpanded]
   );
 
@@ -213,11 +216,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   // we need to use different, more custom and more controlled animations.
   const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     enteringItems.some(_item => _item.id && _item.id === item.id);
-  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !isStackableItem(item);
   const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
 
   const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
+    isFlashbarStackExpanded || hasLeft(item) || (isStackableItem(item) && item.expandedIndex === 0);
 
   const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
@@ -300,11 +303,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                       if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
                         if (typeof transitionRootElement === 'function') {
                           transitionRootElement(el);
-                        } else if (
-                          transitionRootElement &&
-                          typeof transitionRootElement === 'object' &&
-                          'current' in transitionRootElement
-                        ) {
+                        } else if (isRefObject(transitionRootElement)) {
                           (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
                         }
                       }

@@ -208,6 +208,11 @@ export interface DateRangePickerProps
    * Defaults to `false`.
    */
   hideTimeOffset?: boolean;
+
+  /**
+   * Adds `aria-label` to the trigger and dropdown.
+   */
+  ariaLabel?: string;
 }
 
 export namespace DateRangePickerProps {
@@ -310,16 +315,19 @@ export namespace DateRangePickerProps {
   export interface I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
+     * @deprecated Use `ariaLabel` on the component instead.
      */
     ariaLabel?: string;
 
     /**
      * Adds `aria-labelledby` to the trigger and dropdown.
+     * @deprecated Use `ariaLabelledby` on the component instead.
      */
     ariaLabelledby?: string;
 
     /**
      * Adds `aria-describedby` to the trigger and dropdown.
+     * @deprecated Use `ariaDescribedby` on the component instead.
      */
     ariaDescribedby?: string;
 
@@ -570,6 +578,30 @@ export namespace DateRangePickerProps {
      * @i18n
      */
     previousYearAriaLabel?: string;
+
+    /**
+     * Placeholder text for date inputs in absolute mode with 'iso' format (dashes).
+     * Should match the expected date format (for example "YYYY-MM-DD", "JJJJ-MM-TT" for German).
+     * Used for both start and end date inputs.
+     * @i18n
+     */
+    isoDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for date inputs in absolute mode with 'slashed' format (slashes).
+     * Should match the expected date format (for example "YYYY/MM/DD", "JJJJ/MM/TT" for German).
+     * Used for both start and end date inputs.
+     * @i18n
+     */
+    slashedDatePlaceholder?: string;
+
+    /**
+     * Placeholder text for time inputs in absolute mode.
+     * Should match the expected time format (for example "hh:mm:ss", "HH:MM:SS").
+     * Used for both start and end time inputs.
+     * @i18n
+     */
+    timePlaceholder?: string;
   }
 
   export type AbsoluteFormat = DateFormat;

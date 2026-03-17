@@ -17,7 +17,6 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
-import Tooltip from '../internal/components/tooltip';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
@@ -26,6 +25,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
   GeneratedAnalyticsMetadataTabsDismiss,
@@ -575,9 +575,9 @@ const TabTrigger = forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={tabLabelRefObject}
-                value={tab.disabledReason!}
-                onDismiss={() => setShowTooltip(false)}
+                getTrack={() => tabLabelRefObject.current}
+                content={tab.disabledReason!}
+                onEscape={() => setShowTooltip(false)}
               />
             )}
           </>

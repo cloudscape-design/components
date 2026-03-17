@@ -18,12 +18,12 @@ export interface LinkProps extends BaseComponentProps {
   /**
    * Determines the visual style of the link as follows:
    *
-   * - `primary` - Displays the link text with bold styling for sufficient contrast with surrounding text.
-   *     Use this for links where the context doesn't imply interactivity such as
-   *     "Learn more" links and links within paragraphs.
-   * - `secondary` - Does not provide any additional indicators for interactivity (except for an underline when the user hovers over or focuses the link).
-   *     This can be used in cases where the interactivity is strongly implied by its context,
-   *     such as in a table or a list of external links.
+   * - `primary` - Displays the link text with an underline for sufficient contrast with surrounding text.
+   *     Use this for links adjacent to other text, such as inside a paragraph, a "Learn more" link,
+   *     an item ID in a table, a link in a key-value pair, or a link in an alert.
+   * - `secondary` - Uses regular font weight without additional interactivity indicators (except for an underline on hover).
+   *     Use this where context implies interactivity and users can identify links easily,
+   *     such as in a list of links inside a container.
    * - `info` - Use for "info" links that link to content in a help panel.
    *
    * The default is `secondary`, except inside the following components where it defaults to `primary`:
@@ -112,6 +112,8 @@ export interface LinkProps extends BaseComponentProps {
   rel?: string;
 
   /**
+   * An object containing CSS properties to customize the link's visual appearance.
+   * Refer to the [style](/components/link/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: LinkProps.Style;

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IconProps } from '../../../icon/interfaces';
 import { BaseComponentProps } from '../../base-component';
@@ -54,4 +54,5 @@ export interface OptionProps extends BaseComponentProps {
   labelContainerRef?: React.RefObject<HTMLSpanElement>;
   labelRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
+  customContent?: ReactNode;
 }

@@ -28,6 +28,8 @@ export default function ItemsList({
   analyticsMetadataTransformer,
   position,
   linkStyle,
+  renderItem,
+  parentProps,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -38,6 +40,7 @@ export default function ItemsList({
       return (
         <ItemElement
           key={index}
+          index={index}
           item={item}
           onItemActivate={onItemActivate}
           disabled={item.disabled ?? categoryDisabled}
@@ -50,6 +53,8 @@ export default function ItemsList({
           position={`${position ? `${position},` : ''}${index + 1}`}
           analyticsMetadataTransformer={analyticsMetadataTransformer}
           linkStyle={linkStyle}
+          renderItem={renderItem}
+          parentProps={parentProps}
         />
       );
     }
@@ -58,6 +63,7 @@ export default function ItemsList({
         isMobile ? (
           <MobileExpandableCategoryElement
             key={index}
+            index={index}
             item={item}
             onItemActivate={onItemActivate}
             onGroupToggle={onGroupToggle}
@@ -70,10 +76,12 @@ export default function ItemsList({
             disabled={item.disabled ?? false}
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
+            renderItem={renderItem}
           />
         ) : (
           <ExpandableCategoryElement
             key={index}
+            index={index}
             item={item}
             onItemActivate={onItemActivate}
             onGroupToggle={onGroupToggle}
@@ -87,6 +95,7 @@ export default function ItemsList({
             expandToViewport={expandToViewport}
             variant={variant}
             position={`${position ? `${position},` : ''}${index + 1}`}
+            renderItem={renderItem}
           />
         )
       ) : null;
@@ -94,6 +103,7 @@ export default function ItemsList({
     return (
       <CategoryElement
         key={index}
+        index={index}
         item={item}
         onItemActivate={onItemActivate}
         onGroupToggle={onGroupToggle}
@@ -106,6 +116,7 @@ export default function ItemsList({
         disabled={item.disabled ?? false}
         variant={variant}
         position={`${position ? `${position},` : ''}${index + 1}`}
+        renderItem={renderItem}
       />
     );
   });

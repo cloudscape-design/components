@@ -63,32 +63,27 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
 ]);
 
 export default function DateRangePickerCalendarPage() {
-  let i = -1;
   return (
     <PermutationsPage title="Date range picker permutations: year calendar" i18n={{}}>
       <div style={{ blockSize: `${(1 + permutations.length) * 300}px` }}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => {
-            i++;
-            return (
-              <div style={{ insetBlockStart: `${i * 300}px`, position: 'relative' }}>
-                <Dropdown
-                  stretchWidth={true}
-                  stretchHeight={true}
-                  stretchToTriggerWidth={false}
-                  open={true}
-                  onDropdownClose={() => {}}
-                  onMouseDown={() => {}}
-                  trigger={null}
-                >
+          render={permutation => (
+            <div style={{ blockSize: '300px' }}>
+              <Dropdown
+                stretchHeight={true}
+                open={true}
+                onOutsideClick={() => {}}
+                onMouseDown={() => {}}
+                trigger={null}
+                content={
                   <Box padding="m">
                     <Calendar {...permutation} granularity="month" />
                   </Box>
-                </Dropdown>
-              </div>
-            );
-          }}
+                }
+              />
+            </div>
+          )}
         />
       </div>
     </PermutationsPage>

@@ -5,13 +5,12 @@ import testRenderer, { ReactTestRenderer, ReactTestRendererJSON } from 'react-te
 
 import Flashbar from '../../../lib/components/flashbar';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
 
 import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 
 afterEach(() => {
-  awsuiPluginsInternal.flashContent.clearRegisteredReplacer();
+  awsuiPlugins.flashContent.clearRegisteredReplacerForTesting();
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });

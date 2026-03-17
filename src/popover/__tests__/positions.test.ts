@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { Rect } from '../../../lib/components/popover/interfaces';
 import {
   calculatePosition,
+  clampRect,
   intersectRectangles,
   isCenterOutside,
   PRIORITY_MAPPING,
@@ -278,5 +280,58 @@ describe('isCenterOutside', () => {
         parentRect
       )
     ).toBe(false);
+  });
+});
+
+describe('clampRect', () => {
+  const parent = { insetInlineStart: 100, insetBlockStart: 100, inlineSize: 400, blockSize: 300 };
+  function rect(insetInlineStart: number, insetBlockStart: number, inlineSize: number, blockSize: number): Rect {
+    return {
+      insetInlineStart,
+      insetBlockStart,
+      inlineSize,
+      blockSize,
+      insetInlineEnd: insetInlineStart + inlineSize,
+      insetBlockEnd: insetBlockStart + blockSize,
+    };
+  }
+
+  test('returns rect unchanged when bounds is not provided', () => {
+    const testRect = rect(150, 200, 100, 80);
+    expect(clampRect(testRect)).toEqual(testRect);
+  });
+
+  test('returns rect unchanged when fully inside parent', () => {
+    expect(clampRect(rect(200, 200, 50, 50), parent)).toEqual(rect(200, 200, 50, 50));
+  });
+
+  test('clamps start to parent start when rect is before parent', () => {
+    const result = clampRect(rect(50, 30, 20, 20), parent);
+    expect(result.insetInlineStart).toBe(100);
+    expect(result.insetBlockStart).toBe(100);
+  });
+
+  test('clamps start to parent end when rect is past parent', () => {
+    const result = clampRect(rect(600, 500, 20, 20), parent);
+    expect(result.insetInlineStart).toBe(500);
+    expect(result.insetBlockStart).toBe(400);
+  });
+
+  test('clamps size when rect would overflow parent end', () => {
+    const result = clampRect(rect(400, 350, 200, 100), parent);
+    expect(result.inlineSize).toBe(100);
+    expect(result.blockSize).toBe(50);
+  });
+
+  test('reduces size to zero when start is clamped to parent end', () => {
+    const result = clampRect(rect(600, 500, 50, 50), parent);
+    expect(result.inlineSize).toBe(0);
+    expect(result.blockSize).toBe(0);
+  });
+
+  test('computes insetInlineEnd and insetBlockEnd correctly', () => {
+    const result = clampRect(rect(150, 200, 100, 80), parent);
+    expect(result.insetInlineEnd).toBe(250);
+    expect(result.insetBlockEnd).toBe(280);
   });
 });

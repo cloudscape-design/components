@@ -38,6 +38,10 @@
   }
 
   &-content-wrapper {
+    // Apply styles-reset to ensure font-family and other styles are properly set
+    // when expandToViewport is true (dropdown rendered via portal to document.body)
+    @include styles.styles-reset;
+    white-space: inherit;
     position: relative;
     background-color: awsui.$color-background-dropdown-item-default;
     outline: none;
@@ -73,9 +77,10 @@
   &.occupy-entire-width {
     min-inline-size: 100%;
   }
-  &.stretch-beyond-trigger-width {
+  &.use-flexible-width {
     inline-size: max-content;
-    max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, 100%);
+    max-inline-size: var(#{custom-props.$dropdownDefaultMaxWidth}, none);
+    min-inline-size: var(#{custom-props.$dropdownDefaultMinWidth}, auto);
   }
   &.interior > .dropdown-content-wrapper {
     margin-block-start: -1px;

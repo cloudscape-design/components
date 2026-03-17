@@ -22,7 +22,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
-import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
+import { ButtonDropdownProps, InternalButtonDropdownProps, InternalItem } from './interfaces';
 import ItemsList from './items-list';
 import { useButtonDropdown } from './utils/use-button-dropdown';
 import { isLinkItem } from './utils/utils.js';
@@ -58,6 +58,7 @@ const InternalButtonDropdown = React.forwardRef(
       position,
       nativeMainActionAttributes,
       nativeTriggerAttributes,
+      renderItem,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -170,27 +171,27 @@ const InternalButtonDropdown = React.forwardRef(
       ariaLabel,
       ariaExpanded: canBeOpened && isOpen,
       formAction: 'none',
-      nativeButtonAttributes: {
-        'aria-haspopup': true,
-        ...nativeTriggerAttributes,
-      },
+      ariaHaspopup: true,
+      nativeButtonAttributes: nativeTriggerAttributes,
     };
 
     const triggerId = useUniqueId('awsui-button-dropdown__trigger');
 
     const triggerHasBadge = () => {
+      const groupKey: keyof ButtonDropdownProps.ItemGroup = 'items';
       const flatItems = items.flatMap(item => {
-        if ('items' in item) {
+        if (groupKey in item) {
           return item.items;
         }
         return item;
       });
 
+      const badgeKey: keyof InternalItem = 'badge';
       return (
         variant === 'icon' &&
         !!flatItems?.find(item => {
-          if ('badge' in item) {
-            return item.badge;
+          if (badgeKey in item) {
+            return (item as InternalItem).badge;
           }
         })
       );
@@ -358,65 +359,70 @@ const InternalButtonDropdown = React.forwardRef(
       >
         <Dropdown
           open={canBeOpened && isOpen}
-          stretchWidth={false}
           stretchTriggerHeight={variant === 'navigation'}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          hideBlockBorder={false}
           expandToViewport={expandToViewport}
-          preferCenter={preferCenter}
-          onDropdownClose={() => toggleDropdown()}
+          preferredAlignment={preferCenter ? 'center' : 'start'}
+          onOutsideClick={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
-        >
-          {hasHeader && (
-            <div className={styles.header} id={headerId}>
-              {title && (
-                <div className={styles.title}>
-                  <InternalBox
-                    fontSize="heading-s"
-                    fontWeight="bold"
-                    color="inherit"
-                    tagOverride="h2"
-                    margin={{ vertical: 'n', horizontal: 'n' }}
-                  >
-                    {title}
-                  </InternalBox>
+          content={
+            <>
+              {hasHeader && (
+                <div className={styles.header} id={headerId}>
+                  {title && (
+                    <div className={styles.title}>
+                      <InternalBox
+                        fontSize="heading-s"
+                        fontWeight="bold"
+                        color="inherit"
+                        tagOverride="h2"
+                        margin={{ vertical: 'n', horizontal: 'n' }}
+                      >
+                        {title}
+                      </InternalBox>
+                    </div>
+                  )}
+                  {description && (
+                    <InternalBox fontSize="body-s">
+                      <span className={styles.description}>{description}</span>
+                    </InternalBox>
+                  )}
                 </div>
               )}
-              {description && (
-                <InternalBox fontSize="body-s">
-                  <span className={styles.description}>{description}</span>
-                </InternalBox>
-              )}
-            </div>
-          )}
-          <OptionsList
-            open={canBeOpened && isOpen}
-            position="static"
-            role="menu"
-            tagOverride="ul"
-            decreaseBlockMargin={true}
-            ariaLabel={ariaLabel}
-            ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
-            statusType="finished"
-          >
-            <ItemsList
-              items={items}
-              onItemActivate={onItemActivate}
-              onGroupToggle={onGroupToggle}
-              hasExpandableGroups={expandableGroups}
-              targetItem={targetItem}
-              isHighlighted={isHighlighted}
-              isKeyboardHighlight={isKeyboardHighlight}
-              isExpanded={isExpanded}
-              lastInDropdown={true}
-              highlightItem={highlightItem}
-              expandToViewport={expandToViewport}
-              variant={variant}
-              analyticsMetadataTransformer={analyticsMetadataTransformer}
-              linkStyle={linkStyle}
-              position={position}
-            />
-          </OptionsList>
-        </Dropdown>
+              <OptionsList
+                open={canBeOpened && isOpen}
+                position="static"
+                role="menu"
+                tagOverride="ul"
+                decreaseBlockMargin={true}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
+                statusType="finished"
+              >
+                <ItemsList
+                  items={items}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  hasExpandableGroups={expandableGroups}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={true}
+                  highlightItem={highlightItem}
+                  expandToViewport={expandToViewport}
+                  variant={variant}
+                  analyticsMetadataTransformer={analyticsMetadataTransformer}
+                  linkStyle={linkStyle}
+                  position={position}
+                  renderItem={renderItem}
+                />
+              </OptionsList>
+            </>
+          }
+        />
       </div>
     );
   }

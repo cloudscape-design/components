@@ -123,3 +123,10 @@
 .ai-panel-logo {
   font-weight: 600;
 }
+
+.ai-artifact-panel {
+  block-size: 100%;
+  overflow: auto;
+  background-color: awsui.$color-background-layout-main;
+  border-inline-start: 1px solid awsui.$color-border-divider-default;
+}

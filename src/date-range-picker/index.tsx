@@ -104,6 +104,7 @@ const DateRangePicker = React.forwardRef(
       isValidRange = () => ({ valid: true }),
       showClearButton = true,
       dateOnly = false,
+      ariaLabel,
       timeOffset,
       getTimeOffset,
       timeInputFormat = 'hh:mm:ss',
@@ -143,12 +144,22 @@ const DateRangePicker = React.forwardRef(
       ? { startDate: undefined, endDate: undefined }
       : normalizeTimeOffset(value, getTimeOffset, timeOffset);
     value = formatInitialValue(value, dateOnly, isMonthOnly, normalizedTimeOffset);
+
     const baseProps = getBaseProps(rest);
-    const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
+    const ariaLabelId = useUniqueId('date-range-picker-arialabel-');
+    const {
+      invalid,
+      warning,
+      controlId,
+      ariaDescribedby,
+      ariaLabelledby: contextAriaLabelledby,
+    } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
       ariaDescribedby: rest.ariaDescribedby ?? i18nStrings?.ariaDescribedby,
       ...rest,
     });
+    const ariaLabelledby = joinStrings(contextAriaLabelledby, ariaLabelId);
+
     const isSingleGrid = useMobile();
 
     const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -275,7 +286,6 @@ const DateRangePicker = React.forwardRef(
         invalid={invalid}
         warning={warning}
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
-        ariaLabel={i18nStrings?.ariaLabel}
         ariaDescribedby={ariaDescribedby}
         className={clsx(testutilStyles.label, styles.label, {
           [styles['label-enabled']]: !readOnly && !disabled,
@@ -312,49 +322,51 @@ const DateRangePicker = React.forwardRef(
         onKeyDown={onWrapperKeyDownHandler}
       >
         <Dropdown
-          stretchWidth={true}
           stretchHeight={true}
           open={isDropDownOpen}
-          onDropdownClose={() => closeDropdown()}
+          onOutsideClick={() => closeDropdown()}
           trigger={trigger}
-          stretchToTriggerWidth={false}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
-        >
-          {/* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */}
-          <ResetContextsForModal>
-            {isDropDownOpen && (
-              <DateRangePickerDropdown
-                startOfWeek={startOfWeek}
-                locale={normalizedLocale}
-                isSingleGrid={isSingleGrid}
-                onDropdownClose={() => closeDropdown(true)}
-                value={value}
-                showClearButton={showClearButton}
-                isDateEnabled={isDateEnabled}
-                dateDisabledReason={dateDisabledReason}
-                i18nStrings={i18nStrings}
-                onClear={onClear}
-                onApply={onApply}
-                getTimeOffset={getTimeOffset}
-                timeOffset={timeOffset}
-                relativeOptions={relativeOptions}
-                isValidRange={isValidRange}
-                dateOnly={dateOnly}
-                absoluteFormat={absoluteFormat}
-                timeInputFormat={timeInputFormat}
-                dateInputFormat={dateInputFormat}
-                rangeSelectorMode={rangeSelectorMode}
-                ariaLabelledby={ariaLabelledby}
-                ariaDescribedby={ariaDescribedby}
-                customAbsoluteRangeControl={customAbsoluteRangeControl}
-                customRelativeRangeUnits={customRelativeRangeUnits}
-                renderRelativeRangeContent={renderRelativeRangeContent}
-                granularity={granularity}
-              />
-            )}
-          </ResetContextsForModal>
-        </Dropdown>
+          content={
+            /* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */
+            <ResetContextsForModal>
+              {isDropDownOpen && (
+                <DateRangePickerDropdown
+                  startOfWeek={startOfWeek}
+                  locale={normalizedLocale}
+                  isSingleGrid={isSingleGrid}
+                  onOutsideClick={() => closeDropdown(true)}
+                  value={value}
+                  showClearButton={showClearButton}
+                  isDateEnabled={isDateEnabled}
+                  dateDisabledReason={dateDisabledReason}
+                  i18nStrings={i18nStrings}
+                  onClear={onClear}
+                  onApply={onApply}
+                  getTimeOffset={getTimeOffset}
+                  timeOffset={timeOffset}
+                  relativeOptions={relativeOptions}
+                  isValidRange={isValidRange}
+                  dateOnly={dateOnly}
+                  absoluteFormat={absoluteFormat}
+                  timeInputFormat={timeInputFormat}
+                  dateInputFormat={dateInputFormat}
+                  rangeSelectorMode={rangeSelectorMode}
+                  ariaLabelledby={ariaLabelledby}
+                  ariaDescribedby={ariaDescribedby}
+                  customAbsoluteRangeControl={customAbsoluteRangeControl}
+                  customRelativeRangeUnits={customRelativeRangeUnits}
+                  renderRelativeRangeContent={renderRelativeRangeContent}
+                  granularity={granularity}
+                />
+              )}
+            </ResetContextsForModal>
+          }
+        />
+        <div id={ariaLabelId} hidden={true}>
+          {ariaLabel || i18nStrings?.ariaLabel}
+        </div>
       </div>
     );
   }

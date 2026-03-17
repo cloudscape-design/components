@@ -27,52 +27,49 @@ export default function DropdownScenario() {
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="leftDropdown" className={styles['dropdown-container']}>
           <Dropdown
-            stretchWidth={false}
-            preferCenter={true}
+            minWidth="trigger"
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen1(!open1)}>
                 Scenario 1
               </Button>
             }
             open={open1}
-            onDropdownClose={() => setOpen1(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            onOutsideClick={() => setOpen1(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="centerDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '100px' }}>
           <Dropdown
-            stretchWidth={false}
-            preferCenter={true}
+            minWidth="trigger"
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen2(!open2)}>
                 Scenario 2
               </Button>
             }
             open={open2}
-            onDropdownClose={() => setOpen2(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            onOutsideClick={() => setOpen2(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={clsx(styles.container, styles['container-wide'])}>
         <div id="rightDropdown" className={styles['dropdown-container']} style={{ insetInlineStart: '250px' }}>
           <Dropdown
-            stretchWidth={false}
-            preferCenter={true}
+            minWidth="trigger"
+            preferredAlignment="center"
             trigger={
               <Button className="trigger" onClick={() => setOpen3(!open3)}>
                 Scenario 3
               </Button>
             }
             open={open3}
-            onDropdownClose={() => setOpen3(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            onOutsideClick={() => setOpen3(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
     </article>

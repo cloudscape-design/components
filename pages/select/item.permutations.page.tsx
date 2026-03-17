@@ -89,7 +89,7 @@ const options: Record<string, DropdownOption> = {
   },
 };
 
-const permutations = createPermutations<ItemProps>([
+const permutations = createPermutations<Omit<ItemProps, 'index'>>([
   {
     option: [options.simpleOption],
     highlighted: [false, true],
@@ -150,7 +150,10 @@ export default function InputPermutations() {
       <h1>Select item permutations</h1>
       <ScreenshotArea>
         <ul role="listbox" aria-label="list">
-          <PermutationsView permutations={permutations} render={permutation => <Item {...permutation} />} />
+          <PermutationsView
+            permutations={permutations}
+            render={(permutation, index) => <Item index={index ?? -1} {...permutation} />}
+          />
         </ul>
       </ScreenshotArea>
     </>

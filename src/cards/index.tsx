@@ -12,6 +12,7 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
+import Card from '../internal/components/card';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -156,6 +157,10 @@ const Cards = React.forwardRef(function <T = any>(
       selectionType: selectionType || 'none',
       itemsCount: `${items.length}`,
       selectedItemsCount: `${(selectedItems || []).length}`,
+      selectedItemsLabels: {
+        root: 'self',
+        selector: `.${styles['card-selected']} .${analyticsSelectors['card-header']}`,
+      },
       variant,
     },
   };
@@ -269,7 +274,6 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
   const canClickEntireCard = selectable && entireCardClickable;
-  const isRefresh = useVisualRefresh();
 
   const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
@@ -317,7 +321,6 @@ const CardsList = <T,>({
         return (
           <li
             className={clsx(styles.card, {
-              [styles['card-selectable']]: selectable,
               [styles['card-selected']]: selectable && selected,
             })}
             key={key}
@@ -333,9 +336,34 @@ const CardsList = <T,>({
               },
             })}
           >
-            <div
-              className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
-              {...(canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {})}
+            <Card
+              selected={selectable && selected}
+              header={
+                <div className={styles['card-header']}>
+                  <div
+                    className={clsx(
+                      styles['card-header-inner'],
+                      selectable && styles['card-header-inner-selectable'],
+                      analyticsSelectors['card-header']
+                    )}
+                  >
+                    {cardDefinition.header ? cardDefinition.header(item) : ''}
+                  </div>
+                  {selectionProps && (
+                    <div
+                      className={styles['selection-control']}
+                      {...(!canClickEntireCard && !disabled
+                        ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
+                        : {})}
+                    >
+                      <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+                    </div>
+                  )}
+                </div>
+              }
+              metadataAttributes={
+                canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
+              }
               onClick={
                 canClickEntireCard
                   ? event => {
@@ -346,28 +374,14 @@ const CardsList = <T,>({
                   : undefined
               }
             >
-              <div className={styles['card-header']}>
-                <div className={clsx(styles['card-header-inner'], analyticsSelectors['card-header'])}>
-                  {cardDefinition.header ? cardDefinition.header(item) : ''}
-                </div>
-                {selectionProps && (
-                  <div
-                    className={styles['selection-control']}
-                    {...(!canClickEntireCard && !disabled
-                      ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
-                      : {})}
-                  >
-                    <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+              {visibleSectionsDefinition.length > 0 &&
+                visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
+                  <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                    {header ? <div className={styles['section-header']}>{header}</div> : ''}
+                    {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
                   </div>
-                )}
-              </div>
-              {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-                <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
-                  {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                  {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
-                </div>
-              ))}
-            </div>
+                ))}
+            </Card>
           </li>
         );
       })}

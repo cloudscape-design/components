@@ -7,13 +7,14 @@ import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/inte
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component/index.js';
-import Tooltip from '../internal/components/tooltip/index.js';
 import { useFormFieldContext } from '../internal/context/form-field-context.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import customCssProps from '../internal/generated/custom-css-properties/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import Tooltip from '../tooltip/internal.js';
 import { SliderProps } from './interfaces.js';
 import SliderLabels from './slider-labels.js';
+import { getSliderStyles } from './styles.js';
 import SliderTickMarks from './tick-marks.js';
 import {
   findLowerAndHigherValues,
@@ -26,7 +27,9 @@ import {
 
 import styles from './styles.css.js';
 
-interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
+interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {
+  style?: SliderProps['style'];
+}
 
 export default function InternalSlider({
   value,
@@ -43,6 +46,7 @@ export default function InternalSlider({
   hideFillLine,
   valueFormatter,
   i18nStrings,
+  style,
   __internalRootRef,
   ...rest
 }: InternalSliderProps) {
@@ -125,7 +129,12 @@ export default function InternalSlider({
   const thumbSize = readOnly ? THUMB_READONLY_SIZE : THUMB_SIZE;
 
   return (
-    <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+    <div
+      {...baseProps}
+      ref={__internalRootRef}
+      className={clsx(baseProps.className, styles.root)}
+      style={getSliderStyles(style)}
+    >
       <div
         onMouseEnter={() => {
           setShowTooltip(true);
@@ -136,9 +145,9 @@ export default function InternalSlider({
       >
         {showTooltip && (
           <Tooltip
-            value={valueFormatter ? valueFormatter(sliderValue) : sliderValue}
-            trackRef={handleRef}
-            onDismiss={() => setShowTooltip(false)}
+            content={valueFormatter ? valueFormatter(sliderValue) : String(sliderValue)}
+            getTrack={() => handleRef.current}
+            onEscape={() => setShowTooltip(false)}
           />
         )}
         <div

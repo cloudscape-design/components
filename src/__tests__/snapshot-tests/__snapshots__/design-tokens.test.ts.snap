@@ -450,6 +450,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -476,6 +490,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -2344,6 +2393,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -2403,6 +2456,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -2677,8 +2750,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -3130,6 +3203,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -3156,6 +3243,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -5024,6 +5146,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -5083,6 +5209,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -5357,8 +5503,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -5810,6 +5956,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -5836,6 +5996,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -7704,6 +7899,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -7763,6 +7962,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -8037,8 +8256,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -8490,6 +8709,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -8516,6 +8749,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "rgba(0, 7, 22, 0.15)",
             "light": "rgba(0, 7, 22, 0.15)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -10384,6 +10652,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -10443,6 +10715,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -10717,8 +11009,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -11170,6 +11462,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -11196,6 +11502,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "rgba(0, 7, 22, 0.05)",
             "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -13064,6 +13405,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -13123,6 +13468,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -13397,8 +13762,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -13850,6 +14215,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#21252c",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -13876,6 +14255,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#21252c",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
           },
         },
         "color-background-status-error": {
@@ -15744,6 +16158,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -15803,6 +16221,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -16077,8 +16515,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -16530,6 +16968,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -16556,6 +17008,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#21252c",
         "light": "#fafafa",
+      },
+    },
+    "color-background-slider-handle-active": {
+      "$description": "The background color of the slider handle in active state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0a4a74",
+      },
+    },
+    "color-background-slider-handle-default": {
+      "$description": "The default background color of the slider handle.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-slider-range-active": {
+      "$description": "The background color of the slider range in active state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0a4a74",
+      },
+    },
+    "color-background-slider-range-default": {
+      "$description": "The default background color of the slider range.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-slider-track-default": {
+      "$description": "The default background color of the slider track.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#879596",
       },
     },
     "color-background-status-error": {
@@ -18424,6 +18911,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
+      "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-monospace": {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -18483,6 +18974,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "400",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -18757,8 +19268,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "space-tree-view-indentation": {
       "$description": "The indentation of tree view items.",
       "$value": {
-        "comfortable": "20px",
-        "compact": "20px",
+        "comfortable": "24px",
+        "compact": "24px",
       },
     },
   },
@@ -19215,6 +19726,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -19241,6 +19766,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(255, 255, 255, 0.1)",
             "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -21109,6 +21669,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -21168,6 +21732,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -21442,8 +22026,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -21895,6 +22479,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -21921,6 +22519,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(255, 255, 255, 0.1)",
             "light": "rgba(255, 255, 255, 0.1)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -23789,6 +24422,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -23848,6 +24485,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -24122,8 +24779,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -24575,6 +25232,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -24601,6 +25272,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -26469,6 +27175,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -26528,6 +27238,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -26802,8 +27532,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -27255,6 +27985,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -27281,6 +28025,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -29149,6 +29928,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -29208,6 +29991,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -29482,8 +30285,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -29935,6 +30738,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -29961,6 +30778,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(0, 7, 22, 0.15)",
             "light": "rgba(0, 7, 22, 0.15)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -31829,6 +32681,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -31888,6 +32744,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -32162,8 +33038,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -32615,6 +33491,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -32641,6 +33531,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(0, 7, 22, 0.05)",
             "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -34509,6 +35434,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -34568,6 +35497,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -34842,8 +35791,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -35295,6 +36244,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -35321,6 +36284,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -37189,6 +38187,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -37248,6 +38250,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -37522,8 +38544,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -37975,6 +38997,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -38001,6 +39037,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -39869,6 +40940,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-monospace": {
           "$description": "The monospace font family that will be applied globally to the product interface.",
           "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -39928,6 +41003,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -40202,8 +41297,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tree-view-indentation": {
           "$description": "The indentation of tree view items.",
           "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -40655,6 +41750,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ffffff",
       },
     },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#333843",
+        "light": "#ebebf0",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -40681,6 +41790,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1b232d",
         "light": "#f0fbff",
+      },
+    },
+    "color-background-slider-handle-active": {
+      "$description": "The background color of the slider handle in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#004a9e",
+      },
+    },
+    "color-background-slider-handle-default": {
+      "$description": "The default background color of the slider handle.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-slider-range-active": {
+      "$description": "The background color of the slider range in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#004a9e",
+      },
+    },
+    "color-background-slider-range-default": {
+      "$description": "The default background color of the slider range.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-slider-track-default": {
+      "$description": "The default background color of the slider track.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
       },
     },
     "color-background-status-error": {
@@ -42549,6 +43693,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
+      "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-monospace": {
       "$description": "The monospace font family that will be applied globally to the product interface.",
       "$value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
@@ -42608,6 +43756,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "700",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "-0.015em",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "-0.010em",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "-0.005em",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "-0.02em",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -42882,8 +44050,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "space-tree-view-indentation": {
       "$description": "The indentation of tree view items.",
       "$value": {
-        "comfortable": "20px",
-        "compact": "20px",
+        "comfortable": "24px",
+        "compact": "24px",
       },
     },
   },

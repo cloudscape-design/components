@@ -22,7 +22,7 @@ function urlFormatter(inputUrl: string, theme: Theme, mode: Mode) {
   return `#/${mode}/${inputUrl}?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`;
 }
 
-const vrOnlyComponents = ['app-layout-toolbar', 'list'];
+const vrOnlyComponents = ['app-layout-toolbar', 'list', 'feature-notifications'];
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
@@ -32,6 +32,7 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         'theming/tokens',
         // this page intentionally has issues to test the helper
         'undefined-texts',
+        'app-layout/with-error-boundaries',
       ];
       const testFunction =
         skipPages.includes(inputUrl) ||

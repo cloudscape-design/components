@@ -209,6 +209,8 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the alert's visual appearance.
+Refer to the [style](/components/alert/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "AlertProps.Style",
         "properties": [
@@ -1260,7 +1262,7 @@ Each Drawer is an item in the drawers wrapper with the following properties:
 #### DrawerAriaLabels
 - \`drawerName\` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
 - \`closeButton\` (string) - (Optional) Label for the close button.
-- \`triggerButton\` (string) - (Optional) Label for the trigger button.
+- \`triggerButton\` (string) - (Optional) Label for the trigger button. When \`badge\` is true, include the badge information in the label (for example, "Notifications, has unread messages").
 - \`resizeHandle\` (string) - (Optional) Label for the resize handle.",
       "name": "drawers",
       "optional": true,
@@ -1348,7 +1350,9 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`",
+By default, the preference is \`{ position: 'bottom' }\`.
+
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -1902,7 +1906,9 @@ while navigation drawer might be displayed, but opened using a custom trigger.",
     {
       "description": "Controls the split panel preferences.
 
-By default, the preference is \`{ position: 'bottom' }\`",
+By default, the preference is \`{ position: 'bottom' }\`.
+
+On smaller screens, the panel is forced to the \`'bottom'\` position and the \`'side'\` preference becomes disabled.",
       "inlineType": {
         "name": "AppLayoutProps.SplitPanelPreferences",
         "properties": [
@@ -3051,6 +3057,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "command-prompt",
                       "delete-marker",
                       "drag-indicator",
+                      "edit-gen-ai",
                       "envelope",
                       "exit-full-screen",
                       "expand",
@@ -3083,6 +3090,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "notification",
                       "redo",
                       "resize-area",
+                      "search-gen-ai",
                       "settings",
                       "send",
                       "share",
@@ -3101,6 +3109,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "stop-circle",
                       "subtract-minus",
                       "suggestions",
+                      "suggestions-gen-ai",
                       "support",
                       "thumbs-down-filled",
                       "thumbs-down",
@@ -3554,6 +3563,56 @@ For more information, see the
       "type": "AutosuggestProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.
+
+The item inside the props has a different shape depending on its type:
+
+
+### item
+
+- \`type\` ('item') - The item type.
+- \`index\` (number) - The item's absolute position in the dropdown.
+- \`option\` (Option) - The original option configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`selected\` (boolean) - Whether the item is selected.
+- \`parent\` (OptionGroupRenderItem | null) - The parent group item, if any.
+
+### group
+
+- \`type\` ('group') - The item type.
+- \`index\` (number) - The item's absolute position in the dropdown.
+- \`option\` (OptionGroup) - The original option configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+
+### entered-text
+
+- \`type\` ('entered-text') - The item type.
+- \`option\` (Option) - The entered-text option configuration.
+
+When providing a custom \`renderOption\` implementation, it fully replaces the default visual rendering and content for that item.
+The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+
+When returning \`null\`, the default rendering will be applied for that item.",
+      "inlineType": {
+        "name": "AutosuggestProps.ItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: AutosuggestProps.RenderItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "AutosuggestProps.ItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).",
@@ -3584,6 +3643,8 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the autosuggest's visual appearance.
+Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "AutosuggestProps.Style",
         "properties": [
@@ -3927,6 +3988,8 @@ We do not support using this attribute to apply custom styling.",
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
+      "description": "An object containing CSS properties to customize the badge's visual appearance.
+Refer to the [style](/components/badge/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "BadgeProps.Style",
         "properties": [
@@ -5081,6 +5144,25 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
       "type": "boolean",
     },
     {
+      "description": "Adds \`aria-haspopup\` to the button element. Use when the button triggers a popup element such as a menu, listbox, tree, grid, or dialog.",
+      "inlineType": {
+        "name": "boolean | "grid" | "dialog" | "menu" | "listbox" | "tree"",
+        "type": "union",
+        "values": [
+          "false",
+          "true",
+          ""grid"",
+          ""dialog"",
+          ""menu"",
+          ""listbox"",
+          ""tree"",
+        ],
+      },
+      "name": "ariaHaspopup",
+      "optional": true,
+      "type": "boolean | "grid" | "dialog" | "menu" | "listbox" | "tree"",
+    },
+    {
       "description": "Adds \`aria-label\` to the button element. Use this to provide an accessible name for buttons
 that don't have visible text, and to distinguish between multiple buttons with identical visible text.
 The text will also be added to the \`title\` attribute of the button.",
@@ -5275,6 +5357,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "command-prompt",
           "delete-marker",
           "drag-indicator",
+          "edit-gen-ai",
           "envelope",
           "exit-full-screen",
           "expand",
@@ -5307,6 +5390,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "notification",
           "redo",
           "resize-area",
+          "search-gen-ai",
           "settings",
           "send",
           "share",
@@ -5325,6 +5409,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "stop-circle",
           "subtract-minus",
           "suggestions",
+          "suggestions-gen-ai",
           "support",
           "thumbs-down-filled",
           "thumbs-down",
@@ -5439,6 +5524,8 @@ If the \`rel\` property is provided, it overrides the default behavior.",
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the button's visual appearance.
+Refer to the [style](/components/button/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ButtonProps.Style",
         "properties": [
@@ -5892,6 +5979,7 @@ The following properties are supported across all types:
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
 - \`description\` (string) - additional data that will be passed to a \`data-description\` attribute. **Deprecated**, has no effect.
 - \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
+- \`dataAttributes\` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
 
 ### action
 
@@ -6065,6 +6153,7 @@ The main action also supports the following properties of the [button](/componen
                 "command-prompt",
                 "delete-marker",
                 "drag-indicator",
+                "edit-gen-ai",
                 "envelope",
                 "exit-full-screen",
                 "expand",
@@ -6097,6 +6186,7 @@ The main action also supports the following properties of the [button](/componen
                 "notification",
                 "redo",
                 "resize-area",
+                "search-gen-ai",
                 "settings",
                 "send",
                 "share",
@@ -6115,6 +6205,7 @@ The main action also supports the following properties of the [button](/componen
                 "stop-circle",
                 "subtract-minus",
                 "suggestions",
+                "suggestions-gen-ai",
                 "support",
                 "thumbs-down-filled",
                 "thumbs-down",
@@ -6290,6 +6381,63 @@ We do not support using this attribute to apply custom styling.",
         "core",
       ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "Specifies a render function to render custom options in the dropdown menu.
+
+The item inside the props has a different shape depending on its type:
+
+
+### action
+
+- \`type\` ('action') - The item type.
+- \`index\` (number) - The item's position relative to its parent.
+- \`option\` (Item) - The original item configuration.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+
+### checkbox
+
+- \`type\` ('checkbox') - The item type.
+- \`index\` (number) - The item's position relative to its parent.
+- \`option\` (CheckboxItem) - The original item configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`checked\` (boolean) - Controls the state of the checkbox item.
+- \`parent\` (GroupRenderItem | null) - The parent group item, if any.
+
+### group
+
+- \`type\` ('group') - The item type.
+- \`index\` (number) - The item's position in the list.
+- \`option\` (ItemGroup) - The original item configuration.
+- \`disabled\` (boolean) - Whether the item is disabled.
+- \`highlighted\` (boolean) - Whether the item is currently highlighted.
+- \`expanded\` (boolean) - Whether the group is expanded.
+- \`expandDirection\` ('vertical' | 'horizontal') - The direction in which the group expands.
+
+When providing a custom \`renderItem\` implementation, it fully replaces the default visual rendering and content for that item.
+The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+
+When returning \`null\`, the default styling will be applied.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.ItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: ButtonDropdownProps.RenderItem; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderItem",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ButtonDropdownProps.ItemRenderer",
     },
     {
       "defaultValue": "'normal'",
@@ -6495,6 +6643,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "ReadonlyArray<ButtonGroupProps.ItemOrGroup>",
     },
     {
+      "description": "An object containing CSS properties to customize the button group's visual appearance.
+Refer to the [style](/components/button-group/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ButtonGroupProps.Style",
         "properties": [
@@ -6682,9 +6832,16 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     {
       "description": "Determines the general styling of the button dropdown.
 * \`icon\` for icon buttons.",
+      "inlineType": {
+        "name": "ButtonGroupProps.Variant",
+        "type": "union",
+        "values": [
+          "icon",
+        ],
+      },
       "name": "variant",
       "optional": false,
-      "type": ""icon"",
+      "type": "string",
     },
   ],
   "regions": [],
@@ -7469,6 +7626,8 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the checkbox's visual appearance.
+Refer to the [style](/components/checkbox/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "CheckboxProps.Style",
         "properties": [
@@ -9431,6 +9590,8 @@ If no height is provided, the media slot will be displayed at its full height.",
       "type": "ContainerProps.Media",
     },
     {
+      "description": "An object containing CSS properties to customize the container's visual appearance.
+Refer to the [style](/components/container/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ContainerProps.Style",
         "properties": [
@@ -9748,7 +9909,44 @@ Note that the secondary header will not have a high-contrast treatement, even if
 exports[`Components definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
 {
   "dashCaseName": "copy-to-clipboard",
-  "events": [],
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the copy operation fails.
+The event \`detail\` contains the text that failed to copy.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopyFailureDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopyFailureDetail",
+      "name": "onCopyFailure",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the text is successfully copied to the clipboard.
+The event \`detail\` contains the text that was copied.",
+      "detailInlineType": {
+        "name": "CopyToClipboardProps.CopySuccessDetail",
+        "properties": [
+          {
+            "name": "text",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CopyToClipboardProps.CopySuccessDetail",
+      "name": "onCopySuccess",
+    },
+  ],
   "functions": [],
   "name": "CopyToClipboard",
   "properties": [
@@ -10626,6 +10824,12 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     {
+      "description": "Adds \`aria-label\` to the trigger and dropdown.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 
@@ -10946,6 +11150,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "isoDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "isoDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11026,6 +11235,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "slashedDatePlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "slashedDateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -11047,6 +11261,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "startTimeLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "timePlaceholder",
             "optional": true,
             "type": "string",
           },
@@ -11359,6 +11578,180 @@ It should contain the only \`h2\` used in the drawer.",
       "description": "Actions for the header. Available only if you specify the \`header\` property.",
       "isDefault": false,
       "name": "headerActions",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
+{
+  "dashCaseName": "error-boundary",
+  "events": [],
+  "functions": [],
+  "name": "ErrorBoundary",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Optional identifier for the error boundary instance.
+
+When provided, the identifier is included in the \`onError\` callback payload.
+In the rendered output, the boundary wraps its content in a \`<div>\` with the
+attribute \`data-awsui-boundary-id={errorBoundaryId}\` to support debugging.",
+      "name": "errorBoundaryId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Localized strings and components used in the fallback UI.
+
+* \`headerText\` (string): Header text displayed in the fallback view.
+* \`descriptionText\` (string): Description text displayed in the fallback view. Supports embedding inline
+  feedback actions by including \`<Feedback>\` pseudo-tags when \`components.Feedback\` is provided.
+* \`refreshActionText\` (string): Text for the default refresh action button.
+* \`components.Feedback\` (React.ComponentType<I18nFeedbackProps>): A component used to render
+  inline feedback actions within the description text.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ErrorBoundaryProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ Feedback?: React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps> | undefined; }",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps>",
+                    "type": "union",
+                    "values": [
+                      "React.ComponentClass<ErrorBoundaryProps.I18nFeedbackProps, any>",
+                      "React.FunctionComponent<ErrorBoundaryProps.I18nFeedbackProps>",
+                    ],
+                  },
+                  "name": "Feedback",
+                  "optional": true,
+                  "type": "React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps>",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "components",
+            "optional": true,
+            "type": "{ Feedback?: React.ComponentType<ErrorBoundaryProps.I18nFeedbackProps> | undefined; }",
+          },
+          {
+            "name": "descriptionText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "headerText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "refreshActionText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ErrorBoundaryProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Callback invoked when an error is intercepted by the boundary.
+Use this function to record, log, or report errors (for example, to telemetry or monitoring systems).
+
+The callback receives a \`detail\` object containing:
+* \`error\` (Error): The thrown error instance.
+* \`errorInfo\` (React.ErrorInfo): Additional metadata captured by React.
+* \`errorBoundaryId\` (optional, string): The boundary identifier, if defined.",
+      "inlineType": {
+        "name": "(detail: ErrorBoundaryProps.OnErrorDetail) => void",
+        "parameters": [
+          {
+            "name": "detail",
+            "type": "ErrorBoundaryProps.OnErrorDetail",
+          },
+        ],
+        "returnType": "void",
+        "type": "function",
+      },
+      "name": "onError",
+      "optional": false,
+      "type": "(detail: ErrorBoundaryProps.OnErrorDetail) => void",
+    },
+    {
+      "description": "Optional custom renderer for the fallback UI displayed when an error occurs.
+
+The function receives the default slots derived from i18n configuration:
+* \`header\` (ReactNode): The fallback header text.
+* \`description\` (ReactNode): The fallback description text.
+* \`action\` (ReactNode): The fallback action element (a refresh button by default).
+
+Return a React node to fully override the default fallback presentation.",
+      "inlineType": {
+        "name": "(props: ErrorBoundaryProps.FallbackProps) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "ErrorBoundaryProps.FallbackProps",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderFallback",
+      "optional": true,
+      "type": "((props: ErrorBoundaryProps.FallbackProps) => React.ReactNode)",
+    },
+    {
+      "defaultValue": "false",
+      "description": "When set to \`true\`, this error boundary can be suppressed by another error
+boundary with \`suppressNested=true\`, rendered above in the components tree.",
+      "name": "suppressible",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Controls how nested error boundaries behave.
+
+Several components—such as app layout, container, and modal include built-in
+error boundaries. These boundaries activate automatically when they detect
+an ancestor boundary, inheriting configuration from the closest one.
+
+When \`suppressNested\` is set to \`true\`, nested built-in error boundaries
+and nested standalone error boundaries with \`suppressible=true\` are disabled,
+so the errors propagate further up and are captured by this error boundary.",
+      "name": "suppressNested",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Child content rendered when no error has been captured.",
+      "isDefault": true,
+      "name": "children",
     },
   ],
   "releaseStatus": "stable",
@@ -11800,7 +12193,7 @@ Make sure that you add a listener to this event to update your application state
     },
     {
       "description": "An object containing all the localized strings required by the component:
-* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button. Receives file index and file name.
 * \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
 * \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
@@ -11857,11 +12250,15 @@ Make sure that you add a listener to this event to update your application state
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number) => string",
+              "name": "(fileIndex: number, fileName: string) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
+                },
+                {
+                  "name": "fileName",
+                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -11869,7 +12266,7 @@ Make sure that you add a listener to this event to update your application state
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number) => string)",
+            "type": "((fileIndex: number, fileName: string) => string)",
           },
           {
             "name": "warningIconAriaLabel",
@@ -12147,11 +12544,15 @@ is provided by its parent form field component.",
           },
           {
             "inlineType": {
-              "name": "(fileIndex: number) => string",
+              "name": "(fileIndex: number, fileName: string) => string",
               "parameters": [
                 {
                   "name": "fileIndex",
                   "type": "number",
+                },
+                {
+                  "name": "fileName",
+                  "type": "string",
                 },
               ],
               "returnType": "string",
@@ -12159,7 +12560,7 @@ is provided by its parent form field component.",
             },
             "name": "removeFileAriaLabel",
             "optional": true,
-            "type": "((fileIndex: number) => string)",
+            "type": "((fileIndex: number, fileName: string) => string)",
           },
           {
             "inlineType": {
@@ -12400,6 +12801,8 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the flashbar's visual appearance.
+Refer to the [style](/components/flashbar/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "FlashbarProps.Style",
         "properties": [
@@ -13224,6 +13627,14 @@ exports[`Components definition for form-field matches the snapshot: form-field 1
       "type": "FormFieldProps.AnalyticsMetadata",
     },
     {
+      "description": "Character count constraint displayed adjacent to the constraintText. Use
+this to provide an updated character count on each keypress that is debounced
+for screen reader users.",
+      "name": "characterCountText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -13754,6 +14165,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "command-prompt",
           "delete-marker",
           "drag-indicator",
+          "edit-gen-ai",
           "envelope",
           "exit-full-screen",
           "expand",
@@ -13786,6 +14198,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "notification",
           "redo",
           "resize-area",
+          "search-gen-ai",
           "settings",
           "send",
           "share",
@@ -13804,6 +14217,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "stop-circle",
           "subtract-minus",
           "suggestions",
+          "suggestions-gen-ai",
           "support",
           "thumbs-down-filled",
           "thumbs-down",
@@ -14156,6 +14570,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "edit-gen-ai",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "ellipsis",
             "optional": true,
             "type": "React.ReactNode",
@@ -14396,6 +14815,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "search-gen-ai",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "security",
             "optional": true,
             "type": "React.ReactNode",
@@ -14492,6 +14916,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "suggestions",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "suggestions-gen-ai",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -15035,6 +15464,8 @@ including the date, month, week, time, datetime-local, number and range types.",
       "type": "InputProps.Step",
     },
     {
+      "description": "An object containing CSS properties to customize the input's visual appearance.
+Refer to the [style](/components/input/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "InputProps.Style",
         "properties": [
@@ -16078,6 +16509,8 @@ By default, the component sets the \`rel\` attribute to "noopener noreferrer" wh
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the link's visual appearance.
+Refer to the [style](/components/link/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "LinkProps.Style",
         "properties": [
@@ -16169,12 +16602,12 @@ For other options see the documentation for <a> tag's
     {
       "description": "Determines the visual style of the link as follows:
 
-- \`primary\` - Displays the link text with bold styling for sufficient contrast with surrounding text.
-    Use this for links where the context doesn't imply interactivity such as
-    "Learn more" links and links within paragraphs.
-- \`secondary\` - Does not provide any additional indicators for interactivity (except for an underline when the user hovers over or focuses the link).
-    This can be used in cases where the interactivity is strongly implied by its context,
-    such as in a table or a list of external links.
+- \`primary\` - Displays the link text with an underline for sufficient contrast with surrounding text.
+    Use this for links adjacent to other text, such as inside a paragraph, a "Learn more" link,
+    an item ID in a table, a link in a key-value pair, or a link in an alert.
+- \`secondary\` - Uses regular font weight without additional interactivity indicators (except for an underline on hover).
+    Use this where context implies interactivity and users can identify links easily,
+    such as in a list of links inside a container.
 - \`info\` - Use for "info" links that link to content in a help panel.
 
 The default is \`secondary\`, except inside the following components where it defaults to \`primary\`:
@@ -17108,6 +17541,15 @@ The function will be called when a user clicks on the trigger button.",
       "type": "((options: { abortSignal: AbortSignal; }) => Promise<HTMLElement>)",
     },
     {
+      "description": "Specifies the height of the modal. When provided, the modal content becomes scrollable if it exceeds the specified height.
+If the specified height exceeds available viewport space, the modal will use the maximum available space.
+To make sure the content is accessible, the component will apply a minimum height of 60px for the content area,
+plus the header height and the footer height.",
+      "name": "height",
+      "optional": true,
+      "type": "number",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -17123,6 +17565,28 @@ render to an element under \`document.body\`.",
       "name": "modalRoot",
       "optional": true,
       "type": "HTMLElement",
+    },
+    {
+      "defaultValue": "'center'",
+      "description": "Controls the vertical positioning of the modal.
+
+- \`center\` (default) - The modal is vertically centered in the viewport and re-centers
+  when content height changes. Use for dialogs with static, predictable content.
+
+- \`top\` - The modal anchors at fixed distance and grows downward
+  as content expands. Use when the content changes dynamically to prevent disruptive
+  vertical repositioning that can cause users to lose context.",
+      "inlineType": {
+        "name": "ModalProps.Position",
+        "type": "union",
+        "values": [
+          "center",
+          "top",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
@@ -17146,8 +17610,8 @@ of the most recent getModalRoot call as an argument.",
     {
       "defaultValue": "'medium'",
       "description": "Sets the width of the modal. \`max\` uses variable width up to the
-largest size allowed by the design guidelines. Other sizes
-(\`small\`/\`medium\`/\`large\`) have fixed widths.",
+largest size allowed by the design guidelines. Other sizes have fixed widths:
+\`small\` (320px), \`medium\` (600px), \`large\` (820px), \`x-large\` (1024px), \`xx-large\` (1280px).",
       "inlineType": {
         "name": "ModalProps.Size",
         "type": "union",
@@ -17156,6 +17620,8 @@ largest size allowed by the design guidelines. Other sizes
           "max",
           "medium",
           "large",
+          "x-large",
+          "xx-large",
         ],
       },
       "name": "size",
@@ -17168,6 +17634,14 @@ Set this property to \`true\` to show them.",
       "name": "visible",
       "optional": false,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the width of the modal. When provided, takes precedence over the \`size\` property.
+If the specified width exceeds available viewport space, the modal will use the maximum available space.
+The minimum width is 320px (equivalent to the \`small\` size).",
+      "name": "width",
+      "optional": true,
+      "type": "number",
     },
   ],
   "regions": [
@@ -17642,6 +18116,26 @@ For more information, see the
       "type": "SelectProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu.",
+      "inlineType": {
+        "name": "MultiselectProps.MultiselectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: MultiselectProps.MultiselectItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "MultiselectProps.MultiselectOptionItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
@@ -17996,6 +18490,242 @@ never disabled. When the user clicks on it but there are no more items to show, 
     },
   ],
   "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for panel-layout matches the snapshot: panel-layout 1`] = `
+{
+  "dashCaseName": "panel-layout",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the panel and/or main content size changes. This can be due
+to user resizing or changes to the available space on the page.",
+      "detailInlineType": {
+        "name": "PanelLayoutProps.PanelResizeDetail",
+        "properties": [
+          {
+            "name": "panelSize",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "totalSize",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PanelLayoutProps.PanelResizeDetail",
+      "name": "onLayoutChange",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user resizes the panel.",
+      "detailInlineType": {
+        "name": "PanelLayoutProps.PanelResizeDetail",
+        "properties": [
+          {
+            "name": "panelSize",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "totalSize",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "PanelLayoutProps.PanelResizeDetail",
+      "name": "onPanelResize",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Focuses the resize handle of the panel layout.",
+      "name": "focusResizeHandle",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "PanelLayout",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Initial panel size, for uncontrolled behavior.
+
+The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if set.",
+      "name": "defaultPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "'all'",
+      "description": "Determines which content is displayed:
+- 'all': Both panel and main content are displayed.
+- 'panel-only': Only panel is displayed.
+- 'main-only': Only main content is displayed.",
+      "inlineType": {
+        "name": "PanelLayoutProps.Display",
+        "type": "union",
+        "values": [
+          "all",
+          "panel-only",
+          "main-only",
+        ],
+      },
+      "name": "display",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "PanelLayoutProps.I18nStrings",
+        "properties": [
+          {
+            "name": "resizeHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resizeHandleTooltipText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "PanelLayoutProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Makes the main content area focusable. This should be used if there are no focusable elements
+inside the content, to ensure it is keyboard scrollable.
+
+Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-id"}\`",
+      "inlineType": {
+        "name": "PanelLayoutProps.FocusableConfig",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabelledby",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "mainFocusable",
+      "optional": true,
+      "type": "PanelLayoutProps.FocusableConfig",
+    },
+    {
+      "description": "The maximum size of the panel.",
+      "name": "maxPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "The minimum size of the panel.",
+      "name": "minPanelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Makes the panel content focusable. This should be used if there are no focusable elements
+inside the panel, to ensure it is keyboard scrollable.
+
+Provide either \`{ariaLabel: "Panel label"}\` or \`{ariaLabelledby: "panel-label-id"}\`",
+      "inlineType": {
+        "name": "PanelLayoutProps.FocusableConfig",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabelledby",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "panelFocusable",
+      "optional": true,
+      "type": "PanelLayoutProps.FocusableConfig",
+    },
+    {
+      "defaultValue": "'side-start'",
+      "description": "Position of the panel with respect to the main content",
+      "inlineType": {
+        "name": "PanelLayoutProps.PanelPosition",
+        "type": "union",
+        "values": [
+          "side-start",
+          "side-end",
+        ],
+      },
+      "name": "panelPosition",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Size of the panel. If provided, and panel is resizable, the component is controlled,
+so you must also provide \`onPanelResize\`.
+
+The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if set.",
+      "name": "panelSize",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Indicates whether the panel is resizable.",
+      "name": "resizable",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Main content area displayed next to the panel.",
+      "isDefault": false,
+      "name": "mainContent",
+    },
+    {
+      "description": "Panel contents.",
+      "isDefault": false,
+      "name": "panelContent",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -18694,6 +19424,8 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the progress bar's visual appearance.
+Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ProgressBarProps.Style",
         "properties": [
@@ -18786,7 +19518,7 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "defaultValue": "'standalone'",
       "description": "Enables the correct styling of the progress bar in different contexts. You can set it to one of the following:
 
-- \`"flash"\` - Use this variatn when using the progress bar within a flash component.
+- \`"flash"\` - Use this variant when using the progress bar within a flash component.
              Note that the result button isn't displayed when using this variant.
              Use the \`buttonText\` property and the \`onButtonClick\` event listener of the flashbar item instead of the result button provided by the progress bar.
 - \`"key-value"\` - Use this variant when using the progress bar within the key-value pairs pattern.
@@ -19098,6 +19830,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "command-prompt",
           "delete-marker",
           "drag-indicator",
+          "edit-gen-ai",
           "envelope",
           "exit-full-screen",
           "expand",
@@ -19130,6 +19863,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "notification",
           "redo",
           "resize-area",
+          "search-gen-ai",
           "settings",
           "send",
           "share",
@@ -19148,6 +19882,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "stop-circle",
           "subtract-minus",
           "suggestions",
+          "suggestions-gen-ai",
           "support",
           "thumbs-down-filled",
           "thumbs-down",
@@ -19402,6 +20137,8 @@ inadvertently sending data (such as user passwords) to third parties.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the prompt input's visual appearance.
+Refer to the [style](/components/prompt-input/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "PromptInputProps.Style",
         "properties": [
@@ -20608,6 +21345,8 @@ This property should be set for either all or none of the radio buttons in a gro
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the radio button's visual appearance.
+Refer to the [style](/components/radio-button/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "RadioButtonProps.Style",
         "properties": [
@@ -21013,6 +21752,8 @@ being included in a form submission. A read-only control is still focusable.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the radio group's visual appearance.
+Refer to the [style](/components/radio-group/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "RadioButtonProps.Style",
         "properties": [
@@ -22199,6 +22940,8 @@ Each segment has the following properties:
       "type": "string | null",
     },
     {
+      "description": "An object containing CSS properties to customize the segmented control's visual appearance.
+Refer to the [style](/components/segmented-control/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "SegmentedControlProps.Style",
         "properties": [
@@ -22470,6 +23213,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "command-prompt",
                       "delete-marker",
                       "drag-indicator",
+                      "edit-gen-ai",
                       "envelope",
                       "exit-full-screen",
                       "expand",
@@ -22502,6 +23246,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "notification",
                       "redo",
                       "resize-area",
+                      "search-gen-ai",
                       "settings",
                       "send",
                       "share",
@@ -22520,6 +23265,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "stop-circle",
                       "subtract-minus",
                       "suggestions",
+                      "suggestions-gen-ai",
                       "support",
                       "thumbs-down-filled",
                       "thumbs-down",
@@ -22951,6 +23697,26 @@ For more information, see the
       "type": "SelectProps.ContainingOptionAndGroupString",
     },
     {
+      "description": "Specifies a render function to render custom options in the dropdown menu or trigger.",
+      "inlineType": {
+        "name": "SelectProps.SelectOptionItemRenderer",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ item: SelectProps.SelectItem; filterText?: string | undefined; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderOption",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SelectProps.SelectOptionItemRenderer",
+    },
+    {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
 [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
@@ -23062,6 +23828,7 @@ If you want to clear the selection, use \`null\`.",
                 "command-prompt",
                 "delete-marker",
                 "drag-indicator",
+                "edit-gen-ai",
                 "envelope",
                 "exit-full-screen",
                 "expand",
@@ -23094,6 +23861,7 @@ If you want to clear the selection, use \`null\`.",
                 "notification",
                 "redo",
                 "resize-area",
+                "search-gen-ai",
                 "settings",
                 "send",
                 "share",
@@ -23112,6 +23880,7 @@ If you want to clear the selection, use \`null\`.",
                 "stop-circle",
                 "subtract-minus",
                 "suggestions",
+                "suggestions-gen-ai",
                 "support",
                 "thumbs-down-filled",
                 "thumbs-down",
@@ -23725,6 +24494,112 @@ being included in a form submission. A read-only control is still focusable.",
       "type": "number",
     },
     {
+      "description": "An object containing CSS properties to customize the slider's visual appearance.
+Refer to the [style](/components/slider/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "SliderProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "handle",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; hover?: string | undefined; active?: string | undefined; } | undefined; borderRadius?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: { default?: string | undefined; active?: string | undefined; } | undefined; }",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; active?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; active?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "range",
+            "optional": true,
+            "type": "{ backgroundColor?: { default?: string | undefined; active?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ backgroundColor?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "backgroundColor",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "track",
+            "optional": true,
+            "type": "{ backgroundColor?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "SliderProps.Style",
+    },
+    {
       "description": "Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.",
       "name": "tickMarks",
       "optional": true,
@@ -24302,9 +25177,6 @@ By default the orientation is vertical.",
       },
       "name": "orientation",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "string",
     },
     {
@@ -24459,7 +25331,7 @@ the default browser context menu behavior.",
     {
       "cancelable": false,
       "description": "Fired when a user interaction triggers a change in the list of selected items.
-The event \`detail\` contains the current list of \`selectedItems\`.",
+The event \`detail\` contains the new state for \`selectedItems\`.",
       "detailInlineType": {
         "name": "TableProps.SelectionChangeDetail<T>",
         "properties": [
@@ -24556,9 +25428,16 @@ scroll parent scrolls to reveal the first row of the table.",
         "name": "TableProps.AnalyticsMetadata",
         "properties": [
           {
+            "inlineType": {
+              "name": "view-resource",
+              "type": "union",
+              "values": [
+                "view-resource",
+              ],
+            },
             "name": "flowType",
             "optional": true,
-            "type": ""view-resource"",
+            "type": "string",
           },
           {
             "name": "instanceIdentifier",
@@ -24579,11 +25458,19 @@ scroll parent scrolls to reveal the first row of the table.",
     },
     {
       "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
-* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
-You can use the first argument of type \`SelectionState\` to access the current selection state of the component
-(for example, the \`selectedItems\` list). The second argument is the corresponding  \`Item\` object.
-* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
+* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for item selection controls.
+The selection state includes:
+ * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
+ * \`itemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
+ * \`selectedItemsCount\` (optional, number) - corresponds to table's \`expandableRows.getItemsCount(item)\`.
+* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for all items selection control.
+The selection state includes:
+ * \`selectedItems\` (Item[]) - corresponds to table's \`selectedItems\`.
+ * \`itemsCount\` (optional, number) - corresponds to \`expandableRows.totalItemsCount\` or \`totalItemsCount\`.
+ * \`selectedItemsCount\` (optional, number) - corresponds to \`expandableRows.totalSelectedItemsCount\` or \`selectedItems.length\`.
+* \`itemLoaderSelectionLabel\`: ((SelectionState, Item) => string) - Specifies the alternative text for resource loader selector
+in tables with data grouping.
 * \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 * \`resizerRoleDescription\` (string) - Provides role description for table column resizer buttons.
@@ -24687,6 +25574,26 @@ You can use the first argument of type \`SelectionState\` to access the current 
             "name": "expandButtonLabel",
             "optional": true,
             "type": "((item: T) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(data: TableProps.SelectionState<T>, row: T | null) => string",
+              "parameters": [
+                {
+                  "name": "data",
+                  "type": "TableProps.SelectionState<T>",
+                },
+                {
+                  "name": "row",
+                  "type": "T | null",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "itemLoaderSelectionLabel",
+            "optional": true,
+            "type": "((data: TableProps.SelectionState<T>, row: T | null) => string)",
           },
           {
             "inlineType": {
@@ -24836,6 +25743,8 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
   to reorder the items. This property accepts a custom comparator that is used to compare two items.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
   If present, the \`sortingField\` property is ignored.
+* \`counter\` ((ItemCounterData) => string) - Specifies secondary cell content, displayed next to the primary. Use it to display
+  resource counters in the first column of expandable tables with data grouping.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
   * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
   * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
@@ -24900,7 +25809,22 @@ By default, the keyboard navigation is active for tables with expandable rows.",
 * \`getItemChildren\` ((Item) => Item[]) - Use it to define nested data that are shown when an item gets expanded.
 * \`isItemExpandable\` ((Item) => boolean) - Use it for items that can be expanded to show nested data.
 * \`expandedItems\` (Item[]) - Use it to represent the expanded state of items.
-* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<T>) - Called when an item's expand toggle is clicked.",
+* \`onExpandableItemToggle\` (TableProps.OnExpandableItemToggle<Item>) - Called when an item's expand toggle is clicked.
+* \`groupSelection\` (optional, GroupSelectionState<Item>) - Tree-like selection state for tables with grouped data. When defined, the
+properties \`selectionType\` and \`selectedItems\` no longer apply. It reads as (assuming item "a.1" is nested under "a"):
+ * \`{ inverted: false, toggledItems: [] }\` - no items are selected;
+ * \`{ inverted: true, toggledItems: [] }\` - all items are selected;
+ * \`{ inverted: false, toggledItems: ["a", "a.1"] }\` - all items nested under "a", unless also nested under "a.1", are selected.
+ * \`{ inverted: true, toggledItems: ["a", "a.1"] }\` - the opposite of above.
+* \`onGroupSelectionChange\` (optional, TableProps.OnGroupSelectionChange<Item>) - Called when group selection changes.
+* \`getItemsCount\` (optional, (Item) => number) - Use it to indicate the number of resources nested under the given item.
+The value is passed as \`itemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
+* \`totalItemsCount\` (optional, number) - Use it to indicate the total number of resources in the table.
+The value is passed as \`itemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.
+* \`getSelectedItemsCount\` (optional, (Item) => number) - Use it to indicate the number of selected resources nested under the given item.
+The value is passed as \`selectedItemsCount\` property to the \`columnDefinitions[index].counter\` and \`ariaLabels.itemSelectionLabel\` functions.
+* \`totalSelectedItemsCount\` (optional, number) - Use it to indicate the total number of selected resources in the table.
+The value is passed as \`selectedItemsCount\` property to the \`ariaLabels.allItemsSelectionLabel\`.",
       "inlineType": {
         "name": "TableProps.ExpandableRows<T>",
         "properties": [
@@ -24924,6 +25848,59 @@ By default, the keyboard navigation is active for tables with expandable rows.",
             "name": "getItemChildren",
             "optional": false,
             "type": "(item: T) => ReadonlyArray<T>",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => number",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "number",
+              "type": "function",
+            },
+            "name": "getItemsCount",
+            "optional": true,
+            "type": "((item: T) => number)",
+          },
+          {
+            "inlineType": {
+              "name": "(item: T) => number",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": "T",
+                },
+              ],
+              "returnType": "number",
+              "type": "function",
+            },
+            "name": "getSelectedItemsCount",
+            "optional": true,
+            "type": "((item: T) => number)",
+          },
+          {
+            "inlineType": {
+              "name": "TableProps.GroupSelectionState<T>",
+              "properties": [
+                {
+                  "name": "inverted",
+                  "optional": false,
+                  "type": "boolean",
+                },
+                {
+                  "name": "toggledItems",
+                  "optional": false,
+                  "type": "ReadonlyArray<T>",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "groupSelection",
+            "optional": true,
+            "type": "TableProps.GroupSelectionState<T>",
           },
           {
             "inlineType": {
@@ -24956,6 +25933,32 @@ By default, the keyboard navigation is active for tables with expandable rows.",
             "name": "onExpandableItemToggle",
             "optional": false,
             "type": "TableProps.OnExpandableItemToggle<T>",
+          },
+          {
+            "inlineType": {
+              "name": "TableProps.OnGroupSelectionChange<T>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "NonCancelableCustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onGroupSelectionChange",
+            "optional": true,
+            "type": "TableProps.OnGroupSelectionChange<T>",
+          },
+          {
+            "name": "totalItemsCount",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "totalSelectedItemsCount",
+            "optional": true,
+            "type": "number",
           },
         ],
         "type": "object",
@@ -25062,6 +26065,23 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "((data: TableProps.LiveAnnouncement) => string)",
+    },
+    {
+      "description": "Renders loader counter that is appended to the loader content in all loader states.",
+      "inlineType": {
+        "name": "(detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode",
+        "parameters": [
+          {
+            "name": "detail",
+            "type": "TableProps.RenderLoaderCounterDetail<T>",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderLoaderCounter",
+      "optional": true,
+      "type": "((detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode)",
     },
     {
       "description": "Renders loader row content for empty row state: the loading status is "finished",
@@ -25533,6 +26553,8 @@ need to introduce friction to the switching of tabs.",
       "type": "string",
     },
     {
+      "description": "An object containing CSS properties to customize the tabs' visual appearance.
+Refer to the [style](/components/tabs/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TabsProps.Style",
         "properties": [
@@ -26557,6 +27579,8 @@ If set to \`true\`, the live announcement of countText by assistive technologies
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the text filter's visual appearance.
+Refer to the [style](/components/text-filter/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TextFilterProps.Style",
         "properties": [
@@ -27133,6 +28157,8 @@ inadvertently sending data (such as user passwords) to third parties.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the textarea's visual appearance.
+Refer to the [style](/components/textarea/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "TextareaProps.Style",
         "properties": [
@@ -27946,6 +28972,8 @@ If both \`readOnly\` and \`disabled\` are set, \`disabled\` takes precedence.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the toggle's visual appearance.
+Refer to the [style](/components/toggle/?tabId=style) tab for more details.",
       "inlineType": {
         "name": "ToggleProps.Style",
         "properties": [
@@ -28299,6 +29327,7 @@ If an href is provided, it opens the link in a new tab.",
           "command-prompt",
           "delete-marker",
           "drag-indicator",
+          "edit-gen-ai",
           "envelope",
           "exit-full-screen",
           "expand",
@@ -28331,6 +29360,7 @@ If an href is provided, it opens the link in a new tab.",
           "notification",
           "redo",
           "resize-area",
+          "search-gen-ai",
           "settings",
           "send",
           "share",
@@ -28349,6 +29379,7 @@ If an href is provided, it opens the link in a new tab.",
           "stop-circle",
           "subtract-minus",
           "suggestions",
+          "suggestions-gen-ai",
           "support",
           "thumbs-down-filled",
           "thumbs-down",
@@ -28503,6 +29534,7 @@ We do not support using this attribute to apply custom styling.",
           "command-prompt",
           "delete-marker",
           "drag-indicator",
+          "edit-gen-ai",
           "envelope",
           "exit-full-screen",
           "expand",
@@ -28535,6 +29567,7 @@ We do not support using this attribute to apply custom styling.",
           "notification",
           "redo",
           "resize-area",
+          "search-gen-ai",
           "settings",
           "send",
           "share",
@@ -28553,6 +29586,7 @@ We do not support using this attribute to apply custom styling.",
           "stop-circle",
           "subtract-minus",
           "suggestions",
+          "suggestions-gen-ai",
           "support",
           "thumbs-down-filled",
           "thumbs-down",
@@ -28937,6 +29971,64 @@ user from modifying the value. A read-only control is still focusable.",
   ],
   "regions": [],
   "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "dashCaseName": "tooltip",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Callback fired when the user presses the Escape key while the tooltip is visible.",
+      "name": "onEscape",
+    },
+  ],
+  "functions": [],
+  "name": "Tooltip",
+  "properties": [
+    {
+      "description": "Function that returns the element the tooltip points to.
+Can return null if the element is not yet mounted or available.",
+      "inlineType": {
+        "name": "() => HTMLElement | SVGElement | null",
+        "parameters": [],
+        "returnType": "HTMLElement | SVGElement | null",
+        "type": "function",
+      },
+      "name": "getTrack",
+      "optional": false,
+      "type": "() => HTMLElement | SVGElement | null",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Determines where the tooltip is displayed when opened, relative to the trigger. If the tooltip doesn't have enough space to open in this direction, it automatically chooses a better direction based on available space.",
+      "inlineType": {
+        "name": "PopoverProps.Position",
+        "type": "union",
+        "values": [
+          "left",
+          "top",
+          "bottom",
+          "right",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content to display in the tooltip.",
+      "isDefault": false,
+      "name": "content",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
@@ -30902,7 +31994,10 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
           "name": "findItemById",
           "parameters": [
             {
@@ -30911,6 +32006,14 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -30945,9 +32048,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -32003,6 +33118,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {
@@ -32375,6 +33491,19 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],
@@ -33623,9 +34752,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
-for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
-is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
@@ -35876,6 +37002,76 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findFeedbackAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findRefreshAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ErrorBoundaryWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -37850,6 +39046,54 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the wrapper for the main content element.",
+          "name": "findMainContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrapper for the panel element.",
+          "name": "findPanelContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the wrapper for the resize handle element.
+Returns null if the panel layout is not resizable.",
+          "name": "findResizeHandle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "PanelLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns a focusable element that controls keyboard interactions.",
           "name": "findApplication",
           "parameters": [],
@@ -38129,7 +39373,7 @@ wrapper.selectOptionByValue('option_1');
           "name": "findResultText",
           "parameters": [
             {
-              "description": "[optional] Status of the result text. It can be aither "error" or "succes".
+              "description": "[optional] Status of the result text. It can be either "error" or "success".
 If not specified, the method returns the result text that is currently displayed, independently of the result status.",
               "flags": {
                 "isOptional": true,
@@ -39089,6 +40333,37 @@ Returns the current value of the input.",
         {
           "description": "Returns a table cell based on given row and column indices.",
           "name": "findBodyCell",
+          "parameters": [
+            {
+              "description": "1-based index of the row of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "rowIndex",
+              "typeName": "number",
+            },
+            {
+              "description": "1-based index of the column of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
+          "name": "findBodyCellCounter",
           "parameters": [
             {
               "description": "1-based index of the row of the cell to select.",
@@ -40634,6 +41909,26 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findIdentityLink",
           "parameters": [],
           "returnType": {
@@ -40856,7 +42151,10 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItemById",
           },
@@ -40868,6 +42166,14 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -40905,12 +42211,24 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -42159,7 +43477,10 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
           "name": "findItemById",
           "parameters": [
             {
@@ -42168,6 +43489,14 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               },
               "name": "id",
               "typeName": "string",
+            },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -42178,9 +43507,21 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -42905,6 +44246,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
         {
+          "description": "Finds the label wrapper of this option.",
           "name": "findLabel",
           "parameters": [],
           "returnType": {
@@ -43199,6 +44541,14 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],
@@ -44119,9 +45469,6 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Note: for integration/selector-based tests you should add \`1\` to the expected section index,
-for example, \`.findSections().get(sectionIndex+1)\`. The \`get\` call in this context
-is '2-indexed', that is, the first section in a card has an index of \`2\`.",
           "name": "findSections",
           "parameters": [],
           "returnType": {
@@ -45611,6 +46958,51 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
+          "name": "findAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findFeedbackAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findRefreshAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ErrorBoundaryWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -47027,6 +48419,39 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [
         {
+          "description": "Returns the wrapper for the main content element.",
+          "name": "findMainContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the wrapper for the panel element.",
+          "name": "findPanelContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the wrapper for the resize handle element.
+Returns null if the panel layout is not resizable.",
+          "name": "findResizeHandle",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "PanelLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns a focusable element that controls keyboard interactions.",
           "name": "findApplication",
           "parameters": [],
@@ -47252,7 +48677,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           "name": "findResultText",
           "parameters": [
             {
-              "description": "[optional] Status of the result text. It can be aither "error" or "succes".
+              "description": "[optional] Status of the result text. It can be either "error" or "success".
 If not specified, the method returns the result text that is currently displayed, independently of the result status.",
               "flags": {
                 "isOptional": true,
@@ -47908,6 +49333,32 @@ If not specified, the method returns the result text that is currently displayed
         {
           "description": "Returns a table cell based on given row and column indices.",
           "name": "findBodyCell",
+          "parameters": [
+            {
+              "description": "1-based index of the row of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "rowIndex",
+              "typeName": "number",
+            },
+            {
+              "description": "1-based index of the column of the cell to select.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "columnIndex",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns a table cell counter, if defined, based on given row and column indices.",
+          "name": "findBodyCellCounter",
           "parameters": [
             {
               "description": "1-based index of the row of the cell to select.",
@@ -48995,6 +50446,21 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     {
       "methods": [
         {
+          "description": "Returns the tooltip content element.
+Searches within this tooltip's scope to avoid conflicts with popovers.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "TooltipWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findIdentityLink",
           "parameters": [],
           "returnType": {
@@ -49172,7 +50638,10 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find the disabled or non-disabled item.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItemById",
           },
@@ -49185,6 +50654,14 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
               "name": "id",
               "typeName": "string",
             },
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
           ],
           "returnType": {
             "isNullable": false,
@@ -49194,12 +50671,24 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
         {
           "description": "Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
 
-This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.
+
+Supported options:
+* \`disabled\` (boolean) - Use it to find all disabled or non-disabled items.",
           "inheritedFrom": {
             "name": "ButtonDropdownWrapper.findItems",
           },
           "name": "findItems",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",

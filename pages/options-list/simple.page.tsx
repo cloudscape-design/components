@@ -35,14 +35,15 @@ export default function OptionsListScenario() {
             Dropdown trigger
           </Button>
         }
-        onDropdownClose={toggleDropdown}
-      >
-        <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
-          {[...Array(50)].map((_, index) => (
-            <li key={index}>{`Option ${index}`}</li>
-          ))}
-        </OptionsList>
-      </Dropdown>
+        onOutsideClick={toggleDropdown}
+        content={
+          <OptionsList onLoadMore={handleLoadMore} id={'list'} open={open} statusType="pending">
+            {[...Array(50)].map((_, index) => (
+              <li key={index}>{`Option ${index}`}</li>
+            ))}
+          </OptionsList>
+        }
+      />
     </article>
   );
 }

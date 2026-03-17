@@ -158,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
+    "i18nStrings.datePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.isoDatePlaceholder": "YYYY-AA-GG",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/AA/GG",
+    "i18nStrings.timePlaceholder": "sa: dk: sn",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
     "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
     "i18nStrings.slashedDateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
@@ -180,10 +184,18 @@
     "i18nStrings.descriptionText": "{hasFeedback, select, true {Yeniden denemek için yenileyin. Bu sorunu takip ediyoruz ancak <Feedback>buradan daha fazla bilgi</Feedback> paylaşabilirsiniz.} other {Yeniden denemek için yenileyin.}}",
     "i18nStrings.refreshActionText": "Sayfayı yenile"
   },
+  "features-notification-drawer": {
+    "i18nStrings.title": "En son özellik sürümleri",
+    "i18nStrings.viewAll": "Tüm özellik sürümlerini görüntüleyin",
+    "ariaLabels.closeButton": "Bildirimleri kapat",
+    "ariaLabels.content": "Özellik bildirimleri",
+    "ariaLabels.triggerButton": "Özellik bildirimlerini göster",
+    "ariaLabels.resizeHandle": "Özellik bildirimlerini yeniden boyutlandır"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Daha az göster",
     "i18nStrings.limitShowMore": "Daha fazla göster",
-    "i18nStrings.removeFileAriaLabel": "Dosyayı kaldır {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Şu dosyayı kaldır: {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.warningIconAriaLabel": "Uyarı"
   },
@@ -240,7 +252,15 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Sonraki sayfa",
     "ariaLabels.pageLabel": "Sayfa {pageNumber}/tüm sayfalar",
-    "ariaLabels.previousPageLabel": "Önceki sayfa"
+    "ariaLabels.previousPageLabel": "Önceki sayfa",
+    "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
+    "i18nStrings.jumpToPageInputLabel": "Sayfa",
+    "i18nStrings.jumpToPageError": "Aralık dışı sayfa. Mevcut son sayfa gösteriliyor.",
+    "i18nStrings.jumpToPageLoadingText": "Yükleniyor"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Panel yeniden boyutlandırma tutamacı",
+    "i18nStrings.resizeHandleTooltipText": "Yeniden boyutlandırmak için sürükleyin veya seçin"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Değer",

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test-utils selectors 1`] = `
 {
@@ -92,6 +92,7 @@ exports[`test-utils selectors 1`] = `
   "button-dropdown": [
     "awsui_button-dropdown_sne0l",
     "awsui_description_sne0l",
+    "awsui_disabled_93a1u",
     "awsui_dropdown-trigger_sne0l",
     "awsui_expandable_16mm3",
     "awsui_highlighted_93a1u",
@@ -250,6 +251,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
+  "error-boundary": [
+    "awsui_action_11u4a",
+    "awsui_description_11u4a",
+    "awsui_fallback_11u4a",
+    "awsui_feedback-action_11u4a",
+    "awsui_header_11u4a",
+    "awsui_refresh-action_11u4a",
+  ],
   "expandable-section": [
     "awsui_content-expanded_gwq0h",
     "awsui_content_gwq0h",
@@ -304,7 +313,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_secondary-actions_1i0s3",
   ],
   "form-field": [
+    "awsui_character-count_6mjrv",
     "awsui_constraint_14mhv",
+    "awsui_constraint_6mjrv",
     "awsui_control_14mhv",
     "awsui_description_14mhv",
     "awsui_error_14mhv",
@@ -358,6 +369,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_chart-filter_1px7g",
     "awsui_content_x6dl3",
     "awsui_control_1wepg",
+    "awsui_custom-content_1p2cx",
     "awsui_description_1p2cx",
     "awsui_description_1wepg",
     "awsui_direction-button-block-end_8k1rt",
@@ -391,6 +403,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_recovery_vrgzu",
     "awsui_root_11n0s",
     "awsui_root_15oj2",
+    "awsui_root_1b522",
     "awsui_root_1fcus",
     "awsui_root_1kjc7",
     "awsui_root_1om0h",
@@ -455,6 +468,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_button_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
+  ],
+  "panel-layout": [
+    "awsui_content_119z0",
+    "awsui_panel_119z0",
+    "awsui_resize-handle_119z0",
+    "awsui_root_119z0",
   ],
   "pie-chart": [
     "awsui_inner-content_1edmh",
@@ -591,6 +610,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_gxp9y",
   ],
   "table": [
+    "awsui_body-cell-counter_10jtt",
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
@@ -663,6 +683,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_dm8gx",
     "awsui_token_dm8gx",
   ],
+  "tooltip": [
+    "awsui_root_1u26h",
+  ],
   "top-navigation": [
     "awsui_hidden_k5dlb",
     "awsui_identity_k5dlb",
@@ -713,6 +736,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_navigation-link-item_1xupv",
     "awsui_navigation-link-label_1xupv",
     "awsui_navigation-link_1xupv",
+    "awsui_navigation_1xupv",
     "awsui_previous-button_1xupv",
     "awsui_primary-button_1xupv",
     "awsui_root_1xupv",

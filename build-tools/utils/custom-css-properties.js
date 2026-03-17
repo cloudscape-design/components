@@ -50,6 +50,10 @@ const customCssPropertiesList = [
   'stackedNotificationsDefaultBottomMargin',
   // Dropdown Custom Properties
   'dropdownDefaultMaxWidth',
+  'dropdownDefaultMinWidth',
+  // Modal Custom Properties
+  'modalCustomWidth',
+  'modalCustomHeight',
   // Spinner Custom Properties
   'spinnerRotatorFrom',
   'spinnerRotatorTo',
@@ -152,5 +156,12 @@ const customCssPropertiesList = [
   'progressBarBorderRadius',
   'progressBarHeight',
   'progressValueBackgroundColor',
+  'styleSliderTrackBackgroundColor',
+  'styleSliderRangeBackgroundDefault',
+  'styleSliderRangeBackgroundActive',
+  'styleSliderHandleBackgroundDefault',
+  'styleSliderHandleBackgroundHover',
+  'styleSliderHandleBackgroundActive',
+  'styleSliderHandleBorderRadius',
 ];
 module.exports = customCssPropertiesList;

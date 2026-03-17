@@ -60,7 +60,7 @@ export interface FileTokenGroupProps extends BaseComponentProps {
   readOnly?: boolean;
   /**
    * An object containing all the localized strings required by the component:
-   * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
+   * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button. Receives file index and file name.
    * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.
    * * `warningIconAriaLabel` (string): The ARIA label to be shown on the warning file icon.
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
@@ -78,7 +78,7 @@ export namespace FileTokenGroupProps {
     limitShowFewer?: string;
     limitShowMore?: string;
 
-    removeFileAriaLabel?: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number, fileName: string) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;

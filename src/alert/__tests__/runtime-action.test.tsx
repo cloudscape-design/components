@@ -5,7 +5,6 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import Alert from '../../../lib/components/alert';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { ActionConfig } from '../../../lib/components/internal/plugins/controllers/action-buttons';
 
 const defaultAction: ActionConfig = {
@@ -23,7 +22,7 @@ function delay() {
 }
 
 afterEach(() => {
-  awsuiPluginsInternal.alert.clearRegisteredActions();
+  awsuiPlugins.alert.clearRegisteredActionsForTesting();
 });
 
 test('renders runtime action button initially', async () => {

@@ -17,6 +17,7 @@ const defaultProps: DateRangePickerProps = {
   granularity: 'day',
   i18nStrings,
   value: null,
+  ariaLabel: 'Date range picker',
   placeholder: 'Test Placeholder',
   onChange: () => {},
   relativeOptions: [],
@@ -1027,6 +1028,129 @@ describe('Date range picker', () => {
             expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
             expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
           }
+        });
+      });
+
+      describe('date input placeholder', () => {
+        test('month picker derives placeholder from date placeholder by removing day part', () => {
+          // Uses German-style placeholder to verify i18n value is actually used (not the default YYYY-MM)
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            dateInputFormat: 'iso',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: 'JJJJ-MM-TT',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'JJJJ-MM'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'JJJJ-MM'
+          );
+        });
+
+        test('day picker keeps full date placeholder unchanged', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            dateInputFormat: 'iso',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: 'YYYY-MM-DD',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY-MM-DD'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY-MM-DD'
+          );
+        });
+
+        test('month picker uses default placeholder when no i18n placeholder provided', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            dateInputFormat: 'slashed',
+            i18nStrings: {
+              ...i18nStrings,
+              isoDatePlaceholder: undefined,
+              slashedDatePlaceholder: undefined,
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY/MM'
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'YYYY/MM'
+          );
+        });
+      });
+
+      describe('time input placeholder', () => {
+        testIf(granularity === 'day')('derives placeholder from time placeholder by removing seconds part', () => {
+          // Uses Indonesian-style placeholder to verify i18n value is actually used (not the default hh:mm)
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            timeInputFormat: 'hh:mm',
+            i18nStrings: {
+              ...i18nStrings,
+              timePlaceholder: 'jj:mm:dd',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj:mm'
+          );
+          expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj:mm'
+          );
+        });
+
+        testIf(granularity === 'day')('derives hour-only placeholder from time placeholder', () => {
+          // Uses Indonesian-style placeholder to verify i18n value is actually used (not the default hh)
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'day',
+            timeInputFormat: 'hh',
+            i18nStrings: {
+              ...i18nStrings,
+              timePlaceholder: 'jj:mm:dd',
+            },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj'
+          );
+          expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAttribute(
+            'placeholder',
+            'jj'
+          );
         });
       });
 
