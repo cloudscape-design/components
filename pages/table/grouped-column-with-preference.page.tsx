@@ -24,7 +24,7 @@ import {
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-interface EC2Instance {
+interface Instance {
   id: string;
   name: string;
   cpuUtilization: number;
@@ -38,7 +38,7 @@ interface EC2Instance {
   spotPrice: number;
 }
 
-const allInstances: EC2Instance[] = [
+const allInstances: Instance[] = [
   {
     id: 'i-1234567890abcdef0',
     name: 'web-server-1',
@@ -106,77 +106,77 @@ const allInstances: EC2Instance[] = [
   },
 ];
 
-const columnDefinitions: TableProps<EC2Instance>['columnDefinitions'] = [
+const columnDefinitions: TableProps<Instance>['columnDefinitions'] = [
   {
     id: 'id',
     header: 'Instance ID',
-    cell: (item: EC2Instance) => item.id,
+    cell: (item: Instance) => item.id,
     sortingField: 'id',
     isRowHeader: true,
   },
   {
     id: 'name',
     header: 'Name',
-    cell: (item: EC2Instance) => item.name,
+    cell: (item: Instance) => item.name,
     sortingField: 'name',
   },
   {
     id: 'cpuUtilization',
     header: 'CPU (%)',
-    cell: (item: EC2Instance) => `${item.cpuUtilization.toFixed(1)}%`,
+    cell: (item: Instance) => `${item.cpuUtilization.toFixed(1)}%`,
     sortingField: 'cpuUtilization',
   },
   {
     id: 'memoryUtilization',
     header: 'Memory (%)',
-    cell: (item: EC2Instance) => `${item.memoryUtilization.toFixed(1)}%`,
+    cell: (item: Instance) => `${item.memoryUtilization.toFixed(1)}%`,
     sortingField: 'memoryUtilization',
   },
   {
     id: 'networkIn',
     header: 'Network In (MB/s)',
-    cell: (item: EC2Instance) => item.networkIn.toString(),
+    cell: (item: Instance) => item.networkIn.toString(),
     sortingField: 'networkIn',
   },
   {
     id: 'networkOut',
     header: 'Network Out (MB/s)',
-    cell: (item: EC2Instance) => item.networkOut.toString(),
+    cell: (item: Instance) => item.networkOut.toString(),
     sortingField: 'networkOut',
   },
   {
     id: 'instanceType',
     header: 'Instance Type',
-    cell: (item: EC2Instance) => item.instanceType,
+    cell: (item: Instance) => item.instanceType,
     sortingField: 'instanceType',
   },
   {
     id: 'az',
     header: 'Availability Zone',
-    cell: (item: EC2Instance) => item.az,
+    cell: (item: Instance) => item.az,
     sortingField: 'az',
   },
   {
     id: 'state',
     header: 'State',
-    cell: (item: EC2Instance) => item.state,
+    cell: (item: Instance) => item.state,
     sortingField: 'state',
   },
   {
     id: 'monthlyCost',
     header: 'Monthly Cost ($)',
-    cell: (item: EC2Instance) => `$${item.monthlyCost.toFixed(2)}`,
+    cell: (item: Instance) => `$${item.monthlyCost.toFixed(2)}`,
     sortingField: 'monthlyCost',
   },
   {
     id: 'spotPrice',
     header: 'Spot Price ($/hr)',
-    cell: (item: EC2Instance) => `$${item.spotPrice.toFixed(4)}`,
+    cell: (item: Instance) => `$${item.spotPrice.toFixed(4)}`,
     sortingField: 'spotPrice',
   },
 ];
 
-const groupDefinitions: TableProps<EC2Instance>['groupDefinitions'] = [
+const groupDefinitions: TableProps<Instance>['groupDefinitions'] = [
   { id: 'cost', header: 'Cost' },
   { id: 'configuration', header: 'Configuration' },
   { id: 'performance', header: 'Performance' },
@@ -245,7 +245,7 @@ type DemoContext = React.Context<
   }>
 >;
 
-export default function EC2TableDemo() {
+export default function TableDemo() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps['preferences']>({
     pageSize: 10,
     contentDisplay: [
@@ -254,10 +254,12 @@ export default function EC2TableDemo() {
       {
         type: 'group',
         id: 'metrics',
+        visible: true,
         children: [
           {
             type: 'group',
             id: 'performance',
+            visible: true,
             children: [
               { id: 'cpuUtilization', visible: true },
               { id: 'memoryUtilization', visible: true },
@@ -270,6 +272,7 @@ export default function EC2TableDemo() {
       {
         type: 'group',
         id: 'configuration',
+        visible: true,
         children: [
           { id: 'instanceType', visible: true },
           { id: 'az', visible: true },
@@ -279,6 +282,7 @@ export default function EC2TableDemo() {
       {
         type: 'group',
         id: 'cost',
+        visible: true,
         children: [
           { id: 'monthlyCost', visible: false },
           { id: 'spotPrice', visible: false },
@@ -287,15 +291,15 @@ export default function EC2TableDemo() {
     ],
   });
 
-  const ariaLabels: TableProps<EC2Instance>['ariaLabels'] = {
-    selectionGroupLabel: 'EC2 instances selection',
+  const ariaLabels: TableProps<Instance>['ariaLabels'] = {
+    selectionGroupLabel: 'instances selection',
     allItemsSelectionLabel: ({ selectedItems }) =>
       `${selectedItems.length} ${selectedItems.length === 1 ? 'instance' : 'instances'} selected`,
     itemSelectionLabel: ({ selectedItems }, item) => {
       const isItemSelected = selectedItems.includes(item);
       return `${item.name} is ${isItemSelected ? '' : 'not '}selected`;
     },
-    tableLabel: 'EC2 Instances',
+    tableLabel: 'Instances',
   };
 
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
@@ -305,7 +309,7 @@ export default function EC2TableDemo() {
         empty: (
           <EmptyState
             title="No instances"
-            subtitle="No EC2 instances to display"
+            subtitle="No instances to display"
             action={<Button>Launch instance</Button>}
           />
         ),
@@ -332,7 +336,7 @@ export default function EC2TableDemo() {
 
   return (
     <SimplePage title="Grouped Column table demo with collection hooks" i18n={{}} screenshotArea={{}}>
-      <h1>EC2 Instances Table</h1>
+      <h1>Instances Table</h1>
 
       <SpaceBetween size="m" direction="horizontal" alignItems="end">
         <Toggle onChange={({ detail }) => setUrlParams({ resizable: detail.checked })} checked={resizable}>
@@ -380,7 +384,7 @@ export default function EC2TableDemo() {
                 : `(${allInstances.length})`
             }
           >
-            EC2 Instances
+            Instances
           </Header>
         }
         columnDefinitions={columnDefinitions}
