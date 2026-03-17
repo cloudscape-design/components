@@ -198,56 +198,25 @@ describe('Mouse hover hook', () => {
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
-  test('clears highlightX when onPopoverLeave is called with relatedTarget outside SVG', () => {
-    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
+  test('clears highlightX when onPopoverLeave is called', () => {
     const customProps = {
       highlightX: jest.fn(),
       clearHighlightedSeries: jest.fn(),
-      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
     const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: document.createElement('div'),
-    } as any;
-    act(() => hook.current.onPopoverLeave(event));
+    act(() => hook.current.onPopoverLeave());
     expect(customProps.highlightX).toHaveBeenCalledWith(null);
     expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
-  test('does not clear highlightX when onPopoverLeave is called with relatedTarget inside SVG', () => {
-    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    SvgElementDummy.appendChild(lineElement);
-
-    const customProps = {
-      highlightX: jest.fn(),
-      clearHighlightedSeries: jest.fn(),
-      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
-    };
-    const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: lineElement,
-    } as any;
-    act(() => hook.current.onPopoverLeave(event));
-    expect(customProps.highlightX).not.toHaveBeenCalled();
-    expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
-  });
-
   test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
-    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const customProps = {
       highlightX: jest.fn(),
       clearHighlightedSeries: jest.fn(),
       isHandlersDisabled: true,
-      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
     };
-
     const { hook } = renderMouseHoverHook(customProps);
-    const event = {
-      relatedTarget: document.createElement('div'),
-    } as any;
-    act(() => hook.current.onPopoverLeave(event));
+    act(() => hook.current.onPopoverLeave());
     expect(customProps.highlightX).not.toHaveBeenCalled();
     expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
   });
