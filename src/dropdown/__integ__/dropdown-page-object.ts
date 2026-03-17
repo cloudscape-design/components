@@ -24,7 +24,7 @@ export class DropdownPageObject extends BasePageObject {
     return this.dropdownWrapper.toSelector();
   }
   public getTrigger(): string {
-    return this.dropdownWrapper.find('.trigger')!.toSelector();
+    return this.dropdownWrapper.find('.trigger').toSelector();
   }
   public getOpenDropdown(): string {
     return this.dropdownWrapper.findOpenDropdown().toSelector();
