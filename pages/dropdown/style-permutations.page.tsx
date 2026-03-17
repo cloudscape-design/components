@@ -6,7 +6,6 @@ import Button from '~components/button';
 import Dropdown from '~components/dropdown/internal';
 import SpaceBetween from '~components/space-between';
 
-import { palette } from '../app/themes/style-api';
 import ScreenshotArea from '../utils/screenshot-area';
 import ListContent from './list-content';
 
@@ -24,10 +23,11 @@ export default function DropdownStylePermutations() {
             trigger={<Button onClick={() => setOpen1(!open1)}>Open dropdown</Button>}
             open={open1}
             onOutsideClick={() => setOpen1(false)}
+            minWidth={400}
             content={<ListContent n={5} />}
             style={{
               dropdown: {
-                background: `light-dark(${palette.blue10}, ${palette.blue90})`,
+                background: 'light-dark(#edf4ff, #001a66)',
                 borderWidth: '0px',
               },
             }}
@@ -40,12 +40,13 @@ export default function DropdownStylePermutations() {
             trigger={<Button onClick={() => setOpen2(!open2)}>Open dropdown</Button>}
             open={open2}
             onOutsideClick={() => setOpen2(false)}
+            minWidth={400}
             content={<ListContent n={5} />}
             style={{
               dropdown: {
-                background: `light-dark(${palette.teal10}, ${palette.teal90})`,
-                borderColor: `light-dark(${palette.teal60}, ${palette.teal40})`,
-                borderRadius: '12px',
+                background: 'light-dark(#edfbff, #005566)',
+                borderColor: 'light-dark(#408080, #66ccdd)',
+                borderRadius: '0px',
                 borderWidth: '2px',
               },
             }}

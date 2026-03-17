@@ -11,8 +11,7 @@ import { pascalCase } from 'change-case';
 
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import { Dropdown, Modal } from '../../../lib/components';
-import Button from '../../../lib/components/button';
+import { Button, Modal } from '../../../lib/components';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
@@ -247,39 +246,5 @@ describe.each(componentWithMultipleRootElements)('ElementWrapper selectors for %
 
       expect(element!.closest('[data-name]')).toHaveAttribute('data-name', 'first item');
     });
-  });
-});
-
-describe('DropdownWrapper test-utils', () => {
-  test('findOpenDropdown returns null when dropdown is closed', () => {
-    const { container } = renderTestingLibrary(
-      <Dropdown trigger={<button />} open={false} content={<div>content</div>} />
-    );
-    const wrapper = createWrapperDom(container).findDropdown()!;
-    expect(wrapper.findOpenDropdown()).toBeNull();
-  });
-
-  test('findOpenDropdown returns the open dropdown element when open', () => {
-    const { container } = renderTestingLibrary(
-      <Dropdown trigger={<button />} open={true} content={<div>content</div>} />
-    );
-    const wrapper = createWrapperDom(container).findDropdown()!;
-    expect(wrapper.findOpenDropdown()).not.toBeNull();
-  });
-
-  test('findOpenDropdown with expandToViewport finds portaled dropdown', () => {
-    const { container } = renderTestingLibrary(
-      <Dropdown trigger={<button />} open={true} expandToViewport={true} content={<div>content</div>} />
-    );
-    const wrapper = createWrapperDom(container).findDropdown()!;
-    expect(wrapper.findOpenDropdown({ expandToViewport: true })).not.toBeNull();
-  });
-
-  test('findOpenDropdown with expandToViewport returns null when closed', () => {
-    const { container } = renderTestingLibrary(
-      <Dropdown trigger={<button />} open={false} expandToViewport={true} content={<div>content</div>} />
-    );
-    const wrapper = createWrapperDom(container).findDropdown()!;
-    expect(wrapper.findOpenDropdown({ expandToViewport: true })).toBeNull();
   });
 });

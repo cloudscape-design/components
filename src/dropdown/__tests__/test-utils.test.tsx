@@ -36,6 +36,11 @@ describe('test utils', () => {
       const { wrapper } = renderDropdown({ expandToViewport: true });
       expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
     });
+
+    test('returns null for closed dropdown with expandToViewport', () => {
+      const { wrapper } = renderDropdown({ open: false, expandToViewport: true });
+      expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()).toBeNull();
+    });
   });
 
   describe('findContent', () => {
