@@ -103,5 +103,10 @@ describe('test utils', () => {
       wrapper.clickTrigger();
       expect(onClick).toHaveBeenCalledTimes(1);
     });
+
+    test('throws an error when no trigger element is present', () => {
+      const { wrapper } = renderDropdown({ trigger: <></> });
+      expect(() => wrapper.clickTrigger()).toThrow('No trigger element found inside the trigger wrapper');
+    });
   });
 });

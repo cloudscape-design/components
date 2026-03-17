@@ -105,7 +105,11 @@ export default class DropdownWrapper extends ComponentWrapper {
   @usesDom
   clickTrigger(): void {
     act(() => {
-      this.findTrigger().fireEvent(new MouseEvent('click', { bubbles: true }));
+      const trigger = this.findTrigger().getElement().firstElementChild as HTMLElement | null;
+      if (!trigger) {
+        throw new Error('No trigger element found inside the trigger wrapper');
+      }
+      trigger.click();
     });
   }
 }
