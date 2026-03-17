@@ -433,15 +433,13 @@ describe('Dropdown Component', () => {
           }}
         />
       );
-      const openDropdown = wrapper.findOpenDropdown()!.getElement();
-      const wrapperEl = openDropdown.querySelector<HTMLElement>('[class*="dropdown-content-wrapper"]')!;
+      const wrapperEl = wrapper.findContentWrapper()!.getElement();
       expect(wrapperEl.style).toMatchSnapshot();
     });
 
     test('no style applied when style prop is not set', () => {
       const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} content={<div>content</div>} />);
-      const openDropdown = wrapper.findOpenDropdown()!.getElement();
-      const wrapperEl = openDropdown.querySelector<HTMLElement>('[class*="dropdown-content-wrapper"]')!;
+      const wrapperEl = wrapper.findContentWrapper()!.getElement();
       expect(wrapperEl.style).toMatchSnapshot();
     });
   });
