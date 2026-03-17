@@ -11,7 +11,8 @@ import { pascalCase } from 'change-case';
 
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
-import { Button, Modal } from '../../../lib/components';
+import { Modal } from '../../../lib/components';
+import Button from '../../../lib/components/button';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
