@@ -13,8 +13,8 @@ export { DropdownProps };
 /**
  * @awsuiSystem core
  */
-export default function Dropdown({ ...props }: DropdownProps) {
+export default function Dropdown({ style, ...props }: DropdownProps) {
   const baseComponentProps = useBaseComponent('Dropdown');
-  return <InternalDropdown {...props} {...baseComponentProps} />;
+  return <InternalDropdown {...props} style={style} {...baseComponentProps} />;
 }
 applyDisplayName(Dropdown, 'Dropdown');

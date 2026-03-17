@@ -11746,6 +11746,52 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "optional": true,
       "type": "boolean",
     },
+    {
+      "description": "An object containing CSS properties to customize the dropdown's visual appearance.",
+      "inlineType": {
+        "name": "DropdownProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "background",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "dropdown",
+            "optional": true,
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "DropdownProps.Style",
+    },
   ],
   "regions": [
     {

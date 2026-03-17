@@ -45,7 +45,11 @@
     position: relative;
     background-color: awsui.$color-background-dropdown-item-default;
     outline: none;
-    @include styles.dropdown-shadow;
+    @include styles.dropdown-shadow(
+      $border-color: var(#{custom-props.$dropdownContentBorderColor}, #{awsui.$color-border-dropdown-container}),
+      $border-width: var(#{custom-props.$dropdownContentBorderWidth}, #{awsui.$border-width-popover}),
+      $border-radius: var(#{custom-props.$dropdownContentBorderRadius}, #{awsui.$border-radius-dropdown})
+    );
 
     // Don't show dropdown border when there's no dropdown content
     &.is-empty::after {

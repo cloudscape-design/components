@@ -6,6 +6,29 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 
+export namespace DropdownProps {
+  export interface Style {
+    dropdown?: {
+      /**
+       * Background color of the dropdown content wrapper.
+       */
+      background?: string;
+      /**
+       * Border color of the dropdown content wrapper.
+       */
+      borderColor?: string;
+      /**
+       * Border radius of the dropdown content wrapper.
+       */
+      borderRadius?: string;
+      /**
+       * Border width of the dropdown content wrapper.
+       */
+      borderWidth?: string;
+    };
+  }
+}
+
 /**
  * Alignment of the dropdown relative to its trigger.
  */
@@ -144,6 +167,12 @@ export interface DropdownProps extends ExpandToViewport {
    * Adds `aria-describedby` to the dropdown content element.
    */
   ariaDescribedby?: string;
+
+  /**
+   * An object containing CSS properties to customize the dropdown's visual appearance.
+   * @awsuiSystem core
+   */
+  style?: DropdownProps.Style;
 }
 
 export interface ExpandToViewport {

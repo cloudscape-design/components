@@ -28,6 +28,7 @@ import {
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
 import { DropdownAlignment, DropdownProps, DropdownWidthConstraint } from './interfaces';
+import { getDropdownStyles } from './style';
 
 export interface InternalDropdownProps
   extends Omit<DropdownProps, 'minWidth' | 'maxWidth'>,
@@ -110,6 +111,7 @@ interface TransitionContentProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  dropdownStyle?: React.CSSProperties;
 }
 
 const TransitionContent = ({
@@ -138,6 +140,7 @@ const TransitionContent = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  dropdownStyle,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   const dropdownStyles: Record<string, string> = {};
@@ -178,6 +181,7 @@ const TransitionContent = ({
           !header && !content && styles['is-empty'],
           isRefresh && styles.refresh
         )}
+        style={dropdownStyle}
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
@@ -221,6 +225,7 @@ const InternalDropdown = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  style,
   __internalRootRef,
   ...restProps
 }: InternalDropdownProps) => {
@@ -580,6 +585,7 @@ const InternalDropdown = ({
                 ariaLabel={ariaLabel}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
+                dropdownStyle={getDropdownStyles(style)}
               />
 
               <TabTrap

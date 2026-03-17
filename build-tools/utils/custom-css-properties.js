@@ -51,6 +51,10 @@ const customCssPropertiesList = [
   // Dropdown Custom Properties
   'dropdownDefaultMaxWidth',
   'dropdownDefaultMinWidth',
+  // Dropdown Style API
+  'dropdownContentBorderColor',
+  'dropdownContentBorderWidth',
+  'dropdownContentBorderRadius',
   // Modal Custom Properties
   'modalCustomWidth',
   'modalCustomHeight',
