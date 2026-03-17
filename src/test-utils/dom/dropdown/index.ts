@@ -11,6 +11,10 @@ export class DropdownContentWrapper extends ComponentWrapper {
     return this.find(`.${styles.dropdown}[data-open=true]`);
   }
 
+  findContentWrapper(): ElementWrapper | null {
+    return this.findOpenDropdown()?.findByClassName(styles['dropdown-content-wrapper']) ?? null;
+  }
+
   findContent(): ElementWrapper | null {
     return this.findOpenDropdown()?.findByClassName(styles['dropdown-content']) ?? null;
   }

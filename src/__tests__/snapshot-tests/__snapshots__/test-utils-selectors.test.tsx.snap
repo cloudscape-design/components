@@ -252,6 +252,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_test-utils-drawer-content_1sxt8",
   ],
   "dropdown": [
+    "awsui_dropdown-content-wrapper_9duf6",
     "awsui_dropdown-content_9duf6",
     "awsui_dropdown_9duf6",
     "awsui_footer_1hezk",
