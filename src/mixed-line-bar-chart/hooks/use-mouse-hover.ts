@@ -142,7 +142,7 @@ export function useMouseHover<T>({
   };
 
   const onPopoverLeave = (event: React.MouseEvent) => {
-    if (!isHandlersDisabled && nodeContains(plotRef.current!.svg, event.relatedTarget)) {
+    if (!isHandlersDisabled && !nodeContains(plotRef.current!.svg, event.relatedTarget)) {
       highlightX(null);
       clearHighlightedSeries();
     }
