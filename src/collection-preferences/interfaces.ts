@@ -243,6 +243,7 @@ export namespace CollectionPreferencesProps {
   export interface ContentDisplayGroup {
     type: 'group';
     id: string;
+    visible: boolean;
     children: ReadonlyArray<ContentDisplayProperties>;
   }
 

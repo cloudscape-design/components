@@ -51,6 +51,7 @@ const defaultContentDisplay: CollectionPreferencesProps.ContentDisplayProperties
   {
     type: 'group',
     id: 'performance',
+    visible: true,
     children: [
       { id: 'cpuUtilization', visible: true },
       { id: 'memoryUtilization', visible: true },
@@ -61,6 +62,7 @@ const defaultContentDisplay: CollectionPreferencesProps.ContentDisplayProperties
   {
     type: 'group',
     id: 'configuration',
+    visible: true,
     children: [
       { id: 'instanceType', visible: true },
       { id: 'availabilityZone', visible: true },
@@ -70,6 +72,7 @@ const defaultContentDisplay: CollectionPreferencesProps.ContentDisplayProperties
   {
     type: 'group',
     id: 'cost',
+    visible: true,
     children: [
       { id: 'monthlyCost', visible: true },
       { id: 'spotPrice', visible: true },

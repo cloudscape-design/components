@@ -15,6 +15,7 @@ export interface OptionGroupNode {
   label: string;
   isGroup: true;
   children: OptionTreeNode[];
+  visible: boolean;
 }
 
 /** A flat leaf column node (not a group header). */
@@ -26,9 +27,10 @@ export type OptionTreeNode = OptionGroupNode | OptionLeafNode;
 
 /**
  * Extracts a flat ordered list of leaf items from the contentDisplay tree (depth-first).
- * Used for `getSortedOptions` to rebuild the sorted option list with correct order.
+ * Used for `getSortedOptions` to rebuild the sorted option list with correct order,
+ * and to flatten the internal tree back to a public-facing ContentDisplayItem[] before emitting onChange.
  */
-function walkLeaves(
+export function walkLeaves(
   items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>
 ): { id: string; visible: boolean }[] {
   const result: { id: string; visible: boolean }[] = [];
@@ -92,6 +94,7 @@ function convertTree(
         label: groupDef?.label ?? item.id,
         isGroup: true,
         children: convertTree(item.children, optionByKey, groupByKey, sortedOptionsById),
+        visible: item.visible,
       });
     } else {
       const opt = sortedOptionsById.get(item.id);
@@ -143,6 +146,7 @@ export function flattenOptionTree(
           type: 'group' as const,
           id: node.id,
           children: convert(node.children) as ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>,
+          visible: node.visible,
         };
       } else {
         return { id: node.id, visible: node.visible };
