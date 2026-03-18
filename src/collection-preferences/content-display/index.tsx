@@ -34,8 +34,8 @@ const componentPrefix = 'content-display';
 const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
-  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>) => void;
-  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>;
+  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
+  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }
 
 interface HierarchicalContentDisplayProps {
@@ -140,7 +140,7 @@ export default function ContentDisplayPreference({
   const onToggle = (option: OptionWithVisibility) => {
     // Re-build the hierarchical contentDisplay with the toggled visibility.
     // We use sortedOptions (which carries groupId) to reconstruct the tree and then
-    // flatten it back to ContentDisplayProperties[] preserving the hierarchy.
+    // flatten it back to ContentDisplayItem[] preserving the hierarchy.
     const updatedOptions = sortedOptions.map(opt => ({
       ...opt,
       visible: opt.id === option.id ? !option.visible : opt.visible,

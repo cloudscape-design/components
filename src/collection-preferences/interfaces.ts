@@ -221,7 +221,7 @@ export namespace CollectionPreferencesProps {
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
     stickyColumns?: StickyColumns;
-    contentDisplay?: ReadonlyArray<ContentDisplayProperties>;
+    contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
   }
 
@@ -234,7 +234,7 @@ export namespace CollectionPreferencesProps {
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
 
-  export interface ContentDisplayItem {
+  export interface ContentDisplayColumn {
     type?: 'column' | undefined;
     id: string;
     visible: boolean;
@@ -244,10 +244,10 @@ export namespace CollectionPreferencesProps {
     type: 'group';
     id: string;
     visible: boolean;
-    children: ReadonlyArray<ContentDisplayProperties>;
+    children: ReadonlyArray<ContentDisplayItem>;
   }
 
-  export type ContentDisplayProperties = ContentDisplayItem | ContentDisplayGroup;
+  export type ContentDisplayItem = ContentDisplayColumn | ContentDisplayGroup;
 
   export interface ContentDisplayOption {
     id: string;

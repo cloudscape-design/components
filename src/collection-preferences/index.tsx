@@ -141,7 +141,7 @@ export default function CollectionPreferences({
         // Walk the tree depth-first, collecting leaf column ids that are visible.
         // A leaf is only included if all ancestor groups (and the leaf itself) have visible: true.
         const collectVisibleIds = (
-          items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>,
+          items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>,
           ancestorVisible: boolean
         ): string[] => {
           const result: string[] = [];
