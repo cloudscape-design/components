@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDropdownStyles handles all possible style configurations 1`] = `undefined`;
+
+exports[`getDropdownStyles handles all possible style configurations 2`] = `undefined`;
+
+exports[`getDropdownStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-dropdown-content-border-color-6190tg": "rgb(0, 0, 0)",
+  "--awsui-dropdown-content-border-radius-6190tg": "8px",
+  "--awsui-dropdown-content-border-width-6190tg": "2px",
+  "background": "rgb(255, 255, 255)",
+}
+`;

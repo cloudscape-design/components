@@ -416,34 +416,6 @@ describe('Dropdown Component', () => {
     });
   });
 
-  describe('Style API', () => {
-    test('all style properties', () => {
-      const [wrapper] = renderDropdown(
-        <Dropdown
-          trigger={<button />}
-          open={true}
-          content={<div>content</div>}
-          style={{
-            dropdown: {
-              background: 'rgb(255, 255, 255)',
-              borderColor: 'rgb(0, 0, 0)',
-              borderRadius: '8px',
-              borderWidth: '2px',
-            },
-          }}
-        />
-      );
-      const wrapperEl = wrapper.findContentWrapper()!.getElement();
-      expect(wrapperEl.style).toMatchSnapshot();
-    });
-
-    test('no style applied when style prop is not set', () => {
-      const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} content={<div>content</div>} />);
-      const wrapperEl = wrapper.findContentWrapper()!.getElement();
-      expect(wrapperEl.style).toMatchSnapshot();
-    });
-  });
-
   describe('width CSS variables', () => {
     test('applies numeric minWidth value as pixels', () => {
       const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} minWidth={300} />);
