@@ -502,10 +502,10 @@ export namespace PromptInputProps {
      * Inserts text at a specified position. Triggers input events and menu detection when `menus` or `tokens` is defined.
      *
      * @param text The text to insert.
-     * @param cursorStart Position to insert at. Defaults to current cursor position or 0.
-     * @param cursorEnd Cursor position after insertion. Defaults to end of inserted text.
+     * @param caretStart Position to insert at. Defaults to current caret position or 0.
+     * @param caretEnd Caret position after insertion. Defaults to end of inserted text.
      */
-    insertText(text: string, cursorStart?: number, cursorEnd?: number): void;
+    insertText(text: string, caretStart?: number, caretEnd?: number): void;
   }
 
   export interface Style {

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import Dropdown from '../../internal/components/dropdown';
 import DropdownFooter from '../../internal/components/dropdown-footer';
+import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
 import MenuDropdown from './menu-dropdown';
@@ -13,42 +14,42 @@ import MenuDropdown from './menu-dropdown';
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
+/** Props for the token-mode contentEditable input and its associated menu dropdown. */
 interface TokenModeProps {
-  // Refs
+  /** Ref to the contentEditable div */
   editableElementRef: React.RefObject<HTMLDivElement>;
+  /** Ref to the active trigger element, used to anchor the dropdown */
   triggerWrapperRef: React.MutableRefObject<HTMLElement | null>;
 
-  // IDs
   controlId?: string;
   menuListId: string;
   menuFooterControlId: string;
   highlightedMenuOptionId?: string;
 
-  // State
+  /** When set, renders a hidden input for native form submission */
   name?: string;
-  getPlainTextValue: () => string;
+  /** Plain text representation of the current tokens */
+  plainTextValue: string;
   menuIsOpen: boolean;
+  /** True once the trigger element is mounted and ready for dropdown positioning */
   triggerWrapperReady: boolean;
   shouldRenderMenuDropdown: boolean;
 
-  // Menu data
   activeMenu: PromptInputProps.MenuDefinition | null;
   activeTriggerToken: PromptInputProps.TriggerToken | null;
   menuFilterText: string;
   menuItemsState: MenuItemsState | null;
   menuItemsHandlers: MenuItemsHandlers | null;
-  menuDropdownStatus: any;
+  menuDropdownStatus: DropdownStatusResult | null;
 
-  // Handlers
   handleInput: () => void;
   handleLoadMore: () => void;
 
-  // Attributes
+  /** Spread onto the contentEditable div — includes aria attrs, className, and event handlers */
   editableElementAttributes: React.HTMLAttributes<HTMLDivElement> & {
     'data-placeholder'?: string;
   };
 
-  // i18n
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   maxMenuHeight?: number;
@@ -64,7 +65,7 @@ export default function TokenMode({
   menuFooterControlId,
   highlightedMenuOptionId,
   name,
-  getPlainTextValue,
+  plainTextValue,
   menuIsOpen,
   triggerWrapperReady,
   shouldRenderMenuDropdown,
@@ -81,7 +82,7 @@ export default function TokenMode({
 }: TokenModeProps) {
   return (
     <>
-      {name && <input type="hidden" name={name} value={getPlainTextValue()} />}
+      {name && <input type="hidden" name={name} value={plainTextValue} />}
       <div className={styles['editable-wrapper']}>
         <div
           id={controlId}
@@ -141,7 +142,7 @@ export default function TokenMode({
               {shouldRenderMenuDropdown && menuItemsState && menuItemsHandlers && activeMenu && (
                 <MenuDropdown
                   menu={activeMenu}
-                  statusType={(activeMenu.statusType ?? 'finished') as 'finished' | 'pending' | 'error' | 'loading'}
+                  statusType={activeMenu.statusType ?? 'finished'}
                   menuItemsState={menuItemsState}
                   menuItemsHandlers={menuItemsHandlers}
                   highlightedOptionId={highlightedMenuOptionId}
@@ -151,8 +152,8 @@ export default function TokenMode({
                   handleLoadMore={handleLoadMore}
                   hasDropdownStatus={menuDropdownStatus?.content !== null}
                   listBottom={
-                    !menuDropdownStatus?.isSticky ? (
-                      <DropdownFooter content={menuDropdownStatus?.content ?? null} id={menuFooterControlId} />
+                    !menuDropdownStatus?.isSticky && menuDropdownStatus?.content ? (
+                      <DropdownFooter content={menuDropdownStatus.content} id={menuFooterControlId} />
                     ) : null
                   }
                   ariaDescribedby={menuDropdownStatus?.content ? menuFooterControlId : undefined}

@@ -1,28 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CursorController } from '../core/cursor-controller';
+import { isHTMLElement } from '../../internal/utils/dom';
+import { CaretController } from '../core/caret-controller';
+import { ELEMENT_TYPES } from '../core/constants';
+import { getTokenType } from '../core/dom-utils';
+import { isTextNode } from '../core/type-guards';
 
 /**
- * Inserts text into a contenteditable element at a specific position
- * Uses cursor controller for reliable positioning
+ * Inserts text into a contentEditable element at a specific position.
+ * @param caretStart logical position to insert at (defaults to current caret)
+ * @param caretEnd logical position to place caret after insertion
  */
 export function insertTextIntoContentEditable(
   element: HTMLElement,
   text: string,
-  cursorStart: number | undefined,
-  cursorEnd: number | undefined,
-  cursorController: CursorController
+  caretStart: number | undefined,
+  caretEnd: number | undefined,
+  caretController: CaretController
 ): void {
   element.focus();
 
-  // Determine insert position
-  const insertPosition = cursorStart ?? cursorController.getPosition();
+  const insertPosition = caretStart ?? caretController.getPosition();
 
-  // Position cursor at insert point
-  cursorController.setPosition(insertPosition);
+  caretController.setPosition(insertPosition);
 
-  // Insert text at current selection
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
     return;
@@ -32,16 +34,33 @@ export function insertTextIntoContentEditable(
   const textNode = document.createTextNode(text);
   range.insertNode(textNode);
 
-  // Calculate final cursor position
-  const finalPosition = cursorEnd ?? insertPosition + text.length;
+  const finalPosition = caretEnd ?? insertPosition + text.length;
 
-  // Fire input event to trigger token extraction
   element.dispatchEvent(new Event('input', { bubbles: true }));
 
-  // Position cursor after React updates DOM
-  // Use requestAnimationFrame to ensure DOM is ready, preventing stale cursor state
   requestAnimationFrame(() => {
-    cursorController.setPosition(finalPosition);
+    caretController.setPosition(finalPosition);
+
+    if (!caretController.findActiveTrigger()) {
+      const selection = window.getSelection();
+      if (selection?.rangeCount) {
+        const range = selection.getRangeAt(0);
+        const container = range.startContainer;
+
+        if (isTextNode(container) && range.startOffset === 0) {
+          const prevSibling = container.previousSibling;
+          if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ELEMENT_TYPES.TRIGGER) {
+            const triggerText = prevSibling.textContent || '';
+            const triggerTextNode = prevSibling.childNodes[0];
+            if (isTextNode(triggerTextNode)) {
+              range.setStart(triggerTextNode, triggerText.length);
+              range.collapse(true);
+            }
+          }
+        }
+      }
+    }
+
     document.dispatchEvent(new Event('selectionchange'));
   });
 }

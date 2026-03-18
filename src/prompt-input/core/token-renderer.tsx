@@ -1,32 +1,64 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+//
+// Token Renderer — Direct DOM manipulation for contentEditable
+//
+// This module renders tokens (text, triggers, references) into a contentEditable element
+// using direct DOM operations instead of React's declarative rendering. This approach is
+// necessary because:
+//
+// 1. React's reconciliation conflicts with contentEditable. When the user types, the browser
+//    mutates the DOM directly. React expects to own the DOM and would overwrite user input
+//    on the next render, causing cursor jumps and lost keystrokes.
+//
+// 2. Reference tokens are atomic inline elements (rendered via React portals into <span>
+//    containers) surrounded by caret spots (zero-width characters). This structure requires
+//    precise DOM control that React's diffing algorithm cannot provide — it would merge
+//    adjacent text nodes, remove "empty" spans, or reorder elements unpredictably.
+//
+// 3. Cursor positioning depends on exact DOM node identity. React may replace a text node
+//    with an equivalent one during reconciliation, which resets the browser's caret position.
+//    By managing DOM nodes directly, we preserve node identity across renders.
+//
+// The renderer is decoupled from specific component implementations — it accepts a
+// `renderToken` callback to render reference tokens, allowing the visual representation
+// to be customized or tested independently (similar to how Table's sticky columns and
+// grid navigation features are implemented as abstract utilities).
+//
+
 import React from 'react';
-// Import from react-dom/client (React 18+)
-// For React 16/17 environments, webpack alias will replace this with the compatibility stub
+// Import from react-dom/client (React 18+).
+// For React 16/17 environments, the jest config and webpack alias replace this import
+// with a compatibility stub (src/internal/vendor/react-dom-client-stub.ts) that provides
+// a no-op createRoot.
 // @ts-expect-error - react-dom/client only exists in React 18+, aliased to stub in React 16/17
 import { createRoot, Root } from 'react-dom/client';
 
-import Token from '../../token/internal';
 import { PromptInputProps } from '../interfaces';
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
 import {
   createParagraph,
   createTrailingBreak,
   findAllParagraphs,
-  findElement,
   findElements,
   generateTokenId,
   getTokenType,
-  insertAfter,
+  isReferenceElementType,
 } from './dom-utils';
-import { isBreakToken, isBRElement, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
+import { isBreakToken, isReferenceToken, isTextToken, isTriggerToken } from './type-guards';
 
 import styles from '../styles.css.js';
 
-// REACT COMPONENT MANAGEMENT
-
 const rootsMap = new Map<HTMLElement, Root>();
+
+/** Props passed to the renderToken callback for rendering reference tokens. */
+export interface RenderTokenProps {
+  id: string;
+  label: string;
+  disabled: boolean;
+  readOnly: boolean;
+}
 
 function renderComponent(element: React.ReactElement, container: HTMLElement): void {
   let root = rootsMap.get(container);
@@ -35,136 +67,8 @@ function renderComponent(element: React.ReactElement, container: HTMLElement): v
     rootsMap.set(container, root);
   }
 
-  // Render synchronously to avoid timing issues with prop updates
   root.render(element);
 }
-
-export function unmountComponent(container: HTMLElement): void {
-  const root = rootsMap.get(container);
-  if (root) {
-    root.unmount();
-    rootsMap.delete(container);
-  }
-}
-
-// DOM NORMALIZATION
-
-function normalizeParagraphsAfterRender(element: HTMLElement): void {
-  const paragraphs = findAllParagraphs(element);
-
-  paragraphs.forEach(p => {
-    moveCursorSpotContentToParagraph(p);
-    removeLeadingBrowserBRs(p);
-    removeOrphanedZWNJ(p);
-    ensureEmptyParagraphsHaveTrailingBR(p);
-    removeTrailingBRFromStart(p);
-    removeMiddleTrailingBRs(p);
-    ensureCursorSpotsInWrappers(p);
-    ensureWrappersHaveAllParts(p);
-    ensureCursorSpotsHaveZWNJ(p);
-  });
-}
-
-function removeLeadingBrowserBRs(p: HTMLElement): void {
-  while (isBRElement(p.firstChild)) {
-    p.firstChild.remove();
-  }
-}
-
-function removeOrphanedZWNJ(p: HTMLElement): void {
-  Array.from(p.childNodes).forEach(node => {
-    if (isTextNode(node) && node.textContent === SPECIAL_CHARS.ZWNJ) {
-      node.remove();
-    }
-  });
-}
-
-function ensureEmptyParagraphsHaveTrailingBR(p: HTMLElement): void {
-  if (p.childNodes.length === 0) {
-    p.appendChild(createTrailingBreak());
-  } else if (p.childNodes.length === 1 && isTextNode(p.firstChild) && !p.firstChild.textContent?.trim()) {
-    p.innerHTML = '';
-    p.appendChild(createTrailingBreak());
-  }
-}
-
-function removeTrailingBRFromStart(p: HTMLElement): void {
-  if (p.childNodes.length > 1 && isBRElement(p.firstChild, ELEMENT_TYPES.TRAILING_BREAK)) {
-    p.firstChild.remove();
-  }
-}
-
-function removeMiddleTrailingBRs(p: HTMLElement): void {
-  const children = Array.from(p.childNodes);
-  for (let i = 0; i < children.length - 1; i++) {
-    const child = children[i];
-    if (isBRElement(child, ELEMENT_TYPES.TRAILING_BREAK)) {
-      child.remove();
-    }
-  }
-}
-
-function ensureCursorSpotsInWrappers(p: HTMLElement): void {
-  findElements(p, { tokenType: [ELEMENT_TYPES.CURSOR_SPOT_BEFORE, ELEMENT_TYPES.CURSOR_SPOT_AFTER] }).forEach(
-    cursorSpot => {
-      const parent = cursorSpot.parentElement;
-      const parentType = parent ? getTokenType(parent) : null;
-      if (!parent || (parentType !== ELEMENT_TYPES.REFERENCE && parentType !== ELEMENT_TYPES.PINNED)) {
-        cursorSpot.remove();
-      }
-    }
-  );
-}
-
-function ensureWrappersHaveAllParts(p: HTMLElement): void {
-  findElements(p, { tokenType: [ELEMENT_TYPES.REFERENCE, ELEMENT_TYPES.PINNED] }).forEach(wrapper => {
-    const cursorSpotBefore = findElement(wrapper, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_BEFORE });
-    const cursorSpotAfter = findElement(wrapper, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_AFTER });
-
-    if (!cursorSpotBefore || !cursorSpotAfter) {
-      wrapper.remove();
-    }
-  });
-}
-
-function ensureCursorSpotsHaveZWNJ(p: HTMLElement): void {
-  findElements(p, { tokenType: [ELEMENT_TYPES.CURSOR_SPOT_BEFORE, ELEMENT_TYPES.CURSOR_SPOT_AFTER] }).forEach(
-    cursorSpot => {
-      cursorSpot.innerHTML = '';
-      cursorSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZWNJ));
-    }
-  );
-}
-
-function moveCursorSpotContentToParagraph(p: HTMLElement): void {
-  findElements(p, { tokenType: [ELEMENT_TYPES.CURSOR_SPOT_BEFORE, ELEMENT_TYPES.CURSOR_SPOT_AFTER] }).forEach(
-    cursorSpot => {
-      const wrapper = cursorSpot.parentElement;
-      const wrapperType = wrapper ? getTokenType(wrapper) : null;
-      if (!wrapper || (wrapperType !== ELEMENT_TYPES.REFERENCE && wrapperType !== ELEMENT_TYPES.PINNED)) {
-        return;
-      }
-
-      const text = (cursorSpot.textContent || '').replace(new RegExp(SPECIAL_CHARS.ZWNJ, 'g'), '');
-      if (!text) {
-        return;
-      }
-
-      const isBefore = cursorSpot.getAttribute('data-type') === ELEMENT_TYPES.CURSOR_SPOT_BEFORE;
-      const textNode = document.createTextNode(text);
-
-      if (isBefore) {
-        wrapper.parentElement?.insertBefore(textNode, wrapper);
-      } else {
-        insertAfter(textNode, wrapper);
-      }
-
-      cursorSpot.textContent = SPECIAL_CHARS.ZWNJ;
-    }
-  );
-}
-
-// TOKEN GROUPING
 
 interface ParagraphGroup {
   tokens: PromptInputProps.InputToken[];
@@ -182,100 +86,87 @@ function groupTokensIntoParagraphs(tokens: readonly PromptInputProps.InputToken[
     const token = tokens[i];
 
     if (isBreakToken(token)) {
-      // Check if this is a leading break (at start or after other breaks)
       const isLeadingBreak = currentParagraph.length === 0;
 
       if (isLeadingBreak) {
-        // Leading break = create empty paragraph
         paragraphs.push({ tokens: [] });
       } else {
-        // Break after content = end current paragraph
         paragraphs.push({ tokens: currentParagraph });
         currentParagraph = [];
       }
     } else {
-      // Non-break token = add to current paragraph
       currentParagraph.push(token);
     }
   }
 
-  // Add final paragraph (always - could be empty from trailing break or have content)
   paragraphs.push({ tokens: currentParagraph });
 
   return paragraphs;
 }
 
-// CURSOR SPOT CREATION
-function createCursorSpot(type: string): HTMLSpanElement {
-  const cursorSpot = document.createElement('span');
-  cursorSpot.setAttribute('data-type', type);
-  cursorSpot.setAttribute('contenteditable', 'true');
-  // Don't use aria-hidden - it conflicts with contenteditable and causes A11Y warnings
-  cursorSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZWNJ));
-  return cursorSpot;
+/** Creates an invisible span with a ZWNJ character to provide a valid caret position next to reference tokens. */
+function createCaretSpot(type: string): HTMLSpanElement {
+  const caretSpot = document.createElement('span');
+  caretSpot.setAttribute('data-type', type);
+  caretSpot.setAttribute('contenteditable', 'true');
+  caretSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZWNJ));
+  return caretSpot;
 }
 
-function createReferenceWithCursorSpots(
+function createReferenceWithCaretSpots(
   token: PromptInputProps.ReferenceToken,
-  reactContainers: Set<HTMLElement>,
-  disabled: boolean,
-  readOnly: boolean
+  reactContainers: Map<string, HTMLElement>,
+  renderToken: (props: RenderTokenProps) => React.ReactElement
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
   wrapper.setAttribute('data-type', token.pinned ? ELEMENT_TYPES.PINNED : ELEMENT_TYPES.REFERENCE);
-  const instanceId = token.id && token.id !== '' ? token.id : generateTokenId('ref');
-  wrapper.id = instanceId; // Set id on wrapper so it can be extracted later
+  const instanceId = token.id && token.id !== '' ? token.id : generateTokenId();
+  wrapper.id = instanceId;
   wrapper.setAttribute('data-menu-id', token.menuId);
 
-  const cursorSpotBefore = createCursorSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+  const caretSpotBefore = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
   const container = document.createElement('span');
   container.className = styles['token-container'];
   container.setAttribute('contenteditable', 'false');
-  container.setAttribute('data-id', instanceId); // Also keep data-id on container for React key
 
-  reactContainers.add(container);
-  renderComponent(
-    <Token key={instanceId} variant="inline" label={token.label} disabled={disabled} readOnly={readOnly} />,
-    container
-  );
-  const cursorSpotAfter = createCursorSpot(ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+  reactContainers.set(instanceId, container);
+  renderComponent(renderToken({ id: instanceId, label: token.label, disabled: false, readOnly: false }), container);
+  const caretSpotAfter = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_AFTER);
 
-  wrapper.appendChild(cursorSpotBefore);
+  wrapper.appendChild(caretSpotBefore);
   wrapper.appendChild(container);
-  wrapper.appendChild(cursorSpotAfter);
+  wrapper.appendChild(caretSpotAfter);
 
   return wrapper;
 }
 
-// MAIN RENDERING
-
+/**
+ * Renders tokens into a contentEditable element using direct DOM manipulation.
+ * @param tokens token array to render
+ * @param targetElement the contentEditable container
+ * @param reactContainers map tracking React portal containers by token ID
+ * @param renderToken callback to render reference tokens as React elements
+ */
 export function renderTokensToDOM(
   tokens: readonly PromptInputProps.InputToken[],
   targetElement: HTMLElement,
-  reactContainers: Set<HTMLElement>,
-  options?: {
-    disabled?: boolean;
-    readOnly?: boolean;
-  }
+  reactContainers: Map<string, HTMLElement>,
+  renderToken: (props: RenderTokenProps) => React.ReactElement
 ): {
   newTriggerElement: HTMLElement | null;
   lastReferenceWithZwnj: HTMLElement | null;
 } {
-  const { disabled = false, readOnly = false } = options || {};
   const existingContainers = new Map<string, HTMLElement>();
-  reactContainers.forEach(container => {
-    const instanceId = container.getAttribute('data-id');
-    // Only include containers that are descendants of this targetElement
-    if (instanceId && container.isConnected && targetElement.contains(container)) {
+  reactContainers.forEach((container, instanceId) => {
+    if (container.isConnected && targetElement.contains(container)) {
       existingContainers.set(instanceId, container);
     }
   });
   reactContainers.clear();
 
-  // Track existing trigger elements to reuse them
   const existingTriggers = new Map<string, HTMLElement>();
   findElements(targetElement, { tokenType: ELEMENT_TYPES.TRIGGER }).forEach(el => {
-    const id = el.id; // Use standard id attribute
+    const id = el.id;
     if (id) {
       existingTriggers.set(id, el);
     }
@@ -293,13 +184,11 @@ export function renderTokensToDOM(
 
     if (pIndex < existingParagraphs.length) {
       p = existingParagraphs[pIndex];
-      // Don't clear innerHTML - we'll do selective updates below
     } else {
       p = createParagraph();
       targetElement.appendChild(p);
     }
 
-    // Build new content for this paragraph
     const newNodes: Node[] = [];
 
     for (let i = 0; i < paragraphGroup.tokens.length; i++) {
@@ -311,24 +200,21 @@ export function renderTokensToDOM(
         }
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
-        const triggerId = token.id && token.id !== '' ? token.id : generateTokenId('trigger');
+        const triggerId = token.id && token.id !== '' ? token.id : generateTokenId();
         const isNewTrigger = !existingTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
 
         if (existingTriggers.has(triggerId)) {
-          // Reuse existing trigger element and update its content
           span = existingTriggers.get(triggerId)!;
           span.textContent = token.triggerChar + token.value;
-          // Set class only when there's filter text
           span.className = hasFilterText ? styles['trigger-token'] : '';
           existingTriggers.delete(triggerId);
         } else {
-          // Create new trigger element
           span = document.createElement('span');
           span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
-          // Set class only when there's filter text
           span.className = hasFilterText ? styles['trigger-token'] : '';
-          span.id = triggerId; // Use standard id attribute for dropdown anchoring
+          span.id = triggerId;
+          span.setAttribute('data-id', triggerId);
           span.textContent = token.triggerChar + token.value;
         }
 
@@ -340,13 +226,11 @@ export function renderTokensToDOM(
       } else if (isReferenceToken(token)) {
         const existingContainer = token.id ? existingContainers.get(token.id) : undefined;
         if (existingContainer) {
-          // Get the wrapper from the container (container.parentElement should be the wrapper)
           const existingWrapper = existingContainer.parentElement;
           if (existingWrapper) {
             const tokenType = getTokenType(existingWrapper);
-            if (tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED) {
-              // Reuse existing wrapper completely - don't re-render React component
-              reactContainers.add(existingContainer); // Keep tracking the container
+            if (isReferenceElementType(tokenType)) {
+              reactContainers.set(token.id!, existingContainer);
 
               newNodes.push(existingWrapper);
               existingContainers.delete(token.id!);
@@ -356,7 +240,7 @@ export function renderTokensToDOM(
           }
         }
 
-        const wrapper = createReferenceWithCursorSpots(token, reactContainers, disabled, readOnly);
+        const wrapper = createReferenceWithCaretSpots(token, reactContainers, renderToken);
         newNodes.push(wrapper);
         lastReferenceWithZwnj = wrapper;
       }
@@ -366,10 +250,8 @@ export function renderTokensToDOM(
       newNodes.push(createTrailingBreak());
     }
 
-    // Efficiently update paragraph children by comparing with existing nodes
     const existingNodes = Array.from(p.childNodes);
 
-    // Check if nodes are already in the correct order
     let nodesMatch = existingNodes.length === newNodes.length;
     if (nodesMatch) {
       for (let i = 0; i < newNodes.length; i++) {
@@ -380,40 +262,31 @@ export function renderTokensToDOM(
       }
     }
 
-    // Skip DOM manipulation if nodes are already correct
     if (nodesMatch) {
       continue;
     }
 
-    // Remove nodes that are no longer needed
     for (let i = newNodes.length; i < existingNodes.length; i++) {
       existingNodes[i].remove();
     }
 
-    // Update or append nodes
     for (let i = 0; i < newNodes.length; i++) {
       const newNode = newNodes[i];
       const existingNode = existingNodes[i];
 
       if (existingNode === newNode) {
-        // Node is already in the right position, skip
         continue;
       }
 
-      // Check if existingNode was moved (is now in newNodes at a different position)
       if (existingNode && newNodes.includes(existingNode)) {
-        // Don't replace - the existing node was moved elsewhere
-        // Just append the new node
         if (i < p.childNodes.length) {
           p.insertBefore(newNode, p.childNodes[i]);
         } else {
           p.appendChild(newNode);
         }
       } else if (existingNode) {
-        // Replace existing node with new node
         p.replaceChild(newNode, existingNode);
       } else {
-        // Append new node
         p.appendChild(newNode);
       }
     }
@@ -422,8 +295,6 @@ export function renderTokensToDOM(
   while (targetElement.children.length > paragraphGroups.length) {
     targetElement.removeChild(targetElement.lastChild!);
   }
-
-  normalizeParagraphsAfterRender(targetElement);
 
   return { newTriggerElement, lastReferenceWithZwnj };
 }

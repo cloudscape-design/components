@@ -1,23 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
 
-// DOM TYPE GUARDS
-
-export function isHTMLElement(node: Node | null | undefined): node is HTMLElement {
-  return node?.nodeType === Node.ELEMENT_NODE;
-}
-
+/** Checks if a node is a Text node. */
 export function isTextNode(node: Node | null): node is Text {
   return node?.nodeType === Node.TEXT_NODE;
 }
 
 /**
- * Type guard to check if a node is a BR element, optionally with a specific data-id
- * @param node The node to check
- * @param dataId Optional data-id to match (e.g., ELEMENT_TYPES.TRAILING_BREAK)
- * @returns True if the node is a BR element (and matches the data-id if provided)
+ * Checks if a node is a BR element, optionally matching a specific data-id.
+ * @param dataId optional data-id to match (e.g., ELEMENT_TYPES.TRAILING_BREAK)
  */
 export function isBRElement(node: Node | null | undefined, dataId?: string): node is HTMLBRElement {
   if (node?.nodeName !== 'BR' || !isHTMLElement(node)) {
@@ -28,8 +22,6 @@ export function isBRElement(node: Node | null | undefined, dataId?: string): nod
   }
   return true;
 }
-
-// TOKEN TYPE GUARDS
 
 export function isTextToken(token: PromptInputProps.InputToken): token is PromptInputProps.TextToken {
   return token.type === 'text';
