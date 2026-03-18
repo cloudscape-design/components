@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useDensityMode, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -84,7 +85,38 @@ const InternalPromptInput = React.forwardRef(
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
 
-    const effectiveActionButtonAriaLabel = i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel;
+    const i18n = useInternalI18n('prompt-input');
+    const effectiveActionButtonAriaLabel = i18n(
+      'i18nStrings.actionButtonAriaLabel',
+      i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel
+    );
+
+    const effectiveI18nStrings: PromptInputProps.I18nStrings = {
+      actionButtonAriaLabel: effectiveActionButtonAriaLabel,
+      menuErrorIconAriaLabel: i18n('i18nStrings.menuErrorIconAriaLabel', i18nStrings?.menuErrorIconAriaLabel),
+      menuRecoveryText: i18n('i18nStrings.menuRecoveryText', i18nStrings?.menuRecoveryText),
+      menuLoadingText: i18n('i18nStrings.menuLoadingText', i18nStrings?.menuLoadingText),
+      menuFinishedText: i18n('i18nStrings.menuFinishedText', i18nStrings?.menuFinishedText),
+      menuErrorText: i18n('i18nStrings.menuErrorText', i18nStrings?.menuErrorText),
+      tokenInsertedAriaLabel:
+        i18nStrings?.tokenInsertedAriaLabel ??
+        (token =>
+          i18n('i18nStrings.tokenInsertedAriaLabel', undefined, format =>
+            format({ token__label: token.label || token.value })
+          ) ?? `${token.label || token.value} inserted`),
+      tokenPinnedAriaLabel:
+        i18nStrings?.tokenPinnedAriaLabel ??
+        (token =>
+          i18n('i18nStrings.tokenPinnedAriaLabel', undefined, format =>
+            format({ token__label: token.label || token.value })
+          ) ?? `${token.label || token.value} pinned`),
+      tokenRemovedAriaLabel:
+        i18nStrings?.tokenRemovedAriaLabel ??
+        (token =>
+          i18n('i18nStrings.tokenRemovedAriaLabel', undefined, format =>
+            format({ token__label: token.label || token.value })
+          ) ?? `${token.label || token.value} removed`),
+    };
 
     const isTokenMode = !!menus;
     const value = valueProp ?? '';
@@ -179,7 +211,7 @@ const InternalPromptInput = React.forwardRef(
       onMenuItemSelect,
       onMenuFilter,
       onMenuLoadItems,
-      i18nStrings,
+      i18nStrings: effectiveI18nStrings,
       adjustInputHeight,
     });
 
@@ -284,21 +316,17 @@ const InternalPromptInput = React.forwardRef(
         event.preventDefault();
         fireNonCancelableEvent(onAction, {
           value: plainTextValue,
-          ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
         });
       }
     };
 
     const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (isTokenMode) {
-        tokenMode.markTokensAsSent([...(tokens ?? [])]);
+        tokenMode.markTokensAsSent(tokens ?? []);
       }
       const detail: PromptInputProps.ChangeDetail = {
         value: event.target.value,
       };
-      if (isTokenMode) {
-        detail.tokens = [...(tokens ?? [])];
-      }
       fireNonCancelableEvent(onChange, detail);
       adjustInputHeight();
     };
@@ -352,7 +380,7 @@ const InternalPromptInput = React.forwardRef(
             onClick={() => {
               fireNonCancelableEvent(onAction, {
                 value: plainTextValue,
-                ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
+                ...(isTokenMode && { tokens: tokens ?? [] }),
               });
             }}
             variant="icon"
@@ -415,7 +443,7 @@ const InternalPromptInput = React.forwardRef(
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}
-              i18nStrings={i18nStrings}
+              i18nStrings={effectiveI18nStrings}
             />
           ) : (
             <TextareaMode

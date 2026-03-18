@@ -183,7 +183,7 @@ const topicOptions: (OptionDefinition | OptionGroup)[] = [
 ];
 
 export default function PromptInputShortcutsPage() {
-  const [tokens, setTokens] = useState<PromptInputProps.InputToken[]>([]);
+  const [tokens, setTokens] = useState<readonly PromptInputProps.InputToken[]>([]);
   const [plainTextValue, setPlainTextValue] = useState<string>('');
   const [files, setFiles] = useState<File[]>([]);
   const [extractedText, setExtractedText] = useState<string>('');

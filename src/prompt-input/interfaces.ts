@@ -51,6 +51,7 @@ export interface PromptInputProps
    * - Represents the current text content of the textarea
    */
   value?: string;
+
   /**
    * Specifies the content of the prompt input when using token mode.
    *
@@ -189,10 +190,20 @@ export interface PromptInputProps
   disableSecondaryContentPaddings?: boolean;
 
   /**
-   * Menus that can be triggered via specific symbols (e.g., "/" or "@").
-   * For menus only relevant to triggers at the start of the input, set `useAtStart: true`, defaults to `false`.
+   * Defines trigger-based menus that appear when the user types a specific character (e.g., `@` or `/`).
+   * Each menu definition maps a trigger character to a list of selectable options.
    *
    * Requires React 18.
+   *
+   * #### MenuDefinition
+   * - `id` (string) - Unique identifier for this menu. Used in event callbacks to identify the menu.
+   * - `trigger` (string) - The character that activates this menu (e.g., `@`, `/`, `#`).
+   * - `options` (Option[] | OptionGroup[]) - The selectable items shown in the dropdown.
+   * - `useAtStart` (boolean) - (Optional) When true, the trigger is only detected at the start of the input and after any pinned tokens. Selected options become pinned reference tokens. Defaults to false.
+   * - `filteringType` (`'auto'` | `'manual'`) - (Optional) How filtering is applied. `auto` filters options client-side based on typed text. `manual` disables built-in filtering — use `onMenuFilter` to provide filtered options. Defaults to `auto`.
+   * - `statusType` (`'pending'` | `'loading'` | `'finished'` | `'error'`) - (Optional) The loading status of the menu options. Use with `onMenuLoadItems` for async loading.
+   * - `empty` (string) - (Optional) Text shown when no options match the filter.
+   * - `virtualScroll` (boolean) - (Optional) Enables virtual scrolling for large option lists.
    */
   menus?: PromptInputProps.MenuDefinition[];
 
@@ -268,7 +279,7 @@ export interface PromptInputProps
    * - `menuLoadingText` (string) - Specifies the text to display when menus are in a loading state.
    * - `menuFinishedText` (string) - Specifies the text to display when menus have finished loading all items.
    * - `menuErrorText` (string) - Specifies the text to display when menus encounter an error while loading.
-   * - `selectedMenuItemAriaLabel` (string) - Specifies the localized string that describes an option as being selected.
+   * - `selectedMenuItemAriaLabel` (string) - Specifies the string that describes an option as being selected.
    * - `tokenInsertedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is inserted from a menu. Receives the token object with label and value properties.
    * - `tokenPinnedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is pinned (inserted at the start). Receives the token object with label and value properties.
    * - `tokenRemovedAriaLabel` ((token: { label?: string; value: string }) => string) - Aria label announced when a reference token is removed. Receives the token object with label and value properties.
@@ -372,12 +383,12 @@ export namespace PromptInputProps {
 
   export interface ChangeDetail {
     value: string;
-    tokens?: InputToken[];
+    tokens?: readonly InputToken[];
   }
 
   export interface ActionDetail {
     value: string;
-    tokens?: InputToken[];
+    tokens?: readonly InputToken[];
   }
 
   export interface MenuItemSelectDetail {

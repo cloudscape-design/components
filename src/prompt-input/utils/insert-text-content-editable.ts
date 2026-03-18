@@ -3,7 +3,7 @@
 
 import { isHTMLElement } from '../../internal/utils/dom';
 import { CaretController } from '../core/caret-controller';
-import { ELEMENT_TYPES } from '../core/constants';
+import { ElementType } from '../core/constants';
 import { getTokenType } from '../core/dom-utils';
 import { isTextNode } from '../core/type-guards';
 
@@ -49,7 +49,7 @@ export function insertTextIntoContentEditable(
 
         if (isTextNode(container) && range.startOffset === 0) {
           const prevSibling = container.previousSibling;
-          if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ELEMENT_TYPES.TRIGGER) {
+          if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
             const triggerText = prevSibling.textContent || '';
             const triggerTextNode = prevSibling.childNodes[0];
             if (isTextNode(triggerTextNode)) {

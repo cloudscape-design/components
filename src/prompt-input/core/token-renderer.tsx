@@ -36,7 +36,7 @@ import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 
 import { PromptInputProps } from '../interfaces';
-import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
+import { ElementType, SPECIAL_CHARS } from './constants';
 import {
   createParagraph,
   createTrailingBreak,
@@ -102,12 +102,12 @@ function groupTokensIntoParagraphs(tokens: readonly PromptInputProps.InputToken[
   return paragraphs;
 }
 
-/** Creates an invisible span with a ZWNJ character to provide a valid caret position next to reference tokens. */
+/** Creates an invisible span with a zero-width character to provide a valid caret position next to reference tokens. */
 function createCaretSpot(type: string): HTMLSpanElement {
   const caretSpot = document.createElement('span');
   caretSpot.setAttribute('data-type', type);
   caretSpot.setAttribute('contenteditable', 'true');
-  caretSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZWNJ));
+  caretSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER));
   return caretSpot;
 }
 
@@ -117,12 +117,12 @@ function createReferenceWithCaretSpots(
   renderToken: (props: RenderTokenProps) => React.ReactElement
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
-  wrapper.setAttribute('data-type', token.pinned ? ELEMENT_TYPES.PINNED : ELEMENT_TYPES.REFERENCE);
+  wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
   const instanceId = token.id && token.id !== '' ? token.id : generateTokenId();
   wrapper.id = instanceId;
   wrapper.setAttribute('data-menu-id', token.menuId);
 
-  const caretSpotBefore = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+  const caretSpotBefore = createCaretSpot(ElementType.CaretSpotBefore);
   const element = document.createElement('span');
   element.className = styles['token-container'];
   element.setAttribute('contenteditable', 'false');
@@ -131,7 +131,7 @@ function createReferenceWithCaretSpots(
   const container: ReactContainer = { element, root };
   reactContainers.set(instanceId, container);
   renderComponent(renderToken({ id: instanceId, label: token.label, disabled: false, readOnly: false }), container);
-  const caretSpotAfter = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+  const caretSpotAfter = createCaretSpot(ElementType.CaretSpotAfter);
 
   wrapper.appendChild(caretSpotBefore);
   wrapper.appendChild(element);
@@ -154,7 +154,7 @@ export function renderTokensToDOM(
   renderToken: (props: RenderTokenProps) => React.ReactElement
 ): {
   newTriggerElement: HTMLElement | null;
-  lastReferenceWithZwnj: HTMLElement | null;
+  lastReferenceWithCaretSpots: HTMLElement | null;
 } {
   const existingContainers = new Map<string, ReactContainer>();
   reactContainers.forEach((container, instanceId) => {
@@ -168,7 +168,7 @@ export function renderTokensToDOM(
   reactContainers.clear();
 
   const existingTriggers = new Map<string, HTMLElement>();
-  findElements(targetElement, { tokenType: ELEMENT_TYPES.TRIGGER }).forEach(el => {
+  findElements(targetElement, { tokenType: ElementType.Trigger }).forEach(el => {
     const id = el.id;
     if (id) {
       existingTriggers.set(id, el);
@@ -179,7 +179,7 @@ export function renderTokensToDOM(
   const paragraphGroups = groupTokensIntoParagraphs(tokens);
 
   let newTriggerElement: HTMLElement | null = null;
-  let lastReferenceWithZwnj: HTMLElement | null = null;
+  let lastReferenceWithCaretSpots: HTMLElement | null = null;
 
   for (let pIndex = 0; pIndex < paragraphGroups.length; pIndex++) {
     const paragraphGroup = paragraphGroups[pIndex];
@@ -214,7 +214,7 @@ export function renderTokensToDOM(
           existingTriggers.delete(triggerId);
         } else {
           span = document.createElement('span');
-          span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+          span.setAttribute('data-type', ElementType.Trigger);
           span.className = hasFilterText ? styles['trigger-token'] : '';
           span.id = triggerId;
           span.setAttribute('data-id', triggerId);
@@ -237,7 +237,7 @@ export function renderTokensToDOM(
 
               newNodes.push(existingWrapper);
               existingContainers.delete(token.id!);
-              lastReferenceWithZwnj = existingWrapper;
+              lastReferenceWithCaretSpots = existingWrapper;
               continue;
             }
           }
@@ -245,7 +245,7 @@ export function renderTokensToDOM(
 
         const wrapper = createReferenceWithCaretSpots(token, reactContainers, renderToken);
         newNodes.push(wrapper);
-        lastReferenceWithZwnj = wrapper;
+        lastReferenceWithCaretSpots = wrapper;
       }
     }
 
@@ -299,5 +299,5 @@ export function renderTokensToDOM(
     targetElement.removeChild(targetElement.lastChild!);
   }
 
-  return { newTriggerElement, lastReferenceWithZwnj };
+  return { newTriggerElement, lastReferenceWithCaretSpots };
 }

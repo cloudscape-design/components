@@ -4,7 +4,7 @@
 // Mock styles.css.js since it's a build artifact not available in unit tests
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
-import { ELEMENT_TYPES, SPECIAL_CHARS } from '../core/constants';
+import { ElementType, SPECIAL_CHARS } from '../core/constants';
 import {
   detectTriggersInTokens,
   extractTokensFromDOM,
@@ -59,8 +59,8 @@ describe('getPromptText', () => {
     expect(getPromptText([text('hello '), trigger('user', '@')])).toBe('hello @user');
   });
 
-  test('uses value for reference tokens', () => {
-    expect(getPromptText([text('hi '), ref('r1', '@Alice', 'user-1', 'mentions')])).toBe('hi user-1');
+  test('uses label for reference tokens', () => {
+    expect(getPromptText([text('hi '), ref('r1', '@Alice', 'user-1', 'mentions')])).toBe('hi @Alice');
   });
 
   test('handles break tokens', () => {
@@ -77,7 +77,7 @@ describe('getPromptText', () => {
       text('hello '),
       trigger('us', '@'),
     ];
-    expect(getPromptText(tokens)).toBe('file-1hello @us');
+    expect(getPromptText(tokens)).toBe('#file.ts hello @us');
   });
 });
 
@@ -121,7 +121,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const br = document.createElement('br');
-    br.setAttribute('data-id', ELEMENT_TYPES.TRAILING_BREAK);
+    br.setAttribute('data-id', ElementType.TrailingBreak);
     p.appendChild(br);
     el.appendChild(p);
 
@@ -155,7 +155,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     triggerSpan.id = 'trigger-1';
     triggerSpan.textContent = '@user';
     p.appendChild(triggerSpan);
@@ -172,7 +172,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
@@ -192,7 +192,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const pinnedSpan = document.createElement('span');
-    pinnedSpan.setAttribute('data-type', ELEMENT_TYPES.PINNED);
+    pinnedSpan.setAttribute('data-type', ElementType.Pinned);
     pinnedSpan.setAttribute('data-menu-id', 'mentions');
     pinnedSpan.id = 'pinned-1';
     pinnedSpan.appendChild(document.createTextNode('Alice'));
@@ -205,10 +205,10 @@ describe('extractTokensFromDOM', () => {
     expect(refToken.pinned).toBe(true);
   });
 
-  test('strips ZWNJ characters from text content', () => {
+  test('strips zero-width characters from text content', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
-    p.appendChild(document.createTextNode(`hello${SPECIAL_CHARS.ZWNJ}world`));
+    p.appendChild(document.createTextNode(`hello${SPECIAL_CHARS.ZERO_WIDTH_CHARACTER}world`));
     el.appendChild(p);
 
     const tokens = extractTokensFromDOM(el);
@@ -219,7 +219,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     // No text content = empty label
     p.appendChild(refSpan);
@@ -233,7 +233,7 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     triggerSpan.textContent = 'noTriggerChar';
     p.appendChild(triggerSpan);
     el.appendChild(p);
@@ -247,18 +247,18 @@ describe('extractTokensFromDOM', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
 
     const cursorBefore = document.createElement('span');
-    cursorBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    cursorBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     cursorBefore.textContent = 'before';
 
     const labelText = document.createTextNode('Alice');
 
     const cursorAfter = document.createElement('span');
-    cursorAfter.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+    cursorAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     cursorAfter.textContent = 'after';
 
     refSpan.appendChild(cursorBefore);
@@ -415,7 +415,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     triggerSpan.textContent = 'prefix@user';
     p.appendChild(triggerSpan);
     el.appendChild(p);
@@ -445,7 +445,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'grouped');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
@@ -465,7 +465,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     const p = document.createElement('p');
     p.appendChild(document.createTextNode('hello '));
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
@@ -502,7 +502,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     triggerSpan.textContent = '@user /cmd';
     p.appendChild(triggerSpan);
     el.appendChild(p);
@@ -518,7 +518,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     triggerSpan.textContent = '';
     p.appendChild(triggerSpan);
     el.appendChild(p);
@@ -576,7 +576,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
-    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
     // Nested trigger without whitespace before it — should NOT split
     triggerSpan.textContent = '@user/cmd';
     p.appendChild(triggerSpan);
@@ -594,15 +594,15 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-empty';
-    // Only cursor spots with ZWNJ, no actual label content
+    // Only cursor spots with zero-width characters, no actual label content
     const cursorBefore = document.createElement('span');
-    cursorBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    cursorBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     cursorBefore.textContent = '\u200C';
     const cursorAfter = document.createElement('span');
-    cursorAfter.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+    cursorAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     cursorAfter.textContent = '\u200C';
     refSpan.appendChild(cursorBefore);
     refSpan.appendChild(cursorAfter);
@@ -611,7 +611,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
 
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     // Empty label means the reference token itself is skipped,
-    // but cursor spot ZWNJ chars may produce text tokens
+    // but cursor spot zero-width chars may produce text tokens
     const refTokens = tokens.filter(t => t.type === 'reference');
     expect(refTokens).toHaveLength(0);
   });
@@ -632,7 +632,7 @@ describe('extractTokensFromDOM - advanced cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'grouped');
     refSpan.id = 'ref-notfound';
     refSpan.appendChild(document.createTextNode('NonExistentUser'));

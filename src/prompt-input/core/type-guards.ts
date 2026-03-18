@@ -11,7 +11,7 @@ export function isTextNode(node: Node | null): node is Text {
 
 /**
  * Checks if a node is a BR element, optionally matching a specific data-id.
- * @param dataId optional data-id to match (e.g., ELEMENT_TYPES.TRAILING_BREAK)
+ * @param dataId optional data-id to match (e.g., ElementType.TrailingBreak)
  */
 export function isBRElement(node: Node | null | undefined, dataId?: string): node is HTMLBRElement {
   if (node?.nodeName !== 'BR' || !isHTMLElement(node)) {

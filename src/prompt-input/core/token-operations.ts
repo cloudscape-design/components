@@ -5,7 +5,7 @@ import { OptionDefinition, OptionGroup } from '../../internal/components/option/
 import { isHTMLElement } from '../../internal/utils/dom';
 import type { PromptInputProps } from '../interfaces';
 import { calculateTokenPosition } from './caret-controller';
-import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
+import { ElementType, SPECIAL_CHARS } from './constants';
 import {
   findAllParagraphs,
   findElement,
@@ -13,10 +13,11 @@ import {
   getTokenType,
   isCaretSpotType,
   isReferenceElementType,
-  stripZWNJ,
+  stripZeroWidthCharacters,
 } from './dom-utils';
 import { detectTriggersInText, mergeConsecutiveTextTokens } from './token-utils';
 import {
+  isBreakTextToken,
   isBRElement,
   isPinnedReferenceToken,
   isReferenceToken,
@@ -77,7 +78,7 @@ export function extractTokensFromDOM(
   // Special case: single empty paragraph = empty input
   if (paragraphs.length === 1) {
     const p = paragraphs[0];
-    const hasOnlyTrailingBr = p.childNodes.length === 1 && isBRElement(p.firstChild, ELEMENT_TYPES.TRAILING_BREAK);
+    const hasOnlyTrailingBr = p.childNodes.length === 1 && isBRElement(p.firstChild, ElementType.TrailingBreak);
 
     if (hasOnlyTrailingBr) {
       return [];
@@ -114,7 +115,7 @@ function extractTokensFromNode(
   menus?: readonly PromptInputProps.MenuDefinition[]
 ): PromptInputProps.InputToken[] {
   if (isTextNode(node)) {
-    const text = stripZWNJ(node.textContent || '');
+    const text = stripZeroWidthCharacters(node.textContent || '');
     return text ? [{ type: 'text', value: text }] : [];
   }
 
@@ -128,7 +129,7 @@ function extractTokensFromNode(
 
   const tokenType = getTokenType(node);
 
-  if (tokenType === ELEMENT_TYPES.TRIGGER) {
+  if (tokenType === ElementType.Trigger) {
     return extractTriggerTokens(node, menus);
   }
 
@@ -219,9 +220,9 @@ function extractReferenceToken(
   const tokens: PromptInputProps.InputToken[] = [];
 
   // Text from cursor-spot-before
-  const cursorSpotBefore = findElement(node, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_BEFORE });
+  const cursorSpotBefore = findElement(node, { tokenType: ElementType.CaretSpotBefore });
   if (cursorSpotBefore) {
-    const beforeText = stripZWNJ(cursorSpotBefore.textContent || '');
+    const beforeText = stripZeroWidthCharacters(cursorSpotBefore.textContent || '');
     if (beforeText) {
       tokens.push({ type: 'text', value: beforeText });
     }
@@ -239,7 +240,7 @@ function extractReferenceToken(
       }
     }
   }
-  label = stripZWNJ(label).trim();
+  label = stripZeroWidthCharacters(label).trim();
 
   const instanceId = node.id || '';
   const menuId = node.getAttribute('data-menu-id') || '';
@@ -264,7 +265,7 @@ function extractReferenceToken(
     label,
     menuId,
   };
-  if (tokenType === ELEMENT_TYPES.PINNED) {
+  if (tokenType === ElementType.Pinned) {
     token.pinned = true;
   }
 
@@ -274,9 +275,9 @@ function extractReferenceToken(
   }
 
   // Text from cursor-spot-after
-  const cursorSpotAfter = findElement(node, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_AFTER });
+  const cursorSpotAfter = findElement(node, { tokenType: ElementType.CaretSpotAfter });
   if (cursorSpotAfter) {
-    const afterText = stripZWNJ(cursorSpotAfter.textContent || '');
+    const afterText = stripZeroWidthCharacters(cursorSpotAfter.textContent || '');
     if (afterText) {
       tokens.push({ type: 'text', value: afterText });
     }
@@ -285,15 +286,51 @@ function extractReferenceToken(
   return tokens;
 }
 
+/**
+ * Default plain text serialization for tokens.
+ * References use their label with automatic spacing between adjacent tokens.
+ */
 export function getPromptText(tokens: readonly PromptInputProps.InputToken[]): string {
-  return tokens
-    .map(token => {
-      if (isTriggerToken(token)) {
-        return token.triggerChar + token.value;
-      }
-      return token.value;
-    })
-    .join('');
+  let result = '';
+  let prevToken: PromptInputProps.InputToken | null = null;
+
+  for (const token of tokens) {
+    if (isBreakTextToken(token)) {
+      result += '\n';
+      prevToken = token;
+      continue;
+    }
+
+    let segment: string;
+    if (isTriggerToken(token)) {
+      segment = token.triggerChar + token.value;
+    } else if (isReferenceToken(token)) {
+      segment = token.label || token.value;
+    } else {
+      segment = (token as PromptInputProps.TextToken).value;
+    }
+
+    if (segment.length === 0) {
+      continue;
+    }
+
+    // Insert a space between a reference and its neighbor when neither side has whitespace
+    const needsSpace =
+      result.length > 0 &&
+      !result.endsWith(' ') &&
+      !result.endsWith('\n') &&
+      !segment.startsWith(' ') &&
+      (isReferenceToken(token) || (prevToken && isReferenceToken(prevToken)));
+
+    if (needsSpace) {
+      result += ' ';
+    }
+
+    result += segment;
+    prevToken = token;
+  }
+
+  return result;
 }
 
 export function findLastPinnedTokenIndex(tokens: readonly PromptInputProps.InputToken[]): number {
