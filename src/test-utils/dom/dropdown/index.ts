@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { act } from '@cloudscape-design/test-utils-core/utils-dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../dropdown/styles.selectors.js';
 import testutilStyles from '../../../dropdown/test-classes/styles.selectors.js';
@@ -97,19 +96,5 @@ export default class DropdownWrapper extends ComponentWrapper {
    */
   isOpen(options = { expandToViewport: false }): boolean {
     return this.findOpenDropdown(options) !== null;
-  }
-
-  /**
-   * Clicks the trigger element.
-   */
-  @usesDom
-  clickTrigger(): void {
-    act(() => {
-      const trigger = this.findTrigger().getElement().firstElementChild as HTMLElement | null;
-      if (!trigger) {
-        throw new Error('No trigger element found inside the trigger wrapper');
-      }
-      trigger.click();
-    });
   }
 }

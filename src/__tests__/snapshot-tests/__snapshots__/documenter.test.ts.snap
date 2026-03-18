@@ -37252,15 +37252,6 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Clicks the trigger element.",
-          "name": "clickTrigger",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "void",
-          },
-        },
-        {
           "description": "Returns the dropdown content element.",
           "name": "findContent",
           "parameters": [

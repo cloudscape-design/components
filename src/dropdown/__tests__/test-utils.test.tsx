@@ -95,18 +95,4 @@ describe('test utils', () => {
       expect(wrapper.isOpen({ expandToViewport: true })).toBe(true);
     });
   });
-
-  describe('clickTrigger', () => {
-    test('fires a click event on the trigger element', () => {
-      const onClick = jest.fn();
-      const { wrapper } = renderDropdown({ trigger: <button onClick={onClick} /> });
-      wrapper.clickTrigger();
-      expect(onClick).toHaveBeenCalledTimes(1);
-    });
-
-    test('throws an error when no trigger element is present', () => {
-      const { wrapper } = renderDropdown({ trigger: <></> });
-      expect(() => wrapper.clickTrigger()).toThrow('No trigger element found inside the trigger wrapper');
-    });
-  });
 });
