@@ -82,13 +82,13 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
 
 export interface DropdownProps extends ExpandToViewport {
   /**
-   * The trigger element that opens/closes the dropdown
+   * The trigger element that opens/closes the dropdown.
    */
   trigger: React.ReactNode;
 
   /**
    * Optional header content that stays fixed at the top while
-   * scrolling dropdown content
+   * scrolling dropdown content.
    */
   header?: React.ReactNode;
 
@@ -100,7 +100,7 @@ export interface DropdownProps extends ExpandToViewport {
   footer?: React.ReactNode;
 
   /**
-   * Main content of the dropdown
+   * Main content of the dropdown.
    */
   content?: React.ReactNode;
 
@@ -111,29 +111,27 @@ export interface DropdownProps extends ExpandToViewport {
 
   /**
    * Called when the user clicks outside the dropdown. The dropdown does not
-   * close automatically - the parent component must update the `open` prop to
-   * actually close the dropdown.
+   * close automatically - the `open` prop needs to be updated to actually close
+   * the dropdown.
    */
   onOutsideClick?: NonCancelableEventHandler<null>;
 
   /**
-   * Minimum width constraint for the dropdown.
-   * - Number: minimum width in pixels
-   * - undefined: no maximum constraint (natural content sizing)
+   * Minimum width for the dropdown in pixels. If no value is specified, the
+   * dropdown will shrink to fit its content.
    */
   minWidth?: number;
 
   /**
-   * Maximum width constraint for the dropdown.
-   * - Number: maximum width in pixels
-   * - undefined: no maximum constraint (natural content sizing)
+   * Maximum width for the dropdown in pixels. If no value is specified, the
+   * dropdown will expand to fit its content.
    */
   maxWidth?: number;
 
   /**
    * Called when the user presses the Escape key while the dropdown is open.
-   * The dropdown does not close automatically - the parent component
-   * must update the `open` prop to close the dropdown.
+   * The dropdown does not close automatically - the `open` prop needs to be
+   * updated to actually close the dropdown.
    */
   onEscape?: NonCancelableEventHandler;
 
