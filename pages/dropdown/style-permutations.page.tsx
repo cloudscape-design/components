@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import Button from '~components/button';
-import Dropdown from '~components/dropdown/internal';
+import Dropdown from '~components/dropdown';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';

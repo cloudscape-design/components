@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import Button from '~components/button';
-import Dropdown from '~components/dropdown/internal';
+import Dropdown from '~components/dropdown';
 
 import ListContent from './list-content';
 
