@@ -74,6 +74,10 @@
   }
 }
 
+.token-inline-toggle {
+  cursor: pointer;
+}
+
 .token-option-inline {
   max-block-size: constants.$token-max-height-inline;
 }
@@ -88,6 +92,12 @@
 
 .token-box-inline {
   @include mixins.token-box-inline-styles();
+
+  &.token-pressed {
+    background: awsui.$color-background-toggle-button-normal-pressed;
+    border-color: awsui.$color-border-toggle-button-normal-pressed;
+    color: awsui.$color-text-toggle-button-normal-pressed;
+  }
 }
 
 .disable-padding {
