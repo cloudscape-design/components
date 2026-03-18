@@ -62,6 +62,12 @@ export function createEditableState(): EditableState {
   };
 }
 
+/**
+ * Determines if the token array changed structurally and needs a DOM re-render.
+ * Only compares token types and reference IDs — not text values. Text value changes
+ * are already reflected in the contentEditable DOM by the browser; re-rendering for
+ * them would destroy the user's caret position and cause flicker.
+ */
 function shouldRerender(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
   newTokens: readonly PromptInputProps.InputToken[] | undefined
@@ -144,15 +150,11 @@ function detectTypingContext(
     currentLineIsText = currentLineTokens.length > 0 && currentLineTokens.every(isTextToken);
   }
 
-  if ((justStartedNewLine || wasCompletelyEmpty || justAfterReference) && currentLineIsText) {
-    isTypingIntoEmptyLineRef.current = true;
-  }
-
-  if (!currentLineIsText && orderedTokens && orderedTokens.length > 0) {
-    isTypingIntoEmptyLineRef.current = false;
-  }
-
   if (!orderedTokens || orderedTokens.length === 0) {
+    isTypingIntoEmptyLineRef.current = false;
+  } else if ((justStartedNewLine || wasCompletelyEmpty || justAfterReference) && currentLineIsText) {
+    isTypingIntoEmptyLineRef.current = true;
+  } else if (!currentLineIsText) {
     isTypingIntoEmptyLineRef.current = false;
   }
 
