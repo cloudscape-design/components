@@ -11594,8 +11594,8 @@ exports[`Components definition for dropdown matches the snapshot: dropdown 1`] =
     {
       "cancelable": false,
       "description": "Called when the user presses the Escape key while the dropdown is open.
-The dropdown does not close automatically - the parent component
-must update the \`open\` prop to close the dropdown.",
+The dropdown does not close automatically - the \`open\` prop needs to be
+updated to actually close the dropdown.",
       "name": "onEscape",
     },
     {
@@ -11678,8 +11678,8 @@ This includes nested interactive elements like buttons, links, or inputs.",
     {
       "cancelable": false,
       "description": "Called when the user clicks outside the dropdown. The dropdown does not
-close automatically - the parent component must update the \`open\` prop to
-actually close the dropdown.",
+close automatically - the \`open\` prop needs to be updated to actually close
+the dropdown.",
       "name": "onOutsideClick",
     },
   ],
@@ -11725,17 +11725,15 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Maximum width constraint for the dropdown.
-- Number: maximum width in pixels
-- undefined: no maximum constraint (natural content sizing)",
+      "description": "Maximum width for the dropdown in pixels. If no value is specified, the
+dropdown will expand to fit its content.",
       "name": "maxWidth",
       "optional": true,
       "type": "number",
     },
     {
-      "description": "Minimum width constraint for the dropdown.
-- Number: minimum width in pixels
-- undefined: no maximum constraint (natural content sizing)",
+      "description": "Minimum width for the dropdown in pixels. If no value is specified, the
+dropdown will shrink to fit its content.",
       "name": "minWidth",
       "optional": true,
       "type": "number",
@@ -11795,7 +11793,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
   ],
   "regions": [
     {
-      "description": "Main content of the dropdown",
+      "description": "Main content of the dropdown.",
       "isDefault": false,
       "name": "content",
     },
@@ -11808,12 +11806,12 @@ Typically used to display loading status or action buttons.",
     },
     {
       "description": "Optional header content that stays fixed at the top while
-scrolling dropdown content",
+scrolling dropdown content.",
       "isDefault": false,
       "name": "header",
     },
     {
-      "description": "The trigger element that opens/closes the dropdown",
+      "description": "The trigger element that opens/closes the dropdown.",
       "isDefault": false,
       "name": "trigger",
     },

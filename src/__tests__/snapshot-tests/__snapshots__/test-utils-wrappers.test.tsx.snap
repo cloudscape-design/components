@@ -2,11 +2,7 @@
 
 exports[`Generate test utils ElementWrapper dom ElementWrapper matches the snapshot 1`] = `
 "
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
-
 export { ElementWrapper };
 
 import AlertWrapper from './alert';
@@ -4280,9 +4276,6 @@ ElementWrapper.prototype.findClosestWizard = function() {
 };
 
 export default function wrapper(root: Element = document.body) {
-  if (document && document.body && !document.body.contains(root)) {
-    console.warn('[AwsUi] [test-utils] provided element is not part of the document body, interactions may work incorrectly')
-  };
   return new ElementWrapper(root);
 }
 "
