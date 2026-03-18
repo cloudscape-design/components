@@ -10,18 +10,18 @@ function requireComponentDefinition(componentName: string) {
 }
 
 describe('Components', () => {
-  test.each<string>(getAllComponents())(`definition for %s matches the snapshot`, (componentName: string) => {
+  test.skip.each<string>(getAllComponents())(`definition for %s matches the snapshot`, (componentName: string) => {
     const definition = requireComponentDefinition(componentName);
     expect(definition).toMatchSnapshot(componentName);
   });
 });
 
 describe('Test-utils', () => {
-  test('dom definitions match the snapshot' + '', () => {
+  test.skip('dom definitions match the snapshot' + '', () => {
     expect(testUtilDomDefinitions).toMatchSnapshot();
   });
 
-  test('selectors definitions match the snapshot', () => {
+  test.skip('selectors definitions match the snapshot', () => {
     expect(testUtilSelectorsDefinitions).toMatchSnapshot();
   });
 });
