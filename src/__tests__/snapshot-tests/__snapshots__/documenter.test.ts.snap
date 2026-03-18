@@ -40023,15 +40023,6 @@ Returns null if the component does not have menus defined.",
           },
         },
         {
-          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
-          "name": "findMenu",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "PromptInputMenuWrapper",
-          },
-        },
-        {
           "description": "Finds the native textarea element.
 
 Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
@@ -40047,6 +40038,15 @@ or the getValue()/setValue() methods instead.",
                 "name": "HTMLTextAreaElement",
               },
             ],
+          },
+        },
+        {
+          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
+          "name": "findOpenMenu",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "PromptInputMenuWrapper",
           },
         },
         {
@@ -49462,15 +49462,6 @@ Returns null if the component does not have menus defined.",
           },
         },
         {
-          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
-          "name": "findMenu",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "PromptInputMenuWrapper",
-          },
-        },
-        {
           "description": "Finds the native textarea element.
 
 Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
@@ -49481,6 +49472,15 @@ or the getValue()/setValue() methods instead.",
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
+          "name": "findOpenMenu",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "PromptInputMenuWrapper",
           },
         },
         {

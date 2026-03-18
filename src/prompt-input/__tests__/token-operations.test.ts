@@ -389,6 +389,20 @@ describe('processTokens', () => {
     const result = processTokens(tokens, {}, { source: 'user-input' });
     expect((result[0] as PromptInputProps.TriggerToken).id).toBe('existing-id');
   });
+
+  test('does not detect triggers when menus config is undefined', () => {
+    const tokens = [text('hello @user')];
+    const result = processTokens(tokens, {}, { source: 'user-input', detectTriggers: true });
+    expect(result.every(t => t.type === 'text')).toBe(true);
+  });
+
+  test('passes through text tokens unchanged when no trigger detection', () => {
+    const tokens = [text('hello'), brk(), text('world')];
+    const result = processTokens(tokens, {}, { source: 'external' });
+    expect(result).toHaveLength(3);
+    expect(result[0]).toEqual(expect.objectContaining({ type: 'text', value: 'hello' }));
+    expect(result[1]).toEqual(expect.objectContaining({ type: 'break' }));
+  });
 });
 
 describe('extractTokensFromDOM - advanced cases', () => {
@@ -511,5 +525,125 @@ describe('extractTokensFromDOM - advanced cases', () => {
 
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toHaveLength(0);
+  });
+
+  test('returns empty array for single paragraph with only a plain BR (not trailing-break)', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    // A plain BR without data-id=trailing-break should NOT be treated as empty
+    p.appendChild(document.createElement('br'));
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el);
+    // Plain BR is skipped by extractTokensFromNode, so paragraph yields no tokens
+    expect(tokens).toHaveLength(0);
+  });
+
+  test('handles comment node inside paragraph (non-text, non-HTMLElement)', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode('hello'));
+    p.appendChild(document.createComment('a comment'));
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el);
+    expect(tokens).toEqual([text('hello')]);
+  });
+
+  test('recurses into unknown element types', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const unknownSpan = document.createElement('span');
+    // No data-type attribute — unknown element
+    unknownSpan.appendChild(document.createTextNode('nested text'));
+    p.appendChild(unknownSpan);
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el);
+    expect(tokens).toEqual([text('nested text')]);
+  });
+
+  test('handles nested trigger without space before it (no split)', () => {
+    const slashMenu: PromptInputProps.MenuDefinition = {
+      id: 'commands',
+      trigger: '/',
+      options: [],
+    };
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const triggerSpan = document.createElement('span');
+    triggerSpan.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    // Nested trigger without whitespace before it — should NOT split
+    triggerSpan.textContent = '@user/cmd';
+    p.appendChild(triggerSpan);
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el, [mentionsMenu, slashMenu]);
+    // The @ trigger is found first; the / is inside the filter text without preceding space
+    const triggerTokens = tokens.filter(t => t.type === 'trigger');
+    expect(triggerTokens).toHaveLength(1);
+    expect((triggerTokens[0] as PromptInputProps.TriggerToken).triggerChar).toBe('@');
+  });
+
+  test('extractReferenceToken skips reference token when label is empty (only cursor spots)', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-empty';
+    // Only cursor spots with ZWNJ, no actual label content
+    const cursorBefore = document.createElement('span');
+    cursorBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    cursorBefore.textContent = '\u200C';
+    const cursorAfter = document.createElement('span');
+    cursorAfter.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+    cursorAfter.textContent = '\u200C';
+    refSpan.appendChild(cursorBefore);
+    refSpan.appendChild(cursorAfter);
+    p.appendChild(refSpan);
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    // Empty label means the reference token itself is skipped,
+    // but cursor spot ZWNJ chars may produce text tokens
+    const refTokens = tokens.filter(t => t.type === 'reference');
+    expect(refTokens).toHaveLength(0);
+  });
+
+  test('findOptionInMenu returns undefined when option not found in grouped menu', () => {
+    const groupedMenu: PromptInputProps.MenuDefinition = {
+      id: 'grouped',
+      trigger: '@',
+      options: [
+        {
+          label: 'Team A',
+          options: [{ value: 'user-a1', label: 'Alice' }],
+        } as any,
+      ],
+    };
+
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    refSpan.setAttribute('data-menu-id', 'grouped');
+    refSpan.id = 'ref-notfound';
+    refSpan.appendChild(document.createTextNode('NonExistentUser'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el, [groupedMenu]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    // Option not found, so value stays empty and label is the raw text
+    expect(refToken.value).toBe('');
+    expect(refToken.label).toBe('NonExistentUser');
   });
 });

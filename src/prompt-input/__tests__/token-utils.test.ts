@@ -261,6 +261,11 @@ describe('detectTriggersInText', () => {
     expect(result[0].type).toBe('trigger');
   });
 
+  test('returns text token for empty string input', () => {
+    const result = detectTriggersInText('', [mentionsMenu], []);
+    expect(result).toEqual([{ type: 'text', value: '' }]);
+  });
+
   test('detects multiple triggers from different menus', () => {
     const slashMenu: PromptInputProps.MenuDefinition = {
       id: 'commands',

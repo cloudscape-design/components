@@ -37,7 +37,7 @@ import { extractTokensFromDOM, getPromptText, handleMenuSelection, processTokens
 import { RenderTokenProps, renderTokensToDOM } from '../core/token-renderer';
 import { enforcePinnedTokenOrdering, mergeConsecutiveTextTokens } from '../core/token-utils';
 import {
-  isBreakToken,
+  isBreakTextToken,
   isPinnedReferenceToken,
   isReferenceToken,
   isTextNode,
@@ -127,7 +127,7 @@ function detectTypingContext(
   isTypingIntoEmptyLineRef: React.MutableRefObject<boolean>
 ): boolean {
   const prevLastToken = lastRenderedTokens?.[lastRenderedTokens.length - 1];
-  const justStartedNewLine = prevLastToken && isBreakToken(prevLastToken);
+  const justStartedNewLine = prevLastToken && isBreakTextToken(prevLastToken);
   const wasCompletelyEmpty = !lastRenderedTokens || lastRenderedTokens.length === 0;
   const justAfterReference = prevLastToken && isReferenceToken(prevLastToken);
 
@@ -135,7 +135,7 @@ function detectTypingContext(
   if (orderedTokens && orderedTokens.length > 0) {
     let lastBreakIndex = -1;
     for (let i = orderedTokens.length - 1; i >= 0; i--) {
-      if (isBreakToken(orderedTokens[i])) {
+      if (isBreakTextToken(orderedTokens[i])) {
         lastBreakIndex = i;
         break;
       }

@@ -193,6 +193,14 @@ describe('isElementEffectivelyEmpty', () => {
     el.appendChild(document.createElement('span'));
     expect(isElementEffectivelyEmpty(el)).toBe(false);
   });
+
+  test('returns true for element with only BR and whitespace text nodes', () => {
+    const el = document.createElement('p');
+    el.appendChild(document.createTextNode('   '));
+    el.appendChild(document.createElement('br'));
+    el.appendChild(document.createTextNode(''));
+    expect(isElementEffectivelyEmpty(el)).toBe(true);
+  });
 });
 
 describe('hasOnlyTrailingBR', () => {

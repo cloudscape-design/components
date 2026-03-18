@@ -27,7 +27,7 @@ export function isTextToken(token: PromptInputProps.InputToken): token is Prompt
   return token.type === 'text';
 }
 
-export function isBreakToken(token: PromptInputProps.InputToken): token is PromptInputProps.TextToken {
+export function isBreakTextToken(token: PromptInputProps.InputToken): token is PromptInputProps.TextToken {
   return token.type === 'break';
 }
 

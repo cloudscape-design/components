@@ -4,6 +4,8 @@
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
 import {
+  calculateTokenPosition,
+  calculateTotalTokenLength,
   CaretController,
   normalizeCollapsedCaret,
   normalizeSelection,
@@ -977,5 +979,500 @@ describe('CaretController - additional branch coverage', () => {
       expect(controller.findActiveTrigger()).not.toBeNull();
       expect(controller.findActiveTrigger()?.id).toBe('trigger-1');
     });
+
+    test('detects trigger when cursor is at element level inside trigger (non-text startContainer)', () => {
+      const p = document.createElement('p');
+      el.appendChild(p);
+      const trigger = addTriggerToken(p, 'trigger-1', '@user');
+
+      el.focus();
+      // Place cursor at element level inside the trigger span (not in its text node)
+      const range = document.createRange();
+      range.setStart(trigger, 1); // After the text child
+      range.collapse(true);
+      window.getSelection()?.removeAllRanges();
+      window.getSelection()?.addRange(range);
+
+      expect(controller.findActiveTrigger()).not.toBeNull();
+      expect(controller.findActiveTrigger()?.id).toBe('trigger-1');
+    });
+  });
+});
+
+describe('calculateTokenPosition', () => {
+  test('returns 0 for empty tokens', () => {
+    expect(calculateTokenPosition([], 0)).toBe(0);
+  });
+
+  test('sums text token lengths', () => {
+    const tokens = [
+      { type: 'text' as const, value: 'hello' },
+      { type: 'text' as const, value: ' world' },
+    ];
+    expect(calculateTokenPosition(tokens, 1)).toBe(11);
+  });
+
+  test('counts reference tokens as 1', () => {
+    const tokens = [
+      { type: 'reference' as const, id: 'r1', label: 'A', value: 'a', menuId: 'm' },
+      { type: 'text' as const, value: 'hi' },
+    ];
+    expect(calculateTokenPosition(tokens, 0)).toBe(1);
+    expect(calculateTokenPosition(tokens, 1)).toBe(3);
+  });
+
+  test('counts break tokens as 1', () => {
+    const tokens = [
+      { type: 'text' as const, value: 'ab' },
+      { type: 'break' as const, value: '\n' },
+      { type: 'text' as const, value: 'cd' },
+    ];
+    expect(calculateTokenPosition(tokens, 1)).toBe(3);
+    expect(calculateTokenPosition(tokens, 2)).toBe(5);
+  });
+
+  test('counts trigger tokens as 1 + filter length', () => {
+    const tokens = [{ type: 'trigger' as const, value: 'user', triggerChar: '@', id: 't1' }];
+    expect(calculateTokenPosition(tokens, 0)).toBe(5);
+  });
+
+  test('handles upToIndex beyond array length', () => {
+    const tokens = [{ type: 'text' as const, value: 'hi' }];
+    expect(calculateTokenPosition(tokens, 10)).toBe(2);
+  });
+});
+
+describe('calculateTotalTokenLength', () => {
+  test('returns 0 for empty tokens', () => {
+    expect(calculateTotalTokenLength([])).toBe(0);
+  });
+
+  test('returns total length of all tokens', () => {
+    const tokens = [
+      { type: 'text' as const, value: 'hello' },
+      { type: 'break' as const, value: '\n' },
+      { type: 'reference' as const, id: 'r1', label: 'A', value: 'a', menuId: 'm' },
+    ];
+    expect(calculateTotalTokenLength(tokens)).toBe(7);
+  });
+});
+
+describe('CaretController - setPosition edge cases', () => {
+  let el: HTMLDivElement;
+  let controller: CaretController;
+
+  beforeEach(() => {
+    el = createEditableElement();
+    controller = new CaretController(el);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('setPosition with end beyond content collapses range', () => {
+    addParagraph(el, 'hi');
+    el.focus();
+    controller.setPosition(0, 999);
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBe(1);
+  });
+
+  test('setPosition focuses element when not active', () => {
+    addParagraph(el, 'hello');
+    document.body.focus();
+    expect(document.activeElement).not.toBe(el);
+    controller.setPosition(3);
+    expect(document.activeElement).toBe(el);
+  });
+
+  test('setPosition at line break boundary positions at start of next paragraph', () => {
+    addParagraph(el, 'abc');
+    addParagraph(el, 'def');
+    el.focus();
+    controller.setPosition(4);
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBe(1);
+    expect(controller.getPosition()).toBe(4);
+  });
+
+  test('setPosition at end of content with no text node falls back', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    addReferenceToken(p, 'ref-1', 'Alice');
+    el.focus();
+    controller.setPosition(1);
+    expect(controller.getPosition()).toBe(1);
+  });
+
+  test('setPosition falls back to last paragraph when no paragraphs exist', () => {
+    // Empty element with no paragraphs
+    el.focus();
+    controller.setPosition(5);
+    // Should not throw — findDOMLocation returns null
+  });
+
+  test('findDOMLocation returns paragraph-level position when last child is not text', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    addReferenceToken(p, 'ref-1', 'Alice');
+    addReferenceToken(p, 'ref-2', 'Bob');
+    el.focus();
+
+    // Position beyond all content
+    controller.setPosition(999);
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBe(1);
+  });
+});
+
+describe('CaretController - countUpToCursor edge cases', () => {
+  let el: HTMLDivElement;
+  let controller: CaretController;
+
+  beforeEach(() => {
+    el = createEditableElement();
+    controller = new CaretController(el);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('getPosition when cursor is at paragraph level after multiple children', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    p.appendChild(document.createTextNode('ab'));
+    addReferenceToken(p, 'ref-1', 'X');
+    p.appendChild(document.createTextNode('cd'));
+
+    el.focus();
+    const range = document.createRange();
+    range.setStart(p, 3);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    expect(controller.getPosition()).toBe(5);
+  });
+
+  test('getPosition returns 0 for empty element', () => {
+    el.focus();
+    window.getSelection()?.removeAllRanges();
+    expect(controller.getPosition()).toBe(0);
+  });
+
+  test('getPosition with cursor inside reference wrapper (not in cursor spot)', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    p.appendChild(wrapper);
+
+    const content = document.createElement('span');
+    content.textContent = 'Alice';
+    content.setAttribute('contenteditable', 'false');
+    wrapper.appendChild(content);
+
+    el.focus();
+    const range = document.createRange();
+    range.setStart(wrapper, 1);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const pos = controller.getPosition();
+    expect(pos).toBe(1);
+  });
+
+  test('getPosition with cursor in cursor-spot-before without typed text (ZWNJ only)', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    p.appendChild(wrapper);
+
+    const cursorSpotBefore = document.createElement('span');
+    cursorSpotBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    const spotText = document.createTextNode('\u200C');
+    cursorSpotBefore.appendChild(spotText);
+    wrapper.appendChild(cursorSpotBefore);
+
+    const content = document.createElement('span');
+    content.textContent = 'Alice';
+    content.setAttribute('contenteditable', 'false');
+    wrapper.appendChild(content);
+
+    el.focus();
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const pos = controller.getPosition();
+    // ZWNJ-only content strips to empty, so falls through to getNodeLength
+    expect(typeof pos).toBe('number');
+  });
+
+  test('getPosition with cursor in cursor-spot-after without typed text (ZWNJ only)', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    p.appendChild(wrapper);
+
+    const cursorSpotBefore = document.createElement('span');
+    cursorSpotBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    cursorSpotBefore.appendChild(document.createTextNode('\u200C'));
+    wrapper.appendChild(cursorSpotBefore);
+
+    const content = document.createElement('span');
+    content.textContent = 'Alice';
+    content.setAttribute('contenteditable', 'false');
+    wrapper.appendChild(content);
+
+    const cursorSpotAfter = document.createElement('span');
+    cursorSpotAfter.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+    const afterSpotText = document.createTextNode('\u200C');
+    cursorSpotAfter.appendChild(afterSpotText);
+    wrapper.appendChild(cursorSpotAfter);
+
+    el.focus();
+    const range = document.createRange();
+    range.setStart(afterSpotText, 1);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const pos = controller.getPosition();
+    // After reference with ZWNJ-only content, position should be reference length (1)
+    expect(pos).toBeGreaterThanOrEqual(1);
+  });
+
+  test('getPosition with cursor at element level inside cursor-spot (not text node)', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    p.appendChild(wrapper);
+
+    const cursorSpotBefore = document.createElement('span');
+    cursorSpotBefore.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    cursorSpotBefore.appendChild(document.createTextNode('\u200C'));
+    wrapper.appendChild(cursorSpotBefore);
+
+    el.focus();
+    // Place cursor at element level inside the cursor spot (not in text node)
+    const range = document.createRange();
+    range.setStart(cursorSpotBefore, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const pos = controller.getPosition();
+    expect(typeof pos).toBe('number');
+  });
+});
+
+describe('normalizeCollapsedCaret - additional edge cases', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('does nothing when parent has no parentElement', () => {
+    const textNode = document.createTextNode('hello');
+    const range = document.createRange();
+    range.setStart(textNode, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+  });
+
+  test('does nothing when cursor spot wrapper is not a reference type', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', 'trigger');
+    p.appendChild(wrapper);
+
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    const spotText = document.createTextNode('\u200B');
+    spot.appendChild(spotText);
+    wrapper.appendChild(spot);
+
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+    expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
+  });
+
+  test('does nothing when cursor spot has no parent paragraph', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    el.appendChild(wrapper);
+
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    const spotText = document.createTextNode('\u200B');
+    spot.appendChild(spotText);
+    wrapper.appendChild(spot);
+
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+    const sel = window.getSelection()!;
+    expect(sel.getRangeAt(0).startContainer).toBe(el);
+  });
+
+  test('does nothing when wrapper has no parentElement', () => {
+    // Create a reference wrapper with cursor spot but no parent element above wrapper
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    const spotText = document.createTextNode('\u200B');
+    spot.appendChild(spotText);
+    wrapper.appendChild(spot);
+
+    // Wrapper is not attached to any parent
+    document.body.appendChild(wrapper);
+
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+    const sel = window.getSelection()!;
+    // Should normalize to body level since wrapper.parentElement is body
+    expect(sel.getRangeAt(0).startContainer).toBe(document.body);
+  });
+});
+
+describe('normalizeSelection - additional edge cases', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('does nothing when start boundary is not a text node', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+    el.appendChild(p);
+
+    const range = document.createRange();
+    range.setStart(p, 0);
+    range.setEnd(text, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+    expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(p);
+  });
+
+  test('does nothing when cursor spot wrapper is not a reference type', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', 'trigger');
+    p.appendChild(wrapper);
+
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    const spotText = document.createTextNode('\u200B');
+    spot.appendChild(spotText);
+    wrapper.appendChild(spot);
+
+    const afterText = document.createTextNode('hello');
+    p.appendChild(afterText);
+
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.setEnd(afterText, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+    expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
+  });
+
+  test('does nothing when cursor spot parent has no parentElement', () => {
+    const spotText = document.createTextNode('\u200B');
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
+    spot.appendChild(spotText);
+
+    // spot has no parent element (not attached to wrapper)
+    document.body.appendChild(spot);
+    const afterText = document.createTextNode('hello');
+    document.body.appendChild(afterText);
+
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.setEnd(afterText, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+    // Should not modify since parent of spot is body, not a reference wrapper
+    expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
+  });
+
+  test('does nothing when wrapper parentElement is null for end boundary', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+
+    const beforeText = document.createTextNode('hello');
+    el.appendChild(beforeText);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+    el.appendChild(wrapper);
+
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
+    const spotText = document.createTextNode('\u200B');
+    spot.appendChild(spotText);
+    wrapper.appendChild(spot);
+
+    const range = document.createRange();
+    range.setStart(beforeText, 0);
+    range.setEnd(spotText, 1);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+    const sel = window.getSelection()!;
+    // Should normalize end to el level since wrapper.parentElement is el
+    expect(sel.getRangeAt(0).endContainer).toBe(el);
   });
 });

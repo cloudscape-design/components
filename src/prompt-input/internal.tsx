@@ -87,7 +87,7 @@ const InternalPromptInput = React.forwardRef(
     const effectiveActionButtonAriaLabel = i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel;
 
     const isTokenMode = !!menus;
-    const value = valueProp ?? (isTokenMode ? '' : '');
+    const value = valueProp ?? '';
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const editableElementRef = useRef<HTMLDivElement>(null);
