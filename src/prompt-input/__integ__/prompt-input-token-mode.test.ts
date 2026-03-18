@@ -7,7 +7,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors/index.js
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
 const contentEditableSelector = promptInputWrapper.findContentEditableElement()!.toSelector();
-const menuSelector = promptInputWrapper.findMenu()!.toSelector();
+const menuSelector = promptInputWrapper.findOpenMenu()!.toSelector();
 
 class PromptInputTokenModePage extends BasePageObject {
   async focusInput() {
