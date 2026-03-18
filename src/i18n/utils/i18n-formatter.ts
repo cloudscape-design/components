@@ -6,6 +6,7 @@ import IntlMessageFormat from 'intl-messageformat';
 
 import { CustomHandler } from '../context';
 import { getMatchableLocales } from './locales';
+import { normalizeMessages } from './messages';
 
 /**
  * The expected shape of the fully resolved messages object.
@@ -39,8 +40,8 @@ export class I18nFormatter {
   private _localeFormatterCache = new Map<string, IntlMessageFormat>();
 
   constructor(locale: string, messages: I18nMessages) {
-    this._locale = locale;
-    this._messages = messages;
+    this._locale = locale.toLowerCase();
+    this._messages = normalizeMessages([messages]);
   }
 
   format<ReturnValue, FormatFnArgs extends Record<string, string | number>>(

@@ -8,6 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { InternalI18nContext } from '../context';
 import { I18nFormatter, I18nMessages } from '../utils/i18n-formatter';
 import { determineAppLocale } from '../utils/locales';
+import { normalizeMessages } from '../utils/messages';
 
 export interface LocalI18nProviderProps {
   messages: ReadonlyArray<I18nMessages>;
@@ -39,7 +40,7 @@ export function LocalI18nProvider({
   // The provider accepts an array of configs. We merge parent messages and
   // flatten the tree early on so that accesses by key are simpler and faster.
   const parentMessages = useContext(I18nMessagesContext);
-  const messages = mergeMessages([parentMessages, ...messagesArray]);
+  const messages = normalizeMessages([parentMessages, ...messagesArray]);
 
   // The formatter is recreated on every render to ensure it has access to the
   // latest messages. This is a trade-off between performance and correctness.
@@ -52,30 +53,4 @@ export function LocalI18nProvider({
       <I18nMessagesContext.Provider value={messages}>{children}</I18nMessagesContext.Provider>
     </InternalI18nContext.Provider>
   );
-}
-
-function mergeMessages(sources: ReadonlyArray<I18nMessages>): I18nMessages {
-  const result: I18nMessages = {};
-  for (const messages of sources) {
-    for (const namespace in messages) {
-      if (!(namespace in result)) {
-        result[namespace] = {};
-      }
-      for (const casedLocale in messages[namespace]) {
-        const locale = casedLocale.toLowerCase();
-        if (!(locale in result[namespace])) {
-          result[namespace][locale] = {};
-        }
-        for (const component in messages[namespace][casedLocale]) {
-          if (!(component in result[namespace][locale])) {
-            result[namespace][locale][component] = {};
-          }
-          for (const key in messages[namespace][casedLocale][component]) {
-            result[namespace][locale][component][key] = messages[namespace][casedLocale][component][key];
-          }
-        }
-      }
-    }
-  }
-  return result;
 }
