@@ -31,10 +31,10 @@ export type OptionTreeNode = OptionGroupNode | OptionLeafNode;
  * and to flatten the internal tree back to a public-facing ContentDisplayItem[] before emitting onChange.
  */
 export function walkLeaves(
-  items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>
+  items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>
 ): { id: string; visible: boolean }[] {
   const result: { id: string; visible: boolean }[] = [];
-  const walk = (nodes: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>) => {
+  const walk = (nodes: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => {
     for (const node of nodes) {
       if (node.type === 'group') {
         walk(node.children);
@@ -52,7 +52,7 @@ export function getSortedOptions({
   contentDisplay,
 }: {
   options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
-  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>;
+  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }): ReadonlyArray<OptionWithVisibility> {
   // Walk the tree depth-first to get ordered leaf items
   const leaves = walkLeaves(contentDisplay);
@@ -75,12 +75,12 @@ export function getSortedOptions({
 }
 
 /**
- * Directly converts a ContentDisplayProperties[] tree into an OptionTreeNode[] tree,
+ * Directly converts a ContentDisplayItem[] tree into an OptionTreeNode[] tree,
  * looking up labels from the options and groups lookup maps.
  * This preserves arbitrary nesting depth without any reconstruction.
  */
 function convertTree(
-  items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>,
+  items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>,
   optionByKey: Map<string, CollectionPreferencesProps.ContentDisplayOption>,
   groupByKey: Map<string, CollectionPreferencesProps.ContentDisplayOptionGroup>,
   sortedOptionsById: Map<string, OptionWithVisibility>
@@ -109,7 +109,7 @@ function convertTree(
 export function buildOptionTree(
   sortedOptions: ReadonlyArray<OptionWithVisibility>,
   groups: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>,
-  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>
+  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>
 ): OptionTreeNode[] {
   if (!groups || groups.length === 0) {
     return sortedOptions.map(opt => ({ ...opt, isGroup: false as const }));
@@ -132,20 +132,20 @@ export function buildOptionTree(
 }
 
 /**
- * Converts an OptionTreeNode[] back to ContentDisplayProperties[], preserving the group hierarchy.
+ * Converts an OptionTreeNode[] back to ContentDisplayItem[], preserving the group hierarchy.
  * Group nodes become ContentDisplayGroup entries with their children.
  * Leaf nodes become ContentDisplayItem entries.
  */
 export function flattenOptionTree(
   tree: OptionTreeNode[]
-): ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties> {
-  const convert = (nodes: OptionTreeNode[]): CollectionPreferencesProps.ContentDisplayProperties[] => {
+): ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem> {
+  const convert = (nodes: OptionTreeNode[]): CollectionPreferencesProps.ContentDisplayItem[] => {
     return nodes.map(node => {
       if (node.isGroup) {
         return {
           type: 'group' as const,
           id: node.id,
-          children: convert(node.children) as ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>,
+          children: convert(node.children) as ReadonlyArray<CollectionPreferencesProps.ContentDisplayColumn>,
           visible: node.visible,
         };
       } else {

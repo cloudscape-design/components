@@ -45,7 +45,7 @@ const columnGroups: CollectionPreferencesProps.ContentDisplayOptionGroup[] = [
   { id: 'cost', label: 'Cost' },
 ];
 
-const defaultContentDisplay: CollectionPreferencesProps.ContentDisplayProperties[] = [
+const defaultContentDisplay: CollectionPreferencesProps.ContentDisplayItem[] = [
   { id: 'name', visible: true },
   { id: 'status', visible: true },
   {
