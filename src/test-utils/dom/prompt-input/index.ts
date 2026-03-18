@@ -88,7 +88,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   /**
    * Finds the menu dropdown (always in portal due to expandToViewport=true).
    */
-  findMenu(): PromptInputMenuWrapper | null {
+  findOpenMenu(): PromptInputMenuWrapper | null {
     return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PromptInputMenuWrapper);
   }
 
@@ -161,7 +161,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
    */
   @usesDom
   isMenuOpen(): boolean {
-    const menu = this.findMenu();
+    const menu = this.findOpenMenu();
     return menu !== null;
   }
 
@@ -173,7 +173,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   @usesDom
   selectMenuOptionByValue(value: string): void {
     act(() => {
-      const menu = this.findMenu();
+      const menu = this.findOpenMenu();
       if (!menu) {
         throw new Error('Menu not found');
       }
@@ -193,7 +193,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   @usesDom
   selectMenuOption(optionIndex: number): void {
     act(() => {
-      const menu = this.findMenu();
+      const menu = this.findOpenMenu();
       if (!menu) {
         throw new Error('Menu not found');
       }

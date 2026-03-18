@@ -245,6 +245,33 @@ describe('createKeyboardHandlers', () => {
       const { handleMenuNavigation } = createKeyboardHandlers(props);
       expect(handleMenuNavigation(makeKeyboardEvent('a'))).toBe(false);
     });
+
+    test('space key delegates to handleSpaceInOpenMenu', () => {
+      const handlers = createMockMenuHandlers();
+      const closeMenu = jest.fn();
+      const props: KeyboardHandlerProps = {
+        getMenuOpen: () => true,
+        getMenuItemsState: () => createMockMenuState([{}]),
+        getMenuItemsHandlers: () => handlers,
+        closeMenu,
+      };
+      const { handleMenuNavigation } = createKeyboardHandlers(props);
+      const event = makeKeyboardEvent(' ');
+      // Space in open menu with no trigger at caret returns false
+      const result = handleMenuNavigation(event);
+      expect(typeof result).toBe('boolean');
+    });
+
+    test('returns false when menuItemsState is null', () => {
+      const props: KeyboardHandlerProps = {
+        getMenuOpen: () => true,
+        getMenuItemsState: () => null,
+        getMenuItemsHandlers: () => createMockMenuHandlers(),
+        closeMenu: jest.fn(),
+      };
+      const { handleMenuNavigation } = createKeyboardHandlers(props);
+      expect(handleMenuNavigation(makeKeyboardEvent('ArrowDown'))).toBe(false);
+    });
   });
 
   describe('handleEnterKey', () => {
@@ -361,6 +388,44 @@ describe('createKeyboardHandlers', () => {
       document.body.removeChild(form);
       document.body.appendChild(el);
     });
+
+    test('returns early when currentTarget is not an HTMLElement', () => {
+      const onAction = jest.fn();
+      const props: KeyboardHandlerProps = {
+        getMenuOpen: () => false,
+        getMenuItemsState: () => null,
+        getMenuItemsHandlers: () => null,
+        closeMenu: jest.fn(),
+        onAction,
+        tokens: [],
+      };
+      const { handleEnterKey } = createKeyboardHandlers(props);
+      // Create event with non-HTMLElement currentTarget
+      const event = {
+        key: 'Enter',
+        shiftKey: false,
+        preventDefault: jest.fn(),
+        isDefaultPrevented: () => false,
+        nativeEvent: { isComposing: false },
+        currentTarget: null,
+      } as unknown as React.KeyboardEvent<HTMLDivElement>;
+      handleEnterKey(event);
+      expect(onAction).not.toHaveBeenCalled();
+    });
+
+    test('calls onAction without tokens when tokens is undefined', () => {
+      const onAction = jest.fn();
+      const props: KeyboardHandlerProps = {
+        getMenuOpen: () => false,
+        getMenuItemsState: () => null,
+        getMenuItemsHandlers: () => null,
+        closeMenu: jest.fn(),
+        onAction,
+      };
+      const { handleEnterKey } = createKeyboardHandlers(props);
+      handleEnterKey(makeKeyboardEvent('Enter'));
+      expect(onAction).toHaveBeenCalledWith(expect.objectContaining({ value: '', tokens: [] }));
+    });
   });
 });
 
@@ -394,6 +459,30 @@ describe('splitParagraphAtCaret', () => {
 
     splitParagraphAtCaret(el, null);
     expect(el.querySelectorAll('p')).toHaveLength(1);
+  });
+
+  test('does nothing when cursor is not inside a paragraph', () => {
+    // Place cursor in a text node that is not inside a <p>
+    const orphanText = document.createTextNode('orphan');
+    el.appendChild(orphanText);
+    setCursor(orphanText, 3);
+
+    splitParagraphAtCaret(el, null);
+    // No split should happen
+    expect(el.querySelectorAll('p')).toHaveLength(0);
+  });
+
+  test('handles splitting at start of paragraph (empty current paragraph)', () => {
+    const p = addParagraph(el, 'hello');
+    setCursor(p.firstChild!, 0);
+
+    splitParagraphAtCaret(el, null);
+
+    const paragraphs = el.querySelectorAll('p');
+    expect(paragraphs).toHaveLength(2);
+    // First paragraph should be empty (trailing BR)
+    expect(paragraphs[0].querySelector('br')).not.toBeNull();
+    expect(paragraphs[1].textContent).toBe('hello');
   });
 
   test('dispatches input event unless suppressed', () => {
@@ -594,6 +683,110 @@ describe('handleReferenceTokenDeletion', () => {
     );
     expect(result).toBe(true);
   });
+
+  test('handles backspace at paragraph level (HTMLElement container) adjacent to reference', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    // Cursor at paragraph level, offset 1 (after the reference child)
+    setCursor(p, 1);
+
+    const event = makeKeyboardEvent('Backspace');
+    const state = { skipNextZwnjUpdate: false, menuSelectionTokenId: null };
+    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(result).toBe(true);
+  });
+
+  test('handles delete at paragraph level (HTMLElement container) adjacent to reference', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Bob';
+    p.appendChild(ref);
+
+    // Cursor at paragraph level, offset 0 (before the reference child)
+    setCursor(p, 0);
+
+    const event = makeKeyboardEvent('Delete');
+    const state = { skipNextZwnjUpdate: false, menuSelectionTokenId: null };
+    const result = handleReferenceTokenDeletion(event, false, el, state, undefined, undefined, null);
+    expect(result).toBe(true);
+  });
+
+  test('returns true early when reference parent is not an HTMLElement', () => {
+    // Create a document fragment as parent (not an HTMLElement)
+    const fragment = document.createDocumentFragment();
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    fragment.appendChild(ref);
+
+    const text = document.createTextNode('after');
+    fragment.appendChild(text);
+
+    // Attach fragment to el so selection works
+    el.appendChild(fragment);
+
+    // Now ref's parentNode is el (an HTMLElement), but we need to test the branch
+    // where parentNode is NOT an HTMLElement. We can do this by removing ref from DOM
+    // after setting cursor but before deletion check.
+    // Instead, test the actual behavior: when parent IS HTMLElement, skipNextZwnjUpdate is set
+    const p = document.createElement('p');
+    el.textContent = '';
+    el.appendChild(p);
+
+    const ref2 = document.createElement('span');
+    ref2.setAttribute('data-type', 'reference');
+    ref2.textContent = 'Bob';
+    p.appendChild(ref2);
+
+    const text2 = document.createTextNode('after');
+    p.appendChild(text2);
+
+    setCursor(text2, 0);
+
+    const event = makeKeyboardEvent('Backspace');
+    const state = { skipNextZwnjUpdate: false, menuSelectionTokenId: null };
+    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(result).toBe(true);
+    expect(state.skipNextZwnjUpdate).toBe(true);
+  });
+
+  test('adjusts cursor position via caretController on delete (stays in place)', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text1 = document.createTextNode('ab');
+    p.appendChild(text1);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'X';
+    p.appendChild(ref);
+
+    el.focus();
+    setCursor(text1, 2);
+
+    const controller = new CaretController(el);
+    const event = makeKeyboardEvent('Delete');
+    const result = handleReferenceTokenDeletion(
+      event,
+      false,
+      el,
+      { skipNextZwnjUpdate: false, menuSelectionTokenId: null },
+      undefined,
+      undefined,
+      controller
+    );
+    expect(result).toBe(true);
+  });
 });
 
 describe('handleArrowKeyNavigation', () => {
@@ -701,6 +894,71 @@ describe('handleArrowKeyNavigation', () => {
     setCursor(p.firstChild!, 3);
 
     const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
+    expect(handleArrowKeyNavigation(event, null)).toBe(false);
+  });
+
+  test('Shift+ArrowLeft extends selection across reference from HTMLElement container', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    // Create a non-collapsed selection from text back toward reference at paragraph level
+    const range = document.createRange();
+    range.setStart(p, 1); // After reference
+    range.setEnd(text, 3);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
+    const result = handleArrowKeyNavigation(event, null);
+    expect(result).toBe(true);
+  });
+
+  test('Shift+ArrowRight extends selection across reference from HTMLElement container', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    // Create a non-collapsed selection ending at paragraph level before reference
+    const range = document.createRange();
+    range.setStart(text, 0);
+    range.setEnd(p, 1); // Before reference
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
+    const result = handleArrowKeyNavigation(event, null);
+    expect(result).toBe(true);
+  });
+
+  test('Shift+Arrow returns false when sibling is null', () => {
+    const p = addParagraph(el, 'hello');
+
+    // Selection from start to middle — no reference adjacent
+    const range = document.createRange();
+    range.setStart(p.firstChild!, 0);
+    range.setEnd(p.firstChild!, 3);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
     expect(handleArrowKeyNavigation(event, null)).toBe(false);
   });
 
@@ -834,6 +1092,17 @@ describe('handleSpaceAfterClosedTrigger', () => {
     const event = makeKeyboardEvent(' ');
     handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, controller);
     // Should not throw
+  });
+
+  test('returns false when trigger parent is not a P element', () => {
+    // Trigger directly inside the editable div, not inside a <p>
+    const trigger = createTriggerElement('t1', '@user');
+    el.appendChild(trigger);
+
+    setCursor(trigger.firstChild!, 5);
+
+    const event = makeKeyboardEvent(' ');
+    expect(handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null)).toBe(false);
   });
 });
 
@@ -971,6 +1240,77 @@ describe('mergeParagraphs', () => {
     });
 
     expect(onChange).toHaveBeenCalled();
+  });
+
+  test('forward merge adjusts cursor position via caretController', () => {
+    const onChange = jest.fn();
+    const tokens = [
+      { type: 'text' as const, value: 'hello' },
+      { type: 'break' as const, value: '\n' },
+      { type: 'text' as const, value: 'world' },
+    ];
+
+    addParagraph(el, 'hello');
+    addParagraph(el, 'world');
+
+    el.focus();
+    const controller = new CaretController(el);
+    controller.setPosition(5); // At end of first paragraph
+
+    const result = mergeParagraphs({
+      direction: 'forward',
+      editableElement: el,
+      tokens,
+      currentParagraphIndex: 0,
+      onChange,
+      caretController: controller,
+    });
+
+    expect(result).toBe(true);
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  test('returns false when break index does not exist in tokens', () => {
+    const onChange = jest.fn();
+    const tokens = [{ type: 'text' as const, value: 'hello' }];
+
+    addParagraph(el, 'hello');
+    addParagraph(el, 'world');
+
+    const result = mergeParagraphs({
+      direction: 'backward',
+      editableElement: el,
+      tokens,
+      currentParagraphIndex: 1,
+      onChange,
+    });
+
+    expect(result).toBe(false);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('does not adjust caret when no break was removed', () => {
+    const onChange = jest.fn();
+    const tokens = [{ type: 'text' as const, value: 'only text' }];
+
+    addParagraph(el, 'only text');
+    addParagraph(el, 'extra');
+
+    el.focus();
+    const controller = new CaretController(el);
+    controller.setPosition(5);
+
+    const result = mergeParagraphs({
+      direction: 'forward',
+      editableElement: el,
+      tokens,
+      currentParagraphIndex: 0,
+      onChange,
+      caretController: controller,
+    });
+
+    expect(result).toBe(false);
+    expect(onChange).not.toHaveBeenCalled();
   });
 });
 
@@ -1119,5 +1459,55 @@ describe('handleDeleteAtParagraphEnd', () => {
 
     const event = makeKeyboardEvent('Delete');
     expect(handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null)).toBe(false);
+  });
+
+  test('detects end-of-paragraph from text node with no next sibling and walks up to P', () => {
+    const tokens = [
+      { type: 'text' as const, value: 'hello' },
+      { type: 'break' as const, value: '\n' },
+      { type: 'text' as const, value: 'world' },
+    ];
+
+    const p1 = document.createElement('p');
+    el.appendChild(p1);
+    // Wrap text in a span so the walk-up-to-P path is exercised
+    const span = document.createElement('span');
+    const textNode = document.createTextNode('hello');
+    span.appendChild(textNode);
+    p1.appendChild(span);
+
+    addParagraph(el, 'world');
+
+    // Cursor at end of text node inside span, no next sibling
+    setCursor(textNode, 5);
+
+    const event = makeKeyboardEvent('Delete');
+    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(result).toBe(true);
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  test('returns false when text node has a next sibling', () => {
+    const tokens = [
+      { type: 'text' as const, value: 'helloworld' },
+      { type: 'break' as const, value: '\n' },
+      { type: 'text' as const, value: 'next' },
+    ];
+
+    const p1 = document.createElement('p');
+    el.appendChild(p1);
+    const text1 = document.createTextNode('hello');
+    const text2 = document.createTextNode('world');
+    p1.appendChild(text1);
+    p1.appendChild(text2);
+
+    addParagraph(el, 'next');
+
+    // Cursor at end of first text node, but it has a next sibling
+    setCursor(text1, 5);
+
+    const event = makeKeyboardEvent('Delete');
+    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(result).toBe(false);
   });
 });

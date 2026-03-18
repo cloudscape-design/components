@@ -20,7 +20,7 @@ import {
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { getPromptText } from './token-operations';
 import { handleSpaceInOpenMenu } from './trigger-utils';
-import { isBreakToken, isBRElement, isTextNode } from './type-guards';
+import { isBreakTextToken, isBRElement, isTextNode } from './type-guards';
 
 /** Configuration for keyboard handlers created by createKeyboardHandlers. */
 export interface KeyboardHandlerProps {
@@ -354,12 +354,8 @@ export function handleArrowKeyNavigation(
             if (paragraph) {
               const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
 
-              let newOffset: number;
-              if (parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
-                newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
-              } else {
-                newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
-              }
+              // Left arrow: position before the wrapper. Right arrow: position after it.
+              const newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
 
               event.preventDefault();
               const newRange = document.createRange();
@@ -556,17 +552,23 @@ export function mergeParagraphs(params: MergeParagraphsParams): boolean {
   const breakIndexToRemove = direction === 'backward' ? currentParagraphIndex : currentParagraphIndex + 1;
 
   let breakCount = 0;
+  let breakRemoved = false;
 
   // Filter out the specific break token by counting breaks sequentially
   const newTokens = tokens.filter(token => {
-    if (isBreakToken(token)) {
+    if (isBreakTextToken(token)) {
       breakCount++;
       if (breakCount === breakIndexToRemove) {
+        breakRemoved = true;
         return false;
       }
     }
     return true;
   });
+
+  if (!breakRemoved) {
+    return false;
+  }
 
   const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
   onChange({ value, tokens: newTokens });

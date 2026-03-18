@@ -46,7 +46,7 @@ import {
   getTokenType,
   isReferenceElementType,
 } from './dom-utils';
-import { isBreakToken, isReferenceToken, isTextToken, isTriggerToken } from './type-guards';
+import { isBreakTextToken, isReferenceToken, isTextToken, isTriggerToken } from './type-guards';
 
 import styles from '../styles.css.js';
 
@@ -85,7 +85,7 @@ function groupTokensIntoParagraphs(tokens: readonly PromptInputProps.InputToken[
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
-    if (isBreakToken(token)) {
+    if (isBreakTextToken(token)) {
       const isLeadingBreak = currentParagraph.length === 0;
 
       if (isLeadingBreak) {

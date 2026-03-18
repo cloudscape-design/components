@@ -13,7 +13,7 @@ import {
   isReferenceElementType,
   stripZWNJ,
 } from './dom-utils';
-import { isBreakToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
+import { isBreakTextToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
 /** Logical lengths for each token type, used for cursor position calculations. */
 export const TOKEN_LENGTHS = {
@@ -30,7 +30,7 @@ export function calculateTokenPosition(tokens: readonly PromptInputProps.InputTo
     const token = tokens[i];
     if (isTextToken(token)) {
       pos += TOKEN_LENGTHS.text(token.value);
-    } else if (isBreakToken(token)) {
+    } else if (isBreakTextToken(token)) {
       pos += TOKEN_LENGTHS.LINE_BREAK;
     } else if (isTriggerToken(token)) {
       pos += TOKEN_LENGTHS.trigger(token.value);
@@ -527,7 +527,7 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
     }
 
     const wrapper = parent.parentElement;
-    if (!wrapper || !isReferenceElementType(wrapper ? getTokenType(wrapper) : null)) {
+    if (!wrapper || !isReferenceElementType(getTokenType(wrapper))) {
       return;
     }
 
@@ -576,7 +576,7 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
     }
 
     const wrapper = parent.parentElement;
-    if (!wrapper || !isReferenceElementType(wrapper ? getTokenType(wrapper) : null)) {
+    if (!wrapper || !isReferenceElementType(getTokenType(wrapper))) {
       return null;
     }
 

@@ -3,7 +3,7 @@
 
 import { isHTMLElement } from '../../internal/utils/dom';
 import {
-  isBreakToken,
+  isBreakTextToken,
   isBRElement,
   isPinnedReferenceToken,
   isReferenceToken,
@@ -126,14 +126,14 @@ describe('Token type guards', () => {
     });
   });
 
-  describe('isBreakToken', () => {
+  describe('isBreakTextToken', () => {
     test('returns true for break tokens', () => {
-      expect(isBreakToken(breakToken)).toBe(true);
+      expect(isBreakTextToken(breakToken)).toBe(true);
     });
 
     test('returns false for non-break tokens', () => {
-      expect(isBreakToken(textToken)).toBe(false);
-      expect(isBreakToken(triggerToken)).toBe(false);
+      expect(isBreakTextToken(textToken)).toBe(false);
+      expect(isBreakTextToken(triggerToken)).toBe(false);
     });
   });
 
