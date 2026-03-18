@@ -161,8 +161,9 @@ export function renderTokensToDOM(
     if (container.element.isConnected && targetElement.contains(container.element)) {
       existingContainers.set(instanceId, container);
     } else {
-      // Unmount React root for disconnected containers
-      container.root.unmount();
+      // Defer unmount to avoid "synchronously unmount while React is rendering" warning.
+      // This happens because renderTokensToDOM is called from a React effect/callback.
+      setTimeout(() => container.root.unmount(), 0);
     }
   });
   reactContainers.clear();
