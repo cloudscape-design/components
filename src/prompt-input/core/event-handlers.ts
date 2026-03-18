@@ -5,7 +5,7 @@ import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-token-mode';
 import { CaretController, TOKEN_LENGTHS } from './caret-controller';
-import { ELEMENT_TYPES } from './constants';
+import { CARET_DETECTION_DELAY, ELEMENT_TYPES } from './constants';
 import {
   createParagraph,
   createTrailingBreak,
@@ -502,7 +502,7 @@ export function handleSpaceAfterClosedTrigger(
   ignoreCaretDetection.current = true;
   setTimeout(() => {
     ignoreCaretDetection.current = false;
-  }, 100);
+  }, CARET_DETECTION_DELAY);
 
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 

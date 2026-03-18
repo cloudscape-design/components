@@ -684,7 +684,7 @@ describe('token mode with trigger tokens', () => {
 describe('token mode menu interactions', () => {
   test('menu is not open by default', () => {
     const { wrapper } = renderTokenMode({ tokens: [] });
-    expect(wrapper.findMenu()).toBeNull();
+    expect(wrapper.findOpenMenu()).toBeNull();
   });
 });
 
@@ -1009,11 +1009,9 @@ describe('live region announcements', () => {
 });
 
 describe('menu dropdown rendering', () => {
-  test('shouldRenderMenuDropdown is false when menu is closed', () => {
+  test('dropdown is not rendered when menu is closed', () => {
     const { wrapper } = renderTokenMode({ tokens: [] });
-    // Menu should not be open and dropdown should not render
-    expect(wrapper.findMenu()).toBeNull();
-    expect(wrapper.isMenuOpen()).toBe(false);
+    expect(wrapper.findOpenMenu()).toBeNull();
   });
 
   test('dropdown does not render when there are no menu items and no trigger', () => {
@@ -1021,7 +1019,7 @@ describe('menu dropdown rendering', () => {
       tokens: [{ type: 'text', value: 'hello' }],
       menus: [{ id: 'empty-menu', trigger: '@', options: [], filteringType: 'auto' }],
     });
-    expect(wrapper.findMenu()).toBeNull();
+    expect(wrapper.findOpenMenu()).toBeNull();
   });
 });
 

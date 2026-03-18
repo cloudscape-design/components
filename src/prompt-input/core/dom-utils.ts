@@ -57,7 +57,11 @@ export function createTrailingBreak(): HTMLBRElement {
 
 let idCounter = 0;
 
-/** Generates a unique ID for DOM elements outside of React context. */
+/**
+ * Generates a unique ID for DOM elements outside of React context.
+ * Uses the same format as component-toolkit's useRandomId hook, but as a plain
+ * function since token IDs are generated during DOM manipulation (not in React renders).
+ */
 export function generateTokenId(): string {
   return `${idCounter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
 }
