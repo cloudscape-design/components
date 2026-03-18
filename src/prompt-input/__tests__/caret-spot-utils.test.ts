@@ -4,7 +4,7 @@
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
-import { ELEMENT_TYPES, SPECIAL_CHARS } from '../core/constants';
+import { ElementType, SPECIAL_CHARS } from '../core/constants';
 
 let el: HTMLDivElement;
 
@@ -20,20 +20,20 @@ afterEach(() => {
 
 function createReferenceWrapper(id: string, label: string): HTMLSpanElement {
   const wrapper = document.createElement('span');
-  wrapper.setAttribute('data-type', ELEMENT_TYPES.REFERENCE);
+  wrapper.setAttribute('data-type', ElementType.Reference);
   wrapper.id = id;
 
   const before = document.createElement('span');
-  before.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
-  before.textContent = SPECIAL_CHARS.ZWNJ;
+  before.setAttribute('data-type', ElementType.CaretSpotBefore);
+  before.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER;
 
   const container = document.createElement('span');
   container.textContent = label;
   container.setAttribute('contenteditable', 'false');
 
   const after = document.createElement('span');
-  after.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_AFTER);
-  after.textContent = SPECIAL_CHARS.ZWNJ;
+  after.setAttribute('data-type', ElementType.CaretSpotAfter);
+  after.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER;
 
   wrapper.appendChild(before);
   wrapper.appendChild(container);
@@ -68,16 +68,16 @@ describe('extractTextFromCaretSpots', () => {
     el.appendChild(p);
 
     // Simulate user typing "hello" into the before cursor spot
-    const beforeSpot = ref.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_BEFORE}"]`)!;
-    beforeSpot.textContent = SPECIAL_CHARS.ZWNJ + 'hello';
+    const beforeSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotBefore}"]`)!;
+    beforeSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'hello';
 
     const result = extractTextFromCaretSpots([p]);
 
     // Text should be moved before the wrapper at paragraph level
     expect(p.firstChild).not.toBe(ref);
     expect(p.firstChild!.textContent).toBe('hello');
-    // Cursor spot should be reset to ZWNJ
-    expect(beforeSpot.textContent).toBe(SPECIAL_CHARS.ZWNJ);
+    // Cursor spot should be reset to zero-width character
+    expect(beforeSpot.textContent).toBe(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER);
     // movedTextNode should be null since cursor wasn't tracked in the spot
     expect(result.movedTextNode).toBeNull();
   });
@@ -89,15 +89,15 @@ describe('extractTextFromCaretSpots', () => {
     el.appendChild(p);
 
     // Simulate user typing "world" into the after cursor spot
-    const afterSpot = ref.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_AFTER}"]`)!;
-    afterSpot.textContent = SPECIAL_CHARS.ZWNJ + 'world';
+    const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
+    afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'world';
 
     const result = extractTextFromCaretSpots([p]);
 
     // Text should be moved after the wrapper at paragraph level
     expect(p.lastChild!.textContent).toBe('world');
     // Cursor spot should be reset
-    expect(afterSpot.textContent).toBe(SPECIAL_CHARS.ZWNJ);
+    expect(afterSpot.textContent).toBe(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER);
     expect(result.movedTextNode).toBeNull();
   });
 
@@ -107,8 +107,8 @@ describe('extractTextFromCaretSpots', () => {
     p.appendChild(ref);
     el.appendChild(p);
 
-    const afterSpot = ref.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_AFTER}"]`)!;
-    afterSpot.textContent = SPECIAL_CHARS.ZWNJ + 'typed';
+    const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
+    afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'typed';
 
     // Place cursor inside the after spot
     setCursor(afterSpot.firstChild!, 3);
@@ -125,8 +125,8 @@ describe('extractTextFromCaretSpots', () => {
     p.appendChild(ref);
     el.appendChild(p);
 
-    const afterSpot = ref.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_AFTER}"]`)!;
-    afterSpot.textContent = SPECIAL_CHARS.ZWNJ + 'typed';
+    const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
+    afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'typed';
 
     setCursor(afterSpot.firstChild!, 3);
 
@@ -146,11 +146,11 @@ describe('extractTextFromCaretSpots', () => {
     el.appendChild(p2);
 
     // Type in both spots
-    const afterSpot1 = ref1.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_AFTER}"]`)!;
-    afterSpot1.textContent = SPECIAL_CHARS.ZWNJ + 'text1';
+    const afterSpot1 = ref1.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
+    afterSpot1.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'text1';
 
-    const beforeSpot2 = ref2.querySelector(`[data-type="${ELEMENT_TYPES.CURSOR_SPOT_BEFORE}"]`)!;
-    beforeSpot2.textContent = SPECIAL_CHARS.ZWNJ + 'text2';
+    const beforeSpot2 = ref2.querySelector(`[data-type="${ElementType.CaretSpotBefore}"]`)!;
+    beforeSpot2.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'text2';
 
     extractTextFromCaretSpots([p1, p2]);
 
@@ -158,13 +158,13 @@ describe('extractTextFromCaretSpots', () => {
     expect(p2.firstChild!.textContent).toBe('text2');
   });
 
-  test('ignores cursor spots with only ZWNJ content', () => {
+  test('ignores cursor spots with only zero-width character content', () => {
     const p = document.createElement('p');
     const ref = createReferenceWrapper('ref-1', 'Alice');
     p.appendChild(ref);
     el.appendChild(p);
 
-    // Spots only have ZWNJ — nothing to extract
+    // Spots only have zero-width characters — nothing to extract
     const childCountBefore = p.childNodes.length;
     extractTextFromCaretSpots([p]);
     expect(p.childNodes.length).toBe(childCountBefore);
@@ -179,12 +179,13 @@ describe('extractTextFromCaretSpots', () => {
     const p = document.createElement('p');
     // Orphan cursor spot directly in paragraph (edge case)
     const spot = document.createElement('span');
-    spot.setAttribute('data-type', ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
-    spot.textContent = SPECIAL_CHARS.ZWNJ + 'orphan';
+    spot.setAttribute('data-type', ElementType.CaretSpotBefore);
+    spot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'orphan';
     p.appendChild(spot);
     el.appendChild(p);
 
-    // Should not throw
-    extractTextFromCaretSpots([p]);
+    // Should not throw and the text should be extracted
+    const result = extractTextFromCaretSpots([p]);
+    expect(result.movedTextNode).toBeNull();
   });
 });

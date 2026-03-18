@@ -21,7 +21,7 @@ import {
   TOKEN_LENGTHS,
 } from '../core/caret-controller';
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
-import { CARET_DETECTION_DELAY, ELEMENT_TYPES, NEXT_TICK_TIMEOUT } from '../core/constants';
+import { CARET_DETECTION_DELAY, ElementType, NEXT_TICK_TIMEOUT } from '../core/constants';
 import { createParagraph, findAllParagraphs, findElements, getTokenType } from '../core/dom-utils';
 import {
   createKeyboardHandlers,
@@ -51,13 +51,13 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 /** Mutable state shared between the editable tokens hook and event handlers. */
 export interface EditableState {
-  skipNextZwnjUpdate: boolean;
+  skipNextZeroWidthUpdate: boolean;
   menuSelectionTokenId: string | null;
 }
 
 export function createEditableState(): EditableState {
   return {
-    skipNextZwnjUpdate: false,
+    skipNextZeroWidthUpdate: false,
     menuSelectionTokenId: null,
   };
 }
@@ -460,6 +460,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const { ignoreCaretDetection, markTokensAsSent } = shortcutsState;
 
+  // Incremented on selection changes to force activeTriggerToken to recompute.
+  // The value is never read directly — it exists solely as a useMemo dependency invalidation signal.
   const [caretUpdateTrigger, setCaretUpdateTrigger] = useState(0);
 
   const activeTriggerToken = useMemo((): PromptInputProps.TriggerToken | null => {
@@ -478,8 +480,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       | undefined;
 
     return matchingTrigger || null;
-    // caretControllerRef.current is a mutable ref — caretUpdateTrigger is the intentional invalidation signal
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- caretUpdateTrigger is an invalidation signal, not used in the callback
   }, [tokens, caretControllerRef, caretUpdateTrigger]);
 
   useEffect(() => {
@@ -632,8 +633,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       cc.capture();
     }
 
-    if (editableState.skipNextZwnjUpdate) {
-      editableState.skipNextZwnjUpdate = false;
+    if (editableState.skipNextZeroWidthUpdate) {
+      editableState.skipNextZeroWidthUpdate = false;
     }
 
     const paragraphs = findAllParagraphs(editableElementRef.current);
@@ -672,7 +673,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const newTriggers = extractedTokens.filter(isTriggerToken);
 
-    const existingTriggerElements = findElements(editableElementRef.current, { tokenType: ELEMENT_TYPES.TRIGGER });
+    const existingTriggerElements = findElements(editableElementRef.current, { tokenType: ElementType.Trigger });
     const existingTriggerIds = new Set(existingTriggerElements.map(el => el.id).filter(Boolean));
 
     const isNewTrigger = newTriggers.some(t => t.id && !existingTriggerIds.has(t.id));
@@ -729,9 +730,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     processUserInput(extractedTokens);
 
     adjustInputHeight();
-    // Omitted deps are refs/stable objects that don't change — including them would cause unnecessary re-creation
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [processUserInput, adjustInputHeight, tokensToText, ignoreCaretDetection]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- menus is excluded to avoid recreating the callback on every render
+  }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, reactContainersRef, editableState]);
 
   // Initial render
   useLayoutEffect(() => {
@@ -904,9 +904,21 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     }
 
     adjustInputHeight();
-    // Omitted deps are refs/stable values — effect should only re-run when actual data changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled, readOnly, tokens, adjustInputHeight]);
+  }, [
+    disabled,
+    readOnly,
+    tokens,
+    adjustInputHeight,
+    renderToken,
+    caretControllerRef,
+    editableElementRef,
+    reactContainersRef,
+    editableState,
+    lastRenderedTokensRef,
+    lastDisabledRef,
+    lastReadOnlyRef,
+    isTypingIntoEmptyLineRef,
+  ]);
 
   useEffect(() => {
     const handleSelectionChange = () => {

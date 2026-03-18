@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { findElements, insertAfter, stripZWNJ } from './dom-utils';
+import { ElementType, SPECIAL_CHARS } from './constants';
+import { findElements, insertAfter, stripZeroWidthCharacters } from './dom-utils';
 
 export interface CaretSpotExtractionResult {
   movedTextNode: Text | null;
@@ -21,12 +21,12 @@ export function extractTextFromCaretSpots(
 
   paragraphs.forEach((p: HTMLElement) => {
     const cursorSpots = findElements(p, {
-      tokenType: [ELEMENT_TYPES.CURSOR_SPOT_BEFORE, ELEMENT_TYPES.CURSOR_SPOT_AFTER],
+      tokenType: [ElementType.CaretSpotBefore, ElementType.CaretSpotAfter],
     });
 
     cursorSpots.forEach((spot: HTMLElement) => {
       const content = spot.textContent || '';
-      const cleanContent = stripZWNJ(content);
+      const cleanContent = stripZeroWidthCharacters(content);
 
       if (cleanContent) {
         let caretWasHere = false;
@@ -44,7 +44,7 @@ export function extractTextFromCaretSpots(
         const wrapper = spot.parentElement;
 
         if (wrapper) {
-          if (spot.getAttribute('data-type') === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
+          if (spot.getAttribute('data-type') === ElementType.CaretSpotBefore) {
             wrapper.parentNode?.insertBefore(textNode, wrapper);
           } else {
             insertAfter(textNode, wrapper);
@@ -56,7 +56,7 @@ export function extractTextFromCaretSpots(
         }
       }
 
-      spot.textContent = SPECIAL_CHARS.ZWNJ;
+      spot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER;
     });
   });
 

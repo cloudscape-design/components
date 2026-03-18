@@ -4,7 +4,7 @@
 // Mock styles.css.js since it's a build artifact not available in unit tests
 jest.mock('../styles.css.js', () => ({ paragraph: 'paragraph' }), { virtual: true });
 
-import { ELEMENT_TYPES } from '../core/constants';
+import { ElementType } from '../core/constants';
 import {
   createParagraph,
   createTrailingBreak,
@@ -92,7 +92,7 @@ describe('createTrailingBreak', () => {
   test('creates a BR with trailing-break data-id', () => {
     const br = createTrailingBreak();
     expect(br.tagName).toBe('BR');
-    expect(br.getAttribute('data-id')).toBe(ELEMENT_TYPES.TRAILING_BREAK);
+    expect(br.getAttribute('data-id')).toBe(ElementType.TrailingBreak);
   });
 });
 
@@ -333,11 +333,11 @@ describe('findElements with tokenId', () => {
   test('finds trigger element by data-id attribute', () => {
     const container = document.createElement('div');
     const el = document.createElement('span');
-    el.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+    el.setAttribute('data-type', ElementType.Trigger);
     el.setAttribute('data-id', 'trigger-123');
     container.appendChild(el);
 
-    const results = findElements(container, { tokenType: ELEMENT_TYPES.TRIGGER, tokenId: 'trigger-123' });
+    const results = findElements(container, { tokenType: ElementType.Trigger, tokenId: 'trigger-123' });
     expect(results).toHaveLength(1);
     expect(results[0]).toBe(el);
   });

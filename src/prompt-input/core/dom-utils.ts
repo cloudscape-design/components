@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { isHTMLElement } from '../../internal/utils/dom';
-import { ELEMENT_TYPES, ElementType, SPECIAL_CHARS } from './constants';
+import { ElementType, SPECIAL_CHARS } from './constants';
 import { isBRElement, isTextNode } from './type-guards';
 
 import styles from '../styles.css.js';
@@ -11,12 +11,12 @@ import styles from '../styles.css.js';
 export function getTokenType(element: HTMLElement): ElementType | null {
   const value = element.getAttribute('data-type');
   switch (value) {
-    case ELEMENT_TYPES.REFERENCE:
-    case ELEMENT_TYPES.PINNED:
-    case ELEMENT_TYPES.CURSOR_SPOT_BEFORE:
-    case ELEMENT_TYPES.CURSOR_SPOT_AFTER:
-    case ELEMENT_TYPES.TRIGGER:
-    case ELEMENT_TYPES.TRAILING_BREAK:
+    case ElementType.Reference:
+    case ElementType.Pinned:
+    case ElementType.CaretSpotBefore:
+    case ElementType.CaretSpotAfter:
+    case ElementType.Trigger:
+    case ElementType.TrailingBreak:
       return value;
     default:
       return null;
@@ -24,7 +24,7 @@ export function getTokenType(element: HTMLElement): ElementType | null {
 }
 /** Checks if a token type represents a reference element (inline or pinned). */
 export function isReferenceElementType(tokenType: ElementType | string | null): boolean {
-  return tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED;
+  return tokenType === ElementType.Reference || tokenType === ElementType.Pinned;
 }
 
 /** Inserts a node immediately after a reference node in the DOM. */
@@ -51,7 +51,7 @@ export function createParagraph(): HTMLParagraphElement {
 /** Creates a trailing BR element used as a placeholder in empty paragraphs. */
 export function createTrailingBreak(): HTMLBRElement {
   const br = document.createElement('br');
-  br.setAttribute('data-id', ELEMENT_TYPES.TRAILING_BREAK);
+  br.setAttribute('data-id', ElementType.TrailingBreak);
   return br;
 }
 
@@ -66,9 +66,9 @@ export function generateTokenId(): string {
   return `${idCounter++}-${Date.now()}-${Math.round(Math.random() * 10000)}`;
 }
 
-/** Strips zero-width non-joiner characters used for cursor positioning. */
-export function stripZWNJ(text: string): string {
-  return text.replace(new RegExp(SPECIAL_CHARS.ZWNJ, 'g'), '');
+/** Strips zero-width characters used for cursor positioning. */
+export function stripZeroWidthCharacters(text: string): string {
+  return text.replace(new RegExp(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER, 'g'), '');
 }
 
 interface TokenQueryOptions {
@@ -137,7 +137,7 @@ export function isEmptyState(element: HTMLElement): boolean {
 
 /** Checks if a token type represents a caret spot element. */
 export function isCaretSpotType(tokenType: ElementType | string | null): boolean {
-  return tokenType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE || tokenType === ELEMENT_TYPES.CURSOR_SPOT_AFTER;
+  return tokenType === ElementType.CaretSpotBefore || tokenType === ElementType.CaretSpotAfter;
 }
 
 /** Resets the element to a single empty paragraph with a trailing BR. */

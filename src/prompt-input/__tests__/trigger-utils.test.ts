@@ -4,7 +4,7 @@
 jest.mock('../styles.css.js', () => ({ 'trigger-token': 'trigger-token' }), { virtual: true });
 
 import { CaretController } from '../core/caret-controller';
-import { ELEMENT_TYPES } from '../core/constants';
+import { ElementType } from '../core/constants';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { handleSpaceInOpenMenu } from '../core/trigger-utils';
 
@@ -22,7 +22,7 @@ afterEach(() => {
 
 function createTriggerElement(id: string, text: string): HTMLSpanElement {
   const span = document.createElement('span');
-  span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+  span.setAttribute('data-type', ElementType.Trigger);
   span.id = id;
   span.textContent = text;
   return span;

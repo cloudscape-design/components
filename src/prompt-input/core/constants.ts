@@ -1,25 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export type ElementType =
-  | 'reference'
-  | 'pinned'
-  | 'cursor-spot-before'
-  | 'cursor-spot-after'
-  | 'trigger'
-  | 'trailing-break';
-
-export const ELEMENT_TYPES: Record<string, ElementType> = {
-  REFERENCE: 'reference',
-  PINNED: 'pinned',
-  CURSOR_SPOT_BEFORE: 'cursor-spot-before',
-  CURSOR_SPOT_AFTER: 'cursor-spot-after',
-  TRIGGER: 'trigger',
-  TRAILING_BREAK: 'trailing-break',
-};
+export enum ElementType {
+  Reference = 'reference',
+  Pinned = 'pinned',
+  CaretSpotBefore = 'cursor-spot-before',
+  CaretSpotAfter = 'cursor-spot-after',
+  Trigger = 'trigger',
+  TrailingBreak = 'trailing-break',
+}
 
 export const SPECIAL_CHARS = {
-  ZWNJ: '\u200B',
+  ZERO_WIDTH_CHARACTER: '\u200B',
   NEWLINE: '\n',
 };
 

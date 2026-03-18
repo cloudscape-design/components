@@ -494,7 +494,7 @@ describe('token mode hidden input', () => {
     const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
     expect(hiddenInput).not.toBeNull();
     expect(hiddenInput.name).toBe('user-prompt');
-    expect(hiddenInput.value).toBe('hello alice world');
+    expect(hiddenInput.value).toBe('hello Alice world');
   });
 
   test('does not render hidden input when name is not set', () => {

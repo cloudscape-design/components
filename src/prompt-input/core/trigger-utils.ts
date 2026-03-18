@@ -3,7 +3,7 @@
 
 import { PromptInputProps } from '../interfaces';
 import { CaretController } from './caret-controller';
-import { ELEMENT_TYPES } from './constants';
+import { ElementType } from './constants';
 import { getTokenType, insertAfter } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { isTextNode } from './type-guards';
@@ -29,7 +29,7 @@ function findTriggerAtCaret(): HTMLElement | null {
 
   const range = selection.getRangeAt(0);
   const parent = isTextNode(range.startContainer) ? range.startContainer.parentElement : null;
-  return parent && getTokenType(parent) === ELEMENT_TYPES.TRIGGER ? parent : null;
+  return parent && getTokenType(parent) === ElementType.Trigger ? parent : null;
 }
 
 /**

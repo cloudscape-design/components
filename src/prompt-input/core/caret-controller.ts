@@ -3,7 +3,7 @@
 
 import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
-import { ELEMENT_TYPES } from './constants';
+import { ElementType } from './constants';
 import {
   findAllParagraphs,
   findElement,
@@ -11,7 +11,7 @@ import {
   isCaretSpotType,
   isEmptyState,
   isReferenceElementType,
-  stripZWNJ,
+  stripZeroWidthCharacters,
 } from './dom-utils';
 import { isBreakTextToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
@@ -72,18 +72,12 @@ export class CaretController {
 
   /** Returns the logical length of a DOM node based on its token type. */
   private getNodeLength(node: Node): number {
-    if (isTextNode(node)) {
-      return TOKEN_LENGTHS.text(node.textContent || '');
-    }
+    const tokenType = isHTMLElement(node) ? getTokenType(node) : null;
 
-    if (isHTMLElement(node)) {
-      const tokenType = getTokenType(node);
-      if (tokenType === ELEMENT_TYPES.TRIGGER) {
-        return TOKEN_LENGTHS.text(node.textContent || '');
-      }
-      if (isReferenceElementType(tokenType)) {
-        return TOKEN_LENGTHS.REFERENCE;
-      }
+    if (isTextNode(node) || tokenType === ElementType.Trigger) {
+      return TOKEN_LENGTHS.text(node.textContent || '');
+    } else if (tokenType && isReferenceElementType(tokenType)) {
+      return TOKEN_LENGTHS.REFERENCE;
     }
 
     return 0;
@@ -101,9 +95,7 @@ export class CaretController {
       return 0;
     }
 
-    const position = this.calculatePositionFromRange(range, false);
-
-    return position;
+    return this.calculatePositionFromRange(range, false);
   }
 
   /** Finds the trigger element at the current caret position, if any. */
@@ -122,7 +114,7 @@ export class CaretController {
 
     // Walk up from cursor to find a trigger ancestor
     while (node && node !== this.element) {
-      if (isHTMLElement(node) && getTokenType(node) === ELEMENT_TYPES.TRIGGER) {
+      if (isHTMLElement(node) && getTokenType(node) === ElementType.Trigger) {
         if (isTextNode(range.startContainer) && range.startContainer.parentElement === node) {
           const triggerText = node.textContent || '';
           const triggerHasFilterText = triggerText.length > 1;
@@ -141,7 +133,7 @@ export class CaretController {
     // Also check: cursor at offset 0 of a text node right after a trigger
     if (isTextNode(range.startContainer) && range.startOffset === 0) {
       const prevSibling = range.startContainer.previousSibling;
-      if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ELEMENT_TYPES.TRIGGER) {
+      if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
         return prevSibling;
       }
     }
@@ -380,7 +372,7 @@ export class CaretController {
         if (isHTMLElement(child)) {
           const tokenType = getTokenType(child);
 
-          if (tokenType === ELEMENT_TYPES.TRIGGER) {
+          if (tokenType === ElementType.Trigger) {
             const offsetInTrigger = targetOffset - offsetInParagraph;
             const triggerTextNode = child.childNodes[0];
             if (triggerTextNode && isTextNode(triggerTextNode)) {
@@ -449,14 +441,14 @@ export class CaretController {
         if (isHTMLElement(child)) {
           const tokenType = getTokenType(child);
 
-          if (tokenType === ELEMENT_TYPES.TRIGGER) {
+          if (tokenType === ElementType.Trigger) {
             const triggerTextNode = child.childNodes[0];
             if (triggerTextNode && isTextNode(triggerTextNode) && triggerTextNode === container) {
               return count + offset;
             }
           } else if (isReferenceElementType(tokenType)) {
-            const caretSpotBefore = findElement(child, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_BEFORE });
-            const caretSpotAfter = findElement(child, { tokenType: ELEMENT_TYPES.CURSOR_SPOT_AFTER });
+            const caretSpotBefore = findElement(child, { tokenType: ElementType.CaretSpotBefore });
+            const caretSpotAfter = findElement(child, { tokenType: ElementType.CaretSpotAfter });
 
             const caretInBefore =
               caretSpotBefore && (caretSpotBefore === container || caretSpotBefore.contains(container));
@@ -464,16 +456,16 @@ export class CaretController {
 
             if (caretInBefore) {
               // Caret is in the before-spot: any typed text counts from the start of the reference
-              const beforeContent = stripZWNJ(caretSpotBefore!.textContent || '');
+              const beforeContent = stripZeroWidthCharacters(caretSpotBefore!.textContent || '');
               if (beforeContent && isTextNode(container)) {
                 return count + offset;
               }
             } else if (caretInAfter) {
               // Caret is in the after-spot: position is after the reference (count it first)
               count += TOKEN_LENGTHS.REFERENCE;
-              const afterContent = stripZWNJ(caretSpotAfter!.textContent || '');
+              const afterContent = stripZeroWidthCharacters(caretSpotAfter!.textContent || '');
               if (afterContent && isTextNode(container)) {
-                // offset - 1 because the ZWNJ char occupies position 0
+                // offset - 1 because the zero-width character occupies position 0
                 const contentOffset = Math.max(0, offset - 1);
                 return count + contentOffset;
               }
@@ -538,7 +530,7 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
 
     const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
 
-    const newOffset = parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE ? wrapperIndex : wrapperIndex + 1;
+    const newOffset = parentType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
 
     const newRange = document.createRange();
     newRange.setStart(paragraph, newOffset);
@@ -586,7 +578,7 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
     }
 
     const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-    const newOffset = parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE ? wrapperIndex : wrapperIndex + 1;
+    const newOffset = parentType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
 
     return { container: paragraph, offset: newOffset };
   };

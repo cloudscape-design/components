@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-token-mode';
 import { CaretController, TOKEN_LENGTHS } from './caret-controller';
-import { CARET_DETECTION_DELAY, ELEMENT_TYPES } from './constants';
+import { CARET_DETECTION_DELAY, ElementType } from './constants';
 import {
   createParagraph,
   createTrailingBreak,
@@ -116,14 +118,6 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
   };
 }
 
-function findParagraphAncestor(node: Node): HTMLElement | null {
-  let current: Node | null = node;
-  while (current && current.nodeName !== 'P') {
-    current = current.parentNode;
-  }
-  return isHTMLElement(current) ? current : null;
-}
-
 /** Splits the current paragraph at the caret position, creating a new paragraph below. */
 export function splitParagraphAtCaret(
   editableElement: HTMLDivElement,
@@ -136,7 +130,8 @@ export function splitParagraphAtCaret(
   }
 
   const range = selection.getRangeAt(0);
-  const currentP = findParagraphAncestor(range.startContainer);
+  const startElement = isHTMLElement(range.startContainer) ? range.startContainer : range.startContainer.parentElement;
+  const currentP = startElement ? findUpUntil(startElement, node => node.nodeName === 'P') : null;
 
   if (!currentP?.parentNode) {
     return;
@@ -278,8 +273,8 @@ export function handleReferenceTokenDeletion(
     return true;
   }
 
-  // Prevent the next input handler from processing ZWNJ changes left behind by the removed element
-  state.skipNextZwnjUpdate = true;
+  // Prevent the next input handler from processing zero-width character changes left behind by the removed element
+  state.skipNextZeroWidthUpdate = true;
 
   let newCaretPos: number | null = null;
   if (caretController) {
@@ -462,7 +457,7 @@ export function handleSpaceAfterClosedTrigger(
     const parent = range.startContainer.parentElement;
     const parentType = parent ? getTokenType(parent) : null;
 
-    if (parentType === ELEMENT_TYPES.TRIGGER && parent) {
+    if (parentType === ElementType.Trigger && parent) {
       triggerElement = parent;
       const textLength = range.startContainer.textContent?.length || 0;
       caretAtEnd = range.startOffset === textLength;
@@ -472,7 +467,7 @@ export function handleSpaceAfterClosedTrigger(
     const container = range.startContainer;
     if (range.startOffset > 0) {
       const prevNode = container.childNodes[range.startOffset - 1];
-      if (isHTMLElement(prevNode) && getTokenType(prevNode) === ELEMENT_TYPES.TRIGGER) {
+      if (isHTMLElement(prevNode) && getTokenType(prevNode) === ElementType.Trigger) {
         triggerElement = prevNode;
         caretAtEnd = true;
       }
