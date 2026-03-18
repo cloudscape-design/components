@@ -50,7 +50,11 @@ import { isBreakTextToken, isReferenceToken, isTextToken, isTriggerToken } from 
 
 import styles from '../styles.css.js';
 
-const rootsMap = new Map<HTMLElement, Root>();
+/** A React portal container and its associated root, keyed by token ID. */
+export interface ReactContainer {
+  element: HTMLElement;
+  root: Root;
+}
 
 /** Props passed to the renderToken callback for rendering reference tokens. */
 export interface RenderTokenProps {
@@ -60,14 +64,8 @@ export interface RenderTokenProps {
   readOnly: boolean;
 }
 
-function renderComponent(element: React.ReactElement, container: HTMLElement): void {
-  let root = rootsMap.get(container);
-  if (!root) {
-    root = createRoot(container);
-    rootsMap.set(container, root);
-  }
-
-  root.render(element);
+function renderComponent(reactElement: React.ReactElement, container: ReactContainer): void {
+  container.root.render(reactElement);
 }
 
 interface ParagraphGroup {
@@ -115,7 +113,7 @@ function createCaretSpot(type: string): HTMLSpanElement {
 
 function createReferenceWithCaretSpots(
   token: PromptInputProps.ReferenceToken,
-  reactContainers: Map<string, HTMLElement>,
+  reactContainers: Map<string, ReactContainer>,
   renderToken: (props: RenderTokenProps) => React.ReactElement
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
@@ -125,16 +123,18 @@ function createReferenceWithCaretSpots(
   wrapper.setAttribute('data-menu-id', token.menuId);
 
   const caretSpotBefore = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_BEFORE);
-  const container = document.createElement('span');
-  container.className = styles['token-container'];
-  container.setAttribute('contenteditable', 'false');
+  const element = document.createElement('span');
+  element.className = styles['token-container'];
+  element.setAttribute('contenteditable', 'false');
 
+  const root = createRoot(element);
+  const container: ReactContainer = { element, root };
   reactContainers.set(instanceId, container);
   renderComponent(renderToken({ id: instanceId, label: token.label, disabled: false, readOnly: false }), container);
   const caretSpotAfter = createCaretSpot(ELEMENT_TYPES.CURSOR_SPOT_AFTER);
 
   wrapper.appendChild(caretSpotBefore);
-  wrapper.appendChild(container);
+  wrapper.appendChild(element);
   wrapper.appendChild(caretSpotAfter);
 
   return wrapper;
@@ -150,16 +150,19 @@ function createReferenceWithCaretSpots(
 export function renderTokensToDOM(
   tokens: readonly PromptInputProps.InputToken[],
   targetElement: HTMLElement,
-  reactContainers: Map<string, HTMLElement>,
+  reactContainers: Map<string, ReactContainer>,
   renderToken: (props: RenderTokenProps) => React.ReactElement
 ): {
   newTriggerElement: HTMLElement | null;
   lastReferenceWithZwnj: HTMLElement | null;
 } {
-  const existingContainers = new Map<string, HTMLElement>();
+  const existingContainers = new Map<string, ReactContainer>();
   reactContainers.forEach((container, instanceId) => {
-    if (container.isConnected && targetElement.contains(container)) {
+    if (container.element.isConnected && targetElement.contains(container.element)) {
       existingContainers.set(instanceId, container);
+    } else {
+      // Unmount React root for disconnected containers
+      container.root.unmount();
     }
   });
   reactContainers.clear();
@@ -226,7 +229,7 @@ export function renderTokensToDOM(
       } else if (isReferenceToken(token)) {
         const existingContainer = token.id ? existingContainers.get(token.id) : undefined;
         if (existingContainer) {
-          const existingWrapper = existingContainer.parentElement;
+          const existingWrapper = existingContainer.element.parentElement;
           if (existingWrapper) {
             const tokenType = getTokenType(existingWrapper);
             if (isReferenceElementType(tokenType)) {

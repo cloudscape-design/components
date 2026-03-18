@@ -4,7 +4,7 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import { PromptInputProps } from '~components/prompt-input';
 import { extractTokensFromDOM } from '~components/prompt-input/core/token-operations';
-import { RenderTokenProps, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
+import { ReactContainer, RenderTokenProps, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
 
 import { SimplePage } from '../app/templates';
 
@@ -55,7 +55,7 @@ const menus: PromptInputProps.MenuDefinition[] = [
 
 export default function TokenRendererPage() {
   const editorRef = useRef<HTMLDivElement>(null);
-  const reactContainersRef = useRef(new Map<string, HTMLElement>());
+  const reactContainersRef = useRef(new Map<string, ReactContainer>());
   const [tokens, setTokens] = useState<PromptInputProps.InputToken[]>([]);
   const [extracted, setExtracted] = useState<PromptInputProps.InputToken[] | null>(null);
 

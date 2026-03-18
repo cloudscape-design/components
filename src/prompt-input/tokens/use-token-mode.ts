@@ -34,7 +34,7 @@ import {
 } from '../core/event-handlers';
 import { MenuItem, MenuItemsHandlers, MenuItemsState, useMenuItems, useMenuLoadMore } from '../core/menu-state';
 import { extractTokensFromDOM, getPromptText, handleMenuSelection, processTokens } from '../core/token-operations';
-import { RenderTokenProps, renderTokensToDOM } from '../core/token-renderer';
+import { ReactContainer, RenderTokenProps, renderTokensToDOM } from '../core/token-renderer';
 import { enforcePinnedTokenOrdering, mergeConsecutiveTextTokens } from '../core/token-utils';
 import {
   isBreakTextToken,
@@ -199,7 +199,7 @@ export interface UseTokenModeConfig {
 
 /** Return value of useTokenMode — state, handlers, and attributes consumed by TokenMode component. */
 export interface UseTokenModeResult {
-  reactContainersRef: React.MutableRefObject<Map<string, HTMLElement>>;
+  reactContainersRef: React.MutableRefObject<Map<string, ReactContainer>>;
 
   editableState: EditableState;
 
@@ -583,7 +583,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     };
   }, [menuIsOpen, editableElementRef]);
 
-  const reactContainersRef = useRef<Map<string, HTMLElement>>(new Map());
+  const reactContainersRef = useRef<Map<string, ReactContainer>>(new Map());
 
   useLayoutEffect(() => {
     if (editableElementRef.current && !caretControllerRef.current) {
