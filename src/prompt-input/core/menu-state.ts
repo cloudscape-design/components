@@ -14,25 +14,26 @@ import {
 } from '../../internal/components/options-list/utils/use-highlight-option';
 import { PromptInputProps } from '../interfaces';
 
-// TYPES
-
 export type MenuItem = (OptionDefinition | OptionGroup) & {
   type?: 'parent' | 'child' | 'use-entered';
   option: OptionDefinition | OptionGroup;
 };
 
+/** Props for the useMenuItems hook. */
 export interface UseMenuItemsProps {
   menu: PromptInputProps.MenuDefinition;
   filterText: string;
   onSelectItem: (option: MenuItem) => void;
 }
 
+/** Current state of the menu items list, including highlight tracking. */
 export interface MenuItemsState extends HighlightedOptionState<MenuItem> {
   items: readonly MenuItem[];
   showAll: boolean;
   getItemGroup: (item: MenuItem) => undefined | OptionGroup;
 }
 
+/** Handlers for navigating and selecting menu items via keyboard and mouse. */
 export interface MenuItemsHandlers extends HighlightedOptionHandlers<MenuItem> {
   selectHighlightedOptionWithKeyboard(): boolean;
   highlightVisibleOptionWithMouse(index: number): void;
@@ -53,8 +54,6 @@ interface MenuLoadMoreHandlers {
   fireLoadMoreOnInputChange(filteringText: string): void;
 }
 
-// MENU ITEMS
-
 function isMenuItemHighlightable(option?: MenuItem): boolean {
   return !!option && option.type !== 'parent';
 }
@@ -63,6 +62,7 @@ function isMenuItemInteractive(option?: MenuItem): boolean {
   return !!option && !option.disabled && option.type !== 'parent';
 }
 
+/** Manages menu item filtering, highlighting, and selection for a trigger menu. */
 export const useMenuItems = ({
   menu,
   filterText,
@@ -172,8 +172,7 @@ function isGroup(optionOrGroup: OptionDefinition): optionOrGroup is OptionGroup 
   return key in optionOrGroup;
 }
 
-// MENU LOAD MORE
-
+/** Manages pagination and load-more behavior for menu items. */
 export const useMenuLoadMore = ({
   menu,
   statusType,

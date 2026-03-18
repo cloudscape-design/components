@@ -1,27 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
-import { EditableState } from '../tokens/use-editable-tokens';
+import { EditableState } from '../tokens/use-token-mode';
+import { CaretController, TOKEN_LENGTHS } from './caret-controller';
 import { ELEMENT_TYPES } from './constants';
-import { CursorController, TOKEN_LENGTHS } from './cursor-controller';
 import {
   createParagraph,
   createTrailingBreak,
+  findAdjacentToken,
+  findAllParagraphs,
   getTokenType,
   insertAfter,
+  isCaretSpotType,
   isElementEffectivelyEmpty,
+  isReferenceElementType,
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { getPromptText } from './token-operations';
-import { findAdjacentToken } from './token-utils';
 import { handleSpaceInOpenMenu } from './trigger-utils';
-import { isHTMLElement, isTextNode } from './type-guards';
+import { isBreakToken, isBRElement, isTextNode } from './type-guards';
 
-// TYPES
-
-export type { EditableState };
-
+/** Configuration for keyboard handlers created by createKeyboardHandlers. */
 export interface KeyboardHandlerProps {
   getMenuOpen: () => boolean;
   getMenuItemsState: () => MenuItemsState | null;
@@ -35,13 +36,10 @@ export interface KeyboardHandlerProps {
   i18nStrings?: PromptInputProps.I18nStrings;
   disabled?: boolean;
   readOnly?: boolean;
-  editableState?: EditableState;
-  editableElementRef?: React.RefObject<HTMLDivElement>;
-  cursorController?: CursorController;
+  caretController?: CaretController;
 }
 
-// KEYBOARD HANDLERS
-
+/** Creates keyboard event handlers for menu navigation and Enter-to-submit. */
 export function createKeyboardHandlers(props: KeyboardHandlerProps) {
   function handleMenuNavigation(event: React.KeyboardEvent): boolean {
     const menuItemsState = props.getMenuItemsState();
@@ -71,9 +69,7 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
         menuItemsHandlers,
         getMenuStatusType: props.getMenuStatusType,
         closeMenu: props.closeMenu,
-        editableElementRef: props.editableElementRef,
-        cursorController: props.cursorController,
-        editableState: props.editableState,
+        caretController: props.caretController,
       });
     }
 
@@ -91,7 +87,6 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
       return;
     }
 
-    // Don't submit if disabled or readonly (match textarea behavior)
     if (props.disabled || props.readOnly) {
       event.preventDefault();
       return;
@@ -121,8 +116,6 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
   };
 }
 
-// PARAGRAPH OPERATIONS
-
 function findParagraphAncestor(node: Node): HTMLElement | null {
   let current: Node | null = node;
   while (current && current.nodeName !== 'P') {
@@ -131,9 +124,10 @@ function findParagraphAncestor(node: Node): HTMLElement | null {
   return isHTMLElement(current) ? current : null;
 }
 
-export function splitParagraphAtCursor(
+/** Splits the current paragraph at the caret position, creating a new paragraph below. */
+export function splitParagraphAtCaret(
   editableElement: HTMLDivElement,
-  cursorController: CursorController | null,
+  caretController: CaretController | null,
   suppressInputEvent = false
 ): void {
   const selection = window.getSelection();
@@ -148,17 +142,17 @@ export function splitParagraphAtCursor(
     return;
   }
 
-  // Extract content after cursor
   const afterRange = document.createRange();
   afterRange.setStart(range.startContainer, range.startOffset);
   afterRange.setEndAfter(currentP.lastChild || currentP);
+
+  // Extract everything after the caret into a document fragment
   const afterContent = afterRange.extractContents();
 
-  // Create new paragraph with the extracted content
   const newP = createParagraph();
   newP.appendChild(afterContent);
 
-  // Ensure both paragraphs have proper structure
+  // Both paragraphs need valid content — empty ones get a trailing BR
   if (isElementEffectivelyEmpty(newP)) {
     newP.appendChild(createTrailingBreak());
   }
@@ -169,25 +163,22 @@ export function splitParagraphAtCursor(
 
   currentP.parentNode.insertBefore(newP, currentP.nextSibling);
 
-  // Calculate new cursor position BEFORE input event (if controller exists)
-  let newCursorPos: number | null = null;
-  if (cursorController) {
-    const currentPos = cursorController.getPosition();
-    newCursorPos = currentPos + TOKEN_LENGTHS.LINE_BREAK;
+  let newCaretPos: number | null = null;
+  if (caretController) {
+    const currentPos = caretController.getPosition();
+    // Caret moves forward by one line break to land at the start of the new paragraph
+    newCaretPos = currentPos + TOKEN_LENGTHS.LINE_BREAK;
   }
 
+  // Fire input to trigger token extraction from the updated DOM
   if (!suppressInputEvent) {
     editableElement.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
-  // Position cursor at calculated position
-  // The input event triggers onChange which uses flushSync to update DOM synchronously
-  if (cursorController && newCursorPos !== null) {
-    cursorController.setPosition(newCursorPos);
+  if (caretController && newCaretPos !== null) {
+    caretController.setPosition(newCaretPos);
   }
 }
-
-// TOKEN DELETION HELPERS
 
 interface TokenElementResult {
   targetElement: HTMLElement | null;
@@ -198,18 +189,20 @@ function findTokenElementForDeletion(container: Node, offset: number, isBackspac
   let adjacent: Node | null = null;
 
   if (isTextNode(container)) {
+    // At the edge of a text node, check the sibling in the deletion direction
     const isAtEdge = isBackspace ? offset === 0 : offset === (container.textContent?.length || 0);
     if (isAtEdge) {
       adjacent = isBackspace ? container.previousSibling : container.nextSibling;
     }
   } else if (isHTMLElement(container)) {
+    // At paragraph level, the child at offset-1 (backspace) or offset (delete) is the target
     const childIndex = isBackspace ? offset - 1 : offset;
     adjacent = container.childNodes[childIndex];
   }
 
   if (isHTMLElement(adjacent)) {
     const adjacentType = getTokenType(adjacent);
-    if (adjacentType === ELEMENT_TYPES.REFERENCE || adjacentType === ELEMENT_TYPES.PINNED) {
+    if (isReferenceElementType(adjacentType)) {
       return {
         wrapperElement: adjacent,
         targetElement: adjacent,
@@ -225,9 +218,13 @@ function isValidTokenForDeletion(element: HTMLElement | null): boolean {
     return false;
   }
   const tokenType = getTokenType(element);
-  return tokenType === ELEMENT_TYPES.REFERENCE || tokenType === ELEMENT_TYPES.PINNED;
+  return isReferenceElementType(tokenType);
 }
 
+/**
+ * Handles Backspace/Delete when adjacent to a reference token.
+ * @returns true if a token deletion was handled
+ */
 export function handleReferenceTokenDeletion(
   event: React.KeyboardEvent<HTMLDivElement>,
   isBackspace: boolean,
@@ -235,7 +232,7 @@ export function handleReferenceTokenDeletion(
   state: EditableState,
   announceTokenOperation: ((message: string) => void) | undefined,
   i18nStrings: PromptInputProps.I18nStrings | undefined,
-  cursorController: CursorController | null
+  caretController: CaretController | null
 ): boolean {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
@@ -244,14 +241,11 @@ export function handleReferenceTokenDeletion(
 
   const range = selection.getRangeAt(0);
 
-  // If there's a selection range, delete it and trigger input event
   if (!range.collapsed) {
     event.preventDefault();
 
-    // Delete the selected content
     range.deleteContents();
 
-    // Trigger input event to extract tokens from updated DOM
     editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
     return true;
@@ -271,7 +265,6 @@ export function handleReferenceTokenDeletion(
 
   event.preventDefault();
 
-  // Announce token removal
   const tokenLabel = tokenElement!.textContent?.trim() || '';
   if (announceTokenOperation && tokenLabel) {
     const announcement =
@@ -285,35 +278,32 @@ export function handleReferenceTokenDeletion(
     return true;
   }
 
+  // Prevent the next input handler from processing ZWNJ changes left behind by the removed element
   state.skipNextZwnjUpdate = true;
 
-  // Calculate new cursor position BEFORE removing element
-  let newCursorPos: number | null = null;
-  if (cursorController) {
-    const currentPos = cursorController.getPosition();
-    // For Backspace, move cursor back; for Delete, keep cursor at same position
-    newCursorPos = isBackspace ? Math.max(0, currentPos - TOKEN_LENGTHS.REFERENCE) : currentPos;
+  let newCaretPos: number | null = null;
+  if (caretController) {
+    const currentPos = caretController.getPosition();
+    // Backspace: move caret back by the reference length. Delete: stay in place.
+    newCaretPos = isBackspace ? Math.max(0, currentPos - TOKEN_LENGTHS.REFERENCE) : currentPos;
   }
 
+  // Remove the element first, then fire input to re-extract tokens
   elementToRemove.remove();
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
-  // Position cursor at calculated position
-  // The input event triggers onChange which uses flushSync to update DOM synchronously
-  if (cursorController && newCursorPos !== null) {
-    cursorController.setPosition(newCursorPos);
+  if (caretController && newCaretPos !== null) {
+    caretController.setPosition(newCaretPos);
   }
 
   return true;
 }
 
-// ARROW KEY NAVIGATION
-
 function handleArrowNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
   container: Node,
   offset: number,
-  cursorController: CursorController | null
+  caretController: CaretController | null
 ): boolean {
   const direction = event.key === 'ArrowLeft' ? 'left' : 'right';
   const { sibling, isReferenceToken } = findAdjacentToken(container, offset, direction);
@@ -321,22 +311,10 @@ function handleArrowNavigation(
   if (isReferenceToken && sibling) {
     event.preventDefault();
 
-    // Jump cursor over reference token
     if (direction === 'left') {
-      // Check if we're in a text node at offset 0 OR in paragraph right after a reference
-      // This means we just jumped here with right arrow, so only move back by 1
-      const isInTextAtStart = isTextNode(container) && offset === 0;
-      const isInParagraphAfterRef =
-        isHTMLElement(container) &&
-        offset > 0 &&
-        isHTMLElement(container.childNodes[offset - 1]) &&
-        (getTokenType(container.childNodes[offset - 1] as HTMLElement) === ELEMENT_TYPES.REFERENCE ||
-          getTokenType(container.childNodes[offset - 1] as HTMLElement) === ELEMENT_TYPES.PINNED);
-
-      const moveAmount = isInTextAtStart || isInParagraphAfterRef ? 1 : 2;
-      cursorController?.moveBackward(moveAmount);
+      caretController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
     } else {
-      cursorController?.moveForward(TOKEN_LENGTHS.REFERENCE);
+      caretController?.moveForward(TOKEN_LENGTHS.REFERENCE);
     }
 
     return true;
@@ -345,9 +323,10 @@ function handleArrowNavigation(
   return false;
 }
 
+/** Handles left/right arrow key navigation, jumping over atomic reference tokens. */
 export function handleArrowKeyNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
-  cursorController: CursorController | null
+  caretController: CaretController | null
 ): boolean {
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
     return false;
@@ -360,12 +339,47 @@ export function handleArrowKeyNavigation(
 
   const range = selection.getRangeAt(0);
 
-  // Handle Shift+Arrow for selection across reference tokens
+  if (range.collapsed) {
+    const container = range.startContainer;
+    if (isTextNode(container)) {
+      const parent = container.parentElement;
+      if (parent) {
+        const parentType = getTokenType(parent);
+        if (isCaretSpotType(parentType)) {
+          // Caret landed in a caret spot — normalize it out before processing the arrow key
+          const wrapper = parent.parentElement;
+          const wrapperType = wrapper ? getTokenType(wrapper) : null;
+          if (wrapper && isReferenceElementType(wrapperType)) {
+            const paragraph = wrapper.parentElement;
+            if (paragraph) {
+              const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
+
+              let newOffset: number;
+              if (parentType === ELEMENT_TYPES.CURSOR_SPOT_BEFORE) {
+                newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
+              } else {
+                newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
+              }
+
+              event.preventDefault();
+              const newRange = document.createRange();
+              newRange.setStart(paragraph, newOffset);
+              newRange.collapse(true);
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+
   if (event.shiftKey) {
     return handleShiftArrowAcrossTokens(event, selection, range);
   }
 
-  return handleArrowNavigation(event, range.startContainer, range.startOffset, cursorController);
+  return handleArrowNavigation(event, range.startContainer, range.startOffset, caretController);
 }
 
 function handleShiftArrowAcrossTokens(
@@ -375,23 +389,20 @@ function handleShiftArrowAcrossTokens(
 ): boolean {
   const isLeftArrow = event.key === 'ArrowLeft';
 
-  // For Shift+Arrow, we need to check the moving end of the selection
-  // Left arrow moves the start, right arrow moves the end
+  // Shift+Arrow extends the selection — left extends the start, right extends the end
   const relevantContainer = isLeftArrow ? range.startContainer : range.endContainer;
   const relevantOffset = isLeftArrow ? range.startOffset : range.endOffset;
 
-  // Check if we're immediately adjacent to a reference token (treating it as atomic)
+  // Check if the extending edge is adjacent to a reference token
   let sibling: Node | null = null;
 
   if (isTextNode(relevantContainer)) {
-    // In text node - check if at start/end boundary
     if (isLeftArrow && relevantOffset === 0) {
       sibling = relevantContainer.previousSibling;
     } else if (!isLeftArrow && relevantOffset === (relevantContainer.textContent?.length || 0)) {
       sibling = relevantContainer.nextSibling;
     }
   } else if (isHTMLElement(relevantContainer)) {
-    // In element node (paragraph) - check adjacent child
     if (isLeftArrow && relevantOffset > 0) {
       sibling = relevantContainer.childNodes[relevantOffset - 1];
     } else if (!isLeftArrow && relevantOffset < relevantContainer.childNodes.length) {
@@ -404,10 +415,9 @@ function handleShiftArrowAcrossTokens(
   }
 
   const siblingType = isHTMLElement(sibling) ? getTokenType(sibling) : null;
-  if (siblingType === ELEMENT_TYPES.REFERENCE || siblingType === ELEMENT_TYPES.PINNED) {
+  if (isReferenceElementType(siblingType)) {
     event.preventDefault();
 
-    // Extend selection to include the entire reference token (atomic)
     const newRange = range.cloneRange();
     if (isLeftArrow) {
       newRange.setStartBefore(sibling);
@@ -423,17 +433,17 @@ function handleShiftArrowAcrossTokens(
   return false;
 }
 
-// SPACE AFTER CLOSED TRIGGER
-
+/**
+ * Handles space key after a closed trigger element, inserting the space outside the trigger.
+ * @returns true if handled
+ */
 export function handleSpaceAfterClosedTrigger(
   event: React.KeyboardEvent<HTMLDivElement>,
   editableElement: HTMLDivElement,
   menuOpen: boolean,
-  ignoreCursorDetection: React.MutableRefObject<boolean>,
-  cursorController: CursorController | null
+  ignoreCaretDetection: React.MutableRefObject<boolean>,
+  caretController: CaretController | null
 ): boolean {
-  // Only handle space key when menu is closed
-  // triggerValueWhenClosed can be empty string (trigger with no filter) or non-empty (trigger with filter)
   if (event.key !== ' ' || menuOpen) {
     return false;
   }
@@ -448,10 +458,10 @@ export function handleSpaceAfterClosedTrigger(
     return false;
   }
 
-  // Check if cursor is at the end of a trigger element
   let triggerElement: HTMLElement | null = null;
-  let cursorAtEnd = false;
+  let caretAtEnd = false;
 
+  // Case 1: Caret is inside the trigger's text node
   if (isTextNode(range.startContainer)) {
     const parent = range.startContainer.parentElement;
     const parentType = parent ? getTokenType(parent) : null;
@@ -459,58 +469,214 @@ export function handleSpaceAfterClosedTrigger(
     if (parentType === ELEMENT_TYPES.TRIGGER && parent) {
       triggerElement = parent;
       const textLength = range.startContainer.textContent?.length || 0;
-      cursorAtEnd = range.startOffset === textLength;
+      caretAtEnd = range.startOffset === textLength;
     }
   } else if (isHTMLElement(range.startContainer)) {
-    // Cursor might be positioned in the paragraph after the trigger
+    // Case 2: Caret is at paragraph level, right after the trigger child
     const container = range.startContainer;
     if (range.startOffset > 0) {
       const prevNode = container.childNodes[range.startOffset - 1];
       if (isHTMLElement(prevNode) && getTokenType(prevNode) === ELEMENT_TYPES.TRIGGER) {
         triggerElement = prevNode;
-        cursorAtEnd = true;
+        caretAtEnd = true;
       }
     }
   }
 
-  if (!triggerElement || !cursorAtEnd) {
+  if (!triggerElement || !caretAtEnd) {
     return false;
   }
 
-  // Prevent default space insertion
   event.preventDefault();
 
-  // Get the paragraph containing the trigger
   const paragraph = triggerElement.parentElement;
   if (!paragraph || paragraph.nodeName !== 'P') {
     return false;
   }
 
-  // Insert space after trigger
   const spaceNode = document.createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
 
-  // Calculate new cursor position BEFORE input event (if controller exists)
-  let newCursorPos: number | null = null;
-  if (cursorController) {
-    const currentPos = cursorController.getPosition();
-    newCursorPos = currentPos + 1;
+  let newCaretPos: number | null = null;
+  if (caretController) {
+    const currentPos = caretController.getPosition();
+    newCaretPos = currentPos + 1;
   }
 
-  // Prevent cursor detection from reopening the menu
-  ignoreCursorDetection.current = true;
+  ignoreCaretDetection.current = true;
   setTimeout(() => {
-    ignoreCursorDetection.current = false;
+    ignoreCaretDetection.current = false;
   }, 100);
 
-  // Trigger input event
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
-  // Position cursor at calculated position
-  // The input event triggers onChange which uses flushSync to update DOM synchronously
-  if (cursorController && newCursorPos !== null) {
-    cursorController.setPosition(newCursorPos);
+  if (caretController && newCaretPos !== null) {
+    caretController.setPosition(newCaretPos);
   }
 
   return true;
+}
+
+export type MergeDirection = 'forward' | 'backward';
+
+interface MergeParagraphsParams {
+  direction: MergeDirection;
+  editableElement: HTMLDivElement;
+  tokens: readonly PromptInputProps.InputToken[];
+  currentParagraphIndex: number;
+  tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
+  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
+  caretController?: CaretController | null;
+}
+
+/**
+ * Merges two adjacent paragraphs by removing the break token between them.
+ * @param params.direction 'backward' merges with previous, 'forward' merges with next
+ * @param params.currentParagraphIndex zero-based index of the cursor's paragraph
+ * @returns true if a merge was performed
+ */
+export function mergeParagraphs(params: MergeParagraphsParams): boolean {
+  const { direction, editableElement, tokens, currentParagraphIndex, tokensToText, onChange, caretController } = params;
+
+  const paragraphs = findAllParagraphs(editableElement);
+
+  if (direction === 'backward') {
+    if (currentParagraphIndex <= 0) {
+      return false;
+    }
+  } else {
+    if (currentParagraphIndex >= paragraphs.length - 1) {
+      return false;
+    }
+  }
+
+  // The Nth break token corresponds to the boundary between paragraph N and N+1.
+  // For backward merge, remove the break at the current paragraph index.
+  // For forward merge, remove the break after the current paragraph.
+  const breakIndexToRemove = direction === 'backward' ? currentParagraphIndex : currentParagraphIndex + 1;
+
+  let breakCount = 0;
+
+  // Filter out the specific break token by counting breaks sequentially
+  const newTokens = tokens.filter(token => {
+    if (isBreakToken(token)) {
+      breakCount++;
+      if (breakCount === breakIndexToRemove) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
+  onChange({ value, tokens: newTokens });
+
+  if (caretController) {
+    const currentPos = caretController.getPosition();
+    const newCaretPos = currentPos - TOKEN_LENGTHS.LINE_BREAK;
+    caretController.setPosition(newCaretPos);
+  }
+
+  return true;
+}
+
+/** Handles Backspace at the start of a paragraph by merging with the previous one. */
+export function handleBackspaceAtParagraphStart(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  editableElement: HTMLDivElement,
+  tokens: readonly PromptInputProps.InputToken[],
+  tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
+  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
+  caretController: CaretController | null
+): boolean {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) {
+    return false;
+  }
+
+  const range = selection.getRangeAt(0);
+
+  if (range.startOffset !== 0 || !isHTMLElement(range.startContainer) || range.startContainer.nodeName !== 'P') {
+    return false;
+  }
+
+  const paragraphs = findAllParagraphs(editableElement);
+  const currentP = range.startContainer;
+  const pIndex = Array.from(paragraphs).indexOf(currentP as HTMLParagraphElement);
+
+  if (pIndex < 0) {
+    return false;
+  }
+
+  event.preventDefault();
+
+  return mergeParagraphs({
+    direction: 'backward',
+    editableElement,
+    tokens,
+    currentParagraphIndex: pIndex,
+    tokensToText,
+    onChange,
+    caretController: caretController,
+  });
+}
+
+/** Handles Delete at the end of a paragraph by merging with the next one. */
+export function handleDeleteAtParagraphEnd(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  editableElement: HTMLDivElement,
+  tokens: readonly PromptInputProps.InputToken[],
+  tokensToText: ((tokens: readonly PromptInputProps.InputToken[]) => string) | undefined,
+  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
+  caretController: CaretController | null
+): boolean {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) {
+    return false;
+  }
+
+  const range = selection.getRangeAt(0);
+  const container = range.startContainer;
+
+  let isAtEndOfParagraph = false;
+  let currentP: HTMLParagraphElement | null = null;
+
+  // Detect end-of-paragraph from two possible caret positions:
+  // 1. Caret at paragraph element level with offset at the end of children
+  if (isHTMLElement(container) && container.nodeName === 'P') {
+    currentP = container as HTMLParagraphElement;
+    const hasOnlyTrailingBR = currentP.childNodes.length === 1 && isBRElement(currentP.firstChild);
+    isAtEndOfParagraph = hasOnlyTrailingBR || range.startOffset === currentP.childNodes.length;
+  } else if (isTextNode(container)) {
+    // 2. Caret at end of the last text node in the paragraph (no next sibling)
+    isAtEndOfParagraph = range.startOffset === (container.textContent?.length || 0) && !container.nextSibling;
+    let node: Node | null = container;
+    while (node && node.nodeName !== 'P') {
+      node = node.parentNode;
+    }
+    currentP = node as HTMLParagraphElement;
+  }
+
+  if (!isAtEndOfParagraph || !currentP) {
+    return false;
+  }
+
+  const paragraphs = findAllParagraphs(editableElement);
+  const pIndex = Array.from(paragraphs).indexOf(currentP);
+
+  if (pIndex < 0) {
+    return false;
+  }
+
+  event.preventDefault();
+
+  return mergeParagraphs({
+    direction: 'forward',
+    editableElement,
+    tokens,
+    currentParagraphIndex: pIndex,
+    tokensToText,
+    onChange,
+    caretController: caretController,
+  });
 }

@@ -8,6 +8,7 @@ import VirtualList from '../../autosuggest/virtual-list';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
 
+/** Props for the menu options list rendered inside the trigger dropdown. */
 interface MenuDropdownProps {
   menu: PromptInputProps.MenuDefinition;
   statusType: PromptInputProps.MenuDefinition['statusType'];

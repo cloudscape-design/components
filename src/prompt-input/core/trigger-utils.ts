@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PromptInputProps } from '../interfaces';
-import { EditableState } from '../tokens/use-editable-tokens';
+import { CaretController } from './caret-controller';
 import { ELEMENT_TYPES } from './constants';
-import { CursorController } from './cursor-controller';
 import { getTokenType, insertAfter } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { isTextNode } from './type-guards';
@@ -16,15 +15,13 @@ interface TriggerSpaceHandlerProps {
   menuItemsHandlers: MenuItemsHandlers;
   getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
   closeMenu: () => void;
-  editableElementRef?: React.RefObject<HTMLDivElement>;
-  editableState?: EditableState;
-  cursorController?: CursorController;
+  caretController?: CaretController;
 }
 
 /**
- * Finds the trigger element at the current cursor position
+ * Finds the trigger element at the current caret position
  */
-export function findTriggerAtCursor(): HTMLElement | null {
+function findTriggerAtCaret(): HTMLElement | null {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
     return null;
@@ -36,21 +33,12 @@ export function findTriggerAtCursor(): HTMLElement | null {
 }
 
 /**
- * Finalizes space insertion after a trigger by positioning cursor and updating refs
+ * Finalizes space insertion after a trigger by positioning caret and updating refs
  */
-function finalizeSpaceInsertion(
-  spaceNode: Text,
-  props: Pick<TriggerSpaceHandlerProps, 'editableState' | 'cursorController'>
-): void {
-  // Constants approach: cursor moves forward by 1 (the space)
-  if (props.cursorController) {
-    const currentPos = props.cursorController.getPosition();
-    props.cursorController.setPosition(currentPos + 1);
-  }
-
-  // Cursor positioning is handled explicitly by the operation
-  if (props.editableState) {
-    // No-op: cursor already positioned
+function finalizeSpaceInsertion(spaceNode: Text, props: Pick<TriggerSpaceHandlerProps, 'caretController'>): void {
+  if (props.caretController) {
+    const currentPos = props.caretController.getPosition();
+    props.caretController.setPosition(currentPos + 1);
   }
 
   queueMicrotask(() => {
@@ -62,8 +50,8 @@ function finalizeSpaceInsertion(
 }
 
 /**
- * Handles space key press when menu is open
- * Returns true if handled, false to allow default behavior
+ * Handles space key press when a trigger menu is open.
+ * @returns true if the event was handled, false to allow default behavior
  */
 export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: TriggerSpaceHandlerProps): boolean {
   const { menuItemsState, menuItemsHandlers, getMenuStatusType, closeMenu } = props;
@@ -71,7 +59,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
   const statusType = getMenuStatusType?.() ?? 'finished';
   const isLoading = statusType === 'loading' || statusType === 'pending';
 
-  const triggerElement = findTriggerAtCursor();
+  const triggerElement = findTriggerAtCaret();
   if (!triggerElement) {
     return false;
   }
@@ -80,14 +68,14 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
   const triggerChar = triggerText[0];
   const filterText = triggerText.substring(1);
 
-  // Case 1: Single selectable option (not loading) - select it
+  // Single match while not loading — auto-select it
   const selectableItems = items.filter(item => item.type !== 'parent');
   if (selectableItems.length === 1 && !isLoading) {
     event.preventDefault();
     return menuItemsHandlers.selectHighlightedOptionWithKeyboard();
   }
 
-  // Case 2: Double space - close menu, clean filter, add ONE space
+  // Double space (filter already ends with space) — close menu and insert one space outside trigger
   if (filterText.endsWith(' ')) {
     event.preventDefault();
     closeMenu();
@@ -103,7 +91,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     return true;
   }
 
-  // Case 3: Empty filter - close menu, add space as plain text
+  // Empty filter — space dismisses the trigger
   if (filterText === '') {
     event.preventDefault();
     closeMenu();
@@ -115,6 +103,5 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     return true;
   }
 
-  // Default: Allow space in filter for multi-word filtering
   return false;
 }

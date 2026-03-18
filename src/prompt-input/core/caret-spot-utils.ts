@@ -2,20 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { ELEMENT_TYPES, SPECIAL_CHARS } from './constants';
-import { findElements, insertAfter } from './dom-utils';
+import { findElements, insertAfter, stripZWNJ } from './dom-utils';
 
-export interface CursorSpotExtractionResult {
+export interface CaretSpotExtractionResult {
   movedTextNode: Text | null;
 }
 
 /**
- * Extract text content from cursor spots and move it to the paragraph level.
- * This is used to handle text that was typed into cursor spots (before/after reference tokens).
+ * Extracts typed text from caret spots and moves it to the paragraph level.
+ * @param paragraphs paragraph elements to scan for caret spots
+ * @param trackCaret whether to track which text node the caret was in
  */
-export function extractTextFromCursorSpots(
+export function extractTextFromCaretSpots(
   paragraphs: HTMLElement[],
-  trackCursor: boolean = true
-): CursorSpotExtractionResult {
+  trackCaret: boolean = true
+): CaretSpotExtractionResult {
   let movedTextNode: Text | null = null;
 
   paragraphs.forEach((p: HTMLElement) => {
@@ -25,16 +26,16 @@ export function extractTextFromCursorSpots(
 
     cursorSpots.forEach((spot: HTMLElement) => {
       const content = spot.textContent || '';
-      const cleanContent = content.replace(new RegExp(SPECIAL_CHARS.ZWNJ, 'g'), '');
+      const cleanContent = stripZWNJ(content);
 
       if (cleanContent) {
-        let cursorWasHere = false;
-        if (trackCursor) {
+        let caretWasHere = false;
+        if (trackCaret) {
           const selection = window.getSelection();
           if (selection?.rangeCount) {
             const range = selection.getRangeAt(0);
             if (spot.contains(range.startContainer)) {
-              cursorWasHere = true;
+              caretWasHere = true;
             }
           }
         }
@@ -50,7 +51,7 @@ export function extractTextFromCursorSpots(
           }
         }
 
-        if (cursorWasHere) {
+        if (caretWasHere) {
           movedTextNode = textNode;
         }
       }

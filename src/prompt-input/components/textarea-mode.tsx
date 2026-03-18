@@ -5,6 +5,7 @@ import React from 'react';
 
 import WithNativeAttributes from '../../internal/utils/with-native-attributes';
 
+/** Props for when using standard PromptInput. */
 interface TextareaModeProps {
   textareaRef: React.RefObject<HTMLTextAreaElement>;
   controlId?: string;

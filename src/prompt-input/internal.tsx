@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
-import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import * as designTokens from '../internal/generated/styles/tokens';
@@ -18,24 +17,13 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import TextareaMode from './components/textarea-mode';
 import TokenMode from './components/token-mode';
-import { CURSOR_DETECTION_DELAY, DEFAULT_MAX_ROWS, NEXT_TICK_TIMEOUT } from './core/constants';
-import { CursorController, normalizeSelection } from './core/cursor-controller';
-import {
-  createKeyboardHandlers,
-  handleArrowKeyNavigation,
-  handleReferenceTokenDeletion,
-  handleSpaceAfterClosedTrigger,
-  splitParagraphAtCursor,
-} from './core/event-handlers';
-import { MenuItem, useMenuItems } from './core/menu-state';
-import { useMenuLoadMore } from './core/menu-state';
-import { handleMenuSelection } from './core/token-operations';
+import { CaretController } from './core/caret-controller';
+import { DEFAULT_MAX_ROWS } from './core/constants';
 import { getPromptText } from './core/token-operations';
-import { handleBackspaceAtParagraphStart, handleDeleteAtParagraphEnd } from './core/token-utils';
+import { isPinnedReferenceToken } from './core/type-guards';
 import { PromptInputProps } from './interfaces';
-import { useShortcuts } from './shortcuts/use-shortcuts';
 import { getPromptInputStyles } from './styles';
-import { createEditableState, useEditableTokens } from './tokens/use-editable-tokens';
+import { useTokenMode } from './tokens/use-token-mode';
 import { insertTextIntoContentEditable } from './utils/insert-text-content-editable';
 
 import styles from './styles.css.js';
@@ -96,156 +84,25 @@ const InternalPromptInput = React.forwardRef(
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
 
-    // i18n strings with fallback to deprecated properties
     const effectiveActionButtonAriaLabel = i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel;
 
-    // Mode detection - must be declared before useEffect hooks that use it
     const isTokenMode = !!menus;
-
-    // Default value based on mode
     const value = valueProp ?? (isTokenMode ? '' : '');
 
-    // Refs
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const editableElementRef = useRef<HTMLDivElement>(null);
-    const reactContainersRef = useRef<Set<HTMLElement>>(new Set());
-    const cursorControllerRef = useRef<CursorController | null>(null);
+    const caretControllerRef = useRef<CaretController | null>(null);
 
-    // Initialize controller when element is available
-    useLayoutEffect(() => {
-      if (isTokenMode && editableElementRef.current && !cursorControllerRef.current) {
-        cursorControllerRef.current = new CursorController(editableElementRef.current);
-      }
-    }, [isTokenMode]);
-
-    // Initialize consolidated shortcuts system
-    const shortcuts = useShortcuts({
-      isTokenMode,
-      tokens,
-      menus,
-      tokensToText,
-      onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
-        fireNonCancelableEvent(onChange, detail);
-      },
-      onTriggerDetected: onTriggerDetected ? detail => fireCancelableEvent(onTriggerDetected, detail) : undefined,
-      editableElementRef,
-      cursorController: cursorControllerRef,
-    });
-
-    // Extract shortcuts state for easier access
-    const {
-      ignoreCursorDetection,
-      activeTriggerToken,
-      activeMenu,
-      menuIsOpen,
-      menuFilterText,
-      triggerWrapperRef,
-      triggerWrapperReady,
-      processUserInput,
-      markTokensAsSent,
-      setUpdateSource,
-    } = shortcuts;
-
-    // Mode detection
     const isRefresh = useVisualRefresh();
     useDensityMode(textareaRef);
     useDensityMode(editableElementRef);
 
-    // Style constants
     const PADDING = isRefresh ? designTokens.spaceXxs : designTokens.spaceXxxs;
     const LINE_HEIGHT = designTokens.lineHeightBodyM;
 
-    // Helper to get the active input element
     const getActiveElement = useStableCallback(() => {
       return isTokenMode ? editableElementRef.current : textareaRef.current;
     });
-
-    // Create editable state for coordinating between event handlers and input processing
-    const editableState = useMemo(() => createEditableState(), []);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        focus(...args: Parameters<HTMLElement['focus']>) {
-          getActiveElement()?.focus(...args);
-        },
-        select() {
-          if (isTokenMode) {
-            if (editableElementRef.current && cursorControllerRef.current) {
-              cursorControllerRef.current.selectAll();
-            }
-          } else {
-            textareaRef.current?.select();
-          }
-        },
-        setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
-          if (isTokenMode && cursorControllerRef.current) {
-            const [start, end] = args;
-            const actualEnd = end ?? undefined;
-            cursorControllerRef.current.setPosition(start ?? 0, actualEnd);
-            // Fire selectionchange so menu state and other listeners can update
-            document.dispatchEvent(new Event('selectionchange'));
-          } else {
-            textareaRef.current?.setSelectionRange(...args);
-          }
-        },
-        insertText(text: string, cursorStart?: number, cursorEnd?: number) {
-          // Guard against disabled/readonly at the ref level
-          if (disabled || readOnly) {
-            return;
-          }
-
-          if (isTokenMode) {
-            if (!editableElementRef.current || !tokens || !cursorControllerRef.current) {
-              return;
-            }
-
-            // Calculate offset for pinned references
-            // Pinned references are always at the start and can't have content inserted before/between them
-            const pinnedTokens = tokens.filter(
-              (token): token is PromptInputProps.ReferenceToken => token.type === 'reference' && token.pinned === true
-            );
-            const pinnedOffset = pinnedTokens.length;
-
-            // Adjust cursor positions to account for pinned tokens
-            const adjustedCursorStart = cursorStart !== undefined ? cursorStart + pinnedOffset : undefined;
-            const adjustedCursorEnd = cursorEnd !== undefined ? cursorEnd + pinnedOffset : undefined;
-
-            insertTextIntoContentEditable(
-              editableElementRef.current,
-              text,
-              adjustedCursorStart,
-              adjustedCursorEnd,
-              cursorControllerRef.current // Guaranteed non-null by guard above
-            );
-          } else {
-            // Textarea mode
-            if (!textareaRef.current) {
-              return;
-            }
-
-            const textarea = textareaRef.current;
-            textarea.focus();
-
-            const currentValue = textarea.value;
-            const insertPosition = cursorStart ?? textarea.selectionStart ?? 0;
-            const newValue = currentValue.substring(0, insertPosition) + text + currentValue.substring(insertPosition);
-
-            textarea.value = newValue;
-
-            const finalCursorPosition = cursorEnd ?? insertPosition + text.length;
-            textarea.setSelectionRange(finalCursorPosition, finalCursorPosition);
-
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
-            fireNonCancelableEvent(onChange, {
-              value: newValue,
-            });
-          }
-        },
-      }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [getActiveElement, isTokenMode, disabled, readOnly]
-    );
 
     /**
      * Dynamically adjusts the input height based on content and row constraints.
@@ -256,7 +113,6 @@ const InternalPromptInput = React.forwardRef(
         return;
       }
 
-      // Preserve scroll position for token mode
       const scrollTop = element.scrollTop;
       element.style.height = 'auto';
 
@@ -278,69 +134,145 @@ const InternalPromptInput = React.forwardRef(
       }
     });
 
-    // Adjust height when tokens change (after DOM updates)
     useEffect(() => {
       if (isTokenMode) {
-        // Use requestAnimationFrame to ensure DOM has updated
         requestAnimationFrame(() => adjustInputHeight());
       } else {
         adjustInputHeight();
       }
     }, [isTokenMode, tokens, adjustInputHeight, value]);
 
-    // Helper to get plain text value from tokens or value prop
-    const getPlainTextValue = useStableCallback(() => {
-      if (isTokenMode) {
-        return tokensToText ? tokensToText(tokens ?? []) : getPromptText(tokens ?? []);
-      }
-      return value;
-    });
+    const plainTextValue = isTokenMode
+      ? tokensToText
+        ? tokensToText(tokens ?? [])
+        : getPromptText(tokens ?? [])
+      : value;
 
-    // Use the editable hook as interface layer between contentEditable DOM and React
-    const { handleInput: handleInputBase } = useEditableTokens({
-      elementRef: editableElementRef,
-      reactContainersRef,
+    const tokenMode = useTokenMode({
+      editableElementRef,
+      caretControllerRef,
+      isTokenMode,
       tokens,
-      menus,
       tokensToText,
-      onChange: detail => {
-        processUserInput(detail.tokens);
-      },
-      adjustInputHeight,
-      disabled: disabled || !isTokenMode,
+      menus,
+      disabled,
       readOnly,
-      editableState,
-      ignoreCursorDetection,
-      cursorController: cursorControllerRef.current,
+      autoFocus,
+      placeholder,
+      invalid,
+      warning,
+      ariaLabel,
+      ariaLabelledby,
+      ariaDescribedby,
+      ariaRequired: rest.ariaRequired,
+      disableBrowserAutocorrect,
+      spellcheck,
+      onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
+        fireNonCancelableEvent(onChange, detail);
+      },
+      onTriggerDetected: onTriggerDetected ? detail => fireCancelableEvent(onTriggerDetected, detail) : undefined,
+      onAction,
+      onBlur,
+      onFocus,
+      onKeyDown,
+      onKeyUp,
+      onMenuItemSelect,
+      onMenuFilter,
+      onMenuLoadItems,
+      i18nStrings,
+      adjustInputHeight,
     });
 
-    const handleInput = handleInputBase;
-
-    // Normalize selection to include entire reference tokens when boundary is in cursor spots
-    React.useEffect(() => {
-      if (!isTokenMode) {
+    const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
+      if (disabled || readOnly) {
         return;
       }
 
-      const handleSelectionChange = () => normalizeSelection(window.getSelection());
-      const handleMouseDown = () => {
-        window.isMouseDown = true;
-      };
-      const handleMouseUp = () => {
-        window.isMouseDown = false;
-        normalizeSelection(window.getSelection());
-      };
+      if (isTokenMode) {
+        if (!editableElementRef.current || !tokens || !caretControllerRef.current) {
+          return;
+        }
 
-      document.addEventListener('selectionchange', handleSelectionChange);
-      document.addEventListener('mousedown', handleMouseDown);
-      document.addEventListener('mouseup', handleMouseUp);
+        let adjustedCaretStart: number;
+        let adjustedCaretEnd: number | undefined;
 
-      return () => {
-        document.removeEventListener('selectionchange', handleSelectionChange);
-        document.removeEventListener('mousedown', handleMouseDown);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }, [isTokenMode]);
+        if (caretStart === undefined) {
+          const currentPos = caretControllerRef.current.getPosition();
+          const pinnedCount = tokens.filter(isPinnedReferenceToken).length;
+
+          // If the caret is before or between pinned tokens, move it after them.
+          // Text inserted here would get pushed after pinned tokens by enforcePinnedTokenOrdering,
+          // but the caret wouldn't follow — so we preemptively position it correctly.
+          adjustedCaretStart = pinnedCount > 0 && currentPos < pinnedCount ? pinnedCount : currentPos;
+          adjustedCaretEnd = undefined;
+        } else {
+          const pinnedTokens = tokens.filter(isPinnedReferenceToken);
+          const pinnedOffset = pinnedTokens.length;
+
+          adjustedCaretStart = caretStart + pinnedOffset;
+          adjustedCaretEnd = caretEnd !== undefined ? caretEnd + pinnedOffset : undefined;
+        }
+
+        insertTextIntoContentEditable(
+          editableElementRef.current,
+          text,
+          adjustedCaretStart,
+          adjustedCaretEnd,
+          caretControllerRef.current
+        );
+      } else {
+        if (!textareaRef.current) {
+          return;
+        }
+
+        const textarea = textareaRef.current;
+        textarea.focus();
+
+        const currentValue = textarea.value;
+        const insertPosition = caretStart ?? textarea.selectionStart ?? 0;
+        const newValue = currentValue.substring(0, insertPosition) + text + currentValue.substring(insertPosition);
+
+        textarea.value = newValue;
+
+        const finalCursorPosition = caretEnd ?? insertPosition + text.length;
+        textarea.setSelectionRange(finalCursorPosition, finalCursorPosition);
+
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+        fireNonCancelableEvent(onChange, {
+          value: newValue,
+        });
+      }
+    });
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus(...args: Parameters<HTMLElement['focus']>) {
+          getActiveElement()?.focus(...args);
+        },
+        select() {
+          if (isTokenMode) {
+            if (editableElementRef.current && caretControllerRef.current) {
+              caretControllerRef.current.selectAll();
+            }
+          } else {
+            textareaRef.current?.select();
+          }
+        },
+        setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
+          if (isTokenMode && caretControllerRef.current) {
+            const [start, end] = args;
+            const actualEnd = end ?? undefined;
+            caretControllerRef.current.setPosition(start ?? 0, actualEnd);
+            document.dispatchEvent(new Event('selectionchange'));
+          } else {
+            textareaRef.current?.setSelectionRange(...args);
+          }
+        },
+        insertText: handleInsertText,
+      }),
+      [getActiveElement, isTokenMode, handleInsertText]
+    );
 
     const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       fireKeyboardEvent(onKeyDown, event);
@@ -351,7 +283,7 @@ const InternalPromptInput = React.forwardRef(
         }
         event.preventDefault();
         fireNonCancelableEvent(onAction, {
-          value: getPlainTextValue(),
+          value: plainTextValue,
           ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
         });
       }
@@ -359,7 +291,7 @@ const InternalPromptInput = React.forwardRef(
 
     const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (isTokenMode) {
-        markTokensAsSent([...(tokens ?? [])]);
+        tokenMode.markTokensAsSent([...(tokens ?? [])]);
       }
       const detail: PromptInputProps.ChangeDetail = {
         value: event.target.value,
@@ -371,346 +303,12 @@ const InternalPromptInput = React.forwardRef(
       adjustInputHeight();
     };
 
-    // Keyboard handler for contentEditable
-    const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
-      // Handle Ctrl+A / Cmd+A in empty state - prevent selection of trailing break
-      if (event.key === 'a' && (event.ctrlKey || event.metaKey) && tokens?.length === 0) {
-        event.preventDefault();
-        return;
-      }
-
-      // Handle arrow key navigation across reference tokens
-      if (handleArrowKeyNavigation(event, cursorControllerRef.current)) {
-        return;
-      }
-
-      if (event.key === 'Enter' && event.shiftKey && !event.nativeEvent.isComposing) {
-        event.preventDefault();
-
-        // Block action if cursor is inside a trigger token
-        if (cursorControllerRef.current?.isInTrigger()) {
-          return;
-        }
-
-        if (editableElementRef.current) {
-          splitParagraphAtCursor(editableElementRef.current, cursorControllerRef.current);
-        }
-        return;
-      }
-
-      if (event.key === 'Backspace' || event.key === 'Delete') {
-        if (
-          editableElementRef.current &&
-          handleReferenceTokenDeletion(
-            event,
-            event.key === 'Backspace',
-            editableElementRef.current,
-            editableState,
-            (message: string) => {
-              setTokenOperationAnnouncement(message);
-              setTimeout(() => setTokenOperationAnnouncement(''), 100);
-            },
-            i18nStrings,
-            cursorControllerRef.current
-          )
-        ) {
-          return;
-        }
-      }
-
-      if (event.key === 'Backspace' && tokens && editableElementRef.current) {
-        // Prevent backspace in completely empty input
-        if (tokens.length === 0) {
-          event.preventDefault();
-          return;
-        }
-
-        if (
-          handleBackspaceAtParagraphStart(
-            event,
-            editableElementRef.current,
-            tokens,
-            tokensToText,
-            (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
-              markTokensAsSent(detail.tokens);
-              fireNonCancelableEvent(onChange, detail);
-            },
-            editableState,
-            cursorControllerRef.current
-          )
-        ) {
-          return;
-        }
-      }
-
-      if (event.key === 'Delete' && tokens && editableElementRef.current) {
-        if (
-          handleDeleteAtParagraphEnd(
-            event,
-            editableElementRef.current,
-            tokens,
-            tokensToText,
-            (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
-              markTokensAsSent(detail.tokens);
-              fireNonCancelableEvent(onChange, detail);
-            },
-            editableState,
-            cursorControllerRef.current
-          )
-        ) {
-          return;
-        }
-      }
-
-      fireKeyboardEvent(onKeyDown, event);
-
-      // Handle space after closed trigger - move space out of trigger element
-      if (
-        event.key === ' ' &&
-        editableElementRef.current &&
-        shortcuts &&
-        handleSpaceAfterClosedTrigger(
-          event,
-          editableElementRef.current,
-          shortcuts.menuIsOpen,
-          ignoreCursorDetection,
-          cursorControllerRef.current
-        )
-      ) {
-        return;
-      }
-
-      if (keyboardHandlers) {
-        if (keyboardHandlers.handleMenuNavigation(event)) {
-          return;
-        }
-      }
-
-      if (keyboardHandlers) {
-        keyboardHandlers.handleEnterKey(event);
-      }
-    });
-
-    const handleEditableElementBlur = useStableCallback(() => {
-      if (onBlur) {
-        fireNonCancelableEvent(onBlur);
-      }
-    });
-
-    // Auto-focus on mount (token mode only)
-    useEffect(() => {
-      if (isTokenMode && autoFocus && editableElementRef.current) {
-        editableElementRef.current.focus();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // Lifecycle effects: window resize and cleanup
-    useEffect(() => {
-      // Window resize handler
-      const handleResize = () => adjustInputHeight();
-      window.addEventListener('resize', handleResize);
-
-      // Capture containers ref for cleanup
-      const containers = reactContainersRef.current;
-
-      // Cleanup on unmount
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        containers.clear();
-      };
-    }, [adjustInputHeight]);
-
-    // Handle menu option selection - replace TriggerToken with selected option
-    const handleMenuSelect = useStableCallback((option: MenuItem) => {
-      if (!activeMenu || !activeTriggerToken || !tokens) {
-        return;
-      }
-
-      shortcuts.setCursorInTrigger(false);
-      setUpdateSource('menu-selection');
-
-      const result = handleMenuSelection(
-        tokens,
-        {
-          value: option.option.value || '',
-          label: option.option.label || option.option.value || '',
-        },
-        activeMenu.id,
-        activeMenu.useAtStart ?? false,
-        activeTriggerToken
-      );
-
-      const value = tokensToText ? tokensToText(result.tokens) : getPromptText(result.tokens);
-      markTokensAsSent(result.tokens);
-
-      // Set menu selection token ID BEFORE onChange so useEffect can see it
-      editableState.menuSelectionTokenId = result.insertedToken.id || null;
-      editableState.menuSelectionIsPinned = activeMenu.useAtStart ?? false;
-
-      const isPinned = activeMenu.useAtStart ?? false;
-      const tokenLabel = result.insertedToken.label || result.insertedToken.value;
-      const announcement = isPinned
-        ? (i18nStrings?.tokenPinnedAriaLabel?.(result.insertedToken) ?? `${tokenLabel} pinned`)
-        : (i18nStrings?.tokenInsertedAriaLabel?.(result.insertedToken) ?? `${tokenLabel} inserted`);
-
-      setTokenOperationAnnouncement(announcement);
-      setTimeout(() => setTokenOperationAnnouncement(''), 100);
-
-      fireNonCancelableEvent(onChange, { value, tokens: result.tokens });
-
-      fireNonCancelableEvent(onMenuItemSelect, {
-        menuId: activeMenu.id,
-        option: option.option,
-      });
-    });
-
-    // Menu items controller - always call hooks
-    const menuItemsResult = useMenuItems({
-      menu: activeMenu ?? {
-        id: '',
-        trigger: '',
-        options: [],
-      },
-      filterText: menuFilterText,
-      onSelectItem: handleMenuSelect,
-    });
-
-    // Menu items state and handlers
-    const [menuItemsState, menuItemsHandlers] = menuItemsResult;
-
-    // Consolidated menu state ref for keyboard handlers
-    const menuStateRef = useRef({
-      itemsState: menuItemsState,
-      itemsHandlers: menuItemsHandlers,
-      isOpen: menuIsOpen,
-    });
-
-    // Update ref when state changes
-    menuStateRef.current = {
-      itemsState: menuItemsState,
-      itemsHandlers: menuItemsHandlers,
-      isOpen: menuIsOpen,
-    };
-
-    // Create keyboard handlers
-    const keyboardHandlers = useMemo(() => {
-      if (!editableElementRef.current) {
-        return null;
-      }
-
-      return createKeyboardHandlers({
-        getMenuOpen: () => menuStateRef.current.isOpen,
-        getMenuItemsState: () => menuStateRef.current.itemsState,
-        getMenuItemsHandlers: () => menuStateRef.current.itemsHandlers,
-        getMenuStatusType: () => activeMenu?.statusType,
-        onAction: onAction ? detail => fireNonCancelableEvent(onAction, detail) : undefined,
-        tokensToText,
-        tokens,
-        closeMenu: () => {
-          ignoreCursorDetection.current = true;
-          shortcuts.setCursorInTrigger(false);
-
-          setTimeout(() => {
-            ignoreCursorDetection.current = false;
-          }, CURSOR_DETECTION_DELAY);
-        },
-        announceTokenOperation: (message: string) => {
-          setTokenOperationAnnouncement(message);
-          setTimeout(() => setTokenOperationAnnouncement(''), 100);
-        },
-        i18nStrings,
-        disabled,
-        readOnly,
-        editableState,
-        editableElementRef,
-        cursorController: cursorControllerRef.current || undefined,
-      });
-    }, [
-      onAction,
-      tokensToText,
-      tokens,
-      i18nStrings,
-      disabled,
-      readOnly,
-      editableState,
-      activeMenu?.statusType,
-      ignoreCursorDetection,
-      shortcuts,
-    ]);
-
-    // Menu load more controller
-    const menuLoadMoreResult = useMenuLoadMore({
-      menu: activeMenu ?? {
-        id: '',
-        trigger: '',
-        options: [],
-      },
-      statusType: activeMenu?.statusType ?? 'finished',
-      onLoadItems: detail => {
-        fireNonCancelableEvent(onMenuLoadItems, detail);
-      },
-      onLoadMoreItems: () => {
-        fireNonCancelableEvent(onMenuLoadItems, {
-          menuId: activeMenu?.id ?? '',
-          filteringText: undefined, // Pagination - no filter text
-          firstPage: false,
-          samePage: false,
-        });
-      },
-    });
-
-    const menuLoadMoreHandlers = activeMenu ? menuLoadMoreResult : null;
-
-    // Menu state management effect
-    useEffect(() => {
-      if (menuIsOpen && activeMenu && menuLoadMoreHandlers) {
-        menuLoadMoreHandlers.fireLoadMoreOnMenuOpen();
-      }
-    }, [menuIsOpen, activeMenu, menuLoadMoreHandlers]);
-
-    // Highlight first item when menu opens or items change
-    const prevMenuOpenRef = useRef(false);
-    const prevItemsLengthRef = useRef(0);
-
-    useEffect(() => {
-      const justOpened = menuIsOpen && !prevMenuOpenRef.current;
-      const itemsChanged = menuItemsState && menuItemsState.items.length !== prevItemsLengthRef.current;
-
-      if (
-        (justOpened || (menuIsOpen && itemsChanged)) &&
-        menuItemsHandlers &&
-        menuItemsState &&
-        menuItemsState.items.length > 0
-      ) {
-        setTimeout(() => {
-          menuItemsHandlers?.goHomeWithKeyboard();
-        }, NEXT_TICK_TIMEOUT);
-      }
-
-      prevMenuOpenRef.current = menuIsOpen;
-      prevItemsLengthRef.current = menuItemsState?.items.length ?? 0;
-    }, [menuIsOpen, menuItemsHandlers, menuItemsState, menuItemsState.items.length]);
-
-    // Fire filter event when trigger token filter text changes
-    useEffect(() => {
-      if (activeTriggerToken && activeMenu && onMenuFilter) {
-        fireNonCancelableEvent(onMenuFilter, {
-          menuId: activeMenu.id,
-          filteringText: activeTriggerToken.value,
-        });
-      }
-    }, [activeTriggerToken, activeMenu, onMenuFilter]);
-
     const hasActionButton = !!(
       actionButtonIconName ||
       actionButtonIconSvg ||
       actionButtonIconUrl ||
       customPrimaryAction
     );
-
-    // Show placeholder in token mode when input is empty
-    const showPlaceholder = isTokenMode && placeholder && (!tokens || tokens.length === 0);
 
     const textareaAttributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,
@@ -739,68 +337,6 @@ const InternalPromptInput = React.forwardRef(
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
-    const editableElementAttributes: React.HTMLAttributes<HTMLDivElement> & {
-      'data-placeholder'?: string;
-    } = {
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledby,
-      'aria-describedby': ariaDescribedby,
-      'aria-invalid': invalid ? 'true' : undefined,
-      'aria-disabled': disabled ? 'true' : undefined,
-      'aria-readonly': readOnly ? 'true' : undefined,
-      'aria-required': rest.ariaRequired ? 'true' : undefined,
-      'data-placeholder': placeholder,
-      className: clsx(styles.textarea, testutilStyles.textarea, {
-        [styles.invalid]: invalid,
-        [styles.warning]: warning,
-        [styles['textarea-disabled']]: disabled,
-        [styles['textarea-readonly']]: readOnly,
-        [styles['placeholder-visible']]: showPlaceholder,
-      }),
-      autoCorrect: disableBrowserAutocorrect ? 'off' : undefined,
-      autoCapitalize: disableBrowserAutocorrect ? 'off' : undefined,
-      spellCheck: spellcheck,
-      tabIndex: disabled ? -1 : 0,
-      onKeyDown: handleEditableElementKeyDown,
-      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-      onBlur: handleEditableElementBlur,
-      onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
-    };
-
-    // Menu dropdown setup
-    const menuListId = useUniqueId('menu-list');
-    const menuFooterControlId = useUniqueId('menu-footer');
-    const highlightedMenuOptionIdSource = useUniqueId();
-    const highlightedMenuOptionId = menuItemsState?.highlightedOption ? highlightedMenuOptionIdSource : undefined;
-
-    // Accessibility: Track token operations for screen reader announcements
-    const [tokenOperationAnnouncement, setTokenOperationAnnouncement] = useState<string>('');
-
-    // Always call useDropdownStatus hook
-    const menuDropdownStatusResult = useDropdownStatus({
-      ...(activeMenu ?? {}),
-      isEmpty: !menuItemsState || menuItemsState.items.length === 0,
-      recoveryText: i18nStrings?.menuRecoveryText,
-      errorIconAriaLabel: i18nStrings?.menuErrorIconAriaLabel,
-      loadingText: i18nStrings?.menuLoadingText,
-      finishedText: i18nStrings?.menuFinishedText,
-      errorText: i18nStrings?.menuErrorText,
-      onRecoveryClick: () => {
-        if (menuLoadMoreHandlers) {
-          menuLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
-        }
-        editableElementRef.current?.focus();
-      },
-      hasRecoveryCallback: Boolean(onMenuLoadItems),
-    });
-
-    const menuDropdownStatus = activeMenu ? menuDropdownStatusResult : null;
-
-    const shouldRenderMenuDropdown = useMemo(() => {
-      const result = !!(menuIsOpen && activeMenu && menuItemsState);
-      return result;
-    }, [menuIsOpen, activeMenu, menuItemsState]);
-
     const actionButton = (
       <div className={clsx(styles['primary-action'], testutilStyles['primary-action'])}>
         {customPrimaryAction ?? (
@@ -815,7 +351,7 @@ const InternalPromptInput = React.forwardRef(
             iconAlt={actionButtonIconAlt}
             onClick={() => {
               fireNonCancelableEvent(onAction, {
-                value: getPlainTextValue(),
+                value: plainTextValue,
                 ...(isTokenMode && { tokens: [...(tokens ?? [])] }),
               });
             }}
@@ -840,7 +376,7 @@ const InternalPromptInput = React.forwardRef(
         style={getPromptInputStyles(style)}
       >
         <InternalLiveRegion tagName="span" hidden={true} assertive={true} delay={0}>
-          {tokenOperationAnnouncement}
+          {tokenMode.tokenOperationAnnouncement}
         </InternalLiveRegion>
 
         {secondaryContent && (
@@ -859,30 +395,26 @@ const InternalPromptInput = React.forwardRef(
           {isTokenMode ? (
             <TokenMode
               editableElementRef={editableElementRef}
-              triggerWrapperRef={triggerWrapperRef}
+              triggerWrapperRef={tokenMode.triggerWrapperRef}
               controlId={controlId}
-              menuListId={menuListId}
-              menuFooterControlId={menuFooterControlId}
-              highlightedMenuOptionId={highlightedMenuOptionId}
+              menuListId={tokenMode.menuListId}
+              menuFooterControlId={tokenMode.menuFooterControlId}
+              highlightedMenuOptionId={tokenMode.highlightedMenuOptionId}
               name={name}
-              getPlainTextValue={getPlainTextValue}
-              menuIsOpen={menuIsOpen}
-              triggerWrapperReady={triggerWrapperReady}
-              shouldRenderMenuDropdown={shouldRenderMenuDropdown}
-              activeMenu={activeMenu}
-              activeTriggerToken={activeTriggerToken}
-              menuFilterText={menuFilterText}
-              menuItemsState={menuItemsState}
-              menuItemsHandlers={menuItemsHandlers}
-              menuDropdownStatus={menuDropdownStatus}
+              plainTextValue={plainTextValue}
+              menuIsOpen={tokenMode.menuIsOpen}
+              triggerWrapperReady={tokenMode.triggerWrapperReady}
+              shouldRenderMenuDropdown={tokenMode.shouldRenderMenuDropdown}
+              activeMenu={tokenMode.activeMenu}
+              activeTriggerToken={tokenMode.activeTriggerToken}
+              menuFilterText={tokenMode.menuFilterText}
+              menuItemsState={tokenMode.menuItemsState}
+              menuItemsHandlers={tokenMode.menuItemsHandlers}
+              menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
-              handleInput={handleInput}
-              handleLoadMore={() => {
-                if (menuLoadMoreHandlers) {
-                  menuLoadMoreHandlers.fireLoadMoreOnScroll();
-                }
-              }}
-              editableElementAttributes={editableElementAttributes}
+              handleInput={tokenMode.handleInput}
+              handleLoadMore={tokenMode.handleLoadMore}
+              editableElementAttributes={tokenMode.editableElementAttributes}
               i18nStrings={i18nStrings}
             />
           ) : (

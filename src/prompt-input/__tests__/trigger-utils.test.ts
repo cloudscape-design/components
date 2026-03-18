@@ -1,0 +1,244 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+jest.mock('../styles.css.js', () => ({ 'trigger-token': 'trigger-token' }), { virtual: true });
+
+import { CaretController } from '../core/caret-controller';
+import { ELEMENT_TYPES } from '../core/constants';
+import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
+import { handleSpaceInOpenMenu } from '../core/trigger-utils';
+
+let el: HTMLDivElement;
+
+beforeEach(() => {
+  el = document.createElement('div');
+  el.setAttribute('contenteditable', 'true');
+  document.body.appendChild(el);
+});
+
+afterEach(() => {
+  document.body.removeChild(el);
+});
+
+function createTriggerElement(id: string, text: string): HTMLSpanElement {
+  const span = document.createElement('span');
+  span.setAttribute('data-type', ELEMENT_TYPES.TRIGGER);
+  span.id = id;
+  span.textContent = text;
+  return span;
+}
+
+function setCursor(node: Node, offset: number): void {
+  const range = document.createRange();
+  range.setStart(node, offset);
+  range.collapse(true);
+  const sel = window.getSelection()!;
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+function makeKeyboardEvent(key: string): React.KeyboardEvent {
+  let defaultPrevented = false;
+  return {
+    key,
+    shiftKey: false,
+    preventDefault: () => {
+      defaultPrevented = true;
+    },
+    isDefaultPrevented: () => defaultPrevented,
+    nativeEvent: new KeyboardEvent('keydown', { key }),
+  } as unknown as React.KeyboardEvent;
+}
+
+function createMockMenuState(items: Array<{ type?: string; disabled?: boolean }> = []): MenuItemsState {
+  return {
+    items: items as any,
+    highlightedOption: items[0] as any,
+    highlightedIndex: 0,
+    highlightType: { type: 'keyboard', moveFocus: true } as any,
+    showAll: false,
+    getItemGroup: () => undefined,
+  };
+}
+
+function createMockMenuHandlers(): MenuItemsHandlers {
+  return {
+    moveHighlightWithKeyboard: jest.fn(),
+    selectHighlightedOptionWithKeyboard: jest.fn().mockReturnValue(true),
+    highlightVisibleOptionWithMouse: jest.fn(),
+    selectVisibleOptionWithMouse: jest.fn(),
+    resetHighlightWithKeyboard: jest.fn(),
+    goHomeWithKeyboard: jest.fn(),
+    goEndWithKeyboard: jest.fn(),
+    setHighlightedIndexWithMouse: jest.fn(),
+    highlightFirstOptionWithMouse: jest.fn(),
+    highlightOptionWithKeyboard: jest.fn(),
+  };
+}
+
+describe('handleSpaceInOpenMenu', () => {
+  test('returns false when cursor is not in a trigger element', () => {
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode('hello'));
+    el.appendChild(p);
+    setCursor(p.firstChild!, 3);
+
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'child' }]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu: jest.fn(),
+    });
+    expect(result).toBe(false);
+  });
+
+  test('auto-selects single match when not loading', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@us');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const handlers = createMockMenuHandlers();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'child' }]),
+      menuItemsHandlers: handlers,
+      closeMenu: jest.fn(),
+    });
+    expect(result).toBe(true);
+    expect(handlers.selectHighlightedOptionWithKeyboard).toHaveBeenCalled();
+  });
+
+  test('does not auto-select single match when loading', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@us');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const handlers = createMockMenuHandlers();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'child' }]),
+      menuItemsHandlers: handlers,
+      getMenuStatusType: () => 'loading',
+      closeMenu: jest.fn(),
+    });
+    // With loading, single match doesn't auto-select; falls through
+    expect(result).toBe(false);
+  });
+
+  test('does not auto-select when single item is a parent type', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@us');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const handlers = createMockMenuHandlers();
+    const event = makeKeyboardEvent(' ');
+    // Only a parent item — selectableItems will be empty
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'parent' }]),
+      menuItemsHandlers: handlers,
+      closeMenu: jest.fn(),
+    });
+    // No selectable items, falls through to other checks
+    expect(result).toBe(false);
+    expect(handlers.selectHighlightedOptionWithKeyboard).not.toHaveBeenCalled();
+  });
+
+  test('double space closes menu and inserts space outside trigger', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@user ');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 6);
+
+    const closeMenu = jest.fn();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+    });
+    expect(result).toBe(true);
+    expect(closeMenu).toHaveBeenCalled();
+    // Trigger text should be trimmed
+    expect(trigger.textContent).toBe('@user');
+  });
+
+  test('empty filter closes menu and inserts space', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 1);
+
+    const closeMenu = jest.fn();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+    });
+    expect(result).toBe(true);
+    expect(closeMenu).toHaveBeenCalled();
+  });
+
+  test('returns false when filter has text and multiple items', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@us');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'child' }, { type: 'child' }]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu: jest.fn(),
+    });
+    expect(result).toBe(false);
+  });
+
+  test('double space with caretController updates position', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@user ');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    el.focus();
+    setCursor(trigger.firstChild!, 6);
+
+    const controller = new CaretController(el);
+    const closeMenu = jest.fn();
+    const event = makeKeyboardEvent(' ');
+    handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+      caretController: controller,
+    });
+    expect(closeMenu).toHaveBeenCalled();
+  });
+
+  test('pending status type is treated as loading', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@us');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const handlers = createMockMenuHandlers();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{ type: 'child' }]),
+      menuItemsHandlers: handlers,
+      getMenuStatusType: () => 'pending',
+      closeMenu: jest.fn(),
+    });
+    expect(result).toBe(false);
+    expect(handlers.selectHighlightedOptionWithKeyboard).not.toHaveBeenCalled();
+  });
+});
