@@ -163,6 +163,7 @@ export function renderTokensToDOM(
     } else {
       // Defer unmount to avoid "synchronously unmount while React is rendering" warning.
       // This happens because renderTokensToDOM is called from a React effect/callback.
+      /* istanbul ignore next -- covered by integration tests: setTimeout cleanup requires real async scheduling */
       setTimeout(() => container.root.unmount(), 0);
     }
   });
@@ -296,6 +297,7 @@ export function renderTokensToDOM(
     }
   }
 
+  /* istanbul ignore next -- covered by integration tests: paragraph cleanup only triggers with real DOM mutations from browser editing */
   while (targetElement.children.length > paragraphGroups.length) {
     targetElement.removeChild(targetElement.lastChild!);
   }

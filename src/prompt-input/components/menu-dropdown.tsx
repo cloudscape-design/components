@@ -24,12 +24,14 @@ interface MenuDropdownProps {
   ariaDescribedby?: string;
 }
 
+/* istanbul ignore next -- covered by integration tests: MenuDropdown only renders inside positioned Dropdown which requires real browser layout */
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
   if (itemIndex > -1) {
     handler(itemIndex);
   }
 };
 
+/* istanbul ignore next -- covered by integration tests: MenuDropdown only renders inside positioned Dropdown which requires real browser layout */
 export default function MenuDropdown({
   menu,
   statusType,
