@@ -37,6 +37,7 @@ export namespace IconProviderProps {
     'angle-right'?: ReactNode | null;
     'angle-up'?: ReactNode | null;
     'angle-down'?: ReactNode | null;
+    announcement?: ReactNode | null;
     'arrow-left'?: ReactNode | null;
     'arrow-right'?: ReactNode | null;
     'arrow-up'?: ReactNode | null;
@@ -97,6 +98,7 @@ export namespace IconProviderProps {
     'insert-row'?: ReactNode | null;
     key?: ReactNode | null;
     keyboard?: ReactNode | null;
+    'light-dark'?: ReactNode | null;
     'list-view'?: ReactNode | null;
     'location-pin'?: ReactNode | null;
     'lock-private'?: ReactNode | null;
