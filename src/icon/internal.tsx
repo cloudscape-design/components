@@ -153,7 +153,14 @@ const InternalIcon = ({
         </svg>
       );
     } else {
-      return icons[name];
+      const icon = icons[name];
+      if (!icon) {
+        warnOnce(
+          'Icon',
+          `You have specified \`name="${name}"\` but no icon with that name was found in the current IconProvider context. If this is a custom icon, ensure your app is wrapped in an \`IconProvider\` with the icon defined via \`defineIcons\`.`
+        );
+      }
+      return icon;
     }
   }
 

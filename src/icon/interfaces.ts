@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { BuiltInIconName, IconRegistryIconName } from '../icon-provider/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 /**
  * @awsuiSystem core
