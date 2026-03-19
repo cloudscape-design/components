@@ -125,7 +125,12 @@ export function useFeatureNotifications() {
           setSeenFeatures(seenFeatureNotifications);
           const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
           if (hasUnseenFeatures) {
-            if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
+            const latestFeature = features.find(feature => !seenFeatureNotifications[feature.id]) ?? null;
+            if (
+              !payload.suppressFeaturePrompt &&
+              !featurePromptDismissed &&
+              !seenFeatureNotifications[getFeaturePromptPersistenceId(latestFeature)]
+            ) {
               featurePromptMountPromise.then(() => {
                 featurePromptRef.current?.show();
               });
@@ -173,6 +178,7 @@ export function useFeatureNotifications() {
               triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
             }
           });
+          persistFeaturePromptDismiss(latestFeature);
         }}
         header={
           <RuntimeContentPart mountContent={featureNotificationsData?.mountItem} content={latestFeature.header} />
@@ -203,6 +209,21 @@ export function useFeatureNotifications() {
     ).then(() => {
       setSeenFeatures(allFeaturesMap);
       setFeatureNotificationsData(data => (data ? { ...data, badge: false } : data));
+    });
+  };
+
+  const getFeaturePromptPersistenceId = (feature?: Feature<unknown> | null) => `${feature?.id}_feature-prompt`;
+
+  const persistFeaturePromptDismiss = (feature: Feature<unknown>) => {
+    const persistenceConfig = featureNotificationsData?.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
+    const featuresMap = { [getFeaturePromptPersistenceId(feature)]: feature.releaseDate?.toString() };
+    const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
+    const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
+    (featureNotificationsData?.__persistFeatureNotifications ?? persistFeatureNotifications)(
+      persistenceConfig,
+      allFeaturesMap
+    ).then(() => {
+      setSeenFeatures(allFeaturesMap);
     });
   };
 
