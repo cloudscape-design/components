@@ -11,6 +11,7 @@ import {
   findElement,
   generateTokenId,
   getTokenType,
+  hasOnlyTrailingBR,
   isCaretSpotType,
   isReferenceElementType,
   stripZeroWidthCharacters,
@@ -18,7 +19,6 @@ import {
 import { detectTriggersInText, mergeConsecutiveTextTokens } from './token-utils';
 import {
   isBreakTextToken,
-  isBRElement,
   isPinnedReferenceToken,
   isReferenceToken,
   isTextNode,
@@ -77,10 +77,7 @@ export function extractTokensFromDOM(
 
   // Special case: single empty paragraph = empty input
   if (paragraphs.length === 1) {
-    const p = paragraphs[0];
-    const hasOnlyTrailingBr = p.childNodes.length === 1 && isBRElement(p.firstChild, ElementType.TrailingBreak);
-
-    if (hasOnlyTrailingBr) {
+    if (hasOnlyTrailingBR(paragraphs[0])) {
       return [];
     }
   }

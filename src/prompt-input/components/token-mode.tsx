@@ -82,6 +82,7 @@ export default function TokenMode({
 }: TokenModeProps) {
   return (
     <>
+      {/* Hidden input enables native form submission with the plain text value when a name is provided */}
       {name && <input type="hidden" name={name} value={plainTextValue} />}
       <div className={styles['editable-wrapper']}>
         <div
@@ -94,6 +95,9 @@ export default function TokenMode({
               ? 'true'
               : 'false'
           }
+          // React warns when children of a contentEditable element are managed by React.
+          // We suppress this because we intentionally manage the DOM directly via token-renderer
+          // to avoid React's reconciliation conflicting with browser-native editing behavior.
           suppressContentEditableWarning={true}
           aria-controls={menuIsOpen ? menuListId : undefined}
           aria-activedescendant={highlightedMenuOptionId}
@@ -127,6 +131,8 @@ export default function TokenMode({
           onMouseDown={
             /* istanbul ignore next -- covered by integration tests */
             event => {
+              // Prevent default to stop the dropdown from stealing focus from the contentEditable.
+              // Without this, clicking a menu option would blur the input before the selection handler fires.
               event.preventDefault();
             }
           }
