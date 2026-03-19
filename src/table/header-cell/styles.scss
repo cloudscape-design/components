@@ -76,37 +76,20 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     background: awsui.$color-background-layout-main;
   }
 
-  // Group header cells are sticky so the label stays visible while any child column
-  // is on screen. JS applies max-width imperatively on scroll to clip the right edge
-  // as children scroll away.
-  // When sticky columns are active, JS also overrides inset-inline-start.
-  // NOTE: overflow must NOT be set here — the resizer handle is absolutely positioned
-  // and overflows the cell's right edge; clipping it would hide the resize handle.
-  &-group {
-    position: sticky;
-    inset-inline-start: 0;
-    z-index: 1;
-  }
+  // &-group {
+  //   position: sticky;
+  //   inset-inline-start: 0;
+  //   z-index: 1;
+  // }
 
-  // Hidden placeholder cells for grouped column headers.
-  // These cells have no content — they exist purely to maintain column width alignment.
-  // We use :has(.header-cell-hidden-content) because the `hidden` prop on TableThElement
-  // is the table-level visibility prop (for the measurement thead), not our placeholder concept.
   &:has(.header-cell-hidden-content) {
     border-block-end-color: transparent;
   }
 
-  // Show focus ring on the th ONLY when the placeholder div itself is focused —
-  // NOT when a descendant like the resizer button is focused.
-  // :focus-within would be too broad and fires for the resizer button focus too.
   &:has(.header-cell-hidden-content:focus) {
-    @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+    // @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
   }
 
-  // Divider styles for hidden placeholder cells (only when NOT the last cell in the row).
-  // The normal divider rule `th:not(:last-child) > .divider` doesn't apply here because
-  // hidden cells use `.resize-divider` instead of `.divider`. We replicate the positioning
-  // with the same block-gap to keep divider heights visually consistent.
   &:not(:last-child):has(.header-cell-hidden-content) {
     > .resize-divider {
       position: absolute;
@@ -116,8 +99,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       inset-block-end: 0;
       inset-block-start: 0;
       min-block-size: awsui.$line-height-heading-xs;
-      // Use the same block-gap as normal dividers (from resizer/styles.scss)
-      // to keep divider heights visually consistent across the header row.
       // stylelint-disable-next-line custom-property-pattern
       max-block-size: calc(100% - var(--awsui-table-resizer-block-gap, 18px));
       margin-block: auto;
@@ -225,6 +206,38 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 }
 
+.header-cell-spans-rows {
+  block-size: 1px;
+  vertical-align: bottom;
+
+  > .header-cell-content {
+    block-size: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    // stylelint-disable-next-line no-descending-specificity
+    > .sorting-icon {
+      inset-block-start: auto;
+      inset-block-end: awsui.$space-scaled-xxs;
+      transform: none;
+    }
+  }
+
+  > .header-cell-content-group-inner {
+    block-size: 100%;
+
+    > .header-cell-content {
+      block-size: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+}
+
 .header-cell-sortable:not(.header-cell-disabled) {
   & > .header-cell-content {
     cursor: pointer;
@@ -303,7 +316,6 @@ settings icon in the pagination slot.
 
 // Hidden placeholder cell content — empty but focusable for keyboard navigation.
 .header-cell-hidden-content {
-  // No visible content — purely a focus target for grid navigation.
   &:focus {
     outline: none;
   }

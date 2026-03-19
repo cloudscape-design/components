@@ -55,6 +55,8 @@ export interface TableHeaderCellProps<ItemType> {
   rowSpan?: number;
   /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
   columnGroupId?: string;
+  /** When true, applies bottom-alignment (cell spans multiple header rows in a grouped table). */
+  spansRows?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -89,6 +91,7 @@ export function TableHeaderCell<ItemType>({
   colSpan,
   rowSpan,
   columnGroupId,
+  spansRows,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -149,6 +152,7 @@ export function TableHeaderCell<ItemType>({
       colSpan={colSpan}
       rowSpan={rowSpan}
       columnGroupId={columnGroupId}
+      spansRows={spansRows}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

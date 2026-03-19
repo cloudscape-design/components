@@ -40,6 +40,7 @@ export function TableHeaderSelectionCell({
       colIndex={0}
       focusedComponent={focusedComponent}
       ariaLabel={selectAllProps?.selectionGroupLabel}
+      spansRows={!!props.rowSpan && props.rowSpan > 1}
       {...getAnalyticsMetadataAttribute({
         action: selectAllProps?.checked ? 'deselectAll' : 'selectAll',
       })}
@@ -52,6 +53,7 @@ export function TableHeaderSelectionCell({
           focusedComponent={focusedComponent}
           {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
+          spansRows={!!props.rowSpan && props.rowSpan > 1}
         />
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>

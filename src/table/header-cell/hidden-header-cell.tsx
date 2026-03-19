@@ -7,7 +7,7 @@ import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit
 
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
-import { Divider, Resizer } from '../resizer';
+// import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel } from '../sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
@@ -44,9 +44,9 @@ export function TableHiddenHeaderCell({
   colspan,
   resizableColumns,
   resizableStyle,
-  onResizeFinish,
-  updateColumn,
-  focusedComponent,
+  // onResizeFinish,
+  // updateColumn,
+  // focusedComponent,
   tabIndex,
   stuck,
   sticky,
@@ -55,11 +55,11 @@ export function TableHiddenHeaderCell({
   stickyState,
   cellRef,
   tableRole,
-  resizerRoleDescription,
-  resizerTooltipText,
+  // resizerRoleDescription,
+  // resizerTooltipText,
   variant,
   tableVariant,
-  minWidth,
+  // minWidth,
 }: TableHiddenHeaderCellProps) {
   const cellRefObject = useRef<HTMLElement>(null);
   const cellRefCombined = useMergeRefs(cellRef, cellRefObject);
@@ -95,7 +95,7 @@ export function TableHiddenHeaderCell({
         tabIndex={focusableTabIndex}
         data-focus-id={`header-hidden-${columnId}`}
       />
-      {resizableColumns ? (
+      {/* {resizableColumns ? (
         <Resizer
           tabIndex={tabIndex}
           focusId={`resize-control-${columnId}`}
@@ -110,7 +110,7 @@ export function TableHiddenHeaderCell({
         />
       ) : (
         <Divider className={styles['resize-divider']} />
-      )}
+      )} */}
     </TableThElement>
   );
 }

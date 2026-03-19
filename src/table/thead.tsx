@@ -224,35 +224,17 @@ const Thead = React.forwardRef(
             }
             onBlur={rowIndex === 0 ? () => onFocusedComponentChange?.(null) : undefined}
           >
-            {/* Selection column — render empty placeholder cells on top rows, actual cell in last row */}
-            {selectionType ? (
-              rowIndex < hierarchicalStructure.rows.length - 1 ? (
-                <TableHiddenHeaderCell
-                  {...commonCellProps}
-                  key={`selection-hidden-${rowIndex}`}
-                  columnId={String(selectionColumnId)}
-                  colIndex={0}
-                  colspan={1}
-                  tabIndex={sticky ? -1 : 0}
-                  focusedComponent={focusedComponent}
-                  resizableColumns={false}
-                  resizableStyle={{}}
-                  onResizeFinish={() => onResizeFinish(columnWidths)}
-                  updateColumn={() => {}}
-                  cellRef={() => {}}
-                  resizerRoleDescription={resizerRoleDescription}
-                  resizerTooltipText={resizerTooltipText}
-                />
-              ) : (
-                <TableHeaderSelectionCell
-                  {...commonCellProps}
-                  focusedComponent={focusedComponent}
-                  columnId={selectionColumnId}
-                  getSelectAllProps={getSelectAllProps}
-                  onFocusMove={onFocusMove}
-                  singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
-                />
-              )
+            {/* Selection column — render once in the first row with rowSpan covering all header rows */}
+            {selectionType && rowIndex === 0 ? (
+              <TableHeaderSelectionCell
+                {...commonCellProps}
+                focusedComponent={focusedComponent}
+                columnId={selectionColumnId}
+                getSelectAllProps={getSelectAllProps}
+                onFocusMove={onFocusMove}
+                singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+                rowSpan={hierarchicalStructure.rows.length}
+              />
             ) : null}
 
             {row.columns.map(col => {
@@ -300,6 +282,7 @@ const Thead = React.forwardRef(
                     group={groupDefinition}
                     colspan={col.colspan}
                     rowspan={col.rowspan}
+                    spansRows={col.rowspan > 1}
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
                     resizableColumns={resizableColumns}
@@ -355,6 +338,7 @@ const Thead = React.forwardRef(
                     hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
                     colSpan={col.colspan}
                     rowSpan={col.rowspan}
+                    spansRows={col.rowspan > 1}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
                     }
