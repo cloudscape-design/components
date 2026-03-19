@@ -181,6 +181,7 @@ const groupDefinitions: TableProps<Instance>['groupDefinitions'] = [
   { id: 'configuration', header: 'Configuration' },
   { id: 'performance', header: 'Performance' },
   { id: 'metrics', header: 'Metrics' },
+  { id: 'network', header: 'Network' },
 ];
 
 const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
@@ -216,6 +217,7 @@ const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
       { id: 'configuration', label: 'Configuration' },
       { id: 'performance', label: 'Performance' },
       { id: 'metrics', label: 'Metrics' },
+      { id: 'network', label: 'Network' },
     ],
   },
 };
@@ -263,6 +265,13 @@ export default function TableDemo() {
             children: [
               { id: 'cpuUtilization', visible: true },
               { id: 'memoryUtilization', visible: true },
+            ],
+          },
+          {
+            type: 'group',
+            id: 'network',
+            visible: true,
+            children: [
               { id: 'networkIn', visible: true },
               { id: 'networkOut', visible: true },
             ],
