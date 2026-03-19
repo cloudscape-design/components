@@ -8775,7 +8775,7 @@ The values for all configured preferences are present even if the user didn't ch
           {
             "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
           },
           {
             "inlineType": {
@@ -9227,7 +9227,7 @@ It contains the following:
           {
             "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayProperties>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
           },
           {
             "inlineType": {
