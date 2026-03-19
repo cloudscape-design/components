@@ -31,10 +31,6 @@ module.exports = mergePresets(cloudscapePreset, {
       statements: 90,
     },
   },
-  moduleNameMapper: {
-    // Alias react-dom/client to our compatibility stub for React 16/17 tests
-    '^react-dom/client$': '<rootDir>/src/internal/vendor/react-dom-client-stub.ts',
-  },
   transform: {
     '(?!node_modules).*/lib/(components|design-tokens)/.*\\.js$': require.resolve(
       '@cloudscape-design/jest-preset/js-transformer'

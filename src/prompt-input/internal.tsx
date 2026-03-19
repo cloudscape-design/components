@@ -21,6 +21,7 @@ import TokenMode from './components/token-mode';
 import { CaretController } from './core/caret-controller';
 import { DEFAULT_MAX_ROWS } from './core/constants';
 import { getPromptText } from './core/token-operations';
+import { supportsTokenMode } from './core/token-renderer';
 import { isPinnedReferenceToken } from './core/type-guards';
 import { PromptInputProps } from './interfaces';
 import { getPromptInputStyles } from './styles';
@@ -118,7 +119,9 @@ const InternalPromptInput = React.forwardRef(
           ) ?? `${token.label || token.value} removed`),
     };
 
-    const isTokenMode = !!menus;
+    // Token mode requires React 18's createRoot. On React 16/17, fall back to plain textarea
+    // so the component remains usable (without shortcuts/token features) instead of crashing.
+    const isTokenMode = !!menus && supportsTokenMode;
     const value = valueProp ?? '';
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);

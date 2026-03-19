@@ -28,13 +28,8 @@
 //
 
 import React from 'react';
-// Import from react-dom/client (React 18+).
-// For React 16/17 environments, the jest config and webpack alias replace this import
-// with a compatibility stub (src/internal/vendor/react-dom-client-stub.ts) that provides
-// a no-op createRoot.
-// @ts-expect-error - react-dom/client only exists in React 18+, aliased to stub in React 16/17
-import { createRoot, Root } from 'react-dom/client';
 
+import { createRoot, Root } from '../../internal/vendor/react-dom-client-stub';
 import { PromptInputProps } from '../interfaces';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import {
@@ -49,6 +44,9 @@ import {
 import { isBreakTextToken, isReferenceToken, isTextToken, isTriggerToken } from './type-guards';
 
 import styles from '../styles.css.js';
+
+/** Whether the current React version supports token mode (requires React 18's createRoot). */
+export const supportsTokenMode = createRoot !== undefined;
 
 /** A React portal container and its associated root, keyed by token ID. */
 export interface ReactContainer {
@@ -127,7 +125,7 @@ function createReferenceWithCaretSpots(
   element.className = styles['token-container'];
   element.setAttribute('contenteditable', 'false');
 
-  const root = createRoot(element);
+  const root = createRoot!(element);
   const container: ReactContainer = { element, root };
   reactContainers.set(instanceId, container);
   renderComponent(renderToken({ id: instanceId, label: token.label, disabled: false, readOnly: false }), container);
