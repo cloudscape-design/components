@@ -13,6 +13,7 @@ import {
   createTrailingBreak,
   findAdjacentToken,
   findAllParagraphs,
+  getLogicalDirection,
   getTokenType,
   insertAfter,
   isCaretSpotType,
@@ -300,13 +301,13 @@ function handleArrowNavigation(
   offset: number,
   caretController: CaretController | null
 ): boolean {
-  const direction = event.key === 'ArrowLeft' ? 'left' : 'right';
+  const direction = getLogicalDirection(event.key, event.currentTarget);
   const { sibling, isReferenceToken } = findAdjacentToken(container, offset, direction);
 
   if (isReferenceToken && sibling) {
     event.preventDefault();
 
-    if (direction === 'left') {
+    if (direction === 'backward') {
       caretController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
     } else {
       caretController?.moveForward(TOKEN_LENGTHS.REFERENCE);
@@ -349,8 +350,9 @@ export function handleArrowKeyNavigation(
             if (paragraph) {
               const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
 
-              // Left arrow: position before the wrapper. Right arrow: position after it.
-              const newOffset = event.key === 'ArrowLeft' ? wrapperIndex : wrapperIndex + 1;
+              // Backward: position before the wrapper. Forward: position after it.
+              const logicalDir = getLogicalDirection(event.key, event.currentTarget);
+              const newOffset = logicalDir === 'backward' ? wrapperIndex : wrapperIndex + 1;
 
               event.preventDefault();
               const newRange = document.createRange();
@@ -378,25 +380,25 @@ function handleShiftArrowAcrossTokens(
   selection: Selection,
   range: Range
 ): boolean {
-  const isLeftArrow = event.key === 'ArrowLeft';
+  const isBackward = getLogicalDirection(event.key, event.currentTarget) === 'backward';
 
-  // Shift+Arrow extends the selection — left extends the start, right extends the end
-  const relevantContainer = isLeftArrow ? range.startContainer : range.endContainer;
-  const relevantOffset = isLeftArrow ? range.startOffset : range.endOffset;
+  // Shift+Arrow extends the selection — backward extends the start, forward extends the end
+  const relevantContainer = isBackward ? range.startContainer : range.endContainer;
+  const relevantOffset = isBackward ? range.startOffset : range.endOffset;
 
   // Check if the extending edge is adjacent to a reference token
   let sibling: Node | null = null;
 
   if (isTextNode(relevantContainer)) {
-    if (isLeftArrow && relevantOffset === 0) {
+    if (isBackward && relevantOffset === 0) {
       sibling = relevantContainer.previousSibling;
-    } else if (!isLeftArrow && relevantOffset === (relevantContainer.textContent?.length || 0)) {
+    } else if (!isBackward && relevantOffset === (relevantContainer.textContent?.length || 0)) {
       sibling = relevantContainer.nextSibling;
     }
   } else if (isHTMLElement(relevantContainer)) {
-    if (isLeftArrow && relevantOffset > 0) {
+    if (isBackward && relevantOffset > 0) {
       sibling = relevantContainer.childNodes[relevantOffset - 1];
-    } else if (!isLeftArrow && relevantOffset < relevantContainer.childNodes.length) {
+    } else if (!isBackward && relevantOffset < relevantContainer.childNodes.length) {
       sibling = relevantContainer.childNodes[relevantOffset];
     }
   }
@@ -410,7 +412,7 @@ function handleShiftArrowAcrossTokens(
     event.preventDefault();
 
     const newRange = range.cloneRange();
-    if (isLeftArrow) {
+    if (isBackward) {
       newRange.setStartBefore(sibling);
     } else {
       newRange.setEndAfter(sibling);

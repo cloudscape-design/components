@@ -1726,6 +1726,7 @@ describe('handleShiftArrow - sibling is not a reference', () => {
       key: 'ArrowRight',
       shiftKey: true,
       preventDefault: jest.fn(),
+      currentTarget: el,
     } as unknown as React.KeyboardEvent<HTMLDivElement>;
 
     const result = handleArrowKeyNavigation(event, null);
@@ -1847,5 +1848,165 @@ describe('event-handlers - defensive guard coverage', () => {
     const onChange = jest.fn();
     const result = handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null);
     expect(result).toBe(false);
+  });
+});
+
+describe('RTL arrow key navigation', () => {
+  function setCursor(node: Node, offset: number) {
+    const range = document.createRange();
+    range.setStart(node, offset);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+  }
+
+  beforeEach(() => {
+    el.style.direction = 'rtl';
+  });
+
+  afterEach(() => {
+    el.style.direction = '';
+  });
+
+  test('ArrowLeft jumps forward over reference in RTL', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    const after = document.createTextNode(' world');
+    p.appendChild(after);
+
+    // Cursor at end of 'hello' — ArrowLeft in RTL means forward, should jump over reference
+    setCursor(text, 5);
+
+    const controller = new CaretController(el);
+    el.focus();
+
+    const event = {
+      key: 'ArrowLeft',
+      shiftKey: false,
+      preventDefault: jest.fn(),
+      isDefaultPrevented: () => false,
+      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowLeft' }),
+      currentTarget: el,
+    } as unknown as React.KeyboardEvent<HTMLDivElement>;
+
+    const result = handleArrowKeyNavigation(event, controller);
+    expect(result).toBe(true);
+    expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+  test('ArrowRight jumps backward over reference in RTL', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    const after = document.createTextNode(' world');
+    p.appendChild(after);
+
+    // Cursor at start of ' world' — ArrowRight in RTL means backward, should jump over reference
+    setCursor(after, 0);
+
+    const controller = new CaretController(el);
+    el.focus();
+
+    const event = {
+      key: 'ArrowRight',
+      shiftKey: false,
+      preventDefault: jest.fn(),
+      isDefaultPrevented: () => false,
+      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowRight' }),
+      currentTarget: el,
+    } as unknown as React.KeyboardEvent<HTMLDivElement>;
+
+    const result = handleArrowKeyNavigation(event, controller);
+    expect(result).toBe(true);
+    expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+  test('Shift+ArrowLeft extends selection forward in RTL', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    const after = document.createTextNode(' world');
+    p.appendChild(after);
+
+    // Select end of text — Shift+ArrowLeft in RTL extends forward (end of selection)
+    const range = document.createRange();
+    range.setStart(text, 2);
+    range.setEnd(text, 5);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const event = {
+      key: 'ArrowLeft',
+      shiftKey: true,
+      preventDefault: jest.fn(),
+      isDefaultPrevented: () => false,
+      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true }),
+      currentTarget: el,
+    } as unknown as React.KeyboardEvent<HTMLDivElement>;
+
+    const result = handleArrowKeyNavigation(event, null);
+    expect(result).toBe(true);
+    expect(event.preventDefault).toHaveBeenCalled();
+  });
+
+  test('Shift+ArrowRight extends selection backward in RTL', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', 'reference');
+    ref.textContent = 'Alice';
+    p.appendChild(ref);
+
+    const after = document.createTextNode(' world');
+    p.appendChild(after);
+
+    // Select start of after text — Shift+ArrowRight in RTL extends backward (start of selection)
+    const range = document.createRange();
+    range.setStart(after, 0);
+    range.setEnd(after, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const event = {
+      key: 'ArrowRight',
+      shiftKey: true,
+      preventDefault: jest.fn(),
+      isDefaultPrevented: () => false,
+      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowRight', shiftKey: true }),
+      currentTarget: el,
+    } as unknown as React.KeyboardEvent<HTMLDivElement>;
+
+    const result = handleArrowKeyNavigation(event, null);
+    expect(result).toBe(true);
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

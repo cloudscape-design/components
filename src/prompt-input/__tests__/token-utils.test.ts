@@ -290,7 +290,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(refSpan);
     container.appendChild(textNode);
 
-    const result = findAdjacentToken(textNode, 0, 'left');
+    const result = findAdjacentToken(textNode, 0, 'backward');
     expect(result.isReferenceToken).toBe(true);
     expect(result.sibling).toBe(refSpan);
   });
@@ -303,7 +303,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(textNode);
     container.appendChild(refSpan);
 
-    const result = findAdjacentToken(textNode, 5, 'right');
+    const result = findAdjacentToken(textNode, 5, 'forward');
     expect(result.isReferenceToken).toBe(true);
     expect(result.sibling).toBe(refSpan);
   });
@@ -313,7 +313,7 @@ describe('findAdjacentToken', () => {
     const textNode = document.createTextNode('hello');
     container.appendChild(textNode);
 
-    const result = findAdjacentToken(textNode, 2, 'left');
+    const result = findAdjacentToken(textNode, 2, 'backward');
     expect(result.isReferenceToken).toBe(false);
     expect(result.sibling).toBeNull();
   });
@@ -327,7 +327,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(textNode);
 
     // offset=1 means cursor is after childNodes[0] (the refSpan)
-    const result = findAdjacentToken(container, 1, 'left');
+    const result = findAdjacentToken(container, 1, 'backward');
     expect(result.isReferenceToken).toBe(true);
   });
 
@@ -340,7 +340,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(refSpan);
 
     // offset=1 means cursor is before childNodes[1] (the refSpan)
-    const result = findAdjacentToken(container, 1, 'right');
+    const result = findAdjacentToken(container, 1, 'forward');
     expect(result.isReferenceToken).toBe(true);
   });
 
@@ -352,7 +352,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(textNode);
     container.appendChild(span);
 
-    const result = findAdjacentToken(textNode, 5, 'right');
+    const result = findAdjacentToken(textNode, 5, 'forward');
     expect(result.isReferenceToken).toBe(false);
     expect(result.sibling).toBe(span);
   });
@@ -363,7 +363,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(textNode);
 
     // offset=0, left direction - checks previousSibling of container
-    const result = findAdjacentToken(container, 0, 'left');
+    const result = findAdjacentToken(container, 0, 'backward');
     expect(result.sibling).toBeNull();
   });
 
@@ -373,7 +373,7 @@ describe('findAdjacentToken', () => {
     container.appendChild(textNode);
 
     // offset equals childNodes.length - checks nextSibling
-    const result = findAdjacentToken(container, 1, 'right');
+    const result = findAdjacentToken(container, 1, 'forward');
     expect(result.sibling).toBeNull();
   });
 });
