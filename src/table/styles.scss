@@ -142,6 +142,15 @@ filter search icon.
     padding-inline: awsui.$space-scaled-l;
     border-inline-start: awsui.$border-width-item-selected solid transparent;
   }
+
+  // When the selection cell spans multiple header rows, use flex to push the
+  // checkbox to the bottom of the cell, matching bottom-aligned leaf column headers.
+  &-content-spans-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    block-size: 100%;
+  }
 }
 
 .header-secondary {

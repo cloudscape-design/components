@@ -45,6 +45,7 @@ export interface TableGroupHeaderCellProps {
   resizerTooltipText?: string;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
+  spansRows?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -74,6 +75,7 @@ export function TableGroupHeaderCell({
   resizerTooltipText,
   variant,
   tableVariant,
+  spansRows,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
 
@@ -289,6 +291,7 @@ export function TableGroupHeaderCell({
       colSpan={colspan}
       rowSpan={rowspan}
       scope="colgroup"
+      spansRows={spansRows}
     >
       <div ref={innerWrapperRef} className={styles['header-cell-content-group-inner']}>
         <div

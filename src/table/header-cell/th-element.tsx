@@ -54,6 +54,11 @@ export interface TableThElementProps {
    * Omit for top-level columns that have no group parent.
    */
   columnGroupId?: string;
+  /**
+   * When true, the cell spans multiple header rows (leaf column in a grouped table).
+   * Applies bottom-alignment so content sits flush with grouped column labels in the last row.
+   */
+  spansRows?: boolean;
 }
 
 export function TableThElement({
@@ -81,6 +86,7 @@ export function TableThElement({
   scope,
   isPlaceholder,
   columnGroupId,
+  spansRows,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -117,6 +123,7 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles['header-cell-spans-rows']]: spansRows,
         },
         stickyStyles.className
       )}

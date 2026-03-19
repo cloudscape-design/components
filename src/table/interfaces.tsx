@@ -624,6 +624,7 @@ export namespace TableProps {
   export interface GroupDisplay {
     type: 'group';
     id: string;
+    visible: boolean;
     children: ReadonlyArray<ColumnDisplayProperties>;
   }
 

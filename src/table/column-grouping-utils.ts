@@ -274,17 +274,18 @@ function traverseForRowSpanAndRowIndex<T>(
 }
 
 /**
- * Expands nodes with rowspan > 1 into a chain of hidden placeholder nodes ABOVE
- * the real node, so the visible cell appears at the bottom (aligned with leaf columns).
+ * All nodes with rowspan > 1 keep their natural rowspan — no hidden placeholder expansion.
  *
- * For a node at rowIndex=R with rowspan=N, we:
- *   1. Create (N-1) hidden placeholder nodes at rows R, R+1, ..., R+N-2
- *   2. Move the real node to row R+N-1 (the bottom of its span) with rowspan=1
- *   3. The hidden nodes form a parent chain: parent→hidden(R)→hidden(R+1)→...→realNode(R+N-1)
- *   4. The real node keeps its original children.
+ * - Leaf column nodes span from their row downward to the last header row, with the
+ *   resizer covering the full height and content bottom-aligned via CSS.
+ * - Group nodes span from their natural rowIndex downward, filling available vertical
+ *   space (e.g. "Configuration" which only needs 1 row of depth still spans rows 0–1
+ *   because its rowspan is calculated to fill the tree height imbalance).
+ *
+ * This function is kept as a no-op expansion pass — nothing is expanded into hidden nodes.
  */
 function expandRowspansToHiddenNodes<T>(node: TableHeaderNode<T>): void {
-  // Process children first (bottom-up so we don't interfere with our own expansion)
+  // Process children (kept for structural consistency; no expansion occurs).
   for (const child of [...node.children]) {
     expandRowspansToHiddenNodes(child);
   }
@@ -296,6 +297,9 @@ function expandRowspansToHiddenNodes<T>(node: TableHeaderNode<T>): void {
   if (node.rowspan <= 1) {
     return;
   }
+
+  // All nodes (leaf and group) keep their rowspan — skip hidden placeholder expansion.
+  return;
 
   const originalRowspan = node.rowspan;
   const originalRowIndex = node.rowIndex;

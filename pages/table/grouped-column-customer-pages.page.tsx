@@ -162,6 +162,7 @@ const patchingColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'hostsReporting',
+    visible: true,
     children: [
       { id: 'redHosts', visible: true },
       { id: 'yellowHosts', visible: true },
@@ -299,6 +300,7 @@ const forecastColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'apr23',
+    visible: true,
     children: [
       { id: 'apr23snap1', visible: true },
       { id: 'apr23snap2', visible: true },
@@ -308,6 +310,7 @@ const forecastColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'apr30',
+    visible: true,
     children: [
       { id: 'apr30snap1', visible: true },
       { id: 'apr30snap2', visible: true },
@@ -317,6 +320,7 @@ const forecastColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'may7',
+    visible: true,
     children: [
       { id: 'may7snap1', visible: true },
       { id: 'may7snap2', visible: true },
@@ -411,6 +415,7 @@ const groceryColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'sales',
+    visible: true,
     children: [
       { id: 'salesCoreRanking', visible: true },
       { id: 'salesReference', visible: true },
@@ -421,6 +426,7 @@ const groceryColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'units',
+    visible: true,
     children: [
       { id: 'unitsCoreRanking', visible: true },
       { id: 'unitsReference', visible: true },
@@ -555,6 +561,7 @@ const riskColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'itemAtRisk',
+    visible: true,
     children: [
       { id: 'priority', visible: true },
       { id: 'impactedBom', visible: true },
@@ -569,6 +576,7 @@ const riskColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'suggestedAlternate',
+    visible: true,
     children: [
       { id: 'alternateItem', visible: true },
       { id: 'parentItem', visible: true },
@@ -610,6 +618,7 @@ const mlCostColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'cost',
+    visible: true,
     children: [
       { id: 'onDemandCost', visible: true },
       { id: 'reservedCost', visible: true },
@@ -707,6 +716,7 @@ const regionColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'usEast1a',
+    visible: true,
     children: [
       { id: 'usEast1aP1', visible: true },
       { id: 'usEast1aP2', visible: true },
@@ -715,6 +725,7 @@ const regionColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'usEast1b',
+    visible: true,
     children: [
       { id: 'usEast1bP1', visible: true },
       { id: 'usEast1bP2', visible: true },
@@ -723,6 +734,7 @@ const regionColumnDisplay: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
     id: 'usEast1c',
+    visible: true,
     children: [
       { id: 'usEast1cP1', visible: true },
       { id: 'usEast1cP2', visible: true },
