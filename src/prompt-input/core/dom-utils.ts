@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
 import { isHTMLElement } from '../../internal/utils/dom';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import { isBRElement, isTextNode } from './type-guards';
@@ -154,7 +156,16 @@ export function setEmptyState(element: HTMLElement): void {
   element.appendChild(p);
 }
 
-export type ArrowDirection = 'left' | 'right';
+export type ArrowDirection = 'backward' | 'forward';
+
+/** Resolves an arrow key to a logical reading direction, accounting for RTL. */
+export function getLogicalDirection(key: string, element: HTMLElement): ArrowDirection {
+  const isRtl = getIsRtl(element);
+  if (key === 'ArrowLeft') {
+    return isRtl ? 'forward' : 'backward';
+  }
+  return isRtl ? 'backward' : 'forward';
+}
 
 export interface AdjacentTokenResult {
   sibling: Node | null;
@@ -171,13 +182,13 @@ export function findAdjacentToken(container: Node, offset: number, direction: Ar
   let sibling: Node | null = null;
 
   if (isTextNode(container)) {
-    const isAtBoundary = direction === 'left' ? offset === 0 : offset === (container.textContent?.length || 0);
+    const isAtBoundary = direction === 'backward' ? offset === 0 : offset === (container.textContent?.length || 0);
 
     if (isAtBoundary) {
-      sibling = direction === 'left' ? container.previousSibling : container.nextSibling;
+      sibling = direction === 'backward' ? container.previousSibling : container.nextSibling;
     }
   } else if (isHTMLElement(container)) {
-    if (direction === 'left') {
+    if (direction === 'backward') {
       sibling = offset > 0 ? container.childNodes[offset - 1] : container.previousSibling;
     } else {
       sibling = offset < container.childNodes.length ? container.childNodes[offset] : container.nextSibling;

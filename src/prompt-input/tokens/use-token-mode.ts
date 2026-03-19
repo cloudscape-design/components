@@ -123,6 +123,18 @@ function positionCaretAfterMenuSelection(
   return true;
 }
 
+/** Finds a trigger token by its ID in the token array. */
+function findTriggerTokenById(
+  tokens: readonly PromptInputProps.InputToken[],
+  triggerId: string
+): PromptInputProps.TriggerToken | null {
+  const trigger = tokens.find(token => isTriggerToken(token) && token.id === triggerId);
+  if (trigger && isTriggerToken(trigger)) {
+    return trigger;
+  }
+  return null;
+}
+
 /**
  * Detects whether the user is typing into an empty line based on the transition
  * from the last rendered tokens to the current ordered tokens.
@@ -370,7 +382,7 @@ function useShortcutsEffects(config: EffectsConfig) {
 
             if (isTextNode(range.startContainer) && range.startOffset === 0) {
               const prevSibling = range.startContainer.previousSibling;
-              if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === 'trigger') {
+              if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
                 triggerElement = prevSibling;
               }
             } else if (range.startContainer === editableElementRef.current || isHTMLElement(range.startContainer)) {
@@ -378,7 +390,7 @@ function useShortcutsEffects(config: EffectsConfig) {
               const childNodes = Array.from(container.childNodes);
               const nodeBeforeCaret = childNodes[range.startOffset - 1];
 
-              if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === 'trigger') {
+              if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === ElementType.Trigger) {
                 triggerElement = nodeBeforeCaret;
               }
             }
@@ -475,11 +487,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return null;
     }
 
-    const matchingTrigger = tokens.find(t => isTriggerToken(t) && t.id === activeTriggerID) as
-      | PromptInputProps.TriggerToken
-      | undefined;
+    const matchingTrigger = findTriggerTokenById(tokens, activeTriggerID);
 
-    return matchingTrigger || null;
+    return matchingTrigger;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- caretUpdateTrigger is an invalidation signal, not used in the callback
   }, [tokens, caretControllerRef, caretUpdateTrigger]);
 

@@ -11,6 +11,7 @@ import {
   findAllParagraphs,
   findElement,
   findElements,
+  getLogicalDirection,
   getTokenType,
   hasOnlyTrailingBR,
   insertAfter,
@@ -340,5 +341,38 @@ describe('findElements with tokenId', () => {
     const results = findElements(container, { tokenType: ElementType.Trigger, tokenId: 'trigger-123' });
     expect(results).toHaveLength(1);
     expect(results[0]).toBe(el);
+  });
+});
+
+describe('getLogicalDirection', () => {
+  let el: HTMLDivElement;
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('ArrowLeft returns backward in LTR', () => {
+    el.style.direction = 'ltr';
+    expect(getLogicalDirection('ArrowLeft', el)).toBe('backward');
+  });
+
+  test('ArrowRight returns forward in LTR', () => {
+    el.style.direction = 'ltr';
+    expect(getLogicalDirection('ArrowRight', el)).toBe('forward');
+  });
+
+  test('ArrowLeft returns forward in RTL', () => {
+    el.style.direction = 'rtl';
+    expect(getLogicalDirection('ArrowLeft', el)).toBe('forward');
+  });
+
+  test('ArrowRight returns backward in RTL', () => {
+    el.style.direction = 'rtl';
+    expect(getLogicalDirection('ArrowRight', el)).toBe('backward');
   });
 });
