@@ -42,12 +42,13 @@ describe('Table with column grouping', () => {
 
   test('leaf headers carry data-column-group-id; ungrouped headers do not', () => {
     const wrapper = renderTable();
-    const leafHeaders = wrapper.findColumnHeaders();
+    // Search across all header rows — ungrouped columns now span rows from row 0
+    const allThs = wrapper.find('thead')!.findAll('th');
 
-    const cpuTh = leafHeaders.find(th => th.getElement().textContent?.trim() === 'CPU');
+    const cpuTh = allThs.find(th => th.getElement().textContent?.trim() === 'CPU');
     expect(cpuTh?.getElement().getAttribute('data-column-group-id')).toBe('performance');
 
-    const idTh = leafHeaders.find(th => th.getElement().textContent?.trim() === 'ID');
+    const idTh = allThs.find(th => th.getElement().textContent?.trim() === 'ID');
     expect(idTh?.getElement().getAttribute('data-column-group-id')).toBeNull();
   });
 
@@ -67,6 +68,7 @@ describe('Table with column grouping', () => {
         {
           type: 'group',
           id: 'performance',
+          visible: true,
           children: [
             { id: 'cpu', visible: true },
             { id: 'memory', visible: false },
@@ -76,12 +78,13 @@ describe('Table with column grouping', () => {
         {
           type: 'group',
           id: 'config',
+          visible: true,
           children: [
             { id: 'type', visible: false },
             { id: 'az', visible: false },
           ],
         },
-        { type: 'group', id: 'pricing', children: [{ id: 'cost', visible: false }] },
+        { type: 'group', visible: true, id: 'pricing', children: [{ id: 'cost', visible: false }] },
       ],
     });
     const texts = wrapper

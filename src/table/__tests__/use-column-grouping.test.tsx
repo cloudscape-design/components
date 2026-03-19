@@ -45,7 +45,7 @@ describe('useColumnGrouping', () => {
       const visibleIds = new Set(['id', 'cpu']);
       const display: TableProps.ColumnDisplayProperties[] = [
         { id: 'id', visible: true },
-        { type: 'group', id: 'performance', children: [{ id: 'cpu', visible: true }] },
+        { type: 'group', id: 'performance', visible: true, children: [{ id: 'cpu', visible: true }] },
       ];
       const { result } = renderHook(() => useColumnGrouping(GROUP_DEFS, COLUMN_DEFS, visibleIds, display));
       const allIds = result.current.rows.flatMap(r => r.columns.map(c => c.id));
@@ -59,7 +59,7 @@ describe('useColumnGrouping', () => {
       const display: TableProps.ColumnDisplayProperties[] = [
         { id: 'id', visible: true },
         { id: 'name', visible: true },
-        { type: 'group', id: 'performance', children: [{ id: 'cpu', visible: false }] },
+        { type: 'group', visible: true, id: 'performance', children: [{ id: 'cpu', visible: false }] },
       ];
       const { result } = renderHook(() => useColumnGrouping(GROUP_DEFS, COLUMN_DEFS, visibleIds, display));
       const groupIds = result.current.rows.flatMap(r => r.columns.filter(c => c.isGroup).map(c => c.id));
@@ -79,7 +79,7 @@ describe('useColumnGrouping', () => {
       process.env.NODE_ENV = 'development';
       const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
       const display: TableProps.ColumnDisplayProperties[] = [
-        { type: 'group', id: 'ghost-group', children: [{ id: 'cpu', visible: true }] },
+        { type: 'group', visible: true, id: 'ghost-group', children: [{ id: 'cpu', visible: true }] },
       ];
       renderHook(() => useColumnGrouping([], COLUMN_DEFS, undefined, display));
       expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('ghost-group'));

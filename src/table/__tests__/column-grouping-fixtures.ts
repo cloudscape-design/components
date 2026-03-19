@@ -42,6 +42,7 @@ export const FLAT_DISPLAY: TableProps.ColumnDisplayProperties[] = [
   { id: 'name', visible: true },
   {
     type: 'group',
+    visible: true,
     id: 'performance',
     children: [
       { id: 'cpu', visible: true },
@@ -51,13 +52,14 @@ export const FLAT_DISPLAY: TableProps.ColumnDisplayProperties[] = [
   },
   {
     type: 'group',
+    visible: true,
     id: 'config',
     children: [
       { id: 'type', visible: true },
       { id: 'az', visible: true },
     ],
   },
-  { type: 'group', id: 'pricing', children: [{ id: 'cost', visible: true }] },
+  { type: 'group', visible: true, id: 'pricing', children: [{ id: 'cost', visible: true }] },
 ];
 
 /** Nested: metrics → performance → cpu/memory */
@@ -69,10 +71,12 @@ export const NESTED_GROUPS: TableProps.GroupDefinition<any>[] = [
 export const NESTED_DISPLAY: TableProps.ColumnDisplayProperties[] = [
   {
     type: 'group',
+    visible: true,
     id: 'metrics',
     children: [
       {
         type: 'group',
+        visible: true,
         id: 'performance',
         children: [
           { id: 'cpu', visible: true },
