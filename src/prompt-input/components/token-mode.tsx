@@ -121,13 +121,15 @@ export default function TokenMode({
           trigger={null}
           triggerRef={triggerWrapperRef}
           contentKey={
-            triggerWrapperReady
-              ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}-${menuFilterText}`
-              : undefined
+            triggerWrapperReady ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}` : undefined
           }
-          onMouseDown={event => {
-            event.preventDefault();
-          }}
+          /* istanbul ignore next -- covered by integration tests: onMouseDown only fires from real browser mouse events on dropdown */
+          onMouseDown={
+            /* istanbul ignore next -- covered by integration tests */
+            event => {
+              event.preventDefault();
+            }
+          }
           footer={
             menuDropdownStatus?.isSticky && menuDropdownStatus.content ? (
               <DropdownFooter

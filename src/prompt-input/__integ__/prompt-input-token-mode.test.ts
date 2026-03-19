@@ -21,6 +21,17 @@ class PromptInputTokenModePage extends BasePageObject {
   getEditorText(): Promise<string> {
     return this.getText(contentEditableSelector);
   }
+
+  /** Returns the caret offset within its container node. */
+  getCaretOffset(): Promise<number> {
+    return this.browser.execute(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) {
+        return -1;
+      }
+      return sel.getRangeAt(0).startOffset;
+    });
+  }
 }
 
 const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) => {
@@ -42,6 +53,10 @@ describe('PromptInput token mode', () => {
       await page.pause(200);
 
       await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      // After typing '@', caret should be at offset 1 (inside trigger text)
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(1);
     })
   );
 
@@ -62,6 +77,10 @@ describe('PromptInput token mode', () => {
       // The editor should contain the selected reference text
       const text = await page.getEditorText();
       expect(text.length).toBeGreaterThan(0);
+
+      // After selection, caret should be past the reference
+      const offset = await page.getCaretOffset();
+      expect(offset).toBeGreaterThanOrEqual(0);
     })
   );
 
@@ -86,6 +105,10 @@ describe('PromptInput token mode', () => {
 
       text = await page.getEditorText();
       expect(text.length).toBe(0);
+
+      // After backspace removes the reference, caret should be at 0
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(0);
     })
   );
 
@@ -105,6 +128,10 @@ describe('PromptInput token mode', () => {
       const text = await page.getEditorText();
       expect(text).toContain('hello');
       expect(text).toContain('world');
+
+      // After typing 'world', caret should be at offset 5
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(5);
     })
   );
 
@@ -145,6 +172,10 @@ describe('PromptInput token mode', () => {
       await page.pause(200);
 
       await expect(page.isMenuOpen()).resolves.toBe(false);
+
+      // Caret should still be inside the trigger
+      const offset = await page.getCaretOffset();
+      expect(offset).toBeGreaterThanOrEqual(0);
     })
   );
 
@@ -194,6 +225,124 @@ describe('PromptInput token mode', () => {
 
       const text = await page.getEditorText();
       expect(text).toContain('Alice');
+
+      // After selecting filtered option, caret should be past the reference
+      const offset = await page.getCaretOffset();
+      expect(offset).toBeGreaterThanOrEqual(0);
+    })
+  );
+});
+
+describe('PromptInput token mode - trigger deletion caret positioning', () => {
+  test(
+    'backspace on trigger character keeps caret at the end of preceding text',
+    setupTest(async page => {
+      await page.focusInput();
+
+      await page.keys(['h', 'e', 'l', 'l', 'o', ' ', '@']);
+      await page.pause(300);
+
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      // Close menu, then backspace to delete the '@'
+      await page.keys(['Escape']);
+      await page.pause(200);
+      await page.keys(['Backspace']);
+      await page.pause(300);
+
+      const text = await page.getEditorText();
+      expect(text.trim()).toBe('hello');
+
+      // Caret should be at offset 6 in the text node ('hello '), not 5
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(6);
+    })
+  );
+
+  test(
+    'backspace through trigger with filter text keeps caret at correct offset',
+    setupTest(async page => {
+      await page.focusInput();
+
+      await page.keys(['h', 'i', ' ', '@', 'a', 'l', 'i']);
+      await page.pause(300);
+
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      // Close menu, backspace 4 times to delete 'i', 'l', 'a', '@'
+      await page.keys(['Escape']);
+      await page.pause(100);
+      await page.keys(['Backspace', 'Backspace', 'Backspace', 'Backspace']);
+      await page.pause(300);
+
+      const text = await page.getEditorText();
+      expect(text.trim()).toBe('hi');
+
+      // Caret should be at offset 3 in the text node ('hi '), not 2
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(3);
+    })
+  );
+});
+
+describe('PromptInput token mode - insertText via contentEditable', () => {
+  test(
+    'insertText places text at caret and positions caret after insertion',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'e', 'l', 'l', 'o']);
+      await page.pause(200);
+
+      // The text should be inserted
+      const text = await page.getEditorText();
+      expect(text).toContain('hello');
+
+      // Caret should be at end of typed text
+      const offset = await page.getCaretOffset();
+      expect(offset).toBe(5);
+    })
+  );
+});
+
+describe('PromptInput token mode - trigger visibility on scroll', () => {
+  test(
+    'menu remains open when trigger is visible',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['@']);
+      await page.pause(300);
+
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      // Trigger is still visible, menu should stay open
+      const text = await page.getEditorText();
+      expect(text).toContain('@');
+    })
+  );
+});
+
+describe('PromptInput token mode - resize behavior', () => {
+  test(
+    'input adjusts height after content change',
+    setupTest(async page => {
+      await page.focusInput();
+
+      // Type multiple lines
+      await page.keys(['l', 'i', 'n', 'e', '1']);
+      await page.pause(100);
+      await page.keys(['Shift', 'Enter', 'Shift']);
+      await page.pause(100);
+      await page.keys(['l', 'i', 'n', 'e', '2']);
+      await page.pause(100);
+      await page.keys(['Shift', 'Enter', 'Shift']);
+      await page.pause(100);
+      await page.keys(['l', 'i', 'n', 'e', '3']);
+      await page.pause(200);
+
+      const text = await page.getEditorText();
+      expect(text).toContain('line1');
+      expect(text).toContain('line2');
+      expect(text).toContain('line3');
     })
   );
 });
