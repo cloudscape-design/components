@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
@@ -429,6 +429,68 @@ describe('Dropdown Component', () => {
       const [wrapper] = renderDropdown(<Dropdown trigger={<button />} open={true} maxWidth={250} />);
       const dropdown = wrapper.findOpenDropdown()!.getElement();
       expect(dropdown.style.getPropertyValue(customCssProps.dropdownDefaultMaxWidth)).toBe('250px');
+    });
+  });
+
+  describe('external triggerRef', () => {
+    function ExternalTriggerDropdown({ open = true }: { open?: boolean }) {
+      const triggerRef = useRef<HTMLButtonElement>(null);
+      return (
+        <div>
+          <button ref={triggerRef} data-testid="external-trigger" id="ext-trigger-id">
+            External trigger
+          </button>
+          <Dropdown
+            trigger={<span data-testid="internal-trigger">Should not render</span>}
+            triggerRef={triggerRef as React.RefObject<HTMLElement>}
+            open={open}
+            content={<div data-testid="dropdown-content">Content</div>}
+          />
+        </div>
+      );
+    }
+
+    test('does not render the trigger slot when triggerRef is provided', () => {
+      render(<ExternalTriggerDropdown />);
+      expect(screen.queryByTestId('internal-trigger')).toBeNull();
+      expect(screen.getByTestId('external-trigger')).toBeTruthy();
+    });
+
+    test('renders dropdown content when open with external trigger', () => {
+      render(<ExternalTriggerDropdown open={true} />);
+      expect(screen.getByTestId('dropdown-content')).toBeTruthy();
+    });
+
+    test('does not show dropdown content when closed with external trigger', () => {
+      const { container } = render(<ExternalTriggerDropdown open={false} />);
+      const dropdownElement = container.querySelector<HTMLElement>(`.${DropdownWrapper.rootSelector}`);
+      const wrapper = dropdownElement ? new DropdownWrapper(dropdownElement) : null;
+      expect(wrapper?.findOpenDropdown()).toBeFalsy();
+    });
+
+    test('fires onOutsideClick when clicking outside with external trigger', async () => {
+      const handleOutsideClick = jest.fn();
+      function TestComponent() {
+        const triggerRef = useRef<HTMLButtonElement>(null);
+        return (
+          <div>
+            <button data-testid={outsideId} />
+            <button ref={triggerRef}>Trigger</button>
+            <Dropdown
+              trigger={null}
+              triggerRef={triggerRef as React.RefObject<HTMLElement>}
+              open={true}
+              onOutsideClick={handleOutsideClick}
+              content={<div>Content</div>}
+            />
+          </div>
+        );
+      }
+      render(<TestComponent />);
+      await runPendingEvents();
+
+      act(() => screen.getByTestId(outsideId).click());
+      expect(handleOutsideClick).toHaveBeenCalled();
     });
   });
 });
