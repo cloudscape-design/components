@@ -111,6 +111,7 @@ function createReferenceWithCaretSpots(
   portalContainers: Map<string, PortalContainer>
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
+  wrapper.className = styles['reference-wrapper'];
   wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
   const instanceId = token.id && token.id !== '' ? token.id : generateTokenId();
   wrapper.id = instanceId;
@@ -202,17 +203,18 @@ export function renderTokensToDOM(
 
         if (existingTriggers.has(triggerId)) {
           span = existingTriggers.get(triggerId)!;
-          span.textContent = token.triggerChar + token.value;
-          span.className = hasFilterText ? styles['trigger-token'] : '';
           existingTriggers.delete(triggerId);
         } else {
           span = document.createElement('span');
           span.setAttribute('data-type', ElementType.Trigger);
-          span.className = hasFilterText ? styles['trigger-token'] : '';
           span.id = triggerId;
           span.setAttribute('data-id', triggerId);
-          span.textContent = token.triggerChar + token.value;
         }
+
+        const classes = `${styles['trigger-base']} ${hasFilterText && styles['trigger-token']}`;
+
+        span.className = classes;
+        span.textContent = token.triggerChar + token.value;
 
         newNodes.push(span);
 

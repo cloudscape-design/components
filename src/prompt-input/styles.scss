@@ -367,6 +367,18 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   padding-inline: awsui.$space-xxxs;
 }
 
+// Isolate reference token wrappers from the bidi algorithm so that
+// caret spots and the token-container are not reordered in RTL.
+.reference-wrapper {
+  unicode-bidi: isolate;
+}
+
+// Isolate trigger spans from the bidi algorithm so that the trigger
+// character and filter text are not visually reordered in RTL.
+.trigger-base {
+  unicode-bidi: isolate;
+}
+
 .trigger-token {
   text-decoration: underline dashed currentColor;
   text-decoration-thickness: awsui.$border-divider-list-width;
