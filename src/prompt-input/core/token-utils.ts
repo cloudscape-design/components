@@ -105,6 +105,7 @@ export function detectTriggersInText(
   while (position < text.length) {
     let earliestTriggerIndex = -1;
     let earliestMenu: PromptInputProps.MenuDefinition | null = null;
+    let earliestCancelled = false;
 
     for (const menu of menus) {
       let searchPos = position;
@@ -118,6 +119,8 @@ export function detectTriggersInText(
         const isValid = validateTrigger(menu, triggerIndex, text, precedingTokens);
 
         if (isValid) {
+          let cancelled = false;
+
           if (onTriggerDetected) {
             const wasPrevented = onTriggerDetected({
               menuId: menu.id,
@@ -126,14 +129,14 @@ export function detectTriggersInText(
             });
 
             if (wasPrevented) {
-              searchPos = triggerIndex + menu.trigger.length;
-              continue;
+              cancelled = true;
             }
           }
 
           if (earliestTriggerIndex === -1 || triggerIndex < earliestTriggerIndex) {
             earliestTriggerIndex = triggerIndex;
             earliestMenu = menu;
+            earliestCancelled = cancelled;
           }
           break;
         }
@@ -148,27 +151,40 @@ export function detectTriggersInText(
         results.push({ type: 'text', value: beforeTrigger });
       }
 
-      const afterTrigger = text.substring(earliestTriggerIndex + earliestMenu.trigger.length);
-      let filterText = '';
-      let endOfTrigger = earliestTriggerIndex + earliestMenu.trigger.length;
+      if (earliestCancelled) {
+        // Emit as a trigger token with a '-cancelled' ID suffix so it stays in the DOM
+        // as a trigger element (won't be re-scanned as text on subsequent inputs).
+        // The suffixed ID won't match findTriggerTokenById, so no menu opens.
+        results.push({
+          type: 'trigger',
+          value: '',
+          triggerChar: earliestMenu.trigger,
+          id: generateTokenId() + '-cancelled',
+        });
+        position = earliestTriggerIndex + earliestMenu.trigger.length;
+      } else {
+        const afterTrigger = text.substring(earliestTriggerIndex + earliestMenu.trigger.length);
+        let filterText = '';
+        let endOfTrigger = earliestTriggerIndex + earliestMenu.trigger.length;
 
-      if (afterTrigger && !/^\s/.test(afterTrigger)) {
-        let endIndex = 0;
-        while (endIndex < afterTrigger.length && !/\s/.test(afterTrigger[endIndex])) {
-          endIndex++;
+        if (afterTrigger && !/^\s/.test(afterTrigger)) {
+          let endIndex = 0;
+          while (endIndex < afterTrigger.length && !/\s/.test(afterTrigger[endIndex])) {
+            endIndex++;
+          }
+          filterText = afterTrigger.substring(0, endIndex);
+          endOfTrigger += endIndex;
         }
-        filterText = afterTrigger.substring(0, endIndex);
-        endOfTrigger += endIndex;
+
+        results.push({
+          type: 'trigger',
+          value: filterText,
+          triggerChar: earliestMenu.trigger,
+          id: generateTokenId(),
+        });
+
+        position = endOfTrigger;
       }
-
-      results.push({
-        type: 'trigger',
-        value: filterText,
-        triggerChar: earliestMenu.trigger,
-        id: generateTokenId(),
-      });
-
-      position = endOfTrigger;
     } else {
       const remainingText = text.substring(position);
       if (remainingText) {

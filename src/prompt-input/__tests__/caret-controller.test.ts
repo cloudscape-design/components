@@ -2770,3 +2770,151 @@ describe('normalizeSelection - wrapper paragraph null guards', () => {
     expect(sel.getRangeAt(0).startContainer).toBe(document.body);
   });
 });
+
+describe('normalizeCollapsedCaret - focus regain scenarios', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  function createFullReferenceStructure(parent: HTMLElement) {
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    parent.appendChild(wrapper);
+
+    const caretSpotBefore = document.createElement('span');
+    caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
+    caretSpotBefore.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotBefore);
+
+    const tokenContainer = document.createElement('span');
+    tokenContainer.setAttribute('contenteditable', 'false');
+    tokenContainer.className = 'token-container';
+    tokenContainer.textContent = 'Alice';
+    wrapper.appendChild(tokenContainer);
+
+    const caretSpotAfter = document.createElement('span');
+    caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
+    caretSpotAfter.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotAfter);
+
+    return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
+  }
+
+  test('normalizes caret placed directly inside reference wrapper element', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const { wrapper } = createFullReferenceStructure(p);
+
+    // Simulate browser placing caret inside the wrapper element itself
+    const range = document.createRange();
+    range.setStart(wrapper, 1);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+  });
+
+  test('normalizes caret placed inside contenteditable=false token container', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const { tokenContainer } = createFullReferenceStructure(p);
+
+    // Simulate browser placing caret inside the non-editable token container
+    const range = document.createRange();
+    range.setStart(tokenContainer, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Should move to paragraph level, after the wrapper (no caret spot detected)
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    expect(sel.getRangeAt(0).startOffset).toBe(1);
+  });
+
+  test('normalizes caret placed in text node inside token container', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const { tokenContainer } = createFullReferenceStructure(p);
+
+    // Simulate browser placing caret in the text content of the token
+    const range = document.createRange();
+    range.setStart(tokenContainer.firstChild!, 2);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    expect(sel.getRangeAt(0).startOffset).toBe(1);
+  });
+
+  test('normalizes caret between text and reference after focus regain', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    p.appendChild(document.createTextNode('hello '));
+    const { wrapper } = createFullReferenceStructure(p);
+    p.appendChild(document.createTextNode(' world'));
+
+    // Simulate caret landing inside the wrapper at offset 0 (before caret-spot-before)
+    const range = document.createRange();
+    range.setStart(wrapper, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Should normalize to paragraph level, after the wrapper (no caret spot detected at offset 0 of wrapper)
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+  });
+
+  test('normalizes caret in pinned reference wrapper', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Pinned);
+    p.appendChild(wrapper);
+
+    const tokenContainer = document.createElement('span');
+    tokenContainer.setAttribute('contenteditable', 'false');
+    tokenContainer.textContent = 'Mode';
+    wrapper.appendChild(tokenContainer);
+
+    // Caret inside the pinned wrapper
+    const range = document.createRange();
+    range.setStart(wrapper, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+  });
+});

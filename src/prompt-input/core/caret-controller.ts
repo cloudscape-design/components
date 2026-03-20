@@ -491,8 +491,51 @@ export function setMouseDown(value: boolean): void {
 }
 
 /**
- * Moves a collapsed caret out of caret spot elements into the parent paragraph.
- * Caret spots exist only for visual positioning and should not hold the caret.
+ * Checks whether a node is inside a reference element's internals or directly
+ * on the contentEditable div (not inside a paragraph). These are non-typeable
+ * positions where the caret should not rest.
+ */
+export function isNonTypeablePosition(node: Node | null): boolean {
+  while (node) {
+    if (node.nodeName === 'P') {
+      return false;
+    }
+    if (isHTMLElement(node)) {
+      if (isReferenceElementType(getTokenType(node))) {
+        return true;
+      }
+      if (node.getAttribute('contenteditable') === 'true') {
+        return true;
+      }
+    }
+    node = node.parentNode;
+  }
+  return false;
+}
+
+/**
+ * Finds the reference wrapper element that contains the given node, if any.
+ * Returns null if the node is not inside a reference element.
+ */
+export function findContainingReference(node: Node | null): HTMLElement | null {
+  while (node) {
+    if (node.nodeName === 'P') {
+      return null;
+    }
+    if (isHTMLElement(node) && isReferenceElementType(getTokenType(node))) {
+      return node;
+    }
+    node = node.parentNode;
+  }
+  return null;
+}
+
+/**
+ * Moves a collapsed caret out of non-typeable positions into the parent paragraph.
+ * Handles caret inside reference element internals (caret spots, token container)
+ * and caret on the contentEditable div itself (clicking on padding).
+ * Some browsers (notably Firefox) may place the caret in these positions on focus
+ * or imprecise clicks.
  */
 export function normalizeCollapsedCaret(selection: Selection | null): void {
   if (!selection?.rangeCount) {
@@ -507,37 +550,46 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
 
   const container = range.startContainer;
 
-  if (isTextNode(container)) {
-    const parent = container.parentElement;
-    if (!parent) {
-      return;
+  // Walk up from the caret position to find a reference wrapper.
+  let node: Node | null = isTextNode(container) ? container.parentElement : (container as HTMLElement);
+  let wrapper: HTMLElement | null = null;
+  let caretSpotType: ElementType | null = null;
+
+  while (node && isHTMLElement(node)) {
+    const tokenType = getTokenType(node);
+
+    if (isCaretSpotType(tokenType)) {
+      caretSpotType = tokenType as ElementType;
     }
 
-    const parentType = getTokenType(parent);
-    if (!isCaretSpotType(parentType)) {
-      return;
+    if (isReferenceElementType(tokenType)) {
+      wrapper = node;
+      break;
     }
 
-    const wrapper = parent.parentElement;
-    if (!wrapper || !isReferenceElementType(getTokenType(wrapper))) {
-      return;
-    }
-
-    const paragraph = wrapper.parentElement;
-    if (!paragraph) {
-      return;
-    }
-
-    const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-
-    const newOffset = parentType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
-
-    const newRange = document.createRange();
-    newRange.setStart(paragraph, newOffset);
-    newRange.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
+    node = node.parentElement;
   }
+
+  if (!wrapper) {
+    return;
+  }
+
+  const paragraph = wrapper.parentElement;
+  if (!paragraph) {
+    return;
+  }
+
+  const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
+
+  // If we know the caret was in the before-spot, position before the wrapper.
+  // Otherwise position after it (after-spot, token container, or wrapper itself).
+  const newOffset = caretSpotType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
+
+  const newRange = document.createRange();
+  newRange.setStart(paragraph, newOffset);
+  newRange.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
 }
 
 /** Adjusts non-collapsed selection boundaries to exclude caret spot elements. */

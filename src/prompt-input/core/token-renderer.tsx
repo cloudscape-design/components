@@ -198,6 +198,7 @@ export function renderTokensToDOM(
         const triggerId = token.id && token.id !== '' ? token.id : generateTokenId();
         const isNewTrigger = !existingTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
+        const isCancelled = triggerId.endsWith('-cancelled');
 
         if (existingTriggers.has(triggerId)) {
           span = existingTriggers.get(triggerId)!;
@@ -215,7 +216,7 @@ export function renderTokensToDOM(
 
         newNodes.push(span);
 
-        if (isNewTrigger) {
+        if (isNewTrigger && !isCancelled) {
           newTriggerElement = span;
         }
       } else if (isReferenceToken(token)) {
