@@ -293,9 +293,17 @@ export default function PromptInputShortcutsPage() {
     { label: 'Item 3', dismissLabel: 'Remove item 3', disabled: isDisabled },
   ]);
 
+  const [triggerCounter, setTriggerCounter] = React.useState(0);
+
   // Define menus for shortcuts
-  const menus: PromptInputProps.MenuDefinition[] = React.useMemo(
-    () => [
+  const menus: PromptInputProps.MenuDefinition[] = React.useMemo(() => {
+    const pinnedValues = new Set(
+      tokens
+        .filter((t): t is PromptInputProps.ReferenceToken => t.type === 'reference' && t.pinned === true)
+        .map(t => t.value)
+    );
+
+    return [
       {
         id: 'mentions',
         trigger: '@',
@@ -306,7 +314,7 @@ export default function PromptInputShortcutsPage() {
       {
         id: 'mode',
         trigger: '/',
-        options: commandOptions,
+        options: commandOptions.filter(opt => !pinnedValues.has(opt.value!)),
         filteringType: 'auto',
         useAtStart: true,
         empty: 'No commands found',
@@ -326,9 +334,8 @@ export default function PromptInputShortcutsPage() {
         statusType: asyncMenuStatus,
         empty: 'No async items found',
       },
-    ],
-    [asyncOptions, asyncMenuStatus]
-  );
+    ];
+  }, [asyncOptions, asyncMenuStatus, tokens]);
 
   // Reset async menu when trigger is removed
   useEffect(() => {
@@ -552,6 +559,8 @@ export default function PromptInputShortcutsPage() {
           </label>
         </div>
 
+        <p>Trigger counter value: {triggerCounter}</p>
+
         {extractedText || tokens.length > 0 ? (
           <KeyValuePairs
             columns={1}
@@ -650,6 +659,7 @@ export default function PromptInputShortcutsPage() {
                   console.log('Menu selection:', event.detail);
                 }}
                 onTriggerDetected={event => {
+                  setTriggerCounter(c => ++c);
                   // Count current pinned tokens
                   const currentPinnedCount = tokens.filter(
                     token => token.type === 'reference' && token.pinned === true
@@ -764,7 +774,10 @@ export default function PromptInputShortcutsPage() {
                             id: 'slash',
                             iconName: 'slash',
                             text: 'Insert slash',
-                            disabled: isDisabled || isReadOnly,
+                            disabled:
+                              isDisabled ||
+                              isReadOnly ||
+                              tokens.filter(t => t.type === 'reference' && t.pinned === true).length >= maxPinnedTokens,
                           },
                           {
                             type: 'icon-button',

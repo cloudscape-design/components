@@ -16,6 +16,8 @@ import {
   calculateTokenPosition,
   calculateTotalTokenLength,
   CaretController,
+  findContainingReference,
+  isNonTypeablePosition,
   normalizeCollapsedCaret,
   normalizeSelection,
   setMouseDown,
@@ -339,8 +341,7 @@ function useTokenProcessor(config: ProcessorConfig) {
       {
         source: 'external',
         detectTriggers: true,
-      },
-      onTriggerDetected
+      }
     );
 
     const hasChanges = processed.length !== tokens.length || processed.some((t, i) => t !== tokens[i]);
@@ -348,7 +349,7 @@ function useTokenProcessor(config: ProcessorConfig) {
     if (hasChanges) {
       emitTokenChange(processed);
     }
-  }, [tokens, menus, tokensToText, onTriggerDetected, state, emitTokenChange]);
+  }, [tokens, menus, tokensToText, state, emitTokenChange]);
 
   return {
     processUserInput,
@@ -361,6 +362,11 @@ interface EffectsConfig {
   state: ShortcutsState;
   activeTriggerToken: PromptInputProps.TriggerToken | null;
   caretController: React.RefObject<CaretController | null>;
+}
+
+/** Returns true if the trigger ID indicates a cancelled trigger. */
+function isCancelledTriggerId(id: string | null | undefined): boolean {
+  return !!id && id.endsWith('-cancelled');
 }
 
 function useShortcutsEffects(config: EffectsConfig) {
@@ -381,7 +387,8 @@ function useShortcutsEffects(config: EffectsConfig) {
         return;
       }
 
-      let isInTrigger = !!ctrl.findActiveTrigger();
+      const activeTrigger = ctrl.findActiveTrigger();
+      let isInTrigger = !!activeTrigger && !isCancelledTriggerId(activeTrigger.id);
 
       if (!state.ignoreCaretDetection.current) {
         const selection = window.getSelection();
@@ -406,7 +413,7 @@ function useShortcutsEffects(config: EffectsConfig) {
               }
             }
 
-            if (triggerElement) {
+            if (triggerElement && !isCancelledTriggerId(triggerElement.id)) {
               const triggerTextNode = triggerElement.childNodes[0];
               if (isTextNode(triggerTextNode)) {
                 const triggerText = triggerTextNode.textContent || '';
@@ -418,7 +425,8 @@ function useShortcutsEffects(config: EffectsConfig) {
         }
       }
 
-      isInTrigger = !!ctrl.findActiveTrigger();
+      const updatedTrigger = ctrl.findActiveTrigger();
+      isInTrigger = !!updatedTrigger && !isCancelledTriggerId(updatedTrigger.id);
 
       const shouldBeOpen = isInTrigger;
 
@@ -494,7 +502,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const activeTriggerID = caretControllerRef.current.findActiveTrigger()?.id || null;
 
-    if (!activeTriggerID) {
+    if (!activeTriggerID || isCancelledTriggerId(activeTriggerID)) {
       return null;
     }
 
@@ -952,6 +960,48 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       setMouseDown(false);
       normalizeCollapsedCaret(window.getSelection());
       normalizeSelection(window.getSelection());
+
+      // Deferred re-check: browsers may finalize the caret position after mouseup,
+      // or a click-drag may leave a selection in a non-typeable position (inside
+      // reference internals or on the editable div itself).
+      requestAnimationFrame(() => {
+        const sel = window.getSelection();
+        if (!sel?.rangeCount) {
+          return;
+        }
+
+        const range = sel.getRangeAt(0);
+        if (!range.collapsed) {
+          const startBad = isNonTypeablePosition(range.startContainer);
+          const endBad = isNonTypeablePosition(range.endContainer);
+
+          if (startBad && endBad) {
+            // Both ends in non-typeable positions — collapse entirely
+            sel.collapseToEnd();
+          } else if (startBad) {
+            // Start touched a reference — trim selection to just after it
+            const ref = findContainingReference(range.startContainer);
+            if (ref?.parentNode) {
+              const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
+              range.setStart(ref.parentNode, index + 1);
+            } else {
+              sel.collapseToEnd();
+            }
+          } else if (endBad) {
+            // End touched a reference — trim selection to just before it
+            const ref = findContainingReference(range.endContainer);
+            if (ref?.parentNode) {
+              const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
+              range.setEnd(ref.parentNode, index);
+            } else {
+              sel.collapseToStart();
+            }
+          }
+        }
+
+        normalizeCollapsedCaret(sel);
+        normalizeSelection(sel);
+      });
     };
 
     document.addEventListener('selectionchange', handleSelectionChange);
@@ -1187,6 +1237,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     }
   });
 
+  const handleEditableElementFocus = useStableCallback(() => {
+    if (onFocus) {
+      fireNonCancelableEvent(onFocus);
+    }
+  });
+
   useEffect(() => {
     if (autoFocus && editableElementRef.current) {
       editableElementRef.current.focus();
@@ -1321,7 +1377,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     onKeyDown: handleEditableElementKeyDown,
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onBlur: handleEditableElementBlur,
-    onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
+    onFocus: handleEditableElementFocus,
     onCopy: (event: React.ClipboardEvent) => {
       if (editableElementRef.current) {
         handleClipboardEvent(event, editableElementRef.current, false);

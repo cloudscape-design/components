@@ -383,7 +383,8 @@ function handleShiftArrowAcrossTokens(
 ): boolean {
   const isBackward = getLogicalDirection(event.key, event.currentTarget) === 'backward';
 
-  // Shift+Arrow extends the selection — backward extends the start, forward extends the end
+  // Use the arrow direction to determine which edge of the selection to extend.
+  // Backward (Shift+Left in LTR) extends the start, forward extends the end.
   const relevantContainer = isBackward ? range.startContainer : range.endContainer;
   const relevantOffset = isBackward ? range.startOffset : range.endOffset;
 
@@ -405,6 +406,36 @@ function handleShiftArrowAcrossTokens(
   }
 
   if (!sibling) {
+    // When the extending edge is already at the absolute boundary of the editable content
+    // and the selection is non-collapsed, prevent default to stop the browser from
+    // collapsing the selection from the opposite end — which would deselect content.
+    // This guard only applies when reference tokens are present, since they cause browsers
+    // to mishandle selection direction in contentEditable elements.
+    if (!range.collapsed) {
+      const editableElement = event.currentTarget;
+      const hasReferences = editableElement.querySelector(
+        `[data-type="${ElementType.Reference}"], [data-type="${ElementType.Pinned}"]`
+      );
+
+      if (hasReferences) {
+        if (isBackward && relevantOffset === 0) {
+          const hasPrev = isTextNode(relevantContainer) ? !!relevantContainer.previousSibling : false;
+          if (!hasPrev) {
+            event.preventDefault();
+            return true;
+          }
+        }
+        if (!isBackward) {
+          const atEnd = isTextNode(relevantContainer)
+            ? relevantOffset === (relevantContainer.textContent?.length || 0) && !relevantContainer.nextSibling
+            : relevantOffset >= relevantContainer.childNodes.length;
+          if (atEnd) {
+            event.preventDefault();
+            return true;
+          }
+        }
+      }
+    }
     return false;
   }
 
@@ -412,6 +443,19 @@ function handleShiftArrowAcrossTokens(
   if (isReferenceElementType(siblingType)) {
     event.preventDefault();
 
+    // Use Selection.extend() when available to preserve selection direction.
+    // It moves only the focus (moving end) while keeping the anchor fixed,
+    // matching native Shift+Arrow behavior in real browsers.
+    if (typeof selection.extend === 'function' && selection.focusNode) {
+      const parent = sibling.parentNode;
+      if (parent) {
+        const index = Array.from(parent.childNodes).indexOf(sibling as ChildNode);
+        selection.extend(parent, isBackward ? index : index + 1);
+        return true;
+      }
+    }
+
+    // Fallback: manipulate the Range directly
     const newRange = range.cloneRange();
     if (isBackward) {
       newRange.setStartBefore(sibling);

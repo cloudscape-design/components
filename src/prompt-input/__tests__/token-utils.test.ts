@@ -247,7 +247,12 @@ describe('detectTriggersInText', () => {
     expect(onTriggerDetected).toHaveBeenCalledWith(
       expect.objectContaining({ menuId: 'mentions', triggerChar: '@', position: 0 })
     );
-    expect(result).toEqual([{ type: 'text', value: '@user' }]);
+    // Cancelled trigger is emitted as a trigger token with '-cancelled' ID suffix
+    // so it stays in the DOM and won't be re-detected on subsequent inputs
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(expect.objectContaining({ type: 'trigger', value: '', triggerChar: '@' }));
+    expect(result[0].type === 'trigger' && (result[0] as any).id.endsWith('-cancelled')).toBe(true);
+    expect(result[1]).toEqual({ type: 'text', value: 'user' });
   });
 
   test('does not detect useAtStart trigger when preceding tokens are not all pinned', () => {
