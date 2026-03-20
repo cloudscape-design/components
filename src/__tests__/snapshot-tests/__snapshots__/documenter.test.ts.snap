@@ -38800,6 +38800,10 @@ wrapper.selectOptionByValue('option_1');
       "name": "SelectWrapper",
     },
     {
+      "methods": [],
+      "name": "DividerWrapper",
+    },
+    {
       "methods": [
         {
           "name": "findContent",
@@ -49177,6 +49181,10 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [],
+      "name": "DividerWrapper",
     },
     {
       "methods": [
