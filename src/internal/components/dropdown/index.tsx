@@ -171,6 +171,7 @@ const Dropdown = ({
   content,
   trigger,
   triggerRef: externalTriggerRef,
+  triggerId: externalTriggerId,
   open,
   onOutsideClick,
   onMouseDown,
@@ -467,7 +468,7 @@ const Dropdown = ({
   }, [open, expandToViewport, isMobile, triggerRef]);
 
   const generatedReferrerId = useUniqueId();
-  const referrerId = externalTriggerRef?.current?.id || generatedReferrerId;
+  const referrerId = externalTriggerId || generatedReferrerId;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
