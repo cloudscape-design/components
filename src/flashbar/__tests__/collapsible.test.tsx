@@ -620,6 +620,25 @@ describe('Collapsible Flashbar', () => {
     disableMotion(true);
     testFlashDismissal({ stackItems: true });
   });
+
+  test('findItemById', () => {
+    const wrapper = createFlashbarWrapper(
+      <Flashbar
+        stackItems={true}
+        items={[
+          { content: 'Flash 1', id: 'flash-1', type: 'success' },
+          { content: 'Flash 2', id: 'flash-2', type: 'error' },
+        ]}
+      />
+    );
+    expect(wrapper.findItemById('flash-1')).not.toBeNull();
+    expect(wrapper.findItemById('flash-2')).toBeNull();
+
+    findNotificationBar(wrapper)!.click();
+
+    expect(wrapper.findItemById('flash-1')).not.toBeNull();
+    expect(wrapper.findItemById('flash-2')).not.toBeNull();
+  });
 });
 
 // Entire interactive element including the counter and the actual <button/> element
