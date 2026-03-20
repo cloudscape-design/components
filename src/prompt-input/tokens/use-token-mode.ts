@@ -28,6 +28,7 @@ import {
   createKeyboardHandlers,
   handleArrowKeyNavigation,
   handleBackspaceAtParagraphStart,
+  handleClipboardEvent,
   handleDeleteAtParagraphEnd,
   handleReferenceTokenDeletion,
   handleSpaceAfterClosedTrigger,
@@ -1321,6 +1322,16 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onBlur: handleEditableElementBlur,
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
+    onCopy: (event: React.ClipboardEvent) => {
+      if (editableElementRef.current) {
+        handleClipboardEvent(event, editableElementRef.current, false);
+      }
+    },
+    onCut: (event: React.ClipboardEvent) => {
+      if (editableElementRef.current) {
+        handleClipboardEvent(event, editableElementRef.current, true);
+      }
+    },
   };
 
   const portals = portalContainers.map(container =>

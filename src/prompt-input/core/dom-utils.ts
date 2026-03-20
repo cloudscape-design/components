@@ -104,7 +104,7 @@ export function findElement(container: HTMLElement, options: TokenQueryOptions):
 }
 
 /** Returns all paragraph elements within a container. */
-export function findAllParagraphs(container: HTMLElement): HTMLParagraphElement[] {
+export function findAllParagraphs(container: HTMLElement | DocumentFragment): HTMLParagraphElement[] {
   return Array.from(container.querySelectorAll<HTMLParagraphElement>('p'));
 }
 

@@ -5292,3 +5292,74 @@ describe('token render effect - caret restore with only pinned tokens', () => {
     expect(getCaretOffset()).toBeGreaterThanOrEqual(0);
   });
 });
+
+describe('copy and cut - clipboard text', () => {
+  function getClipboardText(wrapper: ReturnType<typeof createWrapper>, eventType: 'copy' | 'cut'): string {
+    const editable = wrapper.findPromptInput()!.findContentEditableElement()!.getElement();
+    // Select all content
+    const range = document.createRange();
+    range.selectNodeContents(editable);
+    const selection = window.getSelection()!;
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    let clipboardText = '';
+    const event = new Event(eventType, { bubbles: true }) as any;
+    event.clipboardData = {
+      setData: (_format: string, data: string) => {
+        clipboardText = data;
+      },
+    };
+    event.preventDefault = () => {};
+    editable.dispatchEvent(event);
+    return clipboardText;
+  }
+
+  test('copy strips zero-width characters from text with reference tokens', () => {
+    const { container } = renderTokenMode({
+      tokens: [
+        { type: 'text', value: 'hello ' },
+        { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        { type: 'text', value: ' world' },
+      ],
+    });
+    const text = getClipboardText(createWrapper(container), 'copy');
+    expect(text).toBe('hello Alice world');
+    expect(text).not.toContain('\u200B');
+  });
+
+  test('copy does not include spurious newlines from caret spots', () => {
+    const { container } = renderTokenMode({
+      tokens: [{ type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+    });
+    const text = getClipboardText(createWrapper(container), 'copy');
+    expect(text).not.toContain('\n');
+    expect(text.trim()).toBe('Alice');
+  });
+
+  test('copy preserves actual newlines from break tokens', () => {
+    const { container } = renderTokenMode({
+      tokens: [
+        { type: 'text', value: 'line1' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'line2' },
+      ],
+    });
+    const text = getClipboardText(createWrapper(container), 'copy');
+    expect(text).toContain('line1');
+    expect(text).toContain('line2');
+    expect(text).toContain('\n');
+  });
+
+  test('cut strips zero-width characters', () => {
+    const { container } = renderTokenMode({
+      tokens: [
+        { type: 'text', value: 'hello ' },
+        { type: 'reference', id: 'ref-1', label: 'Bob', value: 'user-2', menuId: 'mentions' },
+      ],
+    });
+    const text = getClipboardText(createWrapper(container), 'cut');
+    expect(text).toBe('hello Bob');
+    expect(text).not.toContain('\u200B');
+  });
+});
