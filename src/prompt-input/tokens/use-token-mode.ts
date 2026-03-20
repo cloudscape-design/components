@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 
 import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -10,6 +11,7 @@ import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
 import { isHTMLElement } from '../../internal/utils/dom';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
+import Token from '../../token/internal';
 import {
   calculateTokenPosition,
   calculateTotalTokenLength,
@@ -215,6 +217,10 @@ export interface UseTokenModeConfig {
 /** Return value of useTokenMode — state, handlers, and attributes consumed by TokenMode component. */
 export interface UseTokenModeResult {
   portalContainersRef: React.MutableRefObject<Map<string, PortalContainer>>;
+  /** Snapshot of portal containers for rendering portals. Updated after each renderTokensToDOM call. */
+  portalContainers: PortalContainer[];
+  /** Portal elements to render — renders Token components into DOM containers via createPortal. */
+  portals: React.ReactNode;
 
   editableState: EditableState;
 
@@ -602,6 +608,13 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   }, [menuIsOpen, editableElementRef]);
 
   const portalContainersRef = useRef<Map<string, PortalContainer>>(new Map());
+  const [portalContainers, setPortalContainers] = useState<PortalContainer[]>([]);
+
+  const renderTokens = useCallback((tokens: readonly PromptInputProps.InputToken[], target: HTMLElement) => {
+    const result = renderTokensToDOM(tokens, target, portalContainersRef.current);
+    setPortalContainers(Array.from(portalContainersRef.current.values()));
+    return result;
+  }, []);
 
   useLayoutEffect(() => {
     if (editableElementRef.current && !caretControllerRef.current) {
@@ -699,7 +712,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         cc.capture();
       }
 
-      renderTokensToDOM(extractedTokens, editableElementRef.current, portalContainersRef.current);
+      renderTokens(extractedTokens, editableElementRef.current);
 
       if (cc) {
         cc.restore();
@@ -721,7 +734,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
       const adjustedPosition = caretPosBeforeMove + pinnedCount;
 
-      renderTokensToDOM(mergedTokens, editableElementRef.current, portalContainersRef.current);
+      renderTokens(mergedTokens, editableElementRef.current);
 
       if (editableElementRef.current && document.activeElement === editableElementRef.current && cc) {
         cc.setPosition(adjustedPosition);
@@ -735,12 +748,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, portalContainersRef, editableState]);
 
   // Initial render
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!editableElementRef.current || disabled) {
       return;
     }
     if (editableElementRef.current.children.length === 0) {
-      renderTokensToDOM(tokens ?? [], editableElementRef.current, portalContainersRef.current);
+      renderTokens(tokens ?? [], editableElementRef.current);
     }
     // Intentionally run only on mount — subsequent renders are handled by the useEffect below
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -806,7 +819,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       );
 
       if (insertedTokenIndex !== -1) {
-        renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, portalContainersRef.current);
+        renderTokens(orderedTokens ?? [], editableElementRef.current);
         positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc);
 
         lastRenderedTokensRef.current = orderedTokens;
@@ -829,11 +842,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         cc.capture();
       }
 
-      const renderResult = renderTokensToDOM(
-        orderedTokens ?? [],
-        editableElementRef.current,
-        portalContainersRef.current
-      );
+      const renderResult = renderTokens(orderedTokens ?? [], editableElementRef.current);
 
       if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
         adjustInputHeight();
@@ -875,7 +884,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       cc.capture();
     }
 
-    renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, portalContainersRef.current);
+    renderTokens(orderedTokens ?? [], editableElementRef.current);
 
     /* istanbul ignore next -- covered by integration tests: positionCaretAfterMenuSelection requires active menu selection state */
     if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
@@ -927,6 +936,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     lastDisabledRef,
     lastReadOnlyRef,
     isTypingIntoEmptyLineRef,
+    renderTokens,
   ]);
 
   useEffect(() => {
@@ -1313,8 +1323,23 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
   };
 
+  const portals = portalContainers.map(container =>
+    ReactDOM.createPortal(
+      React.createElement(Token, {
+        key: container.id,
+        variant: 'inline' as const,
+        label: container.label,
+        disabled: !!disabled,
+        readOnly: !!readOnly,
+      }),
+      container.element
+    )
+  );
+
   return {
     portalContainersRef,
+    portalContainers,
+    portals,
     editableState,
     editableElementAttributes,
     activeTriggerToken,

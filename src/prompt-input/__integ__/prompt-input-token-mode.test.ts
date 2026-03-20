@@ -7,7 +7,9 @@ import createWrapper from '../../../lib/components/test-utils/selectors/index.js
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
 const contentEditableSelector = promptInputWrapper.findContentEditableElement()!.toSelector();
+const textareaSelector = promptInputWrapper.findNativeTextarea()!.toSelector();
 const menuSelector = promptInputWrapper.findOpenMenu()!.toSelector();
+const isReact18 = process.env.REACT_VERSION === '18';
 
 class PromptInputTokenModePage extends BasePageObject {
   async focusInput() {
@@ -43,8 +45,25 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
     await testFn(page);
   });
 };
+// React 16/17: token mode is disabled (version gate), component falls back to textarea.
+// Verify the fallback works and doesn't crash.
+(isReact18 ? describe.skip : describe)('PromptInput token mode - React 16/17 fallback', () => {
+  test(
+    'renders as textarea when menus are provided on React 16/17',
+    setupTest(async page => {
+      // The component should render a native textarea, not a contentEditable
+      const hasTextarea = await page.isExisting(textareaSelector);
+      expect(hasTextarea).toBe(true);
 
-describe('PromptInput token mode', () => {
+      // contentEditable should NOT exist
+      const hasContentEditable = await page.isExisting(contentEditableSelector);
+      expect(hasContentEditable).toBe(false);
+    })
+  );
+});
+
+// React 18+: full token mode with contentEditable, triggers, menus, and reference tokens.
+(isReact18 ? describe : describe.skip)('PromptInput token mode', () => {
   test(
     'typing a trigger character opens the menu dropdown',
     setupTest(async page => {
@@ -54,7 +73,6 @@ describe('PromptInput token mode', () => {
 
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // After typing '@', caret should be at offset 1 (inside trigger text)
       const offset = await page.getCaretOffset();
       expect(offset).toBe(1);
     })
@@ -67,18 +85,14 @@ describe('PromptInput token mode', () => {
       await page.keys(['@']);
       await page.pause(200);
 
-      // Select the first option from the menu
       await page.keys(['ArrowDown', 'Enter']);
       await page.pause(200);
 
-      // Menu should close after selection
       await expect(page.isMenuOpen()).resolves.toBe(false);
 
-      // The editor should contain the selected reference text
       const text = await page.getEditorText();
       expect(text.length).toBeGreaterThan(0);
 
-      // After selection, caret should be past the reference
       const offset = await page.getCaretOffset();
       expect(offset).toBeGreaterThanOrEqual(0);
     })
@@ -91,22 +105,18 @@ describe('PromptInput token mode', () => {
       await page.keys(['@']);
       await page.pause(200);
 
-      // Select the first option
       await page.keys(['ArrowDown', 'Enter']);
       await page.pause(200);
 
-      // Verify token is present
       let text = await page.getEditorText();
       expect(text.length).toBeGreaterThan(0);
 
-      // Press Backspace to remove the token
       await page.keys(['Backspace']);
       await page.pause(100);
 
       text = await page.getEditorText();
       expect(text.length).toBe(0);
 
-      // After backspace removes the reference, caret should be at 0
       const offset = await page.getCaretOffset();
       expect(offset).toBe(0);
     })
@@ -119,7 +129,6 @@ describe('PromptInput token mode', () => {
       await page.keys(['h', 'e', 'l', 'l', 'o']);
       await page.pause(100);
 
-      // Shift+Enter should create a new line, not submit
       await page.keys(['Shift', 'Enter', 'Shift']);
       await page.pause(100);
       await page.keys(['w', 'o', 'r', 'l', 'd']);
@@ -129,7 +138,6 @@ describe('PromptInput token mode', () => {
       expect(text).toContain('hello');
       expect(text).toContain('world');
 
-      // After typing 'world', caret should be at offset 5
       const offset = await page.getCaretOffset();
       expect(offset).toBe(5);
     })
@@ -164,16 +172,13 @@ describe('PromptInput token mode', () => {
       await page.keys(['@']);
       await page.pause(200);
 
-      // Menu should be open
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Press Escape to close
       await page.keys(['Escape']);
       await page.pause(200);
 
       await expect(page.isMenuOpen()).resolves.toBe(false);
 
-      // Caret should still be inside the trigger
       const offset = await page.getCaretOffset();
       expect(offset).toBeGreaterThanOrEqual(0);
     })
@@ -186,18 +191,15 @@ describe('PromptInput token mode', () => {
       await page.keys(['@']);
       await page.pause(200);
 
-      // Navigate down through options
       await page.keys(['ArrowDown']);
       await page.pause(100);
       await page.keys(['ArrowDown']);
       await page.pause(100);
 
-      // Select the second option
       await page.keys(['Enter']);
       await page.pause(200);
 
       const text = await page.getEditorText();
-      // Second option was selected after two ArrowDowns
       expect(text.length).toBeGreaterThan(0);
     })
   );
@@ -209,31 +211,26 @@ describe('PromptInput token mode', () => {
       await page.keys(['@']);
       await page.pause(200);
 
-      // Verify menu is open with options
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Type to filter — select the filtered result
       await page.keys(['A', 'l', 'i', 'c', 'e']);
       await page.pause(200);
 
-      // Menu should still be open with filtered results
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Select the first filtered option
       await page.keys(['ArrowDown', 'Enter']);
       await page.pause(200);
 
       const text = await page.getEditorText();
       expect(text).toContain('Alice');
 
-      // After selecting filtered option, caret should be past the reference
       const offset = await page.getCaretOffset();
       expect(offset).toBeGreaterThanOrEqual(0);
     })
   );
 });
 
-describe('PromptInput token mode - trigger deletion caret positioning', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - trigger deletion caret positioning', () => {
   test(
     'backspace on trigger character keeps caret at the end of preceding text',
     setupTest(async page => {
@@ -244,7 +241,6 @@ describe('PromptInput token mode - trigger deletion caret positioning', () => {
 
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Close menu, then backspace to delete the '@'
       await page.keys(['Escape']);
       await page.pause(200);
       await page.keys(['Backspace']);
@@ -253,7 +249,6 @@ describe('PromptInput token mode - trigger deletion caret positioning', () => {
       const text = await page.getEditorText();
       expect(text.trim()).toBe('hello');
 
-      // Caret should be at offset 6 in the text node ('hello '), not 5
       const offset = await page.getCaretOffset();
       expect(offset).toBe(6);
     })
@@ -269,7 +264,6 @@ describe('PromptInput token mode - trigger deletion caret positioning', () => {
 
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Close menu, backspace 4 times to delete 'i', 'l', 'a', '@'
       await page.keys(['Escape']);
       await page.pause(100);
       await page.keys(['Backspace', 'Backspace', 'Backspace', 'Backspace']);
@@ -278,14 +272,13 @@ describe('PromptInput token mode - trigger deletion caret positioning', () => {
       const text = await page.getEditorText();
       expect(text.trim()).toBe('hi');
 
-      // Caret should be at offset 3 in the text node ('hi '), not 2
       const offset = await page.getCaretOffset();
       expect(offset).toBe(3);
     })
   );
 });
 
-describe('PromptInput token mode - insertText via contentEditable', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - insertText via contentEditable', () => {
   test(
     'insertText places text at caret and positions caret after insertion',
     setupTest(async page => {
@@ -293,18 +286,16 @@ describe('PromptInput token mode - insertText via contentEditable', () => {
       await page.keys(['h', 'e', 'l', 'l', 'o']);
       await page.pause(200);
 
-      // The text should be inserted
       const text = await page.getEditorText();
       expect(text).toContain('hello');
 
-      // Caret should be at end of typed text
       const offset = await page.getCaretOffset();
       expect(offset).toBe(5);
     })
   );
 });
 
-describe('PromptInput token mode - trigger visibility on scroll', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - trigger visibility on scroll', () => {
   test(
     'menu remains open when trigger is visible',
     setupTest(async page => {
@@ -314,20 +305,18 @@ describe('PromptInput token mode - trigger visibility on scroll', () => {
 
       await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      // Trigger is still visible, menu should stay open
       const text = await page.getEditorText();
       expect(text).toContain('@');
     })
   );
 });
 
-describe('PromptInput token mode - resize behavior', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - resize behavior', () => {
   test(
     'input adjusts height after content change',
     setupTest(async page => {
       await page.focusInput();
 
-      // Type multiple lines
       await page.keys(['l', 'i', 'n', 'e', '1']);
       await page.pause(100);
       await page.keys(['Shift', 'Enter', 'Shift']);

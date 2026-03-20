@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
-import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 
 import { useDensityMode, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -17,7 +16,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
-import Token from '../token/internal';
 import TextareaMode from './components/textarea-mode';
 import TokenMode from './components/token-mode';
 import { CaretController } from './core/caret-controller';
@@ -461,19 +459,7 @@ const InternalPromptInput = React.forwardRef(
         </div>
 
         {/* Render reference tokens into their DOM containers via portals */}
-        {isTokenMode &&
-          Array.from(tokenMode.portalContainersRef.current.values()).map(container =>
-            ReactDOM.createPortal(
-              <Token
-                key={container.id}
-                variant="inline"
-                label={container.label}
-                disabled={!!disabled}
-                readOnly={!!readOnly}
-              />,
-              container.element
-            )
-          )}
+        {isTokenMode && tokenMode.portals}
 
         {secondaryActions && (
           <div

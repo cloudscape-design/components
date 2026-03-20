@@ -12,6 +12,11 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [800, () => {}],
 }));
 
+// Mock React version as 18+ so token mode activates in the React 16 test environment.
+jest.mock('../../../lib/components/internal/utils/react-version', () => ({
+  getReactMajorVersion: () => 18,
+}));
+
 const mentionOptions = [
   { value: 'user-1', label: 'Alice' },
   { value: 'user-2', label: 'Bob' },
@@ -89,6 +94,10 @@ function renderTokenMode(props: TokenModeProps = {}) {
       {...rest}
     />
   );
+  // Flush portal state updates: useEffect → renderTokens → setPortalVersion → re-render with portals
+  act(() => {});
+  act(() => {});
+  act(() => {});
 
   const wrapper = createWrapper(renderResult.container).findPromptInput()!;
   return { wrapper, container: renderResult.container, rerender: renderResult.rerender };
