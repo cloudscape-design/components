@@ -19,6 +19,7 @@ import {
   isCaretSpotType,
   isElementEffectivelyEmpty,
   isReferenceElementType,
+  stripZeroWidthCharacters,
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { getPromptText } from './token-operations';
@@ -678,4 +679,37 @@ export function handleDeleteAtParagraphEnd(
     onChange,
     caretController: caretController,
   });
+}
+
+/**
+ * Handles copy/cut events on the contentEditable element.
+ * Extracts clean text from the current selection by cloning the selected range
+ * into a document fragment, walking its paragraphs, and stripping zero-width
+ * characters. When isCut is true, also removes the selected content from the DOM.
+ */
+export function handleClipboardEvent(event: React.ClipboardEvent, editableElement: HTMLElement, isCut: boolean): void {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) {
+    return;
+  }
+
+  // Clone the selected content into a fragment to walk its structure
+  // without modifying the live DOM.
+  const range = selection.getRangeAt(0);
+  const fragment = range.cloneContents();
+
+  // If the fragment contains paragraphs, join them with newlines.
+  // Otherwise use the fragment's textContent directly (partial selection within one paragraph).
+  const paragraphs = findAllParagraphs(fragment);
+  const text =
+    paragraphs.length > 0
+      ? paragraphs.map(p => stripZeroWidthCharacters(p.textContent || '')).join('\n')
+      : stripZeroWidthCharacters(fragment.textContent || '');
+
+  event.clipboardData.setData('text/plain', text);
+  event.preventDefault();
+
+  if (isCut) {
+    selection.deleteFromDocument();
+  }
 }
