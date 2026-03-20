@@ -585,6 +585,13 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
   // Otherwise position after it (after-spot, token container, or wrapper itself).
   const newOffset = caretSpotType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
 
+  // Guard: skip if the selection is already at the target position.
+  // Without this, Safari in RTL can enter an infinite loop: normalizing the caret
+  // fires selectionchange, which re-enters this function, which normalizes again.
+  if (range.startContainer === paragraph && range.startOffset === newOffset) {
+    return;
+  }
+
   const newRange = document.createRange();
   newRange.setStart(paragraph, newOffset);
   newRange.collapse(true);
@@ -639,12 +646,25 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
   const normalizedEnd = normalizeBoundary(range.endContainer);
 
   if (normalizedStart || normalizedEnd) {
+    const newStartContainer = normalizedStart?.container ?? range.startContainer;
+    const newStartOffset = normalizedStart?.offset ?? range.startOffset;
+    const newEndContainer = normalizedEnd?.container ?? range.endContainer;
+    const newEndOffset = normalizedEnd?.offset ?? range.endOffset;
+
+    // Guard: skip if the selection already matches the normalized boundaries.
+    // Prevents Safari from entering an infinite selectionchange loop in RTL.
+    if (
+      range.startContainer === newStartContainer &&
+      range.startOffset === newStartOffset &&
+      range.endContainer === newEndContainer &&
+      range.endOffset === newEndOffset
+    ) {
+      return;
+    }
+
     const updatedRange = document.createRange();
-    updatedRange.setStart(
-      normalizedStart?.container ?? range.startContainer,
-      normalizedStart?.offset ?? range.startOffset
-    );
-    updatedRange.setEnd(normalizedEnd?.container ?? range.endContainer, normalizedEnd?.offset ?? range.endOffset);
+    updatedRange.setStart(newStartContainer, newStartOffset);
+    updatedRange.setEnd(newEndContainer, newEndOffset);
     selection.removeAllRanges();
     selection.addRange(updatedRange);
   }
