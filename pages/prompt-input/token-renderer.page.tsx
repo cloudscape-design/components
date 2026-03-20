@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 import { PromptInputProps } from '~components/prompt-input';
 import { extractTokensFromDOM } from '~components/prompt-input/core/token-operations';
-import { ReactContainer, RenderTokenProps, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
+import { PortalContainer, RenderTokenProps, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
 
 import { SimplePage } from '../app/templates';
 
@@ -55,21 +56,19 @@ const menus: PromptInputProps.MenuDefinition[] = [
 
 export default function TokenRendererPage() {
   const editorRef = useRef<HTMLDivElement>(null);
-  const reactContainersRef = useRef(new Map<string, ReactContainer>());
+  const portalContainersRef = useRef(new Map<string, PortalContainer>());
   const [tokens, setTokens] = useState<PromptInputProps.InputToken[]>([]);
   const [extracted, setExtracted] = useState<PromptInputProps.InputToken[] | null>(null);
+  const [, forceRender] = useState(0);
 
-  const renderToken = useCallback((props: RenderTokenProps) => <CustomToken {...props} />, []);
-
-  const applyTokens = useCallback(
-    (newTokens: PromptInputProps.InputToken[]) => {
-      setTokens(newTokens);
-      if (editorRef.current) {
-        renderTokensToDOM(newTokens, editorRef.current, reactContainersRef.current, renderToken);
-      }
-    },
-    [renderToken]
-  );
+  const applyTokens = useCallback((newTokens: PromptInputProps.InputToken[]) => {
+    setTokens(newTokens);
+    if (editorRef.current) {
+      renderTokensToDOM(newTokens, editorRef.current, portalContainersRef.current);
+      // Force re-render so portals update
+      forceRender(n => n + 1);
+    }
+  }, []);
 
   const addText = () => {
     applyTokens([...tokens, { type: 'text', value: `Hello world ${nextId++} ` }]);
@@ -158,6 +157,20 @@ export default function TokenRendererPage() {
           marginBottom: 16,
         }}
       />
+
+      {/* Render reference tokens into their DOM containers via portals */}
+      {Array.from(portalContainersRef.current.values()).map(container =>
+        ReactDOM.createPortal(
+          <CustomToken
+            key={container.id}
+            id={container.id}
+            label={container.label}
+            disabled={false}
+            readOnly={false}
+          />,
+          container.element
+        )
+      )}
 
       <details open={true}>
         <summary>Token state ({tokens.length} tokens)</summary>

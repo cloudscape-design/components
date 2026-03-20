@@ -10,7 +10,6 @@ import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
 import { isHTMLElement } from '../../internal/utils/dom';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
-import Token from '../../token/internal';
 import {
   calculateTokenPosition,
   calculateTotalTokenLength,
@@ -34,7 +33,7 @@ import {
 } from '../core/event-handlers';
 import { MenuItem, MenuItemsHandlers, MenuItemsState, useMenuItems, useMenuLoadMore } from '../core/menu-state';
 import { extractTokensFromDOM, getPromptText, handleMenuSelection, processTokens } from '../core/token-operations';
-import { ReactContainer, RenderTokenProps, renderTokensToDOM } from '../core/token-renderer';
+import { PortalContainer, renderTokensToDOM } from '../core/token-renderer';
 import { enforcePinnedTokenOrdering, mergeConsecutiveTextTokens } from '../core/token-utils';
 import {
   isBreakTextToken,
@@ -215,7 +214,7 @@ export interface UseTokenModeConfig {
 
 /** Return value of useTokenMode — state, handlers, and attributes consumed by TokenMode component. */
 export interface UseTokenModeResult {
-  reactContainersRef: React.MutableRefObject<Map<string, ReactContainer>>;
+  portalContainersRef: React.MutableRefObject<Map<string, PortalContainer>>;
 
   editableState: EditableState;
 
@@ -602,7 +601,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     };
   }, [menuIsOpen, editableElementRef]);
 
-  const reactContainersRef = useRef<Map<string, ReactContainer>>(new Map());
+  const portalContainersRef = useRef<Map<string, PortalContainer>>(new Map());
 
   useLayoutEffect(() => {
     if (editableElementRef.current && !caretControllerRef.current) {
@@ -619,23 +618,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     setTimeout(() => setTokenOperationAnnouncement(''), 100);
   });
 
-  const renderToken = React.useCallback(
-    (props: RenderTokenProps) =>
-      React.createElement(Token, {
-        key: props.id,
-        variant: 'inline' as const,
-        label: props.label,
-        disabled: !!disabled,
-        readOnly: !!readOnly,
-      }),
-    [disabled, readOnly]
-  );
-
   const lastRenderedTokensRef = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
   const lastDisabledRef = useRef(disabled);
   const lastReadOnlyRef = useRef(readOnly);
-  const renderTokenRef = useRef(renderToken);
-  renderTokenRef.current = renderToken;
   const isTypingIntoEmptyLineRef = useRef(false);
 
   /* istanbul ignore next -- covered by integration tests: handleInput processes real browser contentEditable DOM mutations */
@@ -714,12 +699,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         cc.capture();
       }
 
-      renderTokensToDOM(
-        extractedTokens,
-        editableElementRef.current,
-        reactContainersRef.current,
-        renderTokenRef.current
-      );
+      renderTokensToDOM(extractedTokens, editableElementRef.current, portalContainersRef.current);
 
       if (cc) {
         cc.restore();
@@ -741,7 +721,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
       const adjustedPosition = caretPosBeforeMove + pinnedCount;
 
-      renderTokensToDOM(mergedTokens, editableElementRef.current, reactContainersRef.current, renderTokenRef.current);
+      renderTokensToDOM(mergedTokens, editableElementRef.current, portalContainersRef.current);
 
       if (editableElementRef.current && document.activeElement === editableElementRef.current && cc) {
         cc.setPosition(adjustedPosition);
@@ -752,7 +732,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     adjustInputHeight();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- menus is excluded to avoid recreating the callback on every render
-  }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, reactContainersRef, editableState]);
+  }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, portalContainersRef, editableState]);
 
   // Initial render
   useLayoutEffect(() => {
@@ -760,7 +740,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return;
     }
     if (editableElementRef.current.children.length === 0) {
-      renderTokensToDOM(tokens ?? [], editableElementRef.current, reactContainersRef.current, renderToken);
+      renderTokensToDOM(tokens ?? [], editableElementRef.current, portalContainersRef.current);
     }
     // Intentionally run only on mount — subsequent renders are handled by the useEffect below
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -826,7 +806,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       );
 
       if (insertedTokenIndex !== -1) {
-        renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, reactContainersRef.current, renderToken);
+        renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, portalContainersRef.current);
         positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc);
 
         lastRenderedTokensRef.current = orderedTokens;
@@ -852,8 +832,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       const renderResult = renderTokensToDOM(
         orderedTokens ?? [],
         editableElementRef.current,
-        reactContainersRef.current,
-        renderToken
+        portalContainersRef.current
       );
 
       if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
@@ -896,7 +875,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       cc.capture();
     }
 
-    renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, reactContainersRef.current, renderToken);
+    renderTokensToDOM(orderedTokens ?? [], editableElementRef.current, portalContainersRef.current);
 
     /* istanbul ignore next -- covered by integration tests: positionCaretAfterMenuSelection requires active menu selection state */
     if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
@@ -940,10 +919,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     readOnly,
     tokens,
     adjustInputHeight,
-    renderToken,
     caretControllerRef,
     editableElementRef,
-    reactContainersRef,
+    portalContainersRef,
     editableState,
     lastRenderedTokensRef,
     lastDisabledRef,
@@ -1210,7 +1188,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   useEffect(() => {
     const handleResize = () => adjustInputHeight();
     window.addEventListener('resize', handleResize);
-    const containers = reactContainersRef.current;
+    const containers = portalContainersRef.current;
     return () => {
       window.removeEventListener('resize', handleResize);
       containers.clear();
@@ -1336,7 +1314,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   };
 
   return {
-    reactContainersRef,
+    portalContainersRef,
     editableState,
     editableElementAttributes,
     activeTriggerToken,

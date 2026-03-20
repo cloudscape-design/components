@@ -21,15 +21,12 @@
 //    with an equivalent one during reconciliation, which resets the browser's caret position.
 //    By managing DOM nodes directly, we preserve node identity across renders.
 //
-// The renderer is decoupled from specific component implementations — it accepts a
-// `renderToken` callback to render reference tokens, allowing the visual representation
-// to be customized or tested independently (similar to how Table's sticky columns and
-// grid navigation features are implemented as abstract utilities).
+// Reference tokens are rendered via React portals (ReactDOM.createPortal) from the parent
+// component, keeping them in the same React tree for shared context and lifecycle. The
+// token-renderer creates the DOM containers; the parent renders content into them.
 //
 
-import React from 'react';
-
-import { createRoot, Root } from '../../internal/vendor/react-dom-client-stub';
+import { getReactMajorVersion } from '../../internal/utils/react-version';
 import { PromptInputProps } from '../interfaces';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import {
@@ -45,13 +42,17 @@ import { isBreakTextToken, isReferenceToken, isTextToken, isTriggerToken } from 
 
 import styles from '../styles.css.js';
 
-/** Whether the current React version supports token mode (requires React 18's createRoot). */
-export const supportsTokenMode = createRoot !== undefined;
+/** Whether the current React version supports token mode (React 18+). */
+export const supportsTokenMode = getReactMajorVersion() >= 18;
 
-/** A React portal container and its associated root, keyed by token ID. */
-export interface ReactContainer {
+/** A portal target — the DOM element where a reference token's React content is rendered via createPortal. */
+export interface PortalContainer {
+  /** Unique ID matching the token */
+  id: string;
+  /** The DOM element to render the portal into */
   element: HTMLElement;
-  root: Root;
+  /** Label for the token */
+  label: string;
 }
 
 /** Props passed to the renderToken callback for rendering reference tokens. */
@@ -60,10 +61,6 @@ export interface RenderTokenProps {
   label: string;
   disabled: boolean;
   readOnly: boolean;
-}
-
-function renderComponent(reactElement: React.ReactElement, container: ReactContainer): void {
-  container.root.render(reactElement);
 }
 
 interface ParagraphGroup {
@@ -111,8 +108,7 @@ function createCaretSpot(type: string): HTMLSpanElement {
 
 function createReferenceWithCaretSpots(
   token: PromptInputProps.ReferenceToken,
-  reactContainers: Map<string, ReactContainer>,
-  renderToken: (props: RenderTokenProps) => React.ReactElement
+  portalContainers: Map<string, PortalContainer>
 ): HTMLSpanElement {
   const wrapper = document.createElement('span');
   wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
@@ -125,10 +121,13 @@ function createReferenceWithCaretSpots(
   element.className = styles['token-container'];
   element.setAttribute('contenteditable', 'false');
 
-  const root = createRoot!(element);
-  const container: ReactContainer = { element, root };
-  reactContainers.set(instanceId, container);
-  renderComponent(renderToken({ id: instanceId, label: token.label, disabled: false, readOnly: false }), container);
+  // Register the container for portal rendering by the parent component.
+  portalContainers.set(instanceId, {
+    id: instanceId,
+    element,
+    label: token.label,
+  });
+
   const caretSpotAfter = createCaretSpot(ElementType.CaretSpotAfter);
 
   wrapper.appendChild(caretSpotBefore);
@@ -140,32 +139,25 @@ function createReferenceWithCaretSpots(
 
 /**
  * Renders tokens into a contentEditable element using direct DOM manipulation.
- * @param tokens token array to render
- * @param targetElement the contentEditable container
- * @param reactContainers map tracking React portal containers by token ID
- * @param renderToken callback to render reference tokens as React elements
+ * Reference tokens are NOT rendered here — instead, their DOM containers are registered
+ * in portalContainers for the parent component to render via ReactDOM.createPortal.
  */
 export function renderTokensToDOM(
   tokens: readonly PromptInputProps.InputToken[],
   targetElement: HTMLElement,
-  reactContainers: Map<string, ReactContainer>,
-  renderToken: (props: RenderTokenProps) => React.ReactElement
+  portalContainers: Map<string, PortalContainer>
 ): {
   newTriggerElement: HTMLElement | null;
   lastReferenceWithCaretSpots: HTMLElement | null;
 } {
-  const existingContainers = new Map<string, ReactContainer>();
-  reactContainers.forEach((container, instanceId) => {
+  // Preserve existing portal containers that are still in the DOM.
+  const existingContainers = new Map<string, PortalContainer>();
+  portalContainers.forEach((container, instanceId) => {
     if (container.element.isConnected && targetElement.contains(container.element)) {
       existingContainers.set(instanceId, container);
-    } else {
-      // Defer unmount to avoid "synchronously unmount while React is rendering" warning.
-      // This happens because renderTokensToDOM is called from a React effect/callback.
-      /* istanbul ignore next -- covered by integration tests: setTimeout cleanup requires real async scheduling */
-      setTimeout(() => container.root.unmount(), 0);
     }
   });
-  reactContainers.clear();
+  portalContainers.clear();
 
   const existingTriggers = new Map<string, HTMLElement>();
   findElements(targetElement, { tokenType: ElementType.Trigger }).forEach(el => {
@@ -227,13 +219,16 @@ export function renderTokensToDOM(
           newTriggerElement = span;
         }
       } else if (isReferenceToken(token)) {
+        // Check if we can reuse an existing portal container.
         const existingContainer = token.id ? existingContainers.get(token.id) : undefined;
         if (existingContainer) {
           const existingWrapper = existingContainer.element.parentElement;
           if (existingWrapper) {
             const tokenType = getTokenType(existingWrapper);
             if (isReferenceElementType(tokenType)) {
-              reactContainers.set(token.id!, existingContainer);
+              // Reuse existing container — update props in case they changed.
+              existingContainer.label = token.label;
+              portalContainers.set(token.id!, existingContainer);
 
               newNodes.push(existingWrapper);
               existingContainers.delete(token.id!);
@@ -243,7 +238,7 @@ export function renderTokensToDOM(
           }
         }
 
-        const wrapper = createReferenceWithCaretSpots(token, reactContainers, renderToken);
+        const wrapper = createReferenceWithCaretSpots(token, portalContainers);
         newNodes.push(wrapper);
         lastReferenceWithCaretSpots = wrapper;
       }
