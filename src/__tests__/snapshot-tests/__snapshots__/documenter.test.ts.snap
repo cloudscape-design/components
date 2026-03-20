@@ -37252,98 +37252,7 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Returns the dropdown content element.",
-          "name": "findContent",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the dropdown wrapper.",
-          "name": "findDropdown",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "DropdownContentWrapper",
-          },
-        },
-        {
-          "description": "Returns the dropdown footer element.",
-          "name": "findFooter",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the dropdown header element.",
-          "name": "findHeader",
-          "parameters": [
-            {
-              "defaultValue": "{ expandToViewport: false }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the open dropdown element.",
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
           "name": "findOpenDropdown",
           "parameters": [
             {
@@ -37358,12 +37267,7 @@ wrapper.selectOptionByValue('option_1');
           ],
           "returnType": {
             "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
+            "name": "DropdownContentWrapper",
           },
         },
         {
@@ -37432,19 +37336,6 @@ wrapper.selectOptionByValue('option_1');
         },
         {
           "name": "findHeader",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "name": "findOpenDropdown",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -47418,91 +47309,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
-          "description": "Returns the dropdown content element.",
-          "name": "findContent",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the dropdown wrapper.",
-          "name": "findDropdown",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "DropdownContentWrapper",
-          },
-        },
-        {
-          "description": "Returns the dropdown footer element.",
-          "name": "findFooter",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the dropdown header element.",
-          "name": "findHeader",
-          "parameters": [
-            {
-              "defaultValue": "{
-    expandToViewport: false
-  }",
-              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "options",
-              "typeName": "{ expandToViewport: boolean; }",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the open dropdown element.",
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
           "name": "findOpenDropdown",
           "parameters": [
             {
@@ -47518,8 +47325,8 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
             },
           ],
           "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
+            "isNullable": true,
+            "name": "DropdownContentWrapper",
           },
         },
         {
@@ -47575,14 +47382,6 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
         {
           "name": "findHeader",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "name": "findOpenDropdown",
           "parameters": [],
           "returnType": {
             "isNullable": false,

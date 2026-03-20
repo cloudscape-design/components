@@ -21,23 +21,23 @@ describe('test utils', () => {
     });
   });
 
-  describe('findDropdown', () => {
-    test('returns the open dropdown', () => {
+  describe('findOpenDropdown', () => {
+    test('returns the dropdown content wrapper', () => {
       const { wrapper } = renderDropdown();
-      expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
+      expect(wrapper.findOpenDropdown()).not.toBeNull();
     });
 
-    test('returns null for closed dropdown', () => {
+    test('returns null when closed', () => {
       const { wrapper } = renderDropdown({ open: false });
-      expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
+      expect(wrapper.findOpenDropdown()).toBeNull();
     });
 
-    test('returns the open dropdown with expandToViewport', () => {
+    test('returns the dropdown content wrapper with expandToViewport', () => {
       const { wrapper } = renderDropdown({ expandToViewport: true });
-      expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
+      expect(wrapper.findOpenDropdown({ expandToViewport: true })).not.toBeNull();
     });
 
-    test('returns null for closed dropdown with expandToViewport', () => {
+    test('returns null when closed with expandToViewport', () => {
       const { wrapper } = renderDropdown({ open: false, expandToViewport: true });
       expect(wrapper.findOpenDropdown({ expandToViewport: true })).toBeNull();
     });
@@ -46,36 +46,31 @@ describe('test utils', () => {
   describe('findContent', () => {
     test('returns the dropdown content', () => {
       const { wrapper } = renderDropdown({ content: <div>content</div> });
-      expect(wrapper.findContent()).not.toBeNull();
-    });
-
-    test('returns null when dropdown is closed', () => {
-      const { wrapper } = renderDropdown({ open: false, content: <div>content</div> });
-      expect(wrapper.findContent()).toBeNull();
+      expect(wrapper.findOpenDropdown()!.findContent()).not.toBeNull();
     });
   });
 
   describe('findHeader', () => {
     test('returns the header when provided', () => {
       const { wrapper } = renderDropdown({ header: <div>header text</div> });
-      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('header text');
+      expect(wrapper.findOpenDropdown()!.findHeader()!.getElement()).toHaveTextContent('header text');
     });
 
     test('returns null when no header is provided', () => {
       const { wrapper } = renderDropdown();
-      expect(wrapper.findHeader()).toBeNull();
+      expect(wrapper.findOpenDropdown()!.findHeader()).toBeNull();
     });
   });
 
   describe('findFooter', () => {
     test('returns the footer when provided', () => {
       const { wrapper } = renderDropdown({ footer: <div>footer text</div> });
-      expect(wrapper.findFooter()!.getElement()).toHaveTextContent('footer text');
+      expect(wrapper.findOpenDropdown()!.findFooter()!.getElement()).toHaveTextContent('footer text');
     });
 
     test('returns null when no footer is provided', () => {
       const { wrapper } = renderDropdown();
-      expect(wrapper.findFooter()).toBeNull();
+      expect(wrapper.findOpenDropdown()!.findFooter()).toBeNull();
     });
   });
 
