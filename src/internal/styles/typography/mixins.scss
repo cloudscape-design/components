@@ -98,6 +98,7 @@
 }
 
 @mixin font-display-l {
+  font-family: awsui.$font-family-display;
   font-size: awsui.$font-size-display-l;
   line-height: awsui.$line-height-display-l;
   letter-spacing: awsui.$letter-spacing-display-l;
