@@ -93,7 +93,7 @@ export function useFeatureNotifications() {
         />
       ),
       trigger: {
-        iconName: 'suggestions',
+        iconName: 'announcement',
       },
       ariaLabels: {
         closeButton: i18n('ariaLabels.closeButton', undefined),
