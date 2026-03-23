@@ -6,14 +6,23 @@ import styles from '../../../dropdown/styles.selectors.js';
 import testutilStyles from '../../../dropdown/test-classes/styles.selectors.js';
 
 export class DropdownContentWrapper extends ComponentWrapper {
+  /**
+   * Returns the dropdown content.
+   */
   findContent(): ElementWrapper | null {
     return this.findByClassName(styles['dropdown-content']);
   }
 
+  /**
+   * Returns the dropdown header.
+   */
   findHeader(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.header);
   }
 
+  /**
+   * Returns the dropdown footer.
+   */
   findFooter(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.footer);
   }

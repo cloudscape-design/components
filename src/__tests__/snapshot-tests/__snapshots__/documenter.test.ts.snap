@@ -37309,6 +37309,7 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the dropdown content.",
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -37322,6 +37323,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the dropdown footer.",
           "name": "findFooter",
           "parameters": [],
           "returnType": {
@@ -37335,6 +37337,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
+          "description": "Returns the dropdown header.",
           "name": "findHeader",
           "parameters": [],
           "returnType": {
@@ -47365,6 +47368,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
+          "description": "Returns the dropdown content.",
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -47373,6 +47377,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the dropdown footer.",
           "name": "findFooter",
           "parameters": [],
           "returnType": {
@@ -47381,6 +47386,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           },
         },
         {
+          "description": "Returns the dropdown header.",
           "name": "findHeader",
           "parameters": [],
           "returnType": {
