@@ -13,7 +13,7 @@ export namespace TableGroupedTypes {
     colspan: number;
     rowspan: number;
     isGroup: boolean;
-    isHidden: boolean; // True for placeholder cells that fill gaps where rowspan > 1 would have been
+    // isHidden: boolean; // True for placeholder cells that fill gaps where rowspan > 1 would have been
     columnDefinition?: TableProps.ColumnDefinition<T>;
     groupDefinition?: TableProps.GroupDefinition<T>;
     parentGroupIds: string[]; // Chain of parent group IDs for ARIA headers attribute
@@ -116,7 +116,7 @@ export class TableHeaderNode<T> {
   rowIndex: number = -1;
   colIndex: number = -1;
   isRoot: boolean = false;
-  isHidden: boolean = false;
+  // isHidden: boolean = false;
 
   constructor(
     id: string,
@@ -129,7 +129,7 @@ export class TableHeaderNode<T> {
       rowIndex?: number;
       colIndex?: number;
       isRoot?: boolean;
-      isHidden?: boolean;
+      // isHidden?: boolean;
     }
   ) {
     this.id = id;
@@ -318,7 +318,7 @@ function expandRowspansToHiddenNodes<T>(node: TableHeaderNode<T>): void {
       colspan: node.colspan,
       columnDefinition: node.columnDefinition,
       groupDefinition: node.groupDefinition,
-      isHidden: true,
+      // isHidden: true,
     });
     // Insert at the same position in parent to maintain column order
     if (currentParent === parentNode) {
@@ -361,9 +361,9 @@ function buildParentChain<T>(node: TableHeaderNode<T>): string[] {
 
   while (current && !current.isRoot) {
     // Skip hidden placeholder nodes — they are not real group parents
-    if (!current.isHidden) {
-      chain.push(current.id);
-    }
+    // if (!current.isHidden) {
+    // }
+    chain.push(current.id);
     current = current.parentNode;
   }
 
@@ -389,7 +389,7 @@ function buildHierarchicalStructure<T>(rootNode: TableHeaderNode<T>): TableGroup
       colspan: node.colspan,
       rowspan: node.rowspan,
       isGroup: node.isGroup,
-      isHidden: node.isHidden,
+      // isHidden: node.isHidden,
       columnDefinition: node.columnDefinition,
       groupDefinition: node.groupDefinition,
       parentGroupIds: parentChain,
@@ -404,7 +404,7 @@ function buildHierarchicalStructure<T>(rootNode: TableHeaderNode<T>): TableGroup
     rowsMap.get(node.rowIndex)!.push(columnInRow);
 
     // Track parent chain for leaf columns (skip hidden placeholder nodes)
-    if (node.isLeaf && node.columnDefinition && !node.isHidden) {
+    if (node.isLeaf && node.columnDefinition) {
       const parentChainForTracking = buildParentChain(node);
       if (parentChainForTracking.length > 0) {
         columnToParentIds.set(node.id, parentChainForTracking);

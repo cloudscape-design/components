@@ -46,6 +46,10 @@ export interface TableGroupHeaderCellProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   spansRows?: boolean;
+  isLastChildOfGroup?: boolean;
+  columnGroupId?: string;
+  /** When true, this group is the last cell in its row — skip the non-resizable divider (mirrors CSS th:last-child behaviour for leaf columns). */
+  isLastInRow?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -76,6 +80,8 @@ export function TableGroupHeaderCell({
   variant,
   tableVariant,
   spansRows,
+  isLastChildOfGroup,
+  columnGroupId,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
 
@@ -292,6 +298,8 @@ export function TableGroupHeaderCell({
       rowSpan={rowspan}
       scope="colgroup"
       spansRows={spansRows}
+      isLastChildOfGroup={isLastChildOfGroup}
+      columnGroupId={columnGroupId}
     >
       <div ref={innerWrapperRef} className={styles['header-cell-content-group-inner']}>
         <div
@@ -322,7 +330,7 @@ export function TableGroupHeaderCell({
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
         />
       ) : (
-        <Divider className={styles['resize-divider']} />
+        <Divider className={clsx(styles['resize-divider'])} />
       )}
     </TableThElement>
   );
