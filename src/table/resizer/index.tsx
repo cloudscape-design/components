@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
@@ -8,6 +9,7 @@ import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@clouds
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 
 import DragHandleWrapper from '../../internal/components/drag-handle-wrapper';
+import { useThrottleCallback } from '../../internal/hooks/use-throttle-callback';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
@@ -27,8 +29,10 @@ interface ResizerProps {
   showFocusRing?: boolean;
   roleDescription?: string;
   tooltipText?: string;
+  isBorderless: boolean;
 }
 
+const RESIZE_THROTTLE = 25;
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
@@ -47,6 +51,7 @@ export function Resizer({
   focusId,
   roleDescription,
   tooltipText,
+  isBorderless,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -166,7 +171,7 @@ export function Resizer({
     [minWidth, onWidthUpdate, updateTrackerPosition]
   );
 
-  const resizeColumn = useCallback(
+  const resizeColumn = useThrottleCallback(
     (offset: number) => {
       const elements = getResizerElements(resizerToggleRef.current);
       if (!elements) {
@@ -181,6 +186,7 @@ export function Resizer({
         updateColumnWidth(newWidth);
       }
     },
+    RESIZE_THROTTLE,
     [updateColumnWidth]
   );
 
@@ -227,7 +233,7 @@ export function Resizer({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (isKeyboardDragging) {
-        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.right, KeyCode.space, KeyCode.escape];
+        const keys = [KeyCode.left, KeyCode.right, KeyCode.enter, KeyCode.space, KeyCode.escape];
 
         if (keys.indexOf(event.keyCode) !== -1) {
           event.preventDefault();
@@ -319,7 +325,13 @@ export function Resizer({
 
   return (
     <div
-      className={clsx(styles['resizer-wrapper'], isVisualRefresh && styles['is-visual-refresh'])}
+      // When the table is borderless (works in visual refresh tables only), the last resize handle must not
+      // exceed table's edges, as it causes an unintended overflow otherwise.
+      className={clsx(
+        styles['resizer-wrapper'],
+        isVisualRefresh && styles['visual-refresh'],
+        (!isVisualRefresh || isBorderless) && styles['is-borderless']
+      )}
       ref={positioningWrapperRef}
     >
       <DragHandleWrapper
@@ -356,11 +368,11 @@ export function Resizer({
         }}
       >
         <button
+          type="button"
           ref={resizerToggleRef}
           className={clsx(
             styles.resizer,
-            (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus'],
-            isVisualRefresh && styles['is-visual-refresh']
+            (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
           )}
           onPointerDown={event => {
             if (event.pointerType === 'mouse' && event.button !== 0) {
@@ -399,11 +411,7 @@ export function Resizer({
           data-focus-id={focusId}
         />
         <span
-          className={clsx(
-            styles['divider-interactive'],
-            (isPointerDown || isDragging) && styles['divider-active'],
-            isVisualRefresh && styles['is-visual-refresh']
-          )}
+          className={clsx(styles['divider-interactive'], (isPointerDown || isDragging) && styles['divider-active'])}
           data-awsui-table-suppress-navigation={true}
           ref={resizerSeparatorRef}
           id={separatorId}

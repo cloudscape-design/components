@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { RadioGroupWrapper } from '../../../lib/components/test-utils/selectors';
 
-import styles from '../../../lib/components/radio-group/styles.selectors.js';
+import radioButtonStyles from '../../../lib/components/internal/components/radio-button/styles.selectors.js';
 
 const radioGroupWrapper = createWrapper().findRadioGroup('#simple');
 
@@ -75,8 +75,8 @@ test(
 
     await page.click('[data-testid="1"]');
     await page.keys('Tab');
-    await expect((await browser.$(`.${styles.outline}`).getCSSProperty('box-shadow', '::before')).value).toBe(
-      'rgb(4,125,149)0px0px0px1px'
-    );
+    await expect(
+      (await browser.$(`.${radioButtonStyles.outline}`).getCSSProperty('box-shadow', '::before')).value
+    ).toBe('rgb(4,125,149)0px0px0px1px');
   })
 );

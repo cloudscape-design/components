@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "总计"
   },
   "attribute-editor": {
-    "removeButtonText": "删除"
+    "removeButtonText": "删除",
+    "i18nStrings.itemRemovedAriaLive": "项目已移除"
   },
   "autosuggest": {
     "errorIconAriaLabel": "错误",
@@ -129,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "复制"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {选择日期} other {选择日期，所选日期为 {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "相对模式",
     "i18nStrings.absoluteModeTitle": "绝对模式",
@@ -154,6 +158,10 @@
     "i18nStrings.endMonthLabel": "结束月底",
     "i18nStrings.endDateLabel": "结束日期",
     "i18nStrings.endTimeLabel": "结束时间",
+    "i18nStrings.datePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.isoDatePlaceholder": "YYYY-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "YYYY/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
     "i18nStrings.dateConstraintText": "对于日期，使用 YYYY/MM/DD。",
     "i18nStrings.slashedDateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
@@ -171,10 +179,23 @@
   "drawer": {
     "i18nStrings.loadingText": "正在加载内容"
   },
+  "error-boundary": {
+    "i18nStrings.headerText": "意外错误，内容无法显示",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {刷新再试一次。我们正在跟踪此问题，但您可以<Feedback>在此处共享更多信息</Feedback>。} other {刷新再试一次。}}",
+    "i18nStrings.refreshActionText": "刷新页面"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "最新功能发布",
+    "i18nStrings.viewAll": "查看所有功能发布",
+    "ariaLabels.closeButton": "关闭通知",
+    "ariaLabels.content": "功能通知",
+    "ariaLabels.triggerButton": "显示功能通知",
+    "ariaLabels.resizeHandle": "调整功能通知的大小"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "显示更少",
     "i18nStrings.limitShowMore": "显示更多",
-    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}，{fileName}",
     "i18nStrings.errorIconAriaLabel": "错误",
     "i18nStrings.warningIconAriaLabel": "警告"
   },
@@ -231,7 +252,15 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",
     "ariaLabels.pageLabel": "所有页面中的第 {pageNumber} 页",
-    "ariaLabels.previousPageLabel": "上一页"
+    "ariaLabels.previousPageLabel": "上一页",
+    "ariaLabels.jumpToPageButtonLabel": "跳转到页面",
+    "i18nStrings.jumpToPageInputLabel": "页面",
+    "i18nStrings.jumpToPageError": "页面超出范围。显示最后一个可用页面。",
+    "i18nStrings.jumpToPageLoadingText": "正在加载"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "面板大小调整手柄",
+    "i18nStrings.resizeHandleTooltipText": "通过拖动或选择来调整大小"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "值",

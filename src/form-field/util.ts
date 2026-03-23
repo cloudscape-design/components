@@ -6,6 +6,7 @@ interface FormFieldIds {
   label?: string;
   description?: string;
   constraint?: string;
+  characterCount?: string;
   error?: string;
   warning?: string;
 }
@@ -23,6 +24,7 @@ export function getSlotIds(
   label?: React.ReactNode,
   description?: React.ReactNode,
   constraintText?: React.ReactNode,
+  characterCount?: string,
   errorText?: React.ReactNode,
   warningText?: React.ReactNode
 ) {
@@ -30,6 +32,7 @@ export function getSlotIds(
     label: makeSlotId(label, formFieldId, 'label'),
     description: makeSlotId(description, formFieldId, 'description'),
     constraint: makeSlotId(constraintText, formFieldId, 'constraint'),
+    characterCount: makeSlotId(characterCount, formFieldId, 'character-count'),
     error: makeSlotId(errorText, formFieldId, 'error'),
     warning: makeSlotId(warningText, formFieldId, 'warning'),
   };
@@ -37,8 +40,8 @@ export function getSlotIds(
   return ids;
 }
 
-export function getAriaDescribedBy({ error, warning, description, constraint }: FormFieldIds) {
-  const describedByAttributes = [error, warning, description, constraint].filter(e => !!e);
+export function getAriaDescribedBy({ error, warning, description, constraint, characterCount }: FormFieldIds) {
+  const describedByAttributes = [error, warning, description, constraint, characterCount].filter(e => !!e);
   const describedBy = describedByAttributes.length ? describedByAttributes.join(' ') : undefined;
   return describedBy;
 }

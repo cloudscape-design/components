@@ -7,8 +7,7 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 import { tokens as parentTokens } from '../colors.js';
 import { alertButtonTokens } from './alert.js';
 
-// Token configuration that is shared between classic and visual refresh
-export const sharedTokens: StyleDictionary.ColorsDictionary = {
+const baseTokens: StyleDictionary.ColorsDictionary = {
   // Links in flash should be using color="inverted", which makes them underlined by default in flashbars
   // and changes their color to match the surrounding text.
   colorTextNotificationDefault: '{colorTextNotificationYellow}',
@@ -21,10 +20,9 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedDefault: '{colorNeutral650}',
   colorTextInteractiveInvertedHover: '{colorNeutral950}',
 
-  // Progress bars in flashbars should be using variant="flash" (which uses a white background by default).
-  // For the warning state, it should use colorGrey950.
-  colorBackgroundProgressBarContentInFlash: '{colorNeutral950}',
-  colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque10}',
+  // Progress bars
+  colorBackgroundProgressBarValueDefault: '{colorNeutral950}',
+  colorBackgroundProgressBarDefault: '{colorGreyOpaque10}',
 
   // Expandable sections
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
@@ -35,6 +33,7 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextHeadingSecondary: '{colorTextNotificationYellow}',
   // Content
   colorTextBodyDefault: '{colorTextNotificationYellow}',
+  colorTextBodySecondary: '{colorTextNotificationYellow}',
 
   // Tutorial hotspot
   colorTextTutorialHotspotDefault: '{colorNeutral600}',
@@ -42,10 +41,18 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
 
   // Inline-code variant background in Box
   colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.1)',
+
+  // Key-value pairs
+  colorTextLabel: '{colorTextNotificationYellow}',
+
+  // Info links
+  colorTextLinkDefault: '{colorTextNotificationYellow}',
+  colorTextLinkHover: '{colorTextNotificationYellow}',
 };
 
-const tokens: StyleDictionary.ColorsDictionary = {
-  ...sharedTokens,
+// Token configuration that is shared between classic and visual refresh
+export const sharedTokens: StyleDictionary.ColorsDictionary = {
+  ...baseTokens,
 
   // For buttons we use the same tokens as alert. But because the warning flash messages
   // look the same in light and dark mode, we only pick the light mode colors.
@@ -53,7 +60,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
-  merge({}, parentTokens, tokens)
+  merge({}, parentTokens, sharedTokens)
 );
 
 export { expandedTokens as tokens };

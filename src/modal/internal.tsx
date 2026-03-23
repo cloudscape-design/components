@@ -3,11 +3,12 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalBox from '../box/internal';
 import { InternalButton } from '../button/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
 import { PerformanceMetrics } from '../internal/analytics';
@@ -35,6 +36,7 @@ import {
 } from './analytics-metadata/interfaces';
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
+import { useModalDimensions } from './use-modal-dimensions';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -71,6 +73,8 @@ type InternalModalProps = SomeRequired<ModalProps, 'size'> &
     __injectAnalyticsComponentMetadata?: boolean;
     onButtonClick?: ButtonContextProps['onClick'];
     referrerId?: string;
+    width?: number;
+    height?: number;
   };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
@@ -92,8 +96,11 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  position = 'center',
   onButtonClick = () => {},
   onDismiss,
+  width,
+  height,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
   __funnelProps,
@@ -154,7 +161,7 @@ function PortaledModal({
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,
         instanceIdentifier: instanceUniqueId,
-        componentIdentifier: headerRef.current?.textContent || '',
+        componentIdentifier: headerTextRef.current?.textContent || '',
       });
       performanceMetricLogged.current = true;
     }
@@ -211,11 +218,15 @@ function PortaledModal({
   // to detect when the user has scrolled to the bottom.
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
-  // Add extra scroll padding to account for the height of the sticky footer,
-  // to prevent it from covering focused elements.
-  const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const headerTextRef = useRef<HTMLSpanElement>(null);
   const { subStepRef } = useFunnelSubStep();
+
+  const { footerRef, headerRef, hasCustomHeight, hasCustomWidth, dialogCustomStyles, footerHeight } =
+    useModalDimensions({
+      height,
+      width,
+      hasFooter: !!footer,
+    });
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
@@ -245,19 +256,27 @@ function PortaledModal({
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
             data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
-            <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+            <FocusLock
+              disabled={!visible}
+              autoFocus={true}
+              restoreFocus={true}
+              className={clsx(styles['focus-lock'], styles[`position-${position}`])}
+            >
               <div
                 className={clsx(
                   styles.dialog,
-                  styles[size],
+                  !hasCustomWidth && styles[size],
                   styles[`breakpoint-${breakpoint}`],
-                  isRefresh && styles.refresh
+                  isRefresh && styles.refresh,
+                  hasCustomWidth && styles['custom-width'],
+                  hasCustomHeight && styles['custom-height']
                 )}
+                style={dialogCustomStyles}
                 onKeyDown={escKeyHandler}
                 {...metadataAttribute}
               >
-                <div className={styles.container}>
-                  <div className={clsx(styles.header, analyticsSelectors.header)}>
+                <div className={clsx(styles.container, hasCustomHeight && styles['custom-height-container'])}>
+                  <div ref={headerRef} className={clsx(styles.header, analyticsSelectors.header)}>
                     <InternalHeader
                       variant="h2"
                       __disableActionsWrapping={true}
@@ -278,26 +297,42 @@ function PortaledModal({
                         </div>
                       }
                     >
-                      <span ref={headerRef} id={headerId} className={styles['header--text']}>
+                      <span ref={headerTextRef} id={headerId} className={styles['header--text']}>
                         {header}
                       </span>
                     </InternalHeader>
                   </div>
-                  <div
-                    ref={__subStepRef}
-                    {...__subStepFunnelProps}
-                    className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
+                  <BuiltInErrorBoundary
+                    wrapper={content => <InternalBox padding={{ bottom: 'm', horizontal: 'l' }}>{content}</InternalBox>}
                   >
-                    {children}
-                    <div ref={stickySentinelRef} />
-                  </div>
-                  {footer && (
-                    <ButtonContext.Provider value={{ onClick: onButtonClick }}>
-                      <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
-                        {footer}
-                      </div>
-                    </ButtonContext.Provider>
-                  )}
+                    <div
+                      ref={__subStepRef}
+                      {...__subStepFunnelProps}
+                      className={clsx(
+                        styles.content,
+                        { [styles['no-paddings']]: disableContentPaddings },
+                        hasCustomHeight && styles['custom-height-content']
+                      )}
+                      {...(hasCustomHeight && {
+                        tabIndex: 0,
+                        role: 'region',
+                        'aria-labelledby': headerId,
+                      })}
+                    >
+                      {children}
+                      <div ref={stickySentinelRef} />
+                    </div>
+                    {footer && (
+                      <ButtonContext.Provider value={{ onClick: onButtonClick }}>
+                        <div
+                          ref={footerRef}
+                          className={clsx(styles.footer, (footerStuck || hasCustomHeight) && styles['footer--rounded'])}
+                        >
+                          {footer}
+                        </div>
+                      </ButtonContext.Provider>
+                    )}
+                  </BuiltInErrorBoundary>
                 </div>
               </div>
             </FocusLock>

@@ -7,14 +7,17 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
+import RadioButton from '../internal/components/radio-button';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
 import { RadioGroupProps } from './interfaces';
-import RadioButton from './radio-button';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps;
 
@@ -31,6 +34,7 @@ const InternalRadioGroup = React.forwardRef(
       readOnly,
       __internalRootRef,
       style,
+      direction,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
@@ -51,7 +55,12 @@ const InternalRadioGroup = React.forwardRef(
         aria-controls={ariaControls}
         aria-readonly={readOnly ? 'true' : undefined}
         {...baseProps}
-        className={clsx(baseProps.className, styles.root)}
+        className={clsx(
+          baseProps.className,
+          testUtilStyles.root,
+          styles['radio-group'],
+          direction === 'horizontal' && styles['horizontal-group']
+        )}
         ref={__internalRootRef}
       >
         {items &&
@@ -59,13 +68,18 @@ const InternalRadioGroup = React.forwardRef(
             <RadioButton
               key={item.value}
               ref={index === radioButtonRefIndex ? radioButtonRef : undefined}
+              className={clsx(
+                styles.radio,
+                item.description && styles['radio--has-description'],
+                direction === 'horizontal' && styles.horizontal,
+                item.value === value && analyticsSelectors.selected
+              )}
               checked={item.value === value}
               name={name || generatedName}
               value={item.value}
-              label={item.label}
               description={item.description}
               disabled={item.disabled}
-              onChange={onChange}
+              onSelect={() => fireNonCancelableEvent(onChange, { value: item.value })}
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
@@ -79,7 +93,9 @@ const InternalRadioGroup = React.forwardRef(
                     }
                   : {}
               )}
-            />
+            >
+              {item.label}
+            </RadioButton>
           ))}
       </div>
     );

@@ -19,17 +19,19 @@ type InternalIconProps = IconProps &
     badge?: boolean;
   };
 
-function iconSizeMap(height: number | null) {
+function iconSizeMap(height: number | null, fontSize?: number | null) {
   if (height === null) {
     // This is the best guess for the contextual height while server rendering.
     return 'normal';
   }
 
+  // Only display medium size icon when both line-height >= 24px AND font-size >= 20px
+  // This prevents icons from becoming medium size inappropriately
   if (height >= 50) {
     return 'large';
   } else if (height >= 36) {
     return 'big';
-  } else if (height >= 24) {
+  } else if (height >= 24 && !!fontSize && fontSize >= 20) {
     return 'medium';
   } else if (height <= 16) {
     return 'small';
@@ -56,8 +58,9 @@ const InternalIcon = ({
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
+  const [parentFontSize, setParentFontSize] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
@@ -79,9 +82,12 @@ const InternalIcon = ({
     if (!contextualSize || !iconRef.current) {
       return;
     }
-    const { lineHeight } = getComputedStyle(iconRef.current);
+    const computedStyle = getComputedStyle(iconRef.current);
+    const { lineHeight, fontSize } = computedStyle;
     const newParentHeight = parseInt(lineHeight, 10);
+    const newParentFontSize = parseInt(fontSize, 10);
     setParentHeight(newParentHeight);
+    setParentFontSize(newParentFontSize);
   });
 
   const mergedRef = useMergeRefs(iconRef, __internalRootRef);
@@ -147,7 +153,14 @@ const InternalIcon = ({
         </svg>
       );
     } else {
-      return icons[name];
+      const icon = icons[name];
+      if (!icon) {
+        warnOnce(
+          'Icon',
+          `You have specified \`name="${name}"\` but no icon with that name was found in the current IconProvider context. If this is a custom icon, ensure your app is wrapped in an \`IconProvider\` with the icon defined via \`defineIcons\`.`
+        );
+      }
+      return icon;
     }
   }
 

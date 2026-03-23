@@ -5,9 +5,11 @@ import React from 'react';
 import Popover, { PopoverProps } from '~components/popover';
 import PopoverBody, { PopoverBodyProps } from '~components/popover/body';
 
+import FocusTarget from '../common/focus-target';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
+import { longTriggerTextWithoutSpaces, longTriggerTextWithSpaces, shortText } from './common';
 
 const noop = () => {};
 
@@ -20,11 +22,7 @@ const sizeMap: Record<PopoverProps.Size, number> = {
 const triggerPermutations = createPermutations<PopoverProps & { size: PopoverProps.Size }>([
   {
     size: ['small', 'medium', 'large'],
-    children: [
-      'Hello!',
-      'Really long popover content with a lot of text that will probably overflow the popover trigger',
-      'Reallylongpopovercontentwithalotoftextbutnospacesthatwillprobablyoverflowthepopovertrigger',
-    ],
+    children: [shortText, longTriggerTextWithSpaces, longTriggerTextWithoutSpaces],
     wrapTriggerText: [true, false],
     triggerType: ['text', 'text-inline'],
   },
@@ -59,6 +57,7 @@ export default function () {
   return (
     <article>
       <h1>Popover text wrapping</h1>
+      <FocusTarget />
       <ScreenshotArea>
         <PermutationsView
           permutations={triggerPermutations}

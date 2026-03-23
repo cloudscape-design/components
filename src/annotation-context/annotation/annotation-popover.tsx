@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
-import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -11,9 +10,9 @@ import { InternalButton } from '../../button/internal';
 import { HotspotProps } from '../../hotspot/interfaces';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { joinStrings } from '../../internal/utils/strings/join-strings.js';
+import Arrow from '../../popover/arrow';
 import PopoverBody from '../../popover/body';
 import PopoverContainer from '../../popover/container';
-import { InternalPosition } from '../../popover/interfaces';
 import InternalSpaceBetween from '../../space-between/internal';
 import { AnnotationContextProps } from '../interfaces';
 
@@ -47,13 +46,6 @@ interface AnnotationPopoverProps {
 
   i18nStrings: AnnotationContextProps['i18nStrings'];
 }
-
-const arrow = (position: InternalPosition | null) => (
-  <div className={clsx(styles.arrow, styles[`arrow-position-${position}`])}>
-    <div className={styles['arrow-outer']} />
-    <div className={styles['arrow-inner']} />
-  </div>
-);
 
 export function AnnotationPopover({
   title,
@@ -97,7 +89,7 @@ export function AnnotationPopover({
       trackRef={trackRef}
       trackKey={taskLocalStepIndex}
       variant="annotation"
-      arrow={arrow}
+      arrow={position => <Arrow position={position} variant="info" />}
       zIndex={7000}
       renderWithPortal={true}
     >

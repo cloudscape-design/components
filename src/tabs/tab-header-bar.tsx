@@ -17,7 +17,6 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getAllFocusables } from '../internal/components/focus-lock/utils';
-import Tooltip from '../internal/components/tooltip';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
@@ -26,6 +25,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
   GeneratedAnalyticsMetadataTabsDismiss,
@@ -39,6 +39,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
+import { getTabContainerStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -84,6 +85,7 @@ interface TabHeaderBarProps {
   i18nStrings?: TabsProps.I18nStrings;
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
+  style?: TabsProps['style'];
 }
 
 export function TabHeaderBar({
@@ -97,6 +99,7 @@ export function TabHeaderBar({
   i18nStrings,
   keyboardActivationMode,
   actions,
+  style,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -522,8 +525,16 @@ export function TabHeaderBar({
           className={tabHeaderContainerClasses}
           {...tabHeaderContainerAriaProps}
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
+          style={getTabContainerStyles(style)}
         >
-          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} activeTabId={activeTabId} index={index} />
+          <TabTrigger
+            ref={setElement}
+            tab={tab}
+            elementProps={commonProps}
+            activeTabId={activeTabId}
+            index={index}
+            style={style}
+          />
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']} {...getAnalyticsMetadataAttribute(analyticsDismissMetadata)}>
@@ -541,9 +552,10 @@ interface TabTriggerProps {
   elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>;
   activeTabId?: string;
   index: number;
+  style?: TabsProps['style'];
 }
 const TabTrigger = forwardRef(
-  ({ tab, elementProps, activeTabId, index }: TabTriggerProps, ref: React.Ref<HTMLElement>) => {
+  ({ tab, elementProps, activeTabId, index, style }: TabTriggerProps, ref: React.Ref<HTMLElement>) => {
     const refObject = useRef<HTMLElement>(null);
     const tabLabelRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
@@ -563,9 +575,9 @@ const TabTrigger = forwardRef(
             {showTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
-                trackRef={tabLabelRefObject}
-                value={tab.disabledReason!}
-                onDismiss={() => setShowTooltip(false)}
+                getTrack={() => tabLabelRefObject.current}
+                content={tab.disabledReason!}
+                onEscape={() => setShowTooltip(false)}
               />
             )}
           </>
@@ -596,6 +608,7 @@ const TabTrigger = forwardRef(
       ...(isDisabledWithReason ? handlers : {}),
       ref: mergedRef,
       tabIndex: tabIndex,
+      style: { ...elementProps.style, ...getTabStyles(style) },
       ...(tab.disabled || tab.id === activeTabId ? {} : getAnalyticsMetadataAttribute(analyticsSelectMetadata)),
     };
 

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { GeneratedAnalyticsMetadataAppLayoutToolbarComponent } from '../../../app-layout-toolbar/analytics-metadata/interfaces';
+import { BuiltInErrorBoundary } from '../../../error-boundary/internal';
 import VisualContext from '../../../internal/components/visual-context';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { AppLayoutInternalProps, AppLayoutPendingState } from '../interfaces';
@@ -15,6 +16,7 @@ import {
   AppLayoutBottomContentSlot,
   AppLayoutTopContentSlot,
 } from '../internal';
+import { isWidgetReady } from '../state/invariants';
 import { ToolbarProps } from '../toolbar';
 import { SkeletonPartProps, SkeletonSlotsAttributes } from './interfaces';
 
@@ -58,12 +60,14 @@ export const SkeletonLayout = ({
     contentElAttributes,
   } = skeletonSlotsAttributes;
 
+  const isWidgetLoaded = isWidgetReady(appLayoutState);
+
   return (
     <VisualContext contextName="app-layout-toolbar">
       <div
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
         ref={appLayoutState.rootRef as React.Ref<HTMLDivElement>}
-        data-awsui-app-layout-widget-loaded={false}
+        data-awsui-app-layout-widget-loaded={isWidgetLoaded}
         {...wrapperElAttributes}
         className={wrapperElAttributes?.className ?? clsx(styles.root, testutilStyles.root)}
         style={
@@ -86,7 +90,7 @@ export const SkeletonLayout = ({
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered ? content : null}
+              {registered ? <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary> : null}
             </div>
           </div>
           <AppLayoutBottomContentSlot {...mergedProps} />

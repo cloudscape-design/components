@@ -52,12 +52,15 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     ariaLabel,
     ariaRequired,
     enteredTextLabel,
+    hideEnteredTextOption,
     filteringResultsText,
     onKeyDown,
     virtualScroll,
     expandToViewport,
     onSelect,
     renderHighlightedAriaLive,
+    style,
+    renderOption,
     __internalRootRef,
     ...restProps
   } = props;
@@ -90,7 +93,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filterText: value,
     filteringType,
     enteredTextLabel,
-    hideEnteredTextLabel: false,
+    hideEnteredTextLabel: hideEnteredTextOption,
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
@@ -193,7 +196,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     hasRecoveryCallback: !!onLoadItems,
   });
 
-  const shouldRenderDropdownContent = !isEmpty || !!dropdownStatus.content;
+  const shouldRenderDropdownContent =
+    autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (!hideEnteredTextOption && !!value);
+
+  const hasItems = useRef(autosuggestItemsState.items.length > 0);
+  hasItems.current = hasItems.current || autosuggestItemsState.items.length > 0;
 
   return (
     <AutosuggestInput
@@ -221,9 +228,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
+      style={style}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList
+            renderOption={renderOption}
             statusType={statusType}
             autosuggestItemsState={autosuggestItemsState}
             autosuggestItemsHandlers={autosuggestItemsHandlers}
@@ -252,6 +261,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           />
         ) : null
       }
+      // Forces dropdown position recalculation when new options are loaded
+      dropdownContentKey={hasItems.current.toString()}
       loopFocus={dropdownStatus.hasRecoveryButton}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}

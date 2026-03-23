@@ -27,7 +27,7 @@ export function unflattenOptions(options: ReadonlyArray<DropdownOption>): Nested
       const wrapped: ParentDropdownOption = { type: 'parent', option, index, children: [] };
       currentParent = wrapped;
       nestedOptions.push(wrapped);
-    } else if (!option.type || option.type === 'child') {
+    } else if (option.type === 'child') {
       (currentParent?.children ?? nestedOptions).push({ type: 'child', option, index });
     } else {
       currentParent = undefined;

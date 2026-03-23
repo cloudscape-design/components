@@ -207,6 +207,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundProgressBarValueDefault: {
+    description: 'The default background color of the progress bar value.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundProgressBarDefault: {
+    description: 'The default background color of the progress bar.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundSegmentActive: {
     description: 'The background color of the active segment in a segmented control.',
     public: true,
@@ -231,6 +241,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The background color of segmented control wrapper.',
     public: false,
     themeable: true,
+  },
+  colorBackgroundSliderHandleDefault: {
+    description: 'The default background color of the slider handle.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderHandleActive: {
+    description: 'The background color of the slider handle in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeDefault: {
+    description: 'The default background color of the slider range.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeActive: {
+    description: 'The background color of the slider range in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderTrackDefault: {
+    description: 'The default background color of the slider track.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundStatusError: {
     description: 'The background color of an item in error state. For example: error alerts.',
@@ -424,22 +459,22 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBorderSegmentActive: {
-    description: 'The border color of the active segment in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentDefault: {
-    description: 'The border color of inactive segments in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentDisabled: {
-    description: 'The border color of disabled segments in a segmented control.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
   colorBorderSegmentHover: {
-    description: 'The border color of inactive segments in a segmented control on hover.',
+    description: 'Deprecated - this token is no longer in use.',
     public: true,
     themeable: true,
   },
@@ -794,6 +829,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextTopNavigationTitle: {
     description: 'The color of the title in the top navigation.',
+    public: true,
+    themeable: true,
+  },
+  colorTreeViewConnectorLine: {
+    description: 'The color of the tree view connector lines.',
     public: true,
     themeable: true,
   },

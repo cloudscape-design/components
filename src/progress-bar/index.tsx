@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -9,9 +9,9 @@ import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/inte
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
-import { throttle } from '../internal/utils/throttle';
 import InternalLiveRegion from '../live-region/internal';
 import { ProgressBarProps } from './interfaces';
 import { Progress, ResultState, SmallText } from './internal';
@@ -35,6 +35,7 @@ export default function ProgressBar({
   additionalInfo,
   resultText,
   onResultButtonClick,
+  style,
   ...rest
 }: ProgressBarProps) {
   const { __internalRootRef } = useBaseComponent('ProgressBar', {
@@ -51,11 +52,13 @@ export default function ProgressBar({
   const additionalInfoId = useUniqueId('progressbar-additional-info-');
 
   const [announcedValue, setAnnouncedValue] = useState('');
-  const throttledAssertion = useMemo(() => {
-    return throttle((value: ProgressBarProps['value']) => {
+  const throttledAssertion = useThrottleCallback(
+    (value: ProgressBarProps['value']) => {
       setAnnouncedValue(`${value}%`);
-    }, ASSERTION_FREQUENCY);
-  }, []);
+    },
+    ASSERTION_FREQUENCY,
+    []
+  );
 
   useEffect(() => {
     throttledAssertion(value);
@@ -96,6 +99,7 @@ export default function ProgressBar({
                   ariaDescribedby
                 )}
                 isInFlash={isInFlash}
+                style={style}
               />
               <InternalLiveRegion hidden={true} tagName="span" delay={0}>
                 {label}

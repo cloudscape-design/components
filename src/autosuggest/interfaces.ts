@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -56,6 +56,44 @@ export interface AutosuggestProps
    * on your own.
    **/
   options?: AutosuggestProps.Options;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### item
+   *
+   * - `type` ('item') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (Option) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `selected` (boolean) - Whether the item is selected.
+   * - `parent` (OptionGroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (OptionGroup) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   *
+   * ### entered-text
+   *
+   * - `type` ('entered-text') - The item type.
+   * - `option` (Option) - The entered-text option configuration.
+   *
+   * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default rendering will be applied for that item.
+   *
+   * @awsuiSystem core
+   */
+  renderOption?: AutosuggestProps.ItemRenderer;
+
   /**
    * Determines how filtering is applied to the list of `options`:
    *
@@ -80,6 +118,11 @@ export interface AutosuggestProps
    * @i18n
    */
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+
+  /**
+   * Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.
+   */
+  hideEnteredTextOption?: boolean;
 
   /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
@@ -112,7 +155,7 @@ export interface AutosuggestProps
    * Overrides the element that is announced to screen readers
    * when the highlighted option changes. By default, this announces
    * the option's name and properties, and its selected state if
-   * the `selectedLabel` property is defined.
+   * the `selectedAriaLabel` property is defined.
    * The highlighted option is provided, and its group (if groups
    * are used and it differs from the group of the previously highlighted option).
    *
@@ -120,6 +163,13 @@ export interface AutosuggestProps
    * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
    */
   renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
+
+  /**
+   * An object containing CSS properties to customize the autosuggest's visual appearance.
+   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: AutosuggestProps.Style;
 }
 
 export namespace AutosuggestProps {
@@ -144,6 +194,29 @@ export namespace AutosuggestProps {
     (option: Option, group?: OptionGroup): string;
   }
 
+  export interface OptionRenderItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+    parent: OptionGroupRenderItem | null;
+  }
+  export interface OptionGroupRenderItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    disabled: boolean;
+  }
+  export interface EnteredTextRenderItem {
+    type: 'entered-text';
+    option: Option;
+    highlighted: boolean;
+  }
+  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | EnteredTextRenderItem;
+  export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;
+
   export interface Ref {
     /**
      * Sets input focus onto the UI control.
@@ -155,10 +228,56 @@ export namespace AutosuggestProps {
      */
     select(): void;
   }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
+  }
 }
 
 // TODO: use DropdownOption type same as in select and multiselect
 export type AutosuggestItem = (AutosuggestProps.Option | AutosuggestProps.OptionGroup) & {
   type?: 'parent' | 'child' | 'use-entered';
   option: OptionDefinition | OptionGroup;
+  parent?: OptionGroup;
 };

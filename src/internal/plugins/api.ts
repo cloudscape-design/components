@@ -51,10 +51,7 @@ function findUpApi(currentWindow: WindowWithApi): AwsuiApi | undefined {
     }
 
     return findUpApi(currentWindow.parent as WindowWithApi);
-
-    // Consumers in the past have not always been able to support not specifiying the value so we keep and ignore
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (ex) {
+  } catch {
     // Most likely a cross-origin access error
     return undefined;
   }

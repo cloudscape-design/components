@@ -93,6 +93,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -430,6 +450,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -456,6 +490,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -641,28 +710,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -2313,8 +2382,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -2376,6 +2456,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -2645,6 +2745,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -2739,6 +2846,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -3076,6 +3203,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -3102,6 +3243,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -3287,28 +3463,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -4959,8 +5135,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -5022,6 +5209,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -5293,6 +5500,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "compact-table": {
@@ -5384,6 +5598,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -5722,6 +5956,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -5748,6 +5996,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#fafafa",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -5933,28 +6216,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -7605,8 +7888,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -7668,6 +7962,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -7939,6 +8253,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "flashbar": {
@@ -8031,6 +8352,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -8070,15 +8411,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
+            "dark": "rgba(0, 7, 22, 0.2)",
+            "light": "rgba(0, 7, 22, 0.2)",
           },
         },
         "color-background-button-normal-default": {
           "$description": "The default background color of normal buttons.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-normal-disabled": {
@@ -8091,8 +8432,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-hover": {
           "$description": "The background color of normal buttons in hover state.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-button-primary-active": {
@@ -8368,6 +8709,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -8378,8 +8733,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-default": {
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-segment-disabled": {
@@ -8392,8 +8747,43 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -8455,15 +8845,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-normal-default": {
           "$description": "The border color of normal buttons.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-button-normal-disabled": {
@@ -8476,8 +8866,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#aab7b8",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-border-button-primary-disabled": {
@@ -8579,28 +8969,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -9834,8 +10224,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-breadcrumb-current": {
@@ -9862,15 +10252,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-button-normal-default": {
           "$description": "The default text color of normal buttons.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-button-normal-disabled": {
@@ -9883,8 +10273,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-button-primary-active": {
@@ -9988,8 +10378,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-group-label": {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-heading-default": {
@@ -10079,8 +10469,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-label-gen-ai": {
@@ -10121,15 +10511,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#99cbe4",
-            "light": "#0a4a74",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-notification-default": {
@@ -10184,15 +10574,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-default": {
           "$description": "The text color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-status-error": {
@@ -10251,8 +10641,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -10314,6 +10715,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -10583,6 +11004,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
           },
         },
       },
@@ -10677,6 +11105,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
+        },
         "border-width-popover": {
           "$description": "The border width of popovers.",
           "$value": "1px",
@@ -10716,15 +11164,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-active": {
           "$description": "The background color of normal buttons in active state.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#eaeded",
+            "dark": "rgba(0, 7, 22, 0.1)",
+            "light": "rgba(0, 7, 22, 0.1)",
           },
         },
         "color-background-button-normal-default": {
           "$description": "The default background color of normal buttons.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-normal-disabled": {
@@ -10737,8 +11185,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-button-normal-hover": {
           "$description": "The background color of normal buttons in hover state.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-button-primary-active": {
@@ -11014,6 +11462,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -11024,8 +11486,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-default": {
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-segment-disabled": {
@@ -11038,8 +11500,43 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#21252c",
-            "light": "#fafafa",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#0a4a74",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#879596",
           },
         },
         "color-background-status-error": {
@@ -11101,14 +11598,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
-            "dark": "#879596",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-border-button-normal-default": {
           "$description": "The border color of normal buttons.",
           "$value": {
-            "dark": "#879596",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -11122,7 +11619,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-border-button-normal-hover": {
           "$description": "The border color of normal buttons in hover state.",
           "$value": {
-            "dark": "#aab7b8",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -11225,28 +11722,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#687078",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#16191f",
@@ -12480,8 +12977,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-breadcrumb-current": {
@@ -12508,14 +13005,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
         "color-text-button-normal-default": {
           "$description": "The default text color of normal buttons.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
@@ -12529,7 +13026,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-button-normal-hover": {
           "$description": "The hover text color of normal buttons.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -12634,8 +13131,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-group-label": {
           "$description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-heading-default": {
@@ -12725,8 +13222,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#95a5a6",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-label-gen-ai": {
@@ -12767,15 +13264,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#44b9d6",
-            "light": "#0073bb",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#99cbe4",
-            "light": "#0a4a74",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-notification-default": {
@@ -12830,14 +13327,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-default": {
           "$description": "The text color of inactive segments in a segmented control.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#545b64",
             "light": "#545b64",
           },
         },
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#fafafa",
+            "dark": "#16191f",
             "light": "#16191f",
           },
         },
@@ -12897,8 +13394,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#879596",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -12960,6 +13468,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -13231,6 +13759,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "top-navigation": {
@@ -13322,6 +13857,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -13660,6 +14215,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#21252c",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -13686,6 +14255,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#21252c",
             "light": "#21252c",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#44b9d6",
+            "light": "#44b9d6",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
           },
         },
         "color-background-status-error": {
@@ -13871,28 +14475,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#879596",
             "light": "#879596",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#414750",
             "light": "#414750",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
@@ -15543,8 +16147,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -15606,6 +16221,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "normal",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -15877,6 +16512,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
   },
@@ -15968,6 +16610,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-icon-big": {
+      "$description": "The visual stroke width of big icons.",
+      "$value": "3px",
+    },
+    "border-width-icon-large": {
+      "$description": "The visual stroke width of large icons.",
+      "$value": "4px",
+    },
+    "border-width-icon-medium": {
+      "$description": "The visual stroke width of medium icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-normal": {
+      "$description": "The visual stroke width of normal icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-small": {
+      "$description": "The visual stroke width of small icons.",
+      "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
@@ -16306,6 +16968,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -16332,6 +17008,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#21252c",
         "light": "#fafafa",
+      },
+    },
+    "color-background-slider-handle-active": {
+      "$description": "The background color of the slider handle in active state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0a4a74",
+      },
+    },
+    "color-background-slider-handle-default": {
+      "$description": "The default background color of the slider handle.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-slider-range-active": {
+      "$description": "The background color of the slider range in active state.",
+      "$value": {
+        "dark": "#44b9d6",
+        "light": "#0a4a74",
+      },
+    },
+    "color-background-slider-range-default": {
+      "$description": "The default background color of the slider range.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
+      },
+    },
+    "color-background-slider-track-default": {
+      "$description": "The default background color of the slider track.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#879596",
       },
     },
     "color-background-status-error": {
@@ -16517,28 +17228,28 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-border-segment-active": {
-      "$description": "The border color of the active segment in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#ffffff",
         "light": "#16191f",
       },
     },
     "color-border-segment-default": {
-      "$description": "The border color of inactive segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#879596",
         "light": "#687078",
       },
     },
     "color-border-segment-disabled": {
-      "$description": "The border color of disabled segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
       },
     },
     "color-border-segment-hover": {
-      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#ffffff",
         "light": "#16191f",
@@ -18189,8 +18900,19 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-tree-view-connector-line": {
+      "$description": "The color of the tree view connector lines.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#879596",
+      },
+    },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
+      "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": {
@@ -18252,6 +18974,26 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "400",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "normal",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -18523,6 +19265,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "2px",
       },
     },
+    "space-tree-view-indentation": {
+      "$description": "The indentation of tree view items.",
+      "$value": {
+        "comfortable": "24px",
+        "compact": "24px",
+      },
+    },
   },
 }
 `;
@@ -18619,6 +19368,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -18957,6 +19726,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -18983,6 +19766,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(255, 255, 255, 0.1)",
             "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -19168,28 +19986,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -20840,8 +21658,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -20903,6 +21732,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -21174,6 +22023,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "alert-header": {
@@ -21265,6 +22121,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -21603,6 +22479,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -21629,6 +22519,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(255, 255, 255, 0.1)",
             "light": "rgba(255, 255, 255, 0.1)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -21814,28 +22739,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -23486,8 +24411,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -23549,6 +24485,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -23820,6 +24776,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "app-layout-toolbar": {
@@ -23911,6 +24874,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -24249,6 +25232,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -24275,6 +25272,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -24460,28 +25492,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -26132,8 +27164,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -26195,6 +27238,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -26466,6 +27529,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "compact-table": {
@@ -26557,6 +27627,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -26895,6 +27985,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#ebebf0",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -26921,6 +28025,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f0fbff",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -27106,28 +28245,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -28778,8 +29917,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -28841,6 +29991,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -29112,6 +30282,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "flashbar": {
@@ -29203,6 +30380,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -29541,6 +30738,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(255, 255, 255, 0.25)",
+            "light": "rgba(255, 255, 255, 0.25)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -29567,6 +30778,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(0, 7, 22, 0.15)",
             "light": "rgba(0, 7, 22, 0.15)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -29752,28 +30998,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -31007,8 +32253,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-breadcrumb-current": {
@@ -31252,8 +32498,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#dedee3",
-            "light": "#0f141a",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-label-gen-ai": {
@@ -31294,15 +32540,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-notification-default": {
@@ -31424,8 +32670,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -31487,6 +32744,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -31758,6 +33035,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "flashbar-warning": {
@@ -31849,6 +33133,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -32187,6 +33491,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.1)",
+            "light": "rgba(0, 0, 0, 0.1)",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -32213,6 +33531,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "rgba(0, 7, 22, 0.05)",
             "light": "rgba(0, 7, 22, 0.05)",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#004a9e",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#8c8c94",
           },
         },
         "color-background-status-error": {
@@ -32398,28 +33751,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -33653,8 +35006,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-body-secondary": {
           "$description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-breadcrumb-current": {
@@ -33898,7 +35251,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-label": {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": {
-            "dark": "#dedee3",
+            "dark": "#0f141a",
             "light": "#0f141a",
           },
         },
@@ -33940,15 +35293,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-link-default": {
           "$description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-hover": {
           "$description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
           "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-notification-default": {
@@ -34070,8 +35423,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#8c8c94",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -34133,6 +35497,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -34404,6 +35788,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "header": {
@@ -34495,6 +35886,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -34833,6 +36244,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -34859,6 +36284,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -35044,28 +36504,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -36716,8 +38176,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -36779,6 +38250,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -37050,6 +38541,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
     "top-navigation": {
@@ -37141,6 +38639,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-icon-big": {
+          "$description": "The visual stroke width of big icons.",
+          "$value": "3px",
+        },
+        "border-width-icon-large": {
+          "$description": "The visual stroke width of large icons.",
+          "$value": "4px",
+        },
+        "border-width-icon-medium": {
+          "$description": "The visual stroke width of medium icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-normal": {
+          "$description": "The visual stroke width of normal icons.",
+          "$value": "2px",
+        },
+        "border-width-icon-small": {
+          "$description": "The visual stroke width of small icons.",
+          "$value": "2px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -37479,6 +38997,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
+        "color-background-progress-bar-default": {
+          "$description": "The default background color of the progress bar.",
+          "$value": {
+            "dark": "#333843",
+            "light": "#333843",
+          },
+        },
+        "color-background-progress-bar-value-default": {
+          "$description": "The default background color of the progress bar value.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
         "color-background-segment-active": {
           "$description": "The background color of the active segment in a segmented control.",
           "$value": {
@@ -37505,6 +39037,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
+          },
+        },
+        "color-background-slider-handle-active": {
+          "$description": "The background color of the slider handle in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-handle-default": {
+          "$description": "The default background color of the slider handle.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-range-active": {
+          "$description": "The background color of the slider range in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-background-slider-range-default": {
+          "$description": "The default background color of the slider range.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-background-slider-track-default": {
+          "$description": "The default background color of the slider track.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-status-error": {
@@ -37690,28 +39257,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-segment-active": {
-          "$description": "The border color of the active segment in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-default": {
-          "$description": "The border color of inactive segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-disabled": {
-          "$description": "The border color of disabled segments in a segmented control.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
           },
         },
         "color-border-segment-hover": {
-          "$description": "The border color of inactive segments in a segmented control on hover.",
+          "$description": "Deprecated - this token is no longer in use.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -39362,8 +40929,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-tree-view-connector-line": {
+          "$description": "The color of the tree view connector lines.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
         "font-family-base": {
           "$description": "The default font family that will be applied globally to the product interface.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
+        "font-family-heading": {
+          "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
         "font-family-monospace": {
@@ -39425,6 +41003,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-heading-l": {
+          "$description": "The default letter spacing for h2s.",
+          "$value": "-0.015em",
+        },
+        "letter-spacing-heading-m": {
+          "$description": "The default letter spacing for h3s.",
+          "$value": "-0.010em",
+        },
+        "letter-spacing-heading-s": {
+          "$description": "The default letter spacing for h4s.",
+          "$value": "-0.005em",
+        },
+        "letter-spacing-heading-xl": {
+          "$description": "The default letter spacing for h1s.",
+          "$value": "-0.02em",
+        },
+        "letter-spacing-heading-xs": {
+          "$description": "The default letter spacing for h5s.",
+          "$value": "normal",
         },
         "line-height-body-m": {
           "$description": "The default line height for regular body text.",
@@ -39696,6 +41294,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-tree-view-indentation": {
+          "$description": "The indentation of tree view items.",
+          "$value": {
+            "comfortable": "24px",
+            "compact": "24px",
+          },
+        },
       },
     },
   },
@@ -39787,6 +41392,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-icon-big": {
+      "$description": "The visual stroke width of big icons.",
+      "$value": "3px",
+    },
+    "border-width-icon-large": {
+      "$description": "The visual stroke width of large icons.",
+      "$value": "4px",
+    },
+    "border-width-icon-medium": {
+      "$description": "The visual stroke width of medium icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-normal": {
+      "$description": "The visual stroke width of normal icons.",
+      "$value": "2px",
+    },
+    "border-width-icon-small": {
+      "$description": "The visual stroke width of small icons.",
+      "$value": "2px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
@@ -40125,6 +41750,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ffffff",
       },
     },
+    "color-background-progress-bar-default": {
+      "$description": "The default background color of the progress bar.",
+      "$value": {
+        "dark": "#333843",
+        "light": "#ebebf0",
+      },
+    },
+    "color-background-progress-bar-value-default": {
+      "$description": "The default background color of the progress bar value.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
     "color-background-segment-active": {
       "$description": "The background color of the active segment in a segmented control.",
       "$value": {
@@ -40151,6 +41790,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1b232d",
         "light": "#f0fbff",
+      },
+    },
+    "color-background-slider-handle-active": {
+      "$description": "The background color of the slider handle in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#004a9e",
+      },
+    },
+    "color-background-slider-handle-default": {
+      "$description": "The default background color of the slider handle.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-slider-range-active": {
+      "$description": "The background color of the slider range in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#004a9e",
+      },
+    },
+    "color-background-slider-range-default": {
+      "$description": "The default background color of the slider range.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-background-slider-track-default": {
+      "$description": "The default background color of the slider track.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#8c8c94",
       },
     },
     "color-background-status-error": {
@@ -40336,28 +42010,28 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-border-segment-active": {
-      "$description": "The border color of the active segment in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-default": {
-      "$description": "The border color of inactive segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-disabled": {
-      "$description": "The border color of disabled segments in a segmented control.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
       },
     },
     "color-border-segment-hover": {
-      "$description": "The border color of inactive segments in a segmented control on hover.",
+      "$description": "Deprecated - this token is no longer in use.",
       "$value": {
         "dark": "#dedee3",
         "light": "#424650",
@@ -42008,8 +43682,19 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#0f141a",
       },
     },
+    "color-tree-view-connector-line": {
+      "$description": "The color of the tree view connector lines.",
+      "$value": {
+        "dark": "#dedee3",
+        "light": "#8c8c94",
+      },
+    },
     "font-family-base": {
       "$description": "The default font family that will be applied globally to the product interface.",
+      "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
+    "font-family-heading": {
+      "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
     "font-family-monospace": {
@@ -42071,6 +43756,26 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "700",
+    },
+    "letter-spacing-heading-l": {
+      "$description": "The default letter spacing for h2s.",
+      "$value": "-0.015em",
+    },
+    "letter-spacing-heading-m": {
+      "$description": "The default letter spacing for h3s.",
+      "$value": "-0.010em",
+    },
+    "letter-spacing-heading-s": {
+      "$description": "The default letter spacing for h4s.",
+      "$value": "-0.005em",
+    },
+    "letter-spacing-heading-xl": {
+      "$description": "The default letter spacing for h1s.",
+      "$value": "-0.02em",
+    },
+    "letter-spacing-heading-xs": {
+      "$description": "The default letter spacing for h5s.",
+      "$value": "normal",
     },
     "line-height-body-m": {
       "$description": "The default line height for regular body text.",
@@ -42340,6 +44045,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "2px",
         "compact": "2px",
+      },
+    },
+    "space-tree-view-indentation": {
+      "$description": "The indentation of tree view items.",
+      "$value": {
+        "comfortable": "24px",
+        "compact": "24px",
       },
     },
   },

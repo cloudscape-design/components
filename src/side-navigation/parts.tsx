@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalBox from '../box/internal';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
+import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -271,6 +272,7 @@ interface LinkProps extends BaseItemComponentProps {
 function Link({ definition, expanded, activeHref, fireFollow, position }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
+  const i18n = useInternalI18n('link');
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -291,6 +293,8 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
     },
   };
 
+  const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', definition.externalIconAriaLabel);
+
   return (
     <>
       <a
@@ -305,10 +309,7 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
       >
         <span className={analyticsSelectors['link-text']}>{definition.text}</span>
         {definition.external && (
-          <span
-            aria-label={definition.externalIconAriaLabel}
-            role={definition.externalIconAriaLabel ? 'img' : undefined}
-          >
+          <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
             <InternalIcon name="external" className={styles['external-icon']} />
           </span>
         )}

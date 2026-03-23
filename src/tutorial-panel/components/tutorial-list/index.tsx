@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -28,6 +28,7 @@ interface TutorialListProps {
   onStartTutorial: HotspotContext['onStartTutorial'];
   i18nStrings: TutorialPanelProps['i18nStrings'];
   downloadUrl: TutorialPanelProps['downloadUrl'];
+  headingId?: string;
 }
 
 export default function TutorialList({
@@ -36,6 +37,7 @@ export default function TutorialList({
   loading = false,
   onStartTutorial,
   downloadUrl,
+  headingId,
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
@@ -45,7 +47,12 @@ export default function TutorialList({
     <>
       <InternalSpaceBetween size="s">
         <InternalSpaceBetween size="m">
-          <InternalBox variant="h2" fontSize={isRefresh ? 'heading-m' : 'heading-l'} padding={{ bottom: 'n' }}>
+          <InternalBox
+            variant="h2"
+            fontSize={isRefresh ? 'heading-m' : 'heading-l'}
+            padding={{ bottom: 'n' }}
+            id={headingId}
+          >
             {i18nStrings.tutorialListTitle}
           </InternalBox>
           <InternalBox variant="p" color="text-body-secondary" padding="n">
@@ -106,6 +113,8 @@ function Tutorial({
 
   const [expanded, setExpanded] = useState(!tutorial.prerequisitesNeeded && !tutorial.completed);
 
+  const expandableSectionRef = useRef<HTMLDivElement>(null);
+
   const onClick = useCallback(() => {
     setExpanded(expanded => !expanded);
   }, []);
@@ -149,8 +158,17 @@ function Tutorial({
       </InternalSpaceBetween>
 
       <div aria-live="polite">
-        <CSSTransition in={expanded} timeout={30} classNames={{ enter: styles['content-enter'] }}>
-          <div className={clsx(styles['expandable-section'], expanded && styles.expanded)} id={controlId}>
+        <CSSTransition
+          in={expanded}
+          timeout={30}
+          classNames={{ enter: styles['content-enter'] }}
+          nodeRef={expandableSectionRef}
+        >
+          <div
+            className={clsx(styles['expandable-section'], expanded && styles.expanded)}
+            id={controlId}
+            ref={expandableSectionRef}
+          >
             <InternalSpaceBetween size="l">
               <InternalSpaceBetween size="m">
                 {tutorial.prerequisitesNeeded && tutorial.prerequisitesAlert && (

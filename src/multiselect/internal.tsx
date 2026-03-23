@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import { getBreakpointValue } from '../internal/breakpoints';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
 import PlainList from '../select/parts/plain-list';
@@ -60,6 +62,7 @@ const InternalMultiselect = React.forwardRef(
       __internalRootRef,
       autoFocus,
       enableSelectAll,
+      renderOption,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -103,8 +106,16 @@ const InternalMultiselect = React.forwardRef(
       />
     );
 
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
+
     const trigger = (
       <Trigger
+        ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}
@@ -149,6 +160,9 @@ const InternalMultiselect = React.forwardRef(
     const dropdownProps = multiselectProps.getDropdownProps();
     const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
 
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
     return (
       <div
         {...baseProps}
@@ -158,11 +172,11 @@ const InternalMultiselect = React.forwardRef(
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(ariaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
+          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
+          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={multiselectProps.isOpen}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
           footer={
@@ -171,27 +185,31 @@ const InternalMultiselect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
-          stretchBeyondTriggerWidth={true}
-        >
-          <ListComponent
-            listBottom={
-              !dropdownStatus.isSticky ? (
-                <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
-              ) : null
-            }
-            menuProps={multiselectProps.getMenuProps()}
-            getOptionProps={multiselectProps.getOptionProps}
-            filteredOptions={multiselectProps.filteredOptions}
-            filteringValue={filteringValue}
-            ref={multiselectProps.scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            checkboxes={true}
-            useInteractiveGroups={true}
-            screenReaderContent={multiselectProps.announcement}
-            highlightType={multiselectProps.highlightType}
-            firstOptionSticky={hasFilteredOptions && enableSelectAll}
-          />
-        </Dropdown>
+          // Forces dropdown position recalculation when new options are loaded
+          contentKey={hasOptions.current.toString()}
+          content={
+            <ListComponent
+              renderOption={renderOption}
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              menuProps={multiselectProps.getMenuProps()}
+              getOptionProps={multiselectProps.getOptionProps}
+              filteredOptions={multiselectProps.filteredOptions}
+              filteringValue={filteringValue}
+              ref={multiselectProps.scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              checkboxes={true}
+              useInteractiveGroups={true}
+              screenReaderContent={multiselectProps.announcement}
+              highlightType={multiselectProps.highlightType}
+              firstOptionSticky={hasFilteredOptions && enableSelectAll}
+              isMultiSelect={true}
+            />
+          }
+        />
 
         {showTokens && (
           <InternalTokenGroup

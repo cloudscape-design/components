@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { MutableRefObject, useEffect, useRef } from 'react';
-import clsx from 'clsx';
 
 import { useComponentMetadata, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
@@ -31,11 +30,11 @@ import styles from './styles.css.js';
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
-  showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
   isPrimaryLoading: boolean;
   allowSkipTo: boolean;
+  customPrimaryActions?: React.ReactNode;
   secondaryActions?: React.ReactNode;
   onCancelClick: () => void;
   onPreviousClick: () => void;
@@ -74,12 +73,12 @@ function WizardForm({
   stepHeaderRef,
   steps,
   activeStepIndex,
-  showCollapsedSteps,
   i18nStrings,
   submitButtonText,
   isPrimaryLoading,
   allowSkipTo,
   secondaryActions,
+  customPrimaryActions,
   onCancelClick,
   onPreviousClick,
   onPrimaryClick,
@@ -129,9 +128,6 @@ function WizardForm({
   return (
     <>
       <WizardFormHeader>
-        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
-          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
-        </div>
         <InternalHeader
           className={styles['form-header-component']}
           variant="h1"
@@ -151,25 +147,29 @@ function WizardForm({
         __internalRootRef={ref}
         className={styles['form-component']}
         actions={
-          <WizardActions
-            cancelButtonText={i18nStrings.cancelButton}
-            primaryButtonText={isLastStep ? (submitButtonText ?? i18nStrings.submitButton) : i18nStrings.nextButton}
-            primaryButtonLoadingText={
-              isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
-            }
-            previousButtonText={i18nStrings.previousButton}
-            onCancelClick={onCancelClick}
-            onPreviousClick={onPreviousClick}
-            onPrimaryClick={onPrimaryClick}
-            onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
-            showPrevious={activeStepIndex !== 0}
-            isPrimaryLoading={isPrimaryLoading}
-            showSkipTo={showSkipTo}
-            skipToButtonText={skipToButtonText}
-            isLastStep={isLastStep}
-            activeStepIndex={activeStepIndex}
-            skipToStepIndex={skipToTargetIndex}
-          />
+          customPrimaryActions ? (
+            customPrimaryActions
+          ) : (
+            <WizardActions
+              cancelButtonText={i18nStrings.cancelButton}
+              primaryButtonText={isLastStep ? (submitButtonText ?? i18nStrings.submitButton) : i18nStrings.nextButton}
+              primaryButtonLoadingText={
+                isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+              }
+              previousButtonText={i18nStrings.previousButton}
+              onCancelClick={onCancelClick}
+              onPreviousClick={onPreviousClick}
+              onPrimaryClick={onPrimaryClick}
+              onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
+              showPrevious={activeStepIndex !== 0}
+              isPrimaryLoading={isPrimaryLoading}
+              showSkipTo={showSkipTo}
+              skipToButtonText={skipToButtonText}
+              isLastStep={isLastStep}
+              activeStepIndex={activeStepIndex}
+              skipToStepIndex={skipToTargetIndex}
+            />
+          )
         }
         secondaryActions={secondaryActions}
         errorText={errorText}

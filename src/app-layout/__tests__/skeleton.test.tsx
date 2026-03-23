@@ -7,7 +7,9 @@ import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
 
+import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.selectors.js';
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 
 let widgetMockEnabled = false;
 function createWidgetizedComponentMock(Implementation: React.ComponentType, Skeleton: React.ComponentType) {
@@ -64,9 +66,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
           tools="test tools"
         />
       );
-      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(wrapper.findToolbar()).toBeTruthy(); // Needed for SSR
       expect(wrapper.findNavigation()).toBeFalsy();
-      expect(wrapper.findBreadcrumbs()).toBeFalsy();
+      expect(wrapper.findBreadcrumbs()).toBeTruthy(); // Needed for SSR
       expect(wrapper.find(getFunnelKeySelector('funnel-name'))).toBeTruthy();
       expect(wrapper.findNotifications()).toBeFalsy();
       expect(wrapper.findTools()).toBeFalsy();
@@ -95,6 +97,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeTruthy();
       rerender(<AppLayout navigationHide={true} toolsHide={true} />);
       expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
+    });
+
+    it('skeleton toolbar has correct classes for SSR compatibility', () => {
+      const { wrapper } = renderComponent(<AppLayout breadcrumbs="test breadcrumbs" />);
+      const toolbarContainer = wrapper.findByClassName(skeletonStyles['toolbar-container']);
+      expect(toolbarContainer).toBeTruthy();
+      expect(toolbarContainer!.getElement()).toHaveClass(toolbarStyles['universal-toolbar']);
+      expect(toolbarContainer!.getElement()).toHaveClass(testutilStyles.toolbar);
     });
   });
 });

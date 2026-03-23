@@ -4,6 +4,8 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import {
   BaseChangeDetail,
@@ -11,13 +13,17 @@ import {
   InputAutoCorrect,
   InputClearLabel,
   InputKeyEvents,
+  InputProps,
 } from '../../../input/interfaces';
 import InternalInput from '../../../input/internal';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { getBreakpointValue } from '../../breakpoints';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { KeyCode } from '../../keycode';
+import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import Dropdown from '../dropdown';
@@ -48,6 +54,7 @@ interface AutosuggestInputProps
   onPressArrowDown?: () => void;
   onPressArrowUp?: () => void;
   onPressEnter?: () => boolean;
+  style?: InputProps['style'];
 }
 
 interface AutosuggestInputFocusOptions {
@@ -94,6 +101,7 @@ const AutosuggestInput = React.forwardRef(
       onPressArrowDown,
       onPressArrowUp,
       onPressEnter,
+      style,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -107,6 +115,11 @@ const AutosuggestInput = React.forwardRef(
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => inputRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const [open, setOpen] = useState(false);
 
@@ -116,6 +129,8 @@ const AutosuggestInput = React.forwardRef(
       setOpen(false);
       fireNonCancelableEvent(onCloseDropdown, null);
     };
+
+    const { isComposing } = useIMEComposition(inputRef);
 
     useImperativeHandle(ref, () => ({
       focus(options?: AutosuggestInputFocusOptions) {
@@ -177,6 +192,11 @@ const AutosuggestInput = React.forwardRef(
           break;
         }
         case KeyCode.enter: {
+          if (isComposing()) {
+            event.preventDefault();
+            return;
+          }
+
           if (open) {
             if (!onPressEnter?.()) {
               closeDropdown();
@@ -283,9 +303,8 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
-          minWidth={dropdownWidth}
-          stretchWidth={!dropdownWidth}
-          stretchBeyondTriggerWidth={true}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -306,6 +325,7 @@ const AutosuggestInput = React.forwardRef(
               autoComplete={false}
               nativeInputAttributes={processAttributes(nativeAttributes, nativeInputAttributes, 'Autosuggest')}
               __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
+              style={style}
               {...formFieldContext}
             />
           }
@@ -320,13 +340,14 @@ const AutosuggestInput = React.forwardRef(
           }
           expandToViewport={expandToViewport}
           loopFocus={loopFocus}
-        >
-          {open && dropdownContent ? (
-            <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-              {dropdownContent}
-            </div>
-          ) : null}
-        </Dropdown>
+          content={
+            open && dropdownContent ? (
+              <div ref={dropdownContentRef} className={styles['dropdown-content']}>
+                {dropdownContent}
+              </div>
+            ) : null
+          }
+        />
       </div>
     );
   }

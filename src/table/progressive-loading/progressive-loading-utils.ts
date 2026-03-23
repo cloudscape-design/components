@@ -3,16 +3,15 @@
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import { InternalExpandableRowsProps } from '../expandable-rows/expandable-rows-utils';
 import { TableProps, TableRow } from '../interfaces';
 
 export function useProgressiveLoadingProps<T>({
-  items,
   getLoadingStatus,
-  getExpandableItemProps,
+  expandableRows,
 }: {
-  items: readonly T[];
   getLoadingStatus?: (item: null | T) => TableProps.LoadingStatus;
-  getExpandableItemProps: (item: T) => { level: number; parent: null | T; isExpanded: boolean; children: readonly T[] };
+  expandableRows: InternalExpandableRowsProps<T>;
 }) {
   // The rows are either data or loader.
   // A loader row can be added to the root level (level=0) in which case it has no associated item (item=null).
@@ -20,10 +19,11 @@ export function useProgressiveLoadingProps<T>({
   // The "from" property of the loader row is the index of the first item to be loaded starting 0. It is used to generate unique React keys.
   const allRows = new Array<TableRow<T>>();
 
-  const getItemParent = (item: T) => getExpandableItemProps(item).parent;
-  const getItemChildren = (item: T) => getExpandableItemProps(item).children;
-  const getItemLevel = (item?: T) => (item ? getExpandableItemProps(item).level : 0);
-  const isItemExpanded = (item: T) => getExpandableItemProps(item).isExpanded;
+  const items = expandableRows.allItems;
+  const getItemParent = (item: T) => expandableRows.getExpandableItemProps(item).parent;
+  const getItemChildren = (item: T) => expandableRows.getExpandableItemProps(item).children;
+  const getItemLevel = (item?: T) => (item ? expandableRows.getExpandableItemProps(item).level : 0);
+  const isItemExpanded = (item: T) => expandableRows.getExpandableItemProps(item).isExpanded;
 
   for (let i = 0; i < items.length; i++) {
     allRows.push({ type: 'data', item: items[i] });

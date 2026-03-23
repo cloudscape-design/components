@@ -47,7 +47,8 @@
 @mixin focus-highlight(
   $gutter,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
-  $box-shadow: foundation.$box-shadow-focused
+  $box-shadow: foundation.$box-shadow-focused,
+  $z-index: null
 ) {
   $gutter-vertical: $gutter;
   $gutter-horizontal: $gutter;
@@ -93,6 +94,9 @@
     border-end-start-radius: $border-radius;
     border-end-end-radius: $border-radius;
     box-shadow: $box-shadow;
+    @if $z-index {
+      z-index: $z-index;
+    }
   }
 }
 
@@ -113,27 +117,36 @@
 
 // Use for form input elements, excluding buttons
 // or for elements that have a light border and light background
-@mixin form-focus-element($border-radius: constants.$control-border-radius) {
+@mixin form-focus-element(
+  $border-radius: constants.$control-border-radius,
+  $border-color: awsui.$color-border-input-focused,
+  $box-shadow: foundation.$box-shadow-focused-light
+) {
   // Using a special transparent outline only visible in Windows High Contrast Mode.
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-focused;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-focused;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  box-shadow: foundation.$box-shadow-focused-light;
+  box-shadow: $box-shadow;
 }
 
-@mixin form-disabled-element {
-  background-color: awsui.$color-background-input-disabled;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-disabled;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-disabled;
-  color: awsui.$color-text-input-disabled;
-  cursor: auto;
+@mixin form-disabled-element(
+  $background-color: awsui.$color-background-input-disabled,
+  $border-color: awsui.$color-border-input-disabled,
+  $color: awsui.$color-text-input-disabled,
+  $cursor: auto
+) {
+  background-color: $background-color;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
+  color: $color;
+  cursor: $cursor;
 }
 
 @mixin button-trigger-disabled-element {
@@ -144,10 +157,13 @@
   cursor: auto;
 }
 
-@mixin form-readonly-element {
-  background-color: awsui.$color-background-input-default;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-disabled;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-disabled;
+@mixin form-readonly-element(
+  $background-color: awsui.$color-background-input-default,
+  $border-color: awsui.$color-border-input-disabled
+) {
+  background-color: $background-color;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
 }
 
 @mixin button-trigger-readonly-element {
@@ -156,13 +172,24 @@
   border-inline: awsui.$border-width-token solid awsui.$color-border-input-disabled;
 }
 
-@mixin form-placeholder {
-  color: awsui.$color-text-input-placeholder;
-  font-style: italic;
+@mixin form-placeholder(
+  $color: awsui.$color-text-input-placeholder,
+  $font-size: null,
+  $font-style: italic,
+  $font-weight: null
+) {
+  color: $color;
+  @if $font-size {
+    font-size: $font-size;
+  }
+  font-style: $font-style;
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
 }
 
-@mixin form-placeholder-disabled {
-  color: awsui.$color-text-input-placeholder-disabled;
+@mixin form-placeholder-disabled($color: awsui.$color-text-input-placeholder-disabled) {
+  color: $color;
 }
 
 @mixin form-control-description {
@@ -170,24 +197,32 @@
   @include typography.font-body-s;
 }
 
-@mixin form-invalid-control {
-  color: awsui.$color-text-status-error;
-  border-color: awsui.$color-text-status-error;
+@mixin form-invalid-control(
+  $color: awsui.$color-text-status-error,
+  $border-color: awsui.$color-text-status-error,
+  $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+) {
+  color: $color;
+  border-color: $border-color;
   padding-inline-start: constants.$invalid-control-left-padding;
   border-inline-start-width: constants.$invalid-control-left-border;
   &:focus {
-    box-shadow: foundation.$box-shadow-focused-light-invalid;
+    box-shadow: $focus-box-shadow;
   }
   @content;
 }
 
-@mixin form-warning-control {
-  color: awsui.$color-text-status-warning;
-  border-color: awsui.$color-text-status-warning;
+@mixin form-warning-control(
+  $color: awsui.$color-text-status-warning,
+  $border-color: awsui.$color-text-status-warning,
+  $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+) {
+  color: $color;
+  border-color: $border-color;
   padding-inline-start: constants.$invalid-control-left-padding;
   border-inline-start-width: constants.$invalid-control-left-border;
   &:focus {
-    box-shadow: foundation.$box-shadow-focused-light-invalid;
+    box-shadow: $focus-box-shadow;
   }
   @content;
 }

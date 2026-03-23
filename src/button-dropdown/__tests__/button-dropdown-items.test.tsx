@@ -498,6 +498,49 @@ describe('Internal ButtonDropdown badge property', () => {
     wrapper.openDropdown();
     expect(wrapper.findAllByClassName(iconStyles.badge)?.map(item => item.getElement())).toHaveLength(2);
   });
+
+  it('should render secondaryText and labelTag', () => {
+    const items = [
+      { id: 'i1', text: 'Option 1', secondaryText: 'Description 1', labelTag: 'Ctrl+D 1' },
+      { id: 'i2', text: 'Option 2', secondaryText: 'Description 2', labelTag: 'Ctrl+D 2' },
+    ];
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+
+    const item1 = wrapper.findItemById('i1')!;
+    expect(item1.getElement()).toHaveTextContent('Option 1');
+    expect(item1.getElement()).toHaveTextContent('Description 1');
+    expect(item1.getElement()).toHaveTextContent('Ctrl+D 1');
+
+    const item2 = wrapper.findItemById('i2')!;
+    expect(item2.getElement()).toHaveTextContent('Option 2');
+    expect(item2.getElement()).toHaveTextContent('Description 2');
+    expect(item2.getElement()).toHaveTextContent('Ctrl+D 2');
+  });
+});
+
+test('findItems and findItemById support disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [
+    { id: 'e1', text: 'Enabled' },
+    { id: 'd1', text: 'Disabled', disabled: true },
+  ];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
+
+  expect(wrapper.findItems()).toHaveLength(2);
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItems({ disabled: false })).toHaveLength(1);
+  expect(wrapper.findItemById('d1', { disabled: true })).not.toBeNull();
+  expect(wrapper.findItemById('e1', { disabled: true })).toBeNull();
+});
+
+test('disabled category items are found with disabled filter', () => {
+  const items: ButtonDropdownProps.Items = [{ text: 'Category', disabled: true, items: [{ id: 'c1', text: 'Item' }] }];
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
+
+  expect(wrapper.findItems({ disabled: true })).toHaveLength(1);
+  expect(wrapper.findItemById('c1', { disabled: true })).not.toBeNull();
 });
 
 describe('ButtonDropdown download property', () => {

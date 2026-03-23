@@ -62,7 +62,7 @@ describe('Masked Input component', () => {
 
     wrapper.focus();
     wrapper.findNativeInput().keydown({ key: '1' });
-    wrapper.findNativeInput().keyup(49);
+    wrapper.findNativeInput().keyup({ key: '1' });
     wrapper.blur();
 
     expect(onFocusSpy).toHaveBeenCalledTimes(1);

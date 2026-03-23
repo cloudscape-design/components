@@ -36,65 +36,61 @@ export default function DropdownScenario() {
       <div className={styles.container}>
         <div id="topLeftDropDown" className={styles['dropdown-container']}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen1(!open1)}>
                 Scenario 1
               </Button>
             }
             open={open1}
-            onDropdownClose={() => setOpen1(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            onOutsideClick={() => setOpen1(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
         <div id="topRightDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '80px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen2(!open2)}>
                 Scenario 2
               </Button>
             }
             open={open2}
-            onDropdownClose={() => setOpen2(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={12} />
-          </Dropdown>
+            onOutsideClick={() => setOpen2(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
         <div id="bottomLeftDropDown" className={styles['dropdown-container']} style={{ top: '170px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen3(!open3)}>
                 Scenario 3
               </Button>
             }
             open={open3}
-            onDropdownClose={() => setOpen3(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={2} />
-          </Dropdown>
+            onOutsideClick={() => setOpen3(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={2} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
         <div id="topMiddleDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '20px' }}>
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen4(!open4)}>
                 Scenario 4
               </Button>
             }
             open={open4}
-            onDropdownClose={() => setOpen4(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={22} />
-          </Dropdown>
+            onOutsideClick={() => setOpen4(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={22} />}
+          />
         </div>
       </div>
       <div className={styles.container}>
@@ -104,17 +100,16 @@ export default function DropdownScenario() {
           style={{ insetInlineStart: '80px', insetBlockStart: '170px' }}
         >
           <Dropdown
-            stretchWidth={false}
+            minWidth="trigger"
             trigger={
               <Button className="trigger" onClick={() => setOpen5(!open5)}>
                 Scenario 5
               </Button>
             }
             open={open5}
-            onDropdownClose={() => setOpen5(false)}
-          >
-            <ListContent n={10} withSpaces={true} repeat={18} />
-          </Dropdown>
+            onOutsideClick={() => setOpen5(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={18} />}
+          />
         </div>
       </div>
     </article>

@@ -19,6 +19,7 @@ import VerticalMarker from '../internal/components/cartesian-chart/vertical-mark
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isElement } from '../internal/utils/dom';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import useContainerWidth from '../internal/utils/use-container-width';
 import BarGroups from './bar-groups';
@@ -391,11 +392,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const onApplicationBlur = (event: React.FocusEvent<Element>) => {
     const blurTarget = event.relatedTarget || event.target;
-    if (
-      blurTarget === null ||
-      !(blurTarget instanceof Element) ||
-      !nodeBelongs(containerRefObject.current, blurTarget)
-    ) {
+    if (blurTarget === null || !isElement(blurTarget) || !nodeBelongs(containerRefObject.current, blurTarget)) {
       clearHighlightedSeries();
       setVerticalMarkerX(null);
 

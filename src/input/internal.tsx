@@ -24,6 +24,7 @@ import {
   GeneratedAnalyticsMetadataInputComponent,
 } from './analytics-metadata/interfaces';
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
+import { getInputStyles } from './styles';
 import { convertAutoComplete, useSearchProps } from './utils';
 
 import styles from './styles.css.js';
@@ -92,6 +93,7 @@ function InternalInput(
     __inheritFormFieldProps,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
+    style,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -216,6 +218,7 @@ function InternalInput(
         nativeAttributes={nativeInputAttributes}
         skipWarnings={__skipNativeAttributesWarnings}
         ref={mergedRef}
+        style={getInputStyles(style)}
       />
       {__rightIcon && (
         <span

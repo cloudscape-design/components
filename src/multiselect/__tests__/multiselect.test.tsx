@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import * as getDropdownMinWidthModule from '../../../lib/components/internal/utils/get-dropdown-min-width';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -57,10 +60,10 @@ function renderMultiselect(jsx: React.ReactElement) {
 jest.mock('@cloudscape-design/component-toolkit/internal', () => {
   const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
 
-  //just mock the `warnOnce` export
   return {
     __esModule: true,
     ...originalModule,
+    useResizeObserver: jest.fn(),
     warnOnce: jest.fn(),
   };
 });
@@ -534,6 +537,25 @@ describe.each([true, false])('footer live announcements [expandToViewport=%s]', 
   });
 });
 
+test('Shifts focus to the filter on retry failed request', () => {
+  const { wrapper } = renderMultiselect(
+    <TestI18nProvider messages={{ select: { recoveryText: 'Custom recovery text' } }}>
+      <Multiselect
+        selectedOptions={[]}
+        options={defaultOptions}
+        onChange={() => {}}
+        onLoadItems={() => {}}
+        errorText="Error fetching items"
+        statusType="error"
+        filteringType="auto"
+      />
+    </TestI18nProvider>
+  );
+  wrapper.openDropdown();
+  wrapper.findErrorRecoveryButton()!.click();
+  expect(wrapper.findFilteringInput()!.findNativeInput()!.getElement()).toHaveFocus();
+});
+
 test('fires a change event when user selects a group option from the dropdown', () => {
   const onChange = jest.fn();
   const { wrapper } = renderMultiselect(
@@ -731,8 +753,12 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
     );
 
-    // Trigger contains token labels and the number of selected items
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    // Inline tokens are displayed in the trigger
+    const inlineTokens = wrapper.findInlineTokens();
+    expect(inlineTokens).toHaveLength(1);
+    expect(inlineTokens[0].findLabel().getElement()).toHaveTextContent('First');
+
+    // Trigger contains the number of selected items
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('(1)');
 
     // Default tokens below the trigger are not displayed
@@ -744,6 +770,7 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} selectedOptions={[]} placeholder="Choose something" />
     );
 
+    expect(wrapper.findInlineTokens()).toHaveLength(0);
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Choose something');
   });
 
@@ -755,10 +782,12 @@ describe('With inline tokens', () => {
       <Multiselect inlineTokens={true} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
     );
 
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('description');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('tag');
-    expect(wrapper.findTrigger().getElement()).not.toHaveTextContent('label');
+    const inlineToken = wrapper.findInlineToken(1);
+    expect(inlineToken).not.toBeNull();
+    expect(inlineToken!.findLabel().getElement()).toHaveTextContent('First');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('description');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('tag');
+    expect(inlineToken!.findLabel().getElement()).not.toHaveTextContent('label');
   });
 
   it('shows multiple selected options inline', () => {
@@ -770,9 +799,13 @@ describe('With inline tokens', () => {
       />
     );
 
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Second');
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Third');
+    const inlineTokens = wrapper.findInlineTokens();
+    expect(inlineTokens).toHaveLength(3);
+    expect(inlineTokens[0].findLabel().getElement()).toHaveTextContent('First');
+    expect(inlineTokens[1].findLabel().getElement()).toHaveTextContent('Second');
+    expect(inlineTokens[2].findLabel().getElement()).toHaveTextContent('Third');
+
+    // Trigger contains the number of selected items
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('(3)');
   });
 });
@@ -923,4 +956,54 @@ test('tolerates options with { options: undefined }, and considers them to not b
   );
   wrapper.openDropdown();
   expect(wrapper.findDropdown().findOptionByValue('option1')).not.toBeNull();
+});
+
+test('renders aria-multiselectable="true" on listbox', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+  wrapper.openDropdown();
+  const listbox = wrapper.findDropdown().find('[role="listbox"]');
+  expect(listbox!.getElement()).toHaveAttribute('aria-multiselectable', 'true');
+});
+
+test('renders aria-multiselectable="true" on listbox with virtual scroll', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[]} options={defaultOptions} virtualScroll={true} />
+  );
+  wrapper.openDropdown();
+  const listbox = wrapper.findDropdown().find('[role="listbox"]');
+  expect(listbox!.getElement()).toHaveAttribute('aria-multiselectable', 'true');
+});
+
+describe('resize observer', () => {
+  let getDropdownMinWidthSpy: jest.SpyInstance;
+  let resizeCallbacks: Array<(entry: ContainerQueryEntry) => void>;
+
+  beforeEach(() => {
+    resizeCallbacks = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => resizeCallbacks.push(cb));
+    getDropdownMinWidthSpy = jest.spyOn(getDropdownMinWidthModule, 'getDropdownMinWidth');
+  });
+
+  afterEach(() => {
+    jest.mocked(useResizeObserver).mockReset();
+    getDropdownMinWidthSpy.mockRestore();
+  });
+
+  function fireResize(borderBoxWidth: number) {
+    act(() => resizeCallbacks.forEach(cb => cb({ borderBoxWidth } as ContainerQueryEntry)));
+  }
+
+  test('sets triggerWidth when borderBoxWidth is positive', () => {
+    renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+    fireResize(300);
+    expect(getDropdownMinWidthSpy).toHaveBeenCalledWith(expect.objectContaining({ triggerWidth: 300 }));
+  });
+
+  test('does not set triggerWidth when borderBoxWidth is 0', () => {
+    renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+    getDropdownMinWidthSpy.mockClear();
+    fireResize(0);
+    // borderBoxWidth === 0 short-circuits the callback so triggerWidth stays null and no re-render occurs
+    expect(getDropdownMinWidthSpy).not.toHaveBeenCalled();
+  });
 });

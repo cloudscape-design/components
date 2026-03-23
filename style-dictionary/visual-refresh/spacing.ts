@@ -43,7 +43,6 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceLayoutTogglePadding: '{spaceStaticS}',
   spaceModalContentBottom: '{spaceScaled2xM}',
   spaceModalHorizontal: '{spaceContainerHorizontal}',
-  spaceOptionIconBigTop: '0px',
   spacePanelContentBottom: '{spaceScaledXxxl}',
   spacePanelContentTop: '{spaceScaledL}',
   spacePanelDividerMarginHorizontal: '{spaceXs}',
@@ -64,6 +63,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderToolsBottom: '0px',
   spaceTableHeaderToolsFullPageBottom: '4px',
   spaceTableHorizontal: '{spaceContainerHorizontal}',
+  spaceTreeViewIndentation: '{spaceXl}',
   spaceTileGutter: { comfortable: '{spaceXl}', compact: '{spaceM}' },
 
   spaceScaled2xNone: '{spaceNone}',

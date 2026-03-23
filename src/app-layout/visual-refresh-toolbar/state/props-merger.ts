@@ -31,7 +31,11 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
-    if (props.globalDrawers && !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')) {
+    if (
+      props.globalDrawers &&
+      props.globalDrawers.some(drawer => drawer.trigger) &&
+      !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')
+    ) {
       toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
       toolbar.globalDrawers = props.globalDrawers;
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;

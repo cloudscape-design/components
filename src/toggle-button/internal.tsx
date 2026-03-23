@@ -27,8 +27,9 @@ export const InternalToggleButton = React.forwardRef(
       nativeButtonAttributes,
       onChange,
       className,
+      analyticsAction = 'click',
       ...rest
-    }: ToggleButtonProps & { __title?: string },
+    }: ToggleButtonProps & { __title?: string; analyticsAction?: string },
     ref: React.Ref<ToggleButtonProps.Ref>
   ) => {
     if (isDevelopment) {
@@ -62,6 +63,7 @@ export const InternalToggleButton = React.forwardRef(
         {...rest}
         ref={ref}
         nativeButtonAttributes={nativeButtonAttributes}
+        analyticsAction={analyticsAction}
       />
     );
   }

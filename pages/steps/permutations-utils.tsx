@@ -4,6 +4,7 @@ import React from 'react';
 
 import Box from '~components/box';
 import Button from '~components/button';
+import Icon from '~components/icon';
 import Link from '~components/link';
 import Popover from '~components/popover';
 import { StepsProps } from '~components/steps';
@@ -294,9 +295,13 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     header: 'loading step',
     details: 'Test description',
   },
+  {
+    status: 'not-started',
+    statusIconAriaLabel: 'not started',
+    header: 'not started step',
+    details: 'Test description',
+  },
 ];
-
-const emptySteps: ReadonlyArray<StepsProps.Step> = [];
 
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
@@ -738,6 +743,7 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 
 export const stepsPermutations = createPermutations<StepsProps>([
   {
+    orientation: ['vertical', 'horizontal'],
     steps: [
       initialSteps,
       loadingSteps,
@@ -746,7 +752,6 @@ export const stepsPermutations = createPermutations<StepsProps>([
       successfulSteps,
       blockedSteps,
       failedSteps,
-      emptySteps,
       allStatusesSteps,
       initialStepsInteractive,
       loadingStepsInteractive,
@@ -760,5 +765,21 @@ export const stepsPermutations = createPermutations<StepsProps>([
       changesetStepsInteractive,
     ],
     ariaLabel: ['test label'],
+  },
+  {
+    steps: [allStatusesSteps, successfulSteps],
+    ariaLabel: ['test label'],
+    orientation: ['vertical', 'horizontal'],
+    renderStep: [
+      step => ({
+        header: <b>Custom header for {step.header}</b>,
+        details: step.details && <i>Custom details for {step.details}</i>,
+      }),
+      step => ({
+        header: step.header,
+        details: step.details && <i>Custom details for {step.details}</i>,
+        icon: <Icon ariaLabel="success" name="status-positive" variant="success" />,
+      }),
+    ],
   },
 ]);

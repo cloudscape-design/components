@@ -21,7 +21,7 @@ export interface ProgressBarProps extends BaseComponentProps {
   /**
    * Enables the correct styling of the progress bar in different contexts. You can set it to one of the following:
    *
-   * - `"flash"` - Use this variatn when using the progress bar within a flash component.
+   * - `"flash"` - Use this variant when using the progress bar within a flash component.
    *              Note that the result button isn't displayed when using this variant.
    *              Use the `buttonText` property and the `onButtonClick` event listener of the flashbar item instead of the result button provided by the progress bar.
    * - `"key-value"` - Use this variant when using the progress bar within the key-value pairs pattern.
@@ -82,9 +82,32 @@ export interface ProgressBarProps extends BaseComponentProps {
    * Use the `buttonText` property and the `onButtonClick` event listener of the flashbar item instead.
    */
   onResultButtonClick?: NonCancelableEventHandler;
+
+  /**
+   * An object containing CSS properties to customize the progress bar's visual appearance.
+   * Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: ProgressBarProps.Style;
 }
 
 export namespace ProgressBarProps {
   export type Status = 'in-progress' | 'success' | 'error';
   export type Variant = 'standalone' | 'flash' | 'key-value';
+
+  export interface Style {
+    progressBar?: {
+      backgroundColor?: string;
+      borderRadius?: string;
+      height?: string;
+    };
+    progressValue?: {
+      backgroundColor?: string;
+    };
+    progressPercentage?: {
+      color?: string;
+      fontSize?: string;
+      fontWeight?: string;
+    };
+  }
 }

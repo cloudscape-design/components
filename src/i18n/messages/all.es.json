@@ -37,13 +37,14 @@
     "ariaLabels.notifications": "Notificaciones",
     "ariaLabels.tools": "Panel de ayuda",
     "ariaLabels.toolsClose": "Cerrar el panel de ayuda",
-    "ariaLabels.toolsToggle": "Abrir panel de ayuda"
+    "ariaLabels.toolsToggle": "Abrir el panel de ayuda"
   },
   "area-chart": {
     "i18nStrings.detailTotalLabel": "Total"
   },
   "attribute-editor": {
-    "removeButtonText": "Eliminar"
+    "removeButtonText": "Eliminar",
+    "i18nStrings.itemRemovedAriaLive": "Elemento eliminado"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Error",
@@ -129,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copiar"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Elegir fecha} other {Elegir fecha; la fecha seleccionada es {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modo relativo",
     "i18nStrings.absoluteModeTitle": "Modo absoluto",
@@ -154,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
+    "i18nStrings.datePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.isoDatePlaceholder": "AAAA-MM-DD",
+    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/DD",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
     "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
     "i18nStrings.slashedDateTimeConstraintText": "Para la fecha, use AAAA/MM/DD. Para la hora, use el formato de 24 horas.",
@@ -171,10 +179,23 @@
   "drawer": {
     "i18nStrings.loadingText": "Cargando contenido"
   },
+  "error-boundary": {
+    "i18nStrings.headerText": "Error inesperado. No se pudo mostrar el contenido",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualice para intentarlo de nuevo. Estamos siguiendo este problema, pero puede compartir <Feedback>más información aquí</Feedback>.} other {Actualice para intentarlo de nuevo.}}",
+    "i18nStrings.refreshActionText": "Actualizar página"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Últimos lanzamientos de características",
+    "i18nStrings.viewAll": "Ver todos los lanzamientos de características",
+    "ariaLabels.closeButton": "Cerrar notificaciones",
+    "ariaLabels.content": "Notificaciones de características",
+    "ariaLabels.triggerButton": "Mostrar notificaciones de características",
+    "ariaLabels.resizeHandle": "Redimensionar notificaciones de características"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar más",
-    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.warningIconAriaLabel": "Aviso"
   },
@@ -231,7 +252,15 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Página siguiente",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas las páginas",
-    "ariaLabels.previousPageLabel": "Página anterior"
+    "ariaLabels.previousPageLabel": "Página anterior",
+    "ariaLabels.jumpToPageButtonLabel": "Ir a la página",
+    "i18nStrings.jumpToPageInputLabel": "Página",
+    "i18nStrings.jumpToPageError": "Página fuera de rango. Se muestra la última página disponible.",
+    "i18nStrings.jumpToPageLoadingText": "Cargando"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Controlador de cambio del tamaño del panel",
+    "i18nStrings.resizeHandleTooltipText": "Arrastre o seleccione para cambiar el tamaño"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Valor",

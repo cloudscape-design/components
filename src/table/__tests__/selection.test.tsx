@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
@@ -7,8 +8,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
-
-import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
+import { getControlIds, getSelectAllInput, getSelectionA11yHeader, getSelectionInput } from './utils/extra-selectors';
 
 interface Item {
   id: number;
@@ -27,32 +27,18 @@ const items: Item[] = [
 ];
 
 function renderTable(tableProps: Partial<TableProps>) {
-  const props: TableProps = {
-    items: items,
-    columnDefinitions: columnDefinitions,
-    ...tableProps,
-  };
-  const { container, rerender, getByTestId, queryByTestId } = render(<Table {...props} />);
+  const props: TableProps = { items, totalItemsCount: items.length, columnDefinitions, ...tableProps };
+  const { container, rerender } = render(<Table {...props} />);
   const wrapper = createWrapper(container).findTable()!;
   return {
     wrapper,
     rerender: (extraProps: Partial<TableProps>) => rerender(<Table {...props} {...extraProps} />),
-    getByTestId,
-    queryByTestId,
   };
 }
 
-const getSelectionInput = (tableWrapper: TableWrapper, index: number) =>
-  tableWrapper.findRowSelectionArea(index)!.find<HTMLInputElement>('input')!;
-const getSelectAllInput = (tableWrapper: TableWrapper) =>
-  tableWrapper.findSelectAllTrigger()!.find<HTMLInputElement>('input')!;
-const getControlIds = (tableWrapper: TableWrapper) =>
-  tableWrapper.findRows().map(row => row.find('td:first-child input')!.getElement().id);
-const expectSelected = (arr: Item[], handleSelectionChange: jest.Mock, index = 0) => {
-  const { selectedItems } = handleSelectionChange.mock.calls[index][0].detail;
-  expect(selectedItems).toHaveLength(arr.length);
-  expect(selectedItems).toEqual(expect.arrayContaining(arr));
-};
+function getCallArgs(handler: jest.Mock, index = 0) {
+  return handler.mock.calls[index][0].detail.selectedItems;
+}
 
 test('does not render selection controls when selectionType is not set', () => {
   const { wrapper } = renderTable({});
@@ -60,9 +46,9 @@ test('does not render selection controls when selectionType is not set', () => {
   expect(wrapper.findRowSelectionArea(1)).toBeFalsy();
 });
 
-test.each<TableProps['selectionType']>(['single', 'multi', undefined])(
+test.each(['single', 'multi', undefined] as const)(
   'Table headers with selectionType=%s are marked as columns for a11y',
-  (selectionType: TableProps['selectionType']) => {
+  selectionType => {
     const { wrapper: tableWrapper } = renderTable({ selectionType });
     tableWrapper.findColumnHeaders().forEach(headerWrapper => {
       const hasThTag = headerWrapper.getElement().tagName === 'TH';
@@ -72,146 +58,127 @@ test.each<TableProps['selectionType']>(['single', 'multi', undefined])(
   }
 );
 
-describe('Selection controls` labelling', () => {
-  let tableWrapper: TableWrapper;
+describe('selection control labels', () => {
   const ariaLabels: TableProps['ariaLabels'] = {
     selectionGroupLabel: 'group label',
-    allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
+    allItemsSelectionLabel: ({ selectedItems, itemsCount, selectedItemsCount }) =>
+      `${selectedItemsCount}(${selectedItems.length}) of ${itemsCount} selected`,
     itemSelectionLabel: ({ selectedItems }, item) =>
       `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
   };
+  const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
 
-  test('puts selectionGroupLabel and allItemsSelectionLabel on selectAll checkbox', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels }).wrapper;
-    expect(tableWrapper.findSelectAllTrigger()?.getElement()).toHaveAttribute('aria-label', '1 item selected');
+  test('adds allItemsSelectionLabel to select-all checkbox', () => {
+    const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels });
+    expect(getSelectionA11yHeader(wrapper)).toBe(null);
+    expect(wrapper.findSelectAllTrigger()!.getElement()).toHaveAttribute('aria-label', '1(1) of 3 selected');
   });
 
-  test('puts selectionGroupLabel on single selection column header', () => {
-    tableWrapper = renderTable({ selectionType: 'single', ariaLabels }).wrapper;
-    expect(tableWrapper.findColumnHeaders()[0].find(`.${screenreaderOnlyStyles.root}`)?.getElement()).toHaveTextContent(
-      'group label'
-    );
+  test('adds selectionGroupLabel to single selection column header', () => {
+    const { wrapper } = renderTable({ selectionType: 'single', ariaLabels });
+    expect(getSelectionA11yHeader(wrapper)).toHaveTextContent('group label');
   });
 
-  describe.each<TableProps['selectionType']>(['single', 'multi'])(
-    '%s',
-    (selectionType: TableProps['selectionType']) => {
-      test('leaves the controls without labels, when ariaLabels is omitted', () => {
-        tableWrapper = renderTable({ selectionType }).wrapper;
-        for (let i = 1; i <= items.length; i++) {
-          expect(tableWrapper.findRowSelectionArea(i)?.getElement()).not.toHaveAttribute('aria-label');
-        }
-      });
+  describe.each(['single', 'multi'] as const)('selectionType=%s', selectionType => {
+    test('leaves the controls without labels, when ariaLabels is omitted', () => {
+      const { wrapper } = renderTable({ selectionType });
+      if (selectionType === 'single') {
+        expect(getSelectionA11yHeader(wrapper)!.textContent).toBe('');
+      } else {
+        expect(wrapper.findSelectAllTrigger()!.getElement()).not.toHaveAttribute('aria-label');
+      }
+      expect(getRowSelector(wrapper, 1)).not.toHaveAttribute('aria-label');
+      expect(getRowSelector(wrapper, 2)).not.toHaveAttribute('aria-label');
+      expect(getRowSelector(wrapper, 3)).not.toHaveAttribute('aria-label');
+    });
 
-      test('puts selectionGroupLabel and itemSelectionLabel on row selection control', () => {
-        tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
-        expect(tableWrapper.findRowSelectionArea(1)?.getElement()).toHaveAttribute(
-          'aria-label',
-          'Apples is not selected'
-        );
-        expect(tableWrapper.findRowSelectionArea(2)?.getElement()).toHaveAttribute('aria-label', 'Oranges is selected');
-        expect(tableWrapper.findRowSelectionArea(3)?.getElement()).toHaveAttribute(
-          'aria-label',
-          'Bananas is not selected'
-        );
-      });
-
-      test('does not put selectionGroupLabel on row selection control', () => {
-        tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
-
-        expect(tableWrapper.findRowSelectionArea(1)!.getElement().getAttribute('aria-label')).toEqual(
-          expect.not.stringContaining('group label')
-        );
-        expect(tableWrapper.findRowSelectionArea(2)!.getElement().getAttribute('aria-label')).toEqual(
-          expect.not.stringContaining('group label')
-        );
-        expect(tableWrapper.findRowSelectionArea(3)!.getElement().getAttribute('aria-label')).toEqual(
-          expect.not.stringContaining('group label')
-        );
-      });
-    }
-  );
+    test('adds selectionGroupLabel and itemSelectionLabel to row selection control', () => {
+      const { wrapper } = renderTable({ selectionType, selectedItems: [items[1]], ariaLabels });
+      expect(getRowSelector(wrapper, 1)).toHaveAttribute('aria-label', 'Apples is not selected');
+      expect(getRowSelector(wrapper, 2)).toHaveAttribute('aria-label', 'Oranges is selected');
+      expect(getRowSelector(wrapper, 3)).toHaveAttribute('aria-label', 'Bananas is not selected');
+    });
+  });
 });
-describe('Select all checkbox', () => {
-  let tableWrapper: TableWrapper;
+
+describe('select all checkbox', () => {
   test('indeterminate, when some of the items are selected', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [items[1]] }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('indeterminate', true);
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', false);
+    const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [items[1]] });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('indeterminate', true);
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('checked', false);
+  });
+  test('unchecked, when no items selected', () => {
+    const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [] });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('indeterminate', false);
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('checked', false);
   });
   test('indeterminate, when there are selected items that do not match the items list', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [{ id: 4, name: 'Apples' }] }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('indeterminate', true);
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', false);
-  });
-  test('unchecked, when none of the items are selected', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [] }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('indeterminate', false);
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', false);
+    const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: [{ id: 4, name: 'Apples' }] });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('indeterminate', true);
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('checked', false);
   });
   test('disabled, when every item is disabled', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', isItemDisabled: () => true }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('disabled', true);
+    const { wrapper } = renderTable({ selectionType: 'multi', isItemDisabled: () => true });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('disabled', true);
   });
   test('checked, when every item is selected', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: items }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', true);
+    const { wrapper } = renderTable({ selectionType: 'multi', selectedItems: items });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('checked', true);
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('indeterminate', false);
   });
   test('disabled, when there are no items', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', items: [] }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('disabled', true);
+    const { wrapper } = renderTable({ selectionType: 'multi', items: [] });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('disabled', true);
   });
   test('disabled, when table is loading', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', loading: true }).wrapper;
-    expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('disabled', true);
+    const { wrapper } = renderTable({ selectionType: 'multi', loading: true });
+    expect(getSelectAllInput(wrapper)!.getElement()).toHaveProperty('disabled', true);
   });
   test('does not exist in selectionType="single"', () => {
-    tableWrapper = renderTable({ selectionType: 'single' }).wrapper;
-    expect(tableWrapper.findSelectAllTrigger()).toBeFalsy();
+    const { wrapper } = renderTable({ selectionType: 'single' });
+    expect(wrapper.findSelectAllTrigger()).toBeFalsy();
   });
   test('does not toggle disabled items', () => {
-    const handleSelectionChange = jest.fn();
-    tableWrapper = renderTable({
+    const onSelectionChange = jest.fn();
+    const { wrapper, rerender } = renderTable({
       selectionType: 'multi',
       isItemDisabled: item => item.id === items[1].id,
       selectedItems: [],
-      onSelectionChange: handleSelectionChange,
-    }).wrapper;
-    tableWrapper.findSelectAllTrigger()!.click();
-    expectSelected([items[0], items[2]], handleSelectionChange);
-    handleSelectionChange.mockReset();
-    tableWrapper = renderTable({
+      onSelectionChange,
+    });
+    wrapper.findSelectAllTrigger()!.click();
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0], items[2]]);
+    onSelectionChange.mockReset();
+    rerender({
       selectionType: 'multi',
       isItemDisabled: item => item.id === items[1].id,
       selectedItems: items,
-      onSelectionChange: handleSelectionChange,
-    }).wrapper;
-    tableWrapper.findSelectAllTrigger()!.click();
-    expectSelected([items[1]], handleSelectionChange);
+      onSelectionChange,
+    });
+    wrapper.findSelectAllTrigger()!.click();
+    expect(getCallArgs(onSelectionChange)).toEqual([items[1]]);
   });
 });
 
 // Some other components may need this click, for example, popover (AWSUI-7864)
-test.each<TableProps['selectionType']>(['single', 'multi'])(
-  'Should propagate click event with selectionType=%s',
-  (selectionType: TableProps['selectionType']) => {
-    const { wrapper: tableWrapper } = renderTable({ selectionType });
-    const clickSpy = jest.fn();
-    document.body.addEventListener('click', clickSpy);
-    tableWrapper.findRowSelectionArea(1)!.click();
-    expect(clickSpy).toHaveBeenCalled();
-    document.body.removeEventListener('click', clickSpy);
-  }
-);
-describe('Single selection', () => {
+test.each(['single', 'multi'] as const)('should propagate click event with selectionType=%s', selectionType => {
+  const { wrapper } = renderTable({ selectionType });
+  const clickSpy = jest.fn();
+  document.body.addEventListener('click', clickSpy);
+  wrapper.findRowSelectionArea(1)!.click();
+  expect(clickSpy).toHaveBeenCalled();
+  document.body.removeEventListener('click', clickSpy);
+});
+
+describe('single selection', () => {
   let tableWrapper: TableWrapper;
-  const handleSelectionChange = jest.fn();
+  const onSelectionChange = jest.fn();
   beforeEach(() => {
-    handleSelectionChange.mockReset();
+    onSelectionChange.mockReset();
     tableWrapper = renderTable({
       selectionType: 'single',
       selectedItems: [items[0]],
-      onSelectionChange: handleSelectionChange,
+      onSelectionChange,
     }).wrapper;
   });
   test('should render radio buttons for `selectionType="single"`', () => {
@@ -219,11 +186,11 @@ describe('Single selection', () => {
   });
   test('should deselect previous row when `single` type', () => {
     tableWrapper.findRowSelectionArea(2)!.click();
-    expectSelected([items[1]], handleSelectionChange);
+    expect(getCallArgs(onSelectionChange)).toEqual([items[1]]);
   });
   test('should not deselect row when clicked and `single` selection', () => {
     tableWrapper.findRowSelectionArea(1)!.click();
-    expect(handleSelectionChange).not.toHaveBeenCalled();
+    expect(onSelectionChange).not.toHaveBeenCalled();
   });
   test('should use the same name for all radios inside a table', () => {
     const names: string[] = [];
@@ -238,23 +205,23 @@ describe('Single selection', () => {
     const { wrapper: secondWrapper } = renderTable({
       selectionType: 'single',
       selectedItems: [items[0]],
-      onSelectionChange: handleSelectionChange,
+      onSelectionChange: onSelectionChange,
     });
     const secondTableName = getSelectionInput(secondWrapper, 1).getElement().name;
     expect(firstTableName).not.toEqual(secondTableName);
   });
 });
 
-describe('Multi selection', () => {
+describe('multi selection', () => {
   let tableWrapper: TableWrapper;
   let rerender: (props: Partial<TableProps>) => void;
-  const handleSelectionChange = jest.fn();
+  const onSelectionChange = jest.fn();
   beforeEach(() => {
-    handleSelectionChange.mockReset();
+    onSelectionChange.mockReset();
     const result = renderTable({
       selectionType: 'multi',
       selectedItems: [items[0]],
-      onSelectionChange: handleSelectionChange,
+      onSelectionChange,
       isItemDisabled: item => item === items[1],
     });
     tableWrapper = result.wrapper;
@@ -262,15 +229,15 @@ describe('Multi selection', () => {
   });
   test('should deselect row when clicked', () => {
     tableWrapper.findRowSelectionArea(1)!.click();
-    expectSelected([], handleSelectionChange);
+    expect(getCallArgs(onSelectionChange)).toEqual([]);
   });
   test('should add clicked item to the selectedItems', () => {
     tableWrapper.findRowSelectionArea(3)!.click();
-    expectSelected([items[0], items[2]], handleSelectionChange);
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0], items[2]]);
   });
   test('should not fire the even on disabled row clicks', () => {
     tableWrapper.findRowSelectionArea(2)!.click();
-    expect(handleSelectionChange).not.toHaveBeenCalled();
+    expect(onSelectionChange).not.toHaveBeenCalled();
   });
   describe('keyboard interaction', () => {
     test('should move focus over a disabled item', () => {
@@ -302,41 +269,30 @@ describe('Multi selection', () => {
     rerender({ items: items.slice(1) });
     // select item
     tableWrapper.findRowSelectionArea(2)!.click();
-    expectSelected([items[0], items[2]], handleSelectionChange);
-    handleSelectionChange.mockReset();
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0], items[2]]);
+    onSelectionChange.mockReset();
     // select all page
     tableWrapper.findSelectAllTrigger()!.click();
-    expectSelected([items[0], items[2]], handleSelectionChange);
-    handleSelectionChange.mockReset();
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0], items[2]]);
+    onSelectionChange.mockReset();
     // deselect item
     rerender({ items: items.slice(1), selectedItems: [items[0], items[2]] });
     tableWrapper.findRowSelectionArea(2)!.click();
-    expectSelected([items[0]], handleSelectionChange);
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0]]);
     // deselect all page
-    handleSelectionChange.mockReset();
+    onSelectionChange.mockReset();
     tableWrapper.findSelectAllTrigger()!.click();
-    expectSelected([items[0]], handleSelectionChange);
+    expect(getCallArgs(onSelectionChange)).toEqual([items[0]]);
   });
 });
 
-describe('Row click event', () => {
+describe('row click event', () => {
   let onRowClickSpy: jest.Mock;
   let tableWrapper: TableWrapper;
-  const handleSelectionChange = jest.fn();
   beforeEach(() => {
     onRowClickSpy = jest.fn();
-    const result = renderTable({
-      selectionType: 'multi',
-      selectedItems: [items[0]],
-      onSelectionChange: handleSelectionChange,
-      isItemDisabled: item => item === items[1],
-      onRowClick: onRowClickSpy,
-    });
+    const result = renderTable({ selectionType: 'multi', selectedItems: [items[0]], onRowClick: onRowClickSpy });
     tableWrapper = result.wrapper;
-  });
-
-  afterEach(() => {
-    handleSelectionChange.mockReset();
   });
 
   test('should fire when clicking on a body cell that is not a selection area', () => {
@@ -353,39 +309,35 @@ describe('Row click event', () => {
   });
 });
 
-describe('selection component with trackBy', function () {
-  let tableWrapper: TableWrapper;
-  let rerender: (props: Partial<TableProps>) => void;
-  beforeEach(() => {
-    const result = renderTable({
-      selectedItems: [{ name: items[0].name, id: items[1].id }],
-      selectionType: 'multi',
-      isItemDisabled: item => item === items[1],
-      trackBy: 'name',
+describe.each(['single', 'multi'] as const)(
+  'compares selectable items using trackBy, selectionType=%s',
+  selectionType => {
+    let tableWrapper: TableWrapper;
+    let rerender: (props: Partial<TableProps>) => void;
+    beforeEach(() => {
+      const selectedItems = [{ name: items[0].name, id: items[1].id }];
+      const result = renderTable({ selectionType, selectedItems, trackBy: 'name' });
+      tableWrapper = result.wrapper;
+      rerender = result.rerender;
     });
-    tableWrapper = result.wrapper;
-    rerender = result.rerender;
-  });
-  const getSelectedNames = () =>
-    tableWrapper.findSelectedRows()?.map(wrapper => wrapper.find('td:nth-child(3)')?.getElement().textContent);
+    const getSelectedNames = () =>
+      tableWrapper.findSelectedRows()!.map(wrapper => wrapper.find('td:nth-child(3)')?.getElement().textContent);
 
-  test('should select rows when selection attached', function () {
-    const selectedNames = getSelectedNames();
-    expect(selectedNames).toEqual(['Apples']);
-  });
+    test('should select rows matched by name', () => {
+      expect(getSelectedNames()).toEqual(['Apples']);
+    });
 
-  test('should select items after trackBy change', () => {
-    const selectedNames = getSelectedNames();
-    expect(selectedNames).toEqual(['Apples']);
-    rerender({ trackBy: 'id' });
-    const newSelectedNames = getSelectedNames();
-    expect(newSelectedNames).toEqual(['Oranges']);
-  });
+    test('should select items matched by id', () => {
+      expect(getSelectedNames()).toEqual(['Apples']);
+      rerender({ trackBy: 'id' });
+      expect(getSelectedNames()).toEqual(['Oranges']);
+    });
 
-  test('preserves control ids using track by', () => {
-    const initialIds = getControlIds(tableWrapper);
-    rerender({ items: [{ id: 4, name: 'Peaches' }, items[0], items[1]] });
-    const newIds = getControlIds(tableWrapper);
-    expect(newIds).toEqual([expect.any(String), initialIds[0], initialIds[1]]);
-  });
-});
+    test('preserves control ids using track by', () => {
+      const initialIds = getControlIds(tableWrapper);
+      rerender({ items: [{ id: 4, name: 'Peaches' }, items[0], items[1]] });
+      const newIds = getControlIds(tableWrapper);
+      expect(newIds).toEqual([expect.any(String), initialIds[0], initialIds[1]]);
+    });
+  }
+);

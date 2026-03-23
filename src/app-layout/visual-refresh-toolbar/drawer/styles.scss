@@ -23,7 +23,7 @@
 $global-drawer-gap-size: 8px;
 $global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
 $drawer-resize-handle-size: awsui.$space-m;
-$ai-drawer-heider-height: 41px;
+$ai-drawer-heider-height: 42px;
 
 .drawer {
   position: sticky;
@@ -50,7 +50,7 @@ $ai-drawer-heider-height: 41px;
   }
 
   @include desktop-only {
-    &:not(.legacy):not(.ai-drawer) {
+    &:not(.legacy):not(.ai-drawer):not(.bottom-drawer) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
@@ -156,6 +156,7 @@ $ai-drawer-heider-height: 41px;
   }
 
   > .drawer-slider {
+    z-index: 850;
     grid-column: 1;
     grid-row: 1;
     block-size: 100%;
@@ -184,6 +185,7 @@ $ai-drawer-heider-height: 41px;
     }
 
     > .drawer-slider {
+      z-index: 850;
       grid-column: 2;
       grid-row: 1;
       display: flex;
@@ -259,6 +261,7 @@ $ai-drawer-heider-height: 41px;
     }
 
     > .drawer-slider {
+      z-index: 850;
       display: flex;
       justify-content: center;
       inline-size: awsui.$space-xs;
@@ -457,10 +460,39 @@ $ai-drawer-heider-height: 41px;
         justify-content: center;
       }
 
+      > .bottom-drawer-content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        inset-block-start: 0;
+        box-sizing: border-box;
+
+        > .bottom-drawer-content-header-content {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: space-between;
+          block-size: 100%;
+          padding-inline-end: awsui.$space-m;
+
+          > .bottom-drawer-actions {
+            display: flex;
+          }
+        }
+      }
+
       > .drawer-content-container {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
       }
     }
   }
+}
+
+.runtime-feature-notifications-drawer-content {
+  border-block-start: 1px solid awsui.$color-border-divider-default;
+}
+
+.runtime-feature-notifications-footer {
+  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
 }

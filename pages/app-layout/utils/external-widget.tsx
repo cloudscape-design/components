@@ -313,6 +313,7 @@ export const registerRuntimeBottomDrawer = () => {
       triggerButton: 'Trigger button',
       resizeHandle: 'Resize handle',
       expandedModeButton: 'Expanded mode button',
+      resizeHandleTooltipText: 'Drag or select to resize',
     },
     onToggle: event => {
       console.log('circle-global drawer on toggle', event.detail);
@@ -331,7 +332,7 @@ export const registerRuntimeBottomDrawer = () => {
 
     mountContent: (container, mountContext) => {
       mount(
-        <Drawer header={<Box variant="h2">Global drawer</Box>}>
+        <Box padding={{ left: 'm' }}>
           <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
             global bottom panel
             {new Array(100).fill(null).map((_, index) => (
@@ -339,11 +340,20 @@ export const registerRuntimeBottomDrawer = () => {
             ))}
             <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
           </AutoIncrementCounter>
-        </Drawer>,
+        </Box>,
         container
       );
     },
     unmountContent: container => unmount(container),
+    mountHeader: container => {
+      mount(
+        <Box variant="h2" padding="m">
+          Global drawer
+        </Box>,
+        container
+      );
+    },
+    unmountHeader: container => unmount(container),
     headerActions: [
       {
         type: 'icon-button',

@@ -195,15 +195,21 @@ type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDr
   __disableRuntimeDrawers?: boolean;
   onGlobalDrawerFocus?: (drawerId: string, open: boolean) => void;
   onAddNewActiveDrawer?: (drawerId: string) => void;
+  expandedDrawerId?: string | null;
+  setExpandedDrawerId?: (value: string | null) => void;
+  externalLocalRuntimeDrawers?: Array<AppLayoutProps.Drawer> | null;
 };
 
 export function useDrawers(
   {
     drawers,
+    externalLocalRuntimeDrawers,
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
     onGlobalDrawerFocus,
     onAddNewActiveDrawer,
+    expandedDrawerId,
+    setExpandedDrawerId,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
@@ -216,7 +222,6 @@ export function useDrawers(
   });
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
-  const [expandedDrawerId, setExpandedDrawerId] = useState<string | null>(null);
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
   const drawersOpenQueue = useRef<Array<string>>([]);
 
@@ -271,7 +276,7 @@ export function useDrawers(
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
       fireNonCancelableEvent(drawer?.onToggle, { isOpen: false, initiatedByUserAction });
       if (drawerId === expandedDrawerId) {
-        setExpandedDrawerId(null);
+        setExpandedDrawerId?.(null);
       }
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
@@ -290,13 +295,19 @@ export function useDrawers(
       : activeDrawerId !== TOOLS_DRAWER_ID
         ? activeDrawerId
         : null;
-  const runtimeDrawers = useRuntimeDrawers(
+  let runtimeDrawers = useRuntimeDrawers(
     disableRuntimeDrawers,
     activeDrawerIdResolved,
     onActiveDrawerChange,
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange
   );
+  if (externalLocalRuntimeDrawers) {
+    runtimeDrawers = {
+      ...runtimeDrawers,
+      localBefore: [...externalLocalRuntimeDrawers, ...runtimeDrawers.localBefore],
+    };
+  }
   const { localBefore, localAfter, global: runtimeGlobalDrawers } = runtimeDrawers;
   const combinedLocalDrawers = drawers
     ? [...localBefore, ...drawers, ...localAfter]
@@ -360,7 +371,5 @@ export function useDrawers(
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
-    expandedDrawerId,
-    setExpandedDrawerId,
   };
 }

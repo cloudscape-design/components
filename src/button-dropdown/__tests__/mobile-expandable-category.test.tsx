@@ -71,4 +71,46 @@ describe('MobileExpandableCategoryElement icon rendering', () => {
     const wrapper = renderComponent(<MobileExpandableCategoryElement item={item} {...mockProps} />);
     expect(wrapper.findIcon()).toBeTruthy();
   });
+  test('renders custom content when using custom renderItem function', () => {
+    const renderItem = jest.fn(props => (
+      <div data-testid="custom-mobile-header">
+        Custom Mobile Group: {props.item.option.text} ({props.item.expanded ? 'expanded' : 'collapsed'})
+      </div>
+    ));
+
+    const item = {
+      id: 'custom-group',
+      text: 'Custom Group',
+      iconName: 'settings' as const,
+      items: [{ id: 'child', text: 'Child Item' }],
+    };
+
+    const wrapper = renderComponent(
+      <MobileExpandableCategoryElement item={item} {...mockProps} renderItem={renderItem} />
+    );
+
+    // Verify that renderItem was called with correct props
+    expect(renderItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          type: 'group',
+          option: expect.objectContaining({
+            id: 'custom-group',
+            text: 'Custom Group',
+            iconName: 'settings',
+          }),
+          disabled: false,
+          expanded: false,
+          expandDirection: 'vertical',
+        }),
+      })
+    );
+
+    // Verify that custom content is rendered instead of default content
+    const customHeader = wrapper.getElement().querySelector('[data-testid="custom-mobile-header"]');
+    expect(customHeader).not.toBeNull();
+    expect(customHeader).toHaveTextContent('Custom Mobile Group: Custom Group (collapsed)');
+
+    expect(wrapper.getElement().textContent).toContain('Custom Mobile Group: Custom Group (collapsed)');
+  });
 });

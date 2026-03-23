@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
+import React, { ReactNode, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -17,14 +18,14 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
-import { throttle } from '../internal/utils/throttle';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
   GeneratedAnalyticsMetadataFlashbarExpand,
 } from './analytics-metadata/interfaces';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
-import { useFlashbar } from './common';
+import { useFlashbar, useFlashbarVisibility } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { getCollapsibleFlashStyles, getNotificationBarStyles } from './style';
@@ -34,6 +35,8 @@ import {
   getFlashTypeCount,
   getItemColor,
   getVisibleCollapsedItems,
+  isRefObject,
+  isStackableItem,
   StackableItem,
 } from './utils';
 
@@ -46,6 +49,7 @@ const maxNonCollapsibleItems = 1;
 const resizeListenerThrottleDelay = 100;
 
 export default function CollapsibleFlashbar({ items, style, ...restProps }: InternalFlashbarProps) {
+  const visibleItems = useFlashbarVisibility(items);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -70,7 +74,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   const itemCountElementId = useUniqueId('item-count');
 
   const { baseProps, isReducedMotion, isVisualRefresh, mergedRef, ref, flashRefs, handleFlashDismissed } = useFlashbar({
-    items,
+    items: visibleItems,
     ...restProps,
     onItemsAdded: newItems => {
       setEnteringItems([...enteringItems, ...newItems]);
@@ -88,7 +92,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     },
   });
 
-  if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
+  if (visibleItems.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
     setIsFlashbarStackExpanded(false);
   }
 
@@ -103,8 +107,8 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
 
   const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
   useLayoutEffect(() => {
-    if (isFlashbarStackExpanded && items?.length) {
-      const mostRecentItem = items[0];
+    if (isFlashbarStackExpanded && visibleItems?.length) {
+      const mostRecentItem = visibleItems[0];
       if (mostRecentItem.id !== undefined) {
         debouncedFocus(ref.current, mostRecentItem.id);
       }
@@ -120,28 +124,28 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     }
   }, [isFlashbarStackExpanded]);
 
-  const updateBottomSpacing = useMemo(
-    () =>
-      throttle(() => {
-        // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
-        // otherwise avoid spacing with eventual sticky elements below.
-        const listElement = listElementRef?.current;
-        const flashbar = listElement?.parentElement;
-        if (listElement && flashbar) {
-          // Make sure the bottom padding is present when we make the calculations,
-          // then we might decide to remove it or not.
-          flashbar.classList.remove(styles.floating);
-          const windowHeight = window.innerHeight;
-          // Take the parent region into account if using the App Layout, because it might have additional margins.
-          // Otherwise we use the Flashbar component for this calculation.
-          const outerElement = findUpUntil(flashbar, element => element.getAttribute('role') === 'region') || flashbar;
-          const applySpacing =
-            isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
-          if (!applySpacing) {
-            flashbar.classList.add(styles.floating);
-          }
+  const updateBottomSpacing = useThrottleCallback(
+    () => {
+      // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
+      // otherwise avoid spacing with eventual sticky elements below.
+      const listElement = listElementRef?.current;
+      const flashbar = listElement?.parentElement;
+      if (listElement && flashbar) {
+        // Make sure the bottom padding is present when we make the calculations,
+        // then we might decide to remove it or not.
+        flashbar.classList.remove(styles.floating);
+        const windowHeight = window.innerHeight;
+        // Take the parent region into account if using the App Layout, because it might have additional margins.
+        // Otherwise we use the Flashbar component for this calculation.
+        const outerElement = findUpUntil(flashbar, element => element.getAttribute('role') === 'region') || flashbar;
+        const applySpacing =
+          isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
+        if (!applySpacing) {
+          flashbar.classList.add(styles.floating);
         }
-      }, resizeListenerThrottleDelay),
+      }
+    },
+    resizeListenerThrottleDelay,
     [isFlashbarStackExpanded]
   );
 
@@ -188,17 +192,17 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     }
   }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
 
-  const isCollapsible = items.length > maxNonCollapsibleItems;
+  const isCollapsible = visibleItems.length > maxNonCollapsibleItems;
 
-  const countByType = getFlashTypeCount(items);
+  const countByType = getFlashTypeCount(visibleItems);
 
-  const numberOfColorsInStack = new Set(items.map(getItemColor)).size;
+  const numberOfColorsInStack = new Set(visibleItems.map(getItemColor)).size;
   const maxSlots = Math.max(numberOfColorsInStack, 3);
-  const stackDepth = Math.min(maxSlots, items.length);
+  const stackDepth = Math.min(maxSlots, visibleItems.length);
 
   const itemsToShow = isFlashbarStackExpanded
-    ? items.map((item, index) => ({ ...item, expandedIndex: index }))
-    : getVisibleCollapsedItems(items, stackDepth).map((item: StackableItem, index: number) => ({
+    ? visibleItems.map((item, index) => ({ ...item, expandedIndex: index }))
+    : getVisibleCollapsedItems(visibleItems, stackDepth).map((item: StackableItem, index: number) => ({
         ...item,
         collapsedIndex: index,
       }));
@@ -212,11 +216,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
   // we need to use different, more custom and more controlled animations.
   const hasEntered = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     enteringItems.some(_item => _item.id && _item.id === item.id);
-  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !('expandedIndex' in item);
+  const hasLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => !isStackableItem(item);
   const hasEnteredOrLeft = (item: StackableItem | FlashbarProps.MessageDefinition) => hasEntered(item) || hasLeft(item);
 
   const showInnerContent = (item: StackableItem | FlashbarProps.MessageDefinition) =>
-    isFlashbarStackExpanded || hasLeft(item) || ('expandedIndex' in item && item.expandedIndex === 0);
+    isFlashbarStackExpanded || hasLeft(item) || (isStackableItem(item) && item.expandedIndex === 0);
 
   const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
@@ -299,11 +303,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                       if (shouldUseStandardAnimation(item, index) && transitionRootElement) {
                         if (typeof transitionRootElement === 'function') {
                           transitionRootElement(el);
-                        } else if (
-                          transitionRootElement &&
-                          typeof transitionRootElement === 'object' &&
-                          'current' in transitionRootElement
-                        ) {
+                        } else if (isRefObject(transitionRootElement)) {
                           (transitionRootElement as React.MutableRefObject<HTMLDivElement | null>).current = el;
                         }
                       }
@@ -331,12 +331,14 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
         styles.flashbar,
         styles.stack,
         isCollapsible && styles.collapsible,
-        items.length === 2 && styles['short-list'],
+        visibleItems.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
         isVisualRefresh && styles['visual-refresh']
       )}
       ref={mergedRef}
-      {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, true, isFlashbarStackExpanded))}
+      {...getAnalyticsMetadataAttribute(
+        getComponentsAnalyticsMetadata(visibleItems.length, true, isFlashbarStackExpanded)
+      )}
     >
       {isFlashbarStackExpanded && renderList()}
       {isCollapsible && (
@@ -346,7 +348,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             isVisualRefresh && styles['visual-refresh'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
             transitioning && styles['animation-running'],
-            items.length === 2 && styles['short-list'],
+            visibleItems.length === 2 && styles['short-list'],
             getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
           )}
           onClick={toggleCollapseExpand}

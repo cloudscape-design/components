@@ -50,6 +50,13 @@ export interface TextareaProps
    * @awsuiSystem core
    */
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
+
+  /**
+   * An object containing CSS properties to customize the textarea's visual appearance.
+   * Refer to the [style](/components/textarea/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: TextareaProps.Style;
 }
 
 export namespace TextareaProps {
@@ -66,5 +73,50 @@ export namespace TextareaProps {
      * Sets input focus on the textarea control.
      */
     focus(): void;
+  }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
   }
 }

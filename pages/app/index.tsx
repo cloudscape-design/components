@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { Suspense, useContext, useEffect } from 'react';
-import { HashRouter, Redirect } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
@@ -50,6 +50,10 @@ function isAppLayoutPage(pageId?: string) {
     'prompt-input/simple',
     'funnel-analytics/static-single-page-flow',
     'funnel-analytics/static-multi-page-flow',
+    'charts.test',
+    'error-boundary/demo-async-load',
+    'error-boundary/demo-components',
+    'feature-notifications',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }
@@ -78,9 +82,6 @@ function App() {
     disableMotion(motionDisabled);
   }, [motionDisabled]);
 
-  if (!mode) {
-    return <Redirect to="/light/" />;
-  }
   return (
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>

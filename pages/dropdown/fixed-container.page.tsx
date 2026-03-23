@@ -32,10 +32,10 @@ export default function () {
               </button>
             }
             open={open}
-            onDropdownClose={() => setOpen(false)}
-          >
-            <ListContent n={5} />
-          </Dropdown>
+            onOutsideClick={() => setOpen(false)}
+            content={<ListContent n={5} />}
+            minWidth={'trigger'}
+          />
         </div>
         <div className={styles.placeholder}>An extra element to enable page scroll</div>
       </ScreenshotArea>

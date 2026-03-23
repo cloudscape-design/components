@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -26,11 +27,29 @@ export default function InternalCopyToClipboard({
   popoverRenderWithPortal,
   disabled,
   disabledReason,
+  onCopySuccess,
+  onCopyFailure,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
-  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('pending');
-  const [statusText, setStatusText] = useState('');
+  const [status, setStatus] = useState<'pending' | 'success' | 'error'>('success');
+  const [statusText, setStatusText] = useState(copySuccessText);
+
+  useEffect(() => {
+    if (navigator.permissions) {
+      navigator.permissions
+        .query({ name: 'clipboard-write' as PermissionName })
+        .then(result => {
+          if (result.state === 'denied') {
+            setStatus('error');
+            setStatusText(copyErrorText);
+          }
+        })
+        .catch(() => {
+          // Permissions API not supported or failed.
+        });
+    }
+  }, [copyErrorText]);
 
   const baseProps = getBaseProps(restProps);
   const onClick = () => {
@@ -38,20 +57,21 @@ export default function InternalCopyToClipboard({
       // The clipboard API is not available in insecure contexts.
       setStatus('error');
       setStatusText(copyErrorText);
+      fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       return;
     }
 
-    setStatus('pending');
-    setStatusText('');
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
         setStatus('success');
         setStatusText(copySuccessText);
+        fireNonCancelableEvent(onCopySuccess, { text: textToCopy });
       })
       .catch(() => {
         setStatus('error');
         setStatusText(copyErrorText);
+        fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       });
   };
 

@@ -21,7 +21,7 @@ export default function DropdownScenario() {
           Dropdown opens up or down depending on the size of the content and available space above and below the trigger
         </li>
         <li>
-          Dropdown fires an <code>onDropdownClose</code> event a click outside of the fly-out content
+          Dropdown fires an <code>onOutsideClick</code> event a click outside of the fly-out content
         </li>
       </ul>
       <div id="smallDropDown">
@@ -32,10 +32,9 @@ export default function DropdownScenario() {
             </Button>
           }
           open={open1}
-          onDropdownClose={() => setOpen1(false)}
-        >
-          <ListContent n={10} />
-        </Dropdown>
+          onOutsideClick={() => setOpen1(false)}
+          content={<ListContent n={10} />}
+        />
       </div>
       <div id="largeDropDown">
         <Dropdown
@@ -45,12 +44,11 @@ export default function DropdownScenario() {
             </Button>
           }
           open={open2}
-          onDropdownClose={() => setOpen2(false)}
+          onOutsideClick={() => setOpen2(false)}
           header={<div style={{ blockSize: '30px' }} />}
           footer={<div className="footer" style={{ blockSize: '30px' }} />}
-        >
-          <ListContent n={100} />
-        </Dropdown>
+          content={<ListContent n={100} />}
+        />
       </div>
 
       <div style={{ blockSize: '400px' }} />
@@ -62,10 +60,9 @@ export default function DropdownScenario() {
             </Button>
           }
           open={open3}
-          onDropdownClose={() => setOpen3(false)}
-        >
-          <ListContent n={10} />
-        </Dropdown>
+          onOutsideClick={() => setOpen3(false)}
+          content={<ListContent n={10} />}
+        />
       </div>
 
       <div style={{ blockSize: '400px' }} />

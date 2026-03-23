@@ -8,9 +8,9 @@ import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
-import Tooltip from '../internal/components/tooltip';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../live-region/internal';
+import Tooltip from '../tooltip/internal.js';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
 
@@ -97,8 +97,11 @@ function InternalToken({
     }
   };
 
+  // Use span for inline tokens (e.g. inside contentEditable) to avoid block-level elements breaking text flow.
+  const SpanOrDivTag = isInline ? 'span' : 'div';
+
   return (
-    <div
+    <SpanOrDivTag
       {...baseProps}
       ref={__internalRootRef}
       className={clsx(
@@ -127,7 +130,7 @@ function InternalToken({
       }}
       tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
     >
-      <div
+      <SpanOrDivTag
         className={clsx(
           !isInline ? styles['token-box'] : styles['token-box-inline'],
           disabled && styles['token-box-disabled'],
@@ -154,23 +157,22 @@ function InternalToken({
             inline={isInline}
           />
         )}
-      </div>
+      </SpanOrDivTag>
       {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
         <Tooltip
           data-testid="token-tooltip"
-          trackRef={labelContainerRef}
-          value={
+          getTrack={() => labelContainerRef.current}
+          content={
             <LiveRegion>
               <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
             </LiveRegion>
           }
-          size="medium"
-          onDismiss={() => {
+          onEscape={() => {
             setShowTooltip(false);
           }}
         />
       )}
-    </div>
+    </SpanOrDivTag>
   );
 }
 

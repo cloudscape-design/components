@@ -3,10 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
+import { getBreakpointValue } from '../internal/breakpoints';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
@@ -17,6 +18,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
@@ -68,6 +70,7 @@ const InternalSelect = React.forwardRef(
       autoFocus,
       __inFilteringToken,
       __internalRootRef,
+      renderOption,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -104,6 +107,11 @@ const InternalSelect = React.forwardRef(
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+    );
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -122,6 +130,7 @@ const InternalSelect = React.forwardRef(
       highlightOption,
       selectOption,
       announceSelected,
+      focusActiveRef,
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
@@ -163,6 +172,7 @@ const InternalSelect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        renderOption={renderOption}
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
@@ -197,7 +207,10 @@ const InternalSelect = React.forwardRef(
       noMatch,
       filteringResultsText: filteredText,
       errorIconAriaLabel,
-      onRecoveryClick: handleRecoveryClick,
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        focusActiveRef();
+      },
       hasRecoveryCallback: !!onLoadItems,
     });
 
@@ -231,6 +244,9 @@ const InternalSelect = React.forwardRef(
 
     const dropdownProps = getDropdownProps();
 
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
     return (
       <div
         {...baseProps}
@@ -240,13 +256,12 @@ const InternalSelect = React.forwardRef(
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
+          ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+          ariaDescribedby={dropdownProps.ariaRole ? (dropdownStatus.content ? footerId : undefined) : undefined}
           open={isOpen}
           stretchTriggerHeight={!!__inFilteringToken}
-          stretchBeyondTriggerWidth={true}
+          minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+          maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
@@ -256,23 +271,27 @@ const InternalSelect = React.forwardRef(
             ) : null
           }
           expandToViewport={expandToViewport}
-        >
-          <ListComponent
-            listBottom={
-              !dropdownStatus.isSticky ? (
-                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-              ) : null
-            }
-            menuProps={menuProps}
-            getOptionProps={getOptionProps}
-            filteredOptions={filteredOptions}
-            filteringValue={filteringValue}
-            ref={scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            screenReaderContent={announcement}
-            highlightType={highlightType}
-          />
-        </Dropdown>
+          // Forces dropdown position recalculation when new options are loaded
+          contentKey={hasOptions.current.toString()}
+          content={
+            <ListComponent
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              renderOption={renderOption}
+              menuProps={menuProps}
+              getOptionProps={getOptionProps}
+              filteredOptions={filteredOptions}
+              filteringValue={filteringValue}
+              ref={scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              screenReaderContent={announcement}
+              highlightType={highlightType}
+            />
+          }
+        />
         <div hidden={true} id={selectAriaLabelId}>
           {ariaLabel || inlineLabelText}
         </div>

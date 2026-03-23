@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 class ScrollSyncPage extends BasePageObject {
   async assertNumberOfCalls(lessThan: number) {
-    const str = await this.getElementAttribute('#numberOfCalls', 'data-call-number');
+    const str = (await this.getElementAttribute('#numberOfCalls', 'data-call-number')) ?? '';
     await expect(parseInt(str)).toBeLessThan(lessThan);
   }
   async assertScrollLeft(value: number) {

@@ -30,6 +30,7 @@ export interface GeneratedAnalyticsMetadataCardsComponent {
     selectedItemsCount: string;
     variant: string;
     selectedItems?: Array<string>;
+    selectedItemsLabels?: LabelIdentifier;
   };
   innerContext?: {
     position: string;

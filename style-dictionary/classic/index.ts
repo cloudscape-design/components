@@ -33,8 +33,11 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
 ];
 
 export async function buildClassicOpenSource(builder: ThemeBuilder) {
-  tokenCategories.forEach(({ tokens, mode: modeId }) => {
+  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
     const mode = modes.find(mode => mode.id === modeId);
+    if (referenceTokens) {
+      builder.addReferenceTokens(referenceTokens, mode);
+    }
     builder.addTokens(tokens, mode);
   });
 
@@ -50,7 +53,7 @@ export async function buildClassicOpenSource(builder: ThemeBuilder) {
   return builder.build();
 }
 
-const builder = new ThemeBuilder('classic', ':root', modes);
+const builder = new ThemeBuilder('classic', 'body', modes);
 const theme = await buildClassicOpenSource(builder);
 
 export default theme;

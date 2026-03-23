@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject } from 'react';
+import React, { RefObject, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -12,6 +13,7 @@ import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { DrawerProps } from './interfaces';
+import { useStickyFooter } from './use-sticky-footer';
 
 import styles from './styles.css.js';
 
@@ -19,6 +21,7 @@ type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,
+  footer,
   children,
   loading,
   i18nStrings,
@@ -32,11 +35,21 @@ export function DrawerImplementation({
   const i18n = useInternalI18n('drawer');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles.drawer, isToolbar && styles['with-toolbar']),
+    className: clsx(
+      baseProps.className,
+      styles.drawer,
+      isToolbar && styles['with-toolbar'],
+      !!footer && styles['with-footer']
+    ),
   };
+  const footerRef = useRef<HTMLDivElement>(null);
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
-  const hasAdditioalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+  const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
+  const { isSticky: isFooterSticky } = useStickyFooter({
+    drawerRef: __internalRootRef as RefObject<HTMLElement>,
+    footerRef,
+  });
 
   return loading ? (
     <div
@@ -57,7 +70,7 @@ export function DrawerImplementation({
           className={clsx(
             styles.header,
             runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditioalDrawerAction && styles['with-additional-action']
+            hasAdditionalDrawerAction && styles['with-additional-action']
           )}
         >
           {header}
@@ -67,11 +80,22 @@ export function DrawerImplementation({
       <div
         className={clsx(
           styles['test-utils-drawer-content'],
+          styles.content,
           !disableContentPaddings && styles['content-with-paddings']
         )}
       >
-        {children}
+        <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
       </div>
+      {footer && (
+        <div
+          ref={footerRef}
+          className={clsx(styles.footer, {
+            [styles['is-sticky']]: isFooterSticky,
+          })}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 }

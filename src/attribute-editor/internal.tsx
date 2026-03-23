@@ -3,10 +3,11 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -14,6 +15,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { usePrevious } from '../internal/hooks/use-previous';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { AdditionalInfo } from './additional-info';
 import { gridDefaults } from './grid-defaults';
 import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
@@ -44,6 +46,8 @@ const InternalAttributeEditor = React.forwardRef(
       onAddButtonClick,
       onRemoveButtonClick,
       __internalRootRef,
+      hideAddButton,
+      additionalActions,
       ...props
     }: InternalAttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>
@@ -71,16 +75,32 @@ const InternalAttributeEditor = React.forwardRef(
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
 
     const prevItemsLength = usePrevious(items.length);
+    const i18n = useInternalI18n('attribute-editor');
 
     React.useEffect(() => {
-      if (prevItemsLength && prevItemsLength > items.length && i18nStrings?.itemRemovedAriaLive) {
-        setRemovalAnnouncement(i18nStrings.itemRemovedAriaLive);
+      if (prevItemsLength && prevItemsLength > items.length) {
+        const announcement = i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive);
+        if (announcement) {
+          setRemovalAnnouncement(announcement);
+        } else {
+          setRemovalAnnouncement('');
+        }
       } else {
         setRemovalAnnouncement('');
       }
       // we only want to announce when the number of items decreases (i.e. when an item is removed)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, i18nStrings?.itemRemovedAriaLive]);
+
+    for (const def of definition) {
+      if (def && !def.label) {
+        warnOnce(
+          'AttributeEditor',
+          'A `label` should be provided for each field definition. It is used as `aria-label` for accessibility.'
+        );
+        break;
+      }
+    }
 
     if (!gridLayout) {
       gridLayout = gridDefaults[definition.length];
@@ -146,24 +166,31 @@ const InternalAttributeEditor = React.forwardRef(
         ))}
 
         <div className={styles['add-row']}>
-          <InternalButton
-            className={styles['add-button']}
-            disabled={disableAddButton}
-            // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
-            // because focus can be dynamically moved to this button by calling
-            // `focusAddButton()` on the ref.
-            nativeButtonAttributes={disableAddButton ? { tabIndex: -1 } : {}}
-            __skipNativeAttributesWarnings={true}
-            __focusable={true}
-            onClick={onAddButtonClick}
-            formAction="none"
-            ref={addButtonRef}
-            ariaDescribedby={infoAriaDescribedBy}
-            variant={addButtonVariant}
-            iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
-          >
-            {addButtonText}
-          </InternalButton>
+          {(!hideAddButton || additionalActions) && (
+            <InternalSpaceBetween size="xs" direction="horizontal">
+              {!hideAddButton && (
+                <InternalButton
+                  className={styles['add-button']}
+                  disabled={disableAddButton}
+                  // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
+                  // because focus can be dynamically moved to this button by calling
+                  // `focusAddButton()` on the ref.
+                  nativeButtonAttributes={disableAddButton ? { tabIndex: -1 } : {}}
+                  __skipNativeAttributesWarnings={true}
+                  __focusable={true}
+                  onClick={onAddButtonClick}
+                  formAction="none"
+                  ref={addButtonRef}
+                  ariaDescribedby={infoAriaDescribedBy}
+                  variant={addButtonVariant}
+                  iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
+                >
+                  {addButtonText}
+                </InternalButton>
+              )}
+              {additionalActions}
+            </InternalSpaceBetween>
+          )}
           <InternalLiveRegion
             data-testid="removal-announcement"
             tagName="span"

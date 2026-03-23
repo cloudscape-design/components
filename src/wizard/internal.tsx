@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -27,7 +27,9 @@ import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/
 import { WizardProps } from './interfaces';
 import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
 import WizardNavigation from './wizard-navigation';
+import WizardStepNavigationExpandable from './wizard-step-navigation-expandable';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalWizardProps = WizardProps &
@@ -41,6 +43,7 @@ export default function InternalWizard({
   submitButtonText,
   isLoadingNextStep = false,
   allowSkipTo = false,
+  customPrimaryActions,
   secondaryActions,
   onCancel,
   onSubmit,
@@ -53,7 +56,6 @@ export default function InternalWizard({
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
-
   const smallContainer = breakpoint === 'default';
 
   const [activeStepIndex, setActiveStepIndex] = useControllable(controlledActiveStepIndex, onNavigate, 0, {
@@ -70,6 +72,8 @@ export default function InternalWizard({
 
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
+
+  const [isStepNavigationExpanded, setIsStepNavigationExpanded] = useState(false);
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
@@ -171,7 +175,7 @@ export default function InternalWizard({
       {...baseProps}
       {...funnelProps}
       ref={ref}
-      className={clsx(styles.root, baseProps.className)}
+      className={clsx(styles.root, analyticsSelectors.root, baseProps.className)}
       {...(__injectAnalyticsComponentMetadata
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
         : {})}
@@ -190,17 +194,33 @@ export default function InternalWizard({
           onSkipToClick={onSkipToClick}
           steps={steps}
         />
+        {smallContainer && (
+          <div className={styles['collapsed-steps']}>
+            <WizardStepNavigationExpandable
+              activeStepIndex={actualActiveStepIndex}
+              farthestStepIndex={farthestStepIndex.current}
+              allowSkipTo={allowSkipTo}
+              i18nStrings={i18nStrings}
+              isLoadingNextStep={isLoadingNextStep}
+              onStepClick={onStepClick}
+              onSkipToClick={onSkipToClick}
+              steps={steps}
+              expanded={isStepNavigationExpanded}
+              onExpandChange={setIsStepNavigationExpanded}
+            />
+          </div>
+        )}
         <div
           className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
         >
           <WizardForm
             steps={steps}
-            showCollapsedSteps={smallContainer}
             i18nStrings={i18nStrings}
             submitButtonText={submitButtonText}
             activeStepIndex={actualActiveStepIndex}
             isPrimaryLoading={isLoadingNextStep}
             allowSkipTo={allowSkipTo}
+            customPrimaryActions={customPrimaryActions}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}

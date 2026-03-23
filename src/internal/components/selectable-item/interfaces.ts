@@ -15,6 +15,7 @@ export type SelectableItemProps = BaseComponentProps & {
   isSelectAll?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
+  disableContentStyling?: boolean;
   isPreviousSelected?: boolean;
   isNextSelected?: boolean;
   useInteractiveGroups?: boolean;
@@ -27,7 +28,9 @@ export type SelectableItemProps = BaseComponentProps & {
   sticky?: boolean;
   afterHeader?: boolean;
   withScrollbar?: boolean;
-} & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
+  ariaSelected?: boolean | never;
+  ariaChecked?: boolean | 'mixed' | never;
+};
 
 export interface ItemDataAttributes {
   'data-group-index'?: string;

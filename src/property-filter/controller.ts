@@ -21,6 +21,7 @@ import {
   TokenGroup,
 } from './interfaces';
 import {
+  isInternalToken,
   matchFilteringProperty,
   matchOperator,
   matchOperatorPrefix,
@@ -46,7 +47,7 @@ export const getQueryActions = ({
 }) => {
   const setQuery = (query: InternalQuery) => {
     function transformToken(token: InternalToken | InternalTokenGroup): Token | TokenGroup {
-      if ('operator' in token) {
+      if (isInternalToken(token)) {
         return matchTokenValue(token, filteringOptions);
       }
       return { ...token, tokens: token.tokens.map(transformToken) };

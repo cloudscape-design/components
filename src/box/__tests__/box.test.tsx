@@ -158,6 +158,11 @@ describe('Box', () => {
     expect(boxWrapper.getElement()).toHaveClass(styles['font-weight-default']);
   });
 
+  test('sets tabindex for h1 variant', () => {
+    const boxWrapper = renderBox({ variant: 'h1' });
+    expect(boxWrapper.getElement()).toHaveAttribute('tabindex', '-1');
+  });
+
   describe('native attributes', () => {
     it('adds native attributes', () => {
       const { container } = render(<Box nativeAttributes={{ 'data-testid': 'my-test-id' }} />);

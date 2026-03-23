@@ -1,0 +1,57 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../styles/foundation' as foundation;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
+
+$radio-size: awsui.$size-control;
+
+.radio-control {
+  @include styles.make-control-size($radio-size);
+}
+
+.outline {
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
+  @include styles.focus-highlight(
+    $gutter: 2px,
+    $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring),
+    $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+  );
+}
+
+.styled-circle-border {
+  stroke: awsui.$color-border-control-default;
+  fill: awsui.$color-background-control-default;
+  &.styled-circle-disabled,
+  &.styled-circle-readonly {
+    fill: awsui.$color-background-control-disabled;
+    stroke: awsui.$color-background-control-disabled;
+  }
+}
+
+.styled-circle-fill {
+  stroke: awsui.$color-background-control-checked;
+  fill: awsui.$color-foreground-control-default;
+  opacity: 0;
+  @include styles.with-motion {
+    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+  &.styled-circle-checked {
+    opacity: 1;
+  }
+  &.styled-circle-disabled {
+    fill: awsui.$color-foreground-control-disabled;
+    stroke: awsui.$color-background-control-disabled;
+  }
+  &.styled-circle-readonly {
+    fill: awsui.$color-foreground-control-read-only;
+    stroke: awsui.$color-background-control-disabled;
+  }
+}

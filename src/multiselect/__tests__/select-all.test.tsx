@@ -12,6 +12,7 @@ import { optionsWithGroups } from './common';
 
 const optionsWithoutGroups = optionsWithGroups.reduce(
   (previousValue: MultiselectProps.Option[], currentValue: MultiselectProps.Option) => {
+    // eslint-disable-next-line no-restricted-syntax -- Test utility: option/group discrimination
     if ('options' in currentValue) {
       return [...previousValue, ...(currentValue as MultiselectProps.OptionGroup).options];
     }

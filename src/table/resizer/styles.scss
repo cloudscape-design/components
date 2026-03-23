@@ -20,12 +20,12 @@ $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 .resizer-wrapper {
   inset-block: 0;
   position: absolute;
-  inset-inline-end: calc(-1 * #{$handle-width} / 2);
+  inset-inline-end: calc(-1 * $handle-width / 2);
   inline-size: $handle-width;
   overflow: hidden;
   z-index: 10;
 
-  th:last-child > &:has(.divider-interactive):not(.is-visual-refresh) {
+  th:last-child > &:has(.divider-interactive).is-borderless {
     inset-inline-end: 0;
   }
 }
@@ -58,6 +58,11 @@ th:not(:last-child) > .divider-disabled {
   inset-inline-end: calc(#{$handle-width} / 2);
 }
 
+// stylelint-disable-next-line selector-combinator-disallowed-list
+th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
+  inset-inline-end: 0;
+}
+
 .divider-active {
   border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
 }
@@ -87,10 +92,6 @@ th:not(:last-child) > .divider-disabled {
       @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
     }
   }
-}
-
-th:last-child > .resizer:not(.is-visual-refresh) {
-  inset-inline-end: 0;
 }
 
 .tracker {

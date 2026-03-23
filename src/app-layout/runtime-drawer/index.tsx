@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
-import { ButtonGroupProps } from '../../button-group/interfaces';
+import { ButtonGroupProps, ItemRuntime } from '../../button-group/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
@@ -83,21 +81,24 @@ function RuntimeDrawerHeader({ mountHeader, unmountHeader }: RuntimeContentHeade
   return <div className={styles['runtime-header-wrapper']} ref={ref} />;
 }
 
-function checkForUnsupportedProps(headerActions: ReadonlyArray<ButtonGroupProps.Item>) {
-  const unsupportedProps = new Set([
-    'iconSvg',
-    'popoverFeedback',
-    'pressedIconSvg',
-    'popoverFeedback',
-    'pressedPopoverFeedback',
-  ]);
-  for (const item of headerActions) {
-    const unsupported = Object.keys(item).filter(key => unsupportedProps.has(key));
-    if (unsupported.length > 0) {
-      warnOnce('AppLayout', `The headerActions properties are not supported for runtime api: ${unsupported.join(' ')}`);
-    }
-  }
-  return headerActions;
+function mapRuntimeHeaderActionsToHeaderActions(
+  runtimeHeaderActions: ReadonlyArray<ItemRuntime>
+): ReadonlyArray<ButtonGroupProps.Item> {
+  return runtimeHeaderActions.map(runtimeHeaderAction => {
+    return {
+      ...runtimeHeaderAction,
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
+      ...('iconSvg' in runtimeHeaderAction &&
+        runtimeHeaderAction.iconSvg && {
+          iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.iconSvg),
+        }),
+      // eslint-disable-next-line no-restricted-syntax -- Runtime plugin API: property not in TS type
+      ...('pressedIconSvg' in runtimeHeaderAction &&
+        runtimeHeaderAction.pressedIconSvg && {
+          iconSvg: convertRuntimeTriggerToReactNode(runtimeHeaderAction.pressedIconSvg),
+        }),
+    };
+  });
 }
 
 const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
@@ -138,7 +139,9 @@ export const mapRuntimeConfigToDrawer = (
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
-    headerActions: runtimeDrawer.headerActions ? checkForUnsupportedProps(runtimeDrawer.headerActions) : undefined,
+    headerActions: runtimeDrawer.headerActions
+      ? mapRuntimeHeaderActionsToHeaderActions(runtimeDrawer.headerActions)
+      : undefined,
   };
 };
 
@@ -149,6 +152,7 @@ export const mapRuntimeConfigToAiDrawer = (
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
   exitExpandedModeTrigger?: React.ReactNode;
+  onToggleFocusMode?: NonCancelableEventHandler<{ isExpanded: boolean }>;
 } => {
   const { mountContent, unmountContent, trigger, exitExpandedModeTrigger, ...runtimeDrawer } = runtimeConfig;
 
@@ -182,7 +186,9 @@ export const mapRuntimeConfigToAiDrawer = (
     onResize: event => {
       fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
     },
-    headerActions: runtimeDrawer.headerActions ? checkForUnsupportedProps(runtimeDrawer.headerActions) : undefined,
+    headerActions: runtimeDrawer.headerActions
+      ? mapRuntimeHeaderActionsToHeaderActions(runtimeDrawer.headerActions)
+      : undefined,
   };
 };
 

@@ -14,6 +14,7 @@ interface AppUrlParams {
   visualRefresh: boolean;
   motionDisabled: boolean;
   appLayoutWidget: boolean;
+  mode?: Mode;
 }
 
 export interface AppContextType<T = unknown> {
@@ -73,22 +74,34 @@ function formatQuery(params: AppUrlParams) {
 export function AppContextProvider({ children }: { children: React.ReactNode }) {
   const history = useHistory();
   const location = useLocation();
-  const match = useRouteMatch<{ theme: string; mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
-  const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
+  const matchWithVisualMode = useRouteMatch<{ mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
+  const matchWithoutVisualMode = useRouteMatch<{ pageId: string }>('/:pageId*');
+  const pageId = (matchWithVisualMode ?? matchWithoutVisualMode)?.params.pageId ?? undefined;
   const urlParams = parseQuery(location.search) as AppUrlParams;
+  const mode = matchWithVisualMode?.params.mode ?? urlParams.mode ?? Mode.Light;
 
   function setUrlParams(newParams: Partial<AppUrlParams>) {
-    const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
-    history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
+    const formattedQuery = formatQuery({ ...urlParams, ...newParams });
+    if (matchWithVisualMode) {
+      const pathname = [matchWithVisualMode.params.mode, pageId].filter(segment => !!segment).join('/') + '/';
+      history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
+    } else {
+      const newUrl = pageId ? `/${pageId}${formattedQuery}` : formattedQuery;
+      history.replace(newUrl);
+    }
   }
 
   function updateMode(newMode: Mode) {
-    const pathname = [newMode, pageId].filter(segment => !!segment).join('/') + '/';
-    history.replace('/' + pathname + location.search + location.hash);
+    if (matchWithVisualMode) {
+      const pathname = [newMode, pageId].filter(segment => !!segment).join('/') + '/';
+      history.replace('/' + pathname + location.search + location.hash);
+    } else {
+      setUrlParams({ mode: newMode });
+    }
   }
 
   return (
-    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
+    <AppContext.Provider value={{ mode, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
       {children}
     </AppContext.Provider>
   );

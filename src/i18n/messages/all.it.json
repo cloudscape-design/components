@@ -43,7 +43,8 @@
     "i18nStrings.detailTotalLabel": "Totale"
   },
   "attribute-editor": {
-    "removeButtonText": "Rimuovi"
+    "removeButtonText": "Rimuovi",
+    "i18nStrings.itemRemovedAriaLive": "Elemento rimosso"
   },
   "autosuggest": {
     "errorIconAriaLabel": "Errore",
@@ -129,6 +130,9 @@
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copia"
   },
+  "date-picker": {
+    "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Scegli data} other {Scegli data, la data selezionata è {selectedDate}}}"
+  },
   "date-range-picker": {
     "i18nStrings.relativeModeTitle": "Modalità relativa",
     "i18nStrings.absoluteModeTitle": "Modalità assoluta",
@@ -154,6 +158,10 @@
     "i18nStrings.endMonthLabel": "Mese di fine",
     "i18nStrings.endDateLabel": "Data di fine",
     "i18nStrings.endTimeLabel": "Ora di fine",
+    "i18nStrings.datePlaceholder": "GG/MM/AAAA",
+    "i18nStrings.isoDatePlaceholder": "AAAA-MM-GG",
+    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/GG",
+    "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
     "i18nStrings.slashedDateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, utilizza il formato 24 ore.",
@@ -171,10 +179,23 @@
   "drawer": {
     "i18nStrings.loadingText": "Caricamento dei contenuti"
   },
+  "error-boundary": {
+    "i18nStrings.headerText": "Errore imprevisto, impossibile visualizzare il contenuto",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Aggiorna la pagina per riprovare. Stiamo monitorando il problema, ma puoi condividere <Feedback>maggiori informazioni qui</Feedback>.} other {Aggiorna la pagina per riprovare.}}",
+    "i18nStrings.refreshActionText": "Aggiorna pagina"
+  },
+  "features-notification-drawer": {
+    "i18nStrings.title": "Ultime versioni delle funzionalità",
+    "i18nStrings.viewAll": "Visualizza tutte le versioni delle funzionalità",
+    "ariaLabels.closeButton": "Chiudi notifiche",
+    "ariaLabels.content": "Notifiche delle funzionalità",
+    "ariaLabels.triggerButton": "Mostra le notifiche delle funzionalità",
+    "ariaLabels.resizeHandle": "Ridimensiona le notifiche delle funzionalità"
+  },
   "file-token-group": {
     "i18nStrings.limitShowFewer": "Mostra meno",
     "i18nStrings.limitShowMore": "Mostra altro",
-    "i18nStrings.removeFileAriaLabel": "Rimuovi file {fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Rimuovi file {fileIndex}, {fileName}",
     "i18nStrings.errorIconAriaLabel": "Errore",
     "i18nStrings.warningIconAriaLabel": "Avviso"
   },
@@ -214,7 +235,7 @@
     "externalIconAriaLabel": "Si apre in una nuova scheda"
   },
   "list": {
-    "dragHandleAriaLabel": "Punto di trascinamento",
+    "dragHandleAriaLabel": "Maniglia di trascinamento",
     "dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, premi Esc.",
     "liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
     "liveAnnouncementDndDiscarded": "Riordinamento annullato",
@@ -231,7 +252,15 @@
   "pagination": {
     "ariaLabels.nextPageLabel": "Pagina successiva",
     "ariaLabels.pageLabel": "Pagina {pageNumber} di tutte le pagine",
-    "ariaLabels.previousPageLabel": "Pagina precedente"
+    "ariaLabels.previousPageLabel": "Pagina precedente",
+    "ariaLabels.jumpToPageButtonLabel": "Vai alla pagina",
+    "i18nStrings.jumpToPageInputLabel": "Pagina",
+    "i18nStrings.jumpToPageError": "Pagina fuori intervallo. Mostra l'ultima pagina disponibile.",
+    "i18nStrings.jumpToPageLoadingText": "Caricamento in corso"
+  },
+  "panel-resize-handle": {
+    "i18nStrings.resizeHandleAriaLabel": "Maniglia di ridimensionamento del pannello",
+    "i18nStrings.resizeHandleTooltipText": "Trascina o seleziona per ridimensionare"
   },
   "pie-chart": {
     "i18nStrings.detailsValue": "Valore",

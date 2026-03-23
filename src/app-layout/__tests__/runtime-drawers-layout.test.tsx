@@ -6,7 +6,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
 import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/index';
@@ -15,7 +15,7 @@ import { KeyCode } from '../../internal/keycode';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 
 beforeEach(() => {
-  awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
+  awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
   awsuiWidgetInternal.clearInitialMessages();
 });
 

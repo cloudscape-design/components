@@ -100,6 +100,8 @@ export interface ButtonGroupProps extends BaseComponentProps {
    */
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
   /**
+   * An object containing CSS properties to customize the button group's visual appearance.
+   * Refer to the [style](/components/button-group/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;
@@ -108,11 +110,32 @@ export interface ButtonGroupProps extends BaseComponentProps {
 export interface InternalIconButton extends ButtonGroupProps.IconButton {
   analyticsAction?: string;
 }
+export interface InternalIconToggleButton extends ButtonGroupProps.IconToggleButton {
+  analyticsAction?: string;
+}
+
+export interface IconButtonRuntime extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback'> {
+  iconSvg?: string;
+}
+export interface IconToggleButtonRuntime
+  extends Omit<
+    ButtonGroupProps.IconToggleButton,
+    'iconSvg' | 'pressedIconSvg' | 'popoverFeedback' | 'pressedPopoverFeedback'
+  > {
+  iconSvg?: string;
+  pressedIconSvg?: string;
+}
+export type ItemOrGroupRuntime = ItemRuntime | ButtonGroupProps.Group;
+export type ItemRuntime =
+  | IconButtonRuntime
+  | IconToggleButtonRuntime
+  | ButtonGroupProps.IconFileInput
+  | ButtonGroupProps.MenuDropdown;
 
 export type InternalItemOrGroup = InternalItem | ButtonGroupProps.Group;
 export type InternalItem =
   | InternalIconButton
-  | ButtonGroupProps.IconToggleButton
+  | InternalIconToggleButton
   | ButtonGroupProps.IconFileInput
   | ButtonGroupProps.MenuDropdown;
 

@@ -77,6 +77,10 @@ export namespace AlertProps {
       };
     };
   }
+  export interface PersistenceConfig {
+    uniqueKey: string;
+    crossServicePersistence?: boolean;
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
@@ -153,7 +157,17 @@ export interface AlertProps extends BaseComponentProps {
    */
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
   /**
+   * An object containing CSS properties to customize the alert's visual appearance.
+   * Refer to the [style](/components/alert/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: AlertProps.Style;
+  /**
+   * Config to persist dismiss state for dismissable Alert
+   * persistenceConfig contains:
+   * * `uniqueKey` (string) - This key to store the persistence state, it must be unique across your console.
+   * * `crossServicePersistence` (boolean) - (Optional) If true, the persistence state will be shared across AWS services.
+   * @awsuiSystem console
+   */
+  persistenceConfig?: AlertProps.PersistenceConfig;
 }

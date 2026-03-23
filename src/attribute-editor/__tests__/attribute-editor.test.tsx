@@ -6,6 +6,7 @@ import { render, waitFor } from '@testing-library/react';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
+import Button from '../../../lib/components/button';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Input from '../../../lib/components/input';
@@ -207,6 +208,21 @@ describe('Attribute Editor', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, ref, disableAddButton: true });
       ref.current!.focusAddButton();
       expect(wrapper.findAddButton().getElement()).toHaveFocus();
+    });
+
+    test('hides add button when hideAddButton is true', () => {
+      const wrapper = renderAttributeEditor({ hideAddButton: true });
+      expect(wrapper.findAddButton()).toBeNull();
+    });
+
+    test('shows add button when hideAddButton is false', () => {
+      const wrapper = renderAttributeEditor({ hideAddButton: false });
+      expect(wrapper.findAddButton()).not.toBeNull();
+    });
+
+    test('shows add button by default when hideAddButton is not specified', () => {
+      const wrapper = renderAttributeEditor();
+      expect(wrapper.findAddButton()).not.toBeNull();
     });
 
     test('has no aria-describedby if there is no additional info', () => {
@@ -619,6 +635,46 @@ describe('Attribute Editor', () => {
       );
       const wrapper = createWrapper(container).findAttributeEditor()!;
       expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveTextContent('Custom remove');
+    });
+    test('supports providing itemRemovedAriaLive from i18n provider', async () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{ 'attribute-editor': { 'i18nStrings.itemRemovedAriaLive': 'Custom removal announcement' } }}
+        >
+          <TestComponent i18nStrings={undefined} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+
+      await waitFor(() =>
+        expect(wrapper.find(`[data-testid="removal-announcement"]`)?.getElement()).toHaveTextContent(
+          'Custom removal announcement'
+        )
+      );
+    });
+    test('supports providing itemRemovedAriaLive from i18nStrings prop', async () => {
+      const { container } = render(<TestComponent i18nStrings={{ itemRemovedAriaLive: 'Item removed via prop' }} />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+
+      await waitFor(() =>
+        expect(wrapper.find(`[data-testid="removal-announcement"]`)?.getElement()).toHaveTextContent(
+          'Item removed via prop'
+        )
+      );
+    });
+  });
+
+  describe('additional actions', () => {
+    test('renders additional actions alongside add button if provided', () => {
+      const additionalActions = <Button data-testid="additional-test-button">Additional Action Button</Button>;
+      const { container } = render(<AttributeEditor {...defaultProps} additionalActions={additionalActions} />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.getElement().querySelector('[data-testid="additional-test-button"]')).not.toBeNull();
+      expect(wrapper.findAddButton()).not.toBeNull();
     });
   });
 

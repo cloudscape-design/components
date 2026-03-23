@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonGroupProps } from '../../../button-group/interfaces';
+import { ButtonGroupProps, ItemRuntime } from '../../../button-group/interfaces';
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 import { reportRuntimeApiWarning } from '../helpers/metrics';
@@ -41,7 +41,7 @@ export interface DrawerConfig {
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
-  headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
+  headerActions?: ReadonlyArray<ItemRuntime>;
   onHeaderActionClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
 }
 
@@ -74,10 +74,10 @@ export interface DrawersApiPublic {
   openDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   closeDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
   resizeDrawer(drawerId: string, size: number): void;
+  clearRegisteredDrawersForTesting(): void;
 }
 
 export interface DrawersApiInternal {
-  clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
   onDrawerOpened(listener: DrawersToggledListener): () => void;
   onDrawerClosed(listener: DrawersToggledListener): () => void;
@@ -142,7 +142,7 @@ export class DrawersController {
     };
   };
 
-  clearRegisteredDrawers = () => {
+  clearRegisteredDrawersForTesting = () => {
     this.drawers = [];
   };
 
@@ -221,11 +221,11 @@ export class DrawersController {
     api.openDrawer ??= this.openDrawer;
     api.closeDrawer ??= this.closeDrawer;
     api.resizeDrawer ??= this.resizeDrawer;
+    api.clearRegisteredDrawersForTesting ??= this.clearRegisteredDrawersForTesting;
     return api as DrawersApiPublic;
   }
 
   installInternal(internalApi: Partial<DrawersApiInternal> = {}): DrawersApiInternal {
-    internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
     internalApi.onDrawerClosed ??= this.onDrawerClosed;

@@ -32,6 +32,8 @@ const VirtualListOpen = forwardRef(
       useInteractiveGroups,
       screenReaderContent,
       firstOptionSticky,
+      isMultiSelect,
+      renderOption,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
@@ -73,7 +75,10 @@ const VirtualListOpen = forwardRef(
               menuEl: menuRefObject?.current,
             });
           } else {
-            scrollToIndex(index);
+            // Fix for AWSUI-61506. Defer scroll to next frame to ensure
+            // virtual items are measured after re-render. When called from
+            // parent's useEffect, measurements may not be ready yet.
+            requestAnimationFrame(() => scrollToIndex(index));
           }
         }
         previousHighlightedIndex.current = index;
@@ -87,6 +92,7 @@ const VirtualListOpen = forwardRef(
     const idPrefix = useUniqueId('select-list-');
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
+      renderOption,
       getOptionProps,
       filteringValue,
       highlightType,
@@ -100,19 +106,10 @@ const VirtualListOpen = forwardRef(
       withScrollbar,
     });
 
-    // Adjust totalSize to account for 1px overlap per item (matching the position adjustment in renderOptions)
-    const overlapAdjustment = filteredOptions.length;
-    const adjustedTotalSize = totalSize - overlapAdjustment;
-
     return (
-      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
+      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef} isMultiSelect={isMultiSelect}>
         {finalOptions}
-        <div
-          aria-hidden="true"
-          key="total-size"
-          className={styles['layout-strut']}
-          style={{ height: adjustedTotalSize - stickySize }}
-        />
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}
@@ -124,10 +121,10 @@ const VirtualListOpen = forwardRef(
 );
 
 const VirtualListClosed = forwardRef(
-  ({ menuProps, listBottom }: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
+  ({ menuProps, listBottom, isMultiSelect }: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
     useImperativeHandle(ref, () => () => {}, []);
     return (
-      <OptionsList {...menuProps} ref={menuProps.ref}>
+      <OptionsList {...menuProps} ref={menuProps.ref} isMultiSelect={isMultiSelect}>
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}

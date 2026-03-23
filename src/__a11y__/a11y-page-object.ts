@@ -79,6 +79,7 @@ export default class A11yPageObject extends BasePageObject {
       runOptions
     );
 
+    // eslint-disable-next-line no-restricted-syntax -- Test utility: runtime check on axe result
     if ('error' in response) {
       throw response.error;
     }

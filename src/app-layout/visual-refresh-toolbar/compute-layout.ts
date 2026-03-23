@@ -35,10 +35,8 @@ export function computeHorizontalLayout({
 }: HorizontalLayoutInput) {
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
 
-  let resizableSpaceAvailable = Math.max(
-    0,
-    placement.inlineSize - minContentWidth - CONTENT_PADDING - activeNavigationWidth - activeAiDrawerSize
-  );
+  let resizableSpaceAvailable =
+    placement.inlineSize - minContentWidth - CONTENT_PADDING - activeNavigationWidth - activeAiDrawerSize;
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
   const availableWidthForSplitPanel = resizableSpaceAvailable - activeDrawerSize;

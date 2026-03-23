@@ -98,7 +98,7 @@ test(
   })
 );
 
-(process.env.REACT_VERSION !== '18' ? test : test.skip)(
+test(
   'renders modal in async root',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
@@ -203,6 +203,27 @@ test(
 
     metrics = await getModalPerformanceMetrics();
     expect(metrics.length).toBe(1);
+  })
+);
+
+test(
+  'keeps focused element visible with custom height',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/custom-dimensions?height=400&footer=true');
+
+    await page.click('[data-testid="modal-trigger"]');
+    const modal = createWrapper().findModal();
+    const footerSelector = modal.findFooter().toSelector();
+    const inputSelector = '[data-testid="final-input"]';
+
+    await page.keys(['Tab', 'Tab']);
+    await expect(page.isFocused(inputSelector)).resolves.toBe(true);
+
+    const inputBox = await page.getBoundingBox(inputSelector);
+    const footerBox = await page.getBoundingBox(footerSelector);
+    const inputCenter = inputBox.top + inputBox.height / 2;
+    expect(inputCenter).toBeLessThan(footerBox.top);
   })
 );
 

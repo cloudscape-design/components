@@ -30,6 +30,7 @@ import { AppLayoutState } from '../interfaces';
 import { AppLayoutInternalProps, AppLayoutInternals } from '../interfaces';
 import { useAiDrawer } from './use-ai-drawer';
 import { useBottomDrawers } from './use-bottom-drawers';
+import { useFeatureNotifications } from './use-feature-notifications';
 import { useWidgetMessages } from './use-widget-messages';
 
 export const useAppLayout = (
@@ -71,6 +72,7 @@ export const useAppLayout = (
   const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
   const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
   const [isNested, setIsNested] = useState(false);
+  const [expandedDrawerId, setInternalExpandedDrawerId] = useState<string | null>(null);
   const rootRefInternal = useRef<HTMLDivElement>(null);
   // This workaround ensures the ref is defined before checking if the app layout is nested.
   // On initial render, the ref might be undefined because this component loads asynchronously via the widget API.
@@ -87,6 +89,16 @@ export const useAppLayout = (
     setToolsOpen(open);
     drawersFocusControl.setFocus();
     fireNonCancelableEvent(onToolsChange, { open });
+  };
+
+  const setExpandedDrawerId = (value: string | null) => {
+    setInternalExpandedDrawerId(value);
+
+    if (aiDrawer?.onToggleFocusMode && (value === aiDrawer?.id || value === null)) {
+      fireNonCancelableEvent(aiDrawer.onToggleFocusMode, {
+        isExpanded: !!value,
+      });
+    }
   };
 
   const onGlobalDrawerFocus = (drawerId: string, open: boolean) => {
@@ -125,6 +137,9 @@ export const useAppLayout = (
     bottomDrawersFocusControl.setFocus();
   };
 
+  const { featureNotificationsProps, onOpenFeatureNotificationsDrawer, featureNotificationsMessageHandler } =
+    useFeatureNotifications();
+
   const {
     drawers,
     activeDrawer,
@@ -141,16 +156,25 @@ export const useAppLayout = (
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
-    expandedDrawerId,
-    setExpandedDrawerId,
-  } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+  } = useDrawers(
+    {
+      ...rest,
+      externalLocalRuntimeDrawers: featureNotificationsProps?.drawer && [featureNotificationsProps?.drawer],
+      onGlobalDrawerFocus,
+      onAddNewActiveDrawer,
+      expandedDrawerId,
+      setExpandedDrawerId,
+    },
     ariaLabels,
-    toolsHide,
-    toolsOpen,
-    tools,
-    toolsWidth,
-    onToolsToggle,
-  });
+    {
+      ariaLabels,
+      toolsHide,
+      toolsOpen,
+      tools,
+      toolsWidth,
+      onToolsToggle,
+    }
+  );
   const {
     aiDrawer,
     aiDrawerMessageHandler,
@@ -221,6 +245,16 @@ export const useAppLayout = (
       return;
     }
 
+    if (
+      ['registerFeatureNotifications', 'showFeaturePromptIfPossible', 'clearFeatureNotifications'].includes(
+        message.type
+      )
+    ) {
+      featureNotificationsMessageHandler(message);
+      return;
+    }
+
+    // eslint-disable-next-line no-restricted-syntax -- postMessage validation: runtime data shape check
     if (!('payload' in message && 'id' in message.payload)) {
       metrics.sendOpsMetricObject('awsui-widget-drawer-incorrect-payload', {
         type: message.type,
@@ -256,6 +290,9 @@ export const useAppLayout = (
   ) => {
     onActiveDrawerChange(drawerId, params);
     drawersFocusControl.setFocus();
+    if (featureNotificationsProps?.drawer?.id && featureNotificationsProps?.drawer?.id === drawerId) {
+      onOpenFeatureNotificationsDrawer();
+    }
   };
 
   const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
@@ -600,6 +637,7 @@ export const useAppLayout = (
       onActiveBottomDrawerResize,
       bottomDrawers,
       bottomDrawersFocusControl,
+      featureNotificationsProps,
     },
   };
 };

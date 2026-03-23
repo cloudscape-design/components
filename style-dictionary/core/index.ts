@@ -35,8 +35,11 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
 ];
 
 async function buildCoreOpenSource(builder: ThemeBuilder) {
-  tokenCategories.forEach(({ tokens, mode: modeId }) => {
+  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
     const mode = modes.find(mode => mode.id === modeId);
+    if (referenceTokens) {
+      builder.addReferenceTokens(referenceTokens, mode);
+    }
     builder.addTokens(tokens, mode);
   });
 
@@ -56,7 +59,7 @@ async function buildCoreOpenSource(builder: ThemeBuilder) {
   return builder.build();
 }
 
-const builder = new ThemeBuilder('visual-refresh', ':root', modes);
+const builder = new ThemeBuilder('visual-refresh', 'body', modes);
 const theme = await buildCoreOpenSource(builder);
 
 export default theme;

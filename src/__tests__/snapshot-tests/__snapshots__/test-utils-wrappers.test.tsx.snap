@@ -37,6 +37,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
 import FileInputWrapper from './file-input';
@@ -61,11 +62,13 @@ import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
+import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
 import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
+import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
@@ -89,6 +92,7 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
+import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TutorialPanelWrapper from './tutorial-panel';
@@ -123,6 +127,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
 export { FileInputWrapper };
@@ -147,11 +152,13 @@ export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
 export { PaginationWrapper };
+export { PanelLayoutWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
 export { ProgressBarWrapper };
 export { PromptInputWrapper };
 export { PropertyFilterWrapper };
+export { RadioButtonWrapper };
 export { RadioGroupWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
@@ -175,6 +182,7 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenWrapper };
 export { TokenGroupWrapper };
+export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TutorialPanelWrapper };
@@ -716,6 +724,25 @@ findDrawer(selector?: string): DrawerWrapper | null;
  */
 findAllDrawers(selector?: string): Array<DrawerWrapper>;
 /**
+ * Returns the wrapper of the first ErrorBoundary that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ErrorBoundary.
+ * If no matching ErrorBoundary is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ErrorBoundaryWrapper | null}
+ */
+findErrorBoundary(selector?: string): ErrorBoundaryWrapper | null;
+
+/**
+ * Returns an array of ErrorBoundary wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ErrorBoundaries inside the current wrapper.
+ * If no matching ErrorBoundary is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ErrorBoundaryWrapper>}
+ */
+findAllErrorBoundaries(selector?: string): Array<ErrorBoundaryWrapper>;
+/**
  * Returns the wrapper of the first ExpandableSection that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first ExpandableSection.
  * If no matching ExpandableSection is found, returns \`null\`.
@@ -1172,6 +1199,25 @@ findPagination(selector?: string): PaginationWrapper | null;
  */
 findAllPaginations(selector?: string): Array<PaginationWrapper>;
 /**
+ * Returns the wrapper of the first PanelLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PanelLayout.
+ * If no matching PanelLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PanelLayoutWrapper | null}
+ */
+findPanelLayout(selector?: string): PanelLayoutWrapper | null;
+
+/**
+ * Returns an array of PanelLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PanelLayouts inside the current wrapper.
+ * If no matching PanelLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PanelLayoutWrapper>}
+ */
+findAllPanelLayouts(selector?: string): Array<PanelLayoutWrapper>;
+/**
  * Returns the wrapper of the first PieChart that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first PieChart.
  * If no matching PieChart is found, returns \`null\`.
@@ -1266,6 +1312,25 @@ findPropertyFilter(selector?: string): PropertyFilterWrapper | null;
  * @returns {Array<PropertyFilterWrapper>}
  */
 findAllPropertyFilters(selector?: string): Array<PropertyFilterWrapper>;
+/**
+ * Returns the wrapper of the first RadioButton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first RadioButton.
+ * If no matching RadioButton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioButtonWrapper | null}
+ */
+findRadioButton(selector?: string): RadioButtonWrapper | null;
+
+/**
+ * Returns an array of RadioButton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the RadioButtons inside the current wrapper.
+ * If no matching RadioButton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<RadioButtonWrapper>}
+ */
+findAllRadioButtons(selector?: string): Array<RadioButtonWrapper>;
 /**
  * Returns the wrapper of the first RadioGroup that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first RadioGroup.
@@ -1703,6 +1768,25 @@ findTokenGroup(selector?: string): TokenGroupWrapper | null;
  * @returns {Array<TokenGroupWrapper>}
  */
 findAllTokenGroups(selector?: string): Array<TokenGroupWrapper>;
+/**
+ * Returns the wrapper of the first Tooltip that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Tooltip.
+ * If no matching Tooltip is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TooltipWrapper | null}
+ */
+findTooltip(selector?: string): TooltipWrapper | null;
+
+/**
+ * Returns an array of Tooltip wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tooltips inside the current wrapper.
+ * If no matching Tooltip is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TooltipWrapper>}
+ */
+findAllTooltips(selector?: string): Array<TooltipWrapper>;
 /**
  * Returns the wrapper of the first TopNavigation that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TopNavigation.
@@ -2147,6 +2231,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findErrorBoundary = function(selector) {
+  let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ErrorBoundaryWrapper.rootSelector}, .\${ErrorBoundaryWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ErrorBoundaryWrapper);
+};
+
+ElementWrapper.prototype.findAllErrorBoundaries = function(selector) {
+  return this.findAllComponents(ErrorBoundaryWrapper, selector);
+};
 ElementWrapper.prototype.findExpandableSection = function(selector) {
   let rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
   if("legacyRootSelector" in ExpandableSectionWrapper && ExpandableSectionWrapper.legacyRootSelector){
@@ -2459,6 +2556,19 @@ ElementWrapper.prototype.findPagination = function(selector) {
 ElementWrapper.prototype.findAllPaginations = function(selector) {
   return this.findAllComponents(PaginationWrapper, selector);
 };
+ElementWrapper.prototype.findPanelLayout = function(selector) {
+  let rootSelector = \`.\${PanelLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PanelLayoutWrapper && PanelLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PanelLayoutWrapper.rootSelector}, .\${PanelLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PanelLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllPanelLayouts = function(selector) {
+  return this.findAllComponents(PanelLayoutWrapper, selector);
+};
 ElementWrapper.prototype.findPieChart = function(selector) {
   let rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
   if("legacyRootSelector" in PieChartWrapper && PieChartWrapper.legacyRootSelector){
@@ -2523,6 +2633,19 @@ ElementWrapper.prototype.findPropertyFilter = function(selector) {
 
 ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
   return this.findAllComponents(PropertyFilterWrapper, selector);
+};
+ElementWrapper.prototype.findRadioButton = function(selector) {
+  let rootSelector = \`.\${RadioButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioButtonWrapper && RadioButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioButtonWrapper.rootSelector}, .\${RadioButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioButtons = function(selector) {
+  return this.findAllComponents(RadioButtonWrapper, selector);
 };
 ElementWrapper.prototype.findRadioGroup = function(selector) {
   let rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
@@ -2823,6 +2946,19 @@ ElementWrapper.prototype.findTokenGroup = function(selector) {
 ElementWrapper.prototype.findAllTokenGroups = function(selector) {
   return this.findAllComponents(TokenGroupWrapper, selector);
 };
+ElementWrapper.prototype.findTooltip = function(selector) {
+  let rootSelector = \`.\${TooltipWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TooltipWrapper && TooltipWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TooltipWrapper.rootSelector}, .\${TooltipWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TooltipWrapper);
+};
+
+ElementWrapper.prototype.findAllTooltips = function(selector) {
+  return this.findAllComponents(TooltipWrapper, selector);
+};
 ElementWrapper.prototype.findTopNavigation = function(selector) {
   let rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
   if("legacyRootSelector" in TopNavigationWrapper && TopNavigationWrapper.legacyRootSelector){
@@ -2923,6 +3059,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
 import FileInputWrapper from './file-input';
@@ -2947,11 +3084,13 @@ import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
 import PaginationWrapper from './pagination';
+import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
 import PopoverWrapper from './popover';
 import ProgressBarWrapper from './progress-bar';
 import PromptInputWrapper from './prompt-input';
 import PropertyFilterWrapper from './property-filter';
+import RadioButtonWrapper from './radio-button';
 import RadioGroupWrapper from './radio-group';
 import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
@@ -2975,6 +3114,7 @@ import ToggleWrapper from './toggle';
 import ToggleButtonWrapper from './toggle-button';
 import TokenWrapper from './token';
 import TokenGroupWrapper from './token-group';
+import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
 import TutorialPanelWrapper from './tutorial-panel';
@@ -3009,6 +3149,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
 export { FileInputWrapper };
@@ -3033,11 +3174,13 @@ export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
 export { PaginationWrapper };
+export { PanelLayoutWrapper };
 export { PieChartWrapper };
 export { PopoverWrapper };
 export { ProgressBarWrapper };
 export { PromptInputWrapper };
 export { PropertyFilterWrapper };
+export { RadioButtonWrapper };
 export { RadioGroupWrapper };
 export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
@@ -3061,6 +3204,7 @@ export { ToggleWrapper };
 export { ToggleButtonWrapper };
 export { TokenWrapper };
 export { TokenGroupWrapper };
+export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
 export { TutorialPanelWrapper };
@@ -3546,6 +3690,23 @@ findDrawer(selector?: string): DrawerWrapper;
  */
 findAllDrawers(selector?: string): MultiElementWrapper<DrawerWrapper>;
 /**
+ * Returns a wrapper that matches the ErrorBoundaries with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ErrorBoundaries.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ErrorBoundaryWrapper}
+ */
+findErrorBoundary(selector?: string): ErrorBoundaryWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ErrorBoundaries with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ErrorBoundaries.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ErrorBoundaryWrapper>}
+ */
+findAllErrorBoundaries(selector?: string): MultiElementWrapper<ErrorBoundaryWrapper>;
+/**
  * Returns a wrapper that matches the ExpandableSections with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches ExpandableSections.
  *
@@ -3954,6 +4115,23 @@ findPagination(selector?: string): PaginationWrapper;
  */
 findAllPaginations(selector?: string): MultiElementWrapper<PaginationWrapper>;
 /**
+ * Returns a wrapper that matches the PanelLayouts with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches PanelLayouts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PanelLayoutWrapper}
+ */
+findPanelLayout(selector?: string): PanelLayoutWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches PanelLayouts with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches PanelLayouts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<PanelLayoutWrapper>}
+ */
+findAllPanelLayouts(selector?: string): MultiElementWrapper<PanelLayoutWrapper>;
+/**
  * Returns a wrapper that matches the PieCharts with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches PieCharts.
  *
@@ -4038,6 +4216,23 @@ findPropertyFilter(selector?: string): PropertyFilterWrapper;
  * @returns {MultiElementWrapper<PropertyFilterWrapper>}
  */
 findAllPropertyFilters(selector?: string): MultiElementWrapper<PropertyFilterWrapper>;
+/**
+ * Returns a wrapper that matches the RadioButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches RadioButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioButtonWrapper}
+ */
+findRadioButton(selector?: string): RadioButtonWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches RadioButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches RadioButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<RadioButtonWrapper>}
+ */
+findAllRadioButtons(selector?: string): MultiElementWrapper<RadioButtonWrapper>;
 /**
  * Returns a wrapper that matches the RadioGroups with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches RadioGroups.
@@ -4429,6 +4624,23 @@ findTokenGroup(selector?: string): TokenGroupWrapper;
  * @returns {MultiElementWrapper<TokenGroupWrapper>}
  */
 findAllTokenGroups(selector?: string): MultiElementWrapper<TokenGroupWrapper>;
+/**
+ * Returns a wrapper that matches the Tooltips with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Tooltips.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TooltipWrapper}
+ */
+findTooltip(selector?: string): TooltipWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Tooltips with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Tooltips.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<TooltipWrapper>}
+ */
+findAllTooltips(selector?: string): MultiElementWrapper<TooltipWrapper>;
 /**
  * Returns a wrapper that matches the TopNavigations with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TopNavigations.
@@ -4865,6 +5077,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findErrorBoundary = function(selector) {
+  let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ErrorBoundaryWrapper.rootSelector}, .\${ErrorBoundaryWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ErrorBoundaryWrapper);
+};
+
+ElementWrapper.prototype.findAllErrorBoundaries = function(selector) {
+  return this.findAllComponents(ErrorBoundaryWrapper, selector);
+};
 ElementWrapper.prototype.findExpandableSection = function(selector) {
   let rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
   if("legacyRootSelector" in ExpandableSectionWrapper && ExpandableSectionWrapper.legacyRootSelector){
@@ -5177,6 +5402,19 @@ ElementWrapper.prototype.findPagination = function(selector) {
 ElementWrapper.prototype.findAllPaginations = function(selector) {
   return this.findAllComponents(PaginationWrapper, selector);
 };
+ElementWrapper.prototype.findPanelLayout = function(selector) {
+  let rootSelector = \`.\${PanelLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PanelLayoutWrapper && PanelLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PanelLayoutWrapper.rootSelector}, .\${PanelLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PanelLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllPanelLayouts = function(selector) {
+  return this.findAllComponents(PanelLayoutWrapper, selector);
+};
 ElementWrapper.prototype.findPieChart = function(selector) {
   let rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
   if("legacyRootSelector" in PieChartWrapper && PieChartWrapper.legacyRootSelector){
@@ -5241,6 +5479,19 @@ ElementWrapper.prototype.findPropertyFilter = function(selector) {
 
 ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
   return this.findAllComponents(PropertyFilterWrapper, selector);
+};
+ElementWrapper.prototype.findRadioButton = function(selector) {
+  let rootSelector = \`.\${RadioButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioButtonWrapper && RadioButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioButtonWrapper.rootSelector}, .\${RadioButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioButtons = function(selector) {
+  return this.findAllComponents(RadioButtonWrapper, selector);
 };
 ElementWrapper.prototype.findRadioGroup = function(selector) {
   let rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
@@ -5540,6 +5791,19 @@ ElementWrapper.prototype.findTokenGroup = function(selector) {
 
 ElementWrapper.prototype.findAllTokenGroups = function(selector) {
   return this.findAllComponents(TokenGroupWrapper, selector);
+};
+ElementWrapper.prototype.findTooltip = function(selector) {
+  let rootSelector = \`.\${TooltipWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TooltipWrapper && TooltipWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TooltipWrapper.rootSelector}, .\${TooltipWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TooltipWrapper);
+};
+
+ElementWrapper.prototype.findAllTooltips = function(selector) {
+  return this.findAllComponents(TooltipWrapper, selector);
 };
 ElementWrapper.prototype.findTopNavigation = function(selector) {
   let rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;

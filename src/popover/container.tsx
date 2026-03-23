@@ -27,6 +27,8 @@ interface PopoverContainerProps {
   */
   trackKey?: string | number;
   minVisibleBlockSize?: number;
+  /** Optional parent element to clamp popover position within its bounds */
+  triggerClampRef?: React.RefObject<HTMLElement>;
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
@@ -52,6 +54,7 @@ export default function PopoverContainer({
   trackRef,
   getTrack: externalGetTrack,
   trackKey,
+  triggerClampRef,
   minVisibleBlockSize,
   arrow,
   children,
@@ -90,6 +93,7 @@ export default function PopoverContainer({
       popoverRef,
       bodyRef,
       arrowRef,
+      triggerClampRef,
       getTrack: getTrack.current,
       contentRef,
       allowScrollToFit,
@@ -113,19 +117,12 @@ export default function PopoverContainer({
 
   // Recalculate position when the DOM changes.
   // istanbul ignore next - tested via integration tests
-  usePositionObserver(trackRef, trackKey, () => {
+  usePositionObserver(getTrack.current, trackKey, () => {
     // Do not update position if popover moved offscreen
     const popoverOffset = popoverRef.current && getLogicalBoundingClientRect(popoverRef.current);
-
-    if (
-      keepPosition ||
-      !popoverOffset ||
-      popoverOffset.insetBlockStart < 0 ||
-      popoverOffset.insetBlockEnd > window.innerHeight
-    ) {
+    if (!popoverOffset || popoverOffset.insetBlockStart < 0 || popoverOffset.insetBlockEnd > window.innerHeight) {
       return;
     }
-
     positionHandlerRef.current();
   });
 

@@ -44,6 +44,7 @@ interface AnalyticsFunnelProps {
   children?: React.ReactNode;
   stepConfiguration?: StepConfiguration[];
   funnelNameSelectors?: () => string[];
+  componentSelectors?: () => string[];
   funnelType: FunnelStartProps['funnelType'];
   optionalStepNumbers: FunnelStartProps['optionalStepNumbers'];
   totalFunnelSteps: FunnelStartProps['totalFunnelSteps'];
@@ -113,6 +114,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   const isVisualRefresh = useVisualRefresh();
   const funnelState = useRef<FunnelState>('default');
   const funnelNameSelector = useRef<string>(getFunnelNameSelector());
+  const componentSelector = useRef<string>();
   const errorCount = useRef<number>(0);
   const loadingButtonCount = useRef<number>(0);
   const wizardCount = useRef<number>(0);
@@ -141,6 +143,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     let funnelInteractionId: string;
     const handle = setTimeout(() => {
       funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors?.() || [], getFunnelNameSelector());
+      componentSelector.current = evaluateSelectors(props.componentSelectors?.() || [], '');
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }
@@ -169,6 +172,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         funnelIdentifier: props.funnelIdentifier,
         flowType: props.funnelFlowType,
         funnelNameSelector: funnelNameSelector.current,
+        componentSelector: componentSelector.current,
         optionalStepNumbers: props.optionalStepNumbers,
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,

@@ -15,8 +15,14 @@ import TextFilter from '../../../lib/components/text-filter';
 import { mockPerformanceMetrics } from '../../internal/analytics/__tests__/mocks';
 
 beforeEach(() => {
+  jest.useFakeTimers();
   jest.resetAllMocks();
   mockPerformanceMetrics();
+});
+
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });
 
 function render(jsx: React.ReactElement) {

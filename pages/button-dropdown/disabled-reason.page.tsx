@@ -7,8 +7,13 @@ import { ButtonDropdown, ButtonDropdownProps } from '~components';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const actionsItems: ButtonDropdownProps.Items = [
-  { id: 'connect', text: 'Connect', disabledReason: 'Instance must be running.', disabled: true },
-  { id: 'details', text: 'View details', disabledReason: 'A single instance needs to be selected.', disabled: true },
+  { id: 'connect', text: 'Connect', disabledReason: 'Instance must be running.', disabled: true, labelTag: 'Disabled' },
+  {
+    id: 'details',
+    text: 'View details',
+    disabledReason: 'A single instance needs to be selected.',
+    disabled: true,
+  },
   {
     id: 'manage-state',
     text: 'Manage instance state',
@@ -22,6 +27,7 @@ const actionsItems: ButtonDropdownProps.Items = [
       {
         id: 'auto-scaling',
         text: 'Attach to Auto Scaling Group',
+        secondaryText: 'Manage the Instance to Auto Scaling Group',
         disabledReason: 'Instance must be running and not already be attached to an Auto Scaling Group.',
         disabled: true,
       },
@@ -38,6 +44,7 @@ const actionsItems: ButtonDropdownProps.Items = [
         text: 'Change shutdown behavior',
         disabledReason: "Instance can't be a spot instance.",
         disabled: true,
+        labelTag: 'Ctrl + D',
       },
     ],
   },

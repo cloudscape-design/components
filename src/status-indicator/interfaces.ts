@@ -45,6 +45,15 @@ export interface StatusIndicatorProps extends BaseComponentProps {
 export namespace StatusIndicatorProps {
   // Why not enums? Explained there
   // https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
-  export type Type = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
+  export type Type =
+    | 'error'
+    | 'warning'
+    | 'success'
+    | 'info'
+    | 'stopped'
+    | 'pending'
+    | 'in-progress'
+    | 'loading'
+    | 'not-started';
   export type Color = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
 }

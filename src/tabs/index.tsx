@@ -55,6 +55,7 @@ export default function Tabs({
   fitHeight,
   keyboardActivationMode = 'automatic',
   actions,
+  style,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -154,6 +155,7 @@ export default function Tabs({
       }}
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
+      style={style}
     />
   );
 
@@ -165,10 +167,12 @@ export default function Tabs({
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         __internalRootRef={__internalRootRef}
+        __contentKey={activeTabId}
         disableContentPaddings={true}
         variant={variant === 'stacked' ? 'stacked' : 'default'}
         fitHeight={fitHeight}
         {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
+        style={style?.container}
       >
         {content()}
       </InternalContainer>

@@ -17,5 +17,6 @@ export interface GeneratedAnalyticsMetadataRadioGroupComponent {
   label: string | LabelIdentifier;
   properties: {
     value: string;
+    valueLabel: string;
   };
 }

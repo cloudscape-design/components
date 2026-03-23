@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+import { RadioButtonProps } from '../internal/components/radio-button/interfaces';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -65,9 +65,16 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   readOnly?: boolean;
 
   /**
+   * An object containing CSS properties to customize the radio group's visual appearance.
+   * Refer to the [style](/components/radio-group/?tabId=style) tab for more details.
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;
+
+  /**
+   * Defines the direction in which the radio buttons are laid out.
+   */
+  direction?: 'horizontal' | 'vertical';
 }
 
 export namespace RadioGroupProps {
@@ -90,47 +97,5 @@ export namespace RadioGroupProps {
     focus(): void;
   }
 
-  export interface Style {
-    input?: {
-      fill?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-      stroke?: {
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-      circle?: {
-        fill?: {
-          checked?: string;
-          disabled?: string;
-          readOnly?: string;
-        };
-      };
-      focusRing?: {
-        borderColor?: string;
-        borderRadius?: string;
-        borderWidth?: string;
-      };
-    };
-    label?: {
-      color?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-    };
-    description?: {
-      color?: {
-        checked?: string;
-        default?: string;
-        disabled?: string;
-        readOnly?: string;
-      };
-    };
-  }
+  export type Style = RadioButtonProps.Style;
 }

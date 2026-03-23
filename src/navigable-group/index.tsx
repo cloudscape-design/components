@@ -12,9 +12,6 @@ import InternalNavigableGroup from './internal';
 
 export { NavigableGroupProps };
 
-/**
- * @awsuiSystem core
- */
 const NavigableGroup = React.forwardRef(({ ...rest }: NavigableGroupProps, ref: React.Ref<NavigableGroupProps.Ref>) => {
   const baseProps = getBaseProps(rest);
   const baseComponentProps = useBaseComponent('NavigableGroup');
@@ -24,4 +21,8 @@ const NavigableGroup = React.forwardRef(({ ...rest }: NavigableGroupProps, ref: 
 });
 
 applyDisplayName(NavigableGroup, 'NavigableGroup');
+
+/**
+ * @awsuiSystem core
+ */
 export default NavigableGroup;

@@ -13,13 +13,14 @@ import {
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
 import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces';
-import { calculatePosition, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
+import { calculatePosition, clampRect, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
 
 export default function usePopoverPosition({
   popoverRef,
   bodyRef,
   arrowRef,
   getTrack,
+  triggerClampRef,
   contentRef,
   allowScrollToFit,
   allowVerticalOverflow,
@@ -34,6 +35,7 @@ export default function usePopoverPosition({
   arrowRef: React.RefObject<HTMLDivElement | null>;
   getTrack: () => null | HTMLElement | SVGElement;
   contentRef: React.RefObject<HTMLDivElement | null>;
+  triggerClampRef?: React.RefObject<HTMLElement>;
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
   preferredPosition: PopoverProps.Position;
@@ -88,7 +90,7 @@ export default function usePopoverPosition({
       // Get rects representing key elements
       // Use getComputedStyle for arrowRect to avoid modifications made by transform
       const viewportRect = getViewportRect(document.defaultView!);
-      const trackRect = getLogicalBoundingClientRect(track);
+      const trackRect = getClampedTrackRect(track, triggerClampRef?.current);
       const arrowRect = getDimensions(arrow);
       const { containingBlock, boundary } = findUpUntilMultiple({
         startElement: popover,
@@ -183,7 +185,7 @@ export default function usePopoverPosition({
         if (!track) {
           return;
         }
-        const trackRect = getLogicalBoundingClientRect(track);
+        const trackRect = getClampedTrackRect(track, triggerClampRef?.current);
 
         const newTrackOffset = toRelativePosition(
           trackRect,
@@ -209,13 +211,14 @@ export default function usePopoverPosition({
       bodyRef,
       contentRef,
       arrowRef,
+      triggerClampRef,
       keepPosition,
       preferredPosition,
       renderWithPortal,
       allowVerticalOverflow,
+      minVisibleBlockSize,
       allowScrollToFit,
       hideOnOverscroll,
-      minVisibleBlockSize,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };
@@ -261,4 +264,10 @@ function getDocumentRect(document: Document): BoundingBox {
 function isBoundary(element: HTMLElement) {
   const computedStyle = getComputedStyle(element);
   return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
+}
+
+function getClampedTrackRect(track: HTMLElement | SVGElement, parentRef?: HTMLElement | null) {
+  const rect = getLogicalBoundingClientRect(track);
+  const bounds = parentRef ? getLogicalBoundingClientRect(parentRef) : undefined;
+  return clampRect(rect, bounds);
 }

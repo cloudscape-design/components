@@ -54,6 +54,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
+  test('dedup ai drawer when registered in nested app layouts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: true });
+    const { globalDrawersWrapper } = renderComponent(<AppLayout content={<AppLayout />} />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    expect(globalDrawersWrapper.findActiveDrawers().length).toBe(1);
+  });
+
   test('isAppLayoutReady returns true when app layout is ready', async () => {
     expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
     const { rerender } = renderComponent(<AppLayout />);
@@ -122,6 +130,26 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       'aria-label',
       'trigger button label'
     );
+  });
+
+  test('updated config should persist between application remounts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: false });
+    const { globalDrawersWrapper: globalDrawersWrapperInitial, unmount } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapperInitial.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, defaultActive: true },
+      })
+    );
+
+    unmount();
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
   });
 
   test('can update drawer config dynamically for bottom drawer', () => {
@@ -248,6 +276,31 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       }
     }
   );
+
+  test(`calls onToggleFocusMode handler by entering / exiting focus mode in left runtime drawer)`, () => {
+    const drawerId = 'global-drawer';
+    const onToggleFocusMode = jest.fn();
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      id: drawerId,
+      isExpandable: true,
+      onToggleFocusMode: event => onToggleFocusMode(event.detail),
+    });
+    const renderProps = renderComponent(<AppLayout />);
+    const { globalDrawersWrapper } = renderProps;
+
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+    if (size === 'mobile') {
+      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();
+    } else {
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: true });
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: false });
+    }
+  });
 
   describe('metrics', () => {
     let sendPanoramaMetricSpy: jest.SpyInstance;
