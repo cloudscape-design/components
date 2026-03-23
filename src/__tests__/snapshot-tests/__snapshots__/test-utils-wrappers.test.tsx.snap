@@ -190,7 +190,7 @@ export { WizardWrapper };
 
 declare module '@cloudscape-design/test-utils-core/dist/dom' {
    interface ElementWrapper {
-    
+
 /**
  * Returns the wrapper of the first Alert that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Alert.
@@ -4444,7 +4444,7 @@ export { WizardWrapper };
 
 declare module '@cloudscape-design/test-utils-core/dist/selectors' {
    interface ElementWrapper {
-    
+
 /**
  * Returns a wrapper that matches the Alerts with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Alerts.
