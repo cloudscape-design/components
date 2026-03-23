@@ -9,7 +9,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { TableGroupedTypes } from './column-grouping-utils';
 import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
-import { TableHiddenHeaderCell } from './header-cell/hidden-header-cell';
+// import { TableHiddenHeaderCell } from './header-cell/hidden-header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
@@ -237,36 +237,14 @@ const Thead = React.forwardRef(
               />
             ) : null}
 
-            {row.columns.map(col => {
-              // Hidden placeholder cell — fills gaps where rowspan > 1 would have been
-              if (col.isHidden) {
-                const columnDef = col.columnDefinition;
-                const minWidth = columnDef?.minWidth
-                  ? typeof columnDef.minWidth === 'string'
-                    ? parseInt(columnDef.minWidth)
-                    : columnDef.minWidth
-                  : undefined;
-
-                return (
-                  <TableHiddenHeaderCell
-                    {...commonCellProps}
-                    key={`${col.id}-hidden-${col.rowIndex}`}
-                    columnId={col.id}
-                    colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
-                    colspan={col.colspan}
-                    tabIndex={sticky ? -1 : 0}
-                    focusedComponent={focusedComponent}
-                    resizableColumns={resizableColumns}
-                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
-                    onResizeFinish={() => onResizeFinish(columnWidths)}
-                    updateColumn={updateColumn}
-                    cellRef={node => setCell(sticky, col.id, node)}
-                    resizerRoleDescription={resizerRoleDescription}
-                    resizerTooltipText={resizerTooltipText}
-                    minWidth={minWidth}
-                  />
-                );
-              }
+            {row.columns.map((col, colIndexInRow) => {
+              // A cell is the last child of its parent group when the next rendered cell
+              // in the same row belongs to a different top-level parent, i.e. they don't
+              // share the same immediate parent group.
+              const nextCol = row.columns[colIndexInRow + 1];
+              const thisParent = col.parentGroupIds[col.parentGroupIds.length - 1] ?? null;
+              const nextParent = nextCol ? (nextCol.parentGroupIds[nextCol.parentGroupIds.length - 1] ?? null) : null;
+              const isLastChildOfGroup = thisParent !== null && thisParent !== nextParent;
 
               if (col.isGroup) {
                 // Group header cell
@@ -298,6 +276,10 @@ const Thead = React.forwardRef(
                     cellRef={node => setCell(sticky, col.id, node)}
                     resizerRoleDescription={resizerRoleDescription}
                     resizerTooltipText={resizerTooltipText}
+                    isLastChildOfGroup={isLastChildOfGroup}
+                    columnGroupId={
+                      col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
+                    }
                   />
                 );
               } else {
@@ -339,6 +321,7 @@ const Thead = React.forwardRef(
                     colSpan={col.colspan}
                     rowSpan={col.rowspan}
                     spansRows={col.rowspan > 1}
+                    isLastChildOfGroup={isLastChildOfGroup}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
                     }

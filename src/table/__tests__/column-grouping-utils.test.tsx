@@ -102,8 +102,8 @@ describe('column-grouping-utils', () => {
         // Row 0: ungrouped columns span all rows (rowspan=2), plus group headers
         const row0 = result.rows[0].columns;
         expect(row0.map(c => c.id)).toEqual(['id', 'name', 'performance', 'config', 'pricing']);
-        expect(row0.find(c => c.id === 'id')).toMatchObject({ isHidden: false, rowspan: 2 });
-        expect(row0.find(c => c.id === 'name')).toMatchObject({ isHidden: false, rowspan: 2 });
+        expect(row0.find(c => c.id === 'id')).toMatchObject({ rowspan: 2 });
+        expect(row0.find(c => c.id === 'name')).toMatchObject({ rowspan: 2 });
         expect(row0.find(c => c.id === 'performance')).toMatchObject({ isGroup: true, colspan: 3, rowspan: 1 });
         expect(row0.find(c => c.id === 'config')).toMatchObject({ isGroup: true, colspan: 2 });
         expect(row0.find(c => c.id === 'pricing')).toMatchObject({ isGroup: true, colspan: 1 });
@@ -205,7 +205,7 @@ describe('column-grouping-utils', () => {
         // Row 0: metrics + config spanning all rows (rowspan=2, not hidden)
         const row0 = result.rows[0].columns;
         expect(row0.map(c => c.id)).toEqual(['metrics', 'config']);
-        expect(row0.find(c => c.id === 'config')).toMatchObject({ isHidden: false, rowspan: 2 });
+        expect(row0.find(c => c.id === 'config')).toMatchObject({ rowspan: 2 });
         // Row 1: only performance (config is already in row 0 with rowspan=2, not repeated)
         expect(result.rows[1].columns.map(c => c.id)).toEqual(['performance']);
       });

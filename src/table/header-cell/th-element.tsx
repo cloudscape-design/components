@@ -59,6 +59,11 @@ export interface TableThElementProps {
    * Applies bottom-alignment so content sits flush with grouped column labels in the last row.
    */
   spansRows?: boolean;
+  /**
+   * When true, this cell is the rightmost child within its parent group.
+   * Its divider/resizer extends fully to connect to the parent group's horizontal border.
+   */
+  isLastChildOfGroup?: boolean;
 }
 
 export function TableThElement({
@@ -87,6 +92,7 @@ export function TableThElement({
   isPlaceholder,
   columnGroupId,
   spansRows,
+  isLastChildOfGroup,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -124,6 +130,8 @@ export function TableThElement({
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
           [styles['header-cell-spans-rows']]: spansRows,
+          [styles['header-cell-grouped']]: !!columnGroupId,
+          [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
         },
         stickyStyles.className
       )}
