@@ -520,6 +520,38 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     });
   });
 
+  test('renders labels from i18nStrings payload prop', () => {
+    const i18nStringsPayload: FeatureNotificationsPayload<string>['i18nStrings'] = {
+      titleText: 'Payload title',
+      viewAllText: 'Payload view all',
+      closeButtonAriaLabel: 'Payload close',
+      contentAriaLabel: 'Payload content',
+      triggerButtonAriaLabel: 'Payload trigger',
+      resizeHandleAriaLabel: 'Payload resize',
+    };
+    featureNotifications.registerFeatureNotifications({
+      ...featureNotificationsDefaults,
+      i18nStrings: i18nStringsPayload,
+    });
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Payload trigger'
+    );
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    const activeDrawerWrapper = wrapper.findActiveDrawer()!;
+
+    expect(activeDrawerWrapper.getElement()).toHaveAttribute('aria-label', 'Payload content');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('Payload title');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('Payload view all');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Payload close');
+    if (size === 'desktop') {
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute('aria-label', 'Payload resize');
+    }
+  });
+
   test('renders feature notifications drawer alongside tools', () => {
     featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
     const { wrapper } = renderComponent(

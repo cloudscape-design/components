@@ -90,6 +90,7 @@ export function useFeatureNotifications() {
           features={payload.features}
           featuresPageLink={payload.featuresPageLink}
           mountItem={payload.mountItem}
+          i18nStrings={payload.i18nStrings}
         />
       ),
       trigger: {
@@ -102,10 +103,10 @@ export function useFeatureNotifications() {
         ),
       },
       ariaLabels: {
-        closeButton: i18n('ariaLabels.closeButton', undefined),
-        drawerName: i18n('ariaLabels.content', undefined) ?? '',
-        triggerButton: i18n('ariaLabels.triggerButton', undefined),
-        resizeHandle: i18n('ariaLabels.resizeHandle', undefined),
+        closeButton: i18n('ariaLabels.closeButton', payload.i18nStrings?.closeButtonAriaLabel),
+        drawerName: i18n('ariaLabels.content', payload.i18nStrings?.contentAriaLabel) ?? '',
+        triggerButton: i18n('ariaLabels.triggerButton', payload.i18nStrings?.triggerButtonAriaLabel),
+        resizeHandle: i18n('ariaLabels.resizeHandle', payload.i18nStrings?.resizeHandleAriaLabel),
       },
       resizable: true,
       defaultSize: 320,
