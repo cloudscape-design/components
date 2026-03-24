@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render as reactRender, waitFor } from '@testing-library/react';
+import { act, render as reactRender, waitFor } from '@testing-library/react';
 
 import { disableMotion } from '@cloudscape-design/global-styles';
 
@@ -10,6 +10,7 @@ import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
+import { TIMEOUT_FOR_ENTERING_ANIMATION } from '../constant';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
 
 import styles from '../../../lib/components/flashbar/styles.css.js';
@@ -442,5 +443,49 @@ describe('Flashbar component', () => {
     // https://cloudscape.design/foundation/visual-foundation/motion/#implementation
     setAnimations(false);
     testFlashDismissal({ stackItems: false });
+  });
+
+  describe('rapid item replacement with animations', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      setAnimations(true);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+      setAnimations(false);
+    });
+
+    test('replacing one item with a different id results in only the new item after transition', () => {
+      const { rerender } = reactRender(<Flashbar items={[{ id: 'flash-a', type: 'info', content: 'Item A' }]} />);
+      const wrapper = createWrapper().findFlashbar()!;
+
+      expect(wrapper.findItems()).toHaveLength(1);
+      expect(wrapper.findItems()[0].getElement()).toHaveTextContent('Item A');
+
+      rerender(<Flashbar items={[{ id: 'flash-b', type: 'success', content: 'Item B' }]} />);
+
+      act(() => {
+        jest.advanceTimersByTime(TIMEOUT_FOR_ENTERING_ANIMATION);
+      });
+
+      expect(wrapper.findItems()).toHaveLength(1);
+      expect(wrapper.findItems()[0].getElement()).toHaveTextContent('Item B');
+    });
+
+    test('rapidly cycling through multiple items leaves only the final item', () => {
+      const { rerender } = reactRender(<Flashbar items={[{ id: '1', type: 'info', content: 'First' }]} />);
+      const wrapper = createWrapper().findFlashbar()!;
+
+      rerender(<Flashbar items={[{ id: '2', type: 'info', content: 'Second' }]} />);
+      rerender(<Flashbar items={[{ id: '3', type: 'success', content: 'Third' }]} />);
+
+      act(() => {
+        jest.advanceTimersByTime(TIMEOUT_FOR_ENTERING_ANIMATION);
+      });
+
+      expect(wrapper.findItems()).toHaveLength(1);
+      expect(wrapper.findItems()[0].getElement()).toHaveTextContent('Third');
+    });
   });
 });
