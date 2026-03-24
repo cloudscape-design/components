@@ -123,10 +123,6 @@
 
   > .dismiss-button {
     color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
-
-    &:hover {
-      color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
-    }
   }
 }
 
@@ -137,9 +133,5 @@
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
     color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
-
-    &:hover {
-      color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
-    }
   }
 }
