@@ -5,6 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import Dropdown from '../../internal/components/dropdown';
+import { RenderTriggerProps } from '../../internal/components/dropdown/interfaces';
 import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
@@ -127,7 +128,11 @@ export default function TokenMode({
             )
           }
           trigger={null}
-          triggerRef={triggerWrapperRef}
+          triggerId={activeTriggerToken?.id}
+          renderTrigger={({ triggerRef }: RenderTriggerProps) => {
+            triggerRef.current = triggerWrapperReady ? triggerWrapperRef.current : null;
+            return null;
+          }}
           contentKey={
             triggerWrapperReady ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}` : undefined
           }
