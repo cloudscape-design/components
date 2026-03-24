@@ -9,7 +9,7 @@ export function getTokenRootStyles(style: TokenProps['style']) {
     return {};
   }
 
-  const properties = {
+  return {
     borderRadius: style?.root?.borderRadius,
     borderWidth: style?.root?.borderWidth,
     paddingBlock: style?.root?.paddingBlock,
@@ -32,6 +32,4 @@ export function getTokenRootStyles(style: TokenProps['style']) {
       [customCssProps.styleFocusRingBorderWidth]: style.dismissButton.focusRing.borderWidth,
     }),
   };
-
-  return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined));
 }
