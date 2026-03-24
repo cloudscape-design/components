@@ -97,7 +97,10 @@
   }
 }
 
-@mixin font-display-l {
+@mixin font-display-l($family: true) {
+  @if $family {
+    font-family: awsui.$font-family-display;
+  }
   font-size: awsui.$font-size-display-l;
   line-height: awsui.$line-height-display-l;
   letter-spacing: awsui.$letter-spacing-display-l;
@@ -160,7 +163,7 @@
     @include font-heading-xl($weight: false, $family: false);
   }
   @if $font-size == display-l {
-    @include font-display-l;
+    @include font-display-l($family: false);
   }
   @if $font-size == inherit {
     @include font-inherit;

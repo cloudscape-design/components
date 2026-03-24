@@ -17,6 +17,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontFamilyDisplay: {
+    description: 'The font family for display text. Defaults to the base font family.',
+    themeable: true,
+    public: true,
+  },
   fontFamilyHeading: {
     description: 'The font family for headings and component headers. Defaults to the base font family.',
     themeable: true,
@@ -104,6 +109,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   letterSpacingDisplayL: {
     description: 'The default letter spacing for large display text.',
+    themeable: true,
+    public: true,
   },
   letterSpacingHeadingXl: {
     description: 'The default letter spacing for h1s.',
