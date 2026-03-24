@@ -239,14 +239,17 @@ const InternalDropdown = ({
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mergedRef = useMergeRefs(wrapperRef, __internalRootRef);
   const internalTriggerRef = useRef<HTMLDivElement | null>(null);
+  const renderTriggerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
 
-  // Use external trigger ref if provided, otherwise use internal ref
-  const triggerRef = externalTriggerRef || internalTriggerRef;
+  // Determine which ref to use for positioning:
+  // 1. renderTriggerRef (when renderTrigger is used — consumer attaches this to their element)
+  // 2. internalTriggerRef (default wrapper div around the trigger slot)
+  const triggerRef = renderTrigger ? renderTriggerRef : internalTriggerRef;
 
   const isRefresh = useVisualRefresh();
 
@@ -549,7 +552,7 @@ const InternalDropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      {!externalTriggerRef && (
+      {!renderTrigger && (
         <div
           id={referrerId}
           className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testUtilStyles.trigger)}
@@ -558,6 +561,12 @@ const InternalDropdown = ({
           {trigger}
         </div>
       )}
+      {renderTrigger &&
+        renderTrigger({
+          triggerRef: renderTriggerRef,
+          isOpen: !!open,
+          referrerId,
+        })}
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
