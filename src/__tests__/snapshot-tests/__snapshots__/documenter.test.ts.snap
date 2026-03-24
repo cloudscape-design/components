@@ -29756,6 +29756,11 @@ Use this if the label is not plain text.",
       "type": "string",
     },
     {
+      "name": "clickable",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Further information about the token that appears below the label.",
       "name": "description",
       "optional": true,
