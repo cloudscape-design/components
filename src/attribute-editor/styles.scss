@@ -13,6 +13,16 @@
   grid-template-rows: min-content;
   gap: awsui.$space-grid-gutter;
   align-items: start;
+
+  &.variant-condensed {
+    gap: awsui.$space-grid-gutter 0;
+  }
+
+  &.direction-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: awsui.$space-grid-gutter;
+  }
 }
 
 .empty {
@@ -23,6 +33,11 @@
 
 .row {
   display: contents;
+
+  &.direction-horizontal {
+    display: flex;
+    margin-inline-end: awsui.$space-grid-gutter;
+  }
 }
 
 .divider {
