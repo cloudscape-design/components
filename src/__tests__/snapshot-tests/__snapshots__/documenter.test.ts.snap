@@ -3081,6 +3081,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "heart-filled",
                       "insert-row",
                       "keyboard",
+                      "light-dark",
                       "list-view",
                       "location-pin",
                       "lock-private",
@@ -5381,6 +5382,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "heart-filled",
           "insert-row",
           "keyboard",
+          "light-dark",
           "list-view",
           "location-pin",
           "lock-private",
@@ -6177,6 +6179,7 @@ The main action also supports the following properties of the [button](/componen
                 "heart-filled",
                 "insert-row",
                 "keyboard",
+                "light-dark",
                 "list-view",
                 "location-pin",
                 "lock-private",
@@ -13627,6 +13630,14 @@ exports[`Components definition for form-field matches the snapshot: form-field 1
       "type": "FormFieldProps.AnalyticsMetadata",
     },
     {
+      "description": "Character count constraint displayed adjacent to the constraintText. Use
+this to provide an updated character count on each keypress that is debounced
+for screen reader users.",
+      "name": "characterCountText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -14181,6 +14192,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "heart-filled",
           "insert-row",
           "keyboard",
+          "light-dark",
           "list-view",
           "location-pin",
           "lock-private",
@@ -14713,6 +14725,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "keyboard",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "light-dark",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -19907,6 +19924,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "heart-filled",
           "insert-row",
           "keyboard",
+          "light-dark",
           "list-view",
           "location-pin",
           "lock-private",
@@ -23295,6 +23313,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "heart-filled",
                       "insert-row",
                       "keyboard",
+                      "light-dark",
                       "list-view",
                       "location-pin",
                       "lock-private",
@@ -23910,6 +23929,7 @@ If you want to clear the selection, use \`null\`.",
                 "heart-filled",
                 "insert-row",
                 "keyboard",
+                "light-dark",
                 "list-view",
                 "location-pin",
                 "lock-private",
@@ -29409,6 +29429,7 @@ If an href is provided, it opens the link in a new tab.",
           "heart-filled",
           "insert-row",
           "keyboard",
+          "light-dark",
           "list-view",
           "location-pin",
           "lock-private",
@@ -29616,6 +29637,7 @@ We do not support using this attribute to apply custom styling.",
           "heart-filled",
           "insert-row",
           "keyboard",
+          "light-dark",
           "list-view",
           "location-pin",
           "lock-private",
@@ -33549,6 +33571,19 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],
@@ -44613,6 +44648,14 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
     },
     {
       "methods": [
+        {
+          "name": "findCharacterCount",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findConstraint",
           "parameters": [],

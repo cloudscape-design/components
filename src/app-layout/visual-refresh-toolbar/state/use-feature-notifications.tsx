@@ -90,16 +90,23 @@ export function useFeatureNotifications() {
           features={payload.features}
           featuresPageLink={payload.featuresPageLink}
           mountItem={payload.mountItem}
+          i18nStrings={payload.i18nStrings}
         />
       ),
       trigger: {
-        iconName: 'suggestions',
+        iconSvg: (
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+            <path d="M7 4L14.3244 1.25334C14.6513 1.13076 15 1.3724 15 1.7215V13.2785C15 13.6276 14.6513 13.8692 14.3244 13.7467L7 11" />
+            <path d="M1 6C1 4.89543 1.89543 4 3 4H7V11H3C1.89543 11 1 10.1046 1 9V6Z" />
+            <path d="M9.93649 12.1466C9.66614 13.4393 8.51989 14.4102 7.14687 14.4102C5.57286 14.4102 4.29688 13.1342 4.29688 11.5602C4.29688 11.3685 4.31579 11.1813 4.35187 11.0002" />
+          </svg>
+        ),
       },
       ariaLabels: {
-        closeButton: i18n('ariaLabels.closeButton', undefined),
-        drawerName: i18n('ariaLabels.content', undefined) ?? '',
-        triggerButton: i18n('ariaLabels.triggerButton', undefined),
-        resizeHandle: i18n('ariaLabels.resizeHandle', undefined),
+        closeButton: i18n('ariaLabels.closeButton', payload.i18nStrings?.closeButtonAriaLabel),
+        drawerName: i18n('ariaLabels.content', payload.i18nStrings?.contentAriaLabel) ?? '',
+        triggerButton: i18n('ariaLabels.triggerButton', payload.i18nStrings?.triggerButtonAriaLabel),
+        resizeHandle: i18n('ariaLabels.resizeHandle', payload.i18nStrings?.resizeHandleAriaLabel),
       },
       resizable: true,
       defaultSize: 320,
@@ -125,7 +132,12 @@ export function useFeatureNotifications() {
           setSeenFeatures(seenFeatureNotifications);
           const hasUnseenFeatures = features.some(feature => !seenFeatureNotifications[feature.id]);
           if (hasUnseenFeatures) {
-            if (!payload.suppressFeaturePrompt && !featurePromptDismissed) {
+            const latestFeature = features.find(feature => !seenFeatureNotifications[feature.id]) ?? null;
+            if (
+              !payload.suppressFeaturePrompt &&
+              !featurePromptDismissed &&
+              !seenFeatureNotifications[getFeaturePromptPersistenceId(latestFeature)]
+            ) {
               featurePromptMountPromise.then(() => {
                 featurePromptRef.current?.show();
               });
@@ -173,6 +185,7 @@ export function useFeatureNotifications() {
               triggerRef.current!.dataset!.awsuiSuppressTooltip = 'false';
             }
           });
+          persistFeaturePromptDismiss(latestFeature);
         }}
         header={
           <RuntimeContentPart mountContent={featureNotificationsData?.mountItem} content={latestFeature.header} />
@@ -203,6 +216,21 @@ export function useFeatureNotifications() {
     ).then(() => {
       setSeenFeatures(allFeaturesMap);
       setFeatureNotificationsData(data => (data ? { ...data, badge: false } : data));
+    });
+  };
+
+  const getFeaturePromptPersistenceId = (feature?: Feature<unknown> | null) => `${feature?.id}_feature-prompt`;
+
+  const persistFeaturePromptDismiss = (feature: Feature<unknown>) => {
+    const persistenceConfig = featureNotificationsData?.persistenceConfig ?? DEFAULT_PERSISTENCE_CONFIG;
+    const featuresMap = { [getFeaturePromptPersistenceId(feature)]: feature.releaseDate?.toString() };
+    const filteredSeenFeaturesMap = filterOutdatedFeatures(seenFeatures);
+    const allFeaturesMap = { ...featuresMap, ...filteredSeenFeaturesMap };
+    (featureNotificationsData?.__persistFeatureNotifications ?? persistFeatureNotifications)(
+      persistenceConfig,
+      allFeaturesMap
+    ).then(() => {
+      setSeenFeatures(allFeaturesMap);
     });
   };
 

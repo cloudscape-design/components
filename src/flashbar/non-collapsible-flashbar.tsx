@@ -61,6 +61,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
         {visibleItems.map((item, index) => (
           <Transition
             transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
+            exitTimeout={TIMEOUT_FOR_ENTERING_ANIMATION}
             key={item.id ?? index}
             in={true}
           >

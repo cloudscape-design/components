@@ -2393,6 +2393,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -2456,6 +2460,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -5146,6 +5154,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -5209,6 +5221,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -7899,6 +7915,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -7962,6 +7982,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -10652,6 +10676,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -10715,6 +10743,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -13405,6 +13437,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -13468,6 +13504,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -16158,6 +16198,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -16221,6 +16265,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "normal",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -18911,6 +18959,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-display": {
+      "$description": "The font family for display text. Defaults to the base font family.",
+      "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-heading": {
       "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -18974,6 +19026,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "400",
+    },
+    "letter-spacing-display-l": {
+      "$description": "The default letter spacing for large display text.",
+      "$value": "normal",
     },
     "letter-spacing-heading-l": {
       "$description": "The default letter spacing for h2s.",
@@ -21669,6 +21725,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -21732,6 +21792,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -24422,6 +24486,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -24485,6 +24553,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -27175,6 +27247,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -27238,6 +27314,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -29928,6 +30008,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -29991,6 +30075,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -32681,6 +32769,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -32744,6 +32836,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -35434,6 +35530,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -35497,6 +35597,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -38187,6 +38291,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -38250,6 +38358,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -40940,6 +41052,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font family that will be applied globally to the product interface.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
         },
+        "font-family-display": {
+          "$description": "The font family for display text. Defaults to the base font family.",
+          "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+        },
         "font-family-heading": {
           "$description": "The font family for headings and component headers. Defaults to the base font family.",
           "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -41003,6 +41119,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
+        },
+        "letter-spacing-display-l": {
+          "$description": "The default letter spacing for large display text.",
+          "$value": "-0.03em",
         },
         "letter-spacing-heading-l": {
           "$description": "The default letter spacing for h2s.",
@@ -43693,6 +43813,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font family that will be applied globally to the product interface.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
     },
+    "font-family-display": {
+      "$description": "The font family for display text. Defaults to the base font family.",
+      "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    },
     "font-family-heading": {
       "$description": "The font family for headings and component headers. Defaults to the base font family.",
       "$value": "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -43756,6 +43880,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "700",
+    },
+    "letter-spacing-display-l": {
+      "$description": "The default letter spacing for large display text.",
+      "$value": "-0.03em",
     },
     "letter-spacing-heading-l": {
       "$description": "The default letter spacing for h2s.",

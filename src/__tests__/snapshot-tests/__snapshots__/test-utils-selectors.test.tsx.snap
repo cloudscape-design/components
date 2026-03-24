@@ -313,7 +313,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_secondary-actions_1i0s3",
   ],
   "form-field": [
+    "awsui_character-count_6mjrv",
     "awsui_constraint_14mhv",
+    "awsui_constraint_6mjrv",
     "awsui_control_14mhv",
     "awsui_description_14mhv",
     "awsui_error_14mhv",
@@ -535,8 +537,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_token-editor-token-remove-actions_1heb1",
   ],
   "radio-group": [
-    "awsui_radio_1mabk",
-    "awsui_root_1mabk",
     "awsui_root_1np5w",
   ],
   "s3-resource-selector": [

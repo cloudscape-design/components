@@ -334,7 +334,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   test('shows feature prompt for a latest unseen features', async () => {
-    mockRetrieveFeatureNotifications.mockResolvedValue({ 'feature-1': mockDate2025.toString() });
+    mockRetrieveFeatureNotifications.mockResolvedValue({
+      'feature-1': mockDate2025.toString(),
+      'feature-1_feature-prompt': mockDate2025.toString(),
+    });
     featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
     const { container } = renderComponent(<AppLayout />);
     await delay();
@@ -376,7 +379,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       'feature-2': mockDate2024.toString(),
       'feature-old': mockDateOld.toString(),
     });
-    featureNotifications.registerFeatureNotifications({ ...featureNotificationsDefaults, suppressFeaturePrompt: true });
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
     const { container } = renderComponent(<AppLayout />);
 
     const featurePromptWrapper = new FeaturePromptWrapper(container);
@@ -408,9 +411,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
     wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
 
-    expect(mockPersistFeatureNotifications).toHaveBeenCalled();
-
-    const persistedFeaturesMap = mockPersistFeatureNotifications.mock.calls[0][1];
+    // The first persist call may be the feature prompt dismissal (if the prompt was shown and auto-dismissed).
+    // The "mark all as read" call is the one that contains all feature IDs.
+    const markAllAsReadCall = mockPersistFeatureNotifications.mock.calls.find(
+      call => call[1]['feature-1'] && call[1]['feature-2']
+    );
+    expect(markAllAsReadCall).toBeTruthy();
+    const persistedFeaturesMap = markAllAsReadCall![1];
 
     expect(persistedFeaturesMap).toHaveProperty('feature-1');
     expect(persistedFeaturesMap).toHaveProperty('feature-2');
@@ -430,6 +437,119 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     featureNotifications.registerFeatureNotifications(emptyFeatures);
     const { wrapper } = renderComponent(<AppLayout />);
     expect(wrapper.findDrawerTriggerById('empty-features')).toBeFalsy();
+  });
+
+  test('does not show feature prompt if it was previously dismissed (persisted)', async () => {
+    // Simulate that the feature prompt for feature-1 was previously dismissed and persisted
+    mockRetrieveFeatureNotifications.mockResolvedValue({
+      'feature-1_feature-prompt': mockDate2025.toString(),
+    });
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
+    const { container } = renderComponent(<AppLayout />);
+    await delay();
+
+    const featurePromptWrapper = new FeaturePromptWrapper(container);
+    // Feature prompt should not appear because the latest unseen feature's prompt was already dismissed
+    expect(featurePromptWrapper.findContent()).toBeFalsy();
+  });
+
+  test('persists feature prompt dismissal when user dismisses the prompt', async () => {
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
+    const { container, unmount } = renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout />
+      </TestI18nProvider>
+    );
+    await delay();
+
+    const featurePromptWrapper = new FeaturePromptWrapper(container);
+    expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent('This is the first new feature content');
+
+    featurePromptWrapper.findDismissButton()!.click();
+
+    await waitFor(() => {
+      expect(mockPersistFeatureNotifications).toHaveBeenCalled();
+      const persistedMap = mockPersistFeatureNotifications.mock.calls[0][1];
+      expect(persistedMap).toHaveProperty('feature-1_feature-prompt');
+    });
+
+    unmount();
+
+    const { container: containerAfterRemount } = renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout />
+      </TestI18nProvider>
+    );
+    expect(new FeaturePromptWrapper(containerAfterRemount).findContent()).toBeFalsy();
+  });
+
+  test('feature prompt dismissal persists with filtered outdated seen features', async () => {
+    const oldSeenFeatureDate = new Date(mockCurrentDate);
+    oldSeenFeatureDate.setDate(oldSeenFeatureDate.getDate() - 200); // More than 180 days ago
+
+    const recentSeenFeatureDate = new Date(mockCurrentDate);
+    recentSeenFeatureDate.setDate(recentSeenFeatureDate.getDate() - 100); // Less than 180 days ago
+
+    mockRetrieveFeatureNotifications.mockResolvedValue({
+      'old-seen-feature': oldSeenFeatureDate.toISOString(),
+      'recent-seen-feature': recentSeenFeatureDate.toISOString(),
+    });
+
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
+    const { container } = renderComponent(
+      <TestI18nProvider messages={i18nMessages}>
+        <AppLayout />
+      </TestI18nProvider>
+    );
+    await delay();
+
+    const featurePromptWrapper = new FeaturePromptWrapper(container);
+    expect(featurePromptWrapper.findContent()!.getElement()).toHaveTextContent('This is the first new feature content');
+
+    featurePromptWrapper.findDismissButton()!.click();
+
+    await waitFor(() => {
+      expect(mockPersistFeatureNotifications).toHaveBeenCalled();
+      const persistedMap = mockPersistFeatureNotifications.mock.calls[0][1];
+      // Should include the prompt dismissal key
+      expect(persistedMap).toHaveProperty('feature-1_feature-prompt');
+      // Should keep recent seen features
+      expect(persistedMap).toHaveProperty('recent-seen-feature');
+      // Should filter out outdated seen features (>180 days)
+      expect(persistedMap).not.toHaveProperty('old-seen-feature');
+    });
+  });
+
+  test('renders labels from i18nStrings payload prop', () => {
+    const i18nStringsPayload: FeatureNotificationsPayload<string>['i18nStrings'] = {
+      titleText: 'Payload title',
+      viewAllText: 'Payload view all',
+      closeButtonAriaLabel: 'Payload close',
+      contentAriaLabel: 'Payload content',
+      triggerButtonAriaLabel: 'Payload trigger',
+      resizeHandleAriaLabel: 'Payload resize',
+    };
+    featureNotifications.registerFeatureNotifications({
+      ...featureNotificationsDefaults,
+      i18nStrings: i18nStringsPayload,
+    });
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Payload trigger'
+    );
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+
+    const activeDrawerWrapper = wrapper.findActiveDrawer()!;
+
+    expect(activeDrawerWrapper.getElement()).toHaveAttribute('aria-label', 'Payload content');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('Payload title');
+    expect(activeDrawerWrapper.getElement()).toHaveTextContent('Payload view all');
+    expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute('aria-label', 'Payload close');
+    if (size === 'desktop') {
+      expect(wrapper.findActiveDrawerResizeHandle()!.getElement()).toHaveAttribute('aria-label', 'Payload resize');
+    }
   });
 
   test('renders feature notifications drawer alongside tools', () => {
