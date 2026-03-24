@@ -492,6 +492,33 @@ describe('Dropdown Component', () => {
       act(() => screen.getByTestId(outsideId).click());
       expect(handleOutsideClick).toHaveBeenCalled();
     });
+
+    test('does not fire onOutsideClick when clicking the external trigger itself', async () => {
+      const handleOutsideClick = jest.fn();
+      function TestComponent() {
+        const triggerRef = useRef<HTMLButtonElement>(null);
+        return (
+          <div>
+            <button data-testid={outsideId} />
+            <button ref={triggerRef} data-testid="external-trigger">
+              Trigger
+            </button>
+            <Dropdown
+              trigger={null}
+              triggerRef={triggerRef as React.RefObject<HTMLElement>}
+              open={true}
+              onOutsideClick={handleOutsideClick}
+              content={<div>Content</div>}
+            />
+          </div>
+        );
+      }
+      render(<TestComponent />);
+      await runPendingEvents();
+
+      act(() => screen.getByTestId('external-trigger').click());
+      expect(handleOutsideClick).not.toHaveBeenCalled();
+    });
   });
 });
 
