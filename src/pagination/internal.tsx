@@ -309,6 +309,10 @@ const InternalPagination = React.forwardRef(
                   onChange={handleInputChange}
                   onBlur={() => setHasError(false)}
                   onKeyDown={e => {
+                    if (e.detail.key === ',') {
+                      e.preventDefault();
+                      return;
+                    }
                     if (e.detail.keyCode === 13 && jumpToPageValue && Number(jumpToPageValue) !== currentPageIndex) {
                       handleJumpToPageClick(Number(jumpToPageValue));
                     }
