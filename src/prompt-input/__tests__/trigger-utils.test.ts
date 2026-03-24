@@ -241,4 +241,59 @@ describe('handleSpaceInOpenMenu', () => {
     expect(result).toBe(false);
     expect(handlers.selectHighlightedOptionWithKeyboard).not.toHaveBeenCalled();
   });
+
+  test('space after trigger char splits filter text out as plain text', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@hello');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 1);
+
+    const closeMenu = jest.fn();
+    const event = makeKeyboardEvent(' ');
+    const result = handleSpaceInOpenMenu(event, {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+    });
+    expect(result).toBe(true);
+    expect(closeMenu).toHaveBeenCalled();
+    expect(trigger.textContent).toBe('@');
+    expect(trigger.getAttribute('data-type')).toBe(ElementType.Trigger);
+    expect(trigger.nextSibling?.textContent).toBe(' hello');
+  });
+
+  test('space after trigger char preserves trigger element identity', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@world');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 1);
+
+    const closeMenu = jest.fn();
+    handleSpaceInOpenMenu(makeKeyboardEvent(' '), {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+    });
+    expect(trigger.id).toBe('t1');
+    expect(p.contains(trigger)).toBe(true);
+  });
+
+  test('space in middle of filter text does not trigger split', () => {
+    const p = document.createElement('p');
+    const trigger = createTriggerElement('t1', '@hello');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    setCursor(trigger.firstChild!, 3);
+
+    const closeMenu = jest.fn();
+    const result = handleSpaceInOpenMenu(makeKeyboardEvent(' '), {
+      menuItemsState: createMockMenuState([{}, {}]),
+      menuItemsHandlers: createMockMenuHandlers(),
+      closeMenu,
+    });
+    expect(result).toBe(false);
+    expect(closeMenu).not.toHaveBeenCalled();
+  });
 });

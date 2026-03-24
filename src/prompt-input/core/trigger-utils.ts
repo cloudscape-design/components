@@ -103,5 +103,29 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     return true;
   }
 
+  // Caret is right after the trigger character with filter text ahead — space splits
+  // the filter text out of the trigger, closing the menu and restoring it as plain text.
+  const selection = window.getSelection();
+  const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+  if (
+    filterText.length > 0 &&
+    range &&
+    isTextNode(range.startContainer) &&
+    range.startContainer.parentElement === triggerElement &&
+    range.startOffset === triggerChar.length
+  ) {
+    event.preventDefault();
+    closeMenu();
+
+    triggerElement.textContent = triggerChar;
+    triggerElement.className = '';
+
+    const textAfter = document.createTextNode(' ' + filterText);
+    insertAfter(textAfter, triggerElement);
+    finalizeSpaceInsertion(textAfter, props);
+
+    return true;
+  }
+
   return false;
 }
