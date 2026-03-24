@@ -33,6 +33,7 @@ describe('getTokenRootStyles', () => {
           readOnly: '#cbd5e1',
         },
         borderRadius: '24px',
+        borderWidth: '2px',
         paddingBlock: '4px',
         paddingInline: '12px',
       },

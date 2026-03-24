@@ -18,6 +18,7 @@ exports[`getTokenRootStyles handles all possible style configurations 1`] = `
   "--awsui-token-style-dismiss-color-hover-wdzefn": "#4338ca",
   "--awsui-token-style-dismiss-color-read-only-wdzefn": "#94a3b8",
   "borderRadius": "24px",
+  "borderWidth": "2px",
   "paddingBlock": "4px",
   "paddingInline": "12px",
 }
