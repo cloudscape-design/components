@@ -25,7 +25,7 @@
   border-start-end-radius: awsui.$border-radius-token;
   border-end-start-radius: awsui.$border-radius-token;
   border-end-end-radius: awsui.$border-radius-token;
-  color: var(#{custom-props.$tokenStyleColorDefault}, awsui.$color-text-body-default);
+  color: awsui.$color-text-body-default;
   box-sizing: border-box;
 
   &:hover {
@@ -36,10 +36,6 @@
     border-color: var(
       #{custom-props.$tokenStyleBorderColorHover},
       var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
-    );
-    color: var(
-      #{custom-props.$tokenStyleColorHover},
-      var(#{custom-props.$tokenStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
 }
@@ -61,7 +57,7 @@
   border-start-end-radius: awsui.$space-scaled-xxs;
   border-end-start-radius: awsui.$space-scaled-xxs;
   border-end-end-radius: awsui.$space-scaled-xxs;
-  color: var(#{custom-props.$tokenStyleColorDefault}, awsui.$color-text-body-default);
+  color: awsui.$color-text-body-default;
   box-sizing: border-box;
   max-inline-size: 100%;
 
@@ -73,10 +69,6 @@
     border-color: var(
       #{custom-props.$tokenStyleBorderColorHover},
       var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
-    );
-    color: var(
-      #{custom-props.$tokenStyleColorHover},
-      var(#{custom-props.$tokenStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
 }

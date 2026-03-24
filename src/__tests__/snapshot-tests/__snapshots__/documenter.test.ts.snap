@@ -29761,7 +29761,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
               "properties": [
                 {
                   "inlineType": {
-                    "name": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                    "name": "object",
                     "properties": [
                       {
                         "name": "default",
@@ -29778,12 +29778,17 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                         "optional": true,
                         "type": "string",
                       },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
                     ],
                     "type": "object",
                   },
                   "name": "color",
                   "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
                 },
                 {
                   "inlineType": {
@@ -29816,7 +29821,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
             },
             "name": "dismissButton",
             "optional": true,
-            "type": "{ color?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; focusRing?: { borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+            "type": "{ color?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; focusRing?: { borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
           },
           {
             "inlineType": {
@@ -29824,7 +29829,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
               "properties": [
                 {
                   "inlineType": {
-                    "name": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                    "name": "object",
                     "properties": [
                       {
                         "name": "default",
@@ -29838,6 +29843,11 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                       },
                       {
                         "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
                         "optional": true,
                         "type": "string",
                       },
@@ -29846,11 +29856,11 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                   },
                   "name": "background",
                   "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
                 },
                 {
                   "inlineType": {
-                    "name": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                    "name": "object",
                     "properties": [
                       {
                         "name": "default",
@@ -29867,12 +29877,17 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                         "optional": true,
                         "type": "string",
                       },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
                     ],
                     "type": "object",
                   },
                   "name": "borderColor",
                   "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
                 },
                 {
                   "name": "borderRadius",
@@ -29883,32 +29898,6 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                   "name": "borderWidth",
                   "optional": true,
                   "type": "string",
-                },
-                {
-                  "inlineType": {
-                    "name": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
-                    "properties": [
-                      {
-                        "name": "default",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "disabled",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "hover",
-                        "optional": true,
-                        "type": "string",
-                      },
-                    ],
-                    "type": "object",
-                  },
-                  "name": "color",
-                  "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; }",
                 },
                 {
                   "name": "paddingBlock",
@@ -29925,7 +29914,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
             },
             "name": "root",
             "optional": true,
-            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; } | undefined; ... 4 more ...; paddingInline?: string | undefined; }",
+            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; borderRadius?:...",
           },
         ],
         "type": "object",

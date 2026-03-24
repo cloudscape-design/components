@@ -109,13 +109,20 @@
 
 .token-box-readonly,
 .token-box-disabled {
-  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-input-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
   pointer-events: none;
 
   > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
     cursor: initial;
+  }
+}
+
+.token-box-disabled {
+  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
+  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
+  color: awsui.$color-text-disabled;
+
+  > .dismiss-button {
+    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
 
     &:hover {
       color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
@@ -123,7 +130,16 @@
   }
 }
 
-.token-box-disabled {
-  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
-  color: var(#{custom-props.$tokenStyleColorDisabled}, awsui.$color-text-disabled);
+.token-box-readonly {
+  border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
+  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
+
+  // stylelint-disable-next-line no-descending-specificity
+  > .dismiss-button {
+    color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
+
+    &:hover {
+      color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
+    }
+  }
 }

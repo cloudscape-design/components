@@ -15,26 +15,24 @@ const roundedPillStyle: TokenProps['style'] = {
       default: 'light-dark(#eef2ff, #2e1065)',
       hover: 'light-dark(#dbeafe, #3b0764)',
       disabled: 'light-dark(#f1f5f9, #1e1b2e)',
+      readOnly: 'light-dark(#f8fafc, #1e1b3a)',
     },
     borderColor: {
       default: 'light-dark(#c7d2fe, #6d28d9)',
       hover: 'light-dark(#93c5fd, #7c3aed)',
       disabled: 'light-dark(#e2e8f0, #334155)',
+      readOnly: 'light-dark(#cbd5e1, #4c1d95)',
     },
     borderRadius: '24px',
     paddingBlock: '4px',
     paddingInline: '12px',
-    color: {
-      default: 'light-dark(#4338ca, #c4b5fd)',
-      hover: 'light-dark(#3730a3, #ddd6fe)',
-      disabled: 'light-dark(#94a3b8, #475569)',
-    },
   },
   dismissButton: {
     color: {
       default: 'light-dark(#6366f1, #a78bfa)',
       hover: 'light-dark(#4338ca, #c4b5fd)',
       disabled: 'light-dark(#cbd5e1, #475569)',
+      readOnly: 'light-dark(#94a3b8, #6d28d9)',
     },
     focusRing: {
       borderColor: 'light-dark(#6366f1, #a78bfa)',
@@ -50,21 +48,18 @@ const greenOutlineStyle: TokenProps['style'] = {
       default: 'light-dark(#ecfdf5, #022c22)',
       hover: 'light-dark(#d1fae5, #064e3b)',
       disabled: 'light-dark(#f8fafc, #1e1b2e)',
+      readOnly: 'light-dark(#f0fdf4, #0a3d2e)',
     },
     borderColor: {
       default: 'light-dark(#6ee7b7, #059669)',
       hover: 'light-dark(#34d399, #10b981)',
       disabled: 'light-dark(#e2e8f0, #334155)',
+      readOnly: 'light-dark(#a7f3d0, #047857)',
     },
     borderRadius: '6px',
     borderWidth: '2px',
     paddingBlock: '4px',
     paddingInline: '10px',
-    color: {
-      default: 'light-dark(#065f46, #6ee7b7)',
-      hover: 'light-dark(#064e3b, #a7f3d0)',
-      disabled: 'light-dark(#94a3b8, #475569)',
-    },
   },
 };
 
@@ -74,6 +69,7 @@ const permutations = createPermutations<TokenProps>([
     icon: [undefined, <Icon key="icon" name="settings" />],
     onDismiss: [() => {}],
     disabled: [false, true],
+    readOnly: [false, true],
     variant: ['normal', 'inline'],
     style: [roundedPillStyle, greenOutlineStyle],
   },

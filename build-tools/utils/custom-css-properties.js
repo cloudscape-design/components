@@ -167,14 +167,14 @@ const customCssPropertiesList = [
   'tokenStyleBackgroundDefault',
   'tokenStyleBackgroundDisabled',
   'tokenStyleBackgroundHover',
+  'tokenStyleBackgroundReadOnly',
   'tokenStyleBorderColorDefault',
   'tokenStyleBorderColorDisabled',
   'tokenStyleBorderColorHover',
-  'tokenStyleColorDefault',
-  'tokenStyleColorDisabled',
-  'tokenStyleColorHover',
+  'tokenStyleBorderColorReadOnly',
   'tokenStyleDismissColorDefault',
   'tokenStyleDismissColorDisabled',
   'tokenStyleDismissColorHover',
+  'tokenStyleDismissColorReadOnly',
 ];
 module.exports = customCssPropertiesList;

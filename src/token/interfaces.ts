@@ -87,19 +87,16 @@ export namespace TokenProps {
         default?: string;
         disabled?: string;
         hover?: string;
+        readOnly?: string;
       };
       borderColor?: {
         default?: string;
         disabled?: string;
         hover?: string;
+        readOnly?: string;
       };
       borderRadius?: string;
       borderWidth?: string;
-      color?: {
-        default?: string;
-        disabled?: string;
-        hover?: string;
-      };
       paddingBlock?: string;
       paddingInline?: string;
     };
@@ -108,6 +105,7 @@ export namespace TokenProps {
         default?: string;
         disabled?: string;
         hover?: string;
+        readOnly?: string;
       };
       focusRing?: {
         borderColor?: string;
