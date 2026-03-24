@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import Box from '../../../box/internal';
 import { InternalDrawer } from '../../../drawer/internal';
 import { useInternalI18n } from '../../../i18n/context';
-import { Feature, MountContentPart } from '../../../internal/plugins/widget/interfaces';
+import { Feature, FeatureNotificationsPayload, MountContentPart } from '../../../internal/plugins/widget/interfaces';
 import { formatDate } from '../../../internal/utils/date-time';
 import Link from '../../../link/internal';
 import List from '../../../list/internal';
@@ -42,15 +42,17 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
   features,
   mountItem,
   featuresPageLink,
+  i18nStrings,
 }: {
   features: Array<Feature<T>>;
   mountItem?: MountContentPart<T>;
   featuresPageLink?: string;
+  i18nStrings?: FeatureNotificationsPayload<unknown>['i18nStrings'];
 }) {
   const i18n = useInternalI18n('features-notification-drawer');
 
   return (
-    <InternalDrawer header={i18n('i18nStrings.title', undefined)} disableContentPaddings={true}>
+    <InternalDrawer header={i18n('i18nStrings.title', i18nStrings?.titleText)} disableContentPaddings={true}>
       <div className={styles['runtime-feature-notifications-drawer-content']}>
         <Box padding={{ top: 'm', left: 'xl', right: 'xl', bottom: 'm' }}>
           <List
@@ -83,7 +85,7 @@ export default function RuntimeFeaturesNotificationDrawer<T>({
           {!!featuresPageLink && (
             <footer className={styles['runtime-feature-notifications-footer']}>
               <Box padding={{ top: 's' }}>
-                <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', undefined)}</Link>
+                <Link href={featuresPageLink}>{i18n('i18nStrings.viewAll', i18nStrings?.viewAllText)}</Link>
               </Box>
             </footer>
           )}

@@ -174,6 +174,15 @@ export interface FeatureNotificationsPayload<T> {
    * Should return a dictionary mapping feature IDs to their release date strings.
    */
   __retrieveFeatureNotifications?: RetrieveFeatureNotifications;
+
+  i18nStrings?: {
+    titleText?: string;
+    viewAllText?: string;
+    closeButtonAriaLabel?: string;
+    contentAriaLabel?: string;
+    triggerButtonAriaLabel?: string;
+    resizeHandleAriaLabel?: string;
+  };
 }
 
 export type FeatureNotificationsPayloadPublic<T> = Omit<
