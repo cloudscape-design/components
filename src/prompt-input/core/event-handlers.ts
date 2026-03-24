@@ -64,7 +64,8 @@ export function createKeyboardHandlers(props: KeyboardHandlerProps) {
 
     if ((event.key === 'Enter' || event.key === 'Tab') && !event.shiftKey) {
       event.preventDefault();
-      return menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+      menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+      return true;
     }
 
     if (event.key === ' ') {

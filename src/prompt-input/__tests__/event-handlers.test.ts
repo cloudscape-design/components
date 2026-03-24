@@ -221,6 +221,21 @@ describe('createKeyboardHandlers', () => {
       expect(handleMenuNavigation(event)).toBe(false);
     });
 
+    test('Enter with empty menu state does not fall through to submit', () => {
+      const handlers = createMockMenuHandlers();
+      handlers.selectHighlightedOptionWithKeyboard = jest.fn().mockReturnValue(false);
+      const props: KeyboardHandlerProps = {
+        getMenuOpen: () => true,
+        getMenuItemsState: () => createMockMenuState([]),
+        getMenuItemsHandlers: () => handlers,
+        closeMenu: jest.fn(),
+      };
+      const { handleMenuNavigation } = createKeyboardHandlers(props);
+      const event = makeKeyboardEvent('Enter');
+      expect(handleMenuNavigation(event)).toBe(true);
+      expect(event.isDefaultPrevented()).toBe(true);
+    });
+
     test('Escape closes menu', () => {
       const closeMenu = jest.fn();
       const props: KeyboardHandlerProps = {
