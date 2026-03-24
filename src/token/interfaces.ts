@@ -69,6 +69,8 @@ export interface TokenProps extends BaseComponentProps {
    * Only applies to plain text labels.
    */
   tooltipContent?: string;
+
+  clickable?: boolean;
 }
 
 export namespace TokenProps {
