@@ -26,7 +26,6 @@ export function insertTextIntoContentEditable(
   caretController.setPosition(insertPosition);
 
   const selection = window.getSelection();
-  /* istanbul ignore next -- covered by integration tests: selection.rangeCount is always > 0 in real browsers after focus+setPosition */
   if (!selection?.rangeCount) {
     return;
   }
@@ -39,7 +38,7 @@ export function insertTextIntoContentEditable(
 
   element.dispatchEvent(new Event('input', { bubbles: true }));
 
-  /* istanbul ignore next -- covered by integration tests: requestAnimationFrame callback requires real browser rAF scheduling */
+  /* istanbul ignore next -- integ test: src/prompt-input/__integ__/prompt-input-token-mode.test.ts > "clicking @ button inserts trigger at caret position" */
   requestAnimationFrame(() => {
     caretController.setPosition(finalPosition);
 

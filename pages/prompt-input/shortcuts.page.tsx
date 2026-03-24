@@ -224,6 +224,8 @@ export default function PromptInputShortcutsPage() {
       return;
     }
 
+    setAsyncMenuStatus('loading');
+
     // For filter changes, debounce unless immediate
     if (firstPage && !immediate && filterText !== asyncLastLoadedFilterRef.current) {
       asyncFilterTimeoutRef.current = window.setTimeout(() => {
@@ -239,8 +241,6 @@ export default function PromptInputShortcutsPage() {
       setAsyncOptions([]);
       asyncLastLoadedFilterRef.current = filterText;
     }
-
-    setAsyncMenuStatus('loading');
 
     // Simulate API delay
     setTimeout(() => {
@@ -708,14 +708,14 @@ export default function PromptInputShortcutsPage() {
                           id: 'record',
                           text: 'Record',
                           iconName: 'microphone',
-                          disabled: isDisabled || isReadOnly,
+                          disabled: isDisabled || isReadOnly || disableActionButton,
                         },
                         {
                           type: 'icon-button',
                           id: 'submit',
                           text: 'Submit',
                           iconName: 'send',
-                          disabled: isDisabled || isReadOnly,
+                          disabled: isDisabled || isReadOnly || disableActionButton,
                         },
                       ]}
                     />

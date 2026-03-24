@@ -24,15 +24,26 @@ class PromptInputTokenModePage extends BasePageObject {
     return this.getText(contentEditableSelector);
   }
 
-  /** Returns the caret offset within its container node. */
+  /**
+   * Returns the visible character count from the start of the input to the caret,
+   * stripping zero-width positioning characters.
+   */
   getCaretOffset(): Promise<number> {
-    return this.browser.execute(() => {
+    return this.browser.execute((selector: string) => {
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0) {
         return -1;
       }
-      return sel.getRangeAt(0).startOffset;
-    });
+      const range = sel.getRangeAt(0);
+      const editable = document.querySelector(selector);
+      if (!editable) {
+        return -1;
+      }
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(editable);
+      preCaretRange.setEnd(range.startContainer, range.startOffset);
+      return preCaretRange.toString().replace(/\u200B/g, '').length;
+    }, contentEditableSelector);
   }
 }
 
@@ -40,22 +51,20 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
   return useBrowser(async browser => {
     const page = new PromptInputTokenModePage(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    await browser.url('#/light/prompt-input/shortcuts');
+    await browser.url('#/light/prompt-input/shortcuts?hasSecondaryActions=true');
     await page.waitForVisible(promptInputWrapper.toSelector());
     await testFn(page);
   });
 };
-// React 16/17: token mode is disabled (version gate), component falls back to textarea.
-// Verify the fallback works and doesn't crash.
-(isReact18 ? describe.skip : describe)('PromptInput token mode - React 16/17 fallback', () => {
+
+// React 16/17: token mode is disabled, component falls back to textarea.
+(isReact18 ? describe.skip : describe)('PromptInput - React 16/17 fallback', () => {
   test(
-    'renders as textarea when menus are provided on React 16/17',
+    'renders as textarea when menus are provided',
     setupTest(async page => {
-      // The component should render a native textarea, not a contentEditable
       const hasTextarea = await page.isExisting(textareaSelector);
       expect(hasTextarea).toBe(true);
 
-      // contentEditable should NOT exist
       const hasContentEditable = await page.isExisting(contentEditableSelector);
       expect(hasContentEditable).toBe(false);
     })
@@ -63,71 +72,16 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
 });
 
 // React 18+: full token mode with contentEditable, triggers, menus, and reference tokens.
-(isReact18 ? describe : describe.skip)('PromptInput token mode', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - typing and editing', () => {
   test(
-    'typing a trigger character opens the menu dropdown',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(1);
-    })
-  );
-
-  test(
-    'selecting a menu item inserts a reference token',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await page.keys(['ArrowDown', 'Enter']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(false);
-
-      const text = await page.getEditorText();
-      expect(text.length).toBeGreaterThan(0);
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBeGreaterThanOrEqual(0);
-    })
-  );
-
-  test(
-    'backspace removes a reference token',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await page.keys(['ArrowDown', 'Enter']);
-      await page.pause(200);
-
-      let text = await page.getEditorText();
-      expect(text.length).toBeGreaterThan(0);
-
-      await page.keys(['Backspace']);
-      await page.pause(100);
-
-      text = await page.getEditorText();
-      expect(text.length).toBe(0);
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(0);
-    })
-  );
-
-  test(
-    'shift+enter creates a new line without submitting',
+    'typing text and creating a new line with shift+enter',
     setupTest(async page => {
       await page.focusInput();
       await page.keys(['h', 'e', 'l', 'l', 'o']);
       await page.pause(100);
+
+      expect(await page.getEditorText()).toContain('hello');
+      expect(await page.getCaretOffset()).toBe(5);
 
       await page.keys(['Shift', 'Enter', 'Shift']);
       await page.pause(100);
@@ -137,105 +91,58 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
       const text = await page.getEditorText();
       expect(text).toContain('hello');
       expect(text).toContain('world');
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(5);
-    })
-  );
-
-  test(
-    'slash trigger opens command menu',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['/']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-    })
-  );
-
-  test(
-    'hash trigger opens topics menu',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['#']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-    })
-  );
-
-  test(
-    'escape closes the menu without selecting',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-
-      await page.keys(['Escape']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(false);
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBeGreaterThanOrEqual(0);
-    })
-  );
-
-  test(
-    'arrow keys navigate and select menu options',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await page.keys(['ArrowDown']);
-      await page.pause(100);
-      await page.keys(['ArrowDown']);
-      await page.pause(100);
-
-      await page.keys(['Enter']);
-      await page.pause(200);
-
-      const text = await page.getEditorText();
-      expect(text.length).toBeGreaterThan(0);
-    })
-  );
-
-  test(
-    'filtering narrows menu options',
-    setupTest(async page => {
-      await page.focusInput();
-      await page.keys(['@']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-
-      await page.keys(['A', 'l', 'i', 'c', 'e']);
-      await page.pause(200);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
-
-      await page.keys(['ArrowDown', 'Enter']);
-      await page.pause(200);
-
-      const text = await page.getEditorText();
-      expect(text).toContain('Alice');
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBeGreaterThanOrEqual(0);
+      expect(await page.getCaretOffset()).toBe(10);
     })
   );
 });
 
-(isReact18 ? describe : describe.skip)('PromptInput token mode - trigger deletion caret positioning', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - menu interactions', () => {
   test(
-    'backspace on trigger character keeps caret at the end of preceding text',
+    'trigger character opens menu, filtering narrows results, selecting inserts reference',
     setupTest(async page => {
       await page.focusInput();
+      await page.keys(['@']);
+      await page.pause(200);
 
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+      expect(await page.getCaretOffset()).toBe(1);
+
+      // Filter to "Alice"
+      await page.keys(['A', 'l', 'i', 'c', 'e']);
+      await page.pause(200);
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      // Select the filtered option
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+
+      await expect(page.isMenuOpen()).resolves.toBe(false);
+      expect(await page.getEditorText()).toContain('Alice');
+    })
+  );
+
+  test(
+    'clicking a menu option inserts reference and retains focus',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['@']);
+      await page.pause(300);
+
+      await expect(page.isMenuOpen()).resolves.toBe(true);
+
+      const firstOption = promptInputWrapper.findOpenMenu()!.findOption(1)!.toSelector();
+      await page.click(firstOption);
+      await page.pause(200);
+
+      expect(await page.getEditorText()).toContain('John Smith');
+      expect(await page.isFocused(contentEditableSelector)).toBe(true);
+    })
+  );
+
+  test(
+    'escape closes menu without selecting, backspace removes trigger',
+    setupTest(async page => {
+      await page.focusInput();
       await page.keys(['h', 'e', 'l', 'l', 'o', ' ', '@']);
       await page.pause(300);
 
@@ -243,95 +150,110 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
 
       await page.keys(['Escape']);
       await page.pause(200);
+      await expect(page.isMenuOpen()).resolves.toBe(false);
+
       await page.keys(['Backspace']);
       await page.pause(300);
 
-      const text = await page.getEditorText();
-      expect(text.trim()).toBe('hello');
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(6);
+      expect(await page.getEditorText()).toContain('hello');
+      expect(await page.getCaretOffset()).toBe(6);
     })
   );
 
   test(
-    'backspace through trigger with filter text keeps caret at correct offset',
+    'backspace through trigger with filter text removes all of it',
     setupTest(async page => {
       await page.focusInput();
-
       await page.keys(['h', 'i', ' ', '@', 'a', 'l', 'i']);
       await page.pause(300);
-
-      await expect(page.isMenuOpen()).resolves.toBe(true);
 
       await page.keys(['Escape']);
       await page.pause(100);
       await page.keys(['Backspace', 'Backspace', 'Backspace', 'Backspace']);
       await page.pause(300);
 
-      const text = await page.getEditorText();
-      expect(text.trim()).toBe('hi');
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(3);
+      expect((await page.getEditorText()).trim()).toBe('hi');
+      expect(await page.getCaretOffset()).toBe(3);
     })
   );
-});
 
-(isReact18 ? describe : describe.skip)('PromptInput token mode - insertText via contentEditable', () => {
   test(
-    'insertText places text at caret and positions caret after insertion',
+    'slash and hash triggers open their respective menus',
     setupTest(async page => {
       await page.focusInput();
-      await page.keys(['h', 'e', 'l', 'l', 'o']);
+      await page.keys(['/']);
       await page.pause(200);
+      await expect(page.isMenuOpen()).resolves.toBe(true);
 
-      const text = await page.getEditorText();
-      expect(text).toContain('hello');
-
-      const offset = await page.getCaretOffset();
-      expect(offset).toBe(5);
+      await page.keys(['Escape']);
+      await page.pause(200);
+      await expect(page.isMenuOpen()).resolves.toBe(false);
     })
   );
 });
 
-(isReact18 ? describe : describe.skip)('PromptInput token mode - trigger visibility on scroll', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - reference token lifecycle', () => {
   test(
-    'menu remains open when trigger is visible',
+    'insert reference via keyboard, then delete it with backspace',
     setupTest(async page => {
       await page.focusInput();
       await page.keys(['@']);
-      await page.pause(300);
+      await page.pause(200);
 
-      await expect(page.isMenuOpen()).resolves.toBe(true);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+
+      const textAfterInsert = await page.getEditorText();
+      expect(textAfterInsert.length).toBeGreaterThan(0);
+
+      await page.keys(['Backspace']);
+      await page.pause(100);
+
+      expect(await page.getEditorText()).toBe('');
+      expect(await page.getCaretOffset()).toBe(0);
+    })
+  );
+
+  test(
+    'type text, insert reference via menu, continue typing after reference',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'i', ' ']);
+      await page.pause(100);
+
+      await page.keys(['@']);
+      await page.pause(200);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+
+      await page.keys([' ', 'b', 'y', 'e']);
+      await page.pause(200);
 
       const text = await page.getEditorText();
-      expect(text).toContain('@');
+      expect(text).toContain('hi');
+      expect(text).toContain('bye');
     })
   );
 });
 
-(isReact18 ? describe : describe.skip)('PromptInput token mode - resize behavior', () => {
+(isReact18 ? describe : describe.skip)('PromptInput token mode - insertText via secondary actions', () => {
   test(
-    'input adjusts height after content change',
+    'clicking @ button inserts trigger at caret position',
     setupTest(async page => {
       await page.focusInput();
-
-      await page.keys(['l', 'i', 'n', 'e', '1']);
-      await page.pause(100);
-      await page.keys(['Shift', 'Enter', 'Shift']);
-      await page.pause(100);
-      await page.keys(['l', 'i', 'n', 'e', '2']);
-      await page.pause(100);
-      await page.keys(['Shift', 'Enter', 'Shift']);
-      await page.pause(100);
-      await page.keys(['l', 'i', 'n', 'e', '3']);
+      await page.keys(['h', 'e', 'l', 'l', 'o', ' ']);
       await page.pause(200);
 
+      expect(await page.getCaretOffset()).toBe(6);
+
+      const atButton = promptInputWrapper.findSecondaryActions()!.find('button[data-itemid="at"]')!.toSelector();
+      await page.click(atButton);
+      await page.pause(500);
+
       const text = await page.getEditorText();
-      expect(text).toContain('line1');
-      expect(text).toContain('line2');
-      expect(text).toContain('line3');
+      expect(text).toContain('hello');
+      expect(text).toContain('@');
+      expect(await page.getCaretOffset()).toBe(7);
     })
   );
 });

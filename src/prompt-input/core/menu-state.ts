@@ -54,12 +54,10 @@ interface MenuLoadMoreHandlers {
   fireLoadMoreOnInputChange(filteringText: string): void;
 }
 
-/* istanbul ignore next -- covered by integration tests: highlight/select handlers only fire from real browser mouse/keyboard events in open dropdown */
 function isMenuItemHighlightable(option?: MenuItem): boolean {
   return !!option && option.type !== 'parent';
 }
 
-/* istanbul ignore next -- covered by integration tests: interactive check only fires from real browser mouse/keyboard events in open dropdown */
 function isMenuItemInteractive(option?: MenuItem): boolean {
   return !!option && !option.disabled && option.type !== 'parent';
 }
@@ -85,7 +83,6 @@ export const useMenuItems = ({
     isHighlightable: isMenuItemHighlightable,
   });
 
-  /* istanbul ignore next -- covered by integration tests: keyboard selection only fires from real browser keyboard events in open dropdown */
   const selectHighlightedOptionWithKeyboard = () => {
     const { highlightedOption } = highlightedOptionState;
     if (!highlightedOption || !isMenuItemInteractive(highlightedOption)) {
@@ -95,7 +92,6 @@ export const useMenuItems = ({
     return true;
   };
 
-  /* istanbul ignore next -- covered by integration tests: mouse highlight only fires from real browser mouse events in open dropdown */
   const highlightVisibleOptionWithMouse = (index: number) => {
     const item = filteredItems[index];
     if (item && isMenuItemHighlightable(item)) {
@@ -103,7 +99,6 @@ export const useMenuItems = ({
     }
   };
 
-  /* istanbul ignore next -- covered by integration tests: mouse selection only fires from real browser mouse events in open dropdown */
   const selectVisibleOptionWithMouse = (index: number) => {
     const item = filteredItems[index];
     if (item && isMenuItemInteractive(item)) {
@@ -122,7 +117,6 @@ export const useMenuItems = ({
   ];
 };
 
-/* istanbul ignore next -- covered by integration tests: createItems processes grouped options which require real dropdown rendering */
 function createItems(options: readonly OptionDefinition[]) {
   const items: MenuItem[] = [];
   const itemToGroup = new WeakMap<MenuItem, MenuItem>();
@@ -173,7 +167,6 @@ function createItems(options: readonly OptionDefinition[]) {
   return { items, getItemGroup, getItemParent };
 }
 
-/* istanbul ignore next -- covered by integration tests: isGroup is called from createItems which processes grouped options */
 function isGroup(optionOrGroup: OptionDefinition): optionOrGroup is OptionGroup {
   const key: keyof OptionGroup = 'options';
   return key in optionOrGroup;
@@ -188,7 +181,6 @@ export const useMenuLoadMore = ({
 }: UseMenuLoadMoreProps): MenuLoadMoreHandlers => {
   const lastFilteringText = useRef<string | null>(null);
 
-  /* istanbul ignore next -- covered by integration tests: fireLoadMore pagination requires real browser scroll events in open dropdown */
   const fireLoadMore = (firstPage: boolean, samePage: boolean, filteringText?: string) => {
     if (filteringText !== undefined && filteringText !== lastFilteringText.current) {
       lastFilteringText.current = filteringText;
@@ -204,7 +196,6 @@ export const useMenuLoadMore = ({
     }
   };
 
-  /* istanbul ignore next -- covered by integration tests: scroll-based load more requires real browser scroll events */
   const fireLoadMoreOnScroll = () => {
     if (menu.options.length > 0 && statusType === 'pending') {
       if (onLoadMoreItems) {
@@ -215,13 +206,10 @@ export const useMenuLoadMore = ({
     }
   };
 
-  /* istanbul ignore next -- covered by integration tests: recovery click requires real browser click in error dropdown */
   const fireLoadMoreOnRecoveryClick = () => fireLoadMore(false, true);
 
-  /* istanbul ignore next -- covered by integration tests: menu open load more requires real browser dropdown open */
   const fireLoadMoreOnMenuOpen = () => fireLoadMore(true, false, lastFilteringText.current ?? '');
 
-  /* istanbul ignore next -- covered by integration tests: input change load more requires real browser input in open dropdown */
   const fireLoadMoreOnInputChange = (filteringText: string) => fireLoadMore(true, false, filteringText);
 
   return { fireLoadMoreOnScroll, fireLoadMoreOnRecoveryClick, fireLoadMoreOnMenuOpen, fireLoadMoreOnInputChange };

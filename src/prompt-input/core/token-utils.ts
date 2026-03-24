@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PromptInputProps } from '../interfaces';
+import { calculateTotalTokenLength, TOKEN_LENGTHS } from './caret-controller';
 import { generateTokenId } from './dom-utils';
 import { findLastPinnedTokenIndex } from './token-operations';
-import { isPinnedReferenceToken, isTextToken } from './type-guards';
+import { isBreakTextToken, isPinnedReferenceToken, isTextToken } from './type-guards';
 
 export { findAdjacentToken } from './dom-utils';
 
@@ -195,4 +196,99 @@ export function detectTriggersInText(
   }
 
   return results.length > 0 ? results : [{ type: 'text', value: text }];
+}
+
+/**
+ * Calculates the correct caret position after pinned tokens have been reordered to the front.
+ * Counts how many pinned tokens were originally after the caret and moved past it during reordering.
+ * @param originalTokens tokens in their original (pre-reorder) order
+ * @param newTokens tokens after reordering
+ * @param caretPosition the logical caret position before reordering
+ */
+export function getCaretPositionAfterPinnedReorder(
+  originalTokens: readonly PromptInputProps.InputToken[],
+  newTokens: readonly PromptInputProps.InputToken[],
+  caretPosition: number
+): number {
+  const totalPinnedCount = newTokens.filter(isPinnedReferenceToken).length;
+  let pinnedBeforeCaret = 0;
+  let pos = 0;
+
+  for (const token of originalTokens) {
+    if (pos >= caretPosition) {
+      break;
+    }
+    if (isPinnedReferenceToken(token)) {
+      pinnedBeforeCaret++;
+    }
+    if (isTextToken(token)) {
+      pos += token.value.length;
+    } else if (isBreakTextToken(token)) {
+      pos += TOKEN_LENGTHS.LINE_BREAK;
+    } else {
+      pos += TOKEN_LENGTHS.REFERENCE;
+    }
+  }
+
+  return caretPosition + (totalPinnedCount - pinnedBeforeCaret);
+}
+
+/**
+ * Maps a caret position from an old token structure to the correct position after
+ * structural changes like token removal (e.g., trigger deletion).
+ * Finds where the token arrays first diverge and adjusts the caret accordingly.
+ *
+ * @param savedPosition the caret position captured from the old DOM (null if invalid)
+ * @param prevTokens tokens from the previous render
+ * @param newTokens tokens for the current render
+ * @returns the adjusted position, or null when no adjustment is needed (use cc.restore())
+ */
+export function getCaretPositionAfterTokenRemoval(
+  savedPosition: number | null,
+  prevTokens: readonly PromptInputProps.InputToken[],
+  newTokens: readonly PromptInputProps.InputToken[]
+): number | null {
+  if (savedPosition === null) {
+    return null;
+  }
+
+  const totalLength = calculateTotalTokenLength(newTokens);
+  const hasOnlyPinned = newTokens.length > 0 && newTokens.every(isPinnedReferenceToken);
+
+  if (hasOnlyPinned || savedPosition > totalLength) {
+    return totalLength;
+  }
+
+  const prevTotalLength = calculateTotalTokenLength(prevTokens);
+  const lengthDelta = prevTotalLength - totalLength;
+
+  if (lengthDelta === 0) {
+    return null;
+  }
+
+  // Find where the token arrays first diverge
+  let diffPosition = 0;
+  const minLen = Math.min(prevTokens.length, newTokens.length);
+
+  for (let i = 0; i < minLen; i++) {
+    if (prevTokens[i].type !== newTokens[i].type) {
+      break;
+    }
+    if (isTextToken(prevTokens[i])) {
+      diffPosition += prevTokens[i].value.length;
+    } else if (isBreakTextToken(prevTokens[i])) {
+      diffPosition += TOKEN_LENGTHS.LINE_BREAK;
+    } else {
+      diffPosition += TOKEN_LENGTHS.REFERENCE;
+    }
+  }
+
+  // When tokens were removed, place the caret at the divergence point.
+  // This is where the deleted token was — the correct position regardless of what
+  // cc.capture() returned (which is unreliable after browser-native deletions).
+  if (lengthDelta > 0) {
+    return Math.min(diffPosition, totalLength);
+  }
+
+  return null;
 }

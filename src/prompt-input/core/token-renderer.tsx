@@ -102,6 +102,7 @@ function createCaretSpot(type: string): HTMLSpanElement {
   const caretSpot = document.createElement('span');
   caretSpot.setAttribute('data-type', type);
   caretSpot.setAttribute('contenteditable', 'true');
+  caretSpot.setAttribute('aria-hidden', 'true');
   caretSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER));
   return caretSpot;
 }
@@ -293,7 +294,6 @@ export function renderTokensToDOM(
     }
   }
 
-  /* istanbul ignore next -- covered by integration tests: paragraph cleanup only triggers with real DOM mutations from browser editing */
   while (targetElement.children.length > paragraphGroups.length) {
     targetElement.removeChild(targetElement.lastChild!);
   }

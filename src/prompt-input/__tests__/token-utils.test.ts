@@ -9,6 +9,8 @@ import {
   detectTriggersInText,
   enforcePinnedTokenOrdering,
   findAdjacentToken,
+  getCaretPositionAfterPinnedReorder,
+  getCaretPositionAfterTokenRemoval,
   mergeConsecutiveTextTokens,
   validateTrigger,
   validateTriggerWithPinnedTokens,
@@ -380,5 +382,96 @@ describe('findAdjacentToken', () => {
     // offset equals childNodes.length - checks nextSibling
     const result = findAdjacentToken(container, 1, 'forward');
     expect(result.sibling).toBeNull();
+  });
+});
+
+describe('getCaretPositionAfterPinnedReorder', () => {
+  test('typing before a single pinned token: caret moves to after pinned', () => {
+    const prev = [text('x'), pinnedRef('p1', 'Mode', 'dev', 'mode')];
+    const next = mergeConsecutiveTextTokens(enforcePinnedTokenOrdering(prev));
+    expect(getCaretPositionAfterPinnedReorder(prev, next, 1)).toBe(2);
+  });
+
+  test('typing between two pinned tokens: caret moves to after both pinned', () => {
+    const prev = [pinnedRef('p1', 'M1', 'dev', 'mode'), text('x'), pinnedRef('p2', 'M2', 'creative', 'mode')];
+    const next = mergeConsecutiveTextTokens(enforcePinnedTokenOrdering(prev));
+    expect(getCaretPositionAfterPinnedReorder(prev, next, 2)).toBe(3);
+  });
+
+  test('typing before two pinned tokens: caret moves to after both pinned', () => {
+    const prev = [text('xy'), pinnedRef('p1', 'M1', 'dev', 'mode'), pinnedRef('p2', 'M2', 'creative', 'mode')];
+    const next = mergeConsecutiveTextTokens(enforcePinnedTokenOrdering(prev));
+    expect(getCaretPositionAfterPinnedReorder(prev, next, 2)).toBe(4);
+  });
+
+  test('typing between pinned and trailing text: caret adjusts correctly', () => {
+    const prev = [
+      pinnedRef('p1', 'M1', 'dev', 'mode'),
+      text('x'),
+      pinnedRef('p2', 'M2', 'creative', 'mode'),
+      text(' hello'),
+    ];
+    const next = mergeConsecutiveTextTokens(enforcePinnedTokenOrdering(prev));
+    expect(getCaretPositionAfterPinnedReorder(prev, next, 2)).toBe(3);
+  });
+
+  test('three pinned tokens with text typed before second: correct adjustment', () => {
+    const prev = [
+      pinnedRef('p1', 'M1', 'a', 'mode'),
+      text('x'),
+      pinnedRef('p2', 'M2', 'b', 'mode'),
+      pinnedRef('p3', 'M3', 'c', 'mode'),
+      text(' hello'),
+    ];
+    const next = mergeConsecutiveTextTokens(enforcePinnedTokenOrdering(prev));
+    expect(getCaretPositionAfterPinnedReorder(prev, next, 2)).toBe(4);
+  });
+
+  test('caret already after all pinned tokens: no adjustment needed', () => {
+    const tokens = [pinnedRef('p1', 'M1', 'dev', 'mode'), pinnedRef('p2', 'M2', 'creative', 'mode'), text('hello x')];
+    expect(getCaretPositionAfterPinnedReorder(tokens, tokens, 9)).toBe(9);
+  });
+});
+
+describe('getCaretPositionAfterTokenRemoval', () => {
+  const trigger = (triggerChar: string, value = '', id = 't1'): PromptInputProps.TriggerToken => ({
+    type: 'trigger',
+    value,
+    triggerChar,
+    id,
+  });
+
+  test('deleting trigger before reference: caret at divergence point (before reference)', () => {
+    // "text @<reference>" → "text <reference>"
+    // Divergence at position 5 (after "text ") — that's where the trigger was
+    const prev = [text('text '), trigger('@'), ref('r1', 'Alice', 'alice', 'mentions')];
+    const next = [text('text '), ref('r1', 'Alice', 'alice', 'mentions')];
+
+    // savedPosition doesn't matter — result is always the divergence point
+    expect(getCaretPositionAfterTokenRemoval(6, prev, next)).toBe(5);
+    expect(getCaretPositionAfterTokenRemoval(5, prev, next)).toBe(5);
+    expect(getCaretPositionAfterTokenRemoval(0, prev, next)).toBe(5);
+  });
+
+  test('deleting trigger after reference: caret at divergence point (after reference)', () => {
+    // "<reference>@ some text" → "<reference> some text"
+    // Divergence at position 1 (after reference) — that's where the trigger was
+    const prev = [ref('r1', 'Alice', 'alice', 'mentions'), trigger('@'), text(' some text')];
+    const next = [ref('r1', 'Alice', 'alice', 'mentions'), text(' some text')];
+
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+    expect(getCaretPositionAfterTokenRemoval(1, prev, next)).toBe(1);
+  });
+
+  test('only pinned tokens remaining: caret at end', () => {
+    const prev = [pinnedRef('p1', 'M', 'a', 'mode'), text('x')];
+    const next = [pinnedRef('p1', 'M', 'a', 'mode')];
+
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+  });
+
+  test('no structural change: returns null for cc.restore()', () => {
+    const tokens = [text('hello'), ref('r1', 'Alice', 'alice', 'mentions')];
+    expect(getCaretPositionAfterTokenRemoval(3, tokens, tokens)).toBeNull();
   });
 });
