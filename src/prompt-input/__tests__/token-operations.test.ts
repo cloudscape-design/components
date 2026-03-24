@@ -13,6 +13,7 @@ import {
   handleMenuSelection,
   processTokens,
 } from '../core/token-operations';
+import { isReferenceToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
 
 // Token helpers
@@ -373,7 +374,12 @@ describe('processTokens', () => {
   test('assigns IDs to trigger tokens without IDs', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'trigger', value: 'user', triggerChar: '@' } as any];
     const result = processTokens(tokens, {}, { source: 'user-input' });
-    expect((result[0] as PromptInputProps.TriggerToken).id).toBeTruthy();
+    const token = result[0];
+    expect(isTriggerToken(token)).toBe(true);
+    if (isTriggerToken(token)) {
+      expect(typeof token.id).toBe('string');
+      expect(token.id).not.toBe('');
+    }
   });
 
   test('assigns IDs to reference tokens without IDs', () => {
@@ -381,13 +387,22 @@ describe('processTokens', () => {
       { type: 'reference', id: '', label: 'Alice', value: 'user-1', menuId: 'mentions' } as any,
     ];
     const result = processTokens(tokens, {}, { source: 'user-input' });
-    expect((result[0] as PromptInputProps.ReferenceToken).id).toBeTruthy();
+    const token = result[0];
+    expect(isReferenceToken(token)).toBe(true);
+    if (isReferenceToken(token)) {
+      expect(typeof token.id).toBe('string');
+      expect(token.id).not.toBe('');
+    }
   });
 
   test('preserves existing IDs', () => {
     const tokens: PromptInputProps.InputToken[] = [trigger('user', '@', 'existing-id')];
     const result = processTokens(tokens, {}, { source: 'user-input' });
-    expect((result[0] as PromptInputProps.TriggerToken).id).toBe('existing-id');
+    const token = result[0];
+    expect(isTriggerToken(token)).toBe(true);
+    if (isTriggerToken(token)) {
+      expect(token.id).toBe('existing-id');
+    }
   });
 
   test('does not detect triggers when menus config is undefined', () => {

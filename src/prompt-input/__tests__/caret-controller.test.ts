@@ -2918,3 +2918,271 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     expect(sel.getRangeAt(0).startContainer).toBe(p);
   });
 });
+
+describe('Home/End key behavior with references', () => {
+  let el: HTMLDivElement;
+  let controller: CaretController;
+
+  function createFullReference(parent: HTMLElement, label: string) {
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    parent.appendChild(wrapper);
+
+    const caretSpotBefore = document.createElement('span');
+    caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
+    caretSpotBefore.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotBefore);
+
+    const tokenContainer = document.createElement('span');
+    tokenContainer.setAttribute('contenteditable', 'false');
+    tokenContainer.textContent = label;
+    wrapper.appendChild(tokenContainer);
+
+    const caretSpotAfter = document.createElement('span');
+    caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
+    caretSpotAfter.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotAfter);
+
+    return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
+  }
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    el.setAttribute('contenteditable', 'true');
+    document.body.appendChild(el);
+    controller = new CaretController(el);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('setPosition(0) places caret before reference at start of paragraph', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    createFullReference(p, 'Alice');
+    p.appendChild(document.createTextNode(' hello'));
+
+    el.focus();
+    controller.setPosition(0);
+
+    // Caret should be at paragraph level before the reference wrapper
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBe(1);
+    expect(controller.getPosition()).toBe(0);
+  });
+
+  test('setPosition at end places caret after last text node', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    p.appendChild(document.createTextNode('hello '));
+    createFullReference(p, 'Alice');
+
+    el.focus();
+    // "hello " (6) + reference (1) = 7
+    controller.setPosition(7);
+
+    expect(controller.getPosition()).toBe(7);
+  });
+
+  test('normalizeCollapsedCaret handles Home key landing in caret-spot-before', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const { caretSpotBefore } = createFullReference(p, 'Alice');
+    p.appendChild(document.createTextNode(' hello'));
+
+    // Simulate Home key placing caret in the before-spot
+    const range = document.createRange();
+    range.setStart(caretSpotBefore.firstChild!, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Should normalize to paragraph level, before the wrapper
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    expect(sel.getRangeAt(0).startOffset).toBe(0);
+  });
+
+  test('normalizeCollapsedCaret handles End key landing in caret-spot-after', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    p.appendChild(document.createTextNode('hello '));
+    const { caretSpotAfter, wrapper } = createFullReference(p, 'Alice');
+
+    // Simulate End key placing caret in the after-spot
+    const range = document.createRange();
+    range.setStart(caretSpotAfter.firstChild!, 1);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeCollapsedCaret(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Should normalize to paragraph level, after the wrapper
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    const wrapperIndex = Array.from(p.childNodes).indexOf(wrapper);
+    expect(sel.getRangeAt(0).startOffset).toBe(wrapperIndex + 1);
+  });
+
+  test('caret position round-trips correctly with text before and after reference', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    p.appendChild(document.createTextNode('abc'));
+    createFullReference(p, 'Alice');
+    p.appendChild(document.createTextNode('def'));
+
+    el.focus();
+
+    // Position 0 = start of "abc"
+    controller.setPosition(0);
+    expect(controller.getPosition()).toBe(0);
+
+    // Position 3 = end of "abc", before reference
+    controller.setPosition(3);
+    expect(controller.getPosition()).toBe(3);
+
+    // Position 4 = after reference, start of "def"
+    controller.setPosition(4);
+    expect(controller.getPosition()).toBe(4);
+
+    // Position 7 = end of "def"
+    controller.setPosition(7);
+    expect(controller.getPosition()).toBe(7);
+  });
+
+  test('caret position round-trips with multiple references', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    createFullReference(p, 'Alice');
+    p.appendChild(document.createTextNode(' and '));
+    createFullReference(p, 'Bob');
+
+    el.focus();
+
+    // ref(1) + " and "(5) + ref(1) = 7
+    controller.setPosition(0);
+    expect(controller.getPosition()).toBe(0);
+
+    controller.setPosition(1);
+    expect(controller.getPosition()).toBe(1);
+
+    controller.setPosition(6);
+    expect(controller.getPosition()).toBe(6);
+
+    controller.setPosition(7);
+    expect(controller.getPosition()).toBe(7);
+  });
+});
+
+describe('Shift+Home/End selection with references', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  function createFullReference(parent: HTMLElement, label: string) {
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    parent.appendChild(wrapper);
+
+    const caretSpotBefore = document.createElement('span');
+    caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
+    caretSpotBefore.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotBefore);
+
+    const tokenContainer = document.createElement('span');
+    tokenContainer.setAttribute('contenteditable', 'false');
+    tokenContainer.textContent = label;
+    wrapper.appendChild(tokenContainer);
+
+    const caretSpotAfter = document.createElement('span');
+    caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
+    caretSpotAfter.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(caretSpotAfter);
+
+    return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
+  }
+
+  test('normalizeSelection adjusts start boundary in caret-spot-before', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const { caretSpotBefore } = createFullReference(p, 'Alice');
+    const afterText = document.createTextNode(' hello');
+    p.appendChild(afterText);
+
+    // Simulate Shift+End creating selection from caret-spot-before to end of text
+    const range = document.createRange();
+    range.setStart(caretSpotBefore.firstChild!, 0);
+    range.setEnd(afterText, 6);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Start should be normalized to paragraph level (before the wrapper)
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    expect(sel.getRangeAt(0).startOffset).toBe(0);
+  });
+
+  test('normalizeSelection adjusts end boundary in caret-spot-after', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const beforeText = document.createTextNode('hello ');
+    p.appendChild(beforeText);
+    const { caretSpotAfter, wrapper } = createFullReference(p, 'Alice');
+
+    // Simulate Shift+Home creating selection from text to caret-spot-after
+    const range = document.createRange();
+    range.setStart(beforeText, 0);
+    range.setEnd(caretSpotAfter.firstChild!, 1);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // End should be normalized to paragraph level (after the wrapper)
+    const wrapperIndex = Array.from(p.childNodes).indexOf(wrapper);
+    expect(sel.getRangeAt(0).endContainer).toBe(p);
+    expect(sel.getRangeAt(0).endOffset).toBe(wrapperIndex + 1);
+  });
+
+  test('normalizeSelection handles selection spanning text-reference-text', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+
+    const beforeText = document.createTextNode('abc');
+    p.appendChild(beforeText);
+    createFullReference(p, 'Alice');
+    const afterText = document.createTextNode('def');
+    p.appendChild(afterText);
+
+    // Selection from start of "abc" to end of "def" — should work without normalization
+    const range = document.createRange();
+    range.setStart(beforeText, 0);
+    range.setEnd(afterText, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    normalizeSelection(window.getSelection());
+
+    const sel = window.getSelection()!;
+    // Boundaries are in text nodes, not caret spots — should be unchanged
+    expect(sel.getRangeAt(0).startContainer).toBe(beforeText);
+    expect(sel.getRangeAt(0).startOffset).toBe(0);
+    expect(sel.getRangeAt(0).endContainer).toBe(afterText);
+    expect(sel.getRangeAt(0).endOffset).toBe(3);
+  });
+});

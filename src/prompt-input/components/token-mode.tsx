@@ -90,6 +90,8 @@ export default function TokenMode({
           ref={editableElementRef}
           role="textbox"
           aria-multiline="true"
+          aria-haspopup="listbox"
+          aria-expanded={menuIsOpen && shouldRenderMenuDropdown}
           contentEditable={
             !editableElementAttributes['aria-disabled'] && !editableElementAttributes['aria-readonly']
               ? 'true'
@@ -100,6 +102,8 @@ export default function TokenMode({
           // to avoid React's reconciliation conflicting with browser-native editing behavior.
           suppressContentEditableWarning={true}
           aria-controls={menuIsOpen ? menuListId : undefined}
+          // aria-owns needed for Safari+VoiceOver to announce activedescendant content
+          aria-owns={menuIsOpen ? menuListId : undefined}
           aria-activedescendant={highlightedMenuOptionId}
           onInput={handleInput}
           {...editableElementAttributes}
@@ -127,15 +131,12 @@ export default function TokenMode({
           contentKey={
             triggerWrapperReady ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}` : undefined
           }
-          /* istanbul ignore next -- covered by integration tests: onMouseDown only fires from real browser mouse events on dropdown */
-          onMouseDown={
-            /* istanbul ignore next -- covered by integration tests */
-            event => {
-              // Prevent default to stop the dropdown from stealing focus from the contentEditable.
-              // Without this, clicking a menu option would blur the input before the selection handler fires.
-              event.preventDefault();
-            }
-          }
+          /* istanbul ignore next -- integ test: src/prompt-input/__integ__/prompt-input-token-mode.test.ts > "clicking a menu option inserts reference and retains focus" */
+          onMouseDown={event => {
+            // Prevent default to stop the dropdown from stealing focus from the contentEditable.
+            // Without this, clicking a menu option would blur the input before the selection handler fires.
+            event.preventDefault();
+          }}
           footer={
             menuDropdownStatus?.isSticky && menuDropdownStatus.content ? (
               <DropdownFooter

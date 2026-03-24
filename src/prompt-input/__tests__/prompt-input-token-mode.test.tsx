@@ -621,6 +621,28 @@ describe('token mode a11y', () => {
     const wrapper = createWrapper(container).findPromptInput()!;
     expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Chat input');
   });
+
+  test('contentEditable has aria-haspopup="listbox"', () => {
+    const { wrapper } = renderTokenMode({});
+    expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('aria-haspopup', 'listbox');
+  });
+
+  test('aria-expanded is false when menu is closed', () => {
+    const { wrapper } = renderTokenMode({ tokens: [{ type: 'text', value: 'hello' }] });
+    expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('caret spots inside references are aria-hidden', () => {
+    const { wrapper } = renderTokenMode({
+      tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    const refEl = el.querySelector('[data-type="reference"]');
+    const caretSpotBefore = refEl!.querySelector('[data-type="cursor-spot-before"]');
+    const caretSpotAfter = refEl!.querySelector('[data-type="cursor-spot-after"]');
+    expect(caretSpotBefore).toHaveAttribute('aria-hidden', 'true');
+    expect(caretSpotAfter).toHaveAttribute('aria-hidden', 'true');
+  });
 });
 
 describe('token mode onBlur/onFocus', () => {
@@ -786,40 +808,51 @@ describe('external token updates', () => {
 });
 
 describe('token processing on prop change', () => {
-  test('tokens with trigger characters in text are detected and processed', () => {
+  test('tokens with trigger characters in text are detected and processed on external update', () => {
     const onChange = jest.fn();
-    renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello @ali' }],
-      onChange,
+    const { rerender } = renderTokenMode({ tokens: [], onChange });
+
+    // Simulate an external prop change that introduces a trigger character
+    act(() => {
+      rerender(
+        <PromptInput
+          tokens={[{ type: 'text', value: 'hello @ali' }]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+        />
+      );
     });
 
-    // The component should detect the trigger character and process the tokens
-    // resulting in an onChange call with processed tokens
-    if (onChange.mock.calls.length > 0) {
-      const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-      expect(lastCall.detail.tokens).toBeDefined();
-    }
+    expect(onChange).toHaveBeenCalled();
+    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
+    expect(lastCall.detail.tokens).toEqual(expect.any(Array));
+    expect(lastCall.detail.tokens.length).toBeGreaterThan(0);
   });
 
-  test('onTriggerDetected returning true prevents trigger creation', () => {
+  test('onTriggerDetected is not called for external token updates', () => {
     const onChange = jest.fn();
     const onTriggerDetected = jest.fn(() => true);
-    renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello @ali' }],
-      onChange,
-      onTriggerDetected,
+    const { rerender } = renderTokenMode({ tokens: [], onChange, onTriggerDetected });
+
+    act(() => {
+      rerender(
+        <PromptInput
+          tokens={[{ type: 'text', value: 'hello @ali' }]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+          onTriggerDetected={onTriggerDetected}
+        />
+      );
     });
 
-    // When onTriggerDetected returns true (preventDefault), the trigger should be cancelled
-    if (onTriggerDetected.mock.calls.length > 0) {
-      expect(onTriggerDetected).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: expect.objectContaining({
-            triggerChar: '@',
-          }),
-        })
-      );
-    }
+    // onTriggerDetected is only called for user-input source, not external prop changes
+    expect(onTriggerDetected).not.toHaveBeenCalled();
   });
 });
 
@@ -2213,14 +2246,12 @@ describe('token-operations: processTokens assigns IDs to tokens without them', (
       );
     });
 
-    if (onChange.mock.calls.length > 0) {
-      const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
-      const ref = lastTokens.find((t: PromptInputProps.InputToken) => t.type === 'reference');
-      if (ref) {
-        expect(ref.id).toBeTruthy();
-        expect(ref.id).not.toBe('');
-      }
-    }
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const ref = lastTokens.find((t: PromptInputProps.InputToken) => t.type === 'reference');
+    expect(ref).toBeDefined();
+    expect(ref.id).not.toBe('');
+    expect(typeof ref.id).toBe('string');
   });
 });
 

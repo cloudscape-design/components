@@ -140,7 +140,6 @@ const InternalPromptInput = React.forwardRef(
     /**
      * Dynamically adjusts the input height based on content and row constraints.
      */
-    /* istanbul ignore next -- covered by integration tests: requires real DOM layout/scrollHeight */
     const adjustInputHeight = useStableCallback(() => {
       const element = getActiveElement();
       if (!element) {
