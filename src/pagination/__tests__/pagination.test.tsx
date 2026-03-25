@@ -392,6 +392,23 @@ describe('jump to page', () => {
       expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(1);
     });
 
+    test('should round down to closest integer', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderPagination(
+        <Pagination currentPageIndex={5} pagesCount={10} jumpToPage={{}} onChange={onChange} />
+      );
+
+      wrapper.findJumpToPageInput()!.setInputValue('2.7');
+      wrapper.findJumpToPageButton()!.click();
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { currentPageIndex: 2 },
+        })
+      );
+      expect(wrapper.findJumpToPageInput()!.findNativeInput().getElement()).toHaveValue(2);
+    });
+
     test('should show error and navigate to last page when input exceeds pagesCount', () => {
       const onChange = jest.fn();
       const { wrapper } = renderPagination(
