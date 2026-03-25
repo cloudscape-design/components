@@ -17,7 +17,9 @@ describe('test utils', () => {
   describe('findTrigger', () => {
     test('returns the trigger element', () => {
       const { wrapper } = renderDropdown({ trigger: <button data-testid="trigger">open</button> });
-      expect(wrapper.findTrigger().getElement()).toContainHTML('button');
+      expect(wrapper.findTrigger().getElement().querySelector('button')!.getAttribute('data-testid')).toEqual(
+        'trigger'
+      );
     });
   });
 
