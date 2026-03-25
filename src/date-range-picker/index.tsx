@@ -308,6 +308,7 @@ const DateRangePicker = React.forwardRef(
     );
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+    const referrerId = useUniqueId();
 
     return (
       <div
@@ -328,6 +329,7 @@ const DateRangePicker = React.forwardRef(
           trigger={trigger}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
+          triggerId={referrerId}
           content={
             /* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */
             <ResetContextsForModal>
@@ -359,6 +361,7 @@ const DateRangePicker = React.forwardRef(
                   customRelativeRangeUnits={customRelativeRangeUnits}
                   renderRelativeRangeContent={renderRelativeRangeContent}
                   granularity={granularity}
+                  referrerId={referrerId}
                 />
               )}
             </ResetContextsForModal>

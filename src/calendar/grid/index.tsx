@@ -47,22 +47,24 @@ export interface GridProps {
   renderDateAnnouncement: (date: Date, isOnCurrentDate: boolean) => string;
   isSameDate: (date: Date, baseDate: Date) => boolean;
   onGridKeyDownHandler: (event: React.KeyboardEvent<HTMLElement>) => void;
+  referrerId?: string;
 }
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
+  referrerId?: string;
 }
 
 const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
-  const { disabledReason, ...rest } = props;
+  const { disabledReason, referrerId, ...rest } = props;
   const isDisabledWithReason = !!disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
-  const ref = useRef<HTMLTableCellElement>(null);
+  const cellRef = useRef<HTMLTableCellElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <td
-      ref={useMergeRefs(focusedDateRef, ref)}
+      ref={useMergeRefs(focusedDateRef, cellRef)}
       {...(isDisabledWithReason ? targetProps : {})}
       {...rest}
       onFocus={() => (isDisabledWithReason ? setShowTooltip(true) : undefined)}
@@ -77,9 +79,10 @@ const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTM
           {showTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
-              getTrack={() => ref.current}
+              getTrack={() => cellRef.current}
               content={disabledReason!}
               onEscape={() => setShowTooltip(false)}
+              referrerId={referrerId}
             />
           )}
         </>
@@ -105,6 +108,7 @@ export default function Grid({
   renderDateAnnouncement,
   isSameDate,
   onGridKeyDownHandler,
+  referrerId,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
@@ -166,6 +170,7 @@ export default function Grid({
                     [styles['calendar-date-dense']]: denseGrid,
                   })}
                   disabledReason={isDisabledWithReason ? disabledReason : undefined}
+                  referrerId={referrerId}
                 >
                   <span className={styles['date-inner']} aria-hidden="true">
                     {renderDate(date)}
