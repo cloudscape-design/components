@@ -279,7 +279,7 @@
     "i18nStrings.menuFinishedText": "Fin de los resultados",
     "i18nStrings.menuErrorText": "Error al obtener los elementos",
     "i18nStrings.selectedMenuItemAriaLabel": "Seleccionado",
-    "i18nStrings.tokenInsertedAriaLabel": "{token__label}insertado",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} insertado",
     "i18nStrings.tokenPinnedAriaLabel": "{token__label} fijado",
     "i18nStrings.tokenRemovedAriaLabel": "{token__label} eliminado"
   },
