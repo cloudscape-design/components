@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "关闭弹出框"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "提交提示",
+    "i18nStrings.menuErrorIconAriaLabel": "错误",
+    "i18nStrings.menuRecoveryText": "重试",
+    "i18nStrings.menuLoadingText": "正在加载项目",
+    "i18nStrings.menuFinishedText": "结果结束",
+    "i18nStrings.menuErrorText": "获取项目时出错",
+    "i18nStrings.selectedMenuItemAriaLabel": "已选择",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 已插入",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} 已固定",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} 已移除"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "所有属性",
     "i18nStrings.applyActionText": "应用",

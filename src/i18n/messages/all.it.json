@@ -159,8 +159,8 @@
     "i18nStrings.endDateLabel": "Data di fine",
     "i18nStrings.endTimeLabel": "Ora di fine",
     "i18nStrings.datePlaceholder": "GG/MM/AAAA",
-    "i18nStrings.isoDatePlaceholder": "AAAA-MM-GG",
-    "i18nStrings.slashedDatePlaceholder": "AAAA/MM/GG",
+    "i18nStrings.isoDatePlaceholder": "GG-MM-AAAA",
+    "i18nStrings.slashedDatePlaceholder": "GG/MM/AAAA",
     "i18nStrings.timePlaceholder": "hh:mm:ss",
     "i18nStrings.dateTimeConstraintText": "Per la data, utilizza il formato GG/MM/AAAA. Per l'ora, usa il formato 24 ore.",
     "i18nStrings.dateConstraintText": "Per la data, utilizza il formato GG/MM/AAAA.",
@@ -270,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Chiudi popover"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Invia prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Errore",
+    "i18nStrings.menuRecoveryText": "Riprova",
+    "i18nStrings.menuLoadingText": "Caricamento degli elementi in corso",
+    "i18nStrings.menuFinishedText": "Fine dei risultati",
+    "i18nStrings.menuErrorText": "Errore durante il recupero degli elementi",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selezionato",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserito",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} fissato",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} rimosso"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Tutte le proprietà",

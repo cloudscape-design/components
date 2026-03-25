@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "팝오버 닫기"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "프롬프트 제출",
+    "i18nStrings.menuErrorIconAriaLabel": "오류",
+    "i18nStrings.menuRecoveryText": "재시도",
+    "i18nStrings.menuLoadingText": "항목 로드 중",
+    "i18nStrings.menuFinishedText": "결과 종료",
+    "i18nStrings.menuErrorText": "항목을 가져오는 중 오류가 발생했습니다.",
+    "i18nStrings.selectedMenuItemAriaLabel": "선택함",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 삽입됨",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} 고정됨",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} 제거됨"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "모든 속성",
     "i18nStrings.applyActionText": "적용",

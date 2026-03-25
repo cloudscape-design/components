@@ -158,9 +158,9 @@
     "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
-    "i18nStrings.datePlaceholder": "HH-BB-TTTT",
-    "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
-    "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
+    "i18nStrings.datePlaceholder": "TTTT-BB-HH\n",
+    "i18nStrings.isoDatePlaceholder": "HH-BB-TTTT",
+    "i18nStrings.slashedDatePlaceholder": "HH/BB/TTTT",
     "i18nStrings.timePlaceholder": "jj:mm:dd",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
     "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
@@ -270,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Tutup popover"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Kirim prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Kesalahan",
+    "i18nStrings.menuRecoveryText": "Coba lagi",
+    "i18nStrings.menuLoadingText": "Memuat item",
+    "i18nStrings.menuFinishedText": "Akhir dari hasil",
+    "i18nStrings.menuErrorText": "Terjadi kesalahan saat mengambil item",
+    "i18nStrings.selectedMenuItemAriaLabel": "Dipilih",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} disisipkan",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} disematkan",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} dihapus"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Semua properti",
