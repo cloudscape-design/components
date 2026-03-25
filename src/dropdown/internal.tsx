@@ -442,10 +442,13 @@ const InternalDropdown = ({
       // Since the listener is registered on the window, `event.target` will incorrectly point at the
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
-      // triggerRef is the wrapper div around the custom trigger element, not the trigger element itself.
-      // A click on triggerRef directly (in the gap between the wrapper boundary and the trigger element inside)
+      // When using an internal trigger, triggerRef is the wrapper div around the trigger element.
+      // A click on the wrapper directly (in the gap between the wrapper boundary and the trigger element inside)
       // must fire onOutsideClick. Only clicks on strict descendants (the actual trigger element) should suppress it.
-      const isInsideTriggerElement = nodeBelongs(triggerRef.current, target) && target !== triggerRef.current;
+      // When using an external triggerRef, the ref points directly at the trigger element, so all clicks on it are inside.
+      const isInsideTriggerElement = externalTriggerRef
+        ? nodeBelongs(triggerRef.current, target)
+        : nodeBelongs(triggerRef.current, target) && target !== triggerRef.current;
       if (!nodeBelongs(dropdownRef.current, target) && !isInsideTriggerElement) {
         fireNonCancelableEvent(onOutsideClick);
       }
@@ -455,7 +458,7 @@ const InternalDropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick, triggerRef]);
+  }, [open, onOutsideClick, triggerRef, externalTriggerRef]);
 
   // subscribe to Escape key press
   useEffect(() => {
