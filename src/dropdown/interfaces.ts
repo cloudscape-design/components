@@ -139,7 +139,7 @@ export interface DropdownProps extends ExpandToViewport {
    * Maximum width for the dropdown in pixels. If no value is specified, the
    * dropdown will expand to fit its content.
    */
-  maxWidth?: DropdownWidthConstraint;
+  maxWidth?: number;
 
   /**
    * Maximum height constraint for the dropdown content in pixels.

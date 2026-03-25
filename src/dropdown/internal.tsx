@@ -546,7 +546,7 @@ const InternalDropdown = ({
       {!externalTriggerRef && (
         <div
           id={referrerId}
-          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testutilStyles.trigger)}
           ref={internalTriggerRef}
         >
           {trigger}
