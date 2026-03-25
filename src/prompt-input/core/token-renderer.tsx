@@ -33,7 +33,6 @@ import {
   createParagraph,
   createTrailingBreak,
   findAllParagraphs,
-  findElements,
   generateTokenId,
   getTokenType,
   isReferenceElementType,
@@ -147,10 +146,12 @@ function createReferenceWithCaretSpots(
 export function renderTokensToDOM(
   tokens: readonly PromptInputProps.InputToken[],
   targetElement: HTMLElement,
-  portalContainers: Map<string, PortalContainer>
+  portalContainers: Map<string, PortalContainer>,
+  existingTriggers?: Map<string, HTMLElement>
 ): {
   newTriggerElement: HTMLElement | null;
   lastReferenceWithCaretSpots: HTMLElement | null;
+  triggerElements: Map<string, HTMLElement>;
 } {
   // Preserve existing portal containers that are still in the DOM.
   const existingContainers = new Map<string, PortalContainer>();
@@ -161,19 +162,15 @@ export function renderTokensToDOM(
   });
   portalContainers.clear();
 
-  const existingTriggers = new Map<string, HTMLElement>();
-  findElements(targetElement, { tokenType: ElementType.Trigger }).forEach(el => {
-    const id = el.id;
-    if (id) {
-      existingTriggers.set(id, el);
-    }
-  });
+  // Use the provided trigger map or start empty for the initial render.
+  const reusableTriggers = new Map(existingTriggers ?? []);
 
   const existingParagraphs = findAllParagraphs(targetElement);
   const paragraphGroups = groupTokensIntoParagraphs(tokens);
 
   let newTriggerElement: HTMLElement | null = null;
   let lastReferenceWithCaretSpots: HTMLElement | null = null;
+  const triggerElements = new Map<string, HTMLElement>();
 
   for (let pIndex = 0; pIndex < paragraphGroups.length; pIndex++) {
     const paragraphGroup = paragraphGroups[pIndex];
@@ -198,13 +195,13 @@ export function renderTokensToDOM(
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
         const triggerId = token.id && token.id !== '' ? token.id : generateTokenId();
-        const isNewTrigger = !existingTriggers.has(triggerId);
+        const isNewTrigger = !reusableTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
         const isCancelled = triggerId.endsWith('-cancelled');
 
-        if (existingTriggers.has(triggerId)) {
-          span = existingTriggers.get(triggerId)!;
-          existingTriggers.delete(triggerId);
+        if (reusableTriggers.has(triggerId)) {
+          span = reusableTriggers.get(triggerId)!;
+          reusableTriggers.delete(triggerId);
         } else {
           span = document.createElement('span');
           span.setAttribute('data-type', ElementType.Trigger);
@@ -218,6 +215,7 @@ export function renderTokensToDOM(
         span.textContent = token.triggerChar + token.value;
 
         newNodes.push(span);
+        triggerElements.set(triggerId, span);
 
         if (isNewTrigger && !isCancelled) {
           newTriggerElement = span;
@@ -298,5 +296,5 @@ export function renderTokensToDOM(
     targetElement.removeChild(targetElement.lastChild!);
   }
 
-  return { newTriggerElement, lastReferenceWithCaretSpots };
+  return { newTriggerElement, lastReferenceWithCaretSpots, triggerElements };
 }

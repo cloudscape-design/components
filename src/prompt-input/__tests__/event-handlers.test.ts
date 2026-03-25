@@ -3,6 +3,7 @@
 
 jest.mock('../styles.css.js', () => ({ paragraph: 'paragraph', 'trigger-token': 'trigger-token' }), { virtual: true });
 
+import './jsdom-polyfills';
 import { CaretController } from '../core/caret-controller';
 import {
   createKeyboardHandlers,
@@ -626,6 +627,7 @@ describe('handleReferenceTokenDeletion', () => {
     setCursor(text, 0);
 
     const announce = jest.fn();
+    const i18n = { tokenRemovedAriaLabel: ({ label }: { label: string }) => `${label} removed` };
     const event = makeKeyboardEvent('Backspace');
     handleReferenceTokenDeletion(
       event,
@@ -633,7 +635,7 @@ describe('handleReferenceTokenDeletion', () => {
       el,
       { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null },
       announce,
-      undefined,
+      i18n as any,
       null
     );
     expect(announce).toHaveBeenCalledWith('Alice removed');

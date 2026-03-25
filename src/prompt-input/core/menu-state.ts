@@ -13,6 +13,9 @@ import {
   useHighlightedOption,
 } from '../../internal/components/options-list/utils/use-highlight-option';
 import { PromptInputProps } from '../interfaces';
+import { calculateTokenPosition } from './caret-controller';
+import { generateTokenId } from './dom-utils';
+import { isPinnedReferenceToken, isReferenceToken, isTriggerToken } from './type-guards';
 
 export type MenuItem = (OptionDefinition | OptionGroup) & {
   type?: 'parent' | 'child' | 'use-entered';
@@ -214,3 +217,56 @@ export const useMenuLoadMore = ({
 
   return { fireLoadMoreOnScroll, fireLoadMoreOnRecoveryClick, fireLoadMoreOnMenuOpen, fireLoadMoreOnInputChange };
 };
+
+export interface MenuSelectionResult {
+  tokens: PromptInputProps.InputToken[];
+  caretPosition: number;
+  insertedToken: PromptInputProps.ReferenceToken;
+}
+
+/** Replaces a trigger token with a reference token (or pinned token) after menu selection. */
+export function handleMenuSelection(
+  tokens: readonly PromptInputProps.InputToken[],
+  selectedOption: { value: string; label?: string },
+  menuId: string,
+  isPinned: boolean,
+  activeTrigger: PromptInputProps.TriggerToken
+): MenuSelectionResult {
+  const newTokens = [...tokens];
+  const triggerIndex = newTokens.findIndex(t => isTriggerToken(t) && t.id === activeTrigger.id);
+
+  if (isPinned) {
+    const pinnedToken: PromptInputProps.ReferenceToken = {
+      type: 'reference',
+      id: generateTokenId(),
+      label: selectedOption.label || selectedOption.value || '',
+      value: selectedOption.value || '',
+      menuId,
+      pinned: true,
+    };
+
+    newTokens.splice(triggerIndex, 1);
+
+    let insertIndex = 0;
+    while (insertIndex < newTokens.length && isPinnedReferenceToken(newTokens[insertIndex])) {
+      insertIndex++;
+    }
+
+    newTokens.splice(insertIndex, 0, pinnedToken);
+    const caretPos = calculateTokenPosition(newTokens, insertIndex);
+    return { tokens: newTokens, caretPosition: caretPos, insertedToken: pinnedToken };
+  }
+
+  const referenceToken: PromptInputProps.ReferenceToken = {
+    type: 'reference',
+    id: generateTokenId(),
+    label: selectedOption.label || selectedOption.value || '',
+    value: selectedOption.value || '',
+    menuId,
+  };
+
+  newTokens.splice(triggerIndex, 1, referenceToken);
+  const insertedIndex = newTokens.findIndex(t => isReferenceToken(t) && t.id === referenceToken.id);
+  const caretPos = calculateTokenPosition(newTokens, insertedIndex);
+  return { tokens: newTokens, caretPosition: caretPos, insertedToken: referenceToken };
+}

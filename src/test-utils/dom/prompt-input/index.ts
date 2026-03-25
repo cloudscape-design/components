@@ -48,8 +48,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
    * Finds the native textarea element.
    *
    * Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
-   * In this case, this method may fail to find the textarea element. Use findContentEditableElement()
-   * or the getValue()/setValue() methods instead.
+   * In this case, use findContentEditableElement() or getValue() instead.
    */
   findNativeTextarea(): ElementWrapper<HTMLTextAreaElement> {
     return this.findByClassName<HTMLTextAreaElement>(testutilStyles.textarea)!;
@@ -107,28 +106,6 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   /**
-   * Sets the value of the component by directly setting text content.
-   * This does NOT trigger menu detection. Use the component ref's insertText() method
-   * to simulate typing and trigger menus.
-   *
-   * @param value String value to set the component to.
-   */
-  @usesDom setValue(value: string): void {
-    const contentEditable = this.findContentEditableElement();
-    if (contentEditable) {
-      const element = contentEditable.getElement();
-      act(() => {
-        element.textContent = value;
-        element.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: true }));
-      });
-    } else {
-      this.setTextareaValue(value);
-    }
-  }
-
-  /**
-   * @deprecated Use getValue() instead.
-   *
    * Gets the value of the component.
    *
    * Returns the current value of the textarea.
@@ -138,9 +115,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   /**
-   * @deprecated Use setValue() instead.
-   *
-   * Sets the value of the component and calls the onChange handler.
+   * Sets the value of the textarea and calls the onChange handler.
    *
    * @param value value to set the textarea to.
    */

@@ -4,7 +4,6 @@
 import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isHTMLElement } from '../../internal/utils/dom';
 import type { PromptInputProps } from '../interfaces';
-import { calculateTokenPosition } from './caret-controller';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import {
   findAllParagraphs,
@@ -39,12 +38,10 @@ export interface ShortcutsConfig {
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
 }
 
-export interface MenuSelectionResult {
-  tokens: PromptInputProps.InputToken[];
-  caretPosition: number;
-  insertedToken: PromptInputProps.ReferenceToken;
-}
-
+/**
+ * Looks up an option's value from menu definitions by label. Used during DOM extraction
+ * to recover reference token values — we store only the label in the DOM, not the value.
+ */
 function findOptionInMenu(
   options: readonly (OptionDefinition | OptionGroup)[],
   labelOrValue: string
@@ -139,7 +136,7 @@ function extractTokensFromNode(
 /** Extracts trigger tokens from a trigger DOM element, handling nested triggers. */
 function extractTriggerTokens(
   node: HTMLElement,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  menus: readonly PromptInputProps.MenuDefinition[] = []
 ): PromptInputProps.InputToken[] {
   const tokens: PromptInputProps.InputToken[] = [];
   const id = node.id || generateTokenId();
@@ -149,13 +146,11 @@ function extractTriggerTokens(
   let triggerCharIndex = -1;
   let triggerChar = '';
 
-  if (menus) {
-    for (const menu of menus) {
-      const index = fullText.indexOf(menu.trigger);
-      if (index >= 0 && (triggerCharIndex === -1 || index < triggerCharIndex)) {
-        triggerCharIndex = index;
-        triggerChar = menu.trigger;
-      }
+  for (const menu of menus) {
+    const index = fullText.indexOf(menu.trigger);
+    if (index >= 0 && (triggerCharIndex === -1 || index < triggerCharIndex)) {
+      triggerCharIndex = index;
+      triggerChar = menu.trigger;
     }
   }
 
@@ -171,16 +166,14 @@ function extractTriggerTokens(
     let nestedTriggerIndex = -1;
     let nestedTriggerChar = '';
 
-    if (menus) {
-      for (const menu of menus) {
-        if (menu.useAtStart) {
-          continue;
-        }
-        const index = value.indexOf(menu.trigger);
-        if (index >= 0 && (nestedTriggerIndex === -1 || index < nestedTriggerIndex)) {
-          nestedTriggerIndex = index;
-          nestedTriggerChar = menu.trigger;
-        }
+    for (const menu of menus) {
+      if (menu.useAtStart) {
+        continue;
+      }
+      const index = value.indexOf(menu.trigger);
+      if (index >= 0 && (nestedTriggerIndex === -1 || index < nestedTriggerIndex)) {
+        nestedTriggerIndex = index;
+        nestedTriggerChar = menu.trigger;
       }
     }
 
@@ -354,11 +347,18 @@ export function detectTriggersInTokens(
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
-    // Collapse empty trigger + adjacent text back into a text token for re-parsing
+    // Skip cancelled triggers — don't re-parse their adjacent text
+    if (isTriggerToken(token) && token.id?.endsWith('-cancelled')) {
+      result.push(token);
+      continue;
+    }
+
+    // Collapse empty trigger + adjacent text back into a text token for re-parsing.
+    // Don't fire onTriggerDetected — the trigger already exists.
     if (isTriggerToken(token) && token.value === '' && i !== tokens.length - 1) {
       const next = tokens[i + 1];
       if (isTextToken(next) && next.value.length > 0 && !next.value.startsWith(' ')) {
-        const detected = detectTriggersInText(token.triggerChar + next.value, menus, result, onTriggerDetected);
+        const detected = detectTriggersInText(token.triggerChar + next.value, menus, result);
         const reusedTrigger = detected.find(isTriggerToken);
         if (reusedTrigger && token.id) {
           reusedTrigger.id = token.id;
@@ -369,12 +369,13 @@ export function detectTriggersInTokens(
       }
     }
 
-    // Merge non-empty trigger + adjacent text when the separator was removed
+    // Merge non-empty trigger + adjacent text when the separator was removed.
+    // Don't fire onTriggerDetected — the trigger already exists.
     if (isTriggerToken(token) && token.value.length > 0 && i !== tokens.length - 1) {
       const next = tokens[i + 1];
       if (isTextToken(next) && next.value.length > 0 && !next.value.startsWith(' ')) {
         const combined = token.triggerChar + token.value + next.value;
-        const detected = detectTriggersInText(combined, menus, result, onTriggerDetected);
+        const detected = detectTriggersInText(combined, menus, result);
         const reusedTrigger = detected.find(isTriggerToken);
         if (reusedTrigger && token.id) {
           reusedTrigger.id = token.id;
@@ -393,59 +394,6 @@ export function detectTriggersInTokens(
   }
 
   return result;
-}
-
-export function handleMenuSelection(
-  tokens: readonly PromptInputProps.InputToken[],
-  selectedOption: {
-    value: string;
-    label?: string;
-  },
-  menuId: string,
-  isPinned: boolean,
-  activeTrigger: PromptInputProps.TriggerToken
-): MenuSelectionResult {
-  const newTokens = [...tokens];
-  const triggerIndex = newTokens.findIndex(t => isTriggerToken(t) && t.id === activeTrigger.id);
-
-  if (isPinned) {
-    const pinnedToken: PromptInputProps.ReferenceToken = {
-      type: 'reference',
-      id: generateTokenId(),
-      label: selectedOption.label || selectedOption.value || '',
-      value: selectedOption.value || '',
-      menuId,
-      pinned: true,
-    };
-
-    newTokens.splice(triggerIndex, 1);
-
-    let insertIndex = 0;
-    while (insertIndex < newTokens.length && isPinnedReferenceToken(newTokens[insertIndex])) {
-      insertIndex++;
-    }
-
-    newTokens.splice(insertIndex, 0, pinnedToken);
-
-    const caretPos = calculateTokenPosition(newTokens, insertIndex);
-
-    return { tokens: newTokens, caretPosition: caretPos, insertedToken: pinnedToken };
-  } else {
-    const referenceToken: PromptInputProps.ReferenceToken = {
-      type: 'reference',
-      id: generateTokenId(),
-      label: selectedOption.label || selectedOption.value || '',
-      value: selectedOption.value || '',
-      menuId,
-    };
-
-    newTokens.splice(triggerIndex, 1, referenceToken);
-
-    const insertedIndex = newTokens.findIndex(t => isReferenceToken(t) && t.id === referenceToken.id);
-    const caretPos = calculateTokenPosition(newTokens, insertedIndex);
-
-    return { tokens: newTokens, caretPosition: caretPos, insertedToken: referenceToken };
-  }
 }
 
 export function processTokens(

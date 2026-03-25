@@ -5,32 +5,10 @@ import ReactDOM from 'react-dom';
 
 import { PromptInputProps } from '~components/prompt-input';
 import { extractTokensFromDOM } from '~components/prompt-input/core/token-operations';
-import { PortalContainer, RenderTokenProps, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
+import { PortalContainer, renderTokensToDOM } from '~components/prompt-input/core/token-renderer';
+import Token from '~components/token/internal';
 
 import { SimplePage } from '../app/templates';
-
-// Custom token renderer — intentionally NOT using the Token component.
-// This proves the renderer is decoupled from any specific UI component.
-function CustomToken({ label }: RenderTokenProps) {
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '2px 8px',
-        margin: '0 2px',
-        borderRadius: 12,
-        background: '#fce4ec',
-        border: '2px dashed #e91e63',
-        fontSize: 13,
-        lineHeight: '18px',
-        fontWeight: 600,
-        color: '#880e4f',
-      }}
-    >
-      ⚡ {label}
-    </span>
-  );
-}
 
 let nextId = 1;
 
@@ -158,16 +136,9 @@ export default function TokenRendererPage() {
         }}
       />
 
-      {/* Render reference tokens into their DOM containers via portals */}
       {Array.from(portalContainersRef.current.values()).map(container =>
         ReactDOM.createPortal(
-          <CustomToken
-            key={container.id}
-            id={container.id}
-            label={container.label}
-            disabled={false}
-            readOnly={false}
-          />,
+          <Token key={container.id} variant="inline" label={container.label} disabled={false} readOnly={false} />,
           container.element
         )
       )}

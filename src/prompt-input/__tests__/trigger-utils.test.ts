@@ -3,6 +3,7 @@
 
 jest.mock('../styles.css.js', () => ({ 'trigger-token': 'trigger-token' }), { virtual: true });
 
+import './jsdom-polyfills';
 import { CaretController } from '../core/caret-controller';
 import { ElementType } from '../core/constants';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
@@ -359,9 +360,9 @@ describe('detectTriggerTransition', () => {
   test('does not match filter-cleared when next token is space-prefixed text (split case)', () => {
     const old = [trigger('bob', 't1'), text(' hello')];
     const next = [trigger('', 't1'), text(' bob hello')];
-    // This is a split, not a filter clear — the split check at i=1 should match
+    // Split: trigger filter cleared and text absorbed — caret after trigger (position 1) + 1 for space
     const pos = detectTriggerTransition(old, next);
-    expect(pos).toBeGreaterThan(0);
+    expect(pos).toBe(2);
   });
 
   test('detects empty trigger absorbing text when token count stays the same', () => {
