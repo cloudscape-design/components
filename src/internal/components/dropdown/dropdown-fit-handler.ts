@@ -238,6 +238,7 @@ export const getDropdownPosition = ({
   matchTriggerWidth = false,
   stretchHeight = false,
   isMobile = false,
+  maxHeight,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
@@ -248,6 +249,7 @@ export const getDropdownPosition = ({
   matchTriggerWidth?: boolean;
   stretchHeight?: boolean;
   isMobile?: boolean;
+  maxHeight?: number;
 }): DropdownPosition => {
   // Determine the space available around the dropdown that it can grow in
   const availableSpace = getAvailableSpace({
@@ -299,11 +301,13 @@ export const getDropdownPosition = ({
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = Math.max(stretchHeight ? availableHeight : Math.floor(availableHeight / 31) * 31 + 16, 15);
 
+  const blockSize = maxHeight ? `min(${croppedHeight}px, ${maxHeight}px)` : `${croppedHeight}px`;
+
   return {
     dropBlockStart,
     dropInlineStart,
     insetInlineStart: insetInlineStart === null ? 'auto' : `${insetInlineStart}px`,
-    blockSize: `${croppedHeight}px`,
+    blockSize,
     inlineSize: `${inlineSize}px`,
   };
 };
@@ -388,7 +392,7 @@ export const calculatePosition = (
     expandToViewport,
     canExpandOutsideViewport: stretchHeight,
   });
-  let position: DropdownPosition | InteriorDropdownPosition = interior
+  const position: DropdownPosition | InteriorDropdownPosition = interior
     ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile)
     : getDropdownPosition({
         triggerElement,
@@ -400,11 +404,8 @@ export const calculatePosition = (
         matchTriggerWidth,
         stretchHeight,
         isMobile,
+        maxHeight,
       });
-  // Apply maxHeight constraint if provided
-  if (maxHeight) {
-    position = { ...position, blockSize: `min(${position.blockSize}, ${maxHeight}px)` };
-  }
 
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
   return [position, triggerBox];
