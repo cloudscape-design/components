@@ -57,18 +57,6 @@ export interface BaseDropdownHostProps extends ExpandToViewport {
   onLoadItems?: NonCancelableEventHandler<OptionsLoadItemsDetail>;
 }
 
-export interface RenderTriggerProps {
-  /** Ref that must be attached to the trigger element for positioning and outside-click detection. */
-  triggerRef: React.MutableRefObject<HTMLElement | null>;
-  /** Whether the dropdown is currently open. */
-  isOpen: boolean;
-  /**
-   * ID that links the trigger to portaled dropdown content for outside-click detection
-   * and focus management. Set this as the `id` on the trigger element.
-   */
-  referrerId: string;
-}
-
 export interface DropdownProps extends ExpandToViewport {
   /**
    * Trigger element.
@@ -76,26 +64,15 @@ export interface DropdownProps extends ExpandToViewport {
   trigger: React.ReactNode;
 
   /**
-   * Render function for the trigger element. When provided, the `trigger` prop is ignored
-   * and this function is called to render the trigger. The function receives props that
-   * should be applied to the trigger element for positioning, outside-click detection,
-   * and portal linking.
-   *
-   * @example
-   * ```tsx
-   * renderTrigger={({ triggerRef, isOpen, referrerId }) => (
-   *   <button ref={triggerRef} id={referrerId} aria-expanded={isOpen}>
-   *     Open menu
-   *   </button>
-   * )}
-   * ```
+   * Optional ref to an external element used for positioning calculations.
+   * When provided, the `trigger` prop is not rendered and this ref's element
+   * is used as the positioning anchor for the dropdown instead.
    */
-  renderTrigger?: (props: RenderTriggerProps) => React.ReactNode;
+  triggerRef?: React.RefObject<HTMLElement>;
 
   /**
    * Explicit ID for the trigger element, used as the referrer ID for portal mode.
-   * Use this when `renderTrigger` is provided and the ID cannot be set directly
-   * on the trigger element within the render function.
+   * Use this when `triggerRef` is provided.
    */
   triggerId?: string;
 
