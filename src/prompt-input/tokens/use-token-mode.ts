@@ -24,7 +24,7 @@ import {
 } from '../core/caret-controller';
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
 import { CARET_DETECTION_DELAY, ElementType, NEXT_TICK_TIMEOUT } from '../core/constants';
-import { createParagraph, findAllParagraphs, findElements, getTokenType } from '../core/dom-utils';
+import { createParagraph, findAllParagraphs, getTokenType } from '../core/dom-utils';
 import {
   createKeyboardHandlers,
   handleArrowKeyNavigation,
@@ -35,8 +35,15 @@ import {
   handleSpaceAfterClosedTrigger,
   splitParagraphAtCaret,
 } from '../core/event-handlers';
-import { MenuItem, MenuItemsHandlers, MenuItemsState, useMenuItems, useMenuLoadMore } from '../core/menu-state';
-import { extractTokensFromDOM, getPromptText, handleMenuSelection, processTokens } from '../core/token-operations';
+import {
+  handleMenuSelection,
+  MenuItem,
+  MenuItemsHandlers,
+  MenuItemsState,
+  useMenuItems,
+  useMenuLoadMore,
+} from '../core/menu-state';
+import { extractTokensFromDOM, getPromptText, processTokens } from '../core/token-operations';
 import { PortalContainer, renderTokensToDOM } from '../core/token-renderer';
 import {
   enforcePinnedTokenOrdering,
@@ -65,8 +72,12 @@ export function createEditableState(): EditableState {
 }
 
 /**
- * Determines if the token array changed structurally and needs a DOM re-render.
- * Compares token types and reference IDs only — text value changes are handled by the browser.
+ * Determines if the token array changed structurally and needs a full DOM re-render.
+ *
+ * Only compares token types and IDs — NOT text or trigger values. Value changes from
+ * normal typing are already reflected in the DOM by the browser's native editing.
+ * Re-rendering on every value change would destroy the cursor position. Structural changes (token added/removed/reordered, reference
+ * swapped) do require a re-render since the DOM element structure must change.
  */
 function shouldRerender(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -632,9 +643,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const portalContainersRef = useRef<Map<string, PortalContainer>>(new Map());
   const [portalContainers, setPortalContainers] = useState<PortalContainer[]>([]);
 
+  const triggerElementsRef = useRef(new Map<string, HTMLElement>());
+
   const renderTokens = useCallback((tokens: readonly PromptInputProps.InputToken[], target: HTMLElement) => {
-    const result = renderTokensToDOM(tokens, target, portalContainersRef.current);
+    const result = renderTokensToDOM(tokens, target, portalContainersRef.current, triggerElementsRef.current);
     setPortalContainers(Array.from(portalContainersRef.current.values()));
+    triggerElementsRef.current = result.triggerElements;
     return result;
   }, []);
 
@@ -650,7 +664,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const announceTokenOperation = useStableCallback((message: string) => {
     setTokenOperationAnnouncement(message);
-    setTimeout(() => setTokenOperationAnnouncement(''), 100);
   });
 
   const lastRenderedTokensRef = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
@@ -677,9 +690,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       editableState.skipNextZeroWidthUpdate = false;
     }
 
-    const paragraphs = findAllParagraphs(editableElementRef.current);
-
-    const { movedTextNode } = extractTextFromCaretSpots(paragraphs, true);
+    const { movedTextNode } = extractTextFromCaretSpots(portalContainersRef.current, triggerElementsRef.current, true);
 
     if (movedTextNode && cc) {
       cc.positionAfterText(movedTextNode);
@@ -713,8 +724,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const newTriggers = extractedTokens.filter(isTriggerToken);
 
-    const existingTriggerElements = findElements(editableElementRef.current, { tokenType: ElementType.Trigger });
-    const existingTriggerIds = new Set(existingTriggerElements.map(el => el.id).filter(Boolean));
+    const existingTriggerElements = Array.from(triggerElementsRef.current.values());
+    const existingTriggerIds = new Set(Array.from(triggerElementsRef.current.keys()));
 
     const isNewTrigger = newTriggers.some(t => t.id && !existingTriggerIds.has(t.id));
 
@@ -1055,12 +1066,13 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     editableState.menuSelectionTokenId = result.insertedToken.id || null;
 
     const isPinned = activeMenu.useAtStart ?? false;
-    const tokenLabel = result.insertedToken.label || result.insertedToken.value;
     const announcement = isPinned
-      ? (i18nStrings?.tokenPinnedAriaLabel?.(result.insertedToken) ?? `${tokenLabel} pinned`)
-      : (i18nStrings?.tokenInsertedAriaLabel?.(result.insertedToken) ?? `${tokenLabel} inserted`);
+      ? i18nStrings?.tokenPinnedAriaLabel?.(result.insertedToken)
+      : i18nStrings?.tokenInsertedAriaLabel?.(result.insertedToken);
 
-    announceTokenOperation(announcement);
+    if (announcement) {
+      announceTokenOperation(announcement);
+    }
 
     onChange({ value, tokens: result.tokens });
 

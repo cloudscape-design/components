@@ -235,6 +235,18 @@ export function handleReferenceTokenDeletion(
 
     range.deleteContents();
 
+    // Clean up empty paragraphs left behind after deleting across paragraph boundaries
+    const paragraphs = findAllParagraphs(editableElement);
+    if (paragraphs.length > 1) {
+      const firstNonEmpty = paragraphs.find(p => !isElementEffectivelyEmpty(p));
+      const keepParagraph = firstNonEmpty || paragraphs[0];
+      for (const p of paragraphs) {
+        if (p !== keepParagraph) {
+          p.remove();
+        }
+      }
+    }
+
     editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
     return true;
@@ -256,9 +268,10 @@ export function handleReferenceTokenDeletion(
 
   const tokenLabel = tokenElement!.textContent?.trim() || '';
   if (announceTokenOperation && tokenLabel) {
-    const announcement =
-      i18nStrings?.tokenRemovedAriaLabel?.({ label: tokenLabel, value: tokenLabel }) ?? `${tokenLabel} removed`;
-    announceTokenOperation(announcement);
+    const announcement = i18nStrings?.tokenRemovedAriaLabel?.({ label: tokenLabel, value: tokenLabel });
+    if (announcement) {
+      announceTokenOperation(announcement);
+    }
   }
 
   const elementToRemove = (wrapperElement || tokenElement)!;
@@ -319,6 +332,44 @@ function handleArrowNavigation(
 }
 
 /** Handles left/right arrow key navigation, jumping over atomic reference tokens. */
+/** If the caret is inside a reference's caret-spot, normalizes it to the paragraph level. */
+function normalizeCaretOutOfReference(
+  container: Node,
+  event: React.KeyboardEvent<HTMLDivElement>,
+  selection: Selection
+): boolean {
+  if (!isTextNode(container)) {
+    return false;
+  }
+
+  const parent = container.parentElement;
+  if (!parent || !isCaretSpotType(getTokenType(parent))) {
+    return false;
+  }
+
+  const wrapper = parent.parentElement;
+  if (!wrapper || !isReferenceElementType(getTokenType(wrapper))) {
+    return false;
+  }
+
+  const paragraph = wrapper.parentElement;
+  if (!paragraph) {
+    return false;
+  }
+
+  const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
+  const logicalDir = getLogicalDirection(event.key, event.currentTarget);
+  const newOffset = logicalDir === 'backward' ? wrapperIndex : wrapperIndex + 1;
+
+  event.preventDefault();
+  const newRange = document.createRange();
+  newRange.setStart(paragraph, newOffset);
+  newRange.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
+  return true;
+}
+
 export function handleArrowKeyNavigation(
   event: React.KeyboardEvent<HTMLDivElement>,
   caretController: CaretController | null,
@@ -335,36 +386,8 @@ export function handleArrowKeyNavigation(
 
   const range = selection.getRangeAt(0);
 
-  if (range.collapsed) {
-    const container = range.startContainer;
-    if (isTextNode(container)) {
-      const parent = container.parentElement;
-      if (parent) {
-        const parentType = getTokenType(parent);
-        if (isCaretSpotType(parentType)) {
-          // Normalize caret out of caret spot before processing arrow key
-          const wrapper = parent.parentElement;
-          const wrapperType = wrapper ? getTokenType(wrapper) : null;
-          if (wrapper && isReferenceElementType(wrapperType)) {
-            const paragraph = wrapper.parentElement;
-            if (paragraph) {
-              const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-
-              const logicalDir = getLogicalDirection(event.key, event.currentTarget);
-              const newOffset = logicalDir === 'backward' ? wrapperIndex : wrapperIndex + 1;
-
-              event.preventDefault();
-              const newRange = document.createRange();
-              newRange.setStart(paragraph, newOffset);
-              newRange.collapse(true);
-              selection.removeAllRanges();
-              selection.addRange(newRange);
-              return true;
-            }
-          }
-        }
-      }
-    }
+  if (range.collapsed && normalizeCaretOutOfReference(range.startContainer, event, selection)) {
+    return true;
   }
 
   if (event.shiftKey) {
@@ -417,16 +440,16 @@ function handleShiftArrowAcrossTokens(
       adjacentRef = focusNode.previousSibling;
     } else if (!isBackward) {
       const len = focusNode.textContent?.length || 0;
-      // Check at boundary or one before — the browser may skip the boundary position
-      // and move directly through a zero-width reference in a single keypress.
-      if (focusOff >= len - 1 && focusNode.nextSibling) {
+      // Check at the text boundary — only jump over the reference when focus
+      // is at the very end of the text node, not one character before.
+      if (focusOff >= len && focusNode.nextSibling) {
         const nextSibling = focusNode.nextSibling;
         if (isHTMLElement(nextSibling) && isReferenceElementType(getTokenType(nextSibling))) {
           adjacentRef = nextSibling;
         }
       }
     }
-    if (!adjacentRef && isBackward && focusOff <= 1 && focusNode.previousSibling) {
+    if (!adjacentRef && isBackward && focusOff === 0 && focusNode.previousSibling) {
       const previousSibling = focusNode.previousSibling;
       if (isHTMLElement(previousSibling) && isReferenceElementType(getTokenType(previousSibling))) {
         adjacentRef = previousSibling;
@@ -637,7 +660,9 @@ export function mergeParagraphs(params: MergeParagraphsParams): boolean {
 
   if (caretController) {
     const currentPos = caretController.getPosition();
-    const newCaretPos = currentPos - TOKEN_LENGTHS.LINE_BREAK;
+    // Backspace: cursor was at start of next paragraph, now needs to move back by the removed break
+    // Delete: cursor stays where it is — the next line merges into the current one
+    const newCaretPos = direction === 'backward' ? currentPos - TOKEN_LENGTHS.LINE_BREAK : currentPos;
     caretController.setPosition(newCaretPos);
   }
 
@@ -660,7 +685,12 @@ export function handleBackspaceAtParagraphStart(
 
   const range = selection.getRangeAt(0);
 
-  if (range.startOffset !== 0 || !isHTMLElement(range.startContainer) || range.startContainer.nodeName !== 'P') {
+  if (
+    !range.collapsed ||
+    range.startOffset !== 0 ||
+    !isHTMLElement(range.startContainer) ||
+    range.startContainer.nodeName !== 'P'
+  ) {
     return false;
   }
 
@@ -672,9 +702,7 @@ export function handleBackspaceAtParagraphStart(
     return false;
   }
 
-  event.preventDefault();
-
-  return mergeParagraphs({
+  const merged = mergeParagraphs({
     direction: 'backward',
     editableElement,
     tokens,
@@ -683,6 +711,12 @@ export function handleBackspaceAtParagraphStart(
     onChange,
     caretController: caretController,
   });
+
+  if (merged) {
+    event.preventDefault();
+  }
+
+  return merged;
 }
 
 /** Handles Delete at the end of a paragraph by merging with the next one. */
@@ -701,6 +735,10 @@ export function handleDeleteAtParagraphEnd(
 
   const range = selection.getRangeAt(0);
   const container = range.startContainer;
+
+  if (!range.collapsed) {
+    return false;
+  }
 
   let isAtEndOfParagraph = false;
   let currentP: HTMLParagraphElement | null = null;
@@ -729,9 +767,7 @@ export function handleDeleteAtParagraphEnd(
     return false;
   }
 
-  event.preventDefault();
-
-  return mergeParagraphs({
+  const merged = mergeParagraphs({
     direction: 'forward',
     editableElement,
     tokens,
@@ -740,6 +776,12 @@ export function handleDeleteAtParagraphEnd(
     onChange,
     caretController: caretController,
   });
+
+  if (merged) {
+    event.preventDefault();
+  }
+
+  return merged;
 }
 
 /** Handles copy/cut events on the contentEditable element. */

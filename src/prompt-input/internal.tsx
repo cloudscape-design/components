@@ -99,24 +99,21 @@ const InternalPromptInput = React.forwardRef(
       menuLoadingText: i18n('i18nStrings.menuLoadingText', i18nStrings?.menuLoadingText),
       menuFinishedText: i18n('i18nStrings.menuFinishedText', i18nStrings?.menuFinishedText),
       menuErrorText: i18n('i18nStrings.menuErrorText', i18nStrings?.menuErrorText),
-      tokenInsertedAriaLabel:
-        i18nStrings?.tokenInsertedAriaLabel ??
-        (token =>
-          i18n('i18nStrings.tokenInsertedAriaLabel', undefined, format =>
-            format({ token__label: token.label || token.value })
-          ) ?? `${token.label || token.value} inserted`),
-      tokenPinnedAriaLabel:
-        i18nStrings?.tokenPinnedAriaLabel ??
-        (token =>
-          i18n('i18nStrings.tokenPinnedAriaLabel', undefined, format =>
-            format({ token__label: token.label || token.value })
-          ) ?? `${token.label || token.value} pinned`),
-      tokenRemovedAriaLabel:
-        i18nStrings?.tokenRemovedAriaLabel ??
-        (token =>
-          i18n('i18nStrings.tokenRemovedAriaLabel', undefined, format =>
-            format({ token__label: token.label || token.value })
-          ) ?? `${token.label || token.value} removed`),
+      tokenInsertedAriaLabel: i18n(
+        'i18nStrings.tokenInsertedAriaLabel',
+        i18nStrings?.tokenInsertedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
+      tokenPinnedAriaLabel: i18n(
+        'i18nStrings.tokenPinnedAriaLabel',
+        i18nStrings?.tokenPinnedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
+      tokenRemovedAriaLabel: i18n(
+        'i18nStrings.tokenRemovedAriaLabel',
+        i18nStrings?.tokenRemovedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
     };
 
     const isTokenMode = !!menus && supportsTokenMode;

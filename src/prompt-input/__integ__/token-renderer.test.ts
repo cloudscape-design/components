@@ -63,7 +63,6 @@ describe('Token Renderer (isolated)', () => {
       await clickButton(page, 'Add reference');
 
       const editorText = await getEditorText(page);
-      expect(editorText).toContain('⚡');
       expect(editorText).toContain('Alice');
 
       const tokenState = await getTokenState(page);

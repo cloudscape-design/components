@@ -182,40 +182,34 @@ export class CaretController {
 
     this.state = { start, end, isValid: true };
 
-    if (typeof range.getBoundingClientRect === 'function') {
-      try {
-        const rangeRect = range.getBoundingClientRect();
-        const elementRect = this.element.getBoundingClientRect();
+    const rangeRect = range.getBoundingClientRect();
+    const elementRect = this.element.getBoundingClientRect();
 
-        const isOutOfView =
-          rangeRect.top < elementRect.top ||
-          rangeRect.bottom > elementRect.bottom ||
-          rangeRect.left < elementRect.left ||
-          rangeRect.right > elementRect.right;
+    const isOutOfView =
+      rangeRect.top < elementRect.top ||
+      rangeRect.bottom > elementRect.bottom ||
+      rangeRect.left < elementRect.left ||
+      rangeRect.right > elementRect.right;
 
-        if (isOutOfView) {
-          const tempSpan = document.createElement('span');
-          range.insertNode(tempSpan);
-          tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-          tempSpan.remove();
+    if (isOutOfView) {
+      const tempSpan = document.createElement('span');
+      range.insertNode(tempSpan);
+      tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      tempSpan.remove();
 
-          range.setStart(startLocation.node, startLocation.offset);
-          if (end !== undefined && end !== start) {
-            const endLocation = this.findDOMLocation(end);
-            if (endLocation) {
-              range.setEnd(endLocation.node, endLocation.offset);
-            } else {
-              range.collapse(true);
-            }
-          } else {
-            range.collapse(true);
-          }
-          selection.removeAllRanges();
-          selection.addRange(range);
+      range.setStart(startLocation.node, startLocation.offset);
+      if (end !== undefined && end !== start) {
+        const endLocation = this.findDOMLocation(end);
+        if (endLocation) {
+          range.setEnd(endLocation.node, endLocation.offset);
+        } else {
+          range.collapse(true);
         }
-      } catch {
-        /* ignore scroll errors in test environments */
+      } else {
+        range.collapse(true);
       }
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
   }
 
@@ -358,6 +352,41 @@ export class CaretController {
     return lastP ? { node: lastP, offset: lastP.childNodes.length } : null;
   }
 
+  /** Resolves a DOM location for a specific child node at the given offset within a paragraph. */
+  private resolveChildLocation(p: HTMLElement, child: ChildNode, offsetInChild: number): DOMLocation {
+    if (isTextNode(child)) {
+      return { node: child, offset: offsetInChild };
+    }
+
+    if (!isHTMLElement(child)) {
+      return { node: p, offset: Array.from(p.childNodes).indexOf(child) };
+    }
+
+    const tokenType = getTokenType(child);
+    const childIndex = Array.from(p.childNodes).indexOf(child);
+
+    if (tokenType === ElementType.Trigger) {
+      const triggerTextNode = child.childNodes[0];
+      if (triggerTextNode && isTextNode(triggerTextNode)) {
+        return { node: triggerTextNode, offset: offsetInChild };
+      }
+      return { node: p, offset: childIndex };
+    }
+
+    if (isReferenceElementType(tokenType)) {
+      if (offsetInChild === 0) {
+        return { node: p, offset: childIndex };
+      }
+      const nextSibling = child.nextSibling;
+      if (nextSibling) {
+        return isTextNode(nextSibling) ? { node: nextSibling, offset: 0 } : { node: p, offset: childIndex + 1 };
+      }
+      return { node: p, offset: p.childNodes.length };
+    }
+
+    return { node: p, offset: childIndex };
+  }
+
   private findLocationInParagraph(p: HTMLElement, targetOffset: number): DOMLocation | null {
     let offsetInParagraph = 0;
 
@@ -365,44 +394,7 @@ export class CaretController {
       const childLength = this.getNodeLength(child);
 
       if (offsetInParagraph + childLength >= targetOffset) {
-        if (isTextNode(child)) {
-          return { node: child, offset: targetOffset - offsetInParagraph };
-        }
-
-        if (isHTMLElement(child)) {
-          const tokenType = getTokenType(child);
-
-          if (tokenType === ElementType.Trigger) {
-            const offsetInTrigger = targetOffset - offsetInParagraph;
-            const triggerTextNode = child.childNodes[0];
-            if (triggerTextNode && isTextNode(triggerTextNode)) {
-              return { node: triggerTextNode, offset: offsetInTrigger };
-            }
-            return { node: p, offset: Array.from(p.childNodes).indexOf(child) };
-          }
-
-          if (isReferenceElementType(tokenType)) {
-            // References are atomic — position before or after, never inside
-            if (offsetInParagraph === targetOffset) {
-              return { node: p, offset: Array.from(p.childNodes).indexOf(child) };
-            }
-
-            offsetInParagraph += TOKEN_LENGTHS.REFERENCE;
-            if (offsetInParagraph === targetOffset) {
-              const nextSibling = child.nextSibling;
-              if (nextSibling) {
-                return isTextNode(nextSibling)
-                  ? { node: nextSibling, offset: 0 }
-                  : { node: p, offset: Array.from(p.childNodes).indexOf(nextSibling) };
-              }
-              return { node: p, offset: p.childNodes.length };
-            }
-
-            return { node: p, offset: Array.from(p.childNodes).indexOf(child) + 1 };
-          }
-        }
-
-        return { node: p, offset: Array.from(p.childNodes).indexOf(child) };
+        return this.resolveChildLocation(p, child, targetOffset - offsetInParagraph);
       }
 
       offsetInParagraph += childLength;
@@ -645,23 +637,44 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
   const normalizedStart = normalizeBoundary(range.startContainer);
   const normalizedEnd = normalizeBoundary(range.endContainer);
 
-  if (normalizedStart || normalizedEnd) {
-    const newStartContainer = normalizedStart?.container ?? range.startContainer;
-    const newStartOffset = normalizedStart?.offset ?? range.startOffset;
-    const newEndContainer = normalizedEnd?.container ?? range.endContainer;
-    const newEndOffset = normalizedEnd?.offset ?? range.endOffset;
+  if (!normalizedStart && !normalizedEnd) {
+    return;
+  }
 
-    // Guard: skip if the selection already matches the normalized boundaries.
-    // Prevents Safari from entering an infinite selectionchange loop in RTL.
-    if (
-      range.startContainer === newStartContainer &&
-      range.startOffset === newStartOffset &&
-      range.endContainer === newEndContainer &&
-      range.endOffset === newEndOffset
-    ) {
-      return;
-    }
+  const newStartContainer = normalizedStart?.container ?? range.startContainer;
+  const newStartOffset = normalizedStart?.offset ?? range.startOffset;
+  const newEndContainer = normalizedEnd?.container ?? range.endContainer;
+  const newEndOffset = normalizedEnd?.offset ?? range.endOffset;
 
+  // Guard: skip if the selection already matches the normalized boundaries.
+  // Prevents Safari from entering an infinite selectionchange loop in RTL.
+  if (
+    range.startContainer === newStartContainer &&
+    range.startOffset === newStartOffset &&
+    range.endContainer === newEndContainer &&
+    range.endOffset === newEndOffset
+  ) {
+    return;
+  }
+
+  // Determine if the selection is backward (focus before anchor in document order).
+  // Range always has start <= end, but the user may be selecting in reverse.
+  const isBackward =
+    selection.anchorNode === range.endContainer &&
+    selection.anchorOffset === range.endOffset &&
+    selection.focusNode === range.startContainer &&
+    selection.focusOffset === range.startOffset;
+
+  if (isBackward && typeof selection.extend === 'function') {
+    // Preserve backward direction: collapse to anchor (end), extend to focus (start)
+    const anchorContainer = normalizedEnd?.container ?? range.endContainer;
+    const anchorOffset = normalizedEnd?.offset ?? range.endOffset;
+    const focusContainer = normalizedStart?.container ?? range.startContainer;
+    const focusOffset = normalizedStart?.offset ?? range.startOffset;
+
+    selection.collapse(anchorContainer, anchorOffset);
+    selection.extend(focusContainer, focusOffset);
+  } else {
     const updatedRange = document.createRange();
     updatedRange.setStart(newStartContainer, newStartOffset);
     updatedRange.setEnd(newEndContainer, newEndOffset);

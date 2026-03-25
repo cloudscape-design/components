@@ -20,20 +20,17 @@ export function enforcePinnedTokenOrdering(
   }
 
   const pinnedTokens: PromptInputProps.InputToken[] = [];
-  const forbiddenContent: PromptInputProps.InputToken[] = [];
-  const allowedContent: PromptInputProps.InputToken[] = [];
+  const restTokens: PromptInputProps.InputToken[] = [];
 
-  tokens.forEach((token, index) => {
+  for (const token of tokens) {
     if (isPinnedReferenceToken(token)) {
       pinnedTokens.push(token);
-    } else if (index <= lastPinnedIndex) {
-      forbiddenContent.push(token);
     } else {
-      allowedContent.push(token);
+      restTokens.push(token);
     }
-  });
+  }
 
-  return [...pinnedTokens, ...forbiddenContent, ...allowedContent];
+  return [...pinnedTokens, ...restTokens];
 }
 
 /** Merges consecutive text tokens into single tokens to avoid DOM fragmentation. */
@@ -87,6 +84,60 @@ export function validateTrigger(
   return isAtStart || isAfterWhitespace;
 }
 
+interface TriggerMatch {
+  index: number;
+  menu: PromptInputProps.MenuDefinition;
+  cancelled: boolean;
+}
+
+/** Finds the earliest valid trigger character in text starting from the given position. */
+function findEarliestTrigger(
+  text: string,
+  position: number,
+  menus: readonly PromptInputProps.MenuDefinition[],
+  precedingTokens: readonly PromptInputProps.InputToken[],
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
+): TriggerMatch | null {
+  let best: TriggerMatch | null = null;
+
+  for (const menu of menus) {
+    let searchPos = position;
+    while (searchPos < text.length) {
+      const idx = text.indexOf(menu.trigger, searchPos);
+      if (idx === -1) {
+        break;
+      }
+      if (!validateTrigger(menu, idx, text, precedingTokens)) {
+        searchPos = idx + menu.trigger.length;
+        continue;
+      }
+      const cancelled = onTriggerDetected?.({ menuId: menu.id, triggerChar: menu.trigger, position: idx }) ?? false;
+      if (!best || idx < best.index) {
+        best = { index: idx, menu, cancelled };
+      }
+      break;
+    }
+  }
+
+  return best;
+}
+
+/** Extracts filter text after a trigger character, stopping at whitespace or another trigger char. */
+function extractFilterText(
+  text: string,
+  startIndex: number,
+  menus: readonly PromptInputProps.MenuDefinition[]
+): string {
+  let end = 0;
+  while (end < text.length && text[end].trim() !== '') {
+    if (menus.some(m => text[end] === m.trigger)) {
+      break;
+    }
+    end++;
+  }
+  return text.substring(0, end);
+}
+
 /** Scans text for trigger characters and splits it into text and trigger tokens. */
 export function detectTriggersInText(
   text: string,
@@ -98,97 +149,37 @@ export function detectTriggersInText(
   let position = 0;
 
   while (position < text.length) {
-    let earliestTriggerIndex = -1;
-    let earliestMenu: PromptInputProps.MenuDefinition | null = null;
-    let earliestCancelled = false;
+    const match = findEarliestTrigger(text, position, menus, precedingTokens, onTriggerDetected);
 
-    for (const menu of menus) {
-      let searchPos = position;
-
-      while (searchPos < text.length) {
-        const triggerIndex = text.indexOf(menu.trigger, searchPos);
-        if (triggerIndex === -1) {
-          break;
-        }
-
-        const isValid = validateTrigger(menu, triggerIndex, text, precedingTokens);
-
-        if (isValid) {
-          let cancelled = false;
-
-          if (onTriggerDetected) {
-            const wasPrevented = onTriggerDetected({
-              menuId: menu.id,
-              triggerChar: menu.trigger,
-              position: triggerIndex,
-            });
-
-            if (wasPrevented) {
-              cancelled = true;
-            }
-          }
-
-          if (earliestTriggerIndex === -1 || triggerIndex < earliestTriggerIndex) {
-            earliestTriggerIndex = triggerIndex;
-            earliestMenu = menu;
-            earliestCancelled = cancelled;
-          }
-          break;
-        }
-
-        searchPos = triggerIndex + menu.trigger.length;
-      }
+    if (!match) {
+      results.push({ type: 'text', value: text.substring(position) });
+      break;
     }
 
-    if (earliestMenu && earliestTriggerIndex !== -1) {
-      const beforeTrigger = text.substring(position, earliestTriggerIndex);
-      if (beforeTrigger) {
-        results.push({ type: 'text', value: beforeTrigger });
-      }
+    const beforeTrigger = text.substring(position, match.index);
+    if (beforeTrigger) {
+      results.push({ type: 'text', value: beforeTrigger });
+    }
 
-      if (earliestCancelled) {
-        // Emit as a trigger token with a '-cancelled' ID suffix so it stays in the DOM
-        // as a trigger element (won't be re-scanned as text on subsequent inputs).
-        // The suffixed ID won't match findTriggerTokenById, so no menu opens.
-        results.push({
-          type: 'trigger',
-          value: '',
-          triggerChar: earliestMenu.trigger,
-          id: generateTokenId() + '-cancelled',
-        });
-        position = earliestTriggerIndex + earliestMenu.trigger.length;
-      } else {
-        const afterTrigger = text.substring(earliestTriggerIndex + earliestMenu.trigger.length);
-        let filterText = '';
-        let endOfTrigger = earliestTriggerIndex + earliestMenu.trigger.length;
-
-        if (afterTrigger && !afterTrigger.startsWith(' ')) {
-          let endIndex = 0;
-          while (endIndex < afterTrigger.length && afterTrigger[endIndex].trim() !== '') {
-            if (menus.some(m => afterTrigger[endIndex] === m.trigger)) {
-              break;
-            }
-            endIndex++;
-          }
-          filterText = afterTrigger.substring(0, endIndex);
-          endOfTrigger += endIndex;
-        }
-
-        results.push({
-          type: 'trigger',
-          value: filterText,
-          triggerChar: earliestMenu.trigger,
-          id: generateTokenId(),
-        });
-
-        position = endOfTrigger;
-      }
+    if (match.cancelled) {
+      results.push({
+        type: 'trigger',
+        value: '',
+        triggerChar: match.menu.trigger,
+        id: generateTokenId() + '-cancelled',
+      });
+      position = match.index + match.menu.trigger.length;
     } else {
-      const remainingText = text.substring(position);
-      if (remainingText) {
-        results.push({ type: 'text', value: remainingText });
-      }
-      break;
+      const afterTrigger = text.substring(match.index + match.menu.trigger.length);
+      const filterText = afterTrigger && !afterTrigger.startsWith(' ') ? extractFilterText(afterTrigger, 0, menus) : '';
+
+      results.push({
+        type: 'trigger',
+        value: filterText,
+        triggerChar: match.menu.trigger,
+        id: generateTokenId(),
+      });
+      position = match.index + match.menu.trigger.length + filterText.length;
     }
   }
 

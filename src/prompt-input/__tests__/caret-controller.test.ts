@@ -3,6 +3,7 @@
 
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
+import './jsdom-polyfills';
 import {
   calculateTokenPosition,
   calculateTotalTokenLength,
@@ -783,11 +784,11 @@ describe('CaretController - additional branch coverage', () => {
       expect(window.getSelection()!.toString()).toBe('');
     });
 
-    test('does nothing when no selection object', () => {
+    test('selectAll selects content even when element is not focused', () => {
       addParagraph(el, 'hello');
       controller.selectAll();
-      // selectAll should work without throwing
-      expect(window.getSelection()!.rangeCount).toBeGreaterThanOrEqual(0);
+      const sel = window.getSelection()!;
+      expect(sel.toString()).toBe('hello');
     });
   });
 
@@ -912,8 +913,8 @@ describe('CaretController - additional branch coverage', () => {
       window.getSelection()?.addRange(range);
 
       const pos = controller.getPosition();
-      // Should be reference (1) + offset in after content
-      expect(pos).toBeGreaterThanOrEqual(1);
+      // Reference (1) + stripped offset in after-spot: raw offset 3 minus 1 for zero-width char = 2
+      expect(pos).toBe(3);
     });
 
     test('getPosition with cursor in trigger text node', () => {
@@ -2073,7 +2074,6 @@ describe('CaretController - defensive guard coverage', () => {
   afterEach(() => {
     document.body.innerHTML = '';
     jest.restoreAllMocks();
-    delete (Range.prototype as any).getBoundingClientRect;
     delete (HTMLElement.prototype as any).scrollIntoView;
   });
 
@@ -2104,7 +2104,7 @@ describe('CaretController - defensive guard coverage', () => {
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
 
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    Range.prototype.getBoundingClientRect = jest.fn().mockReturnValue(mockRangeRect as DOMRect);
+    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
 
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
@@ -2121,25 +2121,12 @@ describe('CaretController - defensive guard coverage', () => {
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
 
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    Range.prototype.getBoundingClientRect = jest.fn().mockReturnValue(mockRangeRect as DOMRect);
+    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
 
     controller.setPosition(2, 8);
     expect(scrollSpy).toHaveBeenCalled();
-  });
-
-  test('setPosition scroll handles getBoundingClientRect throwing', () => {
-    addParagraph(el, 'hello');
-    el.focus();
-
-    Range.prototype.getBoundingClientRect = jest.fn().mockImplementation(() => {
-      throw new Error('not supported');
-    });
-
-    // Should not throw — caught by try/catch, and position should still be set
-    controller.setPosition(3);
-    expect(controller.getPosition()).toBe(3);
   });
 
   test('restore does nothing when element is not the active element', () => {
@@ -2480,7 +2467,6 @@ describe('CaretController - remaining uncovered branches', () => {
   afterEach(() => {
     document.body.innerHTML = '';
     jest.restoreAllMocks();
-    delete (Range.prototype as any).getBoundingClientRect;
     delete (HTMLElement.prototype as any).scrollIntoView;
   });
 
@@ -2492,7 +2478,7 @@ describe('CaretController - remaining uncovered branches', () => {
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
 
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    Range.prototype.getBoundingClientRect = jest.fn().mockReturnValue(mockRangeRect as DOMRect);
+    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     HTMLElement.prototype.scrollIntoView = jest.fn();
 
     // Start at 0 (valid), end at 999 (beyond content)
@@ -2509,7 +2495,7 @@ describe('CaretController - remaining uncovered branches', () => {
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
 
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    Range.prototype.getBoundingClientRect = jest.fn().mockReturnValue(mockRangeRect as DOMRect);
+    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     HTMLElement.prototype.scrollIntoView = jest.fn();
 
     // Collapsed range (no end)
@@ -2699,10 +2685,12 @@ describe('CaretController - null textContent fallbacks', () => {
 
     Object.defineProperty(textNode, 'textContent', { value: null, writable: true });
 
+    el.focus();
     controller.positionAfterText(textNode);
-    // Should not throw — falls back to offset 0
+    // Falls back to offset 0 since textContent is null
     const sel = window.getSelection()!;
-    expect(sel.rangeCount).toBeGreaterThanOrEqual(0);
+    expect(sel.rangeCount).toBe(1);
+    expect(sel.getRangeAt(0).startOffset).toBe(0);
   });
 });
 

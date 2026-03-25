@@ -17,6 +17,8 @@ jest.mock('../../../lib/components/internal/utils/react-version', () => ({
   getReactMajorVersion: () => 18,
 }));
 
+import './jsdom-polyfills';
+
 const mentionOptions = [
   { value: 'user-1', label: 'Alice' },
   { value: 'user-2', label: 'Bob' },
@@ -44,54 +46,21 @@ const defaultI18nStrings: PromptInputProps.I18nStrings = {
   tokenRemovedAriaLabel: token => `${token.label || token.value} removed`,
 };
 
-interface TokenModeProps {
-  tokens?: PromptInputProps.InputToken[];
-  menus?: PromptInputProps.MenuDefinition[];
-  onChange?: PromptInputProps['onChange'];
-  onAction?: PromptInputProps['onAction'];
-  onKeyDown?: PromptInputProps['onKeyDown'];
-  onMenuItemSelect?: PromptInputProps['onMenuItemSelect'];
-  onMenuLoadItems?: PromptInputProps['onMenuLoadItems'];
-  onMenuFilter?: PromptInputProps['onMenuFilter'];
-  onTriggerDetected?: PromptInputProps['onTriggerDetected'];
-  onBlur?: PromptInputProps['onBlur'];
-  onFocus?: PromptInputProps['onFocus'];
-  onKeyUp?: PromptInputProps['onKeyUp'];
-  disabled?: boolean;
-  readOnly?: boolean;
-  placeholder?: string;
-  actionButtonIconName?: PromptInputProps['actionButtonIconName'];
-  i18nStrings?: PromptInputProps.I18nStrings;
-  ref?: React.Ref<PromptInputProps.Ref>;
-  secondaryActions?: React.ReactNode;
-  secondaryContent?: React.ReactNode;
-  customPrimaryAction?: React.ReactNode;
-  ariaLabel?: string;
-  tokensToText?: PromptInputProps['tokensToText'];
-}
-
-function renderTokenMode(props: TokenModeProps = {}) {
-  const {
-    tokens = [],
-    menus = defaultMenus,
-    onChange,
-    onAction,
-    i18nStrings = defaultI18nStrings,
-    ref,
-    ...rest
-  } = props;
+function renderTokenMode({
+  props = {},
+  ref,
+}: { props?: PromptInputProps; ref?: React.Ref<PromptInputProps.Ref> } = {}) {
+  const { tokens = [], menus = defaultMenus, i18nStrings = defaultI18nStrings, ...rest } = props;
 
   const renderResult = render(
     <PromptInput
       tokens={tokens}
       menus={menus}
-      onChange={onChange}
-      onAction={onAction}
       actionButtonIconName="send"
       i18nStrings={i18nStrings}
       ariaLabel="Chat input"
-      ref={ref}
       {...rest}
+      ref={ref}
     />
   );
   // Flush portal state updates: useEffect → renderTokens → setPortalVersion → re-render with portals
@@ -125,23 +94,27 @@ describe('token mode rendering', () => {
   });
 
   test('renders with empty tokens', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     expect(wrapper.getValue()).toBe('');
   });
 
   test('renders text tokens', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello world' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+      },
     });
     expect(wrapper.getValue()).toBe('hello world');
   });
 
   test('renders reference tokens', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('hello');
@@ -150,11 +123,13 @@ describe('token mode rendering', () => {
 
   test('renders break tokens as line breaks', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'line1' },
-        { type: 'break', value: '\n' },
-        { type: 'text', value: 'line2' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'line1' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'line2' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('line1');
@@ -163,8 +138,10 @@ describe('token mode rendering', () => {
 
   test('renders placeholder when tokens are empty', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [],
-      placeholder: 'Type something...',
+      props: {
+        tokens: [],
+        placeholder: 'Type something...',
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('data-placeholder')).toBe('Type something...');
@@ -173,7 +150,7 @@ describe('token mode rendering', () => {
 
 describe('token mode disabled/readOnly', () => {
   test('sets aria-disabled when disabled', () => {
-    const { container } = renderTokenMode({ disabled: true });
+    const { container } = renderTokenMode({ props: { disabled: true } });
     // When disabled, contenteditable="false" so findContentEditableElement returns null
     // Query the role=textbox element directly
     const editable = container.querySelector('[role="textbox"]')!;
@@ -182,20 +159,20 @@ describe('token mode disabled/readOnly', () => {
   });
 
   test('sets aria-readonly when readOnly', () => {
-    const { container } = renderTokenMode({ readOnly: true });
+    const { container } = renderTokenMode({ props: { readOnly: true } });
     const editable = container.querySelector('[role="textbox"]')!;
     expect(editable).toHaveAttribute('aria-readonly', 'true');
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
   test('sets tabIndex to -1 when disabled', () => {
-    const { container } = renderTokenMode({ disabled: true });
+    const { container } = renderTokenMode({ props: { disabled: true } });
     const editable = container.querySelector('[role="textbox"]')!;
     expect(editable).toHaveAttribute('tabindex', '-1');
   });
 
   test('switching from disabled to enabled re-enables editing', () => {
-    const { container, rerender } = renderTokenMode({ disabled: true });
+    const { container, rerender } = renderTokenMode({ props: { disabled: true } });
     const editable = container.querySelector('[role="textbox"]')!;
     expect(editable).toHaveAttribute('contenteditable', 'false');
 
@@ -218,7 +195,7 @@ describe('token mode action button', () => {
   test('fires onAction with tokens on action button click', () => {
     const onAction = jest.fn();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onAction });
+    const { wrapper } = renderTokenMode({ props: { tokens, onAction } });
 
     wrapper.findActionButton().click();
 
@@ -234,7 +211,7 @@ describe('token mode action button', () => {
   test('fires onAction with value derived from tokens', () => {
     const onAction = jest.fn();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onAction });
+    const { wrapper } = renderTokenMode({ props: { tokens, onAction } });
 
     wrapper.findActionButton().click();
 
@@ -254,7 +231,7 @@ describe('token mode action button', () => {
     const tokensToText = (t: readonly PromptInputProps.InputToken[]) =>
       t.map(tok => (tok.type === 'reference' ? `@${(tok as any).label}` : tok.value)).join('');
 
-    const { wrapper } = renderTokenMode({ tokens, onAction, tokensToText });
+    const { wrapper } = renderTokenMode({ props: { tokens, onAction, tokensToText } });
     wrapper.findActionButton().click();
 
     expect(onAction).toHaveBeenCalledWith(
@@ -280,8 +257,10 @@ describe('token mode ref methods', () => {
   test('select() selects all content', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello world' }],
     });
 
     act(() => {
@@ -297,7 +276,7 @@ describe('token mode ref methods', () => {
 
   test('select() does nothing in empty state', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
-    renderTokenMode({ ref, tokens: [] });
+    renderTokenMode({ props: { tokens: [] }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -314,7 +293,7 @@ describe('token mode ref methods', () => {
   test('insertText does nothing when disabled', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    renderTokenMode({ ref, disabled: true, onChange, tokens: [] });
+    renderTokenMode({ props: { disabled: true, onChange, tokens: [] }, ref });
 
     act(() => {
       ref.current!.insertText('hello');
@@ -326,7 +305,7 @@ describe('token mode ref methods', () => {
   test('insertText does nothing when readOnly', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    renderTokenMode({ ref, readOnly: true, onChange, tokens: [] });
+    renderTokenMode({ props: { readOnly: true, onChange, tokens: [] }, ref });
 
     act(() => {
       ref.current!.insertText('hello');
@@ -339,9 +318,11 @@ describe('token mode ref methods', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'text', value: 'hello' }],
     });
 
     act(() => {
@@ -358,9 +339,11 @@ describe('token mode ref methods', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'text', value: 'helloworld' }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'text', value: 'helloworld' }],
     });
 
     act(() => {
@@ -371,17 +354,23 @@ describe('token mode ref methods', () => {
     });
 
     expect(onChange).toHaveBeenCalled();
-    // Caret should be positioned after the inserted text (offset 6: 'hello ' = 5 + 1)
-    expect(getCaretOffset()).toBeGreaterThanOrEqual(0);
+    const tokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textValues = tokens
+      .filter((t: any) => t.type === 'text')
+      .map((t: any) => t.value)
+      .join('');
+    expect(textValues).toBe('hello world');
   });
 
   test('insertText with caretStart and caretEnd positions caret correctly', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'text', value: 'hello' }],
     });
 
     act(() => {
@@ -398,12 +387,14 @@ describe('token mode ref methods', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [
+          { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
+          { type: 'text', value: 'hello' },
+        ],
+      },
       ref,
-      onChange,
-      tokens: [
-        { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
-        { type: 'text', value: 'hello' },
-      ],
     });
 
     act(() => {
@@ -420,9 +411,11 @@ describe('token mode ref methods', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true }],
     });
 
     act(() => {
@@ -440,12 +433,16 @@ describe('token mode ref methods', () => {
 });
 
 describe('token mode onChange', () => {
-  test('fires onChange when content is modified via setValue', () => {
+  test('fires onChange when content is modified via input event', () => {
     const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({ onChange, tokens: [] });
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({ props: { onChange, tokens: [] }, ref });
 
     act(() => {
-      wrapper.setValue('hello');
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('hello');
     });
 
     expect(onChange).toHaveBeenCalled();
@@ -456,8 +453,10 @@ describe('token mode keyboard events', () => {
   test('fires onKeyDown on keypress', () => {
     const onKeyDown = jest.fn();
     const { wrapper } = renderTokenMode({
-      onKeyDown,
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        onKeyDown,
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
 
     const editable = wrapper.findContentEditableElement()!;
@@ -471,7 +470,7 @@ describe('token mode form submission', () => {
   test('action button fires onAction with tokens in token mode', () => {
     const onAction = jest.fn();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onAction });
+    const { wrapper } = renderTokenMode({ props: { tokens, onAction } });
 
     wrapper.findActionButton().click();
 
@@ -595,10 +594,12 @@ describe('token mode hidden input', () => {
 describe('token mode with pinned tokens', () => {
   test('renders pinned reference tokens', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
-        { type: 'text', value: 'hello' },
-      ],
+      props: {
+        tokens: [
+          { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
+          { type: 'text', value: 'hello' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('/dev');
@@ -609,21 +610,27 @@ describe('token mode with pinned tokens', () => {
 describe('token mode secondary slots', () => {
   test('renders secondary actions', () => {
     const { wrapper } = renderTokenMode({
-      secondaryActions: <button>Action</button>,
+      props: {
+        secondaryActions: <button>Action</button>,
+      },
     });
     expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent('Action');
   });
 
   test('renders secondary content', () => {
     const { wrapper } = renderTokenMode({
-      secondaryContent: <div>Extra content</div>,
+      props: {
+        secondaryContent: <div>Extra content</div>,
+      },
     });
     expect(wrapper.findSecondaryContent()?.getElement()).toHaveTextContent('Extra content');
   });
 
   test('renders custom primary action', () => {
     const { wrapper } = renderTokenMode({
-      customPrimaryAction: <button>Custom</button>,
+      props: {
+        customPrimaryAction: <button>Custom</button>,
+      },
     });
     expect(wrapper.findCustomPrimaryAction()?.getElement()).toHaveTextContent('Custom');
   });
@@ -631,12 +638,12 @@ describe('token mode secondary slots', () => {
 
 describe('token mode a11y', () => {
   test('sets aria-label on contentEditable', () => {
-    const { wrapper } = renderTokenMode({ ariaLabel: 'Chat input' });
+    const { wrapper } = renderTokenMode({ props: { ariaLabel: 'Chat input' } });
     expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('aria-label', 'Chat input');
   });
 
   test('sets aria-label on region wrapper', () => {
-    const { container } = renderTokenMode({ ariaLabel: 'Chat input' });
+    const { container } = renderTokenMode({ props: { ariaLabel: 'Chat input' } });
     const wrapper = createWrapper(container).findPromptInput()!;
     expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Chat input');
   });
@@ -647,13 +654,15 @@ describe('token mode a11y', () => {
   });
 
   test('aria-expanded is false when menu is closed', () => {
-    const { wrapper } = renderTokenMode({ tokens: [{ type: 'text', value: 'hello' }] });
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
     expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('caret spots inside references are aria-hidden', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      props: {
+        tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const refEl = el.querySelector('[data-type="reference"]');
@@ -667,7 +676,7 @@ describe('token mode a11y', () => {
 describe('token mode onBlur/onFocus', () => {
   test('fires onBlur when contentEditable loses focus', () => {
     const onBlur = jest.fn();
-    const { wrapper } = renderTokenMode({ onBlur });
+    const { wrapper } = renderTokenMode({ props: { onBlur } });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -682,7 +691,7 @@ describe('token mode onBlur/onFocus', () => {
 
   test('fires onFocus when contentEditable gains focus', () => {
     const onFocus = jest.fn();
-    const { wrapper } = renderTokenMode({ onFocus });
+    const { wrapper } = renderTokenMode({ props: { onFocus } });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -707,8 +716,10 @@ describe('token mode with useAtStart menus', () => {
 
   test('renders with useAtStart menu definition', () => {
     const { wrapper } = renderTokenMode({
-      menus: menusWithUseAtStart,
-      tokens: [],
+      props: {
+        menus: menusWithUseAtStart,
+        tokens: [],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('role', 'textbox');
@@ -716,11 +727,13 @@ describe('token mode with useAtStart menus', () => {
 
   test('renders pinned tokens from useAtStart menu', () => {
     const { wrapper } = renderTokenMode({
-      menus: menusWithUseAtStart,
-      tokens: [
-        { type: 'reference', id: 'p1', label: 'Developer Mode', value: 'dev', menuId: 'mode', pinned: true },
-        { type: 'text', value: 'hello' },
-      ],
+      props: {
+        menus: menusWithUseAtStart,
+        tokens: [
+          { type: 'reference', id: 'p1', label: 'Developer Mode', value: 'dev', menuId: 'mode', pinned: true },
+          { type: 'text', value: 'hello' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('Developer Mode');
@@ -731,10 +744,12 @@ describe('token mode with useAtStart menus', () => {
 describe('token mode with trigger tokens', () => {
   test('renders trigger tokens', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'trigger', value: 'ali', triggerChar: '@', id: 'trigger-1' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'trigger', value: 'ali', triggerChar: '@', id: 'trigger-1' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('hello');
@@ -744,7 +759,7 @@ describe('token mode with trigger tokens', () => {
 
 describe('token mode menu interactions', () => {
   test('menu is not open by default', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     expect(wrapper.isMenuOpen()).toBe(false);
   });
 });
@@ -752,7 +767,9 @@ describe('token mode menu interactions', () => {
 describe('external token updates', () => {
   test('updates display when tokens prop changes to include a new reference', () => {
     const { rerender, container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
     expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
 
@@ -780,7 +797,9 @@ describe('external token updates', () => {
 
   test('renders a reference token added externally', () => {
     const { rerender, container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
     expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
 
@@ -806,7 +825,9 @@ describe('external token updates', () => {
 
   test('clearing tokens to empty array shows empty state', () => {
     const { rerender, container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
     expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
 
@@ -829,7 +850,7 @@ describe('external token updates', () => {
 describe('token processing on prop change', () => {
   test('tokens with trigger characters in text are detected and processed on external update', () => {
     const onChange = jest.fn();
-    const { rerender } = renderTokenMode({ tokens: [], onChange });
+    const { rerender } = renderTokenMode({ props: { tokens: [], onChange } });
 
     // Simulate an external prop change that introduces a trigger character
     act(() => {
@@ -847,14 +868,15 @@ describe('token processing on prop change', () => {
 
     expect(onChange).toHaveBeenCalled();
     const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-    expect(lastCall.detail.tokens).toEqual(expect.any(Array));
-    expect(lastCall.detail.tokens.length).toBeGreaterThan(0);
+    const tokens = lastCall.detail.tokens;
+    expect(tokens.some((t: any) => t.type === 'trigger' && t.triggerChar === '@')).toBe(true);
+    expect(tokens.some((t: any) => t.type === 'text' && t.value === 'hello ')).toBe(true);
   });
 
   test('onTriggerDetected is not called for external token updates', () => {
     const onChange = jest.fn();
     const onTriggerDetected = jest.fn(() => true);
-    const { rerender } = renderTokenMode({ tokens: [], onChange, onTriggerDetected });
+    const { rerender } = renderTokenMode({ props: { tokens: [], onChange, onTriggerDetected } });
 
     act(() => {
       rerender(
@@ -893,8 +915,10 @@ describe('multiple menu definitions', () => {
 
   test('component accepts multiple menu definitions', () => {
     const { wrapper } = renderTokenMode({
-      menus: multipleMenus,
-      tokens: [],
+      props: {
+        menus: multipleMenus,
+        tokens: [],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toBe('');
@@ -902,12 +926,14 @@ describe('multiple menu definitions', () => {
 
   test('renders tokens from different menus', () => {
     const { wrapper } = renderTokenMode({
-      menus: multipleMenus,
-      tokens: [
-        { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-        { type: 'text', value: ' ' },
-        { type: 'reference', id: 'ref-2', label: 'Developer Mode', value: 'dev', menuId: 'commands' },
-      ],
+      props: {
+        menus: multipleMenus,
+        tokens: [
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' ' },
+          { type: 'reference', id: 'ref-2', label: 'Developer Mode', value: 'dev', menuId: 'commands' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('Alice');
@@ -918,10 +944,12 @@ describe('multiple menu definitions', () => {
 describe('token ordering with pinned tokens', () => {
   test('pinned tokens appear before non-pinned tokens', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello' },
-        { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello' },
+          { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
+        ],
+      },
     });
     const value = wrapper.getValue();
     // Pinned tokens are enforced to appear first
@@ -932,11 +960,13 @@ describe('token ordering with pinned tokens', () => {
 
   test('mixed pinned and non-pinned tokens maintain correct order', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'some text' },
-        { type: 'reference', id: 'p1', label: '/creative', value: 'creative', menuId: 'mode', pinned: true },
-        { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'some text' },
+          { type: 'reference', id: 'p1', label: '/creative', value: 'creative', menuId: 'mode', pinned: true },
+          { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     // Pinned token should come first
@@ -950,8 +980,10 @@ describe('keyboard events additional scenarios', () => {
   test('onKeyUp fires on key release', () => {
     const onKeyUp = jest.fn();
     const { wrapper } = renderTokenMode({
-      onKeyUp,
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        onKeyUp,
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
 
     const editable = wrapper.findContentEditableElement()!;
@@ -960,33 +992,47 @@ describe('keyboard events additional scenarios', () => {
     expect(onKeyUp).toHaveBeenCalled();
   });
 
-  test('Ctrl+A in empty state does not throw', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+  test('Ctrl+A in empty state is prevented', () => {
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
-    expect(() => {
-      act(() => {
-        editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', keyCode: 65, ctrlKey: true, bubbles: true }));
-      });
-    }).not.toThrow();
+    const event = new KeyboardEvent('keydown', {
+      key: 'a',
+      keyCode: 65,
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    act(() => {
+      editable.dispatchEvent(event);
+    });
+    expect(event.defaultPrevented).toBe(true);
   });
 
-  test('Meta+A (Cmd+A) in empty state does not throw', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+  test('Meta+A (Cmd+A) in empty state is prevented', () => {
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
-    expect(() => {
-      act(() => {
-        editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', keyCode: 65, metaKey: true, bubbles: true }));
-      });
-    }).not.toThrow();
+    const event = new KeyboardEvent('keydown', {
+      key: 'a',
+      keyCode: 65,
+      metaKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    act(() => {
+      editable.dispatchEvent(event);
+    });
+    expect(event.defaultPrevented).toBe(true);
   });
 });
 
 describe('live region announcements', () => {
   test('component has a live region element for accessibility', () => {
     renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
     // InternalLiveRegion renders to the document body as a portal
     const liveRegion = document.querySelector('[aria-live]');
@@ -996,14 +1042,16 @@ describe('live region announcements', () => {
 
 describe('menu dropdown rendering', () => {
   test('dropdown is not rendered when menu is closed', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     expect(wrapper.isMenuOpen()).toBe(false);
   });
 
   test('dropdown does not render when there are no menu items and no trigger', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      menus: [{ id: 'empty-menu', trigger: '@', options: [], filteringType: 'auto' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        menus: [{ id: 'empty-menu', trigger: '@', options: [], filteringType: 'auto' }],
+      },
     });
     expect(wrapper.isMenuOpen()).toBe(false);
   });
@@ -1013,8 +1061,10 @@ describe('menu state - filtering and item management', () => {
   test('fires onMenuFilter with trigger filter text', () => {
     const onMenuFilter = jest.fn();
     renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'Ali', triggerChar: '@', id: 't1' }],
-      onMenuFilter,
+      props: {
+        tokens: [{ type: 'trigger', value: 'Ali', triggerChar: '@', id: 't1' }],
+        onMenuFilter,
+      },
     });
     if (onMenuFilter.mock.calls.length > 0) {
       expect(onMenuFilter).toHaveBeenCalledWith(
@@ -1043,15 +1093,17 @@ describe('menu state - filtering and item management', () => {
         filteringType: 'auto',
       },
     ];
-    const { wrapper } = renderTokenMode({ menus: groupedMenus, tokens: [] });
+    const { wrapper } = renderTokenMode({ props: { menus: groupedMenus, tokens: [] } });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toBe('');
   });
 
   test('renders with manual filteringType', () => {
     const { wrapper } = renderTokenMode({
-      menus: [{ id: 'search', trigger: '@', options: mentionOptions, filteringType: 'manual' }],
-      tokens: [],
+      props: {
+        menus: [{ id: 'search', trigger: '@', options: mentionOptions, filteringType: 'manual' }],
+        tokens: [],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toBe('');
@@ -1059,18 +1111,20 @@ describe('menu state - filtering and item management', () => {
 
   test('renders with disabled options', () => {
     const { wrapper } = renderTokenMode({
-      menus: [
-        {
-          id: 'mentions',
-          trigger: '@',
-          options: [
-            { value: 'user-1', label: 'Alice' },
-            { value: 'user-2', label: 'Bob', disabled: true },
-          ],
-          filteringType: 'auto',
-        },
-      ],
-      tokens: [],
+      props: {
+        menus: [
+          {
+            id: 'mentions',
+            trigger: '@',
+            options: [
+              { value: 'user-1', label: 'Alice' },
+              { value: 'user-2', label: 'Bob', disabled: true },
+            ],
+            filteringType: 'auto',
+          },
+        ],
+        tokens: [],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toBe('');
@@ -1081,11 +1135,13 @@ describe('menu state - load more', () => {
   test('fires onMenuLoadItems for manual filtering menu with trigger', () => {
     const onMenuLoadItems = jest.fn();
     renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
-      onMenuLoadItems,
-      menus: [
-        { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
-      ],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
+        ],
+      },
     });
     if (onMenuLoadItems.mock.calls.length > 0) {
       expect(onMenuLoadItems).toHaveBeenCalledWith(
@@ -1100,9 +1156,11 @@ describe('menu state - load more', () => {
     const onMenuItemSelect = jest.fn();
     const onAction = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onMenuItemSelect,
-      onAction,
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        onMenuItemSelect,
+        onAction,
+      },
     });
     wrapper.findActionButton().click();
     expect(onAction).toHaveBeenCalled();
@@ -1113,8 +1171,10 @@ describe('menu state - load more', () => {
 describe('menu state - status types', () => {
   test('renders with loading statusType', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'manual', statusType: 'loading' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
+        menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'manual', statusType: 'loading' }],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toContain('@');
@@ -1122,8 +1182,10 @@ describe('menu state - status types', () => {
 
   test('renders with error statusType', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'manual', statusType: 'error' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }],
+        menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'manual', statusType: 'error' }],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toContain('@');
@@ -1131,8 +1193,12 @@ describe('menu state - status types', () => {
 
   test('renders with finished statusType and options', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [],
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'finished' }],
+      props: {
+        tokens: [],
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'finished' },
+        ],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.isMenuOpen()).toBe(false);
@@ -1183,8 +1249,10 @@ describe('internal.tsx - setSelectionRange', () => {
   test('setSelectionRange sets caret position in token mode', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello world' }],
     });
 
     act(() => {
@@ -1203,8 +1271,10 @@ describe('internal.tsx - setSelectionRange', () => {
   test('setSelectionRange creates range selection in token mode', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello world' }],
     });
 
     act(() => {
@@ -1223,8 +1293,10 @@ describe('internal.tsx - setSelectionRange', () => {
   test('setSelectionRange with null start defaults to 0', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello' }],
     });
 
     act(() => {
@@ -1290,7 +1362,7 @@ describe('token render effect - caret positioning and state transitions', () => 
     const tokens1: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
     const tokens2: PromptInputProps.InputToken[] = [{ type: 'text', value: 'world' }];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange } });
     const wrapper = createWrapper(container).findPromptInput()!;
     const el = wrapper.findContentEditableElement()!.getElement();
     const childCountBefore = el.childNodes.length;
@@ -1319,7 +1391,7 @@ describe('token render effect - caret positioning and state transitions', () => 
       { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1 });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 } });
 
     act(() => {
       rerender(
@@ -1345,7 +1417,7 @@ describe('token render effect - caret positioning and state transitions', () => 
       { type: 'text', value: 'world' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1 });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 } });
 
     act(() => {
       rerender(
@@ -1365,7 +1437,7 @@ describe('token render effect - caret positioning and state transitions', () => 
 
   test('handles disabled state change triggering re-render', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { container, rerender } = renderTokenMode({ tokens, disabled: false });
+    const { container, rerender } = renderTokenMode({ props: { tokens, disabled: false } });
 
     act(() => {
       rerender(
@@ -1386,7 +1458,7 @@ describe('token render effect - caret positioning and state transitions', () => 
 
   test('handles readOnly state change triggering re-render', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { container, rerender } = renderTokenMode({ tokens, readOnly: false });
+    const { container, rerender } = renderTokenMode({ props: { tokens, readOnly: false } });
 
     act(() => {
       rerender(
@@ -1417,7 +1489,7 @@ describe('token render effect - caret positioning and state transitions', () => 
       { type: 'text', value: ' world' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -1450,7 +1522,7 @@ describe('token render effect - caret positioning and state transitions', () => 
       { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
     ];
 
-    const { container } = renderTokenMode({ tokens });
+    const { container } = renderTokenMode({ props: { tokens } });
     const value = createWrapper(container).findPromptInput()!.getValue();
     expect(value).toContain('/dev');
   });
@@ -1462,7 +1534,7 @@ describe('handleInput - DOM mutation scenarios', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'trigger', value: '', triggerChar: '@', id: 't1' }];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const el = wrapper.findContentEditableElement()!.getElement();
 
     // Simulate typing into the trigger — the trigger text changes from '@' to '@ali'
@@ -1483,7 +1555,7 @@ describe('keyboard handler - Shift+Enter paragraph splitting', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello world' }];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -1506,7 +1578,7 @@ describe('keyboard handler - Shift+Enter paragraph splitting', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
 
-    const { wrapper } = renderTokenMode({ tokens: [], onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens: [], onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -1549,7 +1621,7 @@ describe('token mode - autoFocus', () => {
 describe('token mode - external update with trigger detection', () => {
   test('external tokens with trigger chars are processed into trigger tokens', () => {
     const onChange = jest.fn();
-    const { rerender } = renderTokenMode({ tokens: [], onChange });
+    const { rerender } = renderTokenMode({ props: { tokens: [], onChange } });
 
     act(() => {
       rerender(
@@ -1575,7 +1647,7 @@ describe('token mode - external update with trigger detection', () => {
   test('external update with no changes does not fire onChange', () => {
     const onChange = jest.fn();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { rerender } = renderTokenMode({ tokens, onChange });
+    const { rerender } = renderTokenMode({ props: { tokens, onChange } });
 
     onChange.mockClear();
 
@@ -1617,8 +1689,10 @@ describe('menu-state: grouped options with parent/child items', () => {
 
   test('grouped options render and trigger token opens menu with children', () => {
     const { wrapper } = renderTokenMode({
-      menus: groupedMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'g1' }],
+      props: {
+        menus: groupedMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'g1' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -1646,8 +1720,10 @@ describe('menu-state: grouped options with parent/child items', () => {
       },
     ];
     const { wrapper } = renderTokenMode({
-      menus: allDisabledMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'g2' }],
+      props: {
+        menus: allDisabledMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'g2' }],
+      },
     });
     // Should render without errors
     expect(wrapper.findContentEditableElement()).not.toBeNull();
@@ -1658,8 +1734,10 @@ describe('menu-state: grouped options with parent/child items', () => {
 describe('menu-state: auto vs manual filtering', () => {
   test('auto filtering filters options by typed text', () => {
     const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto' }],
-      tokens: [{ type: 'trigger', value: 'Ali', triggerChar: '@', id: 'f1' }],
+      props: {
+        menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto' }],
+        tokens: [{ type: 'trigger', value: 'Ali', triggerChar: '@', id: 'f1' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -1671,8 +1749,10 @@ describe('menu-state: auto vs manual filtering', () => {
 
   test('manual filtering shows all options regardless of filter text', () => {
     const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual' }],
-      tokens: [{ type: 'trigger', value: 'zzz', triggerChar: '@', id: 'f2' }],
+      props: {
+        menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual' }],
+        tokens: [{ type: 'trigger', value: 'zzz', triggerChar: '@', id: 'f2' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -1687,9 +1767,13 @@ describe('menu-state: load more pagination', () => {
   test('onMenuLoadItems fires on scroll when statusType is pending', () => {
     const onMenuLoadItems = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lm1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lm1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' },
+        ],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -1705,14 +1789,16 @@ describe('menu-state: load more pagination', () => {
   test('onMenuLoadItems fires on recovery click for error status', () => {
     const onMenuLoadItems = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lm2' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto', statusType: 'error' }],
-      i18nStrings: {
-        ...defaultI18nStrings,
-        menuRecoveryText: 'Retry',
-        menuErrorText: 'Error loading',
-        menuErrorIconAriaLabel: 'Error',
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lm2' }],
+        onMenuLoadItems,
+        menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto', statusType: 'error' }],
+        i18nStrings: {
+          ...defaultI18nStrings,
+          menuRecoveryText: 'Retry',
+          menuErrorText: 'Error loading',
+          menuErrorIconAriaLabel: 'Error',
+        },
       },
     });
     // The error status with recovery text should render a recovery button
@@ -1724,7 +1810,9 @@ describe('menu-state: load more pagination', () => {
 describe('token-renderer: rendering various token types', () => {
   test('renders text tokens as text nodes in paragraphs', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'simple text' }],
+      props: {
+        tokens: [{ type: 'text', value: 'simple text' }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     expect(el.querySelectorAll('p').length).toBe(1);
@@ -1733,7 +1821,9 @@ describe('token-renderer: rendering various token types', () => {
 
   test('renders trigger tokens with trigger-token class when filter text present', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'ali', triggerChar: '@', id: 'tr1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: 'ali', triggerChar: '@', id: 'tr1' }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const triggerEl = el.querySelector('[data-type="trigger"]');
@@ -1743,7 +1833,9 @@ describe('token-renderer: rendering various token types', () => {
 
   test('renders trigger tokens without trigger-token class when filter text is empty', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tr2' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tr2' }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const triggerEl = el.querySelector('[data-type="trigger"]');
@@ -1753,7 +1845,9 @@ describe('token-renderer: rendering various token types', () => {
 
   test('renders reference tokens with caret spots', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      props: {
+        tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const refEl = el.querySelector('[data-type="reference"]');
@@ -1767,7 +1861,9 @@ describe('token-renderer: rendering various token types', () => {
 
   test('renders pinned reference tokens with pinned data-type', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true }],
+      props: {
+        tokens: [{ type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true }],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const pinnedEl = el.querySelector('[data-type="pinned"]');
@@ -1777,13 +1873,15 @@ describe('token-renderer: rendering various token types', () => {
 
   test('renders break tokens as separate paragraphs', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'line1' },
-        { type: 'break', value: '\n' },
-        { type: 'text', value: 'line2' },
-        { type: 'break', value: '\n' },
-        { type: 'text', value: 'line3' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'line1' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'line2' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'line3' },
+        ],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     expect(el.querySelectorAll('p').length).toBe(3);
@@ -1791,12 +1889,14 @@ describe('token-renderer: rendering various token types', () => {
 
   test('empty paragraph gets trailing break element', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'line1' },
-        { type: 'break', value: '\n' },
-        { type: 'break', value: '\n' },
-        { type: 'text', value: 'line3' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'line1' },
+          { type: 'break', value: '\n' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'line3' },
+        ],
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
     const paragraphs = el.querySelectorAll('p');
@@ -1815,7 +1915,7 @@ describe('token-renderer: reusing existing containers on re-render', () => {
       { type: 'text', value: ' hello' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens }, ref });
     const el = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     const refElBefore = el.querySelector('[data-type="reference"]');
 
@@ -1858,10 +1958,12 @@ describe('token-operations: handleMenuSelection with useAtStart menus', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      menus: menusWithUseAtStart,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'us1' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        menus: menusWithUseAtStart,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'us1' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
 
     if (wrapper.isMenuOpen()) {
@@ -1882,10 +1984,12 @@ describe('token-operations: handleMenuSelection with useAtStart menus', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      menus: menusWithUseAtStart,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'us2' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        menus: menusWithUseAtStart,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'us2' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
 
     if (wrapper.isMenuOpen()) {
@@ -1906,7 +2010,7 @@ describe('token-operations: handleMenuSelection with useAtStart menus', () => {
 describe('token-operations: processTokens assigns IDs to tokens without them', () => {
   test('tokens without IDs get assigned IDs after processing', () => {
     const onChange = jest.fn();
-    const { rerender } = renderTokenMode({ tokens: [], onChange });
+    const { rerender } = renderTokenMode({ props: { tokens: [], onChange } });
 
     // Provide tokens with empty IDs — processTokens should assign them
     act(() => {
@@ -2166,9 +2270,11 @@ describe('insert-text-content-editable: insertText at specific positions', () =>
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'text', value: 'world' }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'text', value: 'world' }],
     });
 
     act(() => {
@@ -2185,9 +2291,11 @@ describe('insert-text-content-editable: insertText at specific positions', () =>
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        onChange,
+        tokens: [{ type: 'text', value: 'hi' }],
+      },
       ref,
-      onChange,
-      tokens: [{ type: 'text', value: 'hi' }],
     });
 
     act(() => {
@@ -2215,7 +2323,7 @@ describe('use-token-mode: detectTypingContext scenarios', () => {
       { type: 'text', value: 'w' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -2252,7 +2360,7 @@ describe('use-token-mode: detectTypingContext scenarios', () => {
       { type: 'text', value: ' hi' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange } });
 
     act(() => {
       rerender(
@@ -2275,7 +2383,7 @@ describe('use-token-mode: detectTypingContext scenarios', () => {
   test('typing into completely empty state', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    const { container, rerender } = renderTokenMode({ tokens: [], onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: [], onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -2307,9 +2415,11 @@ describe('use-token-mode: menu selection flow', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms1' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms1' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
 
     if (wrapper.isMenuOpen()) {
@@ -2335,11 +2445,13 @@ describe('use-token-mode: menu selection flow', () => {
   test('selecting a menu item announces insertion via live region', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms2' }],
-      onChange,
-      i18nStrings: {
-        ...defaultI18nStrings,
-        tokenInsertedAriaLabel: token => `${token.label} was inserted`,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms2' }],
+        onChange,
+        i18nStrings: {
+          ...defaultI18nStrings,
+          tokenInsertedAriaLabel: token => `${token.label} was inserted`,
+        },
       },
     });
 
@@ -2357,7 +2469,7 @@ describe('use-token-mode: menu selection flow', () => {
 
 describe('use-token-mode: Ctrl+A on empty prevents default', () => {
   test('Ctrl+A on empty tokens array prevents default behavior', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
+    const { wrapper } = renderTokenMode({ props: { tokens: [] } });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     const event = new KeyboardEvent('keydown', {
@@ -2389,8 +2501,10 @@ describe('use-token-mode: multiple menus with different triggers', () => {
 
   test('renders with three different menu triggers', () => {
     const { wrapper } = renderTokenMode({
-      menus: multiMenus,
-      tokens: [],
+      props: {
+        menus: multiMenus,
+        tokens: [],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     expect(wrapper.getValue()).toBe('');
@@ -2399,9 +2513,11 @@ describe('use-token-mode: multiple menus with different triggers', () => {
   test('@ trigger opens mentions menu', () => {
     const onMenuFilter = jest.fn();
     renderTokenMode({
-      menus: multiMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mm1' }],
-      onMenuFilter,
+      props: {
+        menus: multiMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mm1' }],
+        onMenuFilter,
+      },
     });
     if (onMenuFilter.mock.calls.length > 0) {
       expect(onMenuFilter).toHaveBeenCalledWith(
@@ -2415,9 +2531,11 @@ describe('use-token-mode: multiple menus with different triggers', () => {
   test('/ trigger opens commands menu', () => {
     const onMenuFilter = jest.fn();
     renderTokenMode({
-      menus: multiMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'mm2' }],
-      onMenuFilter,
+      props: {
+        menus: multiMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'mm2' }],
+        onMenuFilter,
+      },
     });
     if (onMenuFilter.mock.calls.length > 0) {
       expect(onMenuFilter).toHaveBeenCalledWith(
@@ -2430,13 +2548,15 @@ describe('use-token-mode: multiple menus with different triggers', () => {
 
   test('tokens from different menus coexist', () => {
     const { wrapper } = renderTokenMode({
-      menus: multiMenus,
-      tokens: [
-        { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-        { type: 'text', value: ' ' },
-        { type: 'reference', id: 'r2', label: 'Bug', value: 'bug', menuId: 'tags' },
-        { type: 'text', value: ' hello' },
-      ],
+      props: {
+        menus: multiMenus,
+        tokens: [
+          { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' ' },
+          { type: 'reference', id: 'r2', label: 'Bug', value: 'bug', menuId: 'tags' },
+          { type: 'text', value: ' hello' },
+        ],
+      },
     });
     const value = wrapper.getValue();
     expect(value).toContain('Alice');
@@ -2449,8 +2569,10 @@ describe('internal.tsx: action button disabled states', () => {
   test('action button is disabled when disableActionButton is true', () => {
     const onAction = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onAction,
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        onAction,
+      },
     });
     // The action button should be rendered
     const btn = wrapper.findActionButton();
@@ -2496,8 +2618,10 @@ describe('internal.tsx: action button disabled states', () => {
 describe('internal.tsx: secondary actions with action button layout', () => {
   test('action button moves to action stripe when secondaryActions present', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [],
-      secondaryActions: <button>Attach</button>,
+      props: {
+        tokens: [],
+        secondaryActions: <button>Attach</button>,
+      },
     });
     expect(wrapper.findSecondaryActions()).not.toBeNull();
     expect(wrapper.findActionButton()).not.toBeNull();
@@ -2506,8 +2630,10 @@ describe('internal.tsx: secondary actions with action button layout', () => {
 
   test('buffer area focuses editable element on click', () => {
     const { container } = renderTokenMode({
-      tokens: [],
-      secondaryActions: <button>Attach</button>,
+      props: {
+        tokens: [],
+        secondaryActions: <button>Attach</button>,
+      },
     });
     // The buffer div exists in the action stripe
     const wrapper = createWrapper(container).findPromptInput()!;
@@ -2568,7 +2694,9 @@ describe('internal.tsx: warning and invalid styling', () => {
 describe('use-token-mode: menu keyboard navigation', () => {
   test('ArrowDown in open menu does not throw', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav1' }],
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -2581,7 +2709,9 @@ describe('use-token-mode: menu keyboard navigation', () => {
 
   test('ArrowUp in open menu does not throw', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav2' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav2' }],
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -2594,7 +2724,9 @@ describe('use-token-mode: menu keyboard navigation', () => {
 
   test('Escape key closes menu', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav3' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav3' }],
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -2612,9 +2744,11 @@ describe('use-token-mode: menu keyboard navigation', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav4' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nav4' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -2648,13 +2782,15 @@ describe('use-token-mode: pinned token announcement', () => {
     ];
 
     const { wrapper } = renderTokenMode({
-      menus: menusWithUseAtStart,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'pa1' }],
-      onChange,
-      onMenuItemSelect,
-      i18nStrings: {
-        ...defaultI18nStrings,
-        tokenPinnedAriaLabel: token => `${token.label} was pinned`,
+      props: {
+        menus: menusWithUseAtStart,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '/', id: 'pa1' }],
+        onChange,
+        onMenuItemSelect,
+        i18nStrings: {
+          ...defaultI18nStrings,
+          tokenPinnedAriaLabel: token => `${token.label} was pinned`,
+        },
       },
     });
 
@@ -2713,7 +2849,7 @@ describe('trigger deletion caret positioning', () => {
       { type: 'trigger', value: '', triggerChar: '@', id: 't1' },
     ];
 
-    const { wrapper, rerender } = renderTokenMode({ tokens: tokensBefore, onChange, ref });
+    const { wrapper, rerender } = renderTokenMode({ props: { tokens: tokensBefore, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -2756,7 +2892,7 @@ describe('trigger deletion caret positioning', () => {
       { type: 'trigger', value: 'ali', triggerChar: '@', id: 't1' },
     ];
 
-    const { wrapper, rerender } = renderTokenMode({ tokens: tokensBefore, onChange, ref });
+    const { wrapper, rerender } = renderTokenMode({ props: { tokens: tokensBefore, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -2805,7 +2941,7 @@ describe('shouldRerender - same structure tokens', () => {
       { type: 'text', value: 'yyy' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange } });
     const el = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     const childCountBefore = el.childNodes.length;
 
@@ -2841,7 +2977,7 @@ describe('detectTypingContext - empty line and reference transitions', () => {
       { type: 'text', value: 'x' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -2879,7 +3015,7 @@ describe('detectTypingContext - empty line and reference transitions', () => {
       { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       rerender(
@@ -2903,7 +3039,9 @@ describe('detectTypingContext - empty line and reference transitions', () => {
 describe('checkMenuState - early returns', () => {
   test('no triggers in tokens does not open menu', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
     });
     expect(wrapper.isMenuOpen()).toBe(false);
   });
@@ -2911,10 +3049,12 @@ describe('checkMenuState - early returns', () => {
   test('trigger token with disabled detection does not open menu when caret is outside', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'trigger', value: '', triggerChar: '@', id: 'cm1' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'trigger', value: '', triggerChar: '@', id: 'cm1' },
+        ],
+      },
       ref,
     });
 
@@ -2934,7 +3074,9 @@ describe('checkMenuState - early returns', () => {
 describe('trigger wrapper positioning', () => {
   test('trigger wrapper is set when menu opens with trigger token', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tw1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tw1' }],
+      },
     });
     // When trigger token is present and menu opens, triggerWrapperReady should be set
     // The dropdown should render if items are available
@@ -2947,7 +3089,9 @@ describe('trigger wrapper positioning', () => {
   test('trigger wrapper is cleared when menu closes', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tw2' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'tw2' }],
+      },
       ref,
     });
 
@@ -2963,7 +3107,9 @@ describe('trigger wrapper positioning', () => {
   test('trigger wrapper handles missing trigger element gracefully', () => {
     // Trigger token with an ID that won't match any DOM element
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: '' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: '' }],
+      },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     // Menu should not open when trigger element cannot be found
@@ -2974,7 +3120,7 @@ describe('trigger wrapper positioning', () => {
 describe('handleInput - direct text nodes and trigger styling', () => {
   test('direct text nodes outside paragraphs are moved into a paragraph', () => {
     const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({ tokens: [{ type: 'text', value: 'hello' }], onChange });
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }], onChange } });
     const el = wrapper.findContentEditableElement()!.getElement();
 
     // Simulate browser inserting a text node directly into the contentEditable
@@ -2991,8 +3137,10 @@ describe('handleInput - direct text nodes and trigger styling', () => {
   test('trigger filter text change triggers styling update via handleInput', () => {
     const onChange = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'a', triggerChar: '@', id: 'hs1' }],
-      onChange,
+      props: {
+        tokens: [{ type: 'trigger', value: 'a', triggerChar: '@', id: 'hs1' }],
+        onChange,
+      },
     });
     const el = wrapper.findContentEditableElement()!.getElement();
 
@@ -3018,12 +3166,14 @@ describe('handleInput - pinned token reordering', () => {
     ];
 
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
-      ],
-      menus: menusWithUseAtStart,
-      onChange,
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
+        ],
+        menus: menusWithUseAtStart,
+        onChange,
+      },
       ref,
     });
 
@@ -3063,7 +3213,7 @@ describe('token render effect - triggerSplitAndMerged', () => {
       { type: 'text', value: ' rest' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       rerender(
@@ -3091,7 +3241,7 @@ describe('isTypingIntoEmptyLine render path - new trigger caret positioning', ()
     const ref = React.createRef<PromptInputProps.Ref>();
 
     // Start with empty state
-    const { container, rerender } = renderTokenMode({ tokens: [], onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: [], onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -3125,7 +3275,7 @@ describe('isTypingIntoEmptyLine render path - new trigger caret positioning', ()
       { type: 'text', value: 'hi ' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -3169,7 +3319,7 @@ describe('caret restore after render', () => {
       { type: 'break', value: '\n' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -3202,12 +3352,14 @@ describe('selection normalization', () => {
   test('selectionchange event fires normalization without errors', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' world' },
+        ],
+      },
       ref,
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-        { type: 'text', value: ' world' },
-      ],
     });
 
     act(() => {
@@ -3225,8 +3377,10 @@ describe('selection normalization', () => {
   test('mousedown and mouseup events fire normalization', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello' }],
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3253,7 +3407,7 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
     const onKeyDown = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onKeyDown, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onKeyDown }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -3275,7 +3429,7 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
       { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
     ];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -3306,7 +3460,7 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
       { type: 'text', value: ' world' },
     ];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -3332,8 +3486,10 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'ali', triggerChar: '@', id: 'se1' }],
-      onChange,
+      props: {
+        tokens: [{ type: 'trigger', value: 'ali', triggerChar: '@', id: 'se1' }],
+        onChange,
+      },
       ref,
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
@@ -3363,7 +3519,7 @@ describe('keyboard Backspace/Delete paragraph merge', () => {
       { type: 'text', value: 'world' },
     ];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -3395,7 +3551,7 @@ describe('keyboard Backspace/Delete paragraph merge', () => {
       { type: 'text', value: 'world' },
     ];
 
-    const { wrapper } = renderTokenMode({ tokens, onChange, ref });
+    const { wrapper } = renderTokenMode({ props: { tokens, onChange }, ref });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
@@ -3424,11 +3580,13 @@ describe('space after trigger and menu navigation keyboard', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'trigger', value: 'ali', triggerChar: '@', id: 'sp1' },
-      ],
-      onChange,
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'trigger', value: 'ali', triggerChar: '@', id: 'sp1' },
+        ],
+        onChange,
+      },
       ref,
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
@@ -3454,9 +3612,11 @@ describe('space after trigger and menu navigation keyboard', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mn1' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mn1' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3479,9 +3639,11 @@ describe('space after trigger and menu navigation keyboard', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mn2' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mn2' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3505,9 +3667,13 @@ describe('menu load more - pending status and scroll', () => {
   test('load more fires on menu open with pending status', () => {
     const onMenuLoadItems = jest.fn();
     renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lmp1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lmp1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' },
+        ],
+      },
     });
 
     // fireLoadMoreOnMenuOpen should have been called
@@ -3523,11 +3689,13 @@ describe('menu load more - pending status and scroll', () => {
   test('load more fires with filter text change', () => {
     const onMenuLoadItems = jest.fn();
     const { rerender } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lmp2' }],
-      onMenuLoadItems,
-      menus: [
-        { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
-      ],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'lmp2' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
+        ],
+      },
     });
 
     onMenuLoadItems.mockClear();
@@ -3562,7 +3730,9 @@ describe('menu load more - pending status and scroll', () => {
 describe('menu highlight and filter interactions', () => {
   test('menu items are highlighted on ArrowDown', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mh1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mh1' }],
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3580,8 +3750,10 @@ describe('menu highlight and filter interactions', () => {
   test('onMenuFilter fires when trigger filter text changes', () => {
     const onMenuFilter = jest.fn();
     const { rerender } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mf1' }],
-      onMenuFilter,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mf1' }],
+        onMenuFilter,
+      },
     });
 
     onMenuFilter.mockClear();
@@ -3613,19 +3785,21 @@ describe('menu-state: selectHighlightedOptionWithKeyboard', () => {
   test('selecting disabled option does not fire onMenuItemSelect', () => {
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      menus: [
-        {
-          id: 'mentions',
-          trigger: '@',
-          options: [
-            { value: 'user-1', label: 'Alice', disabled: true },
-            { value: 'user-2', label: 'Bob' },
-          ],
-          filteringType: 'auto',
-        },
-      ],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sk1' }],
-      onMenuItemSelect,
+      props: {
+        menus: [
+          {
+            id: 'mentions',
+            trigger: '@',
+            options: [
+              { value: 'user-1', label: 'Alice', disabled: true },
+              { value: 'user-2', label: 'Bob' },
+            ],
+            filteringType: 'auto',
+          },
+        ],
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sk1' }],
+        onMenuItemSelect,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3645,17 +3819,19 @@ describe('menu-state: selectHighlightedOptionWithKeyboard', () => {
     const onMenuItemSelect = jest.fn();
     const onChange = jest.fn();
     const { wrapper } = renderTokenMode({
-      menus: [
-        {
-          id: 'mentions',
-          trigger: '@',
-          options: [{ value: 'user-2', label: 'Bob' }],
-          filteringType: 'auto',
-        },
-      ],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sk2' }],
-      onMenuItemSelect,
-      onChange,
+      props: {
+        menus: [
+          {
+            id: 'mentions',
+            trigger: '@',
+            options: [{ value: 'user-2', label: 'Bob' }],
+            filteringType: 'auto',
+          },
+        ],
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sk2' }],
+        onMenuItemSelect,
+        onChange,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -3681,14 +3857,16 @@ describe('menu-state: useMenuLoadMore handlers', () => {
   test('fireLoadMoreOnRecoveryClick fires onMenuLoadItems with samePage=true', () => {
     const onMenuLoadItems = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'rc1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto', statusType: 'error' }],
-      i18nStrings: {
-        ...defaultI18nStrings,
-        menuRecoveryText: 'Retry',
-        menuErrorText: 'Error loading',
-        menuErrorIconAriaLabel: 'Error',
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'rc1' }],
+        onMenuLoadItems,
+        menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto', statusType: 'error' }],
+        i18nStrings: {
+          ...defaultI18nStrings,
+          menuRecoveryText: 'Retry',
+          menuErrorText: 'Error loading',
+          menuErrorIconAriaLabel: 'Error',
+        },
       },
     });
 
@@ -3713,9 +3891,13 @@ describe('menu-state: useMenuLoadMore handlers', () => {
   test('fireLoadMoreOnScroll fires when statusType is pending and options exist', () => {
     const onMenuLoadItems = jest.fn();
     renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sc1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sc1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' },
+        ],
+      },
     });
 
     // The load more on scroll is triggered by the dropdown component
@@ -3729,7 +3911,9 @@ describe('menu-state: useMenuLoadMore handlers', () => {
 describe('menu-dropdown: mouse event handlers', () => {
   test('mouse move on menu option highlights it', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'md1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'md1' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -3749,9 +3933,11 @@ describe('menu-dropdown: mouse event handlers', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'md2' }],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'md2' }],
+        onChange,
+        onMenuItemSelect,
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -3776,16 +3962,22 @@ describe('menu-dropdown: mouse event handlers', () => {
 });
 
 describe('internal.tsx - textarea onChange in token mode', () => {
-  test('textarea onChange marks tokens as sent in token mode', () => {
+  test('input event triggers onChange in token mode', () => {
     const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onChange,
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        onChange,
+      },
+      ref,
     });
 
-    // setValue triggers the onChange path
     act(() => {
-      wrapper.setValue('hello world');
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' world');
     });
 
     expect(onChange).toHaveBeenCalled();
@@ -3968,8 +4160,10 @@ describe('menu-state: createItems with groups', () => {
       },
     ];
     const { wrapper } = renderTokenMode({
-      menus: groupedMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'cg1' }],
+      props: {
+        menus: groupedMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'cg1' }],
+      },
     });
     // Menu should render with the grouped options
     const menu = wrapper.findOpenMenu();
@@ -3998,8 +4192,10 @@ describe('menu-state: createItems with groups', () => {
       },
     ];
     const { wrapper } = renderTokenMode({
-      menus: mixedMenus,
-      tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'cg2' }],
+      props: {
+        menus: mixedMenus,
+        tokens: [{ type: 'trigger', value: '', triggerChar: '#', id: 'cg2' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -4012,7 +4208,9 @@ describe('menu-state: createItems with groups', () => {
 describe('internal.tsx - token mode conditional rendering paths', () => {
   test('menu dropdown renders when trigger is present and has matching options', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'cr1' }],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'cr1' }],
+      },
     });
     const menu = wrapper.findOpenMenu();
     if (menu) {
@@ -4022,7 +4220,9 @@ describe('internal.tsx - token mode conditional rendering paths', () => {
 
   test('menu dropdown does not render when no items match filter', () => {
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'zzzzz', triggerChar: '@', id: 'cr2' }],
+      props: {
+        tokens: [{ type: 'trigger', value: 'zzzzz', triggerChar: '@', id: 'cr2' }],
+      },
     });
     // No options match 'zzzzz'
     expect(wrapper.isMenuOpen()).toBe(false);
@@ -4034,12 +4234,14 @@ describe('menu selection handler - positionCaretAfterMenuSelection', () => {
     const onChange = jest.fn();
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'trigger', value: '', triggerChar: '@', id: 'ms3' },
-      ],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'trigger', value: '', triggerChar: '@', id: 'ms3' },
+        ],
+        onChange,
+        onMenuItemSelect,
+      },
     });
 
     if (wrapper.isMenuOpen()) {
@@ -4062,10 +4264,12 @@ describe('menu selection handler - positionCaretAfterMenuSelection', () => {
       tokens.map(t => (t.type === 'reference' ? `<${(t as any).label}>` : t.value)).join('');
 
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms4' }],
-      onChange,
-      onMenuItemSelect,
-      tokensToText,
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ms4' }],
+        onChange,
+        onMenuItemSelect,
+        tokensToText,
+      },
     });
 
     if (wrapper.isMenuOpen()) {
@@ -4087,7 +4291,7 @@ describe('initial render useLayoutEffect', () => {
       { type: 'text', value: 'hello ' },
       { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
     ];
-    const { wrapper } = renderTokenMode({ tokens });
+    const { wrapper } = renderTokenMode({ props: { tokens } });
     const el = wrapper.findContentEditableElement()!.getElement();
 
     // Should have rendered tokens into paragraphs
@@ -4101,8 +4305,10 @@ describe('caretController initialization', () => {
   test('caretController is created on mount', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+      },
       ref,
-      tokens: [{ type: 'text', value: 'hello' }],
     });
 
     // Verify caretController works by using setSelectionRange
@@ -4129,7 +4335,7 @@ describe('shouldRerender - reference ID changes', () => {
       { type: 'reference', id: 'r2', label: 'Bob', value: 'user-2', menuId: 'mentions' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange } });
 
     act(() => {
       rerender(
@@ -4168,7 +4374,7 @@ describe('detectTypingContext - currentLineIsText with break tokens', () => {
       { type: 'text', value: 'x' },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, onChange, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -4207,7 +4413,7 @@ describe('token-renderer: paragraph count reduction', () => {
     ];
     const tokens2: PromptInputProps.InputToken[] = [{ type: 'text', value: 'line1' }];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 }, ref });
     const el = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(el.querySelectorAll('p').length).toBe(3);
 
@@ -4234,20 +4440,22 @@ describe('menu-state: isMenuItemHighlightable and isMenuItemInteractive', () => 
   test('disabled options are not interactive but may be highlightable', () => {
     const onMenuItemSelect = jest.fn();
     const { wrapper } = renderTokenMode({
-      menus: [
-        {
-          id: 'mentions',
-          trigger: '@',
-          options: [
-            { value: 'user-1', label: 'Alice', disabled: true },
-            { value: 'user-2', label: 'Bob' },
-            { value: 'user-3', label: 'Charlie', disabled: true },
-          ],
-          filteringType: 'auto',
-        },
-      ],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'imh1' }],
-      onMenuItemSelect,
+      props: {
+        menus: [
+          {
+            id: 'mentions',
+            trigger: '@',
+            options: [
+              { value: 'user-1', label: 'Alice', disabled: true },
+              { value: 'user-2', label: 'Bob' },
+              { value: 'user-3', label: 'Charlie', disabled: true },
+            ],
+            filteringType: 'auto',
+          },
+        ],
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'imh1' }],
+        onMenuItemSelect,
+      },
     });
     const editable = wrapper.findContentEditableElement()!.getElement();
 
@@ -4281,11 +4489,13 @@ describe('menu-state: useMenuLoadMore fireLoadMoreOnInputChange', () => {
   test('filter text change fires load more with new filtering text', () => {
     const onMenuLoadItems = jest.fn();
     const { rerender } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'flic1' }],
-      onMenuLoadItems,
-      menus: [
-        { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
-      ],
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'flic1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'manual', statusType: 'pending' },
+        ],
+      },
     });
 
     onMenuLoadItems.mockClear();
@@ -4318,10 +4528,14 @@ describe('token-mode.tsx - dropdown status content rendering', () => {
   test('renders pending status with loading text in dropdown', () => {
     const onMenuLoadItems = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'dsc1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
-      i18nStrings: { ...defaultI18nStrings, menuLoadingText: 'Loading more...' },
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'dsc1' }],
+        onMenuLoadItems,
+        menus: [
+          { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' },
+        ],
+        i18nStrings: { ...defaultI18nStrings, menuLoadingText: 'Loading more...' },
+      },
     });
     // Component renders with pending status without errors
     expect(wrapper.findContentEditableElement()).not.toBeNull();
@@ -4331,14 +4545,16 @@ describe('token-mode.tsx - dropdown status content rendering', () => {
   test('renders error status with recovery button in dropdown', () => {
     const onMenuLoadItems = jest.fn();
     const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'dsc2' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'error' }],
-      i18nStrings: {
-        ...defaultI18nStrings,
-        menuErrorText: 'Failed to load',
-        menuRecoveryText: 'Retry',
-        menuErrorIconAriaLabel: 'Error',
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'dsc2' }],
+        onMenuLoadItems,
+        menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'error' }],
+        i18nStrings: {
+          ...defaultI18nStrings,
+          menuErrorText: 'Failed to load',
+          menuRecoveryText: 'Retry',
+          menuErrorIconAriaLabel: 'Error',
+        },
       },
     });
     // Menu should render with error status content including recovery button
@@ -4356,12 +4572,14 @@ describe('token render effect - menu selection caret positioning', () => {
     const onMenuItemSelect = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper, rerender } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'trigger', value: '', triggerChar: '@', id: 'msc1' },
-      ],
-      onChange,
-      onMenuItemSelect,
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'trigger', value: '', triggerChar: '@', id: 'msc1' },
+        ],
+        onChange,
+        onMenuItemSelect,
+      },
       ref,
     });
 
@@ -4411,7 +4629,7 @@ describe('token render effect - caret restore with only pinned tokens', () => {
       { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
     ];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -4439,7 +4657,7 @@ describe('token render effect - caret restore with only pinned tokens', () => {
     const tokens1: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello world this is long text' }];
     const tokens2: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hi' }];
 
-    const { container, rerender } = renderTokenMode({ tokens: tokens1, ref });
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1 }, ref });
 
     act(() => {
       ref.current!.focus();
@@ -4493,11 +4711,13 @@ describe('copy and cut - clipboard text', () => {
 
   test('copy strips zero-width characters from text with reference tokens', () => {
     const { container } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-        { type: 'text', value: ' world' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' world' },
+        ],
+      },
     });
     const text = getClipboardText(createWrapper(container), 'copy');
     expect(text).toBe('hello Alice world');
@@ -4506,7 +4726,9 @@ describe('copy and cut - clipboard text', () => {
 
   test('copy does not include spurious newlines from caret spots', () => {
     const { container } = renderTokenMode({
-      tokens: [{ type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      props: {
+        tokens: [{ type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+      },
     });
     const text = getClipboardText(createWrapper(container), 'copy');
     expect(text).not.toContain('\n');
@@ -4515,11 +4737,13 @@ describe('copy and cut - clipboard text', () => {
 
   test('copy preserves actual newlines from break tokens', () => {
     const { container } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'line1' },
-        { type: 'break', value: '\n' },
-        { type: 'text', value: 'line2' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'line1' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'line2' },
+        ],
+      },
     });
     const text = getClipboardText(createWrapper(container), 'copy');
     expect(text).toContain('line1');
@@ -4529,10 +4753,12 @@ describe('copy and cut - clipboard text', () => {
 
   test('cut strips zero-width characters', () => {
     const { container } = renderTokenMode({
-      tokens: [
-        { type: 'text', value: 'hello ' },
-        { type: 'reference', id: 'ref-1', label: 'Bob', value: 'user-2', menuId: 'mentions' },
-      ],
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'ref-1', label: 'Bob', value: 'user-2', menuId: 'mentions' },
+        ],
+      },
     });
     const text = getClipboardText(createWrapper(container), 'cut');
     expect(text).toBe('hello Bob');
@@ -4547,11 +4773,13 @@ describe('full-flow: delete key merges trigger with adjacent text', () => {
 
     // Start with "@bob hello" — trigger + space-prefixed text
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df1' },
-        { type: 'text', value: ' hello' },
-      ],
-      onChange,
+      props: {
+        tokens: [
+          { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df1' },
+          { type: 'text', value: ' hello' },
+        ],
+        onChange,
+      },
       ref,
     });
 
@@ -4587,11 +4815,13 @@ describe('full-flow: delete key merges trigger with adjacent text', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
 
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df2' },
-        { type: 'text', value: ' hello world' },
-      ],
-      onChange,
+      props: {
+        tokens: [
+          { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df2' },
+          { type: 'text', value: ' hello world' },
+        ],
+        onChange,
+      },
       ref,
     });
 
@@ -4629,12 +4859,14 @@ describe('full-flow: backspace clears trigger filter text with multiple triggers
 
     // "@ @b" — two triggers, second has filter text "b"
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'trigger', value: '', triggerChar: '@', id: 'bf1' },
-        { type: 'text', value: ' ' },
-        { type: 'trigger', value: 'b', triggerChar: '@', id: 'bf2' },
-      ],
-      onChange,
+      props: {
+        tokens: [
+          { type: 'trigger', value: '', triggerChar: '@', id: 'bf1' },
+          { type: 'text', value: ' ' },
+          { type: 'trigger', value: 'b', triggerChar: '@', id: 'bf2' },
+        ],
+        onChange,
+      },
       ref,
     });
 
@@ -4679,7 +4911,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     tokens: PromptInputProps.InputToken[],
     ref: React.RefObject<PromptInputProps.Ref>
   ) {
-    const result = renderTokenMode({ tokens, onChange, ref });
+    const result = renderTokenMode({ props: { tokens, onChange }, ref });
     act(() => {
       ref.current!.focus();
     });
@@ -4945,11 +5177,13 @@ describe('full-flow: empty trigger absorbs adjacent text on delete', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({
-      tokens: [
-        { type: 'trigger', value: '', triggerChar: '@', id: 'et1' },
-        { type: 'text', value: ' hello world' },
-      ],
-      onChange,
+      props: {
+        tokens: [
+          { type: 'trigger', value: '', triggerChar: '@', id: 'et1' },
+          { type: 'text', value: ' hello world' },
+        ],
+        onChange,
+      },
       ref,
     });
 
@@ -4978,5 +5212,59 @@ describe('full-flow: empty trigger absorbs adjacent text on delete', () => {
     expect(triggers[0].id).toBe('et1');
     const texts = tokens.filter(t => t.type === 'text');
     expect(texts.some(t => t.value === ' world')).toBe(true);
+  });
+});
+
+describe('menu visibility on scroll', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('menu hides when trigger scrolls above the container', () => {
+    const { wrapper } = renderTokenMode({
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sv2' }],
+      },
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const triggerEl = editable.querySelector('[data-type="trigger"]');
+
+    jest
+      .spyOn(editable, 'getBoundingClientRect')
+      .mockReturnValue({ top: 0, bottom: 100, left: 0, right: 200 } as DOMRect);
+    jest
+      .spyOn(triggerEl!, 'getBoundingClientRect')
+      .mockReturnValue({ top: -20, bottom: -10, left: 0, right: 50 } as DOMRect);
+
+    act(() => {
+      editable.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(wrapper.isMenuOpen()).toBe(false);
+  });
+
+  test('menu hides when trigger scrolls below the container', () => {
+    const { wrapper } = renderTokenMode({
+      props: {
+        tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'sv3' }],
+      },
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const triggerEl = editable.querySelector('[data-type="trigger"]');
+
+    jest
+      .spyOn(editable, 'getBoundingClientRect')
+      .mockReturnValue({ top: 0, bottom: 100, left: 0, right: 200 } as DOMRect);
+    jest
+      .spyOn(triggerEl!, 'getBoundingClientRect')
+      .mockReturnValue({ top: 110, bottom: 120, left: 0, right: 50 } as DOMRect);
+
+    act(() => {
+      editable.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(wrapper.isMenuOpen()).toBe(false);
   });
 });

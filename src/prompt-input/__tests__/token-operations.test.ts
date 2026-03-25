@@ -5,12 +5,12 @@
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
 import { ElementType, SPECIAL_CHARS } from '../core/constants';
+import { handleMenuSelection } from '../core/menu-state';
 import {
   detectTriggersInTokens,
   extractTokensFromDOM,
   findLastPinnedTokenIndex,
   getPromptText,
-  handleMenuSelection,
   processTokens,
 } from '../core/token-operations';
 import { isReferenceToken, isTriggerToken } from '../core/type-guards';
@@ -281,8 +281,11 @@ describe('detectTriggersInTokens', () => {
   test('detects triggers in text tokens', () => {
     const tokens = [text('hello @user')];
     const result = detectTriggersInTokens(tokens, [mentionsMenu]);
-    expect(result.length).toBeGreaterThan(1);
-    expect(result.some(t => t.type === 'trigger')).toBe(true);
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(text('hello '));
+    expect(result[1].type).toBe('trigger');
+    expect((result[1] as PromptInputProps.TriggerToken).triggerChar).toBe('@');
+    expect((result[1] as PromptInputProps.TriggerToken).value).toBe('user');
   });
 
   test('passes through non-text tokens unchanged', () => {
@@ -341,7 +344,7 @@ describe('handleMenuSelection', () => {
     expect(inserted.menuId).toBe('mentions');
     expect(inserted.pinned).toBeUndefined();
     expect(result.insertedToken).toBe(inserted);
-    expect(result.caretPosition).toBeGreaterThan(0);
+    expect(result.caretPosition).toBe(7);
   });
 
   test('inserts pinned token at correct position', () => {
@@ -549,9 +552,12 @@ describe('extractTokensFromDOM - advanced cases', () => {
     el.appendChild(p);
 
     const tokens = extractTokensFromDOM(el, [mentionsMenu, slashMenu]);
-    // Should split into two triggers since there's a space before /
-    const triggerTokens = tokens.filter(t => t.type === 'trigger');
-    expect(triggerTokens.length).toBeGreaterThanOrEqual(1);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens).toHaveLength(2);
+    expect(triggerTokens[0].triggerChar).toBe('@');
+    expect(triggerTokens[0].value).toBe('user');
+    expect(triggerTokens[1].triggerChar).toBe('/');
+    expect(triggerTokens[1].value).toBe('cmd');
   });
 
   test('handles empty trigger span', () => {
