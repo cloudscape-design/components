@@ -87,6 +87,19 @@ export interface DropdownProps extends ExpandToViewport {
   trigger: React.ReactNode;
 
   /**
+   * Optional ref to an external element used for positioning calculations.
+   * When provided, the `trigger` prop is not rendered and this ref's element
+   * is used as the positioning anchor for the dropdown instead.
+   */
+  triggerRef?: React.RefObject<HTMLElement>;
+
+  /**
+   * Explicit ID for the trigger element, used as the referrer ID for portal mode.
+   * Use this when `triggerRef` is provided.
+   */
+  triggerId?: string;
+
+  /**
    * Optional header content that stays fixed at the top while
    * scrolling dropdown content.
    */
@@ -126,7 +139,13 @@ export interface DropdownProps extends ExpandToViewport {
    * Maximum width for the dropdown in pixels. If no value is specified, the
    * dropdown will expand to fit its content.
    */
-  maxWidth?: number;
+  maxWidth?: DropdownWidthConstraint;
+
+  /**
+   * Maximum height constraint for the dropdown content in pixels.
+   * When set, constrains the calculated height to not exceed this value.
+   */
+  maxHeight?: number;
 
   /**
    * Called when the user presses the Escape key while the dropdown is open.

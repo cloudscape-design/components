@@ -198,6 +198,8 @@ const TransitionContent = ({
 const InternalDropdown = ({
   content,
   trigger,
+  triggerRef: externalTriggerRef,
+  triggerId: externalTriggerId,
   open,
   onOutsideClick,
   onMouseDown,
@@ -208,6 +210,7 @@ const InternalDropdown = ({
   stretchHeight = false,
   minWidth,
   maxWidth,
+  maxHeight,
   hideBlockBorder = true,
   expandToViewport = false,
   preferredAlignment = 'start',
@@ -232,12 +235,15 @@ const InternalDropdown = ({
   const baseProps = getBaseProps(restProps);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mergedRef = useMergeRefs(wrapperRef, __internalRootRef);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const internalTriggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
+
+  // Use external trigger ref if provided, otherwise use internal ref
+  const triggerRef = externalTriggerRef || internalTriggerRef;
 
   const isRefresh = useVisualRefresh();
 
@@ -395,7 +401,8 @@ const InternalDropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            maxWidth
+            maxWidth,
+            maxHeight
           ),
           dropdownRef.current,
           verticalContainerRef.current
@@ -448,7 +455,7 @@ const InternalDropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick]);
+  }, [open, onOutsideClick, triggerRef]);
 
   // subscribe to Escape key press
   useEffect(() => {
@@ -494,9 +501,10 @@ const InternalDropdown = ({
     return () => {
       controller.abort();
     };
-  }, [open, expandToViewport, isMobile]);
+  }, [open, expandToViewport, isMobile, triggerRef]);
 
-  const referrerId = useUniqueId();
+  const generatedReferrerId = useUniqueId();
+  const referrerId = externalTriggerId || generatedReferrerId;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class
@@ -535,13 +543,15 @@ const InternalDropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      <div
-        id={referrerId}
-        className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testutilStyles.trigger)}
-        ref={triggerRef}
-      >
-        {trigger}
-      </div>
+      {!externalTriggerRef && (
+        <div
+          id={referrerId}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
+          ref={internalTriggerRef}
+        >
+          {trigger}
+        </div>
+      )}
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
