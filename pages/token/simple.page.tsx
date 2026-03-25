@@ -24,6 +24,7 @@ const LONG_LABEL = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
 
 export default function GenericTokenPage() {
   const [files, setFiles] = useState(range(0, 4));
+  const [pressed, setPressed] = useState(false);
 
   const onDismiss = (itemIndex: number) => {
     const newItems = [...files];
@@ -34,6 +35,16 @@ export default function GenericTokenPage() {
   return (
     <Box padding="xl">
       <h1>Standalone token</h1>
+      <h2>Toggle</h2>
+      <SpaceBetween size="l" direction="vertical">
+        <Token
+          data-testid="basic-inline-token"
+          variant="inline-toggle"
+          label="Toggle inline token"
+          pressed={pressed}
+          onChange={event => setPressed(event.detail.pressed)}
+        />
+      </SpaceBetween>
       <h2>Inline</h2>
       <SpaceBetween size="l" direction="vertical">
         <Token data-testid="basic-inline-token" variant="inline" label="Inline token" />

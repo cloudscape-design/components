@@ -29731,6 +29731,24 @@ exports[`Components definition for token matches the snapshot: token 1`] = `
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the user changes their selection.
+The event \`detail\` contains the current value for the \`pressed\` property.",
+      "detailInlineType": {
+        "name": "TokenProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "pressed",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TokenProps.ChangeDetail",
+      "name": "onChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user clicks on the dismiss button.
 
 Make sure that you add a listener to this event to update your application state.",
@@ -29789,6 +29807,11 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "name": "pressed",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies if the control is read-only. A read-only control is still focusable.",
       "name": "readOnly",
       "optional": true,
@@ -29820,6 +29843,7 @@ Defaults to \`normal\` if not specified.",
         "values": [
           "inline",
           "normal",
+          "inline-toggle",
         ],
       },
       "name": "variant",

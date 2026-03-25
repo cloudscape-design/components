@@ -8,6 +8,7 @@ import { useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/com
 
 import { getBaseProps } from '../internal/base-component';
 import Option from '../internal/components/option';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
@@ -39,6 +40,8 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  pressed,
+  onChange,
 
   // Internal
   role,
@@ -53,7 +56,7 @@ function InternalToken({
   const labelRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
-  const isInline = variant === 'inline';
+  const isInline = variant === 'inline' || variant === 'inline-toggle';
   const ariaLabelledbyId = useUniqueId();
 
   const isLabelOverflowing = () => {
@@ -100,6 +103,13 @@ function InternalToken({
   // Use span for inline tokens (e.g. inside contentEditable) to avoid block-level elements breaking text flow.
   const SpanOrDivTag = isInline ? 'span' : 'div';
 
+  const toggleProps =
+    variant === 'inline-toggle'
+      ? {
+          'aria-pressed': pressed,
+        }
+      : {};
+
   return (
     <SpanOrDivTag
       {...baseProps}
@@ -109,6 +119,7 @@ function InternalToken({
         legacyTestingStyles.token,
         testUtilStyles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
+        styles[`token-${variant}`],
         analyticsSelectors.token,
         baseProps.className
       )}
@@ -129,6 +140,15 @@ function InternalToken({
         setShowTooltip(false);
       }}
       tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
+      onClick={event => {
+        if (variant !== 'inline-toggle') {
+          return;
+        }
+        event.preventDefault();
+
+        fireNonCancelableEvent(onChange, { pressed: !pressed });
+      }}
+      {...toggleProps}
     >
       <SpanOrDivTag
         className={clsx(
@@ -136,7 +156,8 @@ function InternalToken({
           disabled && styles['token-box-disabled'],
           readOnly && styles['token-box-readonly'],
           !isInline && !onDismiss && styles['token-box-without-dismiss'],
-          disableInnerPadding && styles['disable-padding']
+          disableInnerPadding && styles['disable-padding'],
+          pressed && styles['token-pressed']
         )}
       >
         <Option

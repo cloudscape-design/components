@@ -69,8 +69,19 @@ export interface TokenProps extends BaseComponentProps {
    * Only applies to plain text labels.
    */
   tooltipContent?: string;
+
+  pressed?: boolean;
+
+  /**
+   * Called when the user changes their selection.
+   * The event `detail` contains the current value for the `pressed` property.
+   */
+  onChange?: NonCancelableEventHandler<TokenProps.ChangeDetail>;
 }
 
 export namespace TokenProps {
-  export type Variant = 'normal' | 'inline';
+  export type Variant = 'normal' | 'inline' | 'inline-toggle';
+  export interface ChangeDetail {
+    pressed: boolean;
+  }
 }
