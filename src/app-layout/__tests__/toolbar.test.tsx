@@ -3,6 +3,8 @@
 import React from 'react';
 import { waitFor } from '@testing-library/react';
 
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import AppLayout from '../../../lib/components/app-layout';
 import { loadFormatter } from '../../../lib/components/app-layout/visual-refresh-toolbar/internal';
 import { I18nProvider } from '../../../lib/components/i18n';
@@ -93,6 +95,9 @@ describe('toolbar mode only features', () => {
     });
 
     describe('RemoteI18nProvider integration', () => {
+      beforeEach(() => {
+        setGlobalFlag('appLayoutWidget', true);
+      });
       test('does not block content while formatter is pending or null', async () => {
         // Keep the promise pending until we manually resolve it.
         let resolveFn: (value: null) => void = () => {};

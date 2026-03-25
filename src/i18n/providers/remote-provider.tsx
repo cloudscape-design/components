@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
+import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
+
 // NOTE: Ensure that direct or transitive dependencies never pull in
 // intl-messageformat or any `@formatjs` dependencies! Otherwise, it
 // would harm any bundle size improvements this component brings.
@@ -40,14 +42,19 @@ export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI1
   const [staticLoadFormatter] = useState(() => loadFormatter);
 
   useEffect(() => {
+    let mounted = true;
     // Translations are already provided from a local provider, so skip.
     if (hasWrapperContext) {
+      return;
+    }
+    // Skip trying to load remote provider if the app layout widget is not available
+    if (!getGlobalFlag('appLayoutWidget')) {
       return;
     }
 
     staticLoadFormatter({ locale })
       .then(formatter => {
-        if (formatter) {
+        if (formatter && mounted) {
           setFormatFunction(() => formatter.format.bind(formatter));
         }
         // If formatter isn't available, do nothing.
@@ -55,6 +62,9 @@ export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI1
       .catch(() => {
         // Do nothing. Failure in fetching the formatter should not be fatal.
       });
+    return () => {
+      mounted = false;
+    };
   }, [hasWrapperContext, locale, staticLoadFormatter]);
 
   const value = wrapperContext || (formatFunction && { locale, format: formatFunction });
