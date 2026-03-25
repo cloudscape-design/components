@@ -13,6 +13,10 @@
   @include styles.styles-reset;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .dismiss-button {
   align-self: flex-start;
   margin-block-end: 0;

@@ -39,6 +39,7 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  clickable,
 
   // Internal
   role,
@@ -110,6 +111,7 @@ function InternalToken({
         testUtilStyles.root,
         !isInline ? styles['token-normal'] : styles['token-inline'],
         analyticsSelectors.token,
+        clickable && styles.clickable,
         baseProps.className
       )}
       aria-label={ariaLabel}
