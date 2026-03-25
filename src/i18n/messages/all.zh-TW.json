@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "關閉彈出視窗"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "提交提示",
+    "i18nStrings.menuErrorIconAriaLabel": "錯誤",
+    "i18nStrings.menuRecoveryText": "重試",
+    "i18nStrings.menuLoadingText": "正在載入項目",
+    "i18nStrings.menuFinishedText": "結果結束",
+    "i18nStrings.menuErrorText": "擷取項目時發生錯誤",
+    "i18nStrings.selectedMenuItemAriaLabel": "已選取",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} 已插入",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} 已固定",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} 已移除"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "所有屬性",
     "i18nStrings.applyActionText": "套用",

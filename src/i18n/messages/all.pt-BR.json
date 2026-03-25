@@ -167,9 +167,9 @@
     "i18nStrings.slashedDateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.isoDateTimeConstraintText": "Para a data, use o formato AAAA-MM-DD. Para o horário, use o formato de 24 horas.",
     "i18nStrings.slashedDateConstraintText": "Para data, use AAAA/MM/DD.",
-    "i18nStrings.isoDateConstraintText": "Para data, use AAAA-MM-DD.",
+    "i18nStrings.isoDateConstraintText": "Para a data, use AAAA-MM-DD.",
     "i18nStrings.slashedMonthConstraintText": "Para mês, use AAAA/MM.",
-    "i18nStrings.isoMonthConstraintText": "Para mês, use AAAA-MM.",
+    "i18nStrings.isoMonthConstraintText": "Para o mês, use AAAA-MM.",
     "i18nStrings.monthConstraintText": "Para mês, use AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Erro",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Intervalo selecionado de {startDate} a {endDate}",
@@ -270,6 +270,18 @@
   },
   "popover": {
     "dismissAriaLabel": "Fechar pop-over"
+  },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Enviar prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Erro",
+    "i18nStrings.menuRecoveryText": "Tentar novamente",
+    "i18nStrings.menuLoadingText": "Carregando itens",
+    "i18nStrings.menuFinishedText": "Fim de resultados",
+    "i18nStrings.menuErrorText": "Erro ao buscar itens",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selecionado",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserido",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} fixado",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} removido"
   },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Todas as propriedades",
