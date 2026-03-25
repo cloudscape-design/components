@@ -297,6 +297,32 @@ describe('detectTriggersInTokens', () => {
     const result = detectTriggersInTokens(tokens, [mentionsMenu]);
     expect(result).toEqual([text('hello world')]);
   });
+
+  test('collapses empty trigger + adjacent text back into trigger with filter text', () => {
+    // Simulates backspace removing space: "@" + "bob rest" → trigger("bob") + text(" rest")
+    const tokens = [trigger('', '@', 'trig-1'), text('bob rest')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toEqual([
+      expect.objectContaining({ type: 'trigger', value: 'bob', triggerChar: '@', id: 'trig-1' }),
+      { type: 'text', value: ' rest' },
+    ]);
+  });
+
+  test('merges non-empty trigger + adjacent text when space was deleted', () => {
+    // Simulates delete key removing space: trigger("bob") + text("hello world") → trigger("bobhello") + text(" world")
+    const tokens = [trigger('bob', '@', 'trig-1'), text('hello world')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toEqual([
+      expect.objectContaining({ type: 'trigger', value: 'bobhello', triggerChar: '@', id: 'trig-1' }),
+      { type: 'text', value: ' world' },
+    ]);
+  });
+
+  test('does not merge trigger with space-prefixed text', () => {
+    const tokens = [trigger('bob', '@', 'trig-1'), text(' hello')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toEqual([trigger('bob', '@', 'trig-1'), { type: 'text', value: ' hello' }]);
+  });
 });
 
 describe('handleMenuSelection', () => {
@@ -602,6 +628,23 @@ describe('extractTokensFromDOM - advanced cases', () => {
     const triggerTokens = tokens.filter(t => t.type === 'trigger');
     expect(triggerTokens).toHaveLength(1);
     expect((triggerTokens[0] as PromptInputProps.TriggerToken).triggerChar).toBe('@');
+  });
+
+  test('handles adjacent trigger characters (nested trigger at index 0)', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const triggerSpan = document.createElement('span');
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
+    triggerSpan.textContent = '@@bob';
+    p.appendChild(triggerSpan);
+    el.appendChild(p);
+
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger');
+    expect(triggerTokens).toHaveLength(2);
+    expect((triggerTokens[0] as PromptInputProps.TriggerToken).value).toBe('');
+    expect((triggerTokens[1] as PromptInputProps.TriggerToken).value).toBe('bob');
   });
 
   test('extractReferenceToken skips reference token when label is empty (only cursor spots)', () => {

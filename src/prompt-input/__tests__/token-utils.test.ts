@@ -475,3 +475,51 @@ describe('getCaretPositionAfterTokenRemoval', () => {
     expect(getCaretPositionAfterTokenRemoval(3, tokens, tokens)).toBeNull();
   });
 });
+
+describe('detectTriggersInText - trigger char breaks filter text', () => {
+  const mentionsMenu: PromptInputProps.MenuDefinition = {
+    id: 'mentions',
+    trigger: '@',
+    options: [{ value: 'user-1', label: 'Alice' }],
+  };
+
+  test('second trigger char stops filter text and becomes plain text', () => {
+    const result = detectTriggersInText('@bob@alice', [mentionsMenu], []);
+    expect(result).toEqual([
+      expect.objectContaining({ type: 'trigger', value: 'bob', triggerChar: '@' }),
+      { type: 'text', value: '@alice' },
+    ]);
+  });
+
+  test('different trigger char stops filter text', () => {
+    const slashMenu: PromptInputProps.MenuDefinition = { id: 'commands', trigger: '/', options: [] };
+    const result = detectTriggersInText('@bob/cmd rest', [mentionsMenu, slashMenu], []);
+    // The / breaks the filter text for @bob, but /cmd is not after whitespace so it stays as text
+    expect(result).toEqual([
+      expect.objectContaining({ type: 'trigger', value: 'bob', triggerChar: '@' }),
+      { type: 'text', value: '/cmd rest' },
+    ]);
+  });
+});
+
+describe('getCaretPositionAfterTokenRemoval - trigger token handling', () => {
+  const trig = (triggerChar: string, value = '', id = 't1'): PromptInputProps.TriggerToken => ({
+    type: 'trigger',
+    value,
+    triggerChar,
+    id,
+  });
+
+  test('diverges at trigger id mismatch', () => {
+    const prev = [trig('@', 'bob', 't1'), text(' hello'), text(' extra')];
+    const next = [trig('@', 'bob', 't2'), text(' hello')];
+    expect(getCaretPositionAfterTokenRemoval(5, prev, next)).toBe(0);
+  });
+
+  test('accumulates trigger length when scanning past matching triggers', () => {
+    const prev = [trig('@', 'bob', 't1'), text(' hello'), text(' world')];
+    const next = [trig('@', 'bob', 't1'), text(' helloworld')];
+    // trigger "@bob" = 4, text " hello" = 6 → divergence at 10
+    expect(getCaretPositionAfterTokenRemoval(12, prev, next)).toBe(10);
+  });
+});

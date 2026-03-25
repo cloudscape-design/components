@@ -44,6 +44,7 @@ import {
   getCaretPositionAfterTokenRemoval,
   mergeConsecutiveTextTokens,
 } from '../core/token-utils';
+import { detectTriggerTransition, handleDeleteAfterTrigger } from '../core/trigger-utils';
 import { isBreakTextToken, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
 
@@ -65,9 +66,7 @@ export function createEditableState(): EditableState {
 
 /**
  * Determines if the token array changed structurally and needs a DOM re-render.
- * Only compares token types and reference IDs — not text values. Text value changes
- * are already reflected in the contentEditable DOM by the browser; re-rendering for
- * them would destroy the user's caret position and cause flicker.
+ * Compares token types and reference IDs only — text value changes are handled by the browser.
  */
 function shouldRerender(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -90,6 +89,12 @@ function shouldRerender(
     }
 
     if (isReferenceToken(oldToken) && isReferenceToken(newToken)) {
+      if (oldToken.id !== newToken.id) {
+        return true;
+      }
+    }
+
+    if (isTriggerToken(oldToken) && isTriggerToken(newToken)) {
       if (oldToken.id !== newToken.id) {
         return true;
       }
@@ -483,8 +488,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const { ignoreCaretDetection, markTokensAsSent } = shortcutsState;
 
-  // Incremented on selection changes to force activeTriggerToken to recompute.
-  // The value is never read directly — it exists solely as a useMemo dependency invalidation signal.
+  // Incremented on selection changes to force activeTriggerToken to recompute
   const [caretUpdateTrigger, setCaretUpdateTrigger] = useState(0);
 
   const activeTriggerToken = useMemo((): PromptInputProps.TriggerToken | null => {
@@ -568,8 +572,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         triggerWrapperRef.current = triggerElement;
 
         if (triggerChanged) {
-          // Reset ready state so the Dropdown closes. The next effect run
-          // (triggered by triggerWrapperReady changing) will set it back to true.
+          // Reset ready state so the Dropdown re-opens for the new trigger
           setTriggerWrapperReady(false);
         } else {
           setTriggerWrapperReady(true);
@@ -584,15 +587,14 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     }
   }, [activeTriggerToken, menuIsOpen, editableElementRef]);
 
-  // Second phase: after the Dropdown has closed (triggerWrapperReady = false),
-  // reopen it now that triggerWrapperRef points to the new element.
+  // Reopen after Dropdown closed for trigger change
   useEffect(() => {
     if (!triggerWrapperReady && triggerWrapperRef.current && menuIsOpen) {
       setTriggerWrapperReady(true);
     }
   }, [triggerWrapperReady, menuIsOpen]);
 
-  // Hide the menu dropdown when the trigger element scrolls out of the editable container's visible area
+  // Hide menu dropdown when trigger scrolls out of the editable container
   useEffect(() => {
     if (!menuIsOpen || !triggerWrapperRef.current || !editableElementRef.current) {
       setTriggerVisible(true);
@@ -663,6 +665,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const cc = caretControllerRef.current;
 
+    // Capture DOM cursor position before processing
+    const sel = window.getSelection();
+    const savedCursorOffset = sel?.rangeCount ? sel.getRangeAt(0).startOffset : 0;
+
     if (cc) {
       cc.capture();
     }
@@ -723,7 +729,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return currentHasClass !== shouldHaveClass;
     });
 
-    if (isNewTrigger || hasStylingChange) {
+    if (isNewTrigger) {
       if (cc) {
         cc.capture();
       }
@@ -732,6 +738,47 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
       if (cc) {
         cc.restore();
+      }
+    } else if (hasStylingChange) {
+      // Track which trigger had its styling changed for cursor restoration
+      const changedTriggerId = newTriggers.find(newT => {
+        const domElement = existingTriggerElements.find(el => el.id === newT.id);
+        if (!domElement) {
+          return false;
+        }
+        const currentHasClass = domElement.className.includes('trigger-token');
+        const shouldHaveClass = newT.value.length > 0;
+        return currentHasClass !== shouldHaveClass;
+      })?.id;
+
+      newTriggers.forEach(newT => {
+        const domElement = existingTriggerElements.find(el => el.id === newT.id);
+        if (domElement) {
+          const shouldHaveClass = newT.value.length > 0;
+          domElement.className = `${styles['trigger-base']} ${shouldHaveClass ? styles['trigger-token'] : ''}`;
+        }
+      });
+
+      // Restore cursor inside the changed trigger after DOM updates
+      if (changedTriggerId && editableElementRef.current) {
+        const triggerIdToRestore = changedTriggerId;
+        const cursorOffsetToRestore = savedCursorOffset;
+        ignoreCaretDetection.current = true;
+        setTimeout(() => {
+          const triggerEl = editableElementRef.current?.querySelector(`#${CSS.escape(triggerIdToRestore)}`);
+          if (triggerEl?.firstChild && document.activeElement === editableElementRef.current) {
+            const s = window.getSelection();
+            if (s) {
+              const maxOffset = triggerEl.firstChild.textContent?.length || 0;
+              const range = document.createRange();
+              range.setStart(triggerEl.firstChild, Math.min(cursorOffsetToRestore, maxOffset));
+              range.collapse(true);
+              s.removeAllRanges();
+              s.addRange(range);
+            }
+          }
+          ignoreCaretDetection.current = false;
+        }, 0);
       }
     }
 
@@ -785,31 +832,23 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     lastDisabledRef.current = disabled;
     lastReadOnlyRef.current = readOnly;
 
-    const triggerSplitAndMerged =
-      lastRenderedTokensRef.current &&
-      orderedTokens &&
-      lastRenderedTokensRef.current.length === orderedTokens.length &&
-      orderedTokens.some((token, i) => {
-        const oldToken = lastRenderedTokensRef.current![i];
-        const prevToken = i > 0 ? orderedTokens[i - 1] : null;
-        return (
-          isTextToken(token) &&
-          isTextToken(oldToken) &&
-          prevToken &&
-          isTriggerToken(prevToken) &&
-          token.value.length === oldToken.value.length + 1 &&
-          token.value.startsWith(' ') &&
-          token.value.substring(1) === oldToken.value
-        );
-      });
+    const triggerTransition = detectTriggerTransition(lastRenderedTokensRef.current, orderedTokens);
 
     const needsRerender =
-      stateChanged || shouldRerender(lastRenderedTokensRef.current, orderedTokens) || triggerSplitAndMerged;
+      stateChanged || shouldRerender(lastRenderedTokensRef.current, orderedTokens) || triggerTransition > 0;
 
     if (!needsRerender) {
       positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc);
 
       lastRenderedTokensRef.current = orderedTokens;
+      return;
+    }
+
+    if (triggerTransition > 0 && orderedTokens && cc) {
+      renderTokens(orderedTokens, editableElementRef.current);
+      lastRenderedTokensRef.current = orderedTokens;
+      cc.setPosition(triggerTransition);
+      adjustInputHeight();
       return;
     }
 
@@ -943,9 +982,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       normalizeCollapsedCaret(window.getSelection());
       normalizeSelection(window.getSelection());
 
-      // Deferred re-check: browsers may finalize the caret position after mouseup,
-      // or a click-drag may leave a selection in a non-typeable position (inside
-      // reference internals or on the editable div itself).
+      // Deferred re-check: browsers may finalize caret position after mouseup
       requestAnimationFrame(() => {
         const sel = window.getSelection();
         if (!sel?.rangeCount) {
@@ -958,10 +995,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
           const endBad = isNonTypeablePosition(range.endContainer);
 
           if (startBad && endBad) {
-            // Both ends in non-typeable positions — collapse entirely
             sel.collapseToEnd();
           } else if (startBad) {
-            // Start touched a reference — trim selection to just after it
             const ref = findContainingReference(range.startContainer);
             if (ref?.parentNode) {
               const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
@@ -970,7 +1005,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
               sel.collapseToEnd();
             }
           } else if (endBad) {
-            // End touched a reference — trim selection to just before it
             const ref = findContainingReference(range.endContainer);
             if (ref?.parentNode) {
               const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
@@ -1071,6 +1105,21 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       closeMenu: () => {
         ignoreCaretDetection.current = true;
         shortcutsState.setCaretInTrigger(false);
+
+        // Move cursor out of the trigger span so subsequent typing creates a proper text boundary
+        const cc = caretControllerRef.current;
+        const triggerEl = cc?.findActiveTrigger();
+        if (triggerEl) {
+          const sel = window.getSelection();
+          if (sel) {
+            const range = document.createRange();
+            range.setStartAfter(triggerEl);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+        }
+
         setTimeout(() => {
           ignoreCaretDetection.current = false;
         }, CARET_DETECTION_DELAY);
@@ -1102,7 +1151,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return;
     }
 
-    if (handleArrowKeyNavigation(event, caretControllerRef.current)) {
+    if (handleArrowKeyNavigation(event, caretControllerRef.current, announceTokenOperation)) {
       return;
     }
 
@@ -1173,6 +1222,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
           caretControllerRef.current
         )
       ) {
+        return;
+      }
+
+      if (handleDeleteAfterTrigger(event, editableElementRef.current)) {
         return;
       }
     }
@@ -1267,10 +1320,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       menuIsOpen && prevMenuOpenRef.current && menuItemsState.items.length !== prevItemsLengthRef.current;
 
     if ((justOpened || itemsChanged) && menuItemsHandlers && menuItemsState && menuItemsState.items.length > 0) {
-      // Reset highlight first so goHomeWithKeyboard triggers a state change
-      // even when the first option stays at index 0 (e.g. after filtering).
-      // Without this, React deduplicates the setState(0) call and the
-      // SelectableItem doesn't re-announce the highlighted option.
+      // Reset highlight so goHomeWithKeyboard triggers a state change even at index 0
       menuItemsHandlers.resetHighlightWithKeyboard();
       setTimeout(() => {
         menuItemsHandlers?.goHomeWithKeyboard();

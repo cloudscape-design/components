@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
-import { CaretController } from './caret-controller';
+import { calculateTokenPosition, CaretController } from './caret-controller';
 import { ElementType } from './constants';
 import { getTokenType, insertAfter } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
-import { isTextNode } from './type-guards';
+import { isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
 import styles from '../styles.css.js';
 
@@ -18,9 +19,7 @@ interface TriggerSpaceHandlerProps {
   caretController?: CaretController;
 }
 
-/**
- * Finds the trigger element at the current caret position
- */
+/** Finds the trigger element at the current caret position. */
 function findTriggerAtCaret(): HTMLElement | null {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
@@ -32,13 +31,11 @@ function findTriggerAtCaret(): HTMLElement | null {
   return parent && getTokenType(parent) === ElementType.Trigger ? parent : null;
 }
 
-/**
- * Finalizes space insertion after a trigger by positioning caret and updating refs
- */
+/** Finalizes space insertion after a trigger by positioning caret and dispatching input. */
 function finalizeSpaceInsertion(spaceNode: Text, props: Pick<TriggerSpaceHandlerProps, 'caretController'>): void {
   if (props.caretController) {
-    const currentPos = props.caretController.getPosition();
-    props.caretController.setPosition(currentPos + 1);
+    props.caretController.capture();
+    props.caretController.restore(1);
   }
 
   queueMicrotask(() => {
@@ -49,10 +46,7 @@ function finalizeSpaceInsertion(spaceNode: Text, props: Pick<TriggerSpaceHandler
   });
 }
 
-/**
- * Handles space key press when a trigger menu is open.
- * @returns true if the event was handled, false to allow default behavior
- */
+/** Handles space key press when a trigger menu is open. Returns true if handled. */
 export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: TriggerSpaceHandlerProps): boolean {
   const { menuItemsState, menuItemsHandlers, getMenuStatusType, closeMenu } = props;
   const items = menuItemsState.items;
@@ -103,8 +97,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     return true;
   }
 
-  // Caret is right after the trigger character with filter text ahead — space splits
-  // the filter text out of the trigger, closing the menu and restoring it as plain text.
+  // Caret right after trigger char with filter text ahead — split filter out of trigger
   const selection = window.getSelection();
   const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
   if (
@@ -128,4 +121,116 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
   }
 
   return false;
+}
+
+/** Handles Delete at the end of a trigger element, removing the leading space from the next text node. */
+export function handleDeleteAfterTrigger(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  editableElement: HTMLDivElement
+): boolean {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount || !selection.getRangeAt(0).collapsed) {
+    return false;
+  }
+
+  const range = selection.getRangeAt(0);
+  const { startContainer, startOffset } = range;
+
+  // Find the trigger element the cursor is at the end of
+  let triggerElement: HTMLElement | null = null;
+  if (isTextNode(startContainer)) {
+    const parent = startContainer.parentElement;
+    if (
+      parent &&
+      getTokenType(parent) === ElementType.Trigger &&
+      startOffset === (startContainer.textContent?.length || 0)
+    ) {
+      triggerElement = parent;
+    }
+  } else if (isHTMLElement(startContainer) && startOffset > 0) {
+    const prev = startContainer.childNodes[startOffset - 1];
+    if (isHTMLElement(prev) && getTokenType(prev) === ElementType.Trigger) {
+      triggerElement = prev;
+    }
+  }
+
+  const nextText = triggerElement?.nextSibling;
+  if (!triggerElement || !nextText || !isTextNode(nextText) || !nextText.textContent?.startsWith(' ')) {
+    return false;
+  }
+
+  event.preventDefault();
+  nextText.textContent = nextText.textContent.substring(1);
+  if (!nextText.textContent) {
+    nextText.remove();
+  }
+  editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+  return true;
+}
+
+/** Detects structural trigger transitions between old and new token arrays. Returns the caret position, or 0 if none. */
+export function detectTriggerTransition(
+  oldTokens: readonly PromptInputProps.InputToken[] | null | undefined,
+  newTokens: readonly PromptInputProps.InputToken[] | null | undefined
+): number {
+  if (!oldTokens || !newTokens) {
+    return 0;
+  }
+
+  for (let i = 0; i < newTokens.length; i++) {
+    const newToken = newTokens[i];
+    const oldToken = i < oldTokens.length ? oldTokens[i] : null;
+    const prevNewToken = i > 0 ? newTokens[i - 1] : null;
+    const prevOldToken = i > 0 && i - 1 < oldTokens.length ? oldTokens[i - 1] : null;
+
+    // Space split: trigger's filter text was pushed into a following text token
+    if (
+      isTextToken(newToken) &&
+      newToken.value.startsWith(' ') &&
+      prevNewToken &&
+      isTriggerToken(prevNewToken) &&
+      prevNewToken.value === '' &&
+      prevOldToken &&
+      isTriggerToken(prevOldToken) &&
+      prevNewToken.id === prevOldToken.id &&
+      prevOldToken.value.length > 0
+    ) {
+      return calculateTokenPosition(newTokens, i - 1) + 1;
+    }
+
+    // Space added before existing text after trigger
+    if (
+      isTextToken(newToken) &&
+      oldToken &&
+      isTextToken(oldToken) &&
+      prevNewToken &&
+      isTriggerToken(prevNewToken) &&
+      newToken.value.length === oldToken.value.length + 1 &&
+      newToken.value.startsWith(' ') &&
+      newToken.value.substring(1) === oldToken.value
+    ) {
+      return calculateTokenPosition(newTokens, i - 1) + 1;
+    }
+
+    // Trigger absorbed adjacent text (value grew by more than 1 character)
+    if (
+      isTriggerToken(newToken) &&
+      oldToken &&
+      isTriggerToken(oldToken) &&
+      newToken.id === oldToken.id &&
+      newToken.value.length > oldToken.value.length + 1
+    ) {
+      const posBeforeTrigger = i > 0 ? calculateTokenPosition(newTokens, i - 1) : 0;
+
+      if (oldToken.value === '') {
+        // Merge from empty trigger → caret after trigger char
+        return posBeforeTrigger + newToken.triggerChar.length;
+      }
+
+      // Merge from non-empty trigger → caret at merge point
+      return posBeforeTrigger + newToken.triggerChar.length + oldToken.value.length;
+    }
+  }
+
+  return 0;
 }

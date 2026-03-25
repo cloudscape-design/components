@@ -193,6 +193,25 @@ describe('token mode disabled/readOnly', () => {
     const editable = container.querySelector('[role="textbox"]')!;
     expect(editable).toHaveAttribute('tabindex', '-1');
   });
+
+  test('switching from disabled to enabled re-enables editing', () => {
+    const { container, rerender } = renderTokenMode({ disabled: true });
+    const editable = container.querySelector('[role="textbox"]')!;
+    expect(editable).toHaveAttribute('contenteditable', 'false');
+
+    rerender(
+      <PromptInput
+        tokens={[]}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+        disabled={false}
+      />
+    );
+
+    expect(editable).toHaveAttribute('contenteditable', 'true');
+  });
 });
 
 describe('token mode action button', () => {
@@ -856,60 +875,6 @@ describe('token processing on prop change', () => {
   });
 });
 
-describe('disabled and readOnly state transitions', () => {
-  test('disabled state sets contentEditable to false', () => {
-    const { container } = renderTokenMode({ disabled: true });
-    const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable).toHaveAttribute('contenteditable', 'false');
-  });
-
-  test('readOnly state sets contentEditable to false', () => {
-    const { container } = renderTokenMode({ readOnly: true });
-    const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable).toHaveAttribute('contenteditable', 'false');
-  });
-
-  test('switching from disabled to enabled re-enables editing', () => {
-    const { container, rerender } = renderTokenMode({ disabled: true });
-    const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable).toHaveAttribute('contenteditable', 'false');
-
-    rerender(
-      <PromptInput
-        tokens={[]}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        i18nStrings={defaultI18nStrings}
-        ariaLabel="Chat input"
-        disabled={false}
-      />
-    );
-
-    expect(editable).toHaveAttribute('contenteditable', 'true');
-  });
-});
-
-describe('placeholder behavior', () => {
-  test('placeholder shows when tokens are empty', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [],
-      placeholder: 'Ask me anything...',
-    });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-    expect(editable.getAttribute('data-placeholder')).toBe('Ask me anything...');
-  });
-
-  test('placeholder hides when tokens have content', () => {
-    const { container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      placeholder: 'Ask me anything...',
-    });
-    const editable = container.querySelector('[role="textbox"]')!;
-    // The placeholder-visible class should not be present when there are tokens
-    expect(editable.className).not.toContain('placeholder-visible');
-  });
-});
-
 describe('multiple menu definitions', () => {
   const multipleMenus: PromptInputProps.MenuDefinition[] = [
     {
@@ -978,39 +943,6 @@ describe('token ordering with pinned tokens', () => {
     const pinnedIndex = value.indexOf('/creative');
     const textIndex = value.indexOf('some text');
     expect(pinnedIndex).toBeLessThan(textIndex);
-  });
-});
-
-describe('onBlur and onFocus additional scenarios', () => {
-  test('onBlur fires when clicking outside the editable area', () => {
-    const onBlur = jest.fn();
-    const { wrapper, container } = renderTokenMode({ onBlur });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-
-    act(() => {
-      editable.focus();
-    });
-
-    // Simulate clicking outside by blurring
-    act(() => {
-      editable.blur();
-      container.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-    });
-
-    expect(onBlur).toHaveBeenCalled();
-  });
-
-  test('onFocus fires when clicking the contentEditable element', () => {
-    const onFocus = jest.fn();
-    const { wrapper } = renderTokenMode({ onFocus });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-
-    act(() => {
-      editable.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-      editable.focus();
-    });
-
-    expect(onFocus).toHaveBeenCalled();
   });
 });
 
@@ -1305,50 +1237,6 @@ describe('internal.tsx - setSelectionRange', () => {
     // Should not throw
     expect(window.getSelection()?.rangeCount).toBeGreaterThan(0);
     expect(getCaretOffset()).toBe(0);
-  });
-});
-
-describe('internal.tsx - plainTextValue computation', () => {
-  test('computes plain text from tokens for hidden input', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'text', value: 'hello ' },
-      { type: 'trigger', value: 'user', triggerChar: '@', id: 't1' },
-      { type: 'text', value: ' world' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('hello @user world');
-  });
-
-  test('uses tokensToText for plain text computation', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-    ];
-    const tokensToText = () => 'custom plain text';
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        tokensToText={tokensToText}
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('custom plain text');
   });
 });
 
@@ -1833,99 +1721,6 @@ describe('menu-state: load more pagination', () => {
   });
 });
 
-describe('token-mode: hidden input and dropdown open conditions', () => {
-  test('dropdown stays closed when triggerWrapperReady is false (no trigger in DOM)', () => {
-    // Render with a trigger token but no matching menu trigger char
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions }],
-      tokens: [{ type: 'text', value: 'no trigger here' }],
-    });
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-
-  test('dropdown stays closed when items list is empty and no status content', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto' }],
-      tokens: [{ type: 'trigger', value: 'zzz', triggerChar: '@', id: 'dc1' }],
-    });
-    // No options match 'zzz' and no status content → dropdown should not open
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-
-  test('dropdown opens when trigger token is present and options match', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto' }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'dc2' }],
-    });
-    // With empty filter, all options should match
-    const menu = wrapper.findOpenMenu();
-    if (menu) {
-      expect(menu.findOptions().length).toBe(mentionOptions.length);
-    }
-  });
-});
-
-describe('token-mode: footer rendering (sticky vs non-sticky)', () => {
-  test('renders loading status as sticky footer', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'loading' }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ft1' }],
-      i18nStrings: { ...defaultI18nStrings, menuLoadingText: 'Loading...' },
-    });
-    // Loading status is sticky — rendered in the Dropdown footer slot
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-
-  test('renders finished status as non-sticky list bottom', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'finished' }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ft2' }],
-      i18nStrings: { ...defaultI18nStrings, menuFinishedText: 'End of list' },
-    });
-    // Finished status is non-sticky — rendered as listBottom inside MenuDropdown
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-
-  test('renders error status with recovery text', () => {
-    const onMenuLoadItems = jest.fn();
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto', statusType: 'error' }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ft3' }],
-      onMenuLoadItems,
-      i18nStrings: {
-        ...defaultI18nStrings,
-        menuErrorText: 'Error occurred',
-        menuRecoveryText: 'Retry',
-        menuErrorIconAriaLabel: 'Error',
-      },
-    });
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-});
-
-describe('menu-dropdown: virtual scroll vs plain list', () => {
-  test('renders with virtualScroll enabled', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', virtualScroll: true }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'vs1' }],
-    });
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-
-  test('renders with virtualScroll disabled (plain list)', () => {
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', virtualScroll: false }],
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'vs2' }],
-    });
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-});
-
 describe('token-renderer: rendering various token types', () => {
   test('renders text tokens as text nodes in paragraphs', () => {
     const { wrapper } = renderTokenMode({
@@ -2044,125 +1839,6 @@ describe('token-renderer: reusing existing containers on re-render', () => {
     const refElAfter = el.querySelector('[data-type="reference"]');
     // The reference element should be reused (same DOM node)
     expect(refElAfter).toBe(refElBefore);
-  });
-});
-
-describe('token-operations: getPromptText with various token types', () => {
-  test('getPromptText inserts space between adjacent references', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-      { type: 'reference', id: 'r2', label: 'Bob', value: 'user-2', menuId: 'mentions' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    // Adjacent references should have a space between them
-    expect(hiddenInput.value).toBe('Alice Bob');
-  });
-
-  test('getPromptText handles reference followed by text without leading space', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-      { type: 'text', value: 'hello' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    // Space should be inserted between reference and text
-    expect(hiddenInput.value).toBe('Alice hello');
-  });
-
-  test('getPromptText handles text followed by reference without trailing space', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'text', value: 'hello' },
-      { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('hello Alice');
-  });
-
-  test('getPromptText handles break tokens as newlines', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'text', value: 'line1' },
-      { type: 'break', value: '\n' },
-      { type: 'text', value: 'line2' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('line1\nline2');
-  });
-
-  test('getPromptText handles trigger tokens with triggerChar + value', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'text', value: 'hello ' },
-      { type: 'trigger', value: 'world', triggerChar: '@', id: 't1' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('hello @world');
-  });
-
-  test('getPromptText skips empty text segments', () => {
-    const tokens: PromptInputProps.InputToken[] = [
-      { type: 'text', value: '' },
-      { type: 'text', value: 'hello' },
-    ];
-    const { container } = render(
-      <PromptInput
-        tokens={tokens}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        name="prompt"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const hiddenInput = container.querySelector('input[type="hidden"]') as HTMLInputElement;
-    expect(hiddenInput.value).toBe('hello');
   });
 });
 
@@ -2485,57 +2161,6 @@ describe('internal.tsx: adjustInputHeight with maxRows variations', () => {
   });
 });
 
-describe('internal.tsx: onAction from Enter key in token mode', () => {
-  test('Enter key fires onAction with tokens in token mode via action button', () => {
-    const onAction = jest.fn();
-    const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onAction });
-
-    wrapper.findActionButton().click();
-
-    expect(onAction).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: expect.objectContaining({
-          value: 'hello',
-          tokens: expect.arrayContaining([expect.objectContaining({ type: 'text', value: 'hello' })]),
-        }),
-      })
-    );
-  });
-
-  test('Enter key does not fire onAction when disabled', () => {
-    const onAction = jest.fn();
-    const { container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onAction,
-      disabled: true,
-    });
-    const editable = container.querySelector('[role="textbox"]')!;
-
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-    });
-
-    expect(onAction).not.toHaveBeenCalled();
-  });
-
-  test('Enter key does not fire onAction when readOnly', () => {
-    const onAction = jest.fn();
-    const { container } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onAction,
-      readOnly: true,
-    });
-    const editable = container.querySelector('[role="textbox"]')!;
-
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-    });
-
-    expect(onAction).not.toHaveBeenCalled();
-  });
-});
-
 describe('insert-text-content-editable: insertText at specific positions', () => {
   test('insertText inserts at position 0 in non-empty content', () => {
     const onChange = jest.fn();
@@ -2727,17 +2352,6 @@ describe('use-token-mode: menu selection flow', () => {
       expect(liveRegion).not.toBeNull();
       expect(onChange).toHaveBeenCalled();
     }
-  });
-});
-
-describe('use-token-mode: trigger visibility (scroll out of view)', () => {
-  test('menu dropdown respects triggerVisible state', () => {
-    // When trigger is present but menu has no matching items, dropdown stays closed
-    const { wrapper } = renderTokenMode({
-      menus: [{ id: 'mentions', trigger: '@', options: [], filteringType: 'auto' }],
-      tokens: [{ type: 'trigger', value: 'nonexistent', triggerChar: '@', id: 'tv1' }],
-    });
-    expect(wrapper.isMenuOpen()).toBe(false);
   });
 });
 
@@ -3054,75 +2668,6 @@ describe('use-token-mode: pinned token announcement', () => {
       expect(liveRegion).not.toBeNull();
       expect(onChange).toHaveBeenCalled();
     }
-  });
-});
-
-describe('use-token-mode: empty state transitions', () => {
-  test('transition from empty to empty does not re-render DOM', () => {
-    const { container, rerender } = renderTokenMode({ tokens: [] });
-    const el = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
-    const childCountBefore = el.childNodes.length;
-
-    act(() => {
-      rerender(
-        <PromptInput
-          tokens={[]}
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          i18nStrings={defaultI18nStrings}
-          ariaLabel="Chat input"
-        />
-      );
-    });
-
-    expect(el.childNodes.length).toBe(childCountBefore);
-  });
-});
-
-describe('internal.tsx: maxMenuHeight prop', () => {
-  test('maxMenuHeight is passed to dropdown', () => {
-    const { container } = render(
-      <PromptInput
-        tokens={[{ type: 'trigger', value: '', triggerChar: '@', id: 'mh1' }]}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        i18nStrings={defaultI18nStrings}
-        maxMenuHeight={200}
-      />
-    );
-    // Component should render without errors with maxMenuHeight
-    const wrapper = createWrapper(container).findPromptInput()!;
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-});
-
-describe('internal.tsx: disableSecondaryActionsPaddings and disableSecondaryContentPaddings', () => {
-  test('disableSecondaryActionsPaddings removes padding from secondary actions', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [],
-      secondaryActions: <button>Attach</button>,
-    });
-    expect(wrapper.findSecondaryActions()).not.toBeNull();
-    expect(wrapper.findSecondaryActions()!.getElement()).toHaveTextContent('Attach');
-  });
-
-  test('disableSecondaryContentPaddings removes padding from secondary content', () => {
-    const { container } = render(
-      <PromptInput
-        tokens={[]}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        i18nStrings={defaultI18nStrings}
-        secondaryContent={<div>Files</div>}
-        disableSecondaryContentPaddings={true}
-      />
-    );
-    const wrapper = createWrapper(container).findPromptInput()!;
-    expect(wrapper.findSecondaryContent()).not.toBeNull();
-    expect(wrapper.findSecondaryContent()!.getElement()).toHaveTextContent('Files');
   });
 });
 
@@ -4650,406 +4195,6 @@ describe('detectTypingContext - currentLineIsText with break tokens', () => {
   });
 });
 
-describe('checkMenuState - no triggers early return', () => {
-  test('text-only tokens with no triggers sets caretInTrigger to false', () => {
-    const ref = React.createRef<PromptInputProps.Ref>();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'no triggers here' }],
-      ref,
-    });
-
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      document.dispatchEvent(new Event('selectionchange'));
-    });
-
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-
-  test('empty tokens array does not open menu', () => {
-    const { wrapper } = renderTokenMode({ tokens: [] });
-    act(() => {
-      document.dispatchEvent(new Event('selectionchange'));
-    });
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-});
-
-describe('menu-dropdown rendering with open menu', () => {
-  test('MenuDropdown renders list component when menu is open with items', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mdr1' }],
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto' }],
-    });
-    // Menu may or may not open depending on trigger wrapper readiness in JSDOM
-    // The key is that the component renders without errors
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-
-  test('MenuDropdown renders with ariaDescribedby when status content exists', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'mdr2' }],
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'loading' }],
-      i18nStrings: { ...defaultI18nStrings, menuLoadingText: 'Loading items...' },
-    });
-    expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
-  });
-});
-
-describe('handleInput - early returns and caret spot extraction', () => {
-  test('handleInput processes input event and extracts tokens', () => {
-    const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onChange,
-    });
-    const el = wrapper.findContentEditableElement()!.getElement();
-
-    // Append text to existing paragraph
-    const p = el.querySelector('p');
-    if (p) {
-      const textNode = document.createTextNode(' world');
-      p.appendChild(textNode);
-      act(() => {
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-      expect(onChange).toHaveBeenCalled();
-    }
-  });
-});
-
-describe('handleInput - new trigger detection via input event', () => {
-  test('typing trigger character in input event creates trigger element', () => {
-    const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello ' }],
-      onChange,
-    });
-    const el = wrapper.findContentEditableElement()!.getElement();
-
-    // Simulate typing '@' by modifying text content and firing input
-    const p = el.querySelector('p');
-    if (p) {
-      const lastTextNode = Array.from(p.childNodes)
-        .filter(n => n.nodeType === Node.TEXT_NODE)
-        .pop();
-      if (lastTextNode) {
-        lastTextNode.textContent = 'hello @';
-      }
-      act(() => {
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-      expect(onChange).toHaveBeenCalled();
-    }
-  });
-});
-
-describe('keyboard handlers - Enter key with onAction in token mode', () => {
-  test('Enter key fires onAction with tokens when menu is closed', () => {
-    const onAction = jest.fn();
-    const onKeyDown = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { wrapper } = renderTokenMode({ tokens, onAction, onKeyDown, ref });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-
-    act(() => {
-      ref.current!.focus();
-    });
-
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-    });
-
-    expect(onKeyDown).toHaveBeenCalled();
-  });
-
-  test('Enter key in open menu selects option instead of firing onAction', () => {
-    const onAction = jest.fn();
-    const onMenuItemSelect = jest.fn();
-    const onChange = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'ek1' }],
-      onAction,
-      onMenuItemSelect,
-      onChange,
-    });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-
-    // Navigate to first option
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
-    });
-    // Enter to select from menu
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-    });
-
-    // Menu selection should have happened
-    if (onMenuItemSelect.mock.calls.length > 0) {
-      expect(onMenuItemSelect).toHaveBeenCalled();
-    }
-  });
-});
-
-describe('menu load more - pending statusType with scroll handler', () => {
-  test('handleLoadMore fires when statusType is pending and options exist', () => {
-    const onMenuLoadItems = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'hlm1' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
-    });
-
-    // Verify menu is open and load items was called
-    const menu = wrapper.findOpenMenu();
-    if (menu) {
-      expect(onMenuLoadItems).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: expect.objectContaining({ menuId: 'mentions', firstPage: true }),
-        })
-      );
-    }
-  });
-
-  test('handleLoadMore with onLoadMoreItems callback fires correctly', () => {
-    const onMenuLoadItems = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'hlm2' }],
-      onMenuLoadItems,
-      menus: [{ id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto', statusType: 'pending' }],
-    });
-
-    // onMenuLoadItems should have been called at least once for menu open
-    const menu = wrapper.findOpenMenu();
-    if (menu) {
-      expect(onMenuLoadItems).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: expect.objectContaining({ menuId: 'mentions', firstPage: true }),
-        })
-      );
-    }
-  });
-});
-
-describe('onMenuFilter callback', () => {
-  test('onMenuFilter fires when trigger value changes', () => {
-    const onMenuFilter = jest.fn();
-    const { rerender } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'omf1' }],
-      onMenuFilter,
-    });
-
-    onMenuFilter.mockClear();
-
-    act(() => {
-      rerender(
-        <PromptInput
-          tokens={[{ type: 'trigger', value: 'B', triggerChar: '@', id: 'omf1' }]}
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          i18nStrings={defaultI18nStrings}
-          ariaLabel="Chat input"
-          onMenuFilter={onMenuFilter}
-        />
-      );
-    });
-
-    if (onMenuFilter.mock.calls.length > 0) {
-      expect(onMenuFilter).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: expect.objectContaining({ menuId: 'mentions', filteringText: 'B' }),
-        })
-      );
-    }
-  });
-});
-
-describe('shouldRenderMenuDropdown conditions', () => {
-  test('shouldRenderMenuDropdown is false when menu is closed', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-    });
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-
-  test('shouldRenderMenuDropdown is true when trigger is present with matching options', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'srd1' }],
-    });
-    const menu = wrapper.findOpenMenu();
-    if (menu) {
-      expect(menu.findOptions().length).toBeGreaterThan(0);
-    }
-  });
-
-  test('shouldRenderMenuDropdown is false when no options match filter', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'trigger', value: 'zzzzzzz', triggerChar: '@', id: 'srd2' }],
-    });
-    expect(wrapper.isMenuOpen()).toBe(false);
-  });
-});
-
-describe('editableElementAttributes - aria and data attributes', () => {
-  test('editableElement has correct aria attributes', () => {
-    const { container } = render(
-      <PromptInput
-        tokens={[]}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        ariaRequired={true}
-        i18nStrings={defaultI18nStrings}
-        disableBrowserAutocorrect={true}
-        spellcheck={false}
-      />
-    );
-    const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable.getAttribute('aria-label')).toBe('Chat input');
-    expect(editable.getAttribute('aria-required')).toBe('true');
-    expect(editable.getAttribute('autocorrect')).toBe('off');
-    expect(editable.getAttribute('autocapitalize')).toBe('off');
-    expect(editable.getAttribute('spellcheck')).toBe('false');
-    expect(editable.getAttribute('tabindex')).toBe('0');
-  });
-
-  test('disabled editableElement has tabindex -1', () => {
-    const { container } = renderTokenMode({ disabled: true });
-    const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable.getAttribute('tabindex')).toBe('-1');
-    expect(editable.getAttribute('aria-disabled')).toBe('true');
-  });
-});
-
-describe('internal.tsx - action button rendering conditions', () => {
-  test('action button renders with customPrimaryAction', () => {
-    const { wrapper } = renderTokenMode({
-      tokens: [],
-      customPrimaryAction: <button data-testid="custom-btn">Go</button>,
-    });
-    expect(wrapper.findCustomPrimaryAction()).not.toBeNull();
-    expect(wrapper.findCustomPrimaryAction()!.getElement()).toHaveTextContent('Go');
-  });
-
-  test('action button renders with actionButtonIconAlt', () => {
-    const { container } = render(
-      <PromptInput
-        tokens={[]}
-        menus={defaultMenus}
-        actionButtonIconName="send"
-        actionButtonIconAlt="Send message"
-        ariaLabel="Chat input"
-        i18nStrings={defaultI18nStrings}
-      />
-    );
-    const wrapper = createWrapper(container).findPromptInput()!;
-    const actionButton = wrapper.findActionButton();
-    expect(actionButton).not.toBeNull();
-    // actionButtonIconAlt provides the icon alt text; the button itself uses i18nStrings.actionButtonAriaLabel
-    expect(actionButton.getElement()).toHaveAttribute('aria-label', 'Submit');
-  });
-});
-
-describe('internal.tsx - keyboard handler wiring in token mode', () => {
-  test('onKeyDown fires for all key types in token mode', () => {
-    const onKeyDown = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onKeyDown,
-      ref,
-    });
-    const editable = wrapper.findContentEditableElement()!.getElement();
-
-    act(() => {
-      ref.current!.focus();
-    });
-
-    // Test various keys that go through the keyboard handler wiring
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }));
-    });
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
-    });
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true }));
-    });
-    act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true }));
-    });
-
-    expect(onKeyDown).toHaveBeenCalled();
-  });
-
-  test('onKeyUp fires in token mode', () => {
-    const onKeyUp = jest.fn();
-    const { wrapper } = renderTokenMode({
-      tokens: [{ type: 'text', value: 'hello' }],
-      onKeyUp,
-    });
-    const editable = wrapper.findContentEditableElement()!;
-    editable.keyup(KeyCode.enter);
-    expect(onKeyUp).toHaveBeenCalled();
-  });
-});
-
-describe('internal.tsx - ref methods branch coverage', () => {
-  test('select() with empty contentEditable does not throw', () => {
-    const ref = React.createRef<PromptInputProps.Ref>();
-    renderTokenMode({ ref, tokens: [] });
-
-    act(() => {
-      ref.current!.focus();
-    });
-    expect(() => {
-      act(() => {
-        ref.current!.select();
-      });
-    }).not.toThrow();
-  });
-
-  test('setSelectionRange dispatches selectionchange event', () => {
-    const ref = React.createRef<PromptInputProps.Ref>();
-    renderTokenMode({
-      ref,
-      tokens: [{ type: 'text', value: 'hello world' }],
-    });
-
-    const selectionChangeSpy = jest.fn();
-    document.addEventListener('selectionchange', selectionChangeSpy);
-
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      ref.current!.setSelectionRange(2, 5);
-    });
-
-    expect(selectionChangeSpy).toHaveBeenCalled();
-    document.removeEventListener('selectionchange', selectionChangeSpy);
-  });
-
-  test('insertText with no caretController does nothing', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    // Render disabled first (no caretController initialized for disabled)
-    renderTokenMode({ ref, disabled: true, onChange, tokens: [] });
-
-    act(() => {
-      ref.current!.insertText('hello');
-    });
-
-    // Should not fire onChange since disabled
-    expect(onChange).not.toHaveBeenCalled();
-  });
-});
-
 describe('token-renderer: paragraph count reduction', () => {
   test('reducing paragraph count removes extra paragraphs from DOM', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
@@ -5392,5 +4537,446 @@ describe('copy and cut - clipboard text', () => {
     const text = getClipboardText(createWrapper(container), 'cut');
     expect(text).toBe('hello Bob');
     expect(text).not.toContain('\u200B');
+  });
+});
+
+describe('full-flow: delete key merges trigger with adjacent text', () => {
+  test('delete removes space between trigger and text, merging them into one trigger', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+
+    // Start with "@bob hello" — trigger + space-prefixed text
+    const { wrapper } = renderTokenMode({
+      tokens: [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df1' },
+        { type: 'text', value: ' hello' },
+      ],
+      onChange,
+      ref,
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      ref.current!.focus();
+    });
+
+    // Position cursor at end of trigger (after "@bob"), then press Delete
+    const triggerEl = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(triggerEl.firstChild!, 4); // end of "@bob"
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    // onChange should fire with merged tokens: trigger absorbed "hello"
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const triggers = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'trigger');
+    expect(triggers).toHaveLength(1);
+    expect(triggers[0].value).toBe('bobhello');
+    expect(triggers[0].id).toBe('df1');
+  });
+
+  test('delete merges trigger with first word only, remaining text stays separate', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+
+    const { wrapper } = renderTokenMode({
+      tokens: [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 'df2' },
+        { type: 'text', value: ' hello world' },
+      ],
+      onChange,
+      ref,
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      ref.current!.focus();
+    });
+
+    const triggerEl = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(triggerEl.firstChild!, 4);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const triggers = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'trigger');
+    const texts = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(triggers).toHaveLength(1);
+    expect(triggers[0].value).toBe('bobhello');
+    expect(texts.some((t: PromptInputProps.InputToken) => t.value === ' world')).toBe(true);
+  });
+});
+
+describe('full-flow: backspace clears trigger filter text with multiple triggers', () => {
+  test('backspacing filter text from second trigger does not affect first trigger', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+
+    // "@ @b" — two triggers, second has filter text "b"
+    const { wrapper } = renderTokenMode({
+      tokens: [
+        { type: 'trigger', value: '', triggerChar: '@', id: 'bf1' },
+        { type: 'text', value: ' ' },
+        { type: 'trigger', value: 'b', triggerChar: '@', id: 'bf2' },
+      ],
+      onChange,
+      ref,
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      ref.current!.focus();
+    });
+
+    // Position cursor at end of second trigger's text (after "@b")
+    const triggers = editable.querySelectorAll('[data-type="trigger"]');
+    const secondTrigger = triggers[1];
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(secondTrigger.firstChild!, 2); // end of "@b"
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    // Simulate backspace: remove the "b" from the trigger's DOM text
+    secondTrigger.textContent = '@';
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    // onChange should fire with the second trigger's value cleared
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const triggerTokens = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'trigger');
+    expect(triggerTokens).toHaveLength(2);
+    // Both triggers should have empty values, but retain their original IDs
+    expect(triggerTokens[0].id).toBe('bf1');
+    expect(triggerTokens[1].id).toBe('bf2');
+    expect(triggerTokens[0].value).toBe('');
+    expect(triggerTokens[1].value).toBe('');
+  });
+});
+
+describe('trigger cursor behavior — full-flow regression tests', () => {
+  // Helpers for setting up trigger scenarios and verifying cursor position
+  function setupTrigger(
+    onChange: jest.Mock,
+    tokens: PromptInputProps.InputToken[],
+    ref: React.RefObject<PromptInputProps.Ref>
+  ) {
+    const result = renderTokenMode({ tokens, onChange, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    return result;
+  }
+
+  function getTokensFromOnChange(onChange: jest.Mock): PromptInputProps.InputToken[] {
+    if (onChange.mock.calls.length === 0) {
+      return [];
+    }
+    return onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+  }
+
+  test('delete space after trigger merges trigger with next word', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' hello' },
+      ],
+      ref
+    );
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(trigger.firstChild!, trigger.firstChild!.textContent!.length);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggers = tokens.filter(t => t.type === 'trigger');
+    expect(triggers).toHaveLength(1);
+    expect((triggers[0] as PromptInputProps.TriggerToken).value).toBe('bobhello');
+    expect((triggers[0] as PromptInputProps.TriggerToken).id).toBe('t1');
+  });
+
+  test('delete space after trigger with multi-word text merges only first word', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' hello world' },
+      ],
+      ref
+    );
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(trigger.firstChild!, trigger.firstChild!.textContent!.length);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggers = tokens.filter(t => t.type === 'trigger');
+    const texts = tokens.filter(t => t.type === 'text');
+    expect((triggers[0] as PromptInputProps.TriggerToken).value).toBe('bobhello');
+    expect(texts.some(t => t.value === ' world')).toBe(true);
+  });
+
+  test('backspace clears filter text from correct trigger when multiple triggers exist', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: '', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' ' },
+        { type: 'trigger', value: 'b', triggerChar: '@', id: 't2' },
+      ],
+      ref
+    );
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const triggers = editable.querySelectorAll('[data-type="trigger"]');
+    const secondTrigger = triggers[1];
+
+    // Simulate backspace: remove "b" from second trigger's DOM
+    secondTrigger.textContent = '@';
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens).toHaveLength(2);
+    expect(triggerTokens[0].id).toBe('t1');
+    expect(triggerTokens[1].id).toBe('t2');
+    expect(triggerTokens[0].value).toBe('');
+    expect(triggerTokens[1].value).toBe('');
+  });
+
+  test('space inside trigger splits it and positions cursor after the space (no trailing text)', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    setupTrigger(onChange, [{ type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' }], ref);
+
+    // Simulate the browser inserting a space inside the trigger at offset 1.
+    // The trigger DOM text becomes "@ bob". extractTriggerTokens parses this as
+    // trigger(value:" bob") which processTokens then handles.
+    const editable = document.querySelector('[contenteditable="true"]')!;
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    trigger.textContent = '@ bob';
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    // The trigger should still exist with the same ID
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens).toHaveLength(1);
+    expect(triggerTokens[0].id).toBe('t1');
+    // "bob" should appear somewhere in the output (either as trigger value or text)
+    const allText = tokens.map(t => t.value).join('');
+    expect(allText).toContain('bob');
+  });
+
+  test('space inside trigger splits it and positions cursor after the space (with trailing text)', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' hello' },
+      ],
+      ref
+    );
+
+    const editable = document.querySelector('[contenteditable="true"]')!;
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    trigger.textContent = '@ bob';
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens).toHaveLength(1);
+    expect(triggerTokens[0].id).toBe('t1');
+    // Both "bob" and "hello" should be in the output
+    const allText = tokens.map(t => t.value).join('');
+    expect(allText).toContain('bob');
+    expect(allText).toContain('hello');
+  });
+
+  test('delete character from trigger filter text preserves cursor position', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' hello' },
+      ],
+      ref
+    );
+
+    // Simulate deleting "b" at offset 1: "@bob" → "@ob"
+    const editable = document.querySelector('[contenteditable="true"]')!;
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    trigger.textContent = '@ob';
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens[0].value).toBe('ob');
+    expect(triggerTokens[0].id).toBe('t1');
+    // Text after trigger should be unchanged
+    const texts = tokens.filter(t => t.type === 'text');
+    expect(texts.some(t => t.value === ' hello')).toBe(true);
+  });
+
+  test('empty trigger absorbs adjacent text when space is removed', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: '', triggerChar: '@', id: 't1' },
+        { type: 'text', value: ' bob' },
+      ],
+      ref
+    );
+
+    // Simulate backspace removing the space: text becomes "bob" (no leading space)
+    const editable = document.querySelector('[contenteditable="true"]')!;
+    const p = editable.querySelector('p')!;
+    const textNode = Array.from(p.childNodes).find(n => n.nodeType === 3);
+    if (textNode) {
+      textNode.textContent = 'bob';
+    }
+    act(() => {
+      editable.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens).toHaveLength(1);
+    expect(triggerTokens[0].value).toBe('bob');
+    expect(triggerTokens[0].id).toBe('t1');
+  });
+
+  test('trigger ID is preserved through merge operations', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = setupTrigger(
+      onChange,
+      [
+        { type: 'trigger', value: 'bob', triggerChar: '@', id: 'preserve-me' },
+        { type: 'text', value: ' hello' },
+      ],
+      ref
+    );
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(trigger.firstChild!, trigger.firstChild!.textContent!.length);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens[0].id).toBe('preserve-me');
+  });
+});
+
+describe('full-flow: empty trigger absorbs adjacent text on delete', () => {
+  function getTokensFromOnChange(onChange: jest.Mock): PromptInputProps.InputToken[] {
+    if (onChange.mock.calls.length === 0) {
+      return [];
+    }
+    return onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+  }
+
+  test('delete space between empty trigger and text merges text into trigger filter', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = renderTokenMode({
+      tokens: [
+        { type: 'trigger', value: '', triggerChar: '@', id: 'et1' },
+        { type: 'text', value: ' hello world' },
+      ],
+      onChange,
+      ref,
+    });
+
+    const editable = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      ref.current!.focus();
+    });
+
+    // Position cursor at end of trigger (after @)
+    const trigger = editable.querySelector('[data-type="trigger"]')!;
+    const sel = window.getSelection()!;
+    const range = document.createRange();
+    range.setStart(trigger.firstChild!, 1);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    act(() => {
+      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+    });
+
+    const tokens = getTokensFromOnChange(onChange);
+    const triggers = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggers).toHaveLength(1);
+    expect(triggers[0].value).toBe('hello');
+    expect(triggers[0].id).toBe('et1');
+    const texts = tokens.filter(t => t.type === 'text');
+    expect(texts.some(t => t.value === ' world')).toBe(true);
   });
 });

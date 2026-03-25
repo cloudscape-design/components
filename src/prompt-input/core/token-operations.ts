@@ -52,13 +52,11 @@ function findOptionInMenu(
   const key: keyof OptionGroup = 'options';
   for (const item of options) {
     if (key in item) {
-      // It's a group, search in its options
       const found = item.options?.find(opt => opt.value === labelOrValue || opt.label === labelOrValue);
       if (found) {
         return found;
       }
     } else if (item.value === labelOrValue || item.label === labelOrValue) {
-      // It's an option
       return item;
     }
   }
@@ -179,14 +177,23 @@ function extractTriggerTokens(
           continue;
         }
         const index = value.indexOf(menu.trigger);
-        if (index > 0 && (nestedTriggerIndex === -1 || index < nestedTriggerIndex)) {
+        if (index >= 0 && (nestedTriggerIndex === -1 || index < nestedTriggerIndex)) {
           nestedTriggerIndex = index;
           nestedTriggerChar = menu.trigger;
         }
       }
     }
 
-    if (nestedTriggerIndex > 0 && /\s/.test(value[nestedTriggerIndex - 1])) {
+    if (nestedTriggerIndex === 0) {
+      // Adjacent trigger characters — first trigger has empty filter, second is a new trigger
+      tokens.push({ type: 'trigger', value: '', triggerChar, id });
+      tokens.push({
+        type: 'trigger',
+        value: value.substring(1),
+        triggerChar: nestedTriggerChar,
+        id: generateTokenId(),
+      });
+    } else if (nestedTriggerIndex > 0 && value[nestedTriggerIndex - 1].trim() === '') {
       // Split into first trigger, whitespace, and second trigger
       const firstValue = value.substring(0, nestedTriggerIndex).trim();
       const spaceBefore = value.substring(firstValue.length, nestedTriggerIndex);
@@ -200,8 +207,8 @@ function extractTriggerTokens(
     } else {
       tokens.push({ type: 'trigger', value, triggerChar, id });
     }
+    // No trigger character found — treat as text
   } else if (fullText) {
-    // No trigger character found — treat entire content as text
     tokens.push({ type: 'text', value: fullText });
   }
 
@@ -283,10 +290,7 @@ function extractReferenceToken(
   return tokens;
 }
 
-/**
- * Default plain text serialization for tokens.
- * References use their label with automatic spacing between adjacent tokens.
- */
+/** Default plain text serialization for tokens. */
 export function getPromptText(tokens: readonly PromptInputProps.InputToken[]): string {
   let result = '';
   let prevToken: PromptInputProps.InputToken | null = null;
@@ -339,13 +343,7 @@ export function findLastPinnedTokenIndex(tokens: readonly PromptInputProps.Input
   return -1;
 }
 
-/**
- * Scans text tokens for trigger characters and converts them to trigger tokens.
- * Trigger detection happens during token processing (not at input time) because
- * the contentEditable input event gives us raw DOM content that needs to be
- * parsed into the token model. The onTriggerDetected callback allows consumers
- * to cancel specific triggers (e.g. limiting the number of pinned tokens).
- */
+/** Scans text tokens for trigger characters and converts them to trigger tokens. */
 export function detectTriggersInTokens(
   tokens: readonly PromptInputProps.InputToken[],
   menus: readonly PromptInputProps.MenuDefinition[],
@@ -353,10 +351,42 @@ export function detectTriggersInTokens(
 ): PromptInputProps.InputToken[] {
   const result: PromptInputProps.InputToken[] = [];
 
-  for (const token of tokens) {
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    // Collapse empty trigger + adjacent text back into a text token for re-parsing
+    if (isTriggerToken(token) && token.value === '' && i !== tokens.length - 1) {
+      const next = tokens[i + 1];
+      if (isTextToken(next) && next.value.length > 0 && !next.value.startsWith(' ')) {
+        const detected = detectTriggersInText(token.triggerChar + next.value, menus, result, onTriggerDetected);
+        const reusedTrigger = detected.find(isTriggerToken);
+        if (reusedTrigger && token.id) {
+          reusedTrigger.id = token.id;
+        }
+        result.push(...detected);
+        i++;
+        continue;
+      }
+    }
+
+    // Merge non-empty trigger + adjacent text when the separator was removed
+    if (isTriggerToken(token) && token.value.length > 0 && i !== tokens.length - 1) {
+      const next = tokens[i + 1];
+      if (isTextToken(next) && next.value.length > 0 && !next.value.startsWith(' ')) {
+        const combined = token.triggerChar + token.value + next.value;
+        const detected = detectTriggersInText(combined, menus, result, onTriggerDetected);
+        const reusedTrigger = detected.find(isTriggerToken);
+        if (reusedTrigger && token.id) {
+          reusedTrigger.id = token.id;
+        }
+        result.push(...detected);
+        i++;
+        continue;
+      }
+    }
+
     if (isTextToken(token)) {
-      const detectedTokens = detectTriggersInText(token.value, menus, result, onTriggerDetected);
-      result.push(...detectedTokens);
+      result.push(...detectTriggersInText(token.value, menus, result, onTriggerDetected));
     } else {
       result.push(token);
     }
@@ -433,9 +463,7 @@ export function processTokens(
     result = detectTriggersInTokens(result, config.menus, onTriggerDetected);
   }
 
-  // Ensure all tokens have IDs — these are used as DOM element IDs for:
-  // - Trigger tokens: anchoring the dropdown menu position
-  // - Reference tokens: tracking which DOM element corresponds to which token during re-renders
+  // Ensure all tokens have IDs for DOM element tracking
   result = result.map(token => {
     if (isTriggerToken(token) && (!token.id || token.id === '')) {
       return { ...token, id: generateTokenId() };
