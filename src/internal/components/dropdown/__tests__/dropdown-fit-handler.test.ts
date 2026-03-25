@@ -292,4 +292,22 @@ describe('getDropdownPosition', () => {
       });
     });
   });
+
+  describe('with maxHeight', () => {
+    test('constrains blockSize with min() when maxHeight is provided', () => {
+      const trigger = getSizedElement(100, 50, 300, 100);
+      const dropdown = getSizedElement(100, 300);
+      expect(
+        getDropdownPosition({
+          triggerElement: trigger,
+          dropdownElement: dropdown,
+          overflowParents: [windowSize],
+          maxHeight: 200,
+        })
+      ).toEqual({
+        ...defaults,
+        blockSize: 'min(605px, 200px)',
+      });
+    });
+  });
 });
