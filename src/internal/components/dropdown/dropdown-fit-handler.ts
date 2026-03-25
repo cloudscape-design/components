@@ -367,7 +367,8 @@ export const calculatePosition = (
   stretchHeight: boolean,
   isMobile: boolean,
   minWidth?: DropdownWidthConstraint,
-  maxWidth?: DropdownWidthConstraint
+  maxWidth?: DropdownWidthConstraint,
+  maxHeight?: number
 ): [DropdownPosition, LogicalDOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
@@ -387,7 +388,7 @@ export const calculatePosition = (
     expandToViewport,
     canExpandOutsideViewport: stretchHeight,
   });
-  const position = interior
+  let position: DropdownPosition | InteriorDropdownPosition = interior
     ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile)
     : getDropdownPosition({
         triggerElement,
@@ -400,6 +401,11 @@ export const calculatePosition = (
         stretchHeight,
         isMobile,
       });
+  // Apply maxHeight constraint if provided
+  if (maxHeight) {
+    position = { ...position, blockSize: `min(${position.blockSize}, ${maxHeight}px)` };
+  }
+
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
   return [position, triggerBox];
 };

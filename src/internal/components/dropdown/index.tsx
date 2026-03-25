@@ -232,9 +232,7 @@ const Dropdown = ({
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    // Apply maxBlockSize, constrained by maxHeight prop if provided
-    const constrainedBlockSize = maxHeight ? `min(${position.blockSize}, ${maxHeight}px)` : position.blockSize;
-    verticalContainer.style.maxBlockSize = constrainedBlockSize;
+    verticalContainer.style.maxBlockSize = position.blockSize;
 
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
@@ -370,7 +368,8 @@ const Dropdown = ({
             stretchHeight,
             isMobile,
             minWidth,
-            maxWidth
+            maxWidth,
+            maxHeight
           ),
           dropdownRef.current,
           verticalContainerRef.current
