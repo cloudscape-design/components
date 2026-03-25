@@ -174,19 +174,15 @@ const InternalPagination = React.forwardRef(
     }
 
     function handleJumpToPageClick(requestedPageIndex: number) {
-      if (requestedPageIndex < 1) {
-        handlePageClick(1);
-        jumpToPageInputRef.current?.focus();
-        return;
-      }
+      const adjustedIndex = Math.max(1, Math.floor(requestedPageIndex));
 
       if (openEnd) {
         // Open-end: always navigate, parent will handle async loading
-        handlePageClick(requestedPageIndex);
+        handlePageClick(adjustedIndex);
       } else {
         // Closed-end: validate range
-        if (requestedPageIndex >= 1 && requestedPageIndex <= pagesCount) {
-          handlePageClick(requestedPageIndex);
+        if (adjustedIndex >= 1 && adjustedIndex <= pagesCount) {
+          handlePageClick(adjustedIndex);
         } else {
           // Out of range - set error and navigate to last page
           handlePageClick(pagesCount, true);
@@ -309,10 +305,6 @@ const InternalPagination = React.forwardRef(
                   onChange={handleInputChange}
                   onBlur={() => setHasError(false)}
                   onKeyDown={e => {
-                    if (e.detail.key === ',') {
-                      e.preventDefault();
-                      return;
-                    }
                     if (e.detail.keyCode === 13 && jumpToPageValue && Number(jumpToPageValue) !== currentPageIndex) {
                       handleJumpToPageClick(Number(jumpToPageValue));
                     }
