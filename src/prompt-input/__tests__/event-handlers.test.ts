@@ -16,6 +16,7 @@ import {
   splitParagraphAtCaret,
 } from '../core/event-handlers';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
+import { handleDeleteAfterTrigger } from '../core/trigger-utils';
 
 let el: HTMLDivElement;
 
@@ -924,13 +925,10 @@ describe('handleArrowKeyNavigation', () => {
     const text = document.createTextNode('hello');
     p.appendChild(text);
 
-    // Create a non-collapsed selection from text back toward reference at paragraph level
-    const range = document.createRange();
-    range.setStart(p, 1); // After reference
-    range.setEnd(text, 3);
+    // Set up selection with focus at the extending (left) edge
     const sel = window.getSelection()!;
-    sel.removeAllRanges();
-    sel.addRange(range);
+    sel.collapse(text, 3); // anchor at text offset 3
+    sel.extend(p, 1); // focus at paragraph level after reference
 
     const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
     const result = handleArrowKeyNavigation(event, null);
@@ -1528,26 +1526,6 @@ describe('handleDeleteAtParagraphEnd', () => {
 });
 
 describe('event-handlers - defensive checks', () => {
-  function setCursor(node: Node, offset: number) {
-    const range = document.createRange();
-    range.setStart(node, offset);
-    range.collapse(true);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
-  }
-
-  function makeKeyboardEvent(key: string, opts: Partial<React.KeyboardEvent<HTMLDivElement>> = {}) {
-    return {
-      key,
-      shiftKey: false,
-      nativeEvent: { isComposing: false },
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      currentTarget: el,
-      ...opts,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-  }
-
   test('handleReferenceTokenDeletion returns true when adjacent reference is found', () => {
     const p = document.createElement('p');
     el.appendChild(p);
@@ -1616,7 +1594,7 @@ describe('event-handlers - defensive checks', () => {
 
     const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreRef, controller);
     expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('handleArrowKeyNavigation with shift+left across reference extends selection', () => {
@@ -1634,12 +1612,10 @@ describe('event-handlers - defensive checks', () => {
     const after = document.createTextNode('world');
     p.appendChild(after);
 
-    // Select from after text back — shift+left should extend over reference
-    const range = document.createRange();
-    range.setStart(after, 0);
-    range.setEnd(after, 3);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
+    // Focus at left edge (after, 0) extending backward toward reference
+    const sel = window.getSelection()!;
+    sel.collapse(after, 3); // anchor
+    sel.extend(after, 0); // focus at start — next left should hit reference
 
     const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
     const result = handleArrowKeyNavigation(event, null);
@@ -1704,12 +1680,10 @@ describe('event-handlers - defensive checks', () => {
     const after = document.createTextNode('world');
     p.appendChild(after);
 
-    // Selection at element level
-    const range = document.createRange();
-    range.setStart(p, 1); // after ref
-    range.setEnd(after, 3);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
+    // Focus at left edge (p, 1) extending backward toward reference
+    const sel = window.getSelection()!;
+    sel.collapse(after, 3); // anchor
+    sel.extend(p, 1); // focus at paragraph level after ref
 
     const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
     const result = handleArrowKeyNavigation(event, null);
@@ -1751,26 +1725,6 @@ describe('handleShiftArrow - sibling is not a reference', () => {
 });
 
 describe('event-handlers - defensive guard coverage', () => {
-  function setCursor(node: Node, offset: number) {
-    const range = document.createRange();
-    range.setStart(node, offset);
-    range.collapse(true);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
-  }
-
-  function makeKeyboardEvent(key: string, opts: Partial<React.KeyboardEvent<HTMLDivElement>> = {}) {
-    return {
-      key,
-      shiftKey: false,
-      nativeEvent: { isComposing: false },
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      currentTarget: el,
-      ...opts,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-  }
-
   test('handleReferenceTokenDeletion returns true when removed element parent is not HTMLElement', () => {
     const p = document.createElement('p');
     el.appendChild(p);
@@ -1822,7 +1776,7 @@ describe('event-handlers - defensive guard coverage', () => {
 
     const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreRef, null);
     expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('handleBackspaceAtParagraphStart returns false when paragraph not in editable element', () => {
@@ -1867,14 +1821,6 @@ describe('event-handlers - defensive guard coverage', () => {
 });
 
 describe('RTL arrow key navigation', () => {
-  function setCursor(node: Node, offset: number) {
-    const range = document.createRange();
-    range.setStart(node, offset);
-    range.collapse(true);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
-  }
-
   beforeEach(() => {
     el.style.direction = 'rtl';
   });
@@ -2004,12 +1950,10 @@ describe('RTL arrow key navigation', () => {
     const after = document.createTextNode(' world');
     p.appendChild(after);
 
-    // Select start of after text — Shift+ArrowRight in RTL extends backward (start of selection)
-    const range = document.createRange();
-    range.setStart(after, 0);
-    range.setEnd(after, 3);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
+    // Focus at left edge — Shift+ArrowRight in RTL extends backward
+    const sel = window.getSelection()!;
+    sel.collapse(after, 3); // anchor
+    sel.extend(after, 0); // focus at start — next right (backward in RTL) hits reference
 
     const event = {
       key: 'ArrowRight',
@@ -2023,5 +1967,90 @@ describe('RTL arrow key navigation', () => {
     const result = handleArrowKeyNavigation(event, null);
     expect(result).toBe(true);
     expect(event.preventDefault).toHaveBeenCalled();
+  });
+});
+
+describe('handleDeleteAfterTrigger', () => {
+  let el: HTMLDivElement;
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    el.setAttribute('contenteditable', 'true');
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(el);
+  });
+
+  test('removes leading space and fires input when cursor is at end of trigger text node', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const trigger = createTriggerElement('t1', '@bob');
+    const textNode = document.createTextNode(' hello world');
+    p.appendChild(trigger);
+    p.appendChild(textNode);
+
+    setCursor(trigger.firstChild!, 4);
+
+    const inputFired = jest.fn();
+    el.addEventListener('input', inputFired);
+
+    const event = new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true });
+    const result = handleDeleteAfterTrigger(event as any, el);
+
+    expect(result).toBe(true);
+    expect(event.defaultPrevented).toBe(true);
+    expect(textNode.textContent).toBe('hello world');
+    expect(inputFired).toHaveBeenCalled();
+  });
+
+  test('removes the text node entirely when it contains only a space', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const trigger = createTriggerElement('t1', '@bob');
+    const textNode = document.createTextNode(' ');
+    p.appendChild(trigger);
+    p.appendChild(textNode);
+
+    setCursor(trigger.firstChild!, 4);
+
+    const event = new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true });
+    handleDeleteAfterTrigger(event as any, el);
+
+    expect(p.childNodes).toHaveLength(1);
+    expect(p.firstChild).toBe(trigger);
+  });
+
+  test('works when cursor is at paragraph level after the trigger element', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const trigger = createTriggerElement('t1', '@bob');
+    const textNode = document.createTextNode(' hello');
+    p.appendChild(trigger);
+    p.appendChild(textNode);
+
+    setCursor(p, 1);
+
+    const event = new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true });
+    const result = handleDeleteAfterTrigger(event as any, el);
+
+    expect(result).toBe(true);
+    expect(textNode.textContent).toBe('hello');
+  });
+
+  test('does not handle when next text has no leading space', () => {
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const trigger = createTriggerElement('t1', '@bob');
+    const textNode = document.createTextNode('hello');
+    p.appendChild(trigger);
+    p.appendChild(textNode);
+
+    setCursor(trigger.firstChild!, 4);
+
+    const event = new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true });
+    expect(handleDeleteAfterTrigger(event as any, el)).toBe(false);
+    expect(textNode.textContent).toBe('hello');
   });
 });

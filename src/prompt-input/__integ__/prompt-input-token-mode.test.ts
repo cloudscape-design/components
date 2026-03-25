@@ -45,6 +45,13 @@ class PromptInputTokenModePage extends BasePageObject {
       return preCaretRange.toString().replace(/\u200B/g, '').length;
     }, contentEditableSelector);
   }
+
+  getSelectedText(): Promise<string> {
+    return this.browser.execute(() => {
+      const sel = window.getSelection();
+      return sel ? sel.toString().replace(/\u200B/g, '') : '';
+    });
+  }
 }
 
 const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) => {
@@ -254,6 +261,103 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
       expect(text).toContain('hello');
       expect(text).toContain('@');
       expect(await page.getCaretOffset()).toBe(7);
+    })
+  );
+});
+
+(isReact18 ? describe : describe.skip)('PromptInput token mode - shift+arrow selection across references', () => {
+  test(
+    'shift+right selects forward through a reference token',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'i', ' ']);
+      await page.keys(['@']);
+      await page.pause(200);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+      await page.keys([' ', 'b', 'y', 'e']);
+      await page.pause(200);
+
+      // Move cursor to start
+      await page.keys(['Home']);
+      await page.pause(100);
+
+      // Select forward: "hi " then the reference then " bye"
+      for (let i = 0; i < 3; i++) {
+        await page.keys(['Shift', 'ArrowRight', 'Shift']);
+      }
+      expect(await page.getSelectedText()).toBe('hi ');
+
+      // One more should jump over the reference
+      await page.keys(['Shift', 'ArrowRight', 'Shift']);
+      await page.pause(100);
+      const selected = await page.getSelectedText();
+      expect(selected).toContain('hi ');
+      expect(selected).toContain('John Smith');
+    })
+  );
+
+  test(
+    'shift+left selects backward through a reference token',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'i', ' ']);
+      await page.keys(['@']);
+      await page.pause(200);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+      await page.keys([' ', 'b', 'y', 'e']);
+      await page.pause(200);
+
+      // Cursor is at end. Select backward: "bye " then reference then " hi"
+      for (let i = 0; i < 4; i++) {
+        await page.keys(['Shift', 'ArrowLeft', 'Shift']);
+      }
+      const afterText = await page.getSelectedText();
+      expect(afterText).toBe(' bye');
+
+      // One more should jump over the reference
+      await page.keys(['Shift', 'ArrowLeft', 'Shift']);
+      await page.pause(100);
+      const selected = await page.getSelectedText();
+      expect(selected).toContain('John Smith');
+      expect(selected).toContain(' bye');
+    })
+  );
+
+  test(
+    'shift+left then shift+right reversal deselects reference without flipping selection',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'e', 'l', 'l', 'o', ' ']);
+      await page.keys(['@']);
+      await page.pause(200);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+      await page.keys([' ', 'w', 'o', 'r', 'l', 'd']);
+      await page.pause(200);
+
+      // Place cursor in middle of "world" (3 chars from end)
+      await page.keys(['ArrowLeft', 'ArrowLeft', 'ArrowLeft']);
+      await page.pause(100);
+
+      // Select backward past " wo", over reference, into "hello"
+      for (let i = 0; i < 7; i++) {
+        await page.keys(['Shift', 'ArrowLeft', 'Shift']);
+      }
+      await page.pause(100);
+      const backwardSel = await page.getSelectedText();
+      expect(backwardSel).toContain('John Smith');
+
+      // Now reverse with shift+right — deselect back through "hello " and the reference
+      for (let i = 0; i < 7; i++) {
+        await page.keys(['Shift', 'ArrowRight', 'Shift']);
+      }
+      await page.pause(100);
+
+      // Selection should be collapsed or very small — not extending the wrong end
+      const afterReverse = await page.getSelectedText();
+      expect(afterReverse.length).toBeLessThanOrEqual(1);
     })
   );
 });

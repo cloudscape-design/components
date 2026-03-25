@@ -245,12 +245,12 @@ export class CaretController {
   }
 
   /** Restores the caret to the previously captured state. */
-  restore(): void {
+  restore(offset = 0): void {
     if (!this.state.isValid || document.activeElement !== this.element) {
       return;
     }
 
-    this.setPosition(this.state.start, this.state.end);
+    this.setPosition(this.state.start + offset, this.state.end !== undefined ? this.state.end + offset : undefined);
   }
 
   /** Overrides the captured state so the next restore() positions to a calculated location. */

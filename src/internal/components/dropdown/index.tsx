@@ -203,17 +203,14 @@ const Dropdown = ({
 }: DropdownProps) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const internalTriggerRef = useRef<HTMLDivElement | null>(null);
-  const renderTriggerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
 
-  // Determine which ref to use for positioning:
-  // 1. renderTriggerRef (when renderTrigger is used — consumer attaches this to their element)
-  // 2. internalTriggerRef (default wrapper div around the trigger slot)
-  const triggerRef = renderTrigger ? renderTriggerRef : internalTriggerRef;
+  // Use external trigger ref if provided, otherwise use internal ref
+  const triggerRef = externalTriggerRef || internalTriggerRef;
 
   const isRefresh = useVisualRefresh();
 
@@ -235,9 +232,7 @@ const Dropdown = ({
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
-    // Apply maxBlockSize, constrained by maxHeight prop if provided
-    const constrainedBlockSize = maxHeight ? `min(${position.blockSize}, ${maxHeight}px)` : position.blockSize;
-    verticalContainer.style.maxBlockSize = constrainedBlockSize;
+    verticalContainer.style.maxBlockSize = position.blockSize;
 
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
@@ -509,7 +504,7 @@ const Dropdown = ({
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
-      {!renderTrigger && (
+      {!externalTriggerRef && (
         <div
           id={referrerId}
           className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
@@ -518,12 +513,6 @@ const Dropdown = ({
           {trigger}
         </div>
       )}
-      {renderTrigger &&
-        renderTrigger({
-          triggerRef: renderTriggerRef,
-          isOpen: !!open,
-          referrerId,
-        })}
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}

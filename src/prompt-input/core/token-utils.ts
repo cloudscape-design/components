@@ -5,7 +5,7 @@ import { PromptInputProps } from '../interfaces';
 import { calculateTotalTokenLength, TOKEN_LENGTHS } from './caret-controller';
 import { generateTokenId } from './dom-utils';
 import { findLastPinnedTokenIndex } from './token-operations';
-import { isBreakTextToken, isPinnedReferenceToken, isTextToken } from './type-guards';
+import { isBreakTextToken, isPinnedReferenceToken, isTextToken, isTriggerToken } from './type-guards';
 
 export { findAdjacentToken } from './dom-utils';
 
@@ -78,7 +78,7 @@ export function validateTrigger(
 ): boolean {
   const isAtStart = triggerIndex === 0;
   const charBefore = triggerIndex > 0 ? text[triggerIndex - 1] : '';
-  const isAfterWhitespace = /\s/.test(charBefore);
+  const isAfterWhitespace = charBefore.trim() === '';
 
   if (menu.useAtStart) {
     return isAtStart && areAllTokensPinned(precedingTokens);
@@ -87,13 +87,7 @@ export function validateTrigger(
   return isAtStart || isAfterWhitespace;
 }
 
-/**
- * Scans text for trigger characters and splits it into text and trigger tokens.
- * @param text the raw text to scan
- * @param menus menu definitions containing trigger characters
- * @param precedingTokens tokens before this text, used for useAtStart validation
- * @param onTriggerDetected optional callback that can cancel a trigger by returning true
- */
+/** Scans text for trigger characters and splits it into text and trigger tokens. */
 export function detectTriggersInText(
   text: string,
   menus: readonly PromptInputProps.MenuDefinition[],
@@ -168,9 +162,12 @@ export function detectTriggersInText(
         let filterText = '';
         let endOfTrigger = earliestTriggerIndex + earliestMenu.trigger.length;
 
-        if (afterTrigger && !/^\s/.test(afterTrigger)) {
+        if (afterTrigger && !afterTrigger.startsWith(' ')) {
           let endIndex = 0;
-          while (endIndex < afterTrigger.length && !/\s/.test(afterTrigger[endIndex])) {
+          while (endIndex < afterTrigger.length && afterTrigger[endIndex].trim() !== '') {
+            if (menus.some(m => afterTrigger[endIndex] === m.trigger)) {
+              break;
+            }
             endIndex++;
           }
           filterText = afterTrigger.substring(0, endIndex);
@@ -198,13 +195,7 @@ export function detectTriggersInText(
   return results.length > 0 ? results : [{ type: 'text', value: text }];
 }
 
-/**
- * Calculates the correct caret position after pinned tokens have been reordered to the front.
- * Counts how many pinned tokens were originally after the caret and moved past it during reordering.
- * @param originalTokens tokens in their original (pre-reorder) order
- * @param newTokens tokens after reordering
- * @param caretPosition the logical caret position before reordering
- */
+/** Calculates the correct caret position after pinned tokens have been reordered to the front. */
 export function getCaretPositionAfterPinnedReorder(
   originalTokens: readonly PromptInputProps.InputToken[],
   newTokens: readonly PromptInputProps.InputToken[],
@@ -233,16 +224,7 @@ export function getCaretPositionAfterPinnedReorder(
   return caretPosition + (totalPinnedCount - pinnedBeforeCaret);
 }
 
-/**
- * Maps a caret position from an old token structure to the correct position after
- * structural changes like token removal (e.g., trigger deletion).
- * Finds where the token arrays first diverge and adjusts the caret accordingly.
- *
- * @param savedPosition the caret position captured from the old DOM (null if invalid)
- * @param prevTokens tokens from the previous render
- * @param newTokens tokens for the current render
- * @returns the adjusted position, or null when no adjustment is needed (use cc.restore())
- */
+/** Maps a caret position from an old token structure to the correct position after structural changes. */
 export function getCaretPositionAfterTokenRemoval(
   savedPosition: number | null,
   prevTokens: readonly PromptInputProps.InputToken[],
@@ -274,18 +256,34 @@ export function getCaretPositionAfterTokenRemoval(
     if (prevTokens[i].type !== newTokens[i].type) {
       break;
     }
+    if (
+      isTriggerToken(prevTokens[i]) &&
+      isTriggerToken(newTokens[i]) &&
+      (prevTokens[i] as PromptInputProps.TriggerToken).id !== (newTokens[i] as PromptInputProps.TriggerToken).id
+    ) {
+      break;
+    }
+    // Trigger value changed — let cc.restore() handle it
+    if (
+      isTriggerToken(prevTokens[i]) &&
+      isTriggerToken(newTokens[i]) &&
+      (prevTokens[i] as PromptInputProps.TriggerToken).id === (newTokens[i] as PromptInputProps.TriggerToken).id &&
+      (prevTokens[i] as PromptInputProps.TriggerToken).value !== (newTokens[i] as PromptInputProps.TriggerToken).value
+    ) {
+      return null;
+    }
     if (isTextToken(prevTokens[i])) {
       diffPosition += prevTokens[i].value.length;
     } else if (isBreakTextToken(prevTokens[i])) {
       diffPosition += TOKEN_LENGTHS.LINE_BREAK;
+    } else if (isTriggerToken(prevTokens[i])) {
+      diffPosition += TOKEN_LENGTHS.trigger(prevTokens[i].value);
     } else {
       diffPosition += TOKEN_LENGTHS.REFERENCE;
     }
   }
 
-  // When tokens were removed, place the caret at the divergence point.
-  // This is where the deleted token was — the correct position regardless of what
-  // cc.capture() returned (which is unreliable after browser-native deletions).
+  // Tokens were removed — place caret at the divergence point
   if (lengthDelta > 0) {
     return Math.min(diffPosition, totalLength);
   }
