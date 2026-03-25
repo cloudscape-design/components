@@ -33,7 +33,7 @@
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
+      $gutter: 0px,
       $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
     );
@@ -122,10 +122,6 @@
 
   > .dismiss-button {
     color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
-
-    &:hover {
-      color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
-    }
   }
 }
 
@@ -137,9 +133,5 @@
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
     color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
-
-    &:hover {
-      color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
-    }
   }
 }

@@ -50,7 +50,7 @@ function InternalToken({
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
-  const tokenRootStyleProps = getTokenRootStyles(restProps.style as TokenProps['style']);
+  const tokenRootStyleProps = getTokenRootStyles(restProps.style);
   const labelContainerRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);

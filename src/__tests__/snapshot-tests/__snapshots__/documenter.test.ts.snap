@@ -29829,7 +29829,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
               "properties": [
                 {
                   "inlineType": {
-                    "name": "object",
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
                     "properties": [
                       {
                         "name": "default",
@@ -29838,11 +29838,6 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                       },
                       {
                         "name": "disabled",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "hover",
                         "optional": true,
                         "type": "string",
                       },
@@ -29856,11 +29851,11 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                   },
                   "name": "background",
                   "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
                 },
                 {
                   "inlineType": {
-                    "name": "object",
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
                     "properties": [
                       {
                         "name": "default",
@@ -29869,11 +29864,6 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                       },
                       {
                         "name": "disabled",
-                        "optional": true,
-                        "type": "string",
-                      },
-                      {
-                        "name": "hover",
                         "optional": true,
                         "type": "string",
                       },
@@ -29887,7 +29877,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
                   },
                   "name": "borderColor",
                   "optional": true,
-                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
                 },
                 {
                   "name": "borderRadius",
@@ -29914,7 +29904,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
             },
             "name": "root",
             "optional": true,
-            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; borderRadius?:...",
+            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; p...",
           },
         ],
         "type": "object",

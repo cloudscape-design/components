@@ -86,13 +86,11 @@ export namespace TokenProps {
       background?: {
         default?: string;
         disabled?: string;
-        hover?: string;
         readOnly?: string;
       };
       borderColor?: {
         default?: string;
         disabled?: string;
-        hover?: string;
         readOnly?: string;
       };
       borderRadius?: string;

@@ -166,11 +166,9 @@ const customCssPropertiesList = [
   // Token style properties
   'tokenStyleBackgroundDefault',
   'tokenStyleBackgroundDisabled',
-  'tokenStyleBackgroundHover',
   'tokenStyleBackgroundReadOnly',
   'tokenStyleBorderColorDefault',
   'tokenStyleBorderColorDisabled',
-  'tokenStyleBorderColorHover',
   'tokenStyleBorderColorReadOnly',
   'tokenStyleDismissColorDefault',
   'tokenStyleDismissColorDisabled',

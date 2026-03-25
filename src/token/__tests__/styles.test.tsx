@@ -22,13 +22,11 @@ describe('getTokenRootStyles', () => {
       root: {
         background: {
           default: '#eef2ff',
-          hover: '#dbeafe',
           disabled: '#f1f5f9',
           readOnly: '#f8fafc',
         },
         borderColor: {
           default: '#c7d2fe',
-          hover: '#93c5fd',
           disabled: '#e2e8f0',
           readOnly: '#cbd5e1',
         },

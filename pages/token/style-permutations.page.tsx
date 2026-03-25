@@ -13,13 +13,11 @@ const roundedPillStyle: TokenProps['style'] = {
   root: {
     background: {
       default: 'light-dark(#eef2ff, #2e1065)',
-      hover: 'light-dark(#dbeafe, #3b0764)',
       disabled: 'light-dark(#f1f5f9, #1e1b2e)',
       readOnly: 'light-dark(#f8fafc, #1e1b3a)',
     },
     borderColor: {
       default: 'light-dark(#c7d2fe, #6d28d9)',
-      hover: 'light-dark(#93c5fd, #7c3aed)',
       disabled: 'light-dark(#e2e8f0, #334155)',
       readOnly: 'light-dark(#cbd5e1, #4c1d95)',
     },
@@ -46,13 +44,11 @@ const greenOutlineStyle: TokenProps['style'] = {
   root: {
     background: {
       default: 'light-dark(#ecfdf5, #022c22)',
-      hover: 'light-dark(#d1fae5, #064e3b)',
       disabled: 'light-dark(#f8fafc, #1e1b2e)',
       readOnly: 'light-dark(#f0fdf4, #0a3d2e)',
     },
     borderColor: {
       default: 'light-dark(#6ee7b7, #059669)',
-      hover: 'light-dark(#34d399, #10b981)',
       disabled: 'light-dark(#e2e8f0, #334155)',
       readOnly: 'light-dark(#a7f3d0, #047857)',
     },

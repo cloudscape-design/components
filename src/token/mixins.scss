@@ -27,17 +27,6 @@
   border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
-
-  &:hover {
-    background: var(
-      #{custom-props.$tokenStyleBackgroundHover},
-      var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background)
-    );
-    border-color: var(
-      #{custom-props.$tokenStyleBorderColorHover},
-      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
-    );
-  }
 }
 
 @mixin token-box-inline-styles {
@@ -60,15 +49,4 @@
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
   max-inline-size: 100%;
-
-  &:hover {
-    background: var(
-      #{custom-props.$tokenStyleBackgroundHover},
-      var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background)
-    );
-    border-color: var(
-      #{custom-props.$tokenStyleBorderColorHover},
-      var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color)
-    );
-  }
 }
