@@ -8,7 +8,6 @@ import legacyDropdownStyles from '../../../internal/components/dropdown/styles.s
 
 export class DropdownContentWrapper extends ComponentWrapper {
   static legacyRootSelector: string = legacyDropdownStyles.root;
-  static legacyDropdownSelector: string = legacyDropdownStyles.dropdown;
 
   /**
    * Returns the dropdown content.
