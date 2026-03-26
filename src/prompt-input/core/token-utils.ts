@@ -123,11 +123,7 @@ function findEarliestTrigger(
 }
 
 /** Extracts filter text after a trigger character, stopping at whitespace or another trigger char. */
-function extractFilterText(
-  text: string,
-  startIndex: number,
-  menus: readonly PromptInputProps.MenuDefinition[]
-): string {
+function extractFilterText(text: string, menus: readonly PromptInputProps.MenuDefinition[]): string {
   let end = 0;
   while (end < text.length && text[end].trim() !== '') {
     if (menus.some(m => text[end] === m.trigger)) {
@@ -171,7 +167,7 @@ export function detectTriggersInText(
       position = match.index + match.menu.trigger.length;
     } else {
       const afterTrigger = text.substring(match.index + match.menu.trigger.length);
-      const filterText = afterTrigger && !afterTrigger.startsWith(' ') ? extractFilterText(afterTrigger, 0, menus) : '';
+      const filterText = afterTrigger && !afterTrigger.startsWith(' ') ? extractFilterText(afterTrigger, menus) : '';
 
       results.push({
         type: 'trigger',
