@@ -51,7 +51,7 @@ export interface InternalDropdownProps
 }
 
 import styles from './styles.css.js';
-import testutilStyles from './test-classes/styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface DropdownContainerProps {
   triggerRef: React.RefObject<HTMLElement>;
@@ -185,9 +185,9 @@ const TransitionContent = ({
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
-            {header && <div className={testutilStyles.header}>{header}</div>}
+            {header && <div className={testUtilStyles.header}>{header}</div>}
             {content}
-            {footer && <div className={testutilStyles.footer}>{footer}</div>}
+            {footer && <div className={testUtilStyles.footer}>{footer}</div>}
           </DropdownContextProvider>
         </div>
       </div>
@@ -549,7 +549,7 @@ const InternalDropdown = ({
       {!externalTriggerRef && (
         <div
           id={referrerId}
-          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testutilStyles.trigger)}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testUtilStyles.trigger)}
           ref={internalTriggerRef}
         >
           {trigger}
