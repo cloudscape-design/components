@@ -167,5 +167,16 @@ const customCssPropertiesList = [
   'styleSliderHandleBackgroundHover',
   'styleSliderHandleBackgroundActive',
   'styleSliderHandleBorderRadius',
+  // Token style properties
+  'tokenStyleBackgroundDefault',
+  'tokenStyleBackgroundDisabled',
+  'tokenStyleBackgroundReadOnly',
+  'tokenStyleBorderColorDefault',
+  'tokenStyleBorderColorDisabled',
+  'tokenStyleBorderColorReadOnly',
+  'tokenStyleDismissColorDefault',
+  'tokenStyleDismissColorDisabled',
+  'tokenStyleDismissColorHover',
+  'tokenStyleDismissColorReadOnly',
 ];
 module.exports = customCssPropertiesList;

@@ -2,21 +2,21 @@
 
 exports[`getTabStyles transforms tab styles to CSS properties 1`] = `
 {
-  "--awsui-style-background-active-6190tg": "#bfdbfe",
-  "--awsui-style-background-default-6190tg": "#dbeafe",
-  "--awsui-style-background-disabled-6190tg": "#f3f4f6",
-  "--awsui-style-background-hover-6190tg": "#eff6ff",
-  "--awsui-style-border-color-active-6190tg": "#1d4ed8",
-  "--awsui-style-border-color-default-6190tg": "#3b82f6",
-  "--awsui-style-border-color-disabled-6190tg": "#93c5fd",
-  "--awsui-style-border-color-hover-6190tg": "#2563eb",
-  "--awsui-style-color-active-6190tg": "#1e3a8a",
-  "--awsui-style-color-default-6190tg": "#1e40af",
-  "--awsui-style-color-disabled-6190tg": "#93c5fd",
-  "--awsui-style-color-hover-6190tg": "#1e40af",
-  "--awsui-style-focus-ring-border-color-6190tg": "#3b82f6",
-  "--awsui-style-focus-ring-border-radius-6190tg": "4px",
-  "--awsui-style-focus-ring-border-width-6190tg": "2px",
+  "--awsui-style-background-active-hzjhvz": "#bfdbfe",
+  "--awsui-style-background-default-hzjhvz": "#dbeafe",
+  "--awsui-style-background-disabled-hzjhvz": "#f3f4f6",
+  "--awsui-style-background-hover-hzjhvz": "#eff6ff",
+  "--awsui-style-border-color-active-hzjhvz": "#1d4ed8",
+  "--awsui-style-border-color-default-hzjhvz": "#3b82f6",
+  "--awsui-style-border-color-disabled-hzjhvz": "#93c5fd",
+  "--awsui-style-border-color-hover-hzjhvz": "#2563eb",
+  "--awsui-style-color-active-hzjhvz": "#1e3a8a",
+  "--awsui-style-color-default-hzjhvz": "#1e40af",
+  "--awsui-style-color-disabled-hzjhvz": "#93c5fd",
+  "--awsui-style-color-hover-hzjhvz": "#1e40af",
+  "--awsui-style-focus-ring-border-color-hzjhvz": "#3b82f6",
+  "--awsui-style-focus-ring-border-radius-hzjhvz": "4px",
+  "--awsui-style-focus-ring-border-width-hzjhvz": "2px",
   "borderRadius": "4px",
   "borderWidth": "2px",
   "fontSize": "16px",
@@ -28,10 +28,10 @@ exports[`getTabStyles transforms tab styles to CSS properties 1`] = `
 
 exports[`getTabStyles transforms tab styles to CSS properties 2`] = `
 {
-  "--awsui-style-tabs-active-indicator-border-radius-6190tg": "2px",
-  "--awsui-style-tabs-active-indicator-color-6190tg": "#1d4ed8",
-  "--awsui-style-tabs-active-indicator-width-6190tg": "3px",
-  "--awsui-style-tabs-separator-color-6190tg": "#cbd5e1",
-  "--awsui-style-tabs-separator-width-6190tg": "2px",
+  "--awsui-style-tabs-active-indicator-border-radius-hzjhvz": "2px",
+  "--awsui-style-tabs-active-indicator-color-hzjhvz": "#1d4ed8",
+  "--awsui-style-tabs-active-indicator-width-hzjhvz": "3px",
+  "--awsui-style-tabs-separator-color-hzjhvz": "#cbd5e1",
+  "--awsui-style-tabs-separator-width-hzjhvz": "2px",
 }
 `;

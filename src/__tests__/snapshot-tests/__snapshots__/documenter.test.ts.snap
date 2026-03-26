@@ -30072,6 +30072,173 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the token's visual appearance.
+Refer to the [style](/components/token/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "TokenProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "dismissButton",
+            "optional": true,
+            "type": "{ color?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; focusRing?: { borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "background",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; p...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "TokenProps.Style",
+    },
+    {
       "description": "A list of tags giving further guidance about the token.",
       "name": "tags",
       "optional": true,
