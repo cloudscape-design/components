@@ -226,6 +226,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const funnelSubmit = () => {
+    clearTimeout(activeValidationTimerId.current);
     funnelState.current = 'validating';
     formSubmitStartTime.current = performance.now();
     /*
