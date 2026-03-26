@@ -35,3 +35,11 @@ NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.build-tool
 ```
 TZ=UTC node_modules/.bin/jest -u -c jest.unit.config.js src/__tests__/snapshot-tests/
 ```
+
+## Testing in the Browser
+
+Integration and motion tests run against dev pages served by the dev server (see docs/DEV_PAGES.md for setup). When running individual test files with jest directly, start the dev server first (`npm start`). The `npm run test:integ` and `npm run test:motion` scripts handle the dev server automatically.
+
+## A11y Tests
+
+All dev pages are axe-checked automatically. A11y violations fail the build. Checks run in dark mode only.

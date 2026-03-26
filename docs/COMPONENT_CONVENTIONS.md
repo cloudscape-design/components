@@ -7,7 +7,28 @@
 
 ## Component Structure
 
-Each public component lives in `src/<component-name>/index.tsx` and must:
+A typical component directory looks like:
+
+```
+src/<component-name>/
+  index.tsx              # public component (default export)
+  internal.tsx           # internal component for composition (optional, for complex components)
+  interfaces.ts          # props interface and sub-types
+  styles.scss            # component styles
+  style.tsx              # style API helpers (optional)
+  test-classes/          # CSS classes used only by test-utils (optional)
+    styles.scss
+  __tests__/             # unit tests
+  __integ__/             # integration tests (optional)
+  __a11y__/              # accessibility tests (optional)
+  __motion__/            # motion tests (optional)
+```
+
+Each component also has dev pages in `pages/<component-name>/` (see docs/DEV_PAGES.md).
+
+## Public Component (`index.tsx`)
+
+Each public component must:
 
 - Assign default prop values in the destructuring signature (not `defaultProps`), then pass them explicitly to the internal component
 - Call `useBaseComponent` for telemetry — pass `props` (primitive/enum values with defaults applied) and optionally `metadata` (derived counters or booleans). No state props, no PII, no user input strings.
@@ -15,7 +36,11 @@ Each public component lives in `src/<component-name>/index.tsx` and must:
 - Call `applyDisplayName` at the bottom of the file
 - Export the props interface as `${ComponentName}Props`
 
-Each public component has a private counterpart at `src/<component-name>/internal.tsx` for composition. Internal props are prefixed with `__`. The public component must not add behavior beyond what the internal component provides.
+## Internal Component (`internal.tsx`)
+
+For components used in composition, a private counterpart lives at `internal.tsx`. Internal props are prefixed with `__`. The public component must not add behavior beyond what the internal component provides.
+
+## Shared Utilities
 
 Shared hooks, components, contexts, and helpers live in `src/internal/`. Always check there before building new shared code.
 
@@ -46,6 +71,10 @@ Shared hooks, components, contexts, and helpers live in `src/internal/`. Always 
 - Controllable: uncontrolled by default, controlled when `value` is set
 
 Use `useControllable` — read existing components for the pattern.
+
+## Test Utils
+
+Components with interactive elements should provide test-util wrappers in `src/test-utils/dom/<component-name>/` (for unit tests) and `src/test-utils/selectors/<component-name>/` (for integration tests). CSS classes used exclusively by test-utils go in `src/<component-name>/test-classes/styles.scss`. See docs/WRITING_TESTS.md for details.
 
 ## Element Queries
 

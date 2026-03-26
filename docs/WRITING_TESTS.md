@@ -11,15 +11,29 @@ Read the wrapper for the component you're testing to see available `find*` metho
 
 ### Authoring Test Utils
 
-Each wrapper extends `ComponentWrapper`, has a static `rootSelector`, and explicit return types on all methods. Test-util CSS classes go in `src/<component-name>/test-classes/styles.scss`. Read existing wrappers for the pattern.
+Each wrapper extends `ComponentWrapper`, has a static `rootSelector`, and explicit return types on all methods. Test-util CSS classes go in `src/<component-name>/test-classes/styles.scss` — these classes are only used for test targeting, not visual styling. Read existing wrappers for the pattern.
 
 ## Unit Tests
 
-Use `react-testing-library` to render, combined with test-utils. Prefer test-utils for public interactions, react-testing-library for internal corner cases. Read an existing test file for the setup pattern.
+Location: `src/<component-name>/__tests__/`
+
+Use `react-testing-library` to render, combined with test-utils. Prefer test-utils for public interactions, react-testing-library for internal corner cases. Read an existing test file (e.g. `src/button/__tests__/button.test.tsx`) for the setup pattern.
 
 ## Integration Tests
 
+Location: `src/<component-name>/__integ__/`
+
+Integration tests run in a real browser against dev pages (see docs/DEV_PAGES.md). Each integration test navigates to a dev page and interacts with it.
+
 Use `useBrowser` from `@amzn/awsui-browser-test-tools/use-browser`. Use a `setupTest` wrapper with `waitForVisible`. Don't wait on tag name selectors — they're visible before JS loads. Multiple assertions per test are fine (e2e tests are slow). Use page object pattern for files with many tests.
+
+## Snapshot Tests
+
+Snapshot tests live in `src/__tests__/snapshot-tests/`. To update snapshots after intentional changes:
+
+```
+TZ=UTC node_modules/.bin/jest -u -c jest.unit.config.js src/__tests__/snapshot-tests/
+```
 
 ## I18n Testing
 
