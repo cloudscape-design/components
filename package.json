@@ -67,7 +67,7 @@
     "@size-limit/preset-small-lib": "^11.2.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
-    "@tony.ganchev/eslint-plugin-header": "^3.2.4",
+    "@tony.ganchev/eslint-plugin-header": "^3.3.0",
     "@tsconfig/node16": "^16.1.1",
     "@types/balanced-match": "^1.0.1",
     "@types/d3-scale": "^2.2.6",

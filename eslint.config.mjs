@@ -117,6 +117,14 @@ export default tsEslint.config(
               ' SPDX-License-Identifier: Apache-2.0',
             ],
           },
+          leadingComments: {
+            comments: [
+              {
+                commentType: 'block',
+                lines: ['*', ' * @jest-environment node', ' '],
+              },
+            ],
+          },
         },
       ],
       'no-restricted-syntax': [
