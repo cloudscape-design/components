@@ -4,11 +4,11 @@ import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-des
 
 import styles from '../../../dropdown/styles.selectors.js';
 import testUtilStyles from '../../../dropdown/test-classes/styles.selectors.js';
-import legacyStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 
 export class DropdownContentWrapper extends ComponentWrapper {
-  static legacyRootSelector: string = legacyStyles.root;
-  static legacyDropdownSelector: string = legacyStyles.dropdown;
+  static legacyRootSelector: string = legacyDropdownStyles.root;
+  static legacyDropdownSelector: string = legacyDropdownStyles.dropdown;
 
   /**
    * Returns the dropdown content.

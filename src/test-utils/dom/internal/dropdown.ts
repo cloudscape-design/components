@@ -3,10 +3,11 @@
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../dropdown/styles.selectors.js';
+import legacyStyles from '../../../internal/components/dropdown/styles.selectors.js';
 export default class DropdownWrapper extends ElementWrapper {
   static rootSelector: string = styles.root;
 
   findOpenDropdown(): ElementWrapper | null {
-    return this.find(`.${styles.dropdown}[data-open=true]`);
+    return this.find(`:is(.${styles.dropdown}, .${legacyStyles.dropdown})[data-open=true]`);
   }
 }
