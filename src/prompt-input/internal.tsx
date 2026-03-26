@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode, useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -14,6 +14,7 @@ import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '
 import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import TextareaMode from './components/textarea-mode';
@@ -117,6 +118,16 @@ const InternalPromptInput = React.forwardRef(
     };
 
     const isTokenMode = !!menus && supportsTokenMode;
+
+    if (isDevelopment) {
+      if ((menus || tokens) && !supportsTokenMode) {
+        warnOnce(
+          'PromptInput',
+          'Shortcuts features require React 18 or later. The `menus` and `tokens` props will be ignored and shortcuts features will not function.'
+        );
+      }
+    }
+
     const value = valueProp ?? '';
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
