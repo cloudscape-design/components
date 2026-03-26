@@ -3,9 +3,13 @@
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../dropdown/styles.selectors.js';
-import testutilStyles from '../../../dropdown/test-classes/styles.selectors.js';
+import testUtilStyles from '../../../dropdown/test-classes/styles.selectors.js';
+import legacyStyles from '../../../internal/components/dropdown/styles.selectors.js';
 
 export class DropdownContentWrapper extends ComponentWrapper {
+  static legacyRootSelector: string = legacyStyles.root;
+  static legacyDropdownSelector: string = legacyStyles.dropdown;
+
   /**
    * Returns the dropdown content.
    */
@@ -17,14 +21,14 @@ export class DropdownContentWrapper extends ComponentWrapper {
    * Returns the dropdown header.
    */
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles.header);
+    return this.findByClassName(testUtilStyles.header);
   }
 
   /**
    * Returns the dropdown footer.
    */
   findFooter(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles.footer);
+    return this.findByClassName(testUtilStyles.footer);
   }
 }
 
@@ -35,7 +39,7 @@ export default class DropdownWrapper extends ComponentWrapper {
    * Returns the trigger element.
    */
   findTrigger(): ElementWrapper {
-    return this.findByClassName(testutilStyles.trigger)!;
+    return this.findByClassName(testUtilStyles.trigger)!;
   }
 
   /**
