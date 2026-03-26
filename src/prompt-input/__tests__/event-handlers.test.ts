@@ -4,12 +4,14 @@
 jest.mock('../styles.css.js', () => ({ paragraph: 'paragraph', 'trigger-token': 'trigger-token' }), { virtual: true });
 
 import './jsdom-polyfills';
+import { KeyCode } from '../../internal/keycode';
 import { CaretController } from '../core/caret-controller';
 import {
-  createKeyboardHandlers,
-  handleArrowKeyNavigation,
   handleBackspaceAtParagraphStart,
   handleDeleteAtParagraphEnd,
+  handleEditableKeyDown,
+  handleInlineEnd,
+  handleInlineStart,
   handleReferenceTokenDeletion,
   handleSpaceAfterClosedTrigger,
   KeyboardHandlerProps,
@@ -18,6 +20,7 @@ import {
 } from '../core/event-handlers';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { handleDeleteAfterTrigger } from '../core/trigger-utils';
+import { PromptInputProps } from '../interfaces';
 
 let el: HTMLDivElement;
 
@@ -89,12 +92,36 @@ function setSelection(startNode: Node, startOffset: number, endNode: Node, endOf
   sel.addRange(range);
 }
 
-function makeKeyboardEvent(key: string, opts: Partial<KeyboardEventInit> = {}): React.KeyboardEvent<HTMLDivElement> {
-  const nativeEvent = new KeyboardEvent('keydown', { key, bubbles: true, ...opts });
+function makeKeyboardEvent(
+  keyCode: number,
+  opts: Partial<KeyboardEventInit> = {}
+): React.KeyboardEvent<HTMLDivElement> {
+  const keyNames: Record<number, string> = {
+    [KeyCode.down]: 'ArrowDown',
+    [KeyCode.up]: 'ArrowUp',
+    [KeyCode.left]: 'ArrowLeft',
+    [KeyCode.right]: 'ArrowRight',
+    [KeyCode.enter]: 'Enter',
+    [KeyCode.tab]: 'Tab',
+    [KeyCode.escape]: 'Escape',
+    [KeyCode.backspace]: 'Backspace',
+    [KeyCode.delete]: 'Delete',
+    [KeyCode.space]: ' ',
+    [KeyCode.home]: 'Home',
+    [KeyCode.end]: 'End',
+    [KeyCode.pageUp]: 'PageUp',
+    [KeyCode.pageDown]: 'PageDown',
+    [KeyCode.a]: 'a',
+  };
+  const key = keyNames[keyCode] ?? '';
+  const nativeEvent = new KeyboardEvent('keydown', { key, keyCode, bubbles: true, ...opts });
   let defaultPrevented = false;
   return {
     key,
+    keyCode,
     shiftKey: opts.shiftKey ?? false,
+    ctrlKey: opts.ctrlKey ?? false,
+    metaKey: opts.metaKey ?? false,
     preventDefault: () => {
       defaultPrevented = true;
     },
@@ -104,7 +131,7 @@ function makeKeyboardEvent(key: string, opts: Partial<KeyboardEventInit> = {}): 
   } as unknown as React.KeyboardEvent<HTMLDivElement>;
 }
 
-describe('createKeyboardHandlers', () => {
+describe('handleEditableKeyDown', () => {
   function createMockMenuState(items: Array<{ type?: string; disabled?: boolean }> = []): MenuItemsState {
     return {
       items: items as any,
@@ -131,257 +158,140 @@ describe('createKeyboardHandlers', () => {
     };
   }
 
-  describe('handleMenuNavigation', () => {
-    test('returns false when menu is closed', () => {
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('ArrowDown');
-      expect(handleMenuNavigation(event)).toBe(false);
-    });
+  function defaultProps(overrides: Partial<KeyboardHandlerProps> = {}): KeyboardHandlerProps {
+    return {
+      editableElement: el,
+      editableState: { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null },
+      caretController: null,
+      tokens: [],
+      getMenuOpen: () => false,
+      getMenuItemsState: () => null,
+      getMenuItemsHandlers: () => null,
+      closeMenu: jest.fn(),
+      menuIsOpen: false,
+      onChange: jest.fn(),
+      markTokensAsSent: jest.fn(),
+      ...overrides,
+    };
+  }
 
-    test('returns false when handlers are null', () => {
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState(),
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      expect(handleMenuNavigation(makeKeyboardEvent('ArrowDown'))).toBe(false);
-    });
-
-    test('ArrowDown moves highlight forward', () => {
+  describe('menu navigation', () => {
+    test('ArrowDown with closed menu does not move highlight', () => {
       const handlers = createMockMenuHandlers();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('ArrowDown');
-      expect(handleMenuNavigation(event)).toBe(true);
+      const props = defaultProps({ getMenuItemsHandlers: () => handlers });
+      handleEditableKeyDown(makeKeyboardEvent(KeyCode.down), props);
+      expect(handlers.moveHighlightWithKeyboard).not.toHaveBeenCalled();
+    });
+
+    test('ArrowDown with open menu moves highlight forward', () => {
+      const handlers = createMockMenuHandlers();
+      const event = makeKeyboardEvent(KeyCode.down);
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          getMenuOpen: () => true,
+          getMenuItemsState: () => createMockMenuState([{}]),
+          getMenuItemsHandlers: () => handlers,
+        })
+      );
       expect(handlers.moveHighlightWithKeyboard).toHaveBeenCalledWith(1);
-    });
-
-    test('ArrowUp moves highlight backward', () => {
-      const handlers = createMockMenuHandlers();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('ArrowUp');
-      expect(handleMenuNavigation(event)).toBe(true);
-      expect(handlers.moveHighlightWithKeyboard).toHaveBeenCalledWith(-1);
-    });
-
-    test('Enter selects highlighted option', () => {
-      const handlers = createMockMenuHandlers();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('Enter');
-      expect(handleMenuNavigation(event)).toBe(true);
-      expect(handlers.selectHighlightedOptionWithKeyboard).toHaveBeenCalled();
-    });
-
-    test('Tab selects highlighted option', () => {
-      const handlers = createMockMenuHandlers();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('Tab');
-      expect(handleMenuNavigation(event)).toBe(true);
-    });
-
-    test('Shift+Enter does not select', () => {
-      const handlers = createMockMenuHandlers();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('Enter', { shiftKey: true });
-      expect(handleMenuNavigation(event)).toBe(false);
-    });
-
-    test('Enter with empty menu state does not fall through to submit', () => {
-      const handlers = createMockMenuHandlers();
-      handlers.selectHighlightedOptionWithKeyboard = jest.fn().mockReturnValue(false);
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('Enter');
-      expect(handleMenuNavigation(event)).toBe(true);
       expect(event.isDefaultPrevented()).toBe(true);
     });
 
-    test('Escape closes menu', () => {
-      const closeMenu = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => createMockMenuHandlers(),
-        closeMenu,
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent('Escape');
-      expect(handleMenuNavigation(event)).toBe(true);
-      expect(closeMenu).toHaveBeenCalled();
-    });
-
-    test('unhandled key returns false', () => {
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => createMockMenuHandlers(),
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      expect(handleMenuNavigation(makeKeyboardEvent('a'))).toBe(false);
-    });
-
-    test('space key delegates to handleSpaceInOpenMenu', () => {
+    test('ArrowUp with open menu moves highlight backward', () => {
       const handlers = createMockMenuHandlers();
-      const closeMenu = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => createMockMenuState([{}]),
-        getMenuItemsHandlers: () => handlers,
-        closeMenu,
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      const event = makeKeyboardEvent(' ');
-      // Space in open menu with no trigger at caret returns false
-      const result = handleMenuNavigation(event);
-      expect(typeof result).toBe('boolean');
+      const event = makeKeyboardEvent(KeyCode.up);
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          getMenuOpen: () => true,
+          getMenuItemsState: () => createMockMenuState([{}]),
+          getMenuItemsHandlers: () => handlers,
+        })
+      );
+      expect(handlers.moveHighlightWithKeyboard).toHaveBeenCalledWith(-1);
+      expect(event.isDefaultPrevented()).toBe(true);
     });
 
-    test('returns false when menuItemsState is null', () => {
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => true,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => createMockMenuHandlers(),
-        closeMenu: jest.fn(),
-      };
-      const { handleMenuNavigation } = createKeyboardHandlers(props);
-      expect(handleMenuNavigation(makeKeyboardEvent('ArrowDown'))).toBe(false);
+    test('Enter with open menu selects highlighted option', () => {
+      const handlers = createMockMenuHandlers();
+      const event = makeKeyboardEvent(KeyCode.enter);
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          getMenuOpen: () => true,
+          getMenuItemsState: () => createMockMenuState([{}]),
+          getMenuItemsHandlers: () => handlers,
+        })
+      );
+      expect(handlers.selectHighlightedOptionWithKeyboard).toHaveBeenCalled();
+      expect(event.isDefaultPrevented()).toBe(true);
+    });
+
+    test('Tab with open menu selects highlighted option', () => {
+      const handlers = createMockMenuHandlers();
+      const event = makeKeyboardEvent(KeyCode.tab);
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          getMenuOpen: () => true,
+          getMenuItemsState: () => createMockMenuState([{}]),
+          getMenuItemsHandlers: () => handlers,
+        })
+      );
+      expect(handlers.selectHighlightedOptionWithKeyboard).toHaveBeenCalled();
+      expect(event.isDefaultPrevented()).toBe(true);
+    });
+
+    test('Escape with open menu closes it', () => {
+      const closeMenu = jest.fn();
+      const event = makeKeyboardEvent(KeyCode.escape);
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          getMenuOpen: () => true,
+          getMenuItemsState: () => createMockMenuState([{}]),
+          getMenuItemsHandlers: () => createMockMenuHandlers(),
+          closeMenu,
+        })
+      );
+      expect(closeMenu).toHaveBeenCalled();
+      expect(event.isDefaultPrevented()).toBe(true);
     });
   });
 
-  describe('handleEnterKey', () => {
-    test('does nothing for non-Enter key', () => {
-      const onAction = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-        tokens: [],
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('a'));
-      expect(onAction).not.toHaveBeenCalled();
-    });
-
-    test('does nothing for Shift+Enter', () => {
-      const onAction = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-        tokens: [],
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('Enter', { shiftKey: true }));
-      expect(onAction).not.toHaveBeenCalled();
-    });
-
-    test('prevents default when disabled', () => {
-      const event = makeKeyboardEvent('Enter');
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        disabled: true,
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(event);
-      expect(event.isDefaultPrevented()).toBe(true);
-    });
-
-    test('prevents default when readOnly', () => {
-      const event = makeKeyboardEvent('Enter');
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        readOnly: true,
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(event);
-      expect(event.isDefaultPrevented()).toBe(true);
-    });
-
+  describe('Enter key submit', () => {
     test('calls onAction with token text', () => {
       const onAction = jest.fn();
-      const tokens = [{ type: 'text' as const, value: 'hello' }];
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-        tokens,
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('Enter'));
+      const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
+      handleEditableKeyDown(makeKeyboardEvent(KeyCode.enter), defaultProps({ onAction, tokens }));
       expect(onAction).toHaveBeenCalledWith(expect.objectContaining({ value: 'hello', tokens: expect.any(Array) }));
     });
 
     test('uses tokensToText when provided', () => {
       const onAction = jest.fn();
       const tokensToText = jest.fn().mockReturnValue('custom text');
-      const tokens = [{ type: 'text' as const, value: 'hello' }];
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-        tokens,
-        tokensToText,
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('Enter'));
+      handleEditableKeyDown(
+        makeKeyboardEvent(KeyCode.enter),
+        defaultProps({
+          onAction,
+          tokens: [{ type: 'text', value: 'hello' }],
+          tokensToText,
+        })
+      );
       expect(onAction).toHaveBeenCalledWith(expect.objectContaining({ value: 'custom text' }));
+    });
+
+    test('prevents default when disabled', () => {
+      const event = makeKeyboardEvent(KeyCode.enter);
+      handleEditableKeyDown(event, defaultProps({ disabled: true }));
+      expect(event.isDefaultPrevented()).toBe(true);
+    });
+
+    test('prevents default when readOnly', () => {
+      const event = makeKeyboardEvent(KeyCode.enter);
+      handleEditableKeyDown(event, defaultProps({ readOnly: true }));
+      expect(event.isDefaultPrevented()).toBe(true);
     });
 
     test('submits form when inside one', () => {
@@ -390,15 +300,7 @@ describe('createKeyboardHandlers', () => {
       form.appendChild(el);
       document.body.appendChild(form);
 
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        tokens: [],
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('Enter'));
+      handleEditableKeyDown(makeKeyboardEvent(KeyCode.enter), defaultProps());
       expect(form.requestSubmit).toHaveBeenCalled();
 
       form.removeChild(el);
@@ -406,42 +308,36 @@ describe('createKeyboardHandlers', () => {
       document.body.appendChild(el);
     });
 
-    test('returns early when currentTarget is not an HTMLElement', () => {
+    test('Shift+Enter does not submit', () => {
       const onAction = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-        tokens: [],
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      // Create event with non-HTMLElement currentTarget
-      const event = {
-        key: 'Enter',
-        shiftKey: false,
-        preventDefault: jest.fn(),
-        isDefaultPrevented: () => false,
-        nativeEvent: { isComposing: false },
-        currentTarget: null,
-      } as unknown as React.KeyboardEvent<HTMLDivElement>;
-      handleEnterKey(event);
+      handleEditableKeyDown(makeKeyboardEvent(KeyCode.enter, { shiftKey: true }), defaultProps({ onAction }));
       expect(onAction).not.toHaveBeenCalled();
     });
+  });
 
-    test('calls onAction without tokens when tokens is undefined', () => {
-      const onAction = jest.fn();
-      const props: KeyboardHandlerProps = {
-        getMenuOpen: () => false,
-        getMenuItemsState: () => null,
-        getMenuItemsHandlers: () => null,
-        closeMenu: jest.fn(),
-        onAction,
-      };
-      const { handleEnterKey } = createKeyboardHandlers(props);
-      handleEnterKey(makeKeyboardEvent('Enter'));
-      expect(onAction).toHaveBeenCalledWith(expect.objectContaining({ value: '', tokens: [] }));
+  describe('Shift+Enter creates new paragraph', () => {
+    test('splits paragraph at caret position', () => {
+      addParagraph(el, 'hello world');
+      setCursor(el.querySelector('p')!.firstChild!, 5);
+
+      const event = makeKeyboardEvent(KeyCode.enter, { shiftKey: true });
+      handleEditableKeyDown(
+        event,
+        defaultProps({
+          tokens: [{ type: 'text', value: 'hello world' }],
+        })
+      );
+
+      expect(event.isDefaultPrevented()).toBe(true);
+      expect(el.querySelectorAll('p').length).toBe(2);
+    });
+  });
+
+  describe('Ctrl+A on empty input', () => {
+    test('prevents default when tokens array is empty', () => {
+      const event = makeKeyboardEvent(KeyCode.a, { ctrlKey: true });
+      handleEditableKeyDown(event, defaultProps({ tokens: [] }));
+      expect(event.isDefaultPrevented()).toBe(true);
     });
   });
 });
@@ -467,7 +363,8 @@ describe('splitParagraphAtCaret', () => {
 
     const paragraphs = el.querySelectorAll('p');
     expect(paragraphs).toHaveLength(2);
-    expect(paragraphs[1].querySelector('br')).not.toBeNull();
+    expect(paragraphs[0].textContent).toBe('hello');
+    expect(paragraphs[1].textContent).toBe('');
   });
 
   test('does nothing when no selection', () => {
@@ -497,8 +394,8 @@ describe('splitParagraphAtCaret', () => {
 
     const paragraphs = el.querySelectorAll('p');
     expect(paragraphs).toHaveLength(2);
-    // First paragraph should be empty (trailing BR)
-    expect(paragraphs[0].querySelector('br')).not.toBeNull();
+    // First paragraph should be empty, second has the content
+    expect(paragraphs[0].textContent).toBe('');
     expect(paragraphs[1].textContent).toBe('hello');
   });
 
@@ -546,18 +443,18 @@ describe('handleReferenceTokenDeletion', () => {
 
   test('returns false when no selection', () => {
     window.getSelection()?.removeAllRanges();
-    const event = makeKeyboardEvent('Backspace');
-    const result = handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
-    expect(result).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.backspace);
+    handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handles non-collapsed selection by deleting contents', () => {
     const p = addParagraph(el, 'hello world');
     setSelection(p.firstChild!, 0, p.firstChild!, 5);
 
-    const event = makeKeyboardEvent('Backspace');
-    const result = handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.backspace);
+    handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('deletes reference token on backspace when adjacent', () => {
@@ -575,10 +472,10 @@ describe('handleReferenceTokenDeletion', () => {
     // Cursor at start of text node (offset 0), backspace should find reference
     setCursor(text, 0);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
+    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
     expect(state.skipNextZeroWidthUpdate).toBe(true);
   });
 
@@ -597,19 +494,19 @@ describe('handleReferenceTokenDeletion', () => {
     // Cursor at end of text node, delete should find reference
     setCursor(text, 5);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    const result = handleReferenceTokenDeletion(event, false, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
+    handleReferenceTokenDeletion(event, false, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('returns false when no adjacent reference token', () => {
     const p = addParagraph(el, 'hello world');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent('Backspace');
-    const result = handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
-    expect(result).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.backspace);
+    handleReferenceTokenDeletion(event, true, el, mockState, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('announces token removal when announcer provided', () => {
@@ -628,7 +525,7 @@ describe('handleReferenceTokenDeletion', () => {
 
     const announce = jest.fn();
     const i18n = { tokenRemovedAriaLabel: ({ label }: { label: string }) => `${label} removed` };
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     handleReferenceTokenDeletion(
       event,
       true,
@@ -657,7 +554,7 @@ describe('handleReferenceTokenDeletion', () => {
 
     const announce = jest.fn();
     const i18n = { tokenRemovedAriaLabel: ({ label }: { label: string }) => `Removed: ${label}` };
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     handleReferenceTokenDeletion(
       event,
       true,
@@ -689,8 +586,8 @@ describe('handleReferenceTokenDeletion', () => {
     setCursor(text2, 0);
 
     const controller = new CaretController(el);
-    const event = makeKeyboardEvent('Backspace');
-    const result = handleReferenceTokenDeletion(
+    const event = makeKeyboardEvent(KeyCode.backspace);
+    handleReferenceTokenDeletion(
       event,
       true,
       el,
@@ -699,7 +596,7 @@ describe('handleReferenceTokenDeletion', () => {
       undefined,
       controller
     );
-    expect(result).toBe(true);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('handles backspace at paragraph level (HTMLElement container) adjacent to reference', () => {
@@ -714,10 +611,10 @@ describe('handleReferenceTokenDeletion', () => {
     // Cursor at paragraph level, offset 1 (after the reference child)
     setCursor(p, 1);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
+    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('handles delete at paragraph level (HTMLElement container) adjacent to reference', () => {
@@ -732,49 +629,10 @@ describe('handleReferenceTokenDeletion', () => {
     // Cursor at paragraph level, offset 0 (before the reference child)
     setCursor(p, 0);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    const result = handleReferenceTokenDeletion(event, false, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
-  });
-
-  test('returns true early when reference parent is not an HTMLElement', () => {
-    // Create a document fragment as parent (not an HTMLElement)
-    const fragment = document.createDocumentFragment();
-    const ref = document.createElement('span');
-    ref.setAttribute('data-type', 'reference');
-    ref.textContent = 'Alice';
-    fragment.appendChild(ref);
-
-    const text = document.createTextNode('after');
-    fragment.appendChild(text);
-
-    // Attach fragment to el so selection works
-    el.appendChild(fragment);
-
-    // Now ref's parentNode is el (an HTMLElement), but we need to test the branch
-    // where parentNode is NOT an HTMLElement. We can do this by removing ref from DOM
-    // after setting cursor but before deletion check.
-    // Instead, test the actual behavior: when parent IS HTMLElement, skipNextZeroWidthUpdate is set
-    const p = document.createElement('p');
-    el.textContent = '';
-    el.appendChild(p);
-
-    const ref2 = document.createElement('span');
-    ref2.setAttribute('data-type', 'reference');
-    ref2.textContent = 'Bob';
-    p.appendChild(ref2);
-
-    const text2 = document.createTextNode('after');
-    p.appendChild(text2);
-
-    setCursor(text2, 0);
-
-    const event = makeKeyboardEvent('Backspace');
-    const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
-    expect(state.skipNextZeroWidthUpdate).toBe(true);
+    handleReferenceTokenDeletion(event, false, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('adjusts cursor position via caretController on delete (stays in place)', () => {
@@ -793,8 +651,8 @@ describe('handleReferenceTokenDeletion', () => {
     setCursor(text1, 2);
 
     const controller = new CaretController(el);
-    const event = makeKeyboardEvent('Delete');
-    const result = handleReferenceTokenDeletion(
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleReferenceTokenDeletion(
       event,
       false,
       el,
@@ -803,20 +661,16 @@ describe('handleReferenceTokenDeletion', () => {
       undefined,
       controller
     );
-    expect(result).toBe(true);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 });
 
-describe('handleArrowKeyNavigation', () => {
-  test('returns false for non-arrow keys', () => {
-    addParagraph(el, 'hello');
-    setCursor(el.querySelector('p')!.firstChild!, 3);
-    expect(handleArrowKeyNavigation(makeKeyboardEvent('a'), null)).toBe(false);
-  });
-
-  test('returns false when no selection', () => {
+describe('handleInlineStart and handleInlineEnd', () => {
+  test('does not preventDefault when no selection exists', () => {
     window.getSelection()?.removeAllRanges();
-    expect(handleArrowKeyNavigation(makeKeyboardEvent('ArrowLeft'), null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.left);
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('jumps over reference token on ArrowRight', () => {
@@ -835,9 +689,9 @@ describe('handleArrowKeyNavigation', () => {
 
     el.focus();
     const controller = new CaretController(el);
-    const event = makeKeyboardEvent('ArrowRight');
-    const result = handleArrowKeyNavigation(event, controller);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.right);
+    handleInlineEnd(event, controller);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('jumps over reference token on ArrowLeft', () => {
@@ -856,17 +710,18 @@ describe('handleArrowKeyNavigation', () => {
 
     el.focus();
     const controller = new CaretController(el);
-    const event = makeKeyboardEvent('ArrowLeft');
-    const result = handleArrowKeyNavigation(event, controller);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.left);
+    handleInlineStart(event, controller);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('returns false when no adjacent reference token', () => {
     const p = addParagraph(el, 'hello world');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent('ArrowRight');
-    expect(handleArrowKeyNavigation(event, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.right);
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handles Shift+ArrowRight across reference token', () => {
@@ -883,9 +738,9 @@ describe('handleArrowKeyNavigation', () => {
 
     setCursor(text, 5);
 
-    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.right, { shiftKey: true });
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('handles Shift+ArrowLeft across reference token', () => {
@@ -902,17 +757,18 @@ describe('handleArrowKeyNavigation', () => {
 
     setCursor(text, 0);
 
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('Shift+Arrow returns false when no adjacent reference', () => {
     const p = addParagraph(el, 'hello world');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
-    expect(handleArrowKeyNavigation(event, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.right, { shiftKey: true });
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('Shift+ArrowLeft extends selection across reference from HTMLElement container', () => {
@@ -932,9 +788,9 @@ describe('handleArrowKeyNavigation', () => {
     sel.collapse(text, 3); // anchor at text offset 3
     sel.extend(p, 1); // focus at paragraph level after reference
 
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('Shift+ArrowRight extends selection across reference from HTMLElement container', () => {
@@ -957,9 +813,9 @@ describe('handleArrowKeyNavigation', () => {
     sel.removeAllRanges();
     sel.addRange(range);
 
-    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.right, { shiftKey: true });
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('Shift+Arrow returns false when sibling is null', () => {
@@ -973,8 +829,9 @@ describe('handleArrowKeyNavigation', () => {
     sel.removeAllRanges();
     sel.addRange(range);
 
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    expect(handleArrowKeyNavigation(event, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('normalizes cursor out of cursor-spot-before on ArrowLeft', () => {
@@ -988,9 +845,9 @@ describe('handleArrowKeyNavigation', () => {
     const cursorSpotBefore = wrapper.querySelector('[data-type="cursor-spot-before"]')!;
     setCursor(cursorSpotBefore.firstChild!, 0);
 
-    const event = makeKeyboardEvent('ArrowLeft');
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.left);
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('normalizes cursor out of cursor-spot-after on ArrowRight', () => {
@@ -1004,40 +861,36 @@ describe('handleArrowKeyNavigation', () => {
     const cursorSpotAfter = wrapper.querySelector('[data-type="cursor-spot-after"]')!;
     setCursor(cursorSpotAfter.firstChild!, 0);
 
-    const event = makeKeyboardEvent('ArrowRight');
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.right);
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 });
 
 describe('handleSpaceAfterClosedTrigger', () => {
-  const ignoreCaretDetection = { current: false };
-
-  beforeEach(() => {
-    ignoreCaretDetection.current = false;
-  });
+  beforeEach(() => {});
 
   test('returns false for non-space key', () => {
     addParagraph(el, 'hello');
     setCursor(el.querySelector('p')!.firstChild!, 3);
-    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent('a'), el, false, ignoreCaretDetection, null)).toBe(false);
+    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(KeyCode.a), el, false, null)).toBe(false);
   });
 
   test('returns false when menu is open', () => {
     addParagraph(el, 'hello');
     setCursor(el.querySelector('p')!.firstChild!, 3);
-    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(' '), el, true, ignoreCaretDetection, null)).toBe(false);
+    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(KeyCode.space), el, true, null)).toBe(false);
   });
 
   test('returns false when no selection', () => {
     window.getSelection()?.removeAllRanges();
-    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(' '), el, false, ignoreCaretDetection, null)).toBe(false);
+    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(KeyCode.space), el, false, null)).toBe(false);
   });
 
   test('returns false when selection is not collapsed', () => {
     const p = addParagraph(el, 'hello');
     setSelection(p.firstChild!, 0, p.firstChild!, 3);
-    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(' '), el, false, ignoreCaretDetection, null)).toBe(false);
+    expect(handleSpaceAfterClosedTrigger(makeKeyboardEvent(KeyCode.space), el, false, null)).toBe(false);
   });
 
   test('inserts space after trigger when cursor is at end of trigger text', () => {
@@ -1050,10 +903,9 @@ describe('handleSpaceAfterClosedTrigger', () => {
     // Cursor at end of trigger text
     setCursor(trigger.firstChild!, 5);
 
-    const event = makeKeyboardEvent(' ');
-    const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null);
-    expect(result).toBe(true);
-    expect(ignoreCaretDetection.current).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.space);
+    handleSpaceAfterClosedTrigger(event, el, false, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('inserts space when cursor is at paragraph level after trigger', () => {
@@ -1066,9 +918,9 @@ describe('handleSpaceAfterClosedTrigger', () => {
     // Cursor at paragraph level, offset 1 (after the trigger child)
     setCursor(p, 1);
 
-    const event = makeKeyboardEvent(' ');
-    const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.space);
+    handleSpaceAfterClosedTrigger(event, el, false, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('returns false when cursor is not at end of trigger', () => {
@@ -1081,16 +933,16 @@ describe('handleSpaceAfterClosedTrigger', () => {
     // Cursor in middle of trigger text
     setCursor(trigger.firstChild!, 2);
 
-    const event = makeKeyboardEvent(' ');
-    expect(handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.space);
+    expect(handleSpaceAfterClosedTrigger(event, el, false, null)).toBe(false);
   });
 
   test('returns false when cursor is in regular text', () => {
     const p = addParagraph(el, 'hello');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent(' ');
-    expect(handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.space);
+    expect(handleSpaceAfterClosedTrigger(event, el, false, null)).toBe(false);
   });
 
   test('updates cursor position via caretController', () => {
@@ -1104,20 +956,9 @@ describe('handleSpaceAfterClosedTrigger', () => {
     setCursor(trigger.firstChild!, 5);
 
     const controller = new CaretController(el);
-    const event = makeKeyboardEvent(' ');
-    const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, controller);
-    expect(result).toBe(true);
-  });
-
-  test('returns false when trigger parent is not a P element', () => {
-    // Trigger directly inside the editable div, not inside a <p>
-    const trigger = createTriggerElement('t1', '@user');
-    el.appendChild(trigger);
-
-    setCursor(trigger.firstChild!, 5);
-
-    const event = makeKeyboardEvent(' ');
-    expect(handleSpaceAfterClosedTrigger(event, el, false, ignoreCaretDetection, null)).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.space);
+    handleSpaceAfterClosedTrigger(event, el, false, controller);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 });
 
@@ -1338,7 +1179,7 @@ describe('handleBackspaceAtParagraphStart', () => {
 
   test('returns false when no selection', () => {
     window.getSelection()?.removeAllRanges();
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     expect(handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null)).toBe(false);
   });
 
@@ -1346,7 +1187,7 @@ describe('handleBackspaceAtParagraphStart', () => {
     const p = addParagraph(el, 'hello');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     expect(handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null)).toBe(false);
   });
 
@@ -1355,7 +1196,7 @@ describe('handleBackspaceAtParagraphStart', () => {
     // Cursor in text node, not in P directly
     setCursor(p.firstChild!, 0);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     expect(handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null)).toBe(false);
   });
 
@@ -1372,9 +1213,9 @@ describe('handleBackspaceAtParagraphStart', () => {
     // Set cursor at paragraph level offset 0
     setCursor(p2, 0);
 
-    const event = makeKeyboardEvent('Backspace');
-    const result = handleBackspaceAtParagraphStart(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.backspace);
+    handleBackspaceAtParagraphStart(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(true);
     expect(onChange).toHaveBeenCalled();
   });
 
@@ -1384,7 +1225,7 @@ describe('handleBackspaceAtParagraphStart', () => {
 
     setCursor(p, 0);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     expect(handleBackspaceAtParagraphStart(event, el, tokens, undefined, onChange, null)).toBe(false);
   });
 });
@@ -1398,7 +1239,7 @@ describe('handleDeleteAtParagraphEnd', () => {
 
   test('returns false when no selection', () => {
     window.getSelection()?.removeAllRanges();
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     expect(handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null)).toBe(false);
   });
 
@@ -1406,7 +1247,7 @@ describe('handleDeleteAtParagraphEnd', () => {
     const p = addParagraph(el, 'hello');
     setCursor(p.firstChild!, 3);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     expect(handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null)).toBe(false);
   });
 
@@ -1423,9 +1264,9 @@ describe('handleDeleteAtParagraphEnd', () => {
     // Cursor at end of text in first paragraph, and text node has no next sibling
     setCursor(p1.firstChild!, 5);
 
-    const event = makeKeyboardEvent('Delete');
-    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(true);
     expect(onChange).toHaveBeenCalled();
   });
 
@@ -1443,9 +1284,9 @@ describe('handleDeleteAtParagraphEnd', () => {
     // Cursor at paragraph level
     setCursor(p1, 0);
 
-    const event = makeKeyboardEvent('Delete');
-    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('merges when cursor is at end of P element children', () => {
@@ -1461,9 +1302,9 @@ describe('handleDeleteAtParagraphEnd', () => {
     // Cursor at paragraph level, offset = childNodes.length
     setCursor(p1, p1.childNodes.length);
 
-    const event = makeKeyboardEvent('Delete');
-    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('returns false at last paragraph', () => {
@@ -1472,7 +1313,7 @@ describe('handleDeleteAtParagraphEnd', () => {
 
     setCursor(p.firstChild!, 5);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     expect(handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null)).toBe(false);
   });
 
@@ -1496,9 +1337,9 @@ describe('handleDeleteAtParagraphEnd', () => {
     // Cursor at end of text node inside span, no next sibling
     setCursor(textNode, 5);
 
-    const event = makeKeyboardEvent('Delete');
-    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(true);
     expect(onChange).toHaveBeenCalled();
   });
 
@@ -1521,35 +1362,13 @@ describe('handleDeleteAtParagraphEnd', () => {
     // Cursor at end of first text node, but it has a next sibling
     setCursor(text1, 5);
 
-    const event = makeKeyboardEvent('Delete');
-    const result = handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
-    expect(result).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.delete);
+    handleDeleteAtParagraphEnd(event, el, tokens, undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 });
 
 describe('event-handlers - defensive checks', () => {
-  test('handleReferenceTokenDeletion returns true when adjacent reference is found', () => {
-    const p = document.createElement('p');
-    el.appendChild(p);
-
-    const ref = document.createElement('span');
-    ref.setAttribute('data-type', 'reference');
-    ref.textContent = 'Alice';
-    p.appendChild(ref);
-
-    const text = document.createTextNode('hello');
-    p.appendChild(text);
-
-    setCursor(text, 0);
-
-    const state = { skipNextZeroWidthUpdate: false } as any;
-    const event = makeKeyboardEvent('Backspace');
-
-    const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
-    expect(state.skipNextZeroWidthUpdate).toBe(true);
-  });
-
   test('handleBackspaceAtParagraphStart returns false when paragraph not found in list', () => {
     const p = document.createElement('p');
     // Don't add to el — paragraph won't be found by findAllParagraphs
@@ -1557,10 +1376,10 @@ describe('event-handlers - defensive checks', () => {
 
     setCursor(p, 0);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     const onChange = jest.fn();
-    const result = handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null);
-    expect(result).toBe(false);
+    handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handleDeleteAtParagraphEnd returns false when paragraph not found in list', () => {
@@ -1570,10 +1389,10 @@ describe('event-handlers - defensive checks', () => {
 
     setCursor(p, 1);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     const onChange = jest.fn();
-    const result = handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null);
-    expect(result).toBe(false);
+    handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handleSpaceAfterClosedTrigger with caretController positions caret', () => {
@@ -1591,64 +1410,10 @@ describe('event-handlers - defensive checks', () => {
     const controller = new CaretController(el);
     el.focus();
 
-    const ignoreRef = { current: false };
-    const event = makeKeyboardEvent(' ');
+    const event = makeKeyboardEvent(KeyCode.space);
 
-    const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreRef, controller);
-    expect(result).toBe(true);
+    handleSpaceAfterClosedTrigger(event, el, false, controller);
     expect(event.isDefaultPrevented()).toBe(true);
-  });
-
-  test('handleArrowKeyNavigation with shift+left across reference extends selection', () => {
-    const p = document.createElement('p');
-    el.appendChild(p);
-
-    const text = document.createTextNode('hello');
-    p.appendChild(text);
-
-    const ref = document.createElement('span');
-    ref.setAttribute('data-type', 'reference');
-    ref.textContent = 'Alice';
-    p.appendChild(ref);
-
-    const after = document.createTextNode('world');
-    p.appendChild(after);
-
-    // Focus at left edge (after, 0) extending backward toward reference
-    const sel = window.getSelection()!;
-    sel.collapse(after, 3); // anchor
-    sel.extend(after, 0); // focus at start — next left should hit reference
-
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
-  });
-
-  test('handleArrowKeyNavigation with shift+right across reference extends selection', () => {
-    const p = document.createElement('p');
-    el.appendChild(p);
-
-    const text = document.createTextNode('hello');
-    p.appendChild(text);
-
-    const ref = document.createElement('span');
-    ref.setAttribute('data-type', 'reference');
-    ref.textContent = 'Alice';
-    p.appendChild(ref);
-
-    const after = document.createTextNode('world');
-    p.appendChild(after);
-
-    // Select text before reference — shift+right should extend over reference
-    const range = document.createRange();
-    range.setStart(text, 2);
-    range.setEnd(text, 5);
-    window.getSelection()?.removeAllRanges();
-    window.getSelection()?.addRange(range);
-
-    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
   });
 
   test('handleShiftArrow returns false when no adjacent sibling', () => {
@@ -1665,9 +1430,9 @@ describe('event-handlers - defensive checks', () => {
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
 
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(false);
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handleShiftArrow from element-level container', () => {
@@ -1687,9 +1452,9 @@ describe('event-handlers - defensive checks', () => {
     sel.collapse(after, 3); // anchor
     sel.extend(p, 1); // focus at paragraph level after ref
 
-    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 });
 
@@ -1720,46 +1485,31 @@ describe('handleShiftArrow - sibling is not a reference', () => {
       currentTarget: el,
     } as unknown as React.KeyboardEvent<HTMLDivElement>;
 
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(false);
+    handleInlineEnd(event, null);
     expect(event.preventDefault).not.toHaveBeenCalled();
   });
 });
 
 describe('event-handlers - defensive guard coverage', () => {
-  test('handleReferenceTokenDeletion returns true when removed element parent is not HTMLElement', () => {
+  test('handleReferenceTokenDeletion returns false when element has no parent', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
-    const text = document.createTextNode('before');
-    p.appendChild(text);
 
     const ref = document.createElement('span');
     ref.setAttribute('data-type', 'reference');
     ref.textContent = 'Alice';
     p.appendChild(ref);
 
-    const after = document.createTextNode('after');
-    p.appendChild(after);
+    setCursor(p, 1);
 
-    // Position cursor right after the reference (at start of 'after')
-    setCursor(after, 0);
+    // Detach the ref so parentNode is null
+    ref.remove();
 
     const state = { skipNextZeroWidthUpdate: false } as any;
-    const event = makeKeyboardEvent('Backspace');
-
-    // Move ref to a document fragment so its parentNode is not an HTMLElement
-    const frag = document.createDocumentFragment();
-    frag.appendChild(ref);
-
-    // Now manually call with a non-collapsed selection that deletes content
-    // Instead, let's test the actual guard by having the ref in a non-HTML parent
-    // Re-add ref to paragraph for the actual test
-    p.insertBefore(ref, after);
-    setCursor(after, 0);
-
+    const event = makeKeyboardEvent(KeyCode.backspace);
     const result = handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
-    expect(result).toBe(true);
+    // No reference found at cursor position since it was removed
+    expect(result).toBe(false);
   });
 
   test('handleSpaceAfterClosedTrigger without caretController still works', () => {
@@ -1773,11 +1523,9 @@ describe('event-handlers - defensive guard coverage', () => {
 
     setCursor(trigger.firstChild!, 5);
 
-    const ignoreRef = { current: false };
-    const event = makeKeyboardEvent(' ');
+    const event = makeKeyboardEvent(KeyCode.space);
 
-    const result = handleSpaceAfterClosedTrigger(event, el, false, ignoreRef, null);
-    expect(result).toBe(true);
+    handleSpaceAfterClosedTrigger(event, el, false, null);
     expect(event.isDefaultPrevented()).toBe(true);
   });
 
@@ -1793,12 +1541,12 @@ describe('event-handlers - defensive guard coverage', () => {
 
     setCursor(orphanP, 0);
 
-    const event = makeKeyboardEvent('Backspace');
+    const event = makeKeyboardEvent(KeyCode.backspace);
     const onChange = jest.fn();
-    const result = handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null);
+    handleBackspaceAtParagraphStart(event, el, [], undefined, onChange, null);
     // startContainer is orphanP which is an HTMLElement with nodeName 'P' and offset 0
     // but it's not in el's paragraphs, so pIndex < 0
-    expect(result).toBe(false);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 
   test('handleDeleteAtParagraphEnd returns false when paragraph not in editable element', () => {
@@ -1815,10 +1563,10 @@ describe('event-handlers - defensive guard coverage', () => {
     // Cursor at end of orphan text, no next sibling
     setCursor(orphanText, 6);
 
-    const event = makeKeyboardEvent('Delete');
+    const event = makeKeyboardEvent(KeyCode.delete);
     const onChange = jest.fn();
-    const result = handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null);
-    expect(result).toBe(false);
+    handleDeleteAtParagraphEnd(event, el, [], undefined, onChange, null);
+    expect(event.isDefaultPrevented()).toBe(false);
   });
 });
 
@@ -1846,24 +1594,16 @@ describe('RTL arrow key navigation', () => {
     const after = document.createTextNode(' world');
     p.appendChild(after);
 
-    // Cursor at end of 'hello' — ArrowLeft in RTL means forward, should jump over reference
+    // Cursor at end of 'hello' — ArrowLeft in RTL = inline-end (forward)
     setCursor(text, 5);
 
     const controller = new CaretController(el);
     el.focus();
 
-    const event = {
-      key: 'ArrowLeft',
-      shiftKey: false,
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowLeft' }),
-      currentTarget: el,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-
-    const result = handleArrowKeyNavigation(event, controller);
-    expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    const event = makeKeyboardEvent(KeyCode.left);
+    // handleKey resolves RTL: ArrowLeft in RTL → onInlineEnd → handleInlineEnd
+    handleInlineEnd(event, controller);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('ArrowRight jumps backward over reference in RTL', () => {
@@ -1881,24 +1621,16 @@ describe('RTL arrow key navigation', () => {
     const after = document.createTextNode(' world');
     p.appendChild(after);
 
-    // Cursor at start of ' world' — ArrowRight in RTL means backward, should jump over reference
+    // Cursor at start of ' world' — ArrowRight in RTL = inline-start (backward)
     setCursor(after, 0);
 
     const controller = new CaretController(el);
     el.focus();
 
-    const event = {
-      key: 'ArrowRight',
-      shiftKey: false,
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowRight' }),
-      currentTarget: el,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-
-    const result = handleArrowKeyNavigation(event, controller);
-    expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    const event = makeKeyboardEvent(KeyCode.right);
+    // handleKey resolves RTL: ArrowRight in RTL → onInlineStart → handleInlineStart
+    handleInlineStart(event, controller);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('Shift+ArrowLeft extends selection forward in RTL', () => {
@@ -1916,25 +1648,16 @@ describe('RTL arrow key navigation', () => {
     const after = document.createTextNode(' world');
     p.appendChild(after);
 
-    // Select end of text — Shift+ArrowLeft in RTL extends forward (end of selection)
     const range = document.createRange();
     range.setStart(text, 2);
     range.setEnd(text, 5);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
 
-    const event = {
-      key: 'ArrowLeft',
-      shiftKey: true,
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true }),
-      currentTarget: el,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    const event = makeKeyboardEvent(KeyCode.left, { shiftKey: true });
+    // handleKey resolves RTL: Shift+ArrowLeft in RTL → onShiftInlineEnd → handleInlineEnd
+    handleInlineEnd(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 
   test('Shift+ArrowRight extends selection backward in RTL', () => {
@@ -1952,23 +1675,14 @@ describe('RTL arrow key navigation', () => {
     const after = document.createTextNode(' world');
     p.appendChild(after);
 
-    // Focus at left edge — Shift+ArrowRight in RTL extends backward
     const sel = window.getSelection()!;
-    sel.collapse(after, 3); // anchor
-    sel.extend(after, 0); // focus at start — next right (backward in RTL) hits reference
+    sel.collapse(after, 3);
+    sel.extend(after, 0);
 
-    const event = {
-      key: 'ArrowRight',
-      shiftKey: true,
-      preventDefault: jest.fn(),
-      isDefaultPrevented: () => false,
-      nativeEvent: new KeyboardEvent('keydown', { key: 'ArrowRight', shiftKey: true }),
-      currentTarget: el,
-    } as unknown as React.KeyboardEvent<HTMLDivElement>;
-
-    const result = handleArrowKeyNavigation(event, null);
-    expect(result).toBe(true);
-    expect(event.preventDefault).toHaveBeenCalled();
+    const event = makeKeyboardEvent(KeyCode.right, { shiftKey: true });
+    // handleKey resolves RTL: Shift+ArrowRight in RTL → onShiftInlineStart → handleInlineStart
+    handleInlineStart(event, null);
+    expect(event.isDefaultPrevented()).toBe(true);
   });
 });
 

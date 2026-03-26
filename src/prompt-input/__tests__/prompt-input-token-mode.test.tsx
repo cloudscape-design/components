@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '../../../lib/components/internal/keycode';
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -460,7 +460,7 @@ describe('token mode keyboard events', () => {
     });
 
     const editable = wrapper.findContentEditableElement()!;
-    editable.keydown(KeyCode.enter);
+    editable.keydown({ key: 'Enter', keyCode: KeyCode.enter });
 
     expect(onKeyDown).toHaveBeenCalled();
   });
@@ -987,7 +987,7 @@ describe('keyboard events additional scenarios', () => {
     });
 
     const editable = wrapper.findContentEditableElement()!;
-    editable.keyup(KeyCode.enter);
+    editable.keyup({ key: 'Enter', keyCode: KeyCode.enter });
 
     expect(onKeyUp).toHaveBeenCalled();
   });
@@ -998,7 +998,7 @@ describe('keyboard events additional scenarios', () => {
 
     const event = new KeyboardEvent('keydown', {
       key: 'a',
-      keyCode: 65,
+      keyCode: KeyCode.a,
       ctrlKey: true,
       bubbles: true,
       cancelable: true,
@@ -1015,7 +1015,7 @@ describe('keyboard events additional scenarios', () => {
 
     const event = new KeyboardEvent('keydown', {
       key: 'a',
-      keyCode: 65,
+      keyCode: KeyCode.a,
       metaKey: true,
       bubbles: true,
       cancelable: true,
@@ -1566,7 +1566,9 @@ describe('keyboard handler - Shift+Enter paragraph splitting', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, shiftKey: true, bubbles: true })
+      );
     });
 
     expect(onChange).toHaveBeenCalled();
@@ -1585,7 +1587,12 @@ describe('keyboard handler - Shift+Enter paragraph splitting', () => {
       ref.current!.focus();
     });
 
-    const event = new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true });
+    const event = new KeyboardEvent('keydown', {
+      key: 'Backspace',
+      keyCode: KeyCode.backspace,
+      bubbles: true,
+      cancelable: true,
+    });
     act(() => {
       editable.dispatchEvent(event);
     });
@@ -2139,7 +2146,9 @@ describe('textarea-mode: Enter key fires onAction', () => {
     const wrapper = createWrapper(container).findPromptInput()!;
     const textarea = wrapper.findNativeTextarea().getElement();
     act(() => {
-      textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      textarea.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
     expect(onAction).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -2163,7 +2172,13 @@ describe('textarea-mode: Enter key fires onAction', () => {
     const textarea = wrapper.findNativeTextarea().getElement();
     act(() => {
       textarea.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          keyCode: KeyCode.enter,
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
       );
     });
     expect(onAction).not.toHaveBeenCalled();
@@ -2474,6 +2489,7 @@ describe('use-token-mode: Ctrl+A on empty prevents default', () => {
 
     const event = new KeyboardEvent('keydown', {
       key: 'a',
+      keyCode: KeyCode.a,
       ctrlKey: true,
       bubbles: true,
       cancelable: true,
@@ -2702,7 +2718,9 @@ describe('use-token-mode: menu keyboard navigation', () => {
 
     expect(() => {
       act(() => {
-        editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+        editable.dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+        );
       });
     }).not.toThrow();
   });
@@ -2717,7 +2735,9 @@ describe('use-token-mode: menu keyboard navigation', () => {
 
     expect(() => {
       act(() => {
-        editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }));
+        editable.dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'ArrowUp', keyCode: KeyCode.up, bubbles: true, cancelable: true })
+        );
       });
     }).not.toThrow();
   });
@@ -2754,7 +2774,9 @@ describe('use-token-mode: menu keyboard navigation', () => {
 
     // Navigate down to highlight first option, then Tab to select
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
     act(() => {
       editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }));
@@ -3415,7 +3437,9 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     expect(onKeyDown).toHaveBeenCalled();
@@ -3441,7 +3465,9 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Backspace', keyCode: KeyCode.backspace, bubbles: true, cancelable: true })
+      );
     });
 
     // onChange should be called with the reference token removed
@@ -3471,7 +3497,9 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     // onChange should be called with the reference token removed
@@ -3500,7 +3528,13 @@ describe('keyboard handlers - Enter, Backspace, Delete with tokens', () => {
 
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', {
+          key: 'Enter',
+          keyCode: KeyCode.enter,
+          shiftKey: true,
+          bubbles: true,
+          cancelable: true,
+        })
       );
     });
 
@@ -3531,7 +3565,9 @@ describe('keyboard Backspace/Delete paragraph merge', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Backspace', keyCode: KeyCode.backspace, bubbles: true, cancelable: true })
+      );
     });
 
     // Should merge paragraphs — onChange should fire with break token removed
@@ -3563,7 +3599,9 @@ describe('keyboard Backspace/Delete paragraph merge', () => {
     });
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     // Should merge paragraphs — onChange should fire with break token removed
@@ -3622,7 +3660,9 @@ describe('space after trigger and menu navigation keyboard', () => {
 
     // Navigate to first option
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
 
     // Tab to select
@@ -3649,12 +3689,16 @@ describe('space after trigger and menu navigation keyboard', () => {
 
     // Navigate to first option
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
 
     // Enter to select
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     if (onMenuItemSelect.mock.calls.length > 0) {
@@ -3737,7 +3781,9 @@ describe('menu highlight and filter interactions', () => {
     const editable = wrapper.findContentEditableElement()!.getElement();
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
 
     // After ArrowDown, a menu option should be highlighted
@@ -3805,10 +3851,14 @@ describe('menu-state: selectHighlightedOptionWithKeyboard', () => {
 
     // Navigate to first (disabled) option and try to select
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     // Disabled option should not be selected
@@ -3837,10 +3887,14 @@ describe('menu-state: selectHighlightedOptionWithKeyboard', () => {
 
     // Navigate to first option and select with Enter
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     if (onMenuItemSelect.mock.calls.length > 0) {
@@ -4005,7 +4059,9 @@ describe('internal.tsx - onAction handler with Enter key', () => {
     const textarea = wrapper.findNativeTextarea().getElement();
 
     act(() => {
-      textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      textarea.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     expect(onAction).toHaveBeenCalled();
@@ -4461,15 +4517,21 @@ describe('menu-state: isMenuItemHighlightable and isMenuItemInteractive', () => 
 
     // Navigate down through options including disabled ones
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: KeyCode.down, bubbles: true, cancelable: true })
+      );
     });
 
     // Try to select - should only select non-disabled
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: KeyCode.enter, bubbles: true, cancelable: true })
+      );
     });
 
     // Bob (non-disabled) should be selectable
@@ -4798,7 +4860,9 @@ describe('full-flow: delete key merges trigger with adjacent text', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     // onChange should fire with merged tokens: trigger absorbed "hello"
@@ -4839,7 +4903,9 @@ describe('full-flow: delete key merges trigger with adjacent text', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     expect(onChange).toHaveBeenCalled();
@@ -4947,7 +5013,9 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     const tokens = getTokensFromOnChange(onChange);
@@ -4979,7 +5047,9 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     const tokens = getTokensFromOnChange(onChange);
@@ -5156,7 +5226,9 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     const tokens = getTokensFromOnChange(onChange);
@@ -5202,7 +5274,9 @@ describe('full-flow: empty trigger absorbs adjacent text on delete', () => {
     sel.addRange(range);
 
     act(() => {
-      editable.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true }));
+      editable.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+      );
     });
 
     const tokens = getTokensFromOnChange(onChange);
@@ -5266,5 +5340,231 @@ describe('menu visibility on scroll', () => {
     });
 
     expect(wrapper.isMenuOpen()).toBe(false);
+  });
+});
+
+describe('shouldRerender: trigger ID change causes DOM update', () => {
+  test('changing trigger ID replaces the trigger element in the DOM', () => {
+    const onChange = jest.fn();
+    const tokens1: PromptInputProps.InputToken[] = [
+      { type: 'text', value: 'hello ' },
+      { type: 'trigger', value: 'ali', triggerChar: '@', id: 'old-trigger' },
+    ];
+    const tokens2: PromptInputProps.InputToken[] = [
+      { type: 'text', value: 'hello ' },
+      { type: 'trigger', value: 'ali', triggerChar: '@', id: 'new-trigger' },
+    ];
+
+    const { container, rerender } = renderTokenMode({ props: { tokens: tokens1, onChange } });
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
+    expect(editable.querySelector('#old-trigger')).toBeTruthy();
+    expect(editable.querySelector('#new-trigger')).toBeNull();
+
+    act(() => {
+      rerender(
+        <PromptInput
+          tokens={tokens2}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+        />
+      );
+    });
+
+    expect(editable.querySelector('#old-trigger')).toBeNull();
+    expect(editable.querySelector('#new-trigger')).toBeTruthy();
+    expect(editable.querySelector('#new-trigger')!.textContent).toBe('@ali');
+  });
+});
+
+describe('external token update: trigger detection on prop change', () => {
+  test('text containing trigger character is split into text + trigger tokens', () => {
+    const onChange = jest.fn();
+    const { rerender } = renderTokenMode({ props: { tokens: [], onChange } });
+
+    act(() => {
+      rerender(
+        <PromptInput
+          tokens={[{ type: 'text', value: 'hello @world' }]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+          onChange={onChange}
+        />
+      );
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    expect(lastTokens).toHaveLength(2);
+    expect(lastTokens[0].type).toBe('text');
+    expect(lastTokens[0].value).toBe('hello ');
+    expect(lastTokens[1].type).toBe('trigger');
+    expect(lastTokens[1].triggerChar).toBe('@');
+    expect(lastTokens[1].value).toBe('world');
+  });
+});
+
+describe('tokensToText: custom value computation', () => {
+  test('onChange value uses tokensToText output instead of default getPromptText', () => {
+    const onChange = jest.fn();
+    const tokensToText = (tokens: readonly PromptInputProps.InputToken[]) =>
+      tokens.map(t => `[${t.type}:${t.value}]`).join('');
+
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        onChange,
+        tokensToText,
+      },
+      ref,
+    });
+
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' world', 5);
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('[text:');
+    expect(lastValue).toContain('hello');
+    expect(lastValue).toContain('world');
+  });
+});
+
+describe('insertText with caret positioning across token boundaries', () => {
+  test('insertText at position 0 prepends text before existing content', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'world' }],
+        onChange,
+      },
+      ref,
+    });
+
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('hello ', 0);
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const fullText = lastTokens
+      .filter((t: any) => t.type === 'text')
+      .map((t: any) => t.value)
+      .join('');
+    expect(fullText).toBe('hello world');
+  });
+
+  test('insertText with caretStart positions caret before inserting', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'helloworld' }],
+        onChange,
+      },
+      ref,
+    });
+
+    act(() => {
+      ref.current!.focus();
+    });
+    // Insert space at position 5 between "hello" and "world"
+    act(() => {
+      ref.current!.insertText(' ', 5);
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const fullText = lastTokens
+      .filter((t: any) => t.type === 'text')
+      .map((t: any) => t.value)
+      .join('');
+    expect(fullText).toBe('hello world');
+  });
+
+  test('insertText after a reference token positions correctly', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderTokenMode({
+      props: {
+        tokens: [
+          { type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' hello' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+
+    act(() => {
+      ref.current!.focus();
+    });
+    // Insert at position 1 (right after the reference, which has length 1)
+    act(() => {
+      ref.current!.insertText(' says', 1);
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textParts = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textParts.join('')).toContain('says');
+    expect(textParts.join('')).toContain('hello');
+  });
+});
+
+describe('pinned token reordering via insertText', () => {
+  test('typing text before a pinned token causes it to reorder to front', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const menusWithPinned: PromptInputProps.MenuDefinition[] = [
+      { id: 'mentions', trigger: '@', options: mentionOptions, filteringType: 'auto' },
+      {
+        id: 'files',
+        trigger: '#',
+        options: [{ value: 'f1', label: 'File1' }],
+        filteringType: 'auto',
+        useAtStart: true,
+      },
+    ];
+
+    renderTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'p1', label: '#File1', value: 'f1', menuId: 'files', pinned: true },
+        ],
+        onChange,
+        menus: menusWithPinned,
+      },
+      ref,
+    });
+
+    act(() => {
+      ref.current!.focus();
+    });
+    // Insert text at position 0 — this triggers handleInput which runs enforcePinnedTokenOrdering
+    act(() => {
+      ref.current!.insertText('x', 0);
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const pinnedIdx = lastTokens.findIndex((t: any) => t.type === 'reference' && t.pinned);
+    const textIdx = lastTokens.findIndex((t: any) => t.type === 'text');
+    expect(pinnedIdx).toBe(0);
+    expect(textIdx).toBeGreaterThan(pinnedIdx);
   });
 });

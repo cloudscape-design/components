@@ -17,4 +17,3 @@ export const SPECIAL_CHARS = {
 
 export const DEFAULT_MAX_ROWS = 3;
 export const NEXT_TICK_TIMEOUT = 0;
-export const CARET_DETECTION_DELAY = 100;

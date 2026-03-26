@@ -23,18 +23,9 @@ import {
   TOKEN_LENGTHS,
 } from '../core/caret-controller';
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
-import { CARET_DETECTION_DELAY, ElementType, NEXT_TICK_TIMEOUT } from '../core/constants';
+import { ElementType, NEXT_TICK_TIMEOUT } from '../core/constants';
 import { createParagraph, findAllParagraphs, getTokenType } from '../core/dom-utils';
-import {
-  createKeyboardHandlers,
-  handleArrowKeyNavigation,
-  handleBackspaceAtParagraphStart,
-  handleClipboardEvent,
-  handleDeleteAtParagraphEnd,
-  handleReferenceTokenDeletion,
-  handleSpaceAfterClosedTrigger,
-  splitParagraphAtCaret,
-} from '../core/event-handlers';
+import { handleClipboardEvent, handleEditableKeyDown } from '../core/event-handlers';
 import {
   handleMenuSelection,
   MenuItem,
@@ -51,7 +42,7 @@ import {
   getCaretPositionAfterTokenRemoval,
   mergeConsecutiveTextTokens,
 } from '../core/token-utils';
-import { detectTriggerTransition, handleDeleteAfterTrigger } from '../core/trigger-utils';
+import { detectTriggerTransition } from '../core/trigger-utils';
 import { isBreakTextToken, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
 
@@ -267,7 +258,7 @@ export interface UseTokenModeResult {
 interface ShortcutsState {
   caretInTrigger: boolean;
   setCaretInTrigger: (inTrigger: boolean) => void;
-  ignoreCaretDetection: React.MutableRefObject<boolean>;
+  dismissedTriggerId: React.MutableRefObject<string | null>;
   lastSentTokens: React.MutableRefObject<readonly PromptInputProps.InputToken[] | undefined>;
   isExternalUpdate: (tokens: readonly PromptInputProps.InputToken[] | undefined) => boolean;
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
@@ -275,7 +266,7 @@ interface ShortcutsState {
 
 function useShortcutsState(): ShortcutsState {
   const [caretInTrigger, setCaretInTrigger] = useState(false);
-  const ignoreCaretDetection = useRef(false);
+  const dismissedTriggerId = useRef<string | null>(null);
   const lastSentTokens = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
 
   const isExternalUpdate = useStableCallback((tokens: readonly PromptInputProps.InputToken[] | undefined): boolean => {
@@ -289,7 +280,7 @@ function useShortcutsState(): ShortcutsState {
   return {
     caretInTrigger,
     setCaretInTrigger,
-    ignoreCaretDetection,
+    dismissedTriggerId,
     lastSentTokens,
     isExternalUpdate,
     markTokensAsSent,
@@ -391,43 +382,41 @@ function useShortcutsEffects(config: EffectsConfig) {
 
     const checkMenuState = () => {
       const ctrl = caretController.current;
-      if (!editableElementRef.current || !ctrl || state.ignoreCaretDetection.current) {
+      if (!editableElementRef.current || !ctrl) {
         return;
       }
 
       const activeTrigger = ctrl.findActiveTrigger();
       let isInTrigger = !!activeTrigger && !isCancelledTriggerId(activeTrigger.id);
 
-      if (!state.ignoreCaretDetection.current) {
-        const selection = window.getSelection();
-        if (selection?.rangeCount) {
-          const range = selection.getRangeAt(0);
+      const selection = window.getSelection();
+      if (selection?.rangeCount) {
+        const range = selection.getRangeAt(0);
 
-          if (range.collapsed) {
-            let triggerElement: HTMLElement | null = null;
+        if (range.collapsed) {
+          let triggerElement: HTMLElement | null = null;
 
-            if (isTextNode(range.startContainer) && range.startOffset === 0) {
-              const prevSibling = range.startContainer.previousSibling;
-              if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
-                triggerElement = prevSibling;
-              }
-            } else if (range.startContainer === editableElementRef.current || isHTMLElement(range.startContainer)) {
-              const container = range.startContainer as HTMLElement;
-              const childNodes = Array.from(container.childNodes);
-              const nodeBeforeCaret = childNodes[range.startOffset - 1];
-
-              if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === ElementType.Trigger) {
-                triggerElement = nodeBeforeCaret;
-              }
+          if (isTextNode(range.startContainer) && range.startOffset === 0) {
+            const prevSibling = range.startContainer.previousSibling;
+            if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
+              triggerElement = prevSibling;
             }
+          } else if (range.startContainer === editableElementRef.current || isHTMLElement(range.startContainer)) {
+            const container = range.startContainer as HTMLElement;
+            const childNodes = Array.from(container.childNodes);
+            const nodeBeforeCaret = childNodes[range.startOffset - 1];
 
-            if (triggerElement && !isCancelledTriggerId(triggerElement.id)) {
-              const triggerTextNode = triggerElement.childNodes[0];
-              if (isTextNode(triggerTextNode)) {
-                const triggerText = triggerTextNode.textContent || '';
-                range.setStart(triggerTextNode, triggerText.length);
-                range.collapse(true);
-              }
+            if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === ElementType.Trigger) {
+              triggerElement = nodeBeforeCaret;
+            }
+          }
+
+          if (triggerElement && !isCancelledTriggerId(triggerElement.id)) {
+            const triggerTextNode = triggerElement.childNodes[0];
+            if (isTextNode(triggerTextNode)) {
+              const triggerText = triggerTextNode.textContent || '';
+              range.setStart(triggerTextNode, triggerText.length);
+              range.collapse(true);
             }
           }
         }
@@ -435,6 +424,16 @@ function useShortcutsEffects(config: EffectsConfig) {
 
       const updatedTrigger = ctrl.findActiveTrigger();
       isInTrigger = !!updatedTrigger && !isCancelledTriggerId(updatedTrigger.id);
+
+      // Don't reopen a trigger that was explicitly dismissed (e.g. via Escape or space-after-trigger)
+      if (isInTrigger && updatedTrigger && state.dismissedTriggerId.current === updatedTrigger.id) {
+        isInTrigger = false;
+      }
+
+      // Clear the dismissed ID when the caret moves to a different trigger
+      if (updatedTrigger?.id !== state.dismissedTriggerId.current) {
+        state.dismissedTriggerId.current = null;
+      }
 
       const shouldBeOpen = isInTrigger;
 
@@ -497,7 +496,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const shortcutsState = useShortcutsState();
 
-  const { ignoreCaretDetection, markTokensAsSent } = shortcutsState;
+  const { markTokensAsSent } = shortcutsState;
 
   // Incremented on selection changes to force activeTriggerToken to recompute
   const [caretUpdateTrigger, setCaretUpdateTrigger] = useState(0);
@@ -774,7 +773,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       if (changedTriggerId && editableElementRef.current) {
         const triggerIdToRestore = changedTriggerId;
         const cursorOffsetToRestore = savedCursorOffset;
-        ignoreCaretDetection.current = true;
         setTimeout(() => {
           const triggerEl = editableElementRef.current?.querySelector(`#${CSS.escape(triggerIdToRestore)}`);
           if (triggerEl?.firstChild && document.activeElement === editableElementRef.current) {
@@ -788,7 +786,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
               s.addRange(range);
             }
           }
-          ignoreCaretDetection.current = false;
         }, 0);
       }
     }
@@ -1101,172 +1098,50 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     isOpen: menuIsOpen,
   };
 
-  const keyboardHandlers = useMemo(() => {
-    if (!editableElementRef.current) {
-      return null;
+  const closeMenu = useStableCallback(() => {
+    const cc = caretControllerRef.current;
+    const triggerEl = cc?.findActiveTrigger();
+
+    if (triggerEl) {
+      shortcutsState.dismissedTriggerId.current = triggerEl.id;
     }
 
-    return createKeyboardHandlers({
+    shortcutsState.setCaretInTrigger(false);
+
+    if (triggerEl) {
+      const sel = window.getSelection();
+      if (sel) {
+        const range = document.createRange();
+        range.setStartAfter(triggerEl);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+  });
+
+  const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+    handleEditableKeyDown(event, {
+      editableElement: editableElementRef.current,
+      editableState,
+      caretController: caretControllerRef.current,
+      tokens,
+      tokensToText,
+      disabled,
+      readOnly,
+      i18nStrings,
+      announceTokenOperation,
       getMenuOpen: () => menuStateRef.current.isOpen,
       getMenuItemsState: () => menuStateRef.current.itemsState,
       getMenuItemsHandlers: () => menuStateRef.current.itemsHandlers,
       getMenuStatusType: () => activeMenu?.statusType,
+      closeMenu,
+      menuIsOpen,
       onAction: onAction ? detail => fireNonCancelableEvent(onAction, detail) : undefined,
-      tokensToText,
-      tokens,
-      closeMenu: () => {
-        ignoreCaretDetection.current = true;
-        shortcutsState.setCaretInTrigger(false);
-
-        // Move cursor out of the trigger span so subsequent typing creates a proper text boundary
-        const cc = caretControllerRef.current;
-        const triggerEl = cc?.findActiveTrigger();
-        if (triggerEl) {
-          const sel = window.getSelection();
-          if (sel) {
-            const range = document.createRange();
-            range.setStartAfter(triggerEl);
-            range.collapse(true);
-            sel.removeAllRanges();
-            sel.addRange(range);
-          }
-        }
-
-        setTimeout(() => {
-          ignoreCaretDetection.current = false;
-        }, CARET_DETECTION_DELAY);
-      },
-      announceTokenOperation,
-      i18nStrings,
-      disabled,
-      readOnly,
-      caretController: caretControllerRef.current || undefined,
+      onChange,
+      markTokensAsSent,
+      onKeyDown,
     });
-  }, [
-    onAction,
-    tokensToText,
-    tokens,
-    i18nStrings,
-    disabled,
-    readOnly,
-    activeMenu?.statusType,
-    ignoreCaretDetection,
-    shortcutsState,
-    announceTokenOperation,
-    caretControllerRef,
-    editableElementRef,
-  ]);
-
-  const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'a' && (event.ctrlKey || event.metaKey) && tokens?.length === 0) {
-      event.preventDefault();
-      return;
-    }
-
-    if (handleArrowKeyNavigation(event, caretControllerRef.current, announceTokenOperation)) {
-      return;
-    }
-
-    if (event.key === 'Enter' && event.shiftKey && !event.nativeEvent.isComposing) {
-      event.preventDefault();
-
-      if (caretControllerRef.current?.findActiveTrigger()) {
-        return;
-      }
-
-      if (editableElementRef.current) {
-        splitParagraphAtCaret(editableElementRef.current, caretControllerRef.current);
-      }
-      return;
-    }
-
-    if (event.key === 'Backspace' || event.key === 'Delete') {
-      if (
-        editableElementRef.current &&
-        handleReferenceTokenDeletion(
-          event,
-          event.key === 'Backspace',
-          editableElementRef.current,
-          editableState,
-          announceTokenOperation,
-          i18nStrings,
-          caretControllerRef.current
-        )
-      ) {
-        return;
-      }
-    }
-
-    if (event.key === 'Backspace' && tokens && editableElementRef.current) {
-      if (tokens.length === 0) {
-        event.preventDefault();
-        return;
-      }
-
-      if (
-        handleBackspaceAtParagraphStart(
-          event,
-          editableElementRef.current,
-          tokens,
-          tokensToText,
-          (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
-            markTokensAsSent(detail.tokens);
-            onChange(detail);
-          },
-          caretControllerRef.current
-        )
-      ) {
-        return;
-      }
-    }
-
-    if (event.key === 'Delete' && tokens && editableElementRef.current) {
-      if (
-        handleDeleteAtParagraphEnd(
-          event,
-          editableElementRef.current,
-          tokens,
-          tokensToText,
-          (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
-            markTokensAsSent(detail.tokens);
-            onChange(detail);
-          },
-          caretControllerRef.current
-        )
-      ) {
-        return;
-      }
-
-      if (handleDeleteAfterTrigger(event, editableElementRef.current)) {
-        return;
-      }
-    }
-
-    fireKeyboardEvent(onKeyDown, event);
-
-    if (
-      event.key === ' ' &&
-      editableElementRef.current &&
-      handleSpaceAfterClosedTrigger(
-        event,
-        editableElementRef.current,
-        menuIsOpen,
-        ignoreCaretDetection,
-        caretControllerRef.current
-      )
-    ) {
-      return;
-    }
-
-    if (keyboardHandlers) {
-      if (keyboardHandlers.handleMenuNavigation(event)) {
-        return;
-      }
-    }
-
-    if (keyboardHandlers) {
-      keyboardHandlers.handleEnterKey(event);
-    }
   });
 
   const handleEditableElementBlur = useStableCallback(() => {

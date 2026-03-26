@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '../../../lib/components/internal/keycode';
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
+import { KeyCode } from '../../internal/keycode';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -188,7 +188,7 @@ describe('onKeyUp', () => {
     const onKeyUp = jest.fn();
     const { wrapper } = renderPromptInput({ value: '', onKeyUp });
 
-    wrapper.findNativeTextarea().keyup(KeyCode.enter);
+    wrapper.findNativeTextarea().keyup({ keyCode: KeyCode.enter });
 
     expect(onKeyUp).toHaveBeenCalled();
   });

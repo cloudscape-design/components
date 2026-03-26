@@ -3,17 +3,18 @@
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
+import { fireKeyboardEvent } from '../../internal/events';
 import { isHTMLElement } from '../../internal/utils/dom';
+import handleKey from '../../internal/utils/handle-key';
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-token-mode';
 import { CaretController, TOKEN_LENGTHS } from './caret-controller';
-import { CARET_DETECTION_DELAY, ElementType } from './constants';
+import { ElementType } from './constants';
 import {
   createParagraph,
   createTrailingBreak,
   findAdjacentToken,
   findAllParagraphs,
-  getLogicalDirection,
   getTokenType,
   insertAfter,
   isCaretSpotType,
@@ -24,102 +25,208 @@ import {
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { getPromptText } from './token-operations';
-import { handleSpaceInOpenMenu } from './trigger-utils';
+import { handleDeleteAfterTrigger, handleSpaceInOpenMenu } from './trigger-utils';
 import { isBreakTextToken, isBRElement, isTextNode } from './type-guards';
 
-/** Configuration for keyboard handlers created by createKeyboardHandlers. */
+/** Configuration for the unified keyboard event handler. */
 export interface KeyboardHandlerProps {
+  editableElement: HTMLDivElement | null;
+  editableState: EditableState;
+  caretController: CaretController | null;
+  tokens?: readonly PromptInputProps.InputToken[];
+  tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  i18nStrings?: PromptInputProps.I18nStrings;
+  announceTokenOperation?: (message: string) => void;
+
+  // Menu state
   getMenuOpen: () => boolean;
   getMenuItemsState: () => MenuItemsState | null;
   getMenuItemsHandlers: () => MenuItemsHandlers | null;
   getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
-  onAction?: (detail: PromptInputProps.ActionDetail) => void;
-  tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
-  tokens?: readonly PromptInputProps.InputToken[];
   closeMenu: () => void;
-  announceTokenOperation?: (message: string) => void;
-  i18nStrings?: PromptInputProps.I18nStrings;
-  disabled?: boolean;
-  readOnly?: boolean;
-  caretController?: CaretController;
+  menuIsOpen: boolean;
+
+  // Callbacks
+  onAction?: (detail: PromptInputProps.ActionDetail) => void;
+  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
+  markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
+  onKeyDown?: PromptInputProps['onKeyDown'];
 }
 
-/** Creates keyboard event handlers for menu navigation and Enter-to-submit. */
-export function createKeyboardHandlers(props: KeyboardHandlerProps) {
-  function handleMenuNavigation(event: React.KeyboardEvent): boolean {
-    const menuItemsState = props.getMenuItemsState();
-    const menuItemsHandlers = props.getMenuItemsHandlers();
-    const menuOpen = props.getMenuOpen();
+/** Handles all keyboard events for the editable element. */
+export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>, props: KeyboardHandlerProps): void {
+  const { editableElement, editableState, caretController, tokens, tokensToText } = props;
 
-    if (!menuOpen || !menuItemsHandlers || !menuItemsState) {
-      return false;
-    }
-
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-
-      const delta = event.key === 'ArrowDown' ? 1 : -1;
-      menuItemsHandlers.moveHighlightWithKeyboard(delta);
-      return true;
-    }
-
-    if ((event.key === 'Enter' || event.key === 'Tab') && !event.shiftKey) {
-      event.preventDefault();
-      menuItemsHandlers.selectHighlightedOptionWithKeyboard();
-      return true;
-    }
-
-    if (event.key === ' ') {
-      return handleSpaceInOpenMenu(event, {
-        menuItemsState,
-        menuItemsHandlers,
-        getMenuStatusType: props.getMenuStatusType,
-        closeMenu: props.closeMenu,
-        caretController: props.caretController,
-      });
-    }
-
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      props.closeMenu();
-      return true;
-    }
-
-    return false;
-  }
-
-  function handleEnterKey(event: React.KeyboardEvent<HTMLDivElement>): void {
-    if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing) {
-      return;
-    }
-
-    if (props.disabled || props.readOnly) {
-      event.preventDefault();
-      return;
-    }
-
-    const currentTarget = event.currentTarget;
-    if (!isHTMLElement(currentTarget)) {
-      return;
-    }
-
-    const form = currentTarget.closest('form');
-    if (form && !event.isDefaultPrevented()) {
-      form.requestSubmit();
-    }
-    event.preventDefault();
-
-    const plainText = props.tokensToText ? props.tokensToText(props.tokens ?? []) : getPromptText(props.tokens ?? []);
-
-    if (props.onAction) {
-      props.onAction({ value: plainText, tokens: [...(props.tokens ?? [])] });
-    }
-  }
-
-  return {
-    handleMenuNavigation,
-    handleEnterKey,
+  const emitChange = (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
+    props.markTokensAsSent(detail.tokens);
+    props.onChange(detail);
   };
+
+  // Forward to consumer's onKeyDown
+  fireKeyboardEvent(props.onKeyDown, event);
+
+  const menuItemsState = props.getMenuItemsState();
+  const menuItemsHandlers = props.getMenuItemsHandlers();
+  const menuOpen = props.getMenuOpen();
+
+  handleKey(
+    event as unknown as {
+      keyCode: number;
+      shiftKey?: boolean;
+      ctrlKey?: boolean;
+      metaKey?: boolean;
+      currentTarget: HTMLElement;
+    },
+    {
+      onInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
+      onInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
+      onShiftInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
+      onShiftInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
+      onSelectAll: () => {
+        if (tokens?.length === 0) {
+          event.preventDefault();
+        }
+      },
+      onBackspace: () => {
+        if (
+          editableElement &&
+          handleReferenceTokenDeletion(
+            event,
+            true,
+            editableElement,
+            editableState,
+            props.announceTokenOperation,
+            props.i18nStrings,
+            caretController
+          )
+        ) {
+          return;
+        }
+        if (!tokens || !editableElement) {
+          return;
+        }
+        if (tokens.length === 0) {
+          event.preventDefault();
+          return;
+        }
+        handleBackspaceAtParagraphStart(event, editableElement, tokens, tokensToText, emitChange, caretController);
+      },
+      onDelete: () => {
+        if (
+          editableElement &&
+          handleReferenceTokenDeletion(
+            event,
+            false,
+            editableElement,
+            editableState,
+            props.announceTokenOperation,
+            props.i18nStrings,
+            caretController
+          )
+        ) {
+          return;
+        }
+        if (!tokens || !editableElement) {
+          return;
+        }
+        if (handleDeleteAtParagraphEnd(event, editableElement, tokens, tokensToText, emitChange, caretController)) {
+          return;
+        }
+        handleDeleteAfterTrigger(event, editableElement);
+      },
+      onShiftEnter: () => {
+        if (event.nativeEvent.isComposing) {
+          return;
+        }
+        event.preventDefault();
+        if (caretController?.findActiveTrigger()) {
+          return;
+        }
+        if (editableElement) {
+          splitParagraphAtCaret(editableElement, caretController);
+        }
+      },
+      onEnter: () => {
+        if (event.nativeEvent.isComposing) {
+          return;
+        }
+        if (menuOpen && menuItemsHandlers) {
+          event.preventDefault();
+          menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+          return;
+        }
+        handleEnterSubmit(event, props);
+      },
+      onTab: () => {
+        if (menuOpen && menuItemsHandlers && !event.shiftKey) {
+          event.preventDefault();
+          menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+        }
+      },
+      onSpace: () => {
+        if (
+          editableElement &&
+          handleSpaceAfterClosedTrigger(event, editableElement, props.menuIsOpen, caretController)
+        ) {
+          return;
+        }
+        if (menuOpen && menuItemsHandlers && menuItemsState) {
+          handleSpaceInOpenMenu(event, {
+            menuItemsState,
+            menuItemsHandlers,
+            getMenuStatusType: props.getMenuStatusType,
+            closeMenu: props.closeMenu,
+            caretController: caretController ?? undefined,
+          });
+        }
+      },
+      onBlockEnd: () => {
+        if (menuOpen && menuItemsHandlers) {
+          event.preventDefault();
+          menuItemsHandlers.moveHighlightWithKeyboard(1);
+        }
+      },
+      onBlockStart: () => {
+        if (menuOpen && menuItemsHandlers) {
+          event.preventDefault();
+          menuItemsHandlers.moveHighlightWithKeyboard(-1);
+        }
+      },
+      onEscape: () => {
+        if (menuOpen) {
+          event.preventDefault();
+          props.closeMenu();
+        }
+      },
+    }
+  );
+}
+
+/** Handles Enter key for form submission and onAction. */
+function handleEnterSubmit(event: React.KeyboardEvent<HTMLDivElement>, props: KeyboardHandlerProps): void {
+  if (props.disabled || props.readOnly) {
+    event.preventDefault();
+    return;
+  }
+
+  const currentTarget = event.currentTarget;
+  if (!isHTMLElement(currentTarget)) {
+    return;
+  }
+
+  const form = currentTarget.closest('form');
+  if (form && !event.isDefaultPrevented()) {
+    form.requestSubmit();
+  }
+  event.preventDefault();
+
+  const plainText = props.tokensToText ? props.tokensToText(props.tokens ?? []) : getPromptText(props.tokens ?? []);
+
+  if (props.onAction) {
+    props.onAction({ value: plainText, tokens: [...(props.tokens ?? [])] });
+  }
 }
 
 /** Splits the current paragraph at the caret position, creating a new paragraph below. */
@@ -268,6 +375,12 @@ export function handleReferenceTokenDeletion(
     return false;
   }
 
+  const elementToRemove = (wrapperElement || tokenElement)!;
+  const paragraph = elementToRemove.parentNode;
+  if (!paragraph) {
+    return false;
+  }
+
   event.preventDefault();
 
   const tokenLabel = tokenElement!.textContent?.trim() || '';
@@ -276,12 +389,6 @@ export function handleReferenceTokenDeletion(
     if (announcement) {
       announceTokenOperation(announcement);
     }
-  }
-
-  const elementToRemove = (wrapperElement || tokenElement)!;
-  const paragraph = elementToRemove.parentNode;
-  if (!isHTMLElement(paragraph)) {
-    return true;
   }
 
   state.skipNextZeroWidthUpdate = true;
@@ -302,43 +409,11 @@ export function handleReferenceTokenDeletion(
   return true;
 }
 
-function handleArrowNavigation(
-  event: React.KeyboardEvent<HTMLDivElement>,
-  container: Node,
-  offset: number,
-  caretController: CaretController | null,
-  announceTokenOperation?: (message: string) => void
-): boolean {
-  const direction = getLogicalDirection(event.key, event.currentTarget);
-  const { sibling, isReferenceToken } = findAdjacentToken(container, offset, direction);
-
-  if (isReferenceToken && sibling) {
-    event.preventDefault();
-
-    if (direction === 'backward') {
-      caretController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
-    } else {
-      caretController?.moveForward(TOKEN_LENGTHS.REFERENCE);
-    }
-
-    // Announce the reference label for screen readers
-    if (announceTokenOperation && isHTMLElement(sibling)) {
-      const label = stripZeroWidthCharacters(sibling.textContent?.trim() || '');
-      if (label) {
-        announceTokenOperation(label);
-      }
-    }
-
-    return true;
-  }
-
-  return false;
-}
-
 /** Handles left/right arrow key navigation, jumping over atomic reference tokens. */
 /** If the caret is inside a reference's caret-spot, normalizes it to the paragraph level. */
 function normalizeCaretOutOfReference(
   container: Node,
+  direction: 'forward' | 'backward',
   event: React.KeyboardEvent<HTMLDivElement>,
   selection: Selection
 ): boolean {
@@ -362,8 +437,7 @@ function normalizeCaretOutOfReference(
   }
 
   const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-  const logicalDir = getLogicalDirection(event.key, event.currentTarget);
-  const newOffset = logicalDir === 'backward' ? wrapperIndex : wrapperIndex + 1;
+  const newOffset = direction === 'backward' ? wrapperIndex : wrapperIndex + 1;
 
   event.preventDefault();
   const newRange = document.createRange();
@@ -374,40 +448,82 @@ function normalizeCaretOutOfReference(
   return true;
 }
 
-export function handleArrowKeyNavigation(
+/** Handles inline-start (backward) arrow key — plain navigation or shift+selection across references. */
+export function handleInlineStart(
   event: React.KeyboardEvent<HTMLDivElement>,
   caretController: CaretController | null,
   announceTokenOperation?: (message: string) => void
-): boolean {
-  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
-    return false;
-  }
-
+): void {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
-    return false;
+    return;
   }
-
   const range = selection.getRangeAt(0);
 
-  if (range.collapsed && normalizeCaretOutOfReference(range.startContainer, event, selection)) {
-    return true;
+  if (range.collapsed && normalizeCaretOutOfReference(range.startContainer, 'backward', event, selection)) {
+    return;
   }
 
   if (event.shiftKey) {
-    return handleShiftArrowAcrossTokens(event, selection, range);
+    handleShiftArrowAcrossTokens(event, selection, range, 'backward');
+    return;
   }
 
-  return handleArrowNavigation(event, range.startContainer, range.startOffset, caretController, announceTokenOperation);
+  const { sibling, isReferenceToken } = findAdjacentToken(range.startContainer, range.startOffset, 'backward');
+  if (isReferenceToken && sibling) {
+    event.preventDefault();
+    caretController?.moveBackward(TOKEN_LENGTHS.REFERENCE);
+    if (announceTokenOperation && isHTMLElement(sibling)) {
+      const label = stripZeroWidthCharacters(sibling.textContent?.trim() || '');
+      if (label) {
+        announceTokenOperation(label);
+      }
+    }
+  }
+}
+
+/** Handles inline-end (forward) arrow key — plain navigation or shift+selection across references. */
+export function handleInlineEnd(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  caretController: CaretController | null,
+  announceTokenOperation?: (message: string) => void
+): void {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) {
+    return;
+  }
+  const range = selection.getRangeAt(0);
+
+  if (range.collapsed && normalizeCaretOutOfReference(range.startContainer, 'forward', event, selection)) {
+    return;
+  }
+
+  if (event.shiftKey) {
+    handleShiftArrowAcrossTokens(event, selection, range, 'forward');
+    return;
+  }
+
+  const { sibling, isReferenceToken } = findAdjacentToken(range.startContainer, range.startOffset, 'forward');
+  if (isReferenceToken && sibling) {
+    event.preventDefault();
+    caretController?.moveForward(TOKEN_LENGTHS.REFERENCE);
+    if (announceTokenOperation && isHTMLElement(sibling)) {
+      const label = stripZeroWidthCharacters(sibling.textContent?.trim() || '');
+      if (label) {
+        announceTokenOperation(label);
+      }
+    }
+  }
 }
 
 /** After the browser handles Shift+Arrow, nudge the focus past any reference it landed inside. */
 function handleShiftArrowAcrossTokens(
   event: React.KeyboardEvent<HTMLDivElement>,
   selection: Selection,
-  range: Range
+  range: Range,
+  direction: 'forward' | 'backward'
 ): boolean {
-  const isBackward = getLogicalDirection(event.key, event.currentTarget) === 'backward';
+  const isBackward = direction === 'backward';
 
   // Check if the focus is adjacent to a reference in the arrow direction
   const focusNode = selection.focusNode;
@@ -471,12 +587,12 @@ function handleShiftArrowAcrossTokens(
     return false;
   }
 
-  event.preventDefault();
-
   const parent = adjacentRef.parentNode;
   if (!parent) {
     return false;
   }
+
+  event.preventDefault();
 
   const index = Array.from(parent.childNodes).indexOf(adjacentRef as ChildNode);
 
@@ -539,7 +655,6 @@ export function handleSpaceAfterClosedTrigger(
   event: React.KeyboardEvent<HTMLDivElement>,
   editableElement: HTMLDivElement,
   menuOpen: boolean,
-  ignoreCaretDetection: React.MutableRefObject<boolean>,
   caretController: CaretController | null
 ): boolean {
   if (event.key !== ' ' || menuOpen) {
@@ -583,12 +698,12 @@ export function handleSpaceAfterClosedTrigger(
     return false;
   }
 
-  event.preventDefault();
-
   const paragraph = triggerElement.parentElement;
-  if (!paragraph || paragraph.nodeName !== 'P') {
+  if (!paragraph) {
     return false;
   }
+
+  event.preventDefault();
 
   const spaceNode = document.createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
@@ -596,11 +711,6 @@ export function handleSpaceAfterClosedTrigger(
   if (caretController) {
     caretController.capture();
   }
-
-  ignoreCaretDetection.current = true;
-  setTimeout(() => {
-    ignoreCaretDetection.current = false;
-  }, CARET_DETECTION_DELAY);
 
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 
