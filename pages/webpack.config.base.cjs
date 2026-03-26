@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const postcssLayerWrap = require('../build-tools/postcss/postcss-layer-wrap.cjs');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = !process.env.CI;
@@ -86,7 +87,27 @@ module.exports = ({
             },
           },
         },
-        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+        {
+          test: /\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: [postcssLayerWrap({ layerName: 'awsui-components' })],
+                },
+              },
+            },
+          ],
+          include: filePath => filePath.includes(componentsPath) || filePath.includes(designTokensPath),
+        },
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          exclude: filePath => filePath.includes(componentsPath) || filePath.includes(designTokensPath),
+        },
         {
           test: /\.scss$/,
           use: [
