@@ -442,14 +442,12 @@ const InternalDropdown = ({
       // Since the listener is registered on the window, `event.target` will incorrectly point at the
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
-      // When using an internal trigger, triggerRef is the wrapper div around the trigger element.
-      // A click on the wrapper directly (in the gap between the wrapper boundary and the trigger element inside)
-      // must fire onOutsideClick. Only clicks on strict descendants (the actual trigger element) should suppress it.
-      // When using an external triggerRef, the ref points directly at the trigger element, so all clicks on it are inside.
-      const isInsideTriggerElement = externalTriggerRef
-        ? nodeBelongs(triggerRef.current, target)
-        : nodeBelongs(triggerRef.current, target) && target !== triggerRef.current;
-      if (!nodeBelongs(dropdownRef.current, target) && !isInsideTriggerElement) {
+      // For internal triggers, the wrapper div itself counts as outside — only its children are the trigger.
+      // For external triggers, the ref is the trigger element directly, so it counts as inside.
+      const isOutsideTrigger =
+        !nodeBelongs(triggerRef.current, target) || (!externalTriggerRef && target === triggerRef.current);
+
+      if (!nodeBelongs(dropdownRef.current, target) && isOutsideTrigger) {
         fireNonCancelableEvent(onOutsideClick);
       }
     };
