@@ -91,12 +91,6 @@ function buildTokenSelector(options: TokenQueryOptions): string {
   return selector;
 }
 
-/** Finds all elements matching the given token type and/or token ID within a container. */
-export function findElements(container: HTMLElement, options: TokenQueryOptions): HTMLElement[] {
-  const selector = buildTokenSelector(options);
-  return selector ? Array.from(container.querySelectorAll<HTMLElement>(selector)) : [];
-}
-
 /** Finds the first element matching the given token type and/or token ID within a container. */
 export function findElement(container: HTMLElement, options: TokenQueryOptions): HTMLElement | null {
   const selector = buildTokenSelector(options);
@@ -137,11 +131,6 @@ export function isEmptyState(element: HTMLElement): boolean {
   return paragraphs.length === 0 || (paragraphs.length === 1 && hasOnlyTrailingBR(paragraphs[0]));
 }
 
-/** Checks if a token type represents a caret spot element. */
-export function isCaretSpotType(tokenType: ElementType | string | null): boolean {
-  return tokenType === ElementType.CaretSpotBefore || tokenType === ElementType.CaretSpotAfter;
-}
-
 /** Resets the element to a single empty paragraph with a trailing BR. */
 export function setEmptyState(element: HTMLElement): void {
   const paragraphs = findAllParagraphs(element);
@@ -154,6 +143,11 @@ export function setEmptyState(element: HTMLElement): void {
   const p = createParagraph();
   p.appendChild(createTrailingBreak());
   element.appendChild(p);
+}
+
+/** Checks if a token type represents a caret spot element. */
+export function isCaretSpotType(tokenType: ElementType | string | null): boolean {
+  return tokenType === ElementType.CaretSpotBefore || tokenType === ElementType.CaretSpotAfter;
 }
 
 export type ArrowDirection = 'backward' | 'forward';

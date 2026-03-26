@@ -56,16 +56,6 @@ export function areAllTokensPinned(tokens: readonly PromptInputProps.InputToken[
   return tokens.every(isPinnedReferenceToken);
 }
 
-export function validateTriggerWithPinnedTokens(
-  menu: PromptInputProps.MenuDefinition,
-  precedingTokens: readonly PromptInputProps.InputToken[]
-): boolean {
-  if (menu.useAtStart) {
-    return areAllTokensPinned(precedingTokens);
-  }
-  return true;
-}
-
 /** Checks if a trigger is valid given the menu config, position, and preceding tokens. */
 export function validateTrigger(
   menu: PromptInputProps.MenuDefinition,

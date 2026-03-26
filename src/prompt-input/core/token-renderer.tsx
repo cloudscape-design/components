@@ -54,14 +54,6 @@ export interface PortalContainer {
   label: string;
 }
 
-/** Props passed to the renderToken callback for rendering reference tokens. */
-export interface RenderTokenProps {
-  id: string;
-  label: string;
-  disabled: boolean;
-  readOnly: boolean;
-}
-
 interface ParagraphGroup {
   tokens: PromptInputProps.InputToken[];
 }

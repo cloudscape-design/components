@@ -13,7 +13,6 @@ import {
   getCaretPositionAfterTokenRemoval,
   mergeConsecutiveTextTokens,
   validateTrigger,
-  validateTriggerWithPinnedTokens,
 } from '../core/token-utils';
 import { PromptInputProps } from '../interfaces';
 
@@ -120,37 +119,6 @@ describe('areAllTokensPinned', () => {
 
   test('returns false for unpinned reference tokens', () => {
     expect(areAllTokensPinned([ref('r1', '@u', 'uid', 'm')])).toBe(false);
-  });
-});
-
-describe('validateTriggerWithPinnedTokens', () => {
-  const useAtStartMenu: PromptInputProps.MenuDefinition = {
-    id: 'files',
-    trigger: '#',
-    options: [],
-    useAtStart: true,
-  };
-  const normalMenu: PromptInputProps.MenuDefinition = {
-    id: 'mentions',
-    trigger: '@',
-    options: [],
-  };
-
-  test('returns true for useAtStart menu when all preceding tokens are pinned', () => {
-    expect(validateTriggerWithPinnedTokens(useAtStartMenu, [pinnedRef('p1', '#a', 'a', 'f')])).toBe(true);
-  });
-
-  test('returns true for useAtStart menu when no preceding tokens', () => {
-    expect(validateTriggerWithPinnedTokens(useAtStartMenu, [])).toBe(true);
-  });
-
-  test('returns false for useAtStart menu when preceding tokens include non-pinned', () => {
-    expect(validateTriggerWithPinnedTokens(useAtStartMenu, [text('hello')])).toBe(false);
-  });
-
-  test('returns true for normal menu regardless of preceding tokens', () => {
-    expect(validateTriggerWithPinnedTokens(normalMenu, [text('hello')])).toBe(true);
-    expect(validateTriggerWithPinnedTokens(normalMenu, [])).toBe(true);
   });
 });
 
