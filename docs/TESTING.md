@@ -1,4 +1,4 @@
-# Testing
+# Running Tests
 
 ## Quick Reference
 

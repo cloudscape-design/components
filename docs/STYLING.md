@@ -2,10 +2,6 @@
 
 Prefer design tokens and custom CSS properties over hardcoded values (colors, spacing, font sizes, etc.). This keeps styles consistent across themes and modes.
 
-## Design Tokens
-
-Tokens are defined in `style-dictionary/` and consumed in SCSS via the `awsui` namespace.
-
 ## Rules
 
 - Root elements must not have outer margins — spacing is managed by parent components
