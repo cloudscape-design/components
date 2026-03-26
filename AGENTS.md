@@ -15,7 +15,7 @@ npm install
 ## Running Locally
 
 ```
-npm start              # starts watcher + dev server (React 16, default)
+npm start              # starts watcher + dev server
 npm run start:react18  # starts watcher + dev server (React 18)
 ```
 

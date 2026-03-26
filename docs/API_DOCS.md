@@ -1,10 +1,10 @@
 # API Documentation Comments
 
-This project uses `@cloudscape-design/documenter` to generate API docs from JSDoc comments in component interface files (`src/<component>/interfaces.ts`).
+Documentation is generated from JSDoc comments in component interface files (`src/<component>/interfaces.ts`).
 
 ## Writing Prop Descriptions
 
-Every public prop must have a JSDoc comment describing its purpose. For union/enum props, list the available options and their meanings inline in the description:
+Every public prop must have a JSDoc comment. For union/enum props, list available options inline:
 
 ```ts
 /** Determines the general styling of the button as follows:
@@ -15,19 +15,13 @@ Every public prop must have a JSDoc comment describing its purpose. For union/en
 variant?: ButtonProps.Variant;
 ```
 
-Do not use `@default` tags — default values are documented by the component implementation (destructuring defaults in `index.tsx`), not in the interface comments.
-
 ## Special Tags
 
-- `@i18n` — marks internationalization properties
-- `@analytics` — marks analytics metadata properties
-- `@deprecated` — marks deprecated properties (include replacement info)
-- `@displayname` — overrides the display name (e.g. `children` → `text`)
-- `@awsuiSystem core` — marks properties that are part of the core system (style API, native attributes)
+- `@displayname` — overrides the display name for children slots (e.g. `children` → `text`)
 
 ## Sub-types
 
-Define union types as named type aliases in the component's namespace, not as inline unions on the prop:
+Define union types as named type aliases in the component's namespace, not as inline unions:
 
 ```ts
 export namespace ButtonProps {
@@ -36,3 +30,7 @@ export namespace ButtonProps {
 ```
 
 Then reference them in the interface: `variant?: ButtonProps.Variant`.
+
+## Related
+
+- For component props and interface conventions, see [COMPONENT_CONVENTIONS.md](COMPONENT_CONVENTIONS.md).
