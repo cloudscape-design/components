@@ -3,10 +3,10 @@
 import React, { useRef, useState } from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 
-import Dropdown from '../../../../../lib/components/internal/components/dropdown';
-import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
-import customCssProps from '../../../../../lib/components/internal/generated/custom-css-properties';
-import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
+import { calculatePosition } from '../../../lib/components/dropdown/dropdown-fit-handler';
+import Dropdown from '../../../lib/components/dropdown/internal';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import DropdownWrapper from '../../../lib/components/test-utils/dom/internal/dropdown';
 
 const outsideId = 'outside';
 
@@ -22,10 +22,8 @@ function renderDropdown(dropdown: React.ReactNode): [DropdownWrapper, HTMLElemen
   return [new DropdownWrapper(dropdownElement), outsideElement];
 }
 
-jest.mock('../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler', () => {
-  const originalModule = jest.requireActual(
-    '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler'
-  );
+jest.mock('../../../lib/components/dropdown/dropdown-fit-handler', () => {
+  const originalModule = jest.requireActual('../../../lib/components/dropdown/dropdown-fit-handler');
   return {
     ...originalModule,
     calculatePosition: jest.fn(originalModule.calculatePosition),
@@ -57,6 +55,32 @@ describe('Dropdown Component', () => {
       await runPendingEvents();
 
       act(() => outsideElement.click());
+      expect(handleOutsideClick).toHaveBeenCalled();
+    });
+
+    test('does not fire event when clicking the trigger element', async () => {
+      const handleOutsideClick = jest.fn();
+      renderDropdown(
+        <Dropdown
+          trigger={<button data-testid="trigger">Trigger</button>}
+          onOutsideClick={handleOutsideClick}
+          open={true}
+        />
+      );
+      await runPendingEvents();
+
+      act(() => screen.getByTestId('trigger').click());
+      expect(handleOutsideClick).not.toHaveBeenCalled();
+    });
+
+    test('fires event when clicking the trigger wrapper div', async () => {
+      const handleOutsideClick = jest.fn();
+      const [wrapper] = renderDropdown(
+        <Dropdown trigger={<button>Trigger</button>} onOutsideClick={handleOutsideClick} open={true} />
+      );
+      await runPendingEvents();
+
+      act(() => wrapper.findTrigger().getElement().click());
       expect(handleOutsideClick).toHaveBeenCalled();
     });
 
@@ -517,6 +541,33 @@ describe('Dropdown Component', () => {
       await runPendingEvents();
 
       act(() => screen.getByTestId('external-trigger').click());
+      expect(handleOutsideClick).not.toHaveBeenCalled();
+    });
+
+    test('does not fire onOutsideClick when clicking a child of the external trigger', async () => {
+      const handleOutsideClick = jest.fn();
+      function TestComponent() {
+        const triggerRef = useRef<HTMLDivElement>(null);
+        return (
+          <div>
+            <button data-testid={outsideId} />
+            <div ref={triggerRef}>
+              <button data-testid="trigger-child">Child</button>
+            </div>
+            <Dropdown
+              trigger={null}
+              triggerRef={triggerRef as React.RefObject<HTMLElement>}
+              open={true}
+              onOutsideClick={handleOutsideClick}
+              content={<div>Content</div>}
+            />
+          </div>
+        );
+      }
+      render(<TestComponent />);
+      await runPendingEvents();
+
+      act(() => screen.getByTestId('trigger-child').click());
       expect(handleOutsideClick).not.toHaveBeenCalled();
     });
   });

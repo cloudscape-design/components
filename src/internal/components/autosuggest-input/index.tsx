@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
+import { ExpandToViewport } from '../../../dropdown/interfaces';
+import InternalDropdown from '../../../dropdown/internal';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -26,8 +28,6 @@ import { KeyCode } from '../../keycode';
 import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
-import Dropdown from '../dropdown';
-import { ExpandToViewport } from '../dropdown/interfaces';
 
 import styles from './styles.css.js';
 
@@ -302,7 +302,7 @@ const AutosuggestInput = React.forwardRef(
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
-        <Dropdown
+        <InternalDropdown
           minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
           maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
           contentKey={dropdownContentKey}

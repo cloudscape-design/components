@@ -9,7 +9,8 @@ import buttonStyles from '../../../button/styles.selectors.js';
 import categoryStyles from '../../../button-dropdown/category-elements/styles.selectors.js';
 import itemStyles from '../../../button-dropdown/item-element/styles.selectors.js';
 import styles from '../../../button-dropdown/styles.selectors.js';
-import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 
 function getItemSelector({ disabled }: { disabled?: boolean }): string {
   let selector = `.${itemStyles['item-element']}`;
@@ -45,7 +46,7 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
   }
 
   findOpenDropdown(): ElementWrapper | null {
-    return createWrapper().find(`.${dropdownStyles.dropdown}[data-open=true]`);
+    return createWrapper().find(`:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`);
   }
 
   /**
