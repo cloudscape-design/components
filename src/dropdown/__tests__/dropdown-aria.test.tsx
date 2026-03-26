@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Dropdown from '../../../../../lib/components/internal/components/dropdown';
-import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
+import Dropdown from '../../../lib/components/dropdown/internal';
+import DropdownWrapper from '../../../lib/components/test-utils/dom/dropdown';
 
 function renderDropdown(jsx: React.ReactElement) {
   const { container } = render(jsx);

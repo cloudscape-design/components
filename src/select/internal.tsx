@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
-import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { OptionGroup } from '../internal/components/option/interfaces.js';

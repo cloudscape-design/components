@@ -10,7 +10,8 @@ import OptionWrapper from '../internal/option';
 import OptionsListWrapper from '../internal/options-list';
 
 import mainStyles from '../../../autosuggest/styles.selectors.js';
-import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
@@ -102,7 +103,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
 
 class PortalAutosuggestDropdownWrapper extends AutosuggestDropdownWrapper {
   findOpenDropdown(): ElementWrapper | null {
-    return createWrapper().find(`.${dropdownStyles.dropdown}[data-open=true]`);
+    return createWrapper().find(`:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`);
   }
 }
 
@@ -115,7 +116,10 @@ export default class AutosuggestWrapper extends InputWrapper {
    */
   findDropdown(options = { expandToViewport: false }): AutosuggestDropdownWrapper {
     return options.expandToViewport
-      ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalAutosuggestDropdownWrapper)!
+      ? createWrapper().findComponent(
+          `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
+          PortalAutosuggestDropdownWrapper
+        )!
       : new AutosuggestDropdownWrapper(this.getElement());
   }
 

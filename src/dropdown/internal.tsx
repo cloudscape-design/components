@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
@@ -7,15 +8,17 @@ import clsx from 'clsx';
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { fireNonCancelableEvent } from '../../events';
-import customCssProps from '../../generated/custom-css-properties';
-import { useMobile } from '../../hooks/use-mobile';
-import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import { nodeBelongs } from '../../utils/node-belongs';
-import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
-import TabTrap from '../tab-trap/index.js';
-import { Transition, TransitionStatus } from '../transition';
+import { getBaseProps } from '../internal/base-component';
+import { getFirstFocusable, getLastFocusable } from '../internal/components/focus-lock/utils.js';
+import TabTrap from '../internal/components/tab-trap/index.js';
+import { Transition, TransitionStatus } from '../internal/components/transition';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import customCssProps from '../internal/generated/custom-css-properties';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { nodeBelongs } from '../internal/utils/node-belongs';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,
@@ -24,9 +27,31 @@ import {
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
 import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
-import { DropdownProps } from './interfaces';
+import { DropdownAlignment, DropdownProps, DropdownWidthConstraint } from './interfaces';
+import { getDropdownStyles } from './style';
+
+export interface InternalDropdownProps
+  extends Omit<DropdownProps, 'minWidth' | 'maxWidth'>,
+    InternalBaseComponentProps {
+  onMouseDown?: React.MouseEventHandler;
+  contentKey?: string;
+  dropdownId?: string;
+  dropdownContentId?: string;
+  stretchHeight?: boolean;
+  stretchTriggerHeight?: boolean;
+  interior?: boolean;
+  scrollable?: boolean;
+  loopFocus?: boolean;
+  minWidth?: DropdownWidthConstraint;
+  maxWidth?: DropdownWidthConstraint;
+  preferredAlignment?: DropdownAlignment;
+  hideBlockBorder?: boolean;
+  onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+}
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface DropdownContainerProps {
   triggerRef: React.RefObject<HTMLElement>;
@@ -86,6 +111,7 @@ interface TransitionContentProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  dropdownStyle?: React.CSSProperties;
 }
 
 const TransitionContent = ({
@@ -114,6 +140,7 @@ const TransitionContent = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  dropdownStyle,
 }: TransitionContentProps) => {
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   const dropdownStyles: Record<string, string> = {};
@@ -154,12 +181,13 @@ const TransitionContent = ({
           !header && !content && styles['is-empty'],
           isRefresh && styles.refresh
         )}
+        style={dropdownStyle}
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
-            {header}
+            {header && <div className={testUtilStyles.header}>{header}</div>}
             {content}
-            {footer}
+            {footer && <div className={testUtilStyles.footer}>{footer}</div>}
           </DropdownContextProvider>
         </div>
       </div>
@@ -167,7 +195,7 @@ const TransitionContent = ({
   );
 };
 
-const Dropdown = ({
+const InternalDropdown = ({
   content,
   trigger,
   triggerRef: externalTriggerRef,
@@ -200,8 +228,13 @@ const Dropdown = ({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
-}: DropdownProps) => {
+  style,
+  __internalRootRef,
+  ...restProps
+}: InternalDropdownProps) => {
+  const baseProps = getBaseProps(restProps);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const mergedRef = useMergeRefs(wrapperRef, __internalRootRef);
   const internalTriggerRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
@@ -409,7 +442,12 @@ const Dropdown = ({
       // Since the listener is registered on the window, `event.target` will incorrectly point at the
       // shadow root if the component is rendered inside shadow DOM.
       const target = event.composedPath ? event.composedPath()[0] : event.target;
-      if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
+      // For internal triggers, the wrapper div itself counts as outside — only its children are the trigger.
+      // For external triggers, the ref is the trigger element directly, so it counts as inside.
+      const isOutsideTrigger =
+        !nodeBelongs(triggerRef.current, target) || (!externalTriggerRef && target === triggerRef.current);
+
+      if (!nodeBelongs(dropdownRef.current, target) && isOutsideTrigger) {
         fireNonCancelableEvent(onOutsideClick);
       }
     };
@@ -418,7 +456,7 @@ const Dropdown = ({
     return () => {
       window.removeEventListener('click', clickListener, true);
     };
-  }, [open, onOutsideClick, triggerRef]);
+  }, [open, onOutsideClick, triggerRef, externalTriggerRef]);
 
   // subscribe to Escape key press
   useEffect(() => {
@@ -495,19 +533,21 @@ const Dropdown = ({
 
   return (
     <div
+      {...baseProps}
       className={clsx(
         styles.root,
         interior && styles.interior,
-        stretchTriggerHeight && styles['stretch-trigger-height']
+        stretchTriggerHeight && styles['stretch-trigger-height'],
+        baseProps.className
       )}
-      ref={wrapperRef}
+      ref={mergedRef}
       onFocus={focusHandler}
       onBlur={blurHandler}
     >
       {!externalTriggerRef && (
         <div
           id={referrerId}
-          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])}
+          className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'], testUtilStyles.trigger)}
           ref={internalTriggerRef}
         >
           {trigger}
@@ -560,6 +600,7 @@ const Dropdown = ({
                 ariaLabel={ariaLabel}
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
+                dropdownStyle={getDropdownStyles(style)}
               />
 
               <TabTrap
@@ -578,4 +619,4 @@ const isInteriorPosition = (
   position: DropdownPosition | InteriorDropdownPosition
 ): position is InteriorDropdownPosition => (position as InteriorDropdownPosition).insetBlockEnd !== undefined;
 
-export default Dropdown;
+export default InternalDropdown;

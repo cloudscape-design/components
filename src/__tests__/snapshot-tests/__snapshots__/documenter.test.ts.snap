@@ -11587,6 +11587,283 @@ It should contain the only \`h2\` used in the drawer.",
 }
 `;
 
+exports[`Components definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "dashCaseName": "dropdown",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user presses the Escape key while the dropdown is open.
+The dropdown does not close automatically - the \`open\` prop needs to be
+updated to actually close the dropdown.",
+      "name": "onEscape",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when any element inside the dropdown content gains focus.
+This includes nested interactive elements like buttons, links, or inputs.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusEnter",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus leaves the dropdown content entirely.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusLeave",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user clicks outside the dropdown. The dropdown does not
+close automatically - the \`open\` prop needs to be updated to actually close
+the dropdown.",
+      "name": "onOutsideClick",
+    },
+  ],
+  "functions": [],
+  "name": "Dropdown",
+  "properties": [
+    {
+      "description": "Adds \`aria-describedby\` to the dropdown content element.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-label\` to the dropdown content element.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the dropdown content element.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`role\` to the dropdown content element.",
+      "name": "ariaRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+      "name": "expandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Maximum height constraint for the dropdown content in pixels.
+When set, constrains the calculated height to not exceed this value.",
+      "name": "maxHeight",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Maximum width for the dropdown in pixels. If no value is specified, the
+dropdown will expand to fit its content.",
+      "name": "maxWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Minimum width for the dropdown in pixels. If no value is specified, the
+dropdown will shrink to fit its content.",
+      "name": "minWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Open state of the dropdown.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing CSS properties to customize the dropdown's visual appearance.",
+      "inlineType": {
+        "name": "DropdownProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "background",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "dropdown",
+            "optional": true,
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "DropdownProps.Style",
+    },
+    {
+      "description": "Explicit ID for the trigger element, used as the referrer ID for portal mode.
+Use this when \`triggerRef\` is provided.",
+      "name": "triggerId",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Optional ref to an external element used for positioning calculations.
+When provided, the \`trigger\` prop is not rendered and this ref's element
+is used as the positioning anchor for the dropdown instead.",
+      "inlineType": {
+        "name": "React.RefObject<HTMLElement>",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "NonNullable<T>",
+              "type": "union",
+              "values": [
+                "T",
+                "{}",
+              ],
+            },
+            "name": "current",
+            "optional": false,
+            "type": "NonNullable<T>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "triggerRef",
+      "optional": true,
+      "type": "React.RefObject<HTMLElement>",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Main content of the dropdown.",
+      "isDefault": false,
+      "name": "content",
+    },
+    {
+      "description": "Optional footer content that stays fixed at the bottom while
+scrolling dropdown content.
+Typically used to display loading status or action buttons.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Optional header content that stays fixed at the top while
+scrolling dropdown content.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "The trigger element that opens/closes the dropdown.",
+      "isDefault": false,
+      "name": "trigger",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
+}
+`;
+
 exports[`Components definition for error-boundary matches the snapshot: error-boundary 1`] = `
 {
   "dashCaseName": "error-boundary",
@@ -32919,7 +33196,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -33268,7 +33545,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -36916,7 +37193,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -37179,6 +37456,110 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the trigger element.",
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the dropdown content.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the dropdown footer.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the dropdown header.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -38809,7 +39190,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44186,7 +44567,7 @@ Supported options:
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44406,7 +44787,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -47008,7 +47389,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -47135,6 +47516,94 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the trigger element.",
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the dropdown content.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the dropdown footer.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the dropdown header.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -48338,7 +48807,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {

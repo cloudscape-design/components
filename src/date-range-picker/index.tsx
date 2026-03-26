@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import ButtonTrigger from '../internal/components/button-trigger';
-import Dropdown from '../internal/components/dropdown';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 import { fireNonCancelableEvent } from '../internal/events';
