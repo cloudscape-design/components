@@ -10,7 +10,6 @@ import {
   createTrailingBreak,
   findAllParagraphs,
   findElement,
-  findElements,
   getLogicalDirection,
   getTokenType,
   hasOnlyTrailingBR,
@@ -94,42 +93,6 @@ describe('createTrailingBreak', () => {
     const br = createTrailingBreak();
     expect(br.tagName).toBe('BR');
     expect(br.getAttribute('data-id')).toBe(ElementType.TrailingBreak);
-  });
-});
-
-describe('findElements', () => {
-  test('finds elements by tokenType', () => {
-    const container = document.createElement('div');
-    const ref1 = document.createElement('span');
-    ref1.setAttribute('data-type', 'reference');
-    const ref2 = document.createElement('span');
-    ref2.setAttribute('data-type', 'reference');
-    const other = document.createElement('span');
-    other.setAttribute('data-type', 'text');
-    container.appendChild(ref1);
-    container.appendChild(ref2);
-    container.appendChild(other);
-
-    const results = findElements(container, { tokenType: 'reference' });
-    expect(results).toHaveLength(2);
-  });
-
-  test('finds elements by array of tokenTypes', () => {
-    const container = document.createElement('div');
-    const refEl = document.createElement('span');
-    refEl.setAttribute('data-type', 'reference');
-    const pinned = document.createElement('span');
-    pinned.setAttribute('data-type', 'pinned');
-    container.appendChild(refEl);
-    container.appendChild(pinned);
-
-    const results = findElements(container, { tokenType: ['reference', 'pinned'] });
-    expect(results).toHaveLength(2);
-  });
-
-  test('returns empty array when no options provided', () => {
-    const container = document.createElement('div');
-    expect(findElements(container, {})).toEqual([]);
   });
 });
 
@@ -315,32 +278,6 @@ describe('setEmptyState', () => {
     expect(el.querySelectorAll('p')).toHaveLength(1);
     expect(el.querySelector('p')!.childNodes).toHaveLength(1);
     expect(el.querySelector('p')!.firstChild!.nodeName).toBe('BR');
-  });
-});
-
-describe('findElements with tokenId', () => {
-  test('finds element by data-id for non-trigger types', () => {
-    const container = document.createElement('div');
-    const el = document.createElement('span');
-    el.setAttribute('data-type', 'reference');
-    el.setAttribute('data-id', 'ref-123');
-    container.appendChild(el);
-
-    const results = findElements(container, { tokenType: 'reference', tokenId: 'ref-123' });
-    expect(results).toHaveLength(1);
-    expect(results[0]).toBe(el);
-  });
-
-  test('finds trigger element by data-id attribute', () => {
-    const container = document.createElement('div');
-    const el = document.createElement('span');
-    el.setAttribute('data-type', ElementType.Trigger);
-    el.setAttribute('data-id', 'trigger-123');
-    container.appendChild(el);
-
-    const results = findElements(container, { tokenType: ElementType.Trigger, tokenId: 'trigger-123' });
-    expect(results).toHaveLength(1);
-    expect(results[0]).toBe(el);
   });
 });
 

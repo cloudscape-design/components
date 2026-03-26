@@ -19,6 +19,7 @@ import {
   isCaretSpotType,
   isElementEffectivelyEmpty,
   isReferenceElementType,
+  setEmptyState,
   stripZeroWidthCharacters,
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
@@ -237,11 +238,14 @@ export function handleReferenceTokenDeletion(
 
     // Clean up empty paragraphs left behind after deleting across paragraph boundaries
     const paragraphs = findAllParagraphs(editableElement);
-    if (paragraphs.length > 1) {
-      const firstNonEmpty = paragraphs.find(p => !isElementEffectivelyEmpty(p));
-      const keepParagraph = firstNonEmpty || paragraphs[0];
+    const allEmpty = paragraphs.every(p => isElementEffectivelyEmpty(p));
+
+    if (allEmpty) {
+      setEmptyState(editableElement);
+    } else if (paragraphs.length > 1) {
+      const firstNonEmpty = paragraphs.find(p => !isElementEffectivelyEmpty(p))!;
       for (const p of paragraphs) {
-        if (p !== keepParagraph) {
+        if (p !== firstNonEmpty) {
           p.remove();
         }
       }

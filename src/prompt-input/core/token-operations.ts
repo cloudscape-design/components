@@ -27,12 +27,6 @@ import {
 
 export type UpdateSource = 'user-input' | 'external' | 'menu-selection' | 'internal';
 
-export interface TokenUpdate {
-  tokens: PromptInputProps.InputToken[];
-  source: UpdateSource;
-  caretPosition?: number;
-}
-
 export interface ShortcutsConfig {
   menus?: readonly PromptInputProps.MenuDefinition[];
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
