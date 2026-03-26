@@ -6,9 +6,9 @@ exports[`getDropdownStyles handles all possible style configurations 2`] = `unde
 
 exports[`getDropdownStyles handles all possible style configurations 3`] = `
 {
-  "--awsui-dropdown-content-border-color-6190tg": "rgb(0, 0, 0)",
-  "--awsui-dropdown-content-border-radius-6190tg": "8px",
-  "--awsui-dropdown-content-border-width-6190tg": "2px",
+  "--awsui-dropdown-content-border-color-u09ddc": "rgb(0, 0, 0)",
+  "--awsui-dropdown-content-border-radius-u09ddc": "8px",
+  "--awsui-dropdown-content-border-width-u09ddc": "2px",
   "background": "rgb(255, 255, 255)",
 }
 `;
