@@ -24,7 +24,3 @@ For cases that need direction-aware logic beyond CSS logical properties:
 
 - In SCSS, use the `with-direction` mixin in `src/internal/styles/direction.scss`
 - In TypeScript, `@cloudscape-design/component-toolkit/internal` provides direction detection and logical geometry helpers that replace physical DOM properties
-
-## Related
-
-- For linting rules (stylelint), see [CODE_STYLE.md](CODE_STYLE.md).

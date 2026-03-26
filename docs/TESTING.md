@@ -32,8 +32,3 @@ NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.motion.con
 ```
 TZ=UTC node_modules/.bin/jest -u -c jest.unit.config.js src/__tests__/snapshot-tests/
 ```
-
-## Related
-
-- For writing tests, test utils, and test conventions, see [WRITING_TESTS.md](WRITING_TESTS.md).
-- For dev/test pages used by integration tests, see [DEV_PAGES.md](DEV_PAGES.md).

@@ -26,8 +26,3 @@ Snapshot tests guard generated artifacts (API definitions, test-util wrappers, d
 Location: `src/<component-name>/__integ__/`
 
 Integration tests run in a real browser against dev pages (see [DEV_PAGES.md](DEV_PAGES.md)). Use `createWrapper` from `test-utils/selectors` (not `test-utils/dom` — selectors generate CSS selectors for browser tests, while dom wrappers operate on DOM nodes for unit tests).
-
-## Related
-
-- For test commands and configs, see [TESTING.md](TESTING.md).
-- For dev/test pages, see [DEV_PAGES.md](DEV_PAGES.md).

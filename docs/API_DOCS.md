@@ -30,7 +30,3 @@ export namespace ButtonProps {
 ```
 
 Then reference them in the interface: `variant?: ButtonProps.Variant`.
-
-## Related
-
-- For component props and interface conventions, see [COMPONENT_CONVENTIONS.md](COMPONENT_CONVENTIONS.md).

@@ -50,8 +50,3 @@ Centralize all translatable strings under a skippable property (e.g. `i18nString
 ## Dependencies
 
 Before adding any dependency: must support React 16.8+ and latest 3 major Chrome/Firefox/Edge, no global state, ESM preferred.
-
-## Related
-
-- For styling rules and design tokens, see [STYLING.md](STYLING.md).
-- For internal shared utilities, see [INTERNALS.md](INTERNALS.md).
