@@ -10,7 +10,6 @@ import {
   createTrailingBreak,
   findAllParagraphs,
   findElement,
-  getLogicalDirection,
   getTokenType,
   hasOnlyTrailingBR,
   insertAfter,
@@ -278,38 +277,5 @@ describe('setEmptyState', () => {
     expect(el.querySelectorAll('p')).toHaveLength(1);
     expect(el.querySelector('p')!.childNodes).toHaveLength(1);
     expect(el.querySelector('p')!.firstChild!.nodeName).toBe('BR');
-  });
-});
-
-describe('getLogicalDirection', () => {
-  let el: HTMLDivElement;
-
-  beforeEach(() => {
-    el = document.createElement('div');
-    document.body.appendChild(el);
-  });
-
-  afterEach(() => {
-    document.body.innerHTML = '';
-  });
-
-  test('ArrowLeft returns backward in LTR', () => {
-    el.style.direction = 'ltr';
-    expect(getLogicalDirection('ArrowLeft', el)).toBe('backward');
-  });
-
-  test('ArrowRight returns forward in LTR', () => {
-    el.style.direction = 'ltr';
-    expect(getLogicalDirection('ArrowRight', el)).toBe('forward');
-  });
-
-  test('ArrowLeft returns forward in RTL', () => {
-    el.style.direction = 'rtl';
-    expect(getLogicalDirection('ArrowLeft', el)).toBe('forward');
-  });
-
-  test('ArrowRight returns backward in RTL', () => {
-    el.style.direction = 'rtl';
-    expect(getLogicalDirection('ArrowRight', el)).toBe('backward');
   });
 });

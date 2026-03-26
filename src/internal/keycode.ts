@@ -9,6 +9,7 @@ export enum KeyCode {
   end = 35,
   home = 36,
   backspace = 8,
+  delete = 46,
   space = 32,
   down = 40,
   left = 37,
@@ -17,4 +18,5 @@ export enum KeyCode {
   escape = 27,
   enter = 13,
   tab = 9,
+  a = 65,
 }
