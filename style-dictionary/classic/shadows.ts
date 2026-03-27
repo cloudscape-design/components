@@ -7,11 +7,7 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/shadows.js';
 
 const tokens: StyleDictionary.ShadowsDictionary = {
-  shadowCard: {
-    light:
-      '0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15), inset 0 1px 0 0 rgba(0, 28, 36, 0.08)',
-    dark: '0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(0, 0, 0, 0.08)',
-  },
+  shadowCard: '{shadowContainer}',
   shadowContainer: {
     light:
       '0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)',
