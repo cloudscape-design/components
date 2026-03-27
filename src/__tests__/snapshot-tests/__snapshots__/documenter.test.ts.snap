@@ -17098,23 +17098,23 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
 * \`content\` (React.ReactNode) - The content of the item.
 * \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
 * \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start.
-* \`action\` (React.ReactNode) - (Optional) Action button(s).
+* \`actions\` (React.ReactNode) - (Optional) Action button(s).
 * \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting.
    By default, the \`content\` is used: a custom label should be provided if \`content\` is not a string.",
       "inlineType": {
-        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "parameters": [
           {
             "name": "item",
             "type": "T",
           },
         ],
-        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "type": "function",
       },
       "name": "renderItem",
       "optional": false,
-      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
     },
     {
       "description": "Makes the list sortable by enabling drag and drop functionality.",
