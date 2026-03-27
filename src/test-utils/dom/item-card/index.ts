@@ -20,28 +20,28 @@ export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
    * Finds the content slot of the item card.
    */
   findContent(): ElementWrapper | null {
-    return this.findByClassName(styles.body);
+    return this.findByClassName(testStyles.body);
   }
 
   /**
    * Finds the description slot of the item card.
    */
   findDescription(): ElementWrapper | null {
-    return this.findByClassName(styles.description);
+    return this.findByClassName(testStyles.description);
   }
 
   /**
    * Finds the header slot of the item card.
    */
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(styles['header-inner']);
+    return this.findByClassName(testStyles.header);
   }
 
   /**
    * Finds the footer slot of the item card.
    */
   findFooter(): ElementWrapper | null {
-    return this.findByClassName(styles.footer);
+    return this.findByClassName(testStyles.footer);
   }
 
   /**

@@ -70,8 +70,10 @@ export default function InternalItemCard({
             style={getHeaderStyles(style)}
           >
             <InternalStructuredItem
-              content={header && <div className={styles['header-inner']}>{header}</div>}
-              secondaryContent={description && <div className={styles.description}>{description}</div>}
+              content={header && <div className={clsx(styles['header-inner'], testStyles.header)}>{header}</div>}
+              secondaryContent={
+                description && <div className={clsx(styles.description, testStyles.description)}>{description}</div>
+              }
               icon={icon && <div className={testStyles.icon}>{icon}</div>}
               actions={actions}
               disablePaddings={disableHeaderPaddings}
@@ -81,7 +83,7 @@ export default function InternalItemCard({
         )}
         {children && (
           <div
-            className={clsx(styles.body, disableContentPaddings && styles['no-padding'])}
+            className={clsx(styles.body, testStyles.body, disableContentPaddings && styles['no-padding'])}
             style={getContentStyles(style)}
           >
             {children}
@@ -89,7 +91,7 @@ export default function InternalItemCard({
         )}
         {footer && (
           <div
-            className={clsx(styles.footer, disableFooterPaddings && styles['no-padding'])}
+            className={clsx(styles.footer, testStyles.footer, disableFooterPaddings && styles['no-padding'])}
             style={getFooterStyles(style)}
           >
             {footer}
