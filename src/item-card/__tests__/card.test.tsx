@@ -302,7 +302,7 @@ describe('nativeAttributes', () => {
   });
 });
 
-describe('highlighted (internal prop)', () => {
+describe('internal props', () => {
   function renderInternalItemCard(jsx: React.ReactElement) {
     const { container } = render(jsx);
     const wrapper = createWrapper(container);
@@ -310,42 +310,31 @@ describe('highlighted (internal prop)', () => {
     return { wrapper, itemCard };
   }
 
-  test('applies highlighted class when highlighted is true', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard highlighted={true}>content</InternalItemCard>);
-    expect(itemCard.getElement()).toHaveClass(styles.highlighted);
+  describe('highlighted', () => {
+    it.each([true])('applies highlighted class when highlighted=%s', highlighted => {
+      const { itemCard } = renderInternalItemCard(
+        <InternalItemCard highlighted={highlighted}>content</InternalItemCard>
+      );
+      expect(itemCard.getElement()).toHaveClass(styles.highlighted);
+    });
+
+    it.each([false, undefined])('does not apply highlighted class when highlighted=%s', highlighted => {
+      const { itemCard } = renderInternalItemCard(
+        <InternalItemCard highlighted={highlighted}>content</InternalItemCard>
+      );
+      expect(itemCard.getElement()).not.toHaveClass(styles.highlighted);
+    });
   });
 
-  test('does not apply highlighted class by default', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard>content</InternalItemCard>);
-    expect(itemCard.getElement()).not.toHaveClass(styles.highlighted);
-  });
+  describe('fullHeight', () => {
+    it.each([true])('applies full-height class when fullHeight=%s', fullHeight => {
+      const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={fullHeight}>content</InternalItemCard>);
+      expect(itemCard.getElement()).toHaveClass(styles['full-height']);
+    });
 
-  test('does not apply highlighted class when highlighted is false', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard highlighted={false}>content</InternalItemCard>);
-    expect(itemCard.getElement()).not.toHaveClass(styles.highlighted);
-  });
-});
-
-describe('fullHeight (internal prop)', () => {
-  function renderInternalItemCard(jsx: React.ReactElement) {
-    const { container } = render(jsx);
-    const wrapper = createWrapper(container);
-    const itemCard = wrapper.findItemCard()!;
-    return { wrapper, itemCard };
-  }
-
-  test('applies full-height class when fullHeight is true', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={true}>content</InternalItemCard>);
-    expect(itemCard.getElement()).toHaveClass(styles['full-height']);
-  });
-
-  test('does not apply full-height class by default', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard>content</InternalItemCard>);
-    expect(itemCard.getElement()).not.toHaveClass(styles['full-height']);
-  });
-
-  test('does not apply full-height class when fullHeight is false', () => {
-    const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={false}>content</InternalItemCard>);
-    expect(itemCard.getElement()).not.toHaveClass(styles['full-height']);
+    it.each([false, undefined])('does not apply full-height class when fullHeight=%s', fullHeight => {
+      const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={fullHeight}>content</InternalItemCard>);
+      expect(itemCard.getElement()).not.toHaveClass(styles['full-height']);
+    });
   });
 });
