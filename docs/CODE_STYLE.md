@@ -1,7 +1,9 @@
 # Code Style
 
-Run `npm run lint` to check formatting and linting (prettier, stylelint, eslint). See the config files for rules:
+Run `npm run lint` to check formatting and linting. The project uses:
 
-- Prettier: `.prettierrc`
-- Stylelint: `.stylelintrc`
-- ESLint: `eslint.config.mjs`
+- **Prettier** for code formatting
+- **Stylelint** for CSS/SCSS linting
+- **ESLint** for JavaScript/TypeScript linting
+
+See the respective config files in the project root for rules.

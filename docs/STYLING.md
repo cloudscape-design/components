@@ -18,5 +18,5 @@ References:
 
 For cases that need direction-aware logic beyond CSS logical properties:
 
-- In SCSS, use the `with-direction` mixin in `src/internal/styles/direction.scss`
+- In SCSS, use the `with-direction` mixin
 - In TypeScript, `@cloudscape-design/component-toolkit/internal` provides direction detection and logical geometry helpers that replace physical DOM properties

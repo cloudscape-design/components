@@ -15,7 +15,7 @@ Test-utils core is a separate package: https://github.com/cloudscape-design/test
 
 Location: `src/<component-name>/__tests__/`
 
-Use `react-testing-library` to render, combined with test-utils. Prefer test-utils for querying and interacting with components — use react-testing-library directly only for internal edge cases not covered by test-utils. Read an existing test file (e.g. `src/button/__tests__/button.test.tsx`) for the setup pattern.
+Use `react-testing-library` to render, combined with test-utils. Prefer test-utils for querying and interacting with components — use react-testing-library directly only for internal edge cases not covered by test-utils.
 
 ### Snapshot Tests
 
