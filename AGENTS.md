@@ -23,11 +23,5 @@ The dev server runs at `http://localhost:8080`. Pages are served from `pages/<co
 
 ## Docs Index
 
-For component structure, props, events, and refs, see docs/COMPONENT_CONVENTIONS.md.
-For design tokens, CSS rules, and RTL support, see docs/STYLING.md.
+See [docs/CLOUDSCAPE_COMPONENTS_GUIDE.md](docs/CLOUDSCAPE_COMPONENTS_GUIDE.md) for guides on component conventions, styling, writing tests, and more.
 For running tests and configs, see docs/RUNNING_TESTS.md.
-For writing tests and test utils, see docs/WRITING_TESTS.md.
-For prettier, stylelint, and eslint (`npm run lint`), see docs/CODE_STYLE.md.
-For dev/test pages and running in the browser, see docs/DEV_PAGES.md.
-For API documentation comments, see docs/API_DOCS.md.
-For internal shared utilities, see docs/INTERNALS.md.
