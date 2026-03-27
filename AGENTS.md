@@ -25,7 +25,7 @@ The dev server runs at `http://localhost:8080`. Pages are served from `pages/<co
 
 For component structure, props, events, and refs, see docs/COMPONENT_CONVENTIONS.md.
 For design tokens, CSS rules, and RTL support, see docs/STYLING.md.
-For running tests and configs, see docs/TESTING.md.
+For running tests and configs, see docs/RUNNING_TESTS.md.
 For writing tests and test utils, see docs/WRITING_TESTS.md.
 For prettier, stylelint, and eslint (`npm run lint`), see docs/CODE_STYLE.md.
 For dev/test pages and running in the browser, see docs/DEV_PAGES.md.
