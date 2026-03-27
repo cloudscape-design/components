@@ -4,6 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import structuredItemStyles from '../../../internal/components/structured-item/test-classes/styles.selectors.js';
 import styles from '../../../item-card/styles.selectors.js';
+import testStyles from '../../../item-card/test-classes/styles.selectors.js';
 
 export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
   static rootSelector: string = styles.root;
@@ -33,7 +34,7 @@ export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
    * Finds the header slot of the item card.
    */
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(styles.header);
+    return this.findByClassName(styles['header-inner']);
   }
 
   /**
@@ -47,6 +48,6 @@ export default class ItemCardWrapper extends ComponentWrapper<HTMLDivElement> {
    * Finds the icon slot of the item card.
    */
   findIcon(): ElementWrapper | null {
-    return this.findByClassName(styles.icon);
+    return this.findByClassName(testStyles.icon);
   }
 }

@@ -36,11 +36,11 @@ test('renders header when provided', () => {
   expect(header!.getElement()).toHaveTextContent('Card title');
 });
 
-test('renders header-inner element for header text', () => {
+test('renders header text content', () => {
   const { itemCard } = renderItemCard(<ItemCard header="My Header">content</ItemCard>);
-  const headerInner = itemCard.findByClassName(styles['header-inner']);
-  expect(headerInner).not.toBeNull();
-  expect(headerInner!.getElement()).toHaveTextContent('My Header');
+  const header = itemCard.findHeader();
+  expect(header).not.toBeNull();
+  expect(header!.getElement()).toHaveTextContent('My Header');
 });
 
 test('renders description when provided', () => {
@@ -77,20 +77,14 @@ test('renders actions in the header area', () => {
   expect(actions!.getElement()).toHaveTextContent('Action');
 });
 
-test('renders header with with-actions class when actions are provided', () => {
+test('renders header and actions together', () => {
   const { itemCard } = renderItemCard(
     <ItemCard header="Title" actions={<button>Action</button>}>
       content
     </ItemCard>
   );
-  const header = itemCard.findHeader();
-  expect(header!.getElement()).toHaveClass(styles['with-actions']);
-});
-
-test('renders header without with-actions class when no actions', () => {
-  const { itemCard } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
-  const header = itemCard.findHeader();
-  expect(header!.getElement()).not.toHaveClass(styles['with-actions']);
+  expect(itemCard.findHeader()!.getElement()).toHaveTextContent('Title');
+  expect(itemCard.findActions()!.getElement()).toHaveTextContent('Action');
 });
 
 test('renders all parts together: header, description, actions, children, footer', () => {
@@ -99,9 +93,9 @@ test('renders all parts together: header, description, actions, children, footer
       Body
     </ItemCard>
   );
-  expect(itemCard.findHeader()).not.toBeNull();
-  expect(itemCard.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Header');
+  expect(itemCard.findHeader()!.getElement()).toHaveTextContent('Header');
   expect(itemCard.findDescription()!.getElement()).toHaveTextContent('Description');
+  expect(itemCard.findActions()!.getElement()).toHaveTextContent('Act');
   expect(itemCard.findContent()!.getElement()).toHaveTextContent('Body');
   expect(itemCard.findFooter()!.getElement()).toHaveTextContent('Footer');
 });
@@ -260,7 +254,7 @@ test('renders with React nodes as header and footer', () => {
       content
     </ItemCard>
   );
-  expect(itemCard.findByClassName(styles['header-inner'])!.getElement()).toHaveTextContent('Custom Header');
+  expect(itemCard.findHeader()!.getElement()).toHaveTextContent('Custom Header');
   expect(itemCard.findFooter()!.getElement()).toHaveTextContent('Custom Footer');
 });
 

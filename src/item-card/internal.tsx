@@ -5,11 +5,13 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { processAttributes } from '../internal/utils/with-native-attributes';
 import { InternalItemCardProps } from './interfaces';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } from './style';
 
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 export default function InternalItemCard({
   actions,
@@ -33,6 +35,7 @@ export default function InternalItemCard({
   ...restProps
 }: InternalItemCardProps) {
   const baseProps = getBaseProps(restProps);
+  const isRefresh = useVisualRefresh();
 
   const headerRowEmpty = !header && !description && !icon && !actions;
 
@@ -43,6 +46,7 @@ export default function InternalItemCard({
         styles.root,
         highlighted && styles.highlighted,
         fullHeight && styles['full-height'],
+        isRefresh && styles.refresh,
         styles[`variant-${variant}`]
       ),
       ...metadataAttributes,
@@ -68,7 +72,7 @@ export default function InternalItemCard({
             <InternalStructuredItem
               content={header && <div className={styles['header-inner']}>{header}</div>}
               secondaryContent={description && <div className={styles.description}>{description}</div>}
-              icon={icon && <div className={styles.icon}>{icon}</div>}
+              icon={icon && <div className={testStyles.icon}>{icon}</div>}
               actions={actions}
               disablePaddings={disableHeaderPaddings}
               wrapActions={false}

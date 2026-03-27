@@ -63,18 +63,37 @@ $action-padding-horizontal: awsui.$space-xxs;
   position: relative;
   background-color: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-card);
   min-inline-size: 0;
-  box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-card);
 
   &:before {
     @include styles.base-pseudo-element;
-
     box-shadow: none;
-
-    border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
-    border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+    border-color: transparent;
   }
+
+  &::after {
+    @include styles.base-pseudo-element;
+  }
+
+  &:not(.refresh) {
+    &::before {
+      border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    }
+    &::after {
+      box-shadow: awsui.$shadow-container;
+    }
+  }
+
+  &.refresh {
+    box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-card);
+
+    &:before {
+      border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+        var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+      border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+        var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+    }
+  }
+
   &.highlighted {
     background-color: awsui.$color-background-item-selected;
 
@@ -114,6 +133,7 @@ $action-padding-horizontal: awsui.$space-xxs;
     &.variant-#{$variant} {
       &,
       &:before,
+      &::after,
       > .inner-card {
         @include apply-border-radius($variant);
       }
@@ -153,8 +173,4 @@ $action-padding-horizontal: awsui.$space-xxs;
 .description {
   color: awsui.$color-text-heading-secondary;
   @include styles.font-body-s;
-}
-
-.icon {
-  /* used in test-utils */
 }

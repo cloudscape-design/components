@@ -436,8 +436,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_body_n1fwt",
     "awsui_description_n1fwt",
     "awsui_footer_n1fwt",
-    "awsui_header_n1fwt",
-    "awsui_icon_n1fwt",
+    "awsui_header-inner_n1fwt",
+    "awsui_icon_14an4",
     "awsui_root_n1fwt",
   ],
   "key-value-pairs": [
