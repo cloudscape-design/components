@@ -112,14 +112,14 @@ describe('disableHeaderPaddings', () => {
         content
       </ItemCard>
     );
-    const header = itemCard.findHeader();
-    expect(header!.getElement()).toHaveClass(styles['no-padding']);
+    const headerWrapper = itemCard.findByClassName(styles.header);
+    expect(headerWrapper!.getElement()).toHaveClass(styles['no-padding']);
   });
 
   test('does not apply no-padding class to header by default', () => {
     const { itemCard } = renderItemCard(<ItemCard header="Title">content</ItemCard>);
-    const header = itemCard.findHeader();
-    expect(header!.getElement()).not.toHaveClass(styles['no-padding']);
+    const headerWrapper = itemCard.findByClassName(styles.header);
+    expect(headerWrapper!.getElement()).not.toHaveClass(styles['no-padding']);
   });
 });
 
@@ -217,9 +217,9 @@ describe('Style API', () => {
     expect(getComputedStyle(body.getElement()).getPropertyValue('padding-block')).toBe('30px');
     expect(getComputedStyle(body.getElement()).getPropertyValue('padding-inline')).toBe('40px');
 
-    const header = itemCard.findHeader()!;
-    expect(getComputedStyle(header.getElement()).getPropertyValue('padding-block')).toBe('10px');
-    expect(getComputedStyle(header.getElement()).getPropertyValue('padding-inline')).toBe('20px');
+    const headerWrapper = itemCard.findByClassName(styles.header)!;
+    expect(getComputedStyle(headerWrapper.getElement()).getPropertyValue('padding-block')).toBe('10px');
+    expect(getComputedStyle(headerWrapper.getElement()).getPropertyValue('padding-inline')).toBe('20px');
 
     const footer = itemCard.findFooter()!;
     expect(getComputedStyle(footer.getElement()).getPropertyValue('border-block-start-color')).toBe('red');
@@ -229,9 +229,10 @@ describe('Style API', () => {
   });
 });
 
-test('renders with empty header still shows header area when actions provided', () => {
+test('renders actions even when header text is not provided', () => {
   const { itemCard } = renderItemCard(<ItemCard actions={<button>Click</button>}>content</ItemCard>);
-  expect(itemCard.findHeader()).not.toBeNull();
+  expect(itemCard.findActions()).not.toBeNull();
+  expect(itemCard.findActions()!.getElement()).toHaveTextContent('Click');
 });
 
 test('renders with only footer and children', () => {
