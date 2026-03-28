@@ -2,15 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode, useContext } from 'react';
 import React from 'react';
+import clsx from 'clsx';
 
+import { Box, Button, Icon } from '~components';
 import ButtonGroup from '~components/button-group';
 import FormField from '~components/form-field';
-import Icon from '~components/icon';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
+import img from './assets/image-placeholder.png';
+
+import styles from './styles.scss';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -54,6 +58,18 @@ export const longDescription =
 export const longContent =
   'This is long card content with multiple sentences. It provides more detailed information and might wrap across several lines.';
 
+export const longFooter =
+  'Long card footer with multiple sentences. It provides more detailed information and might wrap across several lines.';
+
+export const shortFooter = 'Short card footer';
+
+export const reactNodeContent = (
+  <Box padding="xs">
+    <div>This is a React Node</div>
+    <Button>Test Button</Button>
+  </Box>
+);
+
 export const actions = (
   <ButtonGroup
     variant="icon"
@@ -64,4 +80,16 @@ export const actions = (
   />
 );
 
-export const icon = <Icon name="settings" />;
+export const icon = <Icon name="settings"></Icon>;
+
+export const imageContentEmbedded = (
+  <div className={clsx(styles['image-wrapper--embedded'], styles['image-wrapper'])}>
+    <img src={img} alt="Image placeholder for item card media" className={styles.image} />
+  </div>
+);
+
+export const imageContentDefault = (
+  <div className={clsx(styles['image-wrapper--default'], styles['image-wrapper'])}>
+    <img src={img} alt="Image placeholder for item card media" className={styles.image} />
+  </div>
+);

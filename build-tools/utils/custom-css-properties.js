@@ -178,5 +178,11 @@ const customCssPropertiesList = [
   'tokenStyleDismissColorDisabled',
   'tokenStyleDismissColorHover',
   'tokenStyleDismissColorReadOnly',
+  // Item card specific style properties
+  'styleItemCardBackgroundDefault',
+  'styleItemCardBorderColorDefault',
+  'styleItemCardBorderRadius',
+  'styleItemCardBorderWidthDefault',
+  'styleItemCardBoxShadowDefault',
 ];
 module.exports = customCssPropertiesList;
