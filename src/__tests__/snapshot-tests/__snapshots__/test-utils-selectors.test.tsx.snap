@@ -3,10 +3,10 @@
 exports[`test-utils selectors 1`] = `
 {
   "action-card": [
-    "awsui_body_16248",
-    "awsui_description_16248",
-    "awsui_header-inner_16248",
-    "awsui_icon_16248",
+    "awsui_body_1qivf",
+    "awsui_description_1qivf",
+    "awsui_header_1qivf",
+    "awsui_icon_1qivf",
     "awsui_root_16248",
   ],
   "alert": [
