@@ -42,11 +42,11 @@ exports[`getRootStyles handles all possible style configurations 2`] = `{}`;
 
 exports[`getRootStyles handles all possible style configurations 3`] = `
 {
-  "--awsui-style-item-card-background-default-6b9ypa": "#ffffff",
-  "--awsui-style-item-card-border-color-default-6b9ypa": "#e0e0e0",
-  "--awsui-style-item-card-border-radius-6b9ypa": "8px",
-  "--awsui-style-item-card-border-width-default-6b9ypa": "1px",
-  "--awsui-style-item-card-box-shadow-default-6b9ypa": "0 1px 3px rgba(0,0,0,0.1)",
+  "--awsui-style-item-card-background-default-8rcw2s": "#ffffff",
+  "--awsui-style-item-card-border-color-default-8rcw2s": "#e0e0e0",
+  "--awsui-style-item-card-border-radius-8rcw2s": "8px",
+  "--awsui-style-item-card-border-width-default-8rcw2s": "1px",
+  "--awsui-style-item-card-box-shadow-default-8rcw2s": "0 1px 3px rgba(0,0,0,0.1)",
   "borderRadius": "8px",
 }
 `;
