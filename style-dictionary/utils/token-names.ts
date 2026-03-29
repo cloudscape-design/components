@@ -774,7 +774,20 @@ export type ColorsTokenName =
   | 'colorDropzoneBorderDefault'
   | 'colorDropzoneBorderHover'
   | 'colorGapGlobalDrawer'
-  | 'colorItemSelected';
+  | 'colorItemSelected'
+  | 'colorBackgroundActionCardDefault'
+  | 'colorBackgroundActionCardHover'
+  | 'colorBackgroundActionCardActive'
+  | 'colorBorderActionCardDefault'
+  | 'colorBorderActionCardHover'
+  | 'colorBorderActionCardActive'
+  | 'colorBorderActionCardDisabled'
+  | 'colorBackgroundActionCardDisabled'
+  | 'colorTextActionCardDisabled'
+  | 'colorIconActionCardDefault'
+  | 'colorIconActionCardHover'
+  | 'colorIconActionCardActive'
+  | 'colorIconActionCardDisabled';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
@@ -880,7 +893,12 @@ export type BordersTokenName =
   | 'borderWidthIconNormal'
   | 'borderWidthIconMedium'
   | 'borderWidthIconBig'
-  | 'borderWidthIconLarge';
+  | 'borderWidthIconLarge'
+  | 'borderRadiusActionCard'
+  | 'borderWidthActionCardDefault'
+  | 'borderWidthActionCardHover'
+  | 'borderWidthActionCardActive'
+  | 'borderWidthActionCardDisabled';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
@@ -1035,7 +1053,11 @@ export type SpacingTokenName =
   | 'spaceXxl'
   | 'spaceXxs'
   | 'spaceXxxl'
-  | 'spaceXxxs';
+  | 'spaceXxxs'
+  | 'spaceActionCardHorizontal'
+  | 'spaceActionCardVertical'
+  | 'spaceActionCardDescriptionPaddingTop'
+  | 'spaceActionCardContentPaddingTop';
 export type ShadowsTokenName =
   | 'shadowCard'
   | 'shadowContainer'

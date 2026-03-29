@@ -8,6 +8,7 @@
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
+  cursor: inherit;
   display: flex;
   flex: 1;
   flex-direction: row;

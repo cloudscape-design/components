@@ -22,7 +22,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceCalendarGridGutter: '0px',
   spaceCardHorizontalDefault: '{spaceContainerHorizontal}',
   spaceCardHorizontalEmbedded: { comfortable: '{spaceS}', compact: '10px' },
-  spaceCardVerticalDefault: '{spaceScaledL}',
+  spaceCardVerticalDefault: '{spaceScaledM}',
   spaceCardVerticalEmbedded: { comfortable: '10px', compact: '{spaceXs}' },
   spaceCodeEditorStatusFocusOutlineGutter: '3px',
   spaceContainerContentTop: '{spaceScaledM}',
@@ -60,6 +60,10 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
   spaceTableHorizontal: '0px',
+  spaceActionCardHorizontal: '{spaceL}',
+  spaceActionCardVertical: '{spaceM}',
+  spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
+  spaceActionCardContentPaddingTop: '{spaceScaledS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
