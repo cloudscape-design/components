@@ -14,6 +14,7 @@ import { type ActionCardProps } from './interfaces';
 import { getContentStyles, getHeaderStyles, getRootStyles } from './style';
 
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 export type InternalActionCardProps = ActionCardProps & InternalBaseComponentProps;
 
@@ -52,7 +53,7 @@ const InternalActionCard = React.forwardRef(
 
     const handleClick = (event: React.MouseEvent) => {
       if (disabled) {
-        return;
+        return event.preventDefault();
       }
       fireCancelableEvent(onClick, {}, event);
     };
@@ -64,7 +65,7 @@ const InternalActionCard = React.forwardRef(
     const headerRowEmpty = !header && !description;
 
     const iconWrapper = icon && (
-      <div className={styles.icon} aria-hidden="true">
+      <div className={clsx(styles.icon, testStyles.icon)} aria-hidden="true">
         {icon}
       </div>
     );
@@ -75,7 +76,10 @@ const InternalActionCard = React.forwardRef(
         <InternalStructuredItem
           content={
             header && (
-              <div id={headerId} className={clsx(styles['header-inner'], disabled && styles.disabled)}>
+              <div
+                id={headerId}
+                className={clsx(styles['header-inner'], testStyles.header, disabled && styles.disabled)}
+              >
                 {header}
               </div>
             )
@@ -84,7 +88,12 @@ const InternalActionCard = React.forwardRef(
             description && (
               <div
                 id={descriptionId}
-                className={clsx(styles.description, disabled && styles.disabled, header && styles['has-header'])}
+                className={clsx(
+                  styles.description,
+                  testStyles.description,
+                  disabled && styles.disabled,
+                  header && styles['has-header']
+                )}
               >
                 {description}
               </div>
@@ -106,7 +115,10 @@ const InternalActionCard = React.forwardRef(
           headerSection
         )}
         {children && (
-          <div className={clsx(styles.body, disableContentPaddings && styles['no-padding'])} style={contentStyleProps}>
+          <div
+            className={clsx(styles.body, testStyles.body, disableContentPaddings && styles['no-padding'])}
+            style={contentStyleProps}
+          >
             {children}
           </div>
         )}
@@ -127,7 +139,7 @@ const InternalActionCard = React.forwardRef(
           styles[`variant-${variant}`],
           disabled && styles.disabled,
           !!icon && styles['has-icon'],
-          !!icon && styles[`icon-align-end`],
+          !!icon && styles['icon-align-end'],
           !!icon && styles[`icon-vertical-align-${iconVerticalAlignment}`],
           baseProps.className
         )}
@@ -136,8 +148,7 @@ const InternalActionCard = React.forwardRef(
         aria-label={ariaLabel}
         aria-labelledby={!ariaLabel && header ? headerId : undefined}
         aria-describedby={ariaDescribedby || (description ? descriptionId : undefined)}
-        aria-disabled={disabled}
-        disabled={disabled}
+        aria-disabled={disabled || undefined}
       >
         {contentElement}
         {!iconInHeaderRow && iconWrapper}

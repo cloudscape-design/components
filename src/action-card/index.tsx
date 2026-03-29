@@ -3,6 +3,7 @@
 'use client';
 import React from 'react';
 
+import InternalIcon from '../icon/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
@@ -19,6 +20,7 @@ const ActionCard = React.forwardRef(
       disableContentPaddings = false,
       iconVerticalAlignment = 'top',
       variant = 'default',
+      icon = <InternalIcon name="angle-right" />,
       ...props
     }: ActionCardProps,
     ref: React.Ref<ActionCardProps.Ref>
@@ -43,6 +45,7 @@ const ActionCard = React.forwardRef(
         disableContentPaddings={disableContentPaddings}
         iconVerticalAlignment={iconVerticalAlignment}
         variant={variant}
+        icon={icon}
         {...externalProps}
         {...baseComponentProps}
       />

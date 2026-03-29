@@ -22,7 +22,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceCalendarGridGutter: '0px',
   spaceCardHorizontalDefault: '{spaceContainerHorizontal}',
   spaceCardHorizontalEmbedded: { comfortable: '{spaceS}', compact: '10px' },
-  spaceCardVerticalDefault: '{spaceScaledM}',
+  spaceCardVerticalDefault: '{spaceScaledL}',
   spaceCardVerticalEmbedded: { comfortable: '10px', compact: '{spaceXs}' },
   spaceCodeEditorStatusFocusOutlineGutter: '3px',
   spaceContainerContentTop: '{spaceScaledM}',
