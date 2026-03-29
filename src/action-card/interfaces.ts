@@ -56,7 +56,7 @@ export interface ActionCardProps extends BaseComponentProps {
   disableContentPaddings?: boolean;
 
   /**
-   * Displays an icon next to the content. You can use the `iconPosition` and `iconVerticalAlignment` properties to position the icon.
+   * Displays an icon next to the content. You can use the `iconVerticalAlignment` property to control vertical alignment.
    */
   icon?: React.ReactNode;
 
