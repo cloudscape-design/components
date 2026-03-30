@@ -9,7 +9,6 @@ export enum KeyCode {
   end = 35,
   home = 36,
   backspace = 8,
-  delete = 46,
   space = 32,
   down = 40,
   left = 37,
@@ -18,5 +17,10 @@ export enum KeyCode {
   escape = 27,
   enter = 13,
   tab = 9,
-  a = 65,
 }
+
+// Additional keycodes used by prompt-input that are not part of the
+// test-utils-core KeyCode enum. Defined separately to keep the enum
+// compatible with the external type used by ElementWrapper.keydown().
+export const KeyCodeDelete = 46;
+export const KeyCodeA = 65;

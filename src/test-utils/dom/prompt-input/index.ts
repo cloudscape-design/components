@@ -47,16 +47,15 @@ export default class PromptInputWrapper extends ComponentWrapper {
   /**
    * Finds the native textarea element.
    *
-   * Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
-   * In this case, use findContentEditableElement() or getValue() instead.
+   * Note: When `menus` or `tokens` is defined, the component uses a contentEditable element instead of a textarea.
+   * In this case, use findContentEditableElement() instead.
    */
   findNativeTextarea(): ElementWrapper<HTMLTextAreaElement> {
     return this.findByClassName<HTMLTextAreaElement>(testutilStyles.textarea)!;
   }
 
   /**
-   * Finds the contentEditable element used when menus are defined.
-   * Returns null if the component does not have menus defined.
+   * Finds the contentEditable element used when `menus` or `tokens` is defined.
    */
   findContentEditableElement(): ElementWrapper<HTMLDivElement> | null {
     return this.find('[contenteditable="true"]');
@@ -85,7 +84,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   /**
-   * Finds the menu dropdown (always in portal due to expandToViewport=true).
+   * Finds the menu dropdown when `menus` or `tokens` is defined.
    */
   findOpenMenu(): PromptInputMenuWrapper | null {
     return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PromptInputMenuWrapper);
@@ -94,28 +93,21 @@ export default class PromptInputWrapper extends ComponentWrapper {
   /**
    * Gets the value of the component.
    *
-   * Returns the current value of the textarea (when no menus are defined) or the text content of the contentEditable element (when menus are defined).
+   * Returns the current value of the textarea.
+   *
+   * When `menus` or `tokens` is defined, the component uses a contentEditable element.
+   * Use findContentEditableElement().getElement().textContent instead.
    */
-  @usesDom getValue(): string {
-    const contentEditable = this.findContentEditableElement();
-    if (contentEditable) {
-      return contentEditable.getElement().textContent || '';
-    }
+  @usesDom getTextareaValue(): string {
     const textarea = this.findNativeTextarea();
     return textarea ? textarea.getElement().value : '';
   }
 
   /**
-   * Gets the value of the component.
-   *
-   * Returns the current value of the textarea.
-   */
-  @usesDom getTextareaValue(): string {
-    return this.getValue();
-  }
-
-  /**
    * Sets the value of the textarea and calls the onChange handler.
+   *
+   * When `menus` or `tokens` is defined, the component uses a contentEditable element
+   * and this method will have no effect.
    *
    * @param value value to set the textarea to.
    */

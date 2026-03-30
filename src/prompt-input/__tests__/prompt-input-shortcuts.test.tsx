@@ -116,38 +116,14 @@ describe('disableActionButton', () => {
 });
 
 describe('insertText ref method (textarea mode)', () => {
-  test('inserts text at current cursor position when no position specified', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    const { wrapper } = renderPromptInput({ value: 'hello world', onChange, ref });
-    const textarea = wrapper.findNativeTextarea().getElement();
-    act(() => {
-      textarea.focus();
-      textarea.setSelectionRange(5, 5);
-    });
-
-    act(() => {
-      ref.current!.insertText(' beautiful');
-    });
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: expect.objectContaining({ value: 'hello beautiful world' }),
-      })
-    );
-  });
-
-  test('inserts text at specified position', () => {
+  test('does nothing in textarea mode without menus', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderPromptInput({ value: 'hello world', onChange, ref });
     act(() => {
-      ref.current!.insertText('!', 11);
+      ref.current!.insertText(' beautiful');
     });
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: expect.objectContaining({ value: 'hello world!' }),
-      })
-    );
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test('does nothing when disabled', () => {

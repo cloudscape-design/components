@@ -509,6 +509,9 @@ export namespace PromptInputProps {
      * Inserts text at a specified position. Only supported when `menus` or `tokens` is defined.
      * Triggers input events and menu detection.
      *
+     * When pinned reference tokens are present, `caretStart` and `caretEnd` are automatically
+     * shifted to account for their positions.
+     *
      * @param text The text to insert.
      * @param caretStart Position to insert at. Defaults to current caret position or 0.
      * @param caretEnd Caret position after insertion. Defaults to end of inserted text.
