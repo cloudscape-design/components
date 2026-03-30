@@ -53,7 +53,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 .header-cell {
   position: relative;
   text-align: start;
-  box-sizing: border-box;
+  // box-sizing: border-box;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
@@ -235,6 +235,14 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 }
 
+// stylelint-disable-next-line no-descending-specificity
+.header-cell-content-group-inner {
+  position: sticky;
+  inset-inline-start: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .header-cell-sortable:not(.header-cell-disabled) {
   & > .header-cell-content {
     cursor: pointer;
@@ -284,12 +292,21 @@ settings icon in the pagination slot.
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
 
+  &:nth-child(2):not(:first-child) {
+    @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+  }
+
   &:first-child > .header-cell-content {
     // @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start) {
+  &:nth-child(2):not(:first-child) > .header-cell-content {
+    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group),
+  &:nth-child(2):not(:first-child):not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
     @include cell-offset(awsui.$space-xxxs);
   }
 
@@ -298,7 +315,8 @@ settings icon in the pagination slot.
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start) {
+  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group),
+  &:nth-child(2):not(:first-child).has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
     @include cell-offset(awsui.$space-xxs);
   }
 
@@ -311,22 +329,16 @@ settings icon in the pagination slot.
   }
 }
 
-// ─── Resizer / divider sizing via CSS custom properties ──────────────────────
-//
-// The CSS variables below are set on the <th> element and cascade down to the
-// deeply-nested .divider-interactive span inside the Resizer component (and to
-// the static .resize-divider span for non-resizable columns).  This means the
-// Resizer component stays completely generic — no props need to be drilled.
-//
-// Defaults (for a plain leaf column with no group parent) are declared in
-// resizer/styles.scss on .divider-interactive directly.
-//
-// stylelint-disable-next-line custom-property-pattern
+// stylelint-disable custom-property-pattern
 $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
+// stylelint-enable custom-property-pattern
 
-// All group cells: bottom always flush (margin-block-end: 0).
-// Top retains the full resizer gap (margin-block-start: auto pushes line to bottom).
-.header-cell-group {
+.header-cell-group,
+.header-cell-group:last-child {
+  padding-block: 0;
+  padding-inline: 0;
+  // padding-inline-start: 0;
+  // padding-inline-end: 0;
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
   --awsui-resizer-margin-block-start: auto;
@@ -334,7 +346,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
   // stylelint-enable custom-property-pattern
 }
 
-// Rightmost group child (has a parent group): full height — both horizontal borders connected.
 .header-cell-group.header-cell-grouped {
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: 100%;
@@ -343,7 +354,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
   // stylelint-enable custom-property-pattern
 }
 
-// Rightmost leaf-column child (has a parent group): top flush, half gap at bottom.
 .header-cell-last-child-of-group:not(.header-cell-group) {
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
@@ -352,19 +362,13 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
   // stylelint-enable custom-property-pattern
 }
 
-// Hide the non-resizable divider on the last top-level group in its row.
-// Top-level groups don't have .header-cell-grouped; sub-groups do, so they're excluded.
-// This mirrors the th:not(:last-child) > .divider rule used for leaf columns.
-// stylelint-disable-next-line no-descending-specificity
-.header-cell-group:not(.header-cell-grouped):last-child > .resize-divider {
+// stylelint-disable-next-line
+.header-cell-group:not(.header-cell-grouped):last-child .resize-divider {
   display: none;
 }
 
-// Non-resizable static divider for group cells.
-// Always rendered (not subject to the th:not(:last-child) guard in resizer/styles.scss),
-// so it needs its own absolute-positioning and sizing declarations.
-// stylelint-disable-next-line no-descending-specificity
-.header-cell-group > .resize-divider {
+// stylelint-disable-next-line
+.header-cell-group .resize-divider {
   position: absolute;
   outline: none;
   pointer-events: none;
@@ -372,7 +376,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
   inset-block-end: 0;
   inset-block-start: 0;
   min-block-size: awsui.$line-height-heading-xs;
-  // Use the same CSS variable so the static divider mirrors the resizable one.
   // stylelint-disable-next-line custom-property-pattern
   max-block-size: var(--awsui-resizer-max-block-size, calc(100% - #{$resizer-block-gap}));
   // stylelint-disable-next-line custom-property-pattern
@@ -384,8 +387,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
   box-sizing: border-box;
 }
 
-// Non-resizable static divider for rightmost leaf-column children.
-// The resizable case is handled automatically via the CSS variable above.
 // stylelint-disable-next-line no-descending-specificity
 .header-cell-last-child-of-group:not(.header-cell-group) > .resize-divider {
   // stylelint-disable-next-line custom-property-pattern

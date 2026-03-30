@@ -113,18 +113,21 @@ const columnDefinitions: TableProps<Instance>['columnDefinitions'] = [
     cell: (item: Instance) => item.id,
     sortingField: 'id',
     isRowHeader: true,
+    minWidth: 350,
   },
   {
     id: 'name',
     header: 'Name',
     cell: (item: Instance) => item.name,
     sortingField: 'name',
+    minWidth: 250,
   },
   {
     id: 'cpuUtilization',
     header: 'CPU (%)',
     cell: (item: Instance) => `${item.cpuUtilization.toFixed(1)}%`,
     sortingField: 'cpuUtilization',
+    minWidth: 150,
   },
   {
     id: 'memoryUtilization',
@@ -251,8 +254,6 @@ export default function TableDemo() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps['preferences']>({
     pageSize: 10,
     contentDisplay: [
-      { id: 'id', visible: true },
-      { id: 'name', visible: true },
       {
         type: 'group',
         id: 'metrics',
@@ -278,6 +279,8 @@ export default function TableDemo() {
           },
         ],
       },
+      { id: 'id', visible: true },
+      { id: 'name', visible: true },
       {
         type: 'group',
         id: 'configuration',
