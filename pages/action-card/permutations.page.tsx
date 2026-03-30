@@ -14,11 +14,27 @@ const onClick = () => {};
 const icon = <Icon name="angle-right" />;
 
 const permutations = createPermutations<ActionCardProps>([
-  // Header + description + children combinations
+  // With header
   {
-    header: [<b key="h">Card header</b>, undefined],
+    header: [<b key="h">Card header</b>],
     description: ['A description of the action card', undefined],
     children: ['Card content', undefined],
+    onClick: [onClick],
+  },
+  // With description
+  {
+    header: [<b key="h">Card header</b>, undefined],
+    description: ['A description of the action card'],
+    children: ['Card content', undefined],
+    ariaLabel: ['Action card'],
+    onClick: [onClick],
+  },
+  // With content
+  {
+    header: [<b key="h">Card header</b>],
+    description: ['A description of the action card', undefined],
+    children: ['Card content'],
+    ariaLabel: ['Action card'],
     onClick: [onClick],
   },
   // Disabled state
@@ -76,6 +92,7 @@ const permutations = createPermutations<ActionCardProps>([
   // Minimal: content only
   {
     children: ['Minimal card with content only'],
+    ariaLabel: ['Minimal card'],
     onClick: [onClick],
   },
   // Header only
