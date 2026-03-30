@@ -45,8 +45,15 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
    *
    * The children are the leaf-level `ContentDisplayOptionWrapper`s inside the group's
    * nested `InternalList` — i.e. they already carry a drag handle and visibility toggle.
+   *
+   * @param option.group When `true`, returns only group items. When `false`, returns only leaf column items.
+   *   When omitted, returns all child items regardless of type.
    */
-  findChildrenOptions(): Array<ContentDisplayOptionWrapper> | null {
+  findChildrenOptions(
+    option: {
+      group?: boolean;
+    } = {}
+  ): Array<ContentDisplayOptionWrapper> | null {
     // Group items wrap their content in <div data-item-type="group">.
     // If that wrapper is absent this is a leaf column.
     const groupWrapper = this.getListItem().findContent().find('[data-item-type="group"]');
@@ -58,9 +65,20 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
     if (!nestedList) {
       return null;
     }
-    return new ListWrapper(nestedList.getElement())
-      .findItems()
-      .map(item => new ContentDisplayOptionWrapper(item.getElement()));
+    const list = new ListWrapper(nestedList.getElement());
+
+    if (option.group === true) {
+      return list
+        .findAll(`li:has([data-item-type="group"])`)
+        .map(item => new ContentDisplayOptionWrapper(item.getElement()));
+    }
+    if (option.group === false) {
+      return list
+        .findAll(`li:has([data-item-type="column"])`)
+        .map(item => new ContentDisplayOptionWrapper(item.getElement()));
+    }
+
+    return list.findItems().map(item => new ContentDisplayOptionWrapper(item.getElement()));
   }
 }
 
