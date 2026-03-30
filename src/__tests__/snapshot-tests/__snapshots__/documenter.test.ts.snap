@@ -11725,13 +11725,6 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Maximum height constraint for the dropdown content in pixels.
-When set, constrains the calculated height to not exceed this value.",
-      "name": "maxHeight",
-      "optional": true,
-      "type": "number",
-    },
-    {
       "description": "Maximum width for the dropdown in pixels. If no value is specified, the
 dropdown will expand to fit its content.",
       "name": "maxWidth",
@@ -11796,40 +11789,6 @@ dropdown will shrink to fit its content.",
         "core",
       ],
       "type": "DropdownProps.Style",
-    },
-    {
-      "description": "Explicit ID for the trigger element, used as the referrer ID for portal mode.
-Use this when \`triggerRef\` is provided.",
-      "name": "triggerId",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Optional ref to an external element used for positioning calculations.
-When provided, the \`trigger\` prop is not rendered and this ref's element
-is used as the positioning anchor for the dropdown instead.",
-      "inlineType": {
-        "name": "React.RefObject<HTMLElement>",
-        "properties": [
-          {
-            "inlineType": {
-              "name": "NonNullable<T>",
-              "type": "union",
-              "values": [
-                "T",
-                "{}",
-              ],
-            },
-            "name": "current",
-            "optional": false,
-            "type": "NonNullable<T>",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "triggerRef",
-      "optional": true,
-      "type": "React.RefObject<HTMLElement>",
     },
   ],
   "regions": [
@@ -16027,6 +15986,274 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for item-card matches the snapshot: item-card 1`] = `
+{
+  "dashCaseName": "item-card",
+  "events": [],
+  "functions": [],
+  "name": "ItemCard",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the footer area.",
+      "name": "disableFooterPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the header area.",
+      "name": "disableHeaderPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native root element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "An object containing CSS properties to customize the item card's visual appearance.
+Refer to the [style](/components/item-card/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "ItemCardProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "content",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "divider",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "root",
+                  "optional": true,
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "footer",
+            "optional": true,
+            "type": "{ root?: { paddingBlock?: string | undefined; paddingInline?: string | undefined; } | undefined; divider?: { borderColor?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "header",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "background",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ItemCardProps.Style",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual variant of the item card, which controls the border radius and padding.
+
+- \`default\` - Uses container-level border radius and padding (larger).
+- \`embedded\` - Uses compact border radius and padding (smaller).",
+      "inlineType": {
+        "name": "ItemCardProps.Variant",
+        "type": "union",
+        "values": [
+          "default",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Actions to display in the item card header area, typically buttons or links.",
+      "isDefault": false,
+      "name": "actions",
+    },
+    {
+      "description": "Main content of the item card.",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "A description or subtitle displayed below the header.",
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "description": "Footer content displayed at the bottom of the item card.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Heading element of the item card. Use this to add a title or header text.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Icon content displayed next to the header.",
+      "isDefault": false,
+      "name": "icon",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for key-value-pairs matches the snapshot: key-value-pairs 1`] = `
 {
   "dashCaseName": "key-value-pairs",
@@ -17098,23 +17325,23 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
 * \`content\` (React.ReactNode) - The content of the item.
 * \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
 * \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start.
-* \`action\` (React.ReactNode) - (Optional) Action button(s).
+* \`actions\` (React.ReactNode) - (Optional) Action button(s).
 * \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting.
    By default, the \`content\` is used: a custom label should be provided if \`content\` is not a string.",
       "inlineType": {
-        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "parameters": [
           {
             "name": "item",
             "type": "T",
           },
         ],
-        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "type": "function",
       },
       "name": "renderItem",
       "optional": false,
-      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
     },
     {
       "description": "Makes the list sortable by enabling drag and drop functionality.",
@@ -38568,6 +38795,25 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
+        {
           "description": "Returns the individual flashes of this flashbar.
 
 If the items are stacked, only the item at the top of the stack is returned.",
@@ -38934,6 +39180,95 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [],
       "name": "IconWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the action slot of the item card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the content slot of the item card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the description slot of the item card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the footer slot of the item card.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the header slot of the item card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the icon slot of the item card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
     },
     {
       "methods": [
@@ -48625,6 +48960,25 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
+        {
           "description": "Returns the individual flashes of this flashbar.
 
 If the items are stacked, only the item at the top of the stack is returned.",
@@ -48896,6 +49250,65 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [],
       "name": "IconWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the action slot of the item card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the content slot of the item card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the description slot of the item card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the item card.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header slot of the item card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the icon slot of the item card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
     },
     {
       "methods": [

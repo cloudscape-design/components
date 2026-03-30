@@ -445,6 +445,21 @@ describe('Flashbar component', () => {
     testFlashDismissal({ stackItems: false });
   });
 
+  test('findItemById', () => {
+    const wrapper = createFlashbarWrapper(
+      <Flashbar
+        items={[
+          { content: 'Flash 1', id: 'flash-1', type: 'success' },
+          { content: 'Flash 2', id: 'flash-2', type: 'error' },
+          { content: 'Flash 3', type: 'warning' },
+        ]}
+      />
+    );
+    expect(wrapper.findItemById('flash-1')!.findContent()!.getElement()).toHaveTextContent('Flash 1');
+    expect(wrapper.findItemById('flash-2')!.findContent()!.getElement()).toHaveTextContent('Flash 2');
+    expect(wrapper.findItemById('flash-3')).toBeNull();
+  });
+
   describe('rapid item replacement with animations', () => {
     beforeEach(() => {
       jest.useFakeTimers();

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getContentStyles handles all possible style configurations 1`] = `{}`;
+
+exports[`getContentStyles handles all possible style configurations 2`] = `{}`;
+
+exports[`getContentStyles handles all possible style configurations 3`] = `
+{
+  "paddingBlock": "16px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 1`] = `{}`;
+
+exports[`getFooterStyles handles all possible style configurations 2`] = `{}`;
+
+exports[`getFooterStyles handles all possible style configurations 3`] = `
+{
+  "borderBlockStartColor": "#e0e0e0",
+  "borderBlockStartStyle": "solid",
+  "borderBlockStartWidth": "1px",
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 1`] = `{}`;
+
+exports[`getHeaderStyles handles all possible style configurations 2`] = `{}`;
+
+exports[`getHeaderStyles handles all possible style configurations 3`] = `
+{
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 1`] = `{}`;
+
+exports[`getRootStyles handles all possible style configurations 2`] = `{}`;
+
+exports[`getRootStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-style-item-card-background-default-6b9ypa": "#ffffff",
+  "--awsui-style-item-card-border-color-default-6b9ypa": "#e0e0e0",
+  "--awsui-style-item-card-border-radius-6b9ypa": "8px",
+  "--awsui-style-item-card-border-width-default-6b9ypa": "1px",
+  "--awsui-style-item-card-box-shadow-default-6b9ypa": "0 1px 3px rgba(0,0,0,0.1)",
+  "borderRadius": "8px",
+}
+`;

@@ -16,7 +16,12 @@ import { InternalTooltipProps } from './interfaces';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalTooltipComponentProps = InternalTooltipProps & InternalBaseComponentProps;
+type InternalTooltipComponentProps = InternalTooltipProps &
+  InternalBaseComponentProps & {
+    // ID of the associated trigger. When the trigger and the tooltip are connected via referrer ID, the
+    // nodeBelongs(triggerNode, tooltipNode) returns true.
+    referrerId?: string;
+  };
 
 export default function InternalTooltip({
   content,
@@ -24,6 +29,7 @@ export default function InternalTooltip({
   className,
   position = 'top',
   onEscape,
+  referrerId,
   __internalRootRef,
   ...restProps
 }: InternalTooltipComponentProps) {
@@ -66,6 +72,7 @@ export default function InternalTooltip({
         {...baseProps}
         className={clsx(testUtilStyles.root, baseProps.className)}
         ref={__internalRootRef}
+        data-awsui-referrer-id={referrerId}
         role="tooltip"
       >
         <Transition in={true}>

@@ -44,10 +44,13 @@ export interface InternalDropdownProps
   loopFocus?: boolean;
   minWidth?: DropdownWidthConstraint;
   maxWidth?: DropdownWidthConstraint;
+  maxHeight?: number;
   preferredAlignment?: DropdownAlignment;
   hideBlockBorder?: boolean;
   onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  triggerRef?: React.RefObject<HTMLElement>;
+  triggerId?: string;
 }
 
 import styles from './styles.css.js';
@@ -504,8 +507,8 @@ const InternalDropdown = ({
     };
   }, [open, expandToViewport, isMobile, triggerRef]);
 
-  const generatedReferrerId = useUniqueId();
-  const referrerId = externalTriggerId || generatedReferrerId;
+  const internalReferrerId = useUniqueId();
+  const referrerId = externalTriggerId ?? internalReferrerId;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class

@@ -21,6 +21,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "2px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "2px",
@@ -2780,6 +2788,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
+          "$value": "2px",
+        },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
           "$value": "2px",
         },
         "border-radius-chat-bubble": {
@@ -5543,6 +5559,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "2px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "2px",
@@ -8302,6 +8326,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
+          "$value": "2px",
+        },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
           "$value": "2px",
         },
         "border-radius-chat-bubble": {
@@ -11065,6 +11097,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "2px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "2px",
@@ -13826,6 +13866,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "0px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "2px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "2px",
@@ -16585,6 +16633,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-calendar-day-focus-ring": {
       "$description": "The border radius of the focused day in date picker and date range picker.",
+      "$value": "2px",
+    },
+    "border-radius-card-default": {
+      "$description": "The border radius of default cards.",
+      "$value": "0px",
+    },
+    "border-radius-card-embedded": {
+      "$description": "The border radius of embedded cards.",
       "$value": "2px",
     },
     "border-radius-chat-bubble": {
@@ -19353,6 +19409,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "8px",
@@ -22113,6 +22177,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
@@ -24875,6 +24947,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "8px",
@@ -27635,6 +27715,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
@@ -30397,6 +30485,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "8px",
@@ -33157,6 +33253,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
@@ -35919,6 +36023,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "8px",
@@ -38680,6 +38792,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-card-default": {
+          "$description": "The border radius of default cards.",
+          "$value": "16px",
+        },
+        "border-radius-card-embedded": {
+          "$description": "The border radius of embedded cards.",
+          "$value": "8px",
+        },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
           "$value": "8px",
@@ -41440,6 +41560,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-radius-calendar-day-focus-ring": {
       "$description": "The border radius of the focused day in date picker and date range picker.",
       "$value": "3px",
+    },
+    "border-radius-card-default": {
+      "$description": "The border radius of default cards.",
+      "$value": "16px",
+    },
+    "border-radius-card-embedded": {
+      "$description": "The border radius of embedded cards.",
+      "$value": "8px",
     },
     "border-radius-chat-bubble": {
       "$description": "The border radius of chat bubbles.",
