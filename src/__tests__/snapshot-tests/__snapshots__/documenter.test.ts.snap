@@ -20619,7 +20619,8 @@ Requires React 18.",
       "returnType": "void",
     },
     {
-      "description": "Inserts text at a specified position. Triggers input events and menu detection when \`menus\` or \`tokens\` is defined.",
+      "description": "Inserts text at a specified position. Only supported when \`menus\` or \`tokens\` is defined.
+Triggers input events and menu detection.",
       "name": "insertText",
       "parameters": [
         {

@@ -229,60 +229,37 @@ const InternalPromptInput = React.forwardRef(
         return;
       }
 
-      if (isTokenMode) {
-        if (!editableElementRef.current || !tokens || !caretControllerRef.current) {
-          return;
-        }
-
-        let adjustedCaretStart: number;
-        let adjustedCaretEnd: number | undefined;
-
-        if (caretStart === undefined) {
-          const currentPos = caretControllerRef.current.getPosition();
-          const pinnedCount = tokens.filter(isPinnedReferenceToken).length;
-
-          // If the caret is before or between pinned tokens, move it after them.
-          // Text inserted here would get pushed after pinned tokens by enforcePinnedTokenOrdering,
-          // but the caret wouldn't follow — so we preemptively position it correctly.
-          adjustedCaretStart = pinnedCount > 0 && currentPos < pinnedCount ? pinnedCount : currentPos;
-          adjustedCaretEnd = undefined;
-        } else {
-          const pinnedTokens = tokens.filter(isPinnedReferenceToken);
-          const pinnedOffset = pinnedTokens.length;
-
-          adjustedCaretStart = caretStart + pinnedOffset;
-          adjustedCaretEnd = caretEnd !== undefined ? caretEnd + pinnedOffset : undefined;
-        }
-
-        insertTextIntoContentEditable(
-          editableElementRef.current,
-          text,
-          adjustedCaretStart,
-          adjustedCaretEnd,
-          caretControllerRef.current
-        );
-      } else {
-        if (!textareaRef.current) {
-          return;
-        }
-
-        const textarea = textareaRef.current;
-        textarea.focus();
-
-        const currentValue = textarea.value;
-        const insertPosition = caretStart ?? textarea.selectionStart ?? 0;
-        const newValue = currentValue.substring(0, insertPosition) + text + currentValue.substring(insertPosition);
-
-        textarea.value = newValue;
-
-        const finalCursorPosition = caretEnd ?? insertPosition + text.length;
-        textarea.setSelectionRange(finalCursorPosition, finalCursorPosition);
-
-        textarea.dispatchEvent(new Event('input', { bubbles: true }));
-        fireNonCancelableEvent(onChange, {
-          value: newValue,
-        });
+      if (!isTokenMode || !editableElementRef.current || !tokens || !caretControllerRef.current) {
+        return;
       }
+
+      let adjustedCaretStart: number;
+      let adjustedCaretEnd: number | undefined;
+
+      if (caretStart === undefined) {
+        const currentPos = caretControllerRef.current.getPosition();
+        const pinnedCount = tokens.filter(isPinnedReferenceToken).length;
+
+        // If the caret is before or between pinned tokens, move it after them.
+        // Text inserted here would get pushed after pinned tokens by enforcePinnedTokenOrdering,
+        // but the caret wouldn't follow — so we preemptively position it correctly.
+        adjustedCaretStart = pinnedCount > 0 && currentPos < pinnedCount ? pinnedCount : currentPos;
+        adjustedCaretEnd = undefined;
+      } else {
+        const pinnedTokens = tokens.filter(isPinnedReferenceToken);
+        const pinnedOffset = pinnedTokens.length;
+
+        adjustedCaretStart = caretStart + pinnedOffset;
+        adjustedCaretEnd = caretEnd !== undefined ? caretEnd + pinnedOffset : undefined;
+      }
+
+      insertTextIntoContentEditable(
+        editableElementRef.current,
+        text,
+        adjustedCaretStart,
+        adjustedCaretEnd,
+        caretControllerRef.current
+      );
     });
 
     useImperativeHandle(
