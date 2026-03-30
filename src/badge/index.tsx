@@ -15,11 +15,23 @@ import styles from './styles.css.js';
 
 export { BadgeProps };
 
-export default function Badge({ color = 'grey', children, style, nativeAttributes, ...rest }: BadgeProps) {
-  const { __internalRootRef } = useBaseComponent('Badge', { props: { color } });
+export default function Badge({
+  color = 'grey',
+  size = 'default',
+  children,
+  style,
+  nativeAttributes,
+  ...rest
+}: BadgeProps) {
+  const { __internalRootRef } = useBaseComponent('Badge', { props: { color, size } });
   const baseProps = getBaseProps(rest);
 
-  const className = clsx(baseProps.className, styles.badge, styles[`badge-color-${color}`]);
+  const className = clsx(
+    baseProps.className,
+    styles.badge,
+    styles[`badge-color-${color}`],
+    styles[`badge-size-${size}`]
+  );
 
   return (
     <WithNativeAttributes

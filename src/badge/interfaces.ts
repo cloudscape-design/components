@@ -10,6 +10,12 @@ import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface BadgeProps extends BaseComponentProps {
   /**
+   * Specifies the badge size.
+   * @defaultValue `'default'`
+   */
+  size?: BadgeProps.Size;
+
+  /**
    * Specifies the badge color.
    */
   color?:
@@ -49,6 +55,8 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 export namespace BadgeProps {
+  export type Size = 'small' | 'default';
+
   export interface Style {
     root?: {
       background?: string;
