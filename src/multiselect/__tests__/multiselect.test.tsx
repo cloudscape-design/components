@@ -740,6 +740,15 @@ describe('a11y properties', () => {
       'multiselect-label'
     );
   });
+  test('listbox should receive aria-required when that property is set', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect selectedOptions={[]} options={defaultOptions} ariaRequired={true} />
+    );
+    wrapper.openDropdown();
+    expect(
+      wrapper.findDropdown().getElement().parentNode!.querySelector(`[role=listbox]`)!.getAttribute('aria-required')
+    ).toBe('true');
+  });
 });
 
 test('Trigger receives focus when autofocus is true', () => {
