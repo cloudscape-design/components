@@ -44,10 +44,13 @@ export interface InternalDropdownProps
   loopFocus?: boolean;
   minWidth?: DropdownWidthConstraint;
   maxWidth?: DropdownWidthConstraint;
+  maxHeight?: number;
   preferredAlignment?: DropdownAlignment;
   hideBlockBorder?: boolean;
   onFocus?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+  triggerRef?: React.RefObject<HTMLElement>;
+  triggerId?: string;
 }
 
 import styles from './styles.css.js';
