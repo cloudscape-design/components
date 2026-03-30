@@ -38256,6 +38256,25 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
+        {
           "description": "Returns the individual flashes of this flashbar.
 
 If the items are stacked, only the item at the top of the stack is returned.",
@@ -48263,6 +48282,25 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     },
     {
       "methods": [
+        {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
         {
           "description": "Returns the individual flashes of this flashbar.
 
