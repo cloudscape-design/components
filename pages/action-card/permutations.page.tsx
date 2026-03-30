@@ -2,61 +2,67 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Icon } from '~components';
 import ActionCard, { ActionCardProps } from '~components/action-card';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
-const onClick = () => {};
-
-const icon = <Icon name="angle-right" />;
+import {
+  icon,
+  longContent,
+  longDescription,
+  longHeader,
+  onClick,
+  reactNodeContent,
+  shortContent,
+  shortDescription,
+  shortHeader,
+} from './common';
 
 const permutations = createPermutations<ActionCardProps>([
   // With header
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card', undefined],
-    children: ['Card content', undefined],
+    header: [shortHeader],
+    description: [shortDescription, undefined],
+    children: [shortContent, undefined],
     onClick: [onClick],
   },
   // With description
   {
-    header: [<b key="h">Card header</b>, undefined],
-    description: ['A description of the action card'],
-    children: ['Card content', undefined],
+    header: [shortHeader, undefined],
+    description: [shortDescription],
+    children: [shortContent, undefined],
     ariaLabel: ['Action card'],
     onClick: [onClick],
   },
   // With content
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card', undefined],
-    children: ['Card content'],
+    header: [shortHeader],
+    description: [shortDescription, undefined],
+    children: [shortContent],
     ariaLabel: ['Action card'],
     onClick: [onClick],
   },
   // Disabled state
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card'],
-    children: ['Card content'],
+    header: [shortHeader],
+    description: [shortDescription],
+    children: [shortContent],
     disabled: [false, true],
     onClick: [onClick],
   },
   // Icon with position and alignment variations
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card'],
+    header: [shortHeader],
+    description: [shortDescription],
     icon: [icon],
     iconVerticalAlignment: ['top', 'center'],
     onClick: [onClick],
   },
   // Icon with children content
   {
-    header: [<b key="h">Card header</b>],
-    children: ['Card content'],
+    header: [shortHeader],
+    children: [shortContent],
     icon: [icon],
     iconVerticalAlignment: ['top', 'center'],
     disabled: [false, true],
@@ -64,47 +70,45 @@ const permutations = createPermutations<ActionCardProps>([
   },
   // Padding variations
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description'],
-    children: ['Card content'],
+    header: [shortHeader],
+    description: [shortDescription],
+    children: [shortContent],
     disableHeaderPaddings: [false, true],
     disableContentPaddings: [false, true],
     onClick: [onClick],
   },
   // Long content wrapping
   {
-    header: [
-      <b key="h">
-        A very long header text that should wrap to multiple lines to test the layout behavior of the action card
-        component
-      </b>,
-    ],
-    description: [
-      'A very long description text that should wrap to multiple lines to test the layout behavior of the action card component when content overflows',
-    ],
-    children: [
-      'Very long content that should wrap to multiple lines to test the layout behavior of the action card component when the content area has a lot of text',
-    ],
+    header: [longHeader],
+    description: [longDescription],
+    children: [longContent],
     icon: [icon],
     iconVerticalAlignment: ['top', 'center'],
     onClick: [onClick],
   },
   // Minimal: content only
   {
-    children: ['Minimal card with content only'],
+    children: [shortContent],
     ariaLabel: ['Minimal card'],
+    onClick: [onClick],
+  },
+  // ReactNode content
+  {
+    header: [shortHeader],
+    description: [shortDescription],
+    children: [reactNodeContent],
     onClick: [onClick],
   },
   // Header only
   {
-    header: [<b key="h">Header only card</b>],
+    header: [shortHeader],
     onClick: [onClick],
   },
   // All content slots with disabled padding and disabled state
   {
-    header: [<b key="h">Full card</b>],
-    description: ['Description text'],
-    children: ['Card content'],
+    header: [shortHeader],
+    description: [shortDescription],
+    children: [shortContent],
     icon: [icon],
     disabled: [true],
     disableHeaderPaddings: [true],
@@ -113,16 +117,16 @@ const permutations = createPermutations<ActionCardProps>([
   },
   // Variant variations
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card'],
-    children: ['Card content'],
+    header: [shortHeader],
+    description: [shortDescription],
+    children: [shortContent],
     variant: ['default', 'embedded'],
     onClick: [onClick],
   },
   // Variant with icon
   {
-    header: [<b key="h">Card header</b>],
-    description: ['A description of the action card'],
+    header: [shortHeader],
+    description: [shortDescription],
     icon: [icon],
     variant: ['default', 'embedded'],
     onClick: [onClick],
