@@ -73,7 +73,10 @@ export default function ThemedStrokeWidthPage() {
           borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
           borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
           borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
+          spaceButtonHorizontal: '12px',
+          spaceButtonVertical: '4px',
           borderRadiusButton: '8px',
+          borderWidthButton: '1px',
         },
       };
 
@@ -222,6 +225,17 @@ export default function ThemedStrokeWidthPage() {
               <Button iconName="call" variant="primary">
                 Button
               </Button>
+              <Button iconName="call" variant="link">
+                Button
+              </Button>
+              <Button iconName="call" variant="normal">
+                Button
+              </Button>
+            </div>
+            <div>
+              <Button variant="primary">Button</Button>
+              <Button variant="link">Button</Button>
+              <Button variant="normal">Button</Button>
             </div>
 
             <SegmentedControl
