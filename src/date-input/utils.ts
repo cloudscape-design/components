@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getDaysInMonth } from 'date-fns';
+import dayjs from 'dayjs';
 
 import { CalendarProps } from '../calendar/interfaces';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
@@ -15,7 +15,7 @@ function getMaxDaysForDate(value: string): number {
   // Forcing to first day in month to ensure the correct month is used in case the date is incorrect.
   // For example, the date '2018-02-30' is parsed as '2018-03-02' (because there is only 28 days in February 2018).
   const baseDate = displayToIso(value).substring(0, 7);
-  return getDaysInMonth(parseDate(baseDate));
+  return dayjs(parseDate(baseDate)).daysInMonth();
 }
 
 export interface GenerateMaskArgsProps extends Pick<CalendarProps, 'granularity'> {
