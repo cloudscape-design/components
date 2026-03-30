@@ -104,9 +104,7 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the leaf column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    const leafHeaders = this.findActiveTHead().findAll('th[scope="col"]');
-    const header = leafHeaders[columnIndex - 1];
-    return header?.find(`.${resizerStyles.resizer}`) ?? null;
+    return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
   }
 
   /**
