@@ -116,11 +116,8 @@ export class CaretController {
     while (node && node !== this.element) {
       if (isHTMLElement(node) && getTokenType(node) === ElementType.Trigger) {
         if (isTextNode(range.startContainer) && range.startContainer.parentElement === node) {
-          const triggerText = node.textContent || '';
-          const triggerHasFilterText = triggerText.length > 1;
-
-          // At offset 0 with filter text means cursor is before the trigger char — not "in" the trigger
-          if (range.startOffset > 0 || !triggerHasFilterText) {
+          // Caret must be after the trigger character (offset > 0) to be considered "in" the trigger
+          if (range.startOffset > 0) {
             return node;
           }
         } else {
@@ -211,6 +208,8 @@ export class CaretController {
       selection.removeAllRanges();
       selection.addRange(range);
     }
+
+    document.dispatchEvent(new Event('selectionchange'));
   }
 
   /** Captures the current caret/selection state for later restoration. */
@@ -578,8 +577,6 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
   const newOffset = caretSpotType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
 
   // Guard: skip if the selection is already at the target position.
-  // Without this, Safari in RTL can enter an infinite loop: normalizing the caret
-  // fires selectionchange, which re-enters this function, which normalizes again.
   if (range.startContainer === paragraph && range.startOffset === newOffset) {
     return;
   }
@@ -665,7 +662,7 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
     selection.focusNode === range.startContainer &&
     selection.focusOffset === range.startOffset;
 
-  if (isBackward && typeof selection.extend === 'function') {
+  if (isBackward) {
     // Preserve backward direction: collapse to anchor (end), extend to focus (start)
     const anchorContainer = normalizedEnd?.container ?? range.endContainer;
     const anchorOffset = normalizedEnd?.offset ?? range.endOffset;

@@ -212,16 +212,16 @@ describe('detectTriggersInText', () => {
   });
 
   test('respects onTriggerDetected cancellation', () => {
-    const onTriggerDetected = jest.fn().mockReturnValue(true); // cancelled
-    const result = detectTriggersInText('@user', [mentionsMenu], [], onTriggerDetected);
+    const onTriggerDetected = jest.fn().mockReturnValue(true);
+    const cancelledIds = new Set<string>();
+    const result = detectTriggersInText('@user', [mentionsMenu], [], onTriggerDetected, cancelledIds);
     expect(onTriggerDetected).toHaveBeenCalledWith(
       expect.objectContaining({ menuId: 'mentions', triggerChar: '@', position: 0 })
     );
-    // Cancelled trigger is emitted as a trigger token with '-cancelled' ID suffix
-    // so it stays in the DOM and won't be re-detected on subsequent inputs
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual(expect.objectContaining({ type: 'trigger', value: '', triggerChar: '@' }));
-    expect(result[0].type === 'trigger' && (result[0] as any).id.endsWith('-cancelled')).toBe(true);
+    const triggerId = (result[0] as any).id;
+    expect(cancelledIds.has(triggerId)).toBe(true);
     expect(result[1]).toEqual({ type: 'text', value: 'user' });
   });
 

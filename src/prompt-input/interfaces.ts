@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { BaseDropdownHostProps, OptionsFilteringType } from '../dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputSpellcheck } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { BaseDropdownHostProps, OptionsFilteringType } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
@@ -372,10 +372,6 @@ export namespace PromptInputProps {
     type: 'trigger';
     value: string;
     triggerChar: string;
-    /**
-     * Internal: Unique ID for this specific trigger token instance.
-     * Used to anchor menus to the correct trigger when multiple triggers exist.
-     */
     id?: string;
   }
 

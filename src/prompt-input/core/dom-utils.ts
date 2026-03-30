@@ -185,3 +185,46 @@ export function findAdjacentToken(
 
   return { sibling, isReferenceToken };
 }
+
+/**
+ * When the caret lands immediately after a trigger element (e.g. at offset 0 of the
+ * next text node, or at the paragraph-level offset right after the trigger), nudge it
+ * inside the trigger's text node so that `findActiveTrigger` detects it correctly.
+ * @param cancelledIds Set of trigger IDs that are cancelled — caret won't be nudged into these.
+ */
+export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelledIds?: Set<string>): void {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) {
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+  if (!range.collapsed) {
+    return;
+  }
+
+  let triggerElement: HTMLElement | null = null;
+
+  if (isTextNode(range.startContainer) && range.startOffset === 0) {
+    const prevSibling = range.startContainer.previousSibling;
+    if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
+      triggerElement = prevSibling;
+    }
+  } else if (range.startContainer === editableElement || isHTMLElement(range.startContainer)) {
+    const container = range.startContainer as HTMLElement;
+    const childNodes = Array.from(container.childNodes);
+    const nodeBeforeCaret = childNodes[range.startOffset - 1];
+
+    if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === ElementType.Trigger) {
+      triggerElement = nodeBeforeCaret;
+    }
+  }
+
+  if (triggerElement && !cancelledIds?.has(triggerElement.id)) {
+    const triggerTextNode = triggerElement.childNodes[0];
+    if (isTextNode(triggerTextNode)) {
+      range.setStart(triggerTextNode, triggerTextNode.textContent?.length ?? 0);
+      range.collapse(true);
+    }
+  }
+}

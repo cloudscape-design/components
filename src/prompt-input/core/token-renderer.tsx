@@ -139,7 +139,8 @@ export function renderTokensToDOM(
   tokens: readonly PromptInputProps.InputToken[],
   targetElement: HTMLElement,
   portalContainers: Map<string, PortalContainer>,
-  existingTriggers?: Map<string, HTMLElement>
+  existingTriggers?: Map<string, HTMLElement>,
+  cancelledTriggerIds?: Set<string>
 ): {
   newTriggerElement: HTMLElement | null;
   lastReferenceWithCaretSpots: HTMLElement | null;
@@ -189,7 +190,7 @@ export function renderTokensToDOM(
         const triggerId = token.id && token.id !== '' ? token.id : generateTokenId();
         const isNewTrigger = !reusableTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
-        const isCancelled = triggerId.endsWith('-cancelled');
+        const isCancelled = cancelledTriggerIds?.has(triggerId) ?? false;
 
         if (reusableTriggers.has(triggerId)) {
           span = reusableTriggers.get(triggerId)!;

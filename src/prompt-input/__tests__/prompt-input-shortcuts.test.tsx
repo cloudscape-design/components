@@ -76,14 +76,12 @@ describe('onBlur and onFocus', () => {
     const onBlur = jest.fn();
     const { wrapper } = renderPromptInput({ value: '', onBlur });
     const textarea = wrapper.findNativeTextarea().getElement();
-
     act(() => {
       textarea.focus();
     });
     act(() => {
       textarea.blur();
     });
-
     expect(onBlur).toHaveBeenCalled();
   });
 
@@ -91,11 +89,9 @@ describe('onBlur and onFocus', () => {
     const onFocus = jest.fn();
     const { wrapper } = renderPromptInput({ value: '', onFocus });
     const textarea = wrapper.findNativeTextarea().getElement();
-
     act(() => {
       textarea.focus();
     });
-
     expect(onFocus).toHaveBeenCalled();
   });
 });
@@ -124,7 +120,6 @@ describe('insertText ref method (textarea mode)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderPromptInput({ value: 'hello world', onChange, ref });
-
     const textarea = wrapper.findNativeTextarea().getElement();
     act(() => {
       textarea.focus();
@@ -134,7 +129,6 @@ describe('insertText ref method (textarea mode)', () => {
     act(() => {
       ref.current!.insertText(' beautiful');
     });
-
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: expect.objectContaining({ value: 'hello beautiful world' }),
@@ -146,11 +140,9 @@ describe('insertText ref method (textarea mode)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderPromptInput({ value: 'hello world', onChange, ref });
-
     act(() => {
       ref.current!.insertText('!', 11);
     });
-
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: expect.objectContaining({ value: 'hello world!' }),
@@ -162,11 +154,9 @@ describe('insertText ref method (textarea mode)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderPromptInput({ value: 'hello', onChange, ref, disabled: true });
-
     act(() => {
       ref.current!.insertText(' world');
     });
-
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -174,11 +164,9 @@ describe('insertText ref method (textarea mode)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     renderPromptInput({ value: 'hello', onChange, ref, readOnly: true });
-
     act(() => {
       ref.current!.insertText(' world');
     });
-
     expect(onChange).not.toHaveBeenCalled();
   });
 });
@@ -187,9 +175,7 @@ describe('onKeyUp', () => {
   test('fires onKeyUp event', () => {
     const onKeyUp = jest.fn();
     const { wrapper } = renderPromptInput({ value: '', onKeyUp });
-
     wrapper.findNativeTextarea().keyup({ keyCode: KeyCode.enter });
-
     expect(onKeyUp).toHaveBeenCalled();
   });
 });

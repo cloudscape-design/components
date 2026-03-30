@@ -8,6 +8,8 @@ import {
   calculateTokenPosition,
   calculateTotalTokenLength,
   CaretController,
+  findContainingReference,
+  isNonTypeablePosition,
   normalizeCollapsedCaret,
   normalizeSelection,
   setMouseDown,
@@ -95,7 +97,6 @@ describe('CaretController', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.getPosition()).toBe(0);
     });
 
@@ -107,7 +108,6 @@ describe('CaretController', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.getPosition()).toBe(5);
     });
 
@@ -116,7 +116,6 @@ describe('CaretController', () => {
       el.appendChild(p);
       addReferenceToken(p, 'ref-1', 'Alice');
       p.appendChild(document.createTextNode('hello'));
-
       el.focus();
       const range = document.createRange();
       // Position cursor at the text node after reference
@@ -124,7 +123,6 @@ describe('CaretController', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       // Reference = 1, then offset 0 in text = position 1
       expect(controller.getPosition()).toBe(1);
     });
@@ -132,14 +130,12 @@ describe('CaretController', () => {
     test('returns correct position across paragraphs', () => {
       addParagraph(el, 'abc');
       const p2 = addParagraph(el, 'def');
-
       el.focus();
       const range = document.createRange();
       range.setStart(p2.firstChild!, 2);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       // "abc" (3) + line break (1) + "de" (2) = 6
       expect(controller.getPosition()).toBe(6);
     });
@@ -149,9 +145,7 @@ describe('CaretController', () => {
     test('sets cursor in text node', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(5);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
       expect(selection.getRangeAt(0).startOffset).toBe(5);
@@ -161,10 +155,8 @@ describe('CaretController', () => {
       addParagraph(el, 'abc');
       addParagraph(el, 'def');
       el.focus();
-
       // Position 4 = after "abc" (3) + line break (1)
       controller.setPosition(4);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
     });
@@ -172,9 +164,7 @@ describe('CaretController', () => {
     test('sets selection range when end is provided', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(0, 5);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
       expect(selection.getRangeAt(0).collapsed).toBe(false);
@@ -183,7 +173,6 @@ describe('CaretController', () => {
     test('focuses element if not focused', () => {
       addParagraph(el, 'hello');
       document.body.focus();
-
       controller.setPosition(0);
       expect(document.activeElement).toBe(el);
       expect(controller.getPosition()).toBe(0);
@@ -194,10 +183,8 @@ describe('CaretController', () => {
     test('captures and restores cursor position', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(5);
       controller.capture();
-
       expect(controller.getSavedPosition()).toBe(5);
     });
 
@@ -221,7 +208,6 @@ describe('CaretController', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       controller.capture();
       expect(controller.getSavedPosition()).toBeNull();
     });
@@ -231,7 +217,6 @@ describe('CaretController', () => {
       el.focus();
       controller.setPosition(3);
       controller.capture();
-
       document.body.focus();
       controller.restore();
       // getSavedPosition should still be valid (capture wasn't cleared)
@@ -243,10 +228,8 @@ describe('CaretController', () => {
     test('sets position for next restore', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setCapturedPosition(7);
       controller.restore();
-
       expect(controller.getPosition()).toBe(7);
     });
   });
@@ -255,9 +238,7 @@ describe('CaretController', () => {
     test('selects all content', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.selectAll();
-
       const selection = window.getSelection()!;
       expect(selection.toString()).toContain('hello world');
     });
@@ -268,7 +249,6 @@ describe('CaretController', () => {
       p.appendChild(br);
       el.appendChild(p);
       el.focus();
-
       controller.selectAll();
       const sel = window.getSelection()!;
       expect(sel.toString()).toBe('');
@@ -280,7 +260,6 @@ describe('CaretController', () => {
       addParagraph(el, 'hello');
       el.focus();
       controller.setPosition(0);
-
       controller.moveForward(3);
       expect(controller.getPosition()).toBe(3);
     });
@@ -289,7 +268,6 @@ describe('CaretController', () => {
       addParagraph(el, 'hello');
       el.focus();
       controller.setPosition(5);
-
       controller.moveBackward(2);
       expect(controller.getPosition()).toBe(3);
     });
@@ -298,7 +276,6 @@ describe('CaretController', () => {
       addParagraph(el, 'hello');
       el.focus();
       controller.setPosition(1);
-
       controller.moveBackward(5);
       expect(controller.getPosition()).toBe(0);
     });
@@ -311,9 +288,7 @@ describe('CaretController', () => {
       p.appendChild(textNode);
       el.appendChild(p);
       el.focus();
-
       controller.positionAfterText(textNode);
-
       const selection = window.getSelection()!;
       expect(selection.getRangeAt(0).startOffset).toBe(5);
     });
@@ -324,7 +299,6 @@ describe('CaretController', () => {
       addParagraph(el, 'hello');
       el.focus();
       controller.setPosition(3);
-
       expect(controller.findActiveTrigger()).toBeNull();
     });
 
@@ -332,14 +306,12 @@ describe('CaretController', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       const trigger = addTriggerToken(p, 'trigger-1', '@user');
-
       el.focus();
       const range = document.createRange();
       range.setStart(trigger.firstChild!, 2);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.findActiveTrigger()).not.toBeNull();
       expect(controller.findActiveTrigger()?.id).toBe('trigger-1');
     });
@@ -349,14 +321,12 @@ describe('CaretController', () => {
       el.appendChild(p);
       addTriggerToken(p, 'trigger-1', '@user');
       p.appendChild(document.createTextNode('hello'));
-
       el.focus();
       const range = document.createRange();
       range.setStart(p.firstChild!.firstChild!, 0);
       range.setEnd(p.lastChild!, 3);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.findActiveTrigger()).toBeNull();
     });
 
@@ -371,11 +341,9 @@ describe('CaretController', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       addTriggerToken(p, 'trigger-1', '@user');
-
       el.focus();
       // Trigger "@user" has length 5, position 3 should be inside it
       controller.setPosition(3);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
     });
@@ -386,10 +354,8 @@ describe('CaretController', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       addReferenceToken(p, 'ref-1', 'Alice');
-
       el.focus();
       controller.setPosition(0);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
     });
@@ -399,10 +365,8 @@ describe('CaretController', () => {
       el.appendChild(p);
       addReferenceToken(p, 'ref-1', 'Alice');
       p.appendChild(document.createTextNode('hello'));
-
       el.focus();
       controller.setPosition(1); // After reference (length 1)
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
     });
@@ -427,15 +391,12 @@ describe('normalizeCollapsedCaret', () => {
     const text = document.createTextNode('hello');
     p.appendChild(text);
     el.appendChild(p);
-
     const range = document.createRange();
     range.setStart(text, 3);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(text);
     expect(sel.getRangeAt(0).startOffset).toBe(3);
@@ -446,25 +407,20 @@ describe('normalizeCollapsedCaret', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpot = document.createElement('span');
     cursorSpot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200C');
     cursorSpot.appendChild(spotText);
     wrapper.appendChild(cursorSpot);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should have moved cursor to paragraph level, before the wrapper
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -475,25 +431,20 @@ describe('normalizeCollapsedCaret', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpot = document.createElement('span');
     cursorSpot.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200C');
     cursorSpot.appendChild(spotText);
     wrapper.appendChild(cursorSpot);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should have moved cursor to paragraph level, after the wrapper
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -507,13 +458,11 @@ describe('normalizeCollapsedCaret', () => {
     const text = document.createTextNode('hello');
     p.appendChild(text);
     el.appendChild(p);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(text, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // Should not modify the selection
     expect(window.getSelection()!.getRangeAt(0).collapsed).toBe(false);
@@ -536,13 +485,11 @@ describe('normalizeSelection', () => {
     document.body.appendChild(el);
     const text = document.createTextNode('hello');
     el.appendChild(text);
-
     const range = document.createRange();
     range.setStart(text, 3);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     expect(window.getSelection()!.getRangeAt(0).collapsed).toBe(true);
   });
@@ -552,13 +499,11 @@ describe('normalizeSelection', () => {
     document.body.appendChild(el);
     const text = document.createTextNode('hello');
     el.appendChild(text);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(text, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection(), true);
     // Should not modify
     expect(window.getSelection()!.getRangeAt(0).startOffset).toBe(0);
@@ -571,13 +516,11 @@ describe('normalizeSelection', () => {
     document.body.appendChild(el);
     const text = document.createTextNode('hello');
     el.appendChild(text);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(text, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     setMouseDown(false);
   });
@@ -587,28 +530,22 @@ describe('normalizeSelection', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpotBefore = document.createElement('span');
     cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200C');
     cursorSpotBefore.appendChild(spotText);
     wrapper.appendChild(cursorSpotBefore);
-
     const afterText = document.createTextNode('hello');
     p.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     // Start should be normalized to paragraph level
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -619,28 +556,22 @@ describe('normalizeSelection', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const beforeText = document.createTextNode('hello');
     p.appendChild(beforeText);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpotAfter = document.createElement('span');
     cursorSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200C');
     cursorSpotAfter.appendChild(spotText);
     wrapper.appendChild(cursorSpotAfter);
-
     const range = document.createRange();
     range.setStart(beforeText, 0);
     range.setEnd(spotText, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     // End should be normalized to paragraph level, after the wrapper
     expect(sel.getRangeAt(0).endContainer).toBe(p);
@@ -654,15 +585,12 @@ describe('normalizeSelection', () => {
     const text = document.createTextNode('hello world');
     p.appendChild(text);
     el.appendChild(p);
-
     const range = document.createRange();
     range.setStart(text, 2);
     range.setEnd(text, 8);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(text);
     expect(sel.getRangeAt(0).startOffset).toBe(2);
@@ -671,7 +599,7 @@ describe('normalizeSelection', () => {
   });
 });
 
-describe('CaretController - additional branch coverage', () => {
+describe('CaretController - additional branches', () => {
   let el: HTMLDivElement;
   let controller: CaretController;
 
@@ -688,9 +616,7 @@ describe('CaretController - additional branch coverage', () => {
     test('creates selection range from start to end', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(2, 7);
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
       const range = selection.getRangeAt(0);
@@ -701,9 +627,7 @@ describe('CaretController - additional branch coverage', () => {
     test('collapses when end equals start', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(3, 3);
-
       const selection = window.getSelection()!;
       expect(selection.getRangeAt(0).collapsed).toBe(true);
     });
@@ -711,7 +635,6 @@ describe('CaretController - additional branch coverage', () => {
     test('handles end location that cannot be found', () => {
       addParagraph(el, 'hi');
       el.focus();
-
       // end position way beyond content — should collapse
       controller.setPosition(0, 999);
       const selection = window.getSelection()!;
@@ -723,18 +646,13 @@ describe('CaretController - additional branch coverage', () => {
     test('captures and restores a range selection', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(2, 7);
       controller.capture();
-
       expect(controller.getSavedPosition()).toBe(2);
-
       // Move cursor elsewhere
       controller.setPosition(0);
-
       // Restore — verifies it doesn't throw and sets position
       controller.restore();
-
       const selection = window.getSelection()!;
       expect(selection.rangeCount).toBe(1);
     });
@@ -742,10 +660,8 @@ describe('CaretController - additional branch coverage', () => {
     test('capture stores end position for non-collapsed selection', () => {
       addParagraph(el, 'hello world');
       el.focus();
-
       controller.setPosition(1, 5);
       controller.capture();
-
       expect(controller.getSavedPosition()).toBe(1);
     });
 
@@ -753,7 +669,6 @@ describe('CaretController - additional branch coverage', () => {
       addParagraph(el, 'hello');
       el.focus();
       controller.setPosition(0);
-
       // No capture done — state is invalid, restore should be a no-op
       controller.restore();
       expect(controller.getPosition()).toBe(0);
@@ -765,9 +680,7 @@ describe('CaretController - additional branch coverage', () => {
       addParagraph(el, 'hello');
       addParagraph(el, 'world');
       el.focus();
-
       controller.selectAll();
-
       const selection = window.getSelection()!;
       expect(selection.toString()).toContain('hello');
       expect(selection.toString()).toContain('world');
@@ -779,7 +692,6 @@ describe('CaretController - additional branch coverage', () => {
       p.appendChild(br);
       el.appendChild(p);
       el.focus();
-
       controller.selectAll();
       expect(window.getSelection()!.toString()).toBe('');
     });
@@ -799,11 +711,9 @@ describe('CaretController - additional branch coverage', () => {
       addReferenceToken(p, 'ref-1', 'Alice');
       addReferenceToken(p, 'ref-2', 'Bob');
       el.focus();
-
       // Position 1 = after first reference
       controller.setPosition(1);
       expect(controller.getPosition()).toBe(1);
-
       // Position 2 = after second reference
       controller.setPosition(2);
       expect(controller.getPosition()).toBe(2);
@@ -815,7 +725,6 @@ describe('CaretController - additional branch coverage', () => {
       p.appendChild(document.createTextNode('hi'));
       addReferenceToken(p, 'ref-1', 'Alice');
       el.focus();
-
       // "hi" (2) + reference (1) = 3
       controller.setPosition(3);
       expect(controller.getPosition()).toBe(3);
@@ -826,7 +735,6 @@ describe('CaretController - additional branch coverage', () => {
       el.appendChild(p);
       addTriggerToken(p, 'trigger-1', '@user');
       el.focus();
-
       // Position 2 should be inside trigger text
       controller.setPosition(2);
       expect(controller.getPosition()).toBe(2);
@@ -835,7 +743,6 @@ describe('CaretController - additional branch coverage', () => {
     test('handles position beyond content length', () => {
       addParagraph(el, 'hi');
       el.focus();
-
       // "hi" has length 2, position should clamp to 2
       controller.setPosition(100);
       expect(controller.getPosition()).toBe(2);
@@ -846,27 +753,22 @@ describe('CaretController - additional branch coverage', () => {
     test('getPosition with cursor in cursor-spot-before with typed text', () => {
       const p = document.createElement('p');
       el.appendChild(p);
-
       const wrapper = document.createElement('span');
       wrapper.setAttribute('data-type', ElementType.Reference);
       p.appendChild(wrapper);
-
       const cursorSpotBefore = document.createElement('span');
       cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
       const spotText = document.createTextNode('\u200Btyped');
       cursorSpotBefore.appendChild(spotText);
       wrapper.appendChild(cursorSpotBefore);
-
       const content = document.createElement('span');
       content.textContent = 'Alice';
       content.setAttribute('contenteditable', 'false');
       wrapper.appendChild(content);
-
       const cursorSpotAfter = document.createElement('span');
       cursorSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
       cursorSpotAfter.appendChild(document.createTextNode('\u200B'));
       wrapper.appendChild(cursorSpotAfter);
-
       el.focus();
       // Place cursor in the before spot text at offset 3
       // Zero-width character (\u200B) is stripped, leaving "typed" (5 chars). Offset 3 in raw text = offset 2 in stripped text.
@@ -876,7 +778,6 @@ describe('CaretController - additional branch coverage', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       const pos = controller.getPosition();
       expect(pos).toBe(3);
     });
@@ -884,34 +785,28 @@ describe('CaretController - additional branch coverage', () => {
     test('getPosition with cursor in cursor-spot-after with typed text', () => {
       const p = document.createElement('p');
       el.appendChild(p);
-
       const wrapper = document.createElement('span');
       wrapper.setAttribute('data-type', ElementType.Reference);
       p.appendChild(wrapper);
-
       const cursorSpotBefore = document.createElement('span');
       cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
       cursorSpotBefore.appendChild(document.createTextNode('\u200B'));
       wrapper.appendChild(cursorSpotBefore);
-
       const content = document.createElement('span');
       content.textContent = 'Alice';
       content.setAttribute('contenteditable', 'false');
       wrapper.appendChild(content);
-
       const cursorSpotAfter = document.createElement('span');
       cursorSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
       const afterText = document.createTextNode('\u200Btyped');
       cursorSpotAfter.appendChild(afterText);
       wrapper.appendChild(cursorSpotAfter);
-
       el.focus();
       const range = document.createRange();
       range.setStart(afterText, 3);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       const pos = controller.getPosition();
       // Reference (1) + stripped offset in after-spot: raw offset 3 minus 1 for zero-width char = 2
       expect(pos).toBe(3);
@@ -921,47 +816,41 @@ describe('CaretController - additional branch coverage', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       const trigger = addTriggerToken(p, 'trigger-1', '@user');
-
       el.focus();
       const range = document.createRange();
       range.setStart(trigger.firstChild!, 3);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.getPosition()).toBe(3);
     });
   });
 
   describe('findActiveTrigger edge cases', () => {
-    test('detects trigger when cursor is at offset 0 with no filter text', () => {
+    test('returns null when cursor is at offset 0 of trigger with no filter text', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       const trigger = addTriggerToken(p, 'trigger-1', '@');
-
       el.focus();
       const range = document.createRange();
       range.setStart(trigger.firstChild!, 0);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
-      // Single char trigger with no filter — offset 0 is valid
-      expect(controller.findActiveTrigger()).not.toBeNull();
+      // Offset 0 means cursor is before the trigger char — not "in" the trigger
+      expect(controller.findActiveTrigger()).toBeNull();
     });
 
     test('returns null when cursor is at offset 0 of trigger with filter text', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       const trigger = addTriggerToken(p, 'trigger-1', '@user');
-
       el.focus();
       const range = document.createRange();
       range.setStart(trigger.firstChild!, 0);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       // Offset 0 with filter text means cursor is before trigger char
       expect(controller.findActiveTrigger()).toBeNull();
     });
@@ -972,14 +861,12 @@ describe('CaretController - additional branch coverage', () => {
       addTriggerToken(p, 'trigger-1', '@user');
       const textAfter = document.createTextNode('hello');
       p.appendChild(textAfter);
-
       el.focus();
       const range = document.createRange();
       range.setStart(textAfter, 0);
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       // Cursor at offset 0 of text node right after trigger
       expect(controller.findActiveTrigger()).not.toBeNull();
       expect(controller.findActiveTrigger()?.id).toBe('trigger-1');
@@ -989,7 +876,6 @@ describe('CaretController - additional branch coverage', () => {
       const p = document.createElement('p');
       el.appendChild(p);
       const trigger = addTriggerToken(p, 'trigger-1', '@user');
-
       el.focus();
       // Place cursor at element level inside the trigger span (not in its text node)
       const range = document.createRange();
@@ -997,7 +883,6 @@ describe('CaretController - additional branch coverage', () => {
       range.collapse(true);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-
       expect(controller.findActiveTrigger()).not.toBeNull();
       expect(controller.findActiveTrigger()?.id).toBe('trigger-1');
     });
@@ -1123,7 +1008,6 @@ describe('CaretController - setPosition edge cases', () => {
     addReferenceToken(p, 'ref-1', 'Alice');
     addReferenceToken(p, 'ref-2', 'Bob');
     el.focus();
-
     // Two references = length 2, position beyond all content should clamp to 2
     controller.setPosition(999);
     expect(controller.getPosition()).toBe(2);
@@ -1149,14 +1033,12 @@ describe('CaretController - countUpToCursor edge cases', () => {
     p.appendChild(document.createTextNode('ab'));
     addReferenceToken(p, 'ref-1', 'X');
     p.appendChild(document.createTextNode('cd'));
-
     el.focus();
     const range = document.createRange();
     range.setStart(p, 3);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     expect(controller.getPosition()).toBe(5);
   });
 
@@ -1169,23 +1051,19 @@ describe('CaretController - countUpToCursor edge cases', () => {
   test('getPosition with cursor inside reference wrapper (not in cursor spot)', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const content = document.createElement('span');
     content.textContent = 'Alice';
     content.setAttribute('contenteditable', 'false');
     wrapper.appendChild(content);
-
     el.focus();
     const range = document.createRange();
     range.setStart(wrapper, 1);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     expect(pos).toBe(1);
   });
@@ -1193,29 +1071,24 @@ describe('CaretController - countUpToCursor edge cases', () => {
   test('getPosition with cursor in cursor-spot-before without typed text (zero-width character only)', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpotBefore = document.createElement('span');
     cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200C');
     cursorSpotBefore.appendChild(spotText);
     wrapper.appendChild(cursorSpotBefore);
-
     const content = document.createElement('span');
     content.textContent = 'Alice';
     content.setAttribute('contenteditable', 'false');
     wrapper.appendChild(content);
-
     el.focus();
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // Zero-width-only content in cursor-spot-before means cursor is before the reference = position 0
     expect(pos).toBe(0);
@@ -1224,34 +1097,28 @@ describe('CaretController - countUpToCursor edge cases', () => {
   test('getPosition with cursor in cursor-spot-after without typed text (zero-width character only)', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpotBefore = document.createElement('span');
     cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     cursorSpotBefore.appendChild(document.createTextNode('\u200C'));
     wrapper.appendChild(cursorSpotBefore);
-
     const content = document.createElement('span');
     content.textContent = 'Alice';
     content.setAttribute('contenteditable', 'false');
     wrapper.appendChild(content);
-
     const cursorSpotAfter = document.createElement('span');
     cursorSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     const afterSpotText = document.createTextNode('\u200C');
     cursorSpotAfter.appendChild(afterSpotText);
     wrapper.appendChild(cursorSpotAfter);
-
     el.focus();
     const range = document.createRange();
     range.setStart(afterSpotText, 1);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // After reference with zero-width-only content, position should be 1 (after the reference)
     expect(pos).toBe(1);
@@ -1260,16 +1127,13 @@ describe('CaretController - countUpToCursor edge cases', () => {
   test('getPosition with cursor at element level inside cursor-spot (not text node)', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const cursorSpotBefore = document.createElement('span');
     cursorSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     cursorSpotBefore.appendChild(document.createTextNode('\u200C'));
     wrapper.appendChild(cursorSpotBefore);
-
     el.focus();
     // Place cursor at element level inside the cursor spot (not in text node)
     const range = document.createRange();
@@ -1277,7 +1141,6 @@ describe('CaretController - countUpToCursor edge cases', () => {
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // Element-level offset 0 inside cursor-spot-before resolves to position 1
     expect(pos).toBe(1);
@@ -1294,13 +1157,11 @@ describe('normalizeCollapsedCaret - additional edge cases', () => {
     document.body.appendChild(el);
     const textNode = document.createTextNode('hello');
     el.appendChild(textNode);
-
     const range = document.createRange();
     range.setStart(textNode, 2);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     // textNode's parent is a div, not a cursor spot — normalizeCollapsedCaret should be a no-op
     normalizeCollapsedCaret(window.getSelection());
     const sel = window.getSelection()!;
@@ -1313,23 +1174,19 @@ describe('normalizeCollapsedCaret - additional edge cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', 'trigger');
     p.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
   });
@@ -1337,23 +1194,19 @@ describe('normalizeCollapsedCaret - additional edge cases', () => {
   test('does nothing when cursor spot has no parent paragraph', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     el.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(el);
@@ -1363,22 +1216,18 @@ describe('normalizeCollapsedCaret - additional edge cases', () => {
     // Create a reference wrapper with cursor spot but no parent element above wrapper
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     // Wrapper is not attached to any parent
     document.body.appendChild(wrapper);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     const sel = window.getSelection()!;
     // Should normalize to body level since wrapper.parentElement is body
@@ -1398,13 +1247,11 @@ describe('normalizeSelection - additional edge cases', () => {
     const text = document.createTextNode('hello');
     p.appendChild(text);
     el.appendChild(p);
-
     const range = document.createRange();
     range.setStart(p, 0);
     range.setEnd(text, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(p);
   });
@@ -1414,26 +1261,21 @@ describe('normalizeSelection - additional edge cases', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', 'trigger');
     p.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const afterText = document.createTextNode('hello');
     p.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
   });
@@ -1443,18 +1285,15 @@ describe('normalizeSelection - additional edge cases', () => {
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     spot.appendChild(spotText);
-
     // spot has no parent element (not attached to wrapper)
     document.body.appendChild(spot);
     const afterText = document.createTextNode('hello');
     document.body.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     // Should not modify since parent of spot is body, not a reference wrapper
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
@@ -1463,26 +1302,21 @@ describe('normalizeSelection - additional edge cases', () => {
   test('does nothing when wrapper parentElement is null for end boundary', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
-
     const beforeText = document.createTextNode('hello');
     el.appendChild(beforeText);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     el.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(beforeText, 0);
     range.setEnd(spotText, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     const sel = window.getSelection()!;
     // Should normalize end to el level since wrapper.parentElement is el
@@ -1522,7 +1356,6 @@ describe('CaretController - setPosition null location handling', () => {
     el.appendChild(p);
     document.body.focus();
     el.focus();
-
     // Start at 0 (valid), end at 999 (beyond content — falls back to last paragraph end)
     controller.setPosition(0, 999);
     const sel = window.getSelection()!;
@@ -1555,13 +1388,11 @@ describe('CaretController - capture and restore', () => {
     const other = document.createElement('div');
     document.body.appendChild(other);
     other.appendChild(document.createTextNode('outside'));
-
     const range = document.createRange();
     range.setStart(other.firstChild!, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     controller.capture();
     expect(controller.getSavedPosition()).toBeNull();
   });
@@ -1570,13 +1401,11 @@ describe('CaretController - capture and restore', () => {
     const p = document.createElement('p');
     p.appendChild(document.createTextNode('hello world'));
     el.appendChild(p);
-
     const range = document.createRange();
     range.setStart(p.firstChild!, 2);
     range.setEnd(p.firstChild!, 7);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     controller.capture();
     expect(controller.getSavedPosition()).toBe(2);
   });
@@ -1593,13 +1422,11 @@ describe('CaretController - capture and restore', () => {
     const p = document.createElement('p');
     p.appendChild(document.createTextNode('hello'));
     el.appendChild(p);
-
     controller.setCapturedPosition(3);
     // Element is not focused — restore should be a no-op
     const other = document.createElement('input');
     document.body.appendChild(other);
     other.focus();
-
     controller.restore();
     // No assertion on position since restore was skipped
   });
@@ -1623,15 +1450,12 @@ describe('CaretController - findLocationInParagraph reference positioning', () =
   test('setPosition targets position exactly before a reference', () => {
     const p = addParagraph(el, 'ab');
     const textNode = p.firstChild!;
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const after = document.createTextNode('cd');
     p.appendChild(after);
-
     el.focus();
     // Position 2 = end of 'ab', right before the reference
     controller.setPosition(2);
@@ -1645,15 +1469,12 @@ describe('CaretController - findLocationInParagraph reference positioning', () =
   test('setPosition targets position exactly after a reference', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const after = document.createTextNode('cd');
     p.appendChild(after);
-
     el.focus();
     // Position 1 = right after the reference (reference length = 1)
     controller.setPosition(1);
@@ -1667,12 +1488,10 @@ describe('CaretController - findLocationInParagraph reference positioning', () =
   test('setPosition after reference with no next text sibling', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     el.focus();
     controller.setPosition(1);
     const sel = window.getSelection()!;
@@ -1684,16 +1503,13 @@ describe('CaretController - findLocationInParagraph reference positioning', () =
   test('setPosition after reference with non-text next sibling', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const nextSpan = document.createElement('span');
     nextSpan.textContent = 'next';
     p.appendChild(nextSpan);
-
     el.focus();
     controller.setPosition(1);
     const sel = window.getSelection()!;
@@ -1704,12 +1520,10 @@ describe('CaretController - findLocationInParagraph reference positioning', () =
   test('setPosition into trigger without text node falls back to paragraph', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const trigger = document.createElement('span');
     trigger.setAttribute('data-type', ElementType.Trigger);
     // No child text node — empty trigger
     p.appendChild(trigger);
-
     el.focus();
     controller.setPosition(0);
     const sel = window.getSelection()!;
@@ -1735,23 +1549,19 @@ describe('CaretController - countUpToCursor trigger edge case', () => {
   test('getPosition with cursor inside trigger element (not in text node)', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const text = document.createTextNode('ab');
     p.appendChild(text);
-
     const trigger = document.createElement('span');
     trigger.setAttribute('data-type', ElementType.Trigger);
     const triggerText = document.createTextNode('@test');
     trigger.appendChild(triggerText);
     p.appendChild(trigger);
-
     // Place cursor at element level inside trigger (offset 0 = before the text node)
     const range = document.createRange();
     range.setStart(trigger, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // 'ab' = 2, cursor at element level of trigger with offset 0 falls through to getNodeLength
     // which returns the full trigger text length (5 for '@test')
@@ -1769,26 +1579,21 @@ describe('normalizeCollapsedCaret - caret spot before vs after', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const beforeText = document.createTextNode('hi');
     p.appendChild(beforeText);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const spotAfter = document.createElement('span');
     spotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     spotAfter.appendChild(spotText);
     wrapper.appendChild(spotAfter);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     const sel = window.getSelection()!;
     // caret-spot-after normalizes to wrapperIndex + 1
@@ -1807,42 +1612,34 @@ describe('normalizeSelection - end boundary normalization', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     // First reference with caret-spot-before
     const wrapper1 = document.createElement('span');
     wrapper1.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper1);
-
     const spotBefore = document.createElement('span');
     spotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText1 = document.createTextNode('\u200B');
     spotBefore.appendChild(spotText1);
     wrapper1.appendChild(spotBefore);
-
     const label1 = document.createTextNode('Alice');
     wrapper1.appendChild(label1);
-
     // Second reference with caret-spot-after
     const wrapper2 = document.createElement('span');
     wrapper2.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper2);
-
     const label2 = document.createTextNode('Bob');
     wrapper2.appendChild(label2);
-
     const spotAfter = document.createElement('span');
     spotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText2 = document.createTextNode('\u200B');
     spotAfter.appendChild(spotText2);
     wrapper2.appendChild(spotAfter);
-
     // Select from spot-before of wrapper1 to spot-after of wrapper2
     const range = document.createRange();
     range.setStart(spotText1, 0);
     range.setEnd(spotText2, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     const sel = window.getSelection()!;
     const r = sel.getRangeAt(0);
@@ -1859,26 +1656,21 @@ describe('normalizeSelection - end boundary normalization', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const afterText = document.createTextNode('hello');
     p.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     setMouseDown(true);
     normalizeSelection(window.getSelection());
     // Should not normalize because mouse is down
@@ -1891,26 +1683,21 @@ describe('normalizeSelection - end boundary normalization', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const afterText = document.createTextNode('hello');
     p.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection(), true);
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
   });
@@ -1934,17 +1721,14 @@ describe('CaretController - findLocationInParagraph deep reference branches', ()
   test('setPosition at reference with non-text next sibling positions at paragraph level', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const nextRef = document.createElement('span');
     nextRef.setAttribute('data-type', ElementType.Reference);
     nextRef.textContent = 'Bob';
     p.appendChild(nextRef);
-
     el.focus();
     // Position 1 = after first reference, before second reference
     controller.setPosition(1);
@@ -1957,12 +1741,10 @@ describe('CaretController - findLocationInParagraph deep reference branches', ()
   test('setPosition past reference into unknown child type', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     // A non-token span (unknown type)
     const unknownSpan = document.createElement('span');
     unknownSpan.textContent = 'unknown';
     p.appendChild(unknownSpan);
-
     el.focus();
     controller.setPosition(0);
     const sel = window.getSelection()!;
@@ -1972,10 +1754,8 @@ describe('CaretController - findLocationInParagraph deep reference branches', ()
   test('setPosition beyond all content falls back to last text node', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const text = document.createTextNode('hello');
     p.appendChild(text);
-
     el.focus();
     controller.setPosition(999);
     const sel = window.getSelection()!;
@@ -2003,27 +1783,22 @@ describe('CaretController - countUpToCursor reference with caret in after-spot w
   test('getPosition with cursor in caret-spot-after with no typed content', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const label = document.createTextNode('Alice');
     wrapper.appendChild(label);
-
     const caretSpotAfter = document.createElement('span');
     caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     caretSpotAfter.appendChild(spotText);
     wrapper.appendChild(caretSpotAfter);
-
     // Place cursor in the after-spot text node (only zero-width char, no typed content)
     const range = document.createRange();
     range.setStart(spotText, 1);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // Reference = 1, cursor at offset 1 in after-spot (after zero-width char)
     // countUpToCursor counts reference + after-spot content offset
@@ -2033,34 +1808,29 @@ describe('CaretController - countUpToCursor reference with caret in after-spot w
   test('getPosition with cursor in caret-spot-before at element level', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     p.appendChild(wrapper);
-
     const caretSpotBefore = document.createElement('span');
     caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     caretSpotBefore.appendChild(spotText);
     wrapper.appendChild(caretSpotBefore);
-
     const label = document.createTextNode('Alice');
     wrapper.appendChild(label);
-
     // Place cursor at element level of caret-spot-before (not in text node)
     const range = document.createRange();
     range.setStart(caretSpotBefore, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // Cursor at element level of caret-spot-before falls through to getNodeLength(wrapper) = REFERENCE = 1
     expect(pos).toBe(1);
   });
 });
 
-describe('CaretController - defensive guard coverage', () => {
+describe('CaretController - defensive guards', () => {
   let el: HTMLDivElement;
   let controller: CaretController;
 
@@ -2099,16 +1869,12 @@ describe('CaretController - defensive guard coverage', () => {
   test('setPosition scrolls into view when caret is out of bounds', () => {
     addParagraph(el, 'hello world');
     el.focus();
-
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
     jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
-
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
-
     controller.setPosition(5);
     expect(scrollSpy).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
   });
@@ -2116,15 +1882,12 @@ describe('CaretController - defensive guard coverage', () => {
   test('setPosition scroll with range selection when out of view', () => {
     addParagraph(el, 'hello world test');
     el.focus();
-
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
     jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
-
     controller.setPosition(2, 8);
     expect(scrollSpy).toHaveBeenCalled();
   });
@@ -2133,12 +1896,10 @@ describe('CaretController - defensive guard coverage', () => {
     addParagraph(el, 'hello');
     el.focus();
     controller.setCapturedPosition(3);
-
     const other = document.createElement('input');
     document.body.appendChild(other);
     other.focus();
     expect(document.activeElement).toBe(other);
-
     controller.restore();
     // restore was a no-op, active element should still be the other input
     expect(document.activeElement).toBe(other);
@@ -2163,7 +1924,6 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
   test('setPosition into empty trigger (no text child) falls back to paragraph index', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const trigger = document.createElement('span');
     trigger.setAttribute('data-type', ElementType.Trigger);
     // Trigger has a non-text child instead of text
@@ -2171,7 +1931,6 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
     inner.textContent = 'inner';
     trigger.appendChild(inner);
     p.appendChild(trigger);
-
     el.focus();
     controller.setPosition(0);
     const sel = window.getSelection()!;
@@ -2182,15 +1941,12 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
   test('setPosition into reference at exact start offset', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const text = document.createTextNode('after');
     p.appendChild(text);
-
     el.focus();
     // Position 0 = exactly at start of reference
     controller.setPosition(0);
@@ -2203,17 +1959,14 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
   test('setPosition past reference into next non-text sibling', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref1 = document.createElement('span');
     ref1.setAttribute('data-type', ElementType.Reference);
     ref1.textContent = 'Alice';
     p.appendChild(ref1);
-
     const ref2 = document.createElement('span');
     ref2.setAttribute('data-type', ElementType.Reference);
     ref2.textContent = 'Bob';
     p.appendChild(ref2);
-
     el.focus();
     // Position 1 = after first reference
     controller.setPosition(1);
@@ -2227,12 +1980,10 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
   test('setPosition past reference with no next sibling', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     el.focus();
     controller.setPosition(1);
     const sel = window.getSelection()!;
@@ -2244,11 +1995,9 @@ describe('CaretController - findLocationInParagraph trigger fallback', () => {
   test('setPosition on unknown element type falls back to paragraph index', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const unknown = document.createElement('span');
     unknown.textContent = 'unknown';
     p.appendChild(unknown);
-
     el.focus();
     controller.setPosition(0);
     const sel = window.getSelection()!;
@@ -2274,16 +2023,13 @@ describe('CaretController - countUpToCursor fallback', () => {
   test('getPosition returns count when cursor container is not found in paragraph children', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const text = document.createTextNode('hello');
     p.appendChild(text);
-
     const range = document.createRange();
     range.setStart(text, 3);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     // This should work normally
     const pos = controller.getPosition();
     expect(pos).toBe(3);
@@ -2300,16 +2046,13 @@ describe('normalizeCollapsedCaret - all guard branches', () => {
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
-
     // Spot is directly in body — no wrapper parent
     document.body.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // Should not modify — wrapper is body, not a reference
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(spotText);
@@ -2319,22 +2062,18 @@ describe('normalizeCollapsedCaret - all guard branches', () => {
     // Create a reference wrapper with caret spot but no paragraph parent
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     // Wrapper is directly in body — its parentElement is body, not a paragraph
     document.body.appendChild(wrapper);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // Should normalize to body level
     const sel = window.getSelection()!;
@@ -2346,19 +2085,16 @@ describe('normalizeCollapsedCaret - all guard branches', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const span = document.createElement('span');
     span.setAttribute('data-type', ElementType.Trigger);
     const text = document.createTextNode('hello');
     span.appendChild(text);
     p.appendChild(span);
-
     const range = document.createRange();
     range.setStart(text, 2);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // Should not modify — parent is trigger, not caret spot
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(text);
@@ -2373,23 +2109,19 @@ describe('normalizeSelection - all guard branches', () => {
   test('returns early when end boundary parent has no parentElement', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
-
     const text = document.createTextNode('hello');
     el.appendChild(text);
-
     // Create a caret spot directly in body (no wrapper)
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     document.body.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(spotText, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     // End boundary spot has no reference wrapper — should not normalize end
     expect(window.getSelection()!.getRangeAt(0).endContainer).toBe(spotText);
@@ -2400,26 +2132,21 @@ describe('normalizeSelection - all guard branches', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const text = document.createTextNode('hello');
     p.appendChild(text);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Trigger);
     p.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(spotText, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     expect(window.getSelection()!.getRangeAt(0).endContainer).toBe(spotText);
   });
@@ -2427,25 +2154,20 @@ describe('normalizeSelection - all guard branches', () => {
   test('returns early when end boundary wrapper paragraph is null', () => {
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotAfter);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     // Wrapper directly in body — no paragraph parent
     document.body.appendChild(wrapper);
-
     const text = document.createTextNode('hello');
     document.body.insertBefore(text, wrapper);
-
     const range = document.createRange();
     range.setStart(text, 0);
     range.setEnd(spotText, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     // Should normalize end to body level since wrapper.parentElement is body
     const sel = window.getSelection()!;
@@ -2473,14 +2195,11 @@ describe('CaretController - remaining uncovered branches', () => {
   test('setPosition scroll re-selection with end that cannot be found', () => {
     addParagraph(el, 'hi');
     el.focus();
-
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
     jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     HTMLElement.prototype.scrollIntoView = jest.fn();
-
     // Start at 0 (valid), end at 999 (beyond content)
     controller.setPosition(0, 999);
     const sel = window.getSelection()!;
@@ -2490,14 +2209,11 @@ describe('CaretController - remaining uncovered branches', () => {
   test('setPosition scroll re-selection with collapsed range', () => {
     addParagraph(el, 'hello');
     el.focus();
-
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
     const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-
     jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
     jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
     HTMLElement.prototype.scrollIntoView = jest.fn();
-
     // Collapsed range (no end)
     controller.setPosition(3);
     const sel = window.getSelection()!;
@@ -2514,15 +2230,12 @@ describe('CaretController - remaining uncovered branches', () => {
   test('findLocationInParagraph falls back to last text node when position exceeds content', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const ref = document.createElement('span');
     ref.setAttribute('data-type', ElementType.Reference);
     ref.textContent = 'Alice';
     p.appendChild(ref);
-
     const text = document.createTextNode('end');
     p.appendChild(text);
-
     el.focus();
     // Position way beyond content
     controller.setPosition(100);
@@ -2535,11 +2248,9 @@ describe('CaretController - remaining uncovered branches', () => {
   test('findLocationInParagraph falls back to paragraph childNodes length when no text last child', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const span = document.createElement('span');
     span.textContent = 'not-a-token';
     p.appendChild(span);
-
     el.focus();
     controller.setPosition(100);
     const sel = window.getSelection()!;
@@ -2551,15 +2262,12 @@ describe('CaretController - remaining uncovered branches', () => {
   test('findLocationInParagraph returns paragraph index for unknown element child', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     // Unknown element type — getNodeLength returns 0, so offset stays at 0
     const unknown = document.createElement('div');
     unknown.textContent = 'div-content';
     p.appendChild(unknown);
-
     const text = document.createTextNode('after');
     p.appendChild(text);
-
     el.focus();
     // Position 0 should match the unknown div (length 0, so 0 + 0 >= 0)
     controller.setPosition(0);
@@ -2570,13 +2278,10 @@ describe('CaretController - remaining uncovered branches', () => {
   test('countUpToCursor returns accumulated count when cursor not found in children', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const text1 = document.createTextNode('hello');
     p.appendChild(text1);
-
     const text2 = document.createTextNode('world');
     p.appendChild(text2);
-
     // Place cursor in a node that's a child of p but use an offset that triggers the fallback
     // Actually, countUpToCursor always finds the container in children.
     // The fallback is hit when container is not found — e.g., cursor in a deeply nested node
@@ -2587,7 +2292,6 @@ describe('CaretController - remaining uncovered branches', () => {
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     const pos = controller.getPosition();
     // Should count both text nodes: 5 + 5 = 10
     expect(pos).toBe(10);
@@ -2602,7 +2306,6 @@ describe('normalizeCollapsedCaret - parent with no parentElement', () => {
   test('returns early when text node parent element is null', () => {
     // Create a text node with no parent element
     document.createTextNode('orphan');
-
     // We can't easily place cursor in a parentless text node via Selection API,
     // but we can test by creating a spot whose parent is a document fragment
     const frag = document.createDocumentFragment();
@@ -2611,7 +2314,6 @@ describe('normalizeCollapsedCaret - parent with no parentElement', () => {
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     frag.appendChild(spot);
-
     // Can't set selection in a fragment, so test the guard indirectly
     // by having the spot in a non-element parent
     // Actually, let's test with a spot that has parentElement but it's not a caret spot
@@ -2622,13 +2324,11 @@ describe('normalizeCollapsedCaret - parent with no parentElement', () => {
     const text = document.createTextNode('hello');
     plainSpan.appendChild(text);
     div.appendChild(plainSpan);
-
     const range = document.createRange();
     range.setStart(text, 2);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // Should not modify — parent is not a caret spot
     expect(window.getSelection()!.getRangeAt(0).startContainer).toBe(text);
@@ -2655,36 +2355,29 @@ describe('CaretController - null textContent fallbacks', () => {
   test('findActiveTrigger handles trigger with null textContent', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const trigger = document.createElement('span');
     trigger.setAttribute('data-type', ElementType.Trigger);
     p.appendChild(trigger);
-
     // Trigger has no text content — textContent is ''
     const textNode = document.createTextNode('');
     trigger.appendChild(textNode);
-
     const range = document.createRange();
     range.setStart(textNode, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     el.focus();
     const result = controller.findActiveTrigger();
-    // Empty trigger with offset 0 and no filter text — should return the trigger
-    expect(result).toBe(trigger);
+    // Empty trigger with offset 0 — cursor is before the trigger char, not "in" it
+    expect(result).toBeNull();
   });
 
   test('positionAfterText with node that has null textContent', () => {
     const p = document.createElement('p');
     el.appendChild(p);
-
     const textNode = document.createTextNode('');
     p.appendChild(textNode);
-
     Object.defineProperty(textNode, 'textContent', { value: null, writable: true });
-
     el.focus();
     controller.positionAfterText(textNode);
     // Falls back to offset 0 since textContent is null
@@ -2703,23 +2396,19 @@ describe('normalizeCollapsedCaret - wrapper and paragraph null guards', () => {
     // Create wrapper as root element (parentElement is null)
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     // Don't attach wrapper to anything — but we need it in the DOM for selection
     // Attach to a document fragment won't work. Attach directly to body.
     document.body.appendChild(wrapper);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
     // wrapper.parentElement is body, so paragraph = body
     // This actually normalizes — the guard for !paragraph is when wrapper has no parent at all
@@ -2736,22 +2425,18 @@ describe('normalizeSelection - wrapper paragraph null guards', () => {
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     document.body.appendChild(wrapper);
-
     const spot = document.createElement('span');
     spot.setAttribute('data-type', ElementType.CaretSpotBefore);
     const spotText = document.createTextNode('\u200B');
     spot.appendChild(spotText);
     wrapper.appendChild(spot);
-
     const afterText = document.createTextNode('hello');
     document.body.appendChild(afterText);
-
     const range = document.createRange();
     range.setStart(spotText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
     // wrapper.parentElement is body — normalizes to body level
     const sel = window.getSelection()!;
@@ -2768,23 +2453,19 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     parent.appendChild(wrapper);
-
     const caretSpotBefore = document.createElement('span');
     caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     caretSpotBefore.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotBefore);
-
     const tokenContainer = document.createElement('span');
     tokenContainer.setAttribute('contenteditable', 'false');
     tokenContainer.className = 'token-container';
     tokenContainer.textContent = 'Alice';
     wrapper.appendChild(tokenContainer);
-
     const caretSpotAfter = document.createElement('span');
     caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     caretSpotAfter.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotAfter);
-
     return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
   }
 
@@ -2793,18 +2474,14 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const { wrapper } = createFullReferenceStructure(p);
-
     // Simulate browser placing caret inside the wrapper element itself
     const range = document.createRange();
     range.setStart(wrapper, 1);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(p);
   });
@@ -2814,18 +2491,14 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const { tokenContainer } = createFullReferenceStructure(p);
-
     // Simulate browser placing caret inside the non-editable token container
     const range = document.createRange();
     range.setStart(tokenContainer, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should move to paragraph level, after the wrapper (no caret spot detected)
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -2837,18 +2510,14 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const { tokenContainer } = createFullReferenceStructure(p);
-
     // Simulate browser placing caret in the text content of the token
     const range = document.createRange();
     range.setStart(tokenContainer.firstChild!, 2);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(p);
     expect(sel.getRangeAt(0).startOffset).toBe(1);
@@ -2859,20 +2528,16 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     p.appendChild(document.createTextNode('hello '));
     const { wrapper } = createFullReferenceStructure(p);
     p.appendChild(document.createTextNode(' world'));
-
     // Simulate caret landing inside the wrapper at offset 0 (before caret-spot-before)
     const range = document.createRange();
     range.setStart(wrapper, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should normalize to paragraph level, after the wrapper (no caret spot detected at offset 0 of wrapper)
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -2883,25 +2548,20 @@ describe('normalizeCollapsedCaret - focus regain scenarios', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Pinned);
     p.appendChild(wrapper);
-
     const tokenContainer = document.createElement('span');
     tokenContainer.setAttribute('contenteditable', 'false');
     tokenContainer.textContent = 'Mode';
     wrapper.appendChild(tokenContainer);
-
     // Caret inside the pinned wrapper
     const range = document.createRange();
     range.setStart(wrapper, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     expect(sel.getRangeAt(0).startContainer).toBe(p);
   });
@@ -2915,22 +2575,18 @@ describe('Home/End key behavior with references', () => {
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     parent.appendChild(wrapper);
-
     const caretSpotBefore = document.createElement('span');
     caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     caretSpotBefore.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotBefore);
-
     const tokenContainer = document.createElement('span');
     tokenContainer.setAttribute('contenteditable', 'false');
     tokenContainer.textContent = label;
     wrapper.appendChild(tokenContainer);
-
     const caretSpotAfter = document.createElement('span');
     caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     caretSpotAfter.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotAfter);
-
     return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
   }
 
@@ -2950,10 +2606,8 @@ describe('Home/End key behavior with references', () => {
     el.appendChild(p);
     createFullReference(p, 'Alice');
     p.appendChild(document.createTextNode(' hello'));
-
     el.focus();
     controller.setPosition(0);
-
     // Caret should be at paragraph level before the reference wrapper
     const sel = window.getSelection()!;
     expect(sel.rangeCount).toBe(1);
@@ -2965,11 +2619,9 @@ describe('Home/End key behavior with references', () => {
     el.appendChild(p);
     p.appendChild(document.createTextNode('hello '));
     createFullReference(p, 'Alice');
-
     el.focus();
     // "hello " (6) + reference (1) = 7
     controller.setPosition(7);
-
     expect(controller.getPosition()).toBe(7);
   });
 
@@ -2978,16 +2630,13 @@ describe('Home/End key behavior with references', () => {
     el.appendChild(p);
     const { caretSpotBefore } = createFullReference(p, 'Alice');
     p.appendChild(document.createTextNode(' hello'));
-
     // Simulate Home key placing caret in the before-spot
     const range = document.createRange();
     range.setStart(caretSpotBefore.firstChild!, 0);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should normalize to paragraph level, before the wrapper
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -2999,16 +2648,13 @@ describe('Home/End key behavior with references', () => {
     el.appendChild(p);
     p.appendChild(document.createTextNode('hello '));
     const { caretSpotAfter, wrapper } = createFullReference(p, 'Alice');
-
     // Simulate End key placing caret in the after-spot
     const range = document.createRange();
     range.setStart(caretSpotAfter.firstChild!, 1);
     range.collapse(true);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeCollapsedCaret(window.getSelection());
-
     const sel = window.getSelection()!;
     // Should normalize to paragraph level, after the wrapper
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -3022,21 +2668,16 @@ describe('Home/End key behavior with references', () => {
     p.appendChild(document.createTextNode('abc'));
     createFullReference(p, 'Alice');
     p.appendChild(document.createTextNode('def'));
-
     el.focus();
-
     // Position 0 = start of "abc"
     controller.setPosition(0);
     expect(controller.getPosition()).toBe(0);
-
     // Position 3 = end of "abc", before reference
     controller.setPosition(3);
     expect(controller.getPosition()).toBe(3);
-
     // Position 4 = after reference, start of "def"
     controller.setPosition(4);
     expect(controller.getPosition()).toBe(4);
-
     // Position 7 = end of "def"
     controller.setPosition(7);
     expect(controller.getPosition()).toBe(7);
@@ -3048,19 +2689,14 @@ describe('Home/End key behavior with references', () => {
     createFullReference(p, 'Alice');
     p.appendChild(document.createTextNode(' and '));
     createFullReference(p, 'Bob');
-
     el.focus();
-
     // ref(1) + " and "(5) + ref(1) = 7
     controller.setPosition(0);
     expect(controller.getPosition()).toBe(0);
-
     controller.setPosition(1);
     expect(controller.getPosition()).toBe(1);
-
     controller.setPosition(6);
     expect(controller.getPosition()).toBe(6);
-
     controller.setPosition(7);
     expect(controller.getPosition()).toBe(7);
   });
@@ -3075,22 +2711,18 @@ describe('Shift+Home/End selection with references', () => {
     const wrapper = document.createElement('span');
     wrapper.setAttribute('data-type', ElementType.Reference);
     parent.appendChild(wrapper);
-
     const caretSpotBefore = document.createElement('span');
     caretSpotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     caretSpotBefore.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotBefore);
-
     const tokenContainer = document.createElement('span');
     tokenContainer.setAttribute('contenteditable', 'false');
     tokenContainer.textContent = label;
     wrapper.appendChild(tokenContainer);
-
     const caretSpotAfter = document.createElement('span');
     caretSpotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     caretSpotAfter.appendChild(document.createTextNode('\u200B'));
     wrapper.appendChild(caretSpotAfter);
-
     return { wrapper, caretSpotBefore, tokenContainer, caretSpotAfter };
   }
 
@@ -3099,20 +2731,16 @@ describe('Shift+Home/End selection with references', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const { caretSpotBefore } = createFullReference(p, 'Alice');
     const afterText = document.createTextNode(' hello');
     p.appendChild(afterText);
-
     // Simulate Shift+End creating selection from caret-spot-before to end of text
     const range = document.createRange();
     range.setStart(caretSpotBefore.firstChild!, 0);
     range.setEnd(afterText, 6);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     // Start should be normalized to paragraph level (before the wrapper)
     expect(sel.getRangeAt(0).startContainer).toBe(p);
@@ -3124,20 +2752,16 @@ describe('Shift+Home/End selection with references', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const beforeText = document.createTextNode('hello ');
     p.appendChild(beforeText);
     const { caretSpotAfter, wrapper } = createFullReference(p, 'Alice');
-
     // Simulate Shift+Home creating selection from text to caret-spot-after
     const range = document.createRange();
     range.setStart(beforeText, 0);
     range.setEnd(caretSpotAfter.firstChild!, 1);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     // End should be normalized to paragraph level (after the wrapper)
     const wrapperIndex = Array.from(p.childNodes).indexOf(wrapper);
@@ -3150,27 +2774,223 @@ describe('Shift+Home/End selection with references', () => {
     document.body.appendChild(el);
     const p = document.createElement('p');
     el.appendChild(p);
-
     const beforeText = document.createTextNode('abc');
     p.appendChild(beforeText);
     createFullReference(p, 'Alice');
     const afterText = document.createTextNode('def');
     p.appendChild(afterText);
-
     // Selection from start of "abc" to end of "def" — should work without normalization
     const range = document.createRange();
     range.setStart(beforeText, 0);
     range.setEnd(afterText, 3);
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
-
     normalizeSelection(window.getSelection());
-
     const sel = window.getSelection()!;
     // Boundaries are in text nodes, not caret spots — should be unchanged
     expect(sel.getRangeAt(0).startContainer).toBe(beforeText);
     expect(sel.getRangeAt(0).startOffset).toBe(0);
     expect(sel.getRangeAt(0).endContainer).toBe(afterText);
     expect(sel.getRangeAt(0).endOffset).toBe(3);
+  });
+});
+
+describe('isNonTypeablePosition', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('returns false for node inside a paragraph', () => {
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+    document.body.appendChild(p);
+    expect(isNonTypeablePosition(text)).toBe(false);
+  });
+
+  test('returns true for node inside a reference element', () => {
+    const p = document.createElement('p');
+    document.body.appendChild(p);
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(ref);
+    const inner = document.createElement('span');
+    inner.textContent = 'Alice';
+    ref.appendChild(inner);
+    expect(isNonTypeablePosition(inner)).toBe(true);
+  });
+
+  test('returns true for node on contentEditable div (not inside paragraph)', () => {
+    const editable = document.createElement('div');
+    editable.setAttribute('contenteditable', 'true');
+    document.body.appendChild(editable);
+    expect(isNonTypeablePosition(editable)).toBe(true);
+  });
+
+  test('returns false for null node', () => {
+    expect(isNonTypeablePosition(null)).toBe(false);
+  });
+
+  test('returns true for pinned reference element', () => {
+    const p = document.createElement('p');
+    document.body.appendChild(p);
+    const pinned = document.createElement('span');
+    pinned.setAttribute('data-type', ElementType.Pinned);
+    p.appendChild(pinned);
+    const inner = document.createTextNode('Mode');
+    pinned.appendChild(inner);
+    expect(isNonTypeablePosition(inner)).toBe(true);
+  });
+});
+
+describe('findContainingReference', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('returns null for node inside a paragraph (no reference)', () => {
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+    document.body.appendChild(p);
+    expect(findContainingReference(text)).toBeNull();
+  });
+
+  test('returns the reference element when node is inside one', () => {
+    const p = document.createElement('p');
+    document.body.appendChild(p);
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(ref);
+    const inner = document.createElement('span');
+    inner.textContent = 'Alice';
+    ref.appendChild(inner);
+    expect(findContainingReference(inner)).toBe(ref);
+  });
+
+  test('returns null for null node', () => {
+    expect(findContainingReference(null)).toBeNull();
+  });
+
+  test('returns null when node is not inside any reference', () => {
+    const div = document.createElement('div');
+    const text = document.createTextNode('hello');
+    div.appendChild(text);
+    document.body.appendChild(div);
+    expect(findContainingReference(text)).toBeNull();
+  });
+});
+
+describe('normalizeCollapsedCaret - already at target position guard', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('skips normalization when selection is already at the target position', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(wrapper);
+    const spot = document.createElement('span');
+    spot.setAttribute('data-type', ElementType.CaretSpotAfter);
+    spot.appendChild(document.createTextNode('\u200B'));
+    wrapper.appendChild(spot);
+    // Set selection already at the normalized position (paragraph, after wrapper)
+    const wrapperIndex = Array.from(p.childNodes).indexOf(wrapper);
+    const range = document.createRange();
+    range.setStart(p, wrapperIndex + 1);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    // Now place cursor in the spot but with startContainer = p and startOffset = wrapperIndex + 1
+    // This simulates the guard condition where selection is already normalized
+    normalizeCollapsedCaret(window.getSelection());
+    const sel = window.getSelection()!;
+    expect(sel.getRangeAt(0).startContainer).toBe(p);
+    expect(sel.getRangeAt(0).startOffset).toBe(wrapperIndex + 1);
+  });
+});
+
+describe('normalizeSelection - backward selection preservation', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('preserves backward selection direction when normalizing', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const text1 = document.createTextNode('hello');
+    p.appendChild(text1);
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(wrapper);
+    const spotBefore = document.createElement('span');
+    spotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
+    const spotTextBefore = document.createTextNode('\u200B');
+    spotBefore.appendChild(spotTextBefore);
+    wrapper.appendChild(spotBefore);
+    const label = document.createTextNode('Alice');
+    wrapper.appendChild(label);
+    const spotAfter = document.createElement('span');
+    spotAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
+    const spotTextAfter = document.createTextNode('\u200B');
+    spotAfter.appendChild(spotTextAfter);
+    wrapper.appendChild(spotAfter);
+    const text2 = document.createTextNode(' world');
+    p.appendChild(text2);
+    // Create backward selection: anchor in after-spot, focus in before-spot
+    const sel = window.getSelection()!;
+    sel.collapse(spotTextAfter, 1); // anchor at end of after-spot
+    sel.extend(spotTextBefore, 0); // focus at start of before-spot
+    normalizeSelection(sel);
+    // Selection should be normalized to paragraph level
+    const range = sel.getRangeAt(0);
+    expect(range.startContainer).toBe(p);
+    expect(range.endContainer).toBe(p);
+  });
+});
+
+describe('normalizeSelection - already normalized guard', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('skips normalization when boundaries already match normalized positions', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    el.appendChild(p);
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(wrapper);
+    const spotBefore = document.createElement('span');
+    spotBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
+    const spotText = document.createTextNode('\u200B');
+    spotBefore.appendChild(spotText);
+    wrapper.appendChild(spotBefore);
+    const text = document.createTextNode(' world');
+    p.appendChild(text);
+    // Set selection from spot text to regular text
+    const range = document.createRange();
+    range.setStart(spotText, 0);
+    range.setEnd(text, 3);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    // First normalization
+    normalizeSelection(window.getSelection());
+    const sel = window.getSelection()!;
+    const firstRange = sel.getRangeAt(0);
+    const startContainer = firstRange.startContainer;
+    const startOffset = firstRange.startOffset;
+    // Second normalization should be a no-op (already normalized)
+    normalizeSelection(window.getSelection());
+    const secondRange = sel.getRangeAt(0);
+    expect(secondRange.startContainer).toBe(startContainer);
+    expect(secondRange.startOffset).toBe(startOffset);
   });
 });

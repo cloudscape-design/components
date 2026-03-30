@@ -7,7 +7,7 @@ import { act, setNativeValue } from '@cloudscape-design/test-utils-core/utils-do
 
 import OptionWrapper from '../internal/option';
 
-import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.js';
 

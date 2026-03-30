@@ -1,16 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { isHTMLElement } from '../../internal/utils/dom';
 import { CaretController } from '../core/caret-controller';
-import { ElementType } from '../core/constants';
-import { getTokenType } from '../core/dom-utils';
-import { isTextNode } from '../core/type-guards';
 
 /**
  * Inserts text into a contentEditable element at a specific position.
- * @param caretStart logical position to insert at (defaults to current caret)
- * @param caretEnd logical position to place caret after insertion
+ * After insertion, dispatches an input event so the token processor picks up
+ * the change, then positions the caret at `caretEnd` (or end of inserted text).
+ * Finally dispatches `selectionchange` so `checkMenuState` can detect whether
+ * the caret landed inside a trigger and open the menu accordingly.
  */
 export function insertTextIntoContentEditable(
   element: HTMLElement,
@@ -22,7 +20,6 @@ export function insertTextIntoContentEditable(
   element.focus();
 
   const insertPosition = caretStart ?? caretController.getPosition();
-
   caretController.setPosition(insertPosition);
 
   const selection = window.getSelection();
@@ -31,37 +28,16 @@ export function insertTextIntoContentEditable(
   }
 
   const range = selection.getRangeAt(0);
-  const textNode = document.createTextNode(text);
-  range.insertNode(textNode);
+  range.insertNode(document.createTextNode(text));
 
   const finalPosition = caretEnd ?? insertPosition + text.length;
 
+  // Notify the token processor of the DOM change
   element.dispatchEvent(new Event('input', { bubbles: true }));
 
-  /* istanbul ignore next -- integ test: src/prompt-input/__integ__/prompt-input-token-mode.test.ts > "clicking @ button inserts trigger at caret position" */
-  requestAnimationFrame(() => {
-    caretController.setPosition(finalPosition);
+  // Position the caret — this may land inside a trigger element
+  caretController.setPosition(finalPosition);
 
-    if (!caretController.findActiveTrigger()) {
-      const selection = window.getSelection();
-      if (selection?.rangeCount) {
-        const range = selection.getRangeAt(0);
-        const container = range.startContainer;
-
-        if (isTextNode(container) && range.startOffset === 0) {
-          const prevSibling = container.previousSibling;
-          if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
-            const triggerText = prevSibling.textContent || '';
-            const triggerTextNode = prevSibling.childNodes[0];
-            if (isTextNode(triggerTextNode)) {
-              range.setStart(triggerTextNode, triggerText.length);
-              range.collapse(true);
-            }
-          }
-        }
-      }
-    }
-
-    document.dispatchEvent(new Event('selectionchange'));
-  });
+  // Trigger menu state detection via the selectionchange listener in useShortcutsEffects.
+  document.dispatchEvent(new Event('selectionchange'));
 }

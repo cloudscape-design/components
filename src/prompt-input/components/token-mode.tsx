@@ -4,7 +4,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import Dropdown from '../../internal/components/dropdown';
+import Dropdown from '../../dropdown/internal';
 import DropdownFooter from '../../internal/components/dropdown-footer';
 import { DropdownStatusResult } from '../../internal/components/dropdown-status';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';

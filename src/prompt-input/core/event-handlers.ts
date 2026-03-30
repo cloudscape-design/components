@@ -71,137 +71,125 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
   const menuItemsHandlers = props.getMenuItemsHandlers();
   const menuOpen = props.getMenuOpen();
 
-  handleKey(
-    event as unknown as {
-      keyCode: number;
-      shiftKey?: boolean;
-      ctrlKey?: boolean;
-      metaKey?: boolean;
-      currentTarget: HTMLElement;
-    },
-    {
-      onInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
-      onInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
-      onShiftInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
-      onShiftInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
-      onSelectAll: () => {
-        if (tokens?.length === 0) {
-          event.preventDefault();
-        }
-      },
-      onBackspace: () => {
-        if (
-          editableElement &&
-          handleReferenceTokenDeletion(
-            event,
-            true,
-            editableElement,
-            editableState,
-            props.announceTokenOperation,
-            props.i18nStrings,
-            caretController
-          )
-        ) {
-          return;
-        }
-        if (!tokens || !editableElement) {
-          return;
-        }
-        if (tokens.length === 0) {
-          event.preventDefault();
-          return;
-        }
-        handleBackspaceAtParagraphStart(event, editableElement, tokens, tokensToText, emitChange, caretController);
-      },
-      onDelete: () => {
-        if (
-          editableElement &&
-          handleReferenceTokenDeletion(
-            event,
-            false,
-            editableElement,
-            editableState,
-            props.announceTokenOperation,
-            props.i18nStrings,
-            caretController
-          )
-        ) {
-          return;
-        }
-        if (!tokens || !editableElement) {
-          return;
-        }
-        if (handleDeleteAtParagraphEnd(event, editableElement, tokens, tokensToText, emitChange, caretController)) {
-          return;
-        }
-        handleDeleteAfterTrigger(event, editableElement);
-      },
-      onShiftEnter: () => {
-        if (event.nativeEvent.isComposing) {
-          return;
-        }
+  handleKey(event, {
+    onInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
+    onInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
+    onShiftInlineStart: () => handleInlineStart(event, caretController, props.announceTokenOperation),
+    onShiftInlineEnd: () => handleInlineEnd(event, caretController, props.announceTokenOperation),
+    onSelectAll: () => {
+      if (tokens?.length === 0) {
         event.preventDefault();
-        if (caretController?.findActiveTrigger()) {
-          return;
-        }
-        if (editableElement) {
-          splitParagraphAtCaret(editableElement, caretController);
-        }
-      },
-      onEnter: () => {
-        if (event.nativeEvent.isComposing) {
-          return;
-        }
-        if (menuOpen && menuItemsHandlers) {
-          event.preventDefault();
-          menuItemsHandlers.selectHighlightedOptionWithKeyboard();
-          return;
-        }
-        handleEnterSubmit(event, props);
-      },
-      onTab: () => {
-        if (menuOpen && menuItemsHandlers && !event.shiftKey) {
-          event.preventDefault();
-          menuItemsHandlers.selectHighlightedOptionWithKeyboard();
-        }
-      },
-      onSpace: () => {
-        if (
-          editableElement &&
-          handleSpaceAfterClosedTrigger(event, editableElement, props.menuIsOpen, caretController)
-        ) {
-          return;
-        }
-        if (menuOpen && menuItemsHandlers && menuItemsState) {
-          handleSpaceInOpenMenu(event, {
-            menuItemsState,
-            menuItemsHandlers,
-            getMenuStatusType: props.getMenuStatusType,
-            closeMenu: props.closeMenu,
-            caretController: caretController ?? undefined,
-          });
-        }
-      },
-      onBlockEnd: () => {
-        if (menuOpen && menuItemsHandlers) {
-          event.preventDefault();
-          menuItemsHandlers.moveHighlightWithKeyboard(1);
-        }
-      },
-      onBlockStart: () => {
-        if (menuOpen && menuItemsHandlers) {
-          event.preventDefault();
-          menuItemsHandlers.moveHighlightWithKeyboard(-1);
-        }
-      },
-      onEscape: () => {
-        if (menuOpen) {
-          event.preventDefault();
-          props.closeMenu();
-        }
-      },
-    }
-  );
+      }
+    },
+    onBackspace: () => {
+      if (
+        editableElement &&
+        handleReferenceTokenDeletion(
+          event,
+          true,
+          editableElement,
+          editableState,
+          props.announceTokenOperation,
+          props.i18nStrings,
+          caretController
+        )
+      ) {
+        return;
+      }
+      if (!tokens || !editableElement) {
+        return;
+      }
+      if (tokens.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      handleBackspaceAtParagraphStart(event, editableElement, tokens, tokensToText, emitChange, caretController);
+    },
+    onDelete: () => {
+      if (
+        editableElement &&
+        handleReferenceTokenDeletion(
+          event,
+          false,
+          editableElement,
+          editableState,
+          props.announceTokenOperation,
+          props.i18nStrings,
+          caretController
+        )
+      ) {
+        return;
+      }
+      if (!tokens || !editableElement) {
+        return;
+      }
+      if (handleDeleteAtParagraphEnd(event, editableElement, tokens, tokensToText, emitChange, caretController)) {
+        return;
+      }
+      handleDeleteAfterTrigger(event, editableElement);
+    },
+    onShiftEnter: () => {
+      if (event.nativeEvent.isComposing) {
+        return;
+      }
+      event.preventDefault();
+      if (caretController?.findActiveTrigger()) {
+        return;
+      }
+      if (editableElement) {
+        splitParagraphAtCaret(editableElement, caretController);
+      }
+    },
+    onEnter: () => {
+      if (event.nativeEvent.isComposing) {
+        return;
+      }
+      if (menuOpen && menuItemsHandlers) {
+        event.preventDefault();
+        menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+        return;
+      }
+      handleEnterSubmit(event, props);
+    },
+    onTab: () => {
+      if (menuOpen && menuItemsHandlers && !event.shiftKey) {
+        event.preventDefault();
+        menuItemsHandlers.selectHighlightedOptionWithKeyboard();
+      }
+    },
+    onSpace: () => {
+      if (editableElement && handleSpaceAfterClosedTrigger(event, editableElement, props.menuIsOpen, caretController)) {
+        return;
+      }
+      if (menuOpen && menuItemsHandlers && menuItemsState) {
+        handleSpaceInOpenMenu(event, {
+          menuItemsState,
+          menuItemsHandlers,
+          getMenuStatusType: props.getMenuStatusType,
+          closeMenu: props.closeMenu,
+          caretController: caretController ?? undefined,
+        });
+      }
+    },
+    onBlockEnd: () => {
+      if (menuOpen && menuItemsHandlers) {
+        event.preventDefault();
+        menuItemsHandlers.moveHighlightWithKeyboard(1);
+      }
+    },
+    onBlockStart: () => {
+      if (menuOpen && menuItemsHandlers) {
+        event.preventDefault();
+        menuItemsHandlers.moveHighlightWithKeyboard(-1);
+      }
+    },
+    onEscape: () => {
+      if (menuOpen) {
+        event.preventDefault();
+        props.closeMenu();
+      }
+    },
+  });
 }
 
 /** Handles Enter key for form submission and onAction. */
@@ -618,7 +606,7 @@ function handleShiftArrowAcrossTokens(
 
   // If extending would jump the focus past the anchor (deselecting through a reference),
   // collapse instead of flipping the selection direction.
-  if (!range.collapsed && typeof selection.extend === 'function' && selection.anchorNode) {
+  if (!range.collapsed && selection.anchorNode) {
     const anchorPos = adjacentRef.compareDocumentPosition(selection.anchorNode);
     const anchorIsAfter =
       (anchorPos & Node.DOCUMENT_POSITION_FOLLOWING) !== 0 || (anchorPos & Node.DOCUMENT_POSITION_CONTAINED_BY) !== 0;
@@ -634,18 +622,7 @@ function handleShiftArrowAcrossTokens(
     }
   }
 
-  if (typeof selection.extend === 'function') {
-    selection.extend(targetNode, targetOffset);
-  } else {
-    const newRange = range.cloneRange();
-    if (isBackward) {
-      newRange.setStartBefore(adjacentRef);
-    } else {
-      newRange.setEndAfter(adjacentRef);
-    }
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-  }
+  selection.extend(targetNode, targetOffset);
 
   return true;
 }

@@ -19,7 +19,6 @@ afterEach(() => {
   document.body.removeChild(el);
 });
 
-/** Creates a reference wrapper with caret spots and registers its portal container. */
 function createReferenceWrapper(
   id: string,
   label: string,
@@ -60,47 +59,40 @@ function setCursor(node: Node, offset: number): void {
 }
 
 describe('extractTextFromCaretSpots', () => {
-  test('returns null movedTextNode when no cursor spots have typed text', () => {
+  test('returns null movedTextNode when no caret spots have typed text', () => {
     const portalContainers = new Map<string, PortalContainer>();
     const p = document.createElement('p');
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
-    const result = extractTextFromCaretSpots(portalContainers, new Map(), false);
+    const result = extractTextFromCaretSpots(portalContainers, false);
     expect(result.movedTextNode).toBeNull();
   });
 
-  test('extracts typed text from cursor-spot-before and moves it before the wrapper', () => {
+  test('extracts typed text from caret-spot-before and moves it before the wrapper', () => {
     const portalContainers = new Map<string, PortalContainer>();
     const p = document.createElement('p');
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
     const beforeSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotBefore}"]`)!;
     beforeSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'hello';
-
-    const result = extractTextFromCaretSpots(portalContainers, new Map(), false);
-
+    const result = extractTextFromCaretSpots(portalContainers, false);
     expect(p.firstChild).not.toBe(ref);
     expect(p.firstChild!.textContent).toBe('hello');
     expect(beforeSpot.textContent).toBe(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER);
     expect(result.movedTextNode).toBeNull();
   });
 
-  test('extracts typed text from cursor-spot-after and moves it after the wrapper', () => {
+  test('extracts typed text from caret-spot-after and moves it after the wrapper', () => {
     const portalContainers = new Map<string, PortalContainer>();
     const p = document.createElement('p');
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
     const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
     afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'world';
-
-    const result = extractTextFromCaretSpots(portalContainers, new Map(), false);
-
+    const result = extractTextFromCaretSpots(portalContainers, false);
     expect(p.lastChild!.textContent).toBe('world');
     expect(afterSpot.textContent).toBe(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER);
     expect(result.movedTextNode).toBeNull();
@@ -112,14 +104,10 @@ describe('extractTextFromCaretSpots', () => {
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
     const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
     afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'typed';
-
     setCursor(afterSpot.firstChild!, 3);
-
-    const result = extractTextFromCaretSpots(portalContainers, new Map(), true);
-
+    const result = extractTextFromCaretSpots(portalContainers, true);
     expect(result.movedTextNode).not.toBeNull();
     expect(result.movedTextNode!.textContent).toBe('typed');
   });
@@ -130,13 +118,10 @@ describe('extractTextFromCaretSpots', () => {
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
     const afterSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
     afterSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'typed';
-
     setCursor(afterSpot.firstChild!, 3);
-
-    const result = extractTextFromCaretSpots(portalContainers, new Map(), false);
+    const result = extractTextFromCaretSpots(portalContainers, false);
     expect(result.movedTextNode).toBeNull();
   });
 
@@ -146,56 +131,56 @@ describe('extractTextFromCaretSpots', () => {
     const ref1 = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p1.appendChild(ref1);
     el.appendChild(p1);
-
     const p2 = document.createElement('p');
     const ref2 = createReferenceWrapper('ref-2', 'Bob', portalContainers);
     p2.appendChild(ref2);
     el.appendChild(p2);
-
     const afterSpot1 = ref1.querySelector(`[data-type="${ElementType.CaretSpotAfter}"]`)!;
     afterSpot1.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'text1';
-
     const beforeSpot2 = ref2.querySelector(`[data-type="${ElementType.CaretSpotBefore}"]`)!;
     beforeSpot2.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'text2';
-
-    extractTextFromCaretSpots(portalContainers, new Map(), false);
-
+    extractTextFromCaretSpots(portalContainers, false);
     expect(p1.lastChild!.textContent).toBe('text1');
     expect(p2.firstChild!.textContent).toBe('text2');
   });
 
-  test('ignores cursor spots with only zero-width character content', () => {
+  test('ignores caret spots with only zero-width character content', () => {
     const portalContainers = new Map<string, PortalContainer>();
     const p = document.createElement('p');
     const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
     p.appendChild(ref);
     el.appendChild(p);
-
     const childCountBefore = p.childNodes.length;
-    extractTextFromCaretSpots(portalContainers, new Map(), false);
+    extractTextFromCaretSpots(portalContainers, false);
     expect(p.childNodes.length).toBe(childCountBefore);
   });
 
-  test('handles empty maps', () => {
-    const result = extractTextFromCaretSpots(new Map(), new Map(), false);
+  test('handles empty map', () => {
+    const result = extractTextFromCaretSpots(new Map(), false);
     expect(result.movedTextNode).toBeNull();
   });
 
-  test('extracts filter text from cancelled triggers', () => {
+  test('tracks cursor in caret-spot-before when trackCaret is true', () => {
+    const portalContainers = new Map<string, PortalContainer>();
     const p = document.createElement('p');
-    const trigger = document.createElement('span');
-    trigger.setAttribute('data-type', ElementType.Trigger);
-    trigger.id = 'trigger-1-cancelled';
-    trigger.textContent = '@hello';
-    p.appendChild(trigger);
+    const ref = createReferenceWrapper('ref-1', 'Alice', portalContainers);
+    p.appendChild(ref);
     el.appendChild(p);
+    const beforeSpot = ref.querySelector(`[data-type="${ElementType.CaretSpotBefore}"]`)!;
+    beforeSpot.textContent = SPECIAL_CHARS.ZERO_WIDTH_CHARACTER + 'typed';
+    setCursor(beforeSpot.firstChild!, 3);
+    const result = extractTextFromCaretSpots(portalContainers, true);
+    expect(result.movedTextNode).not.toBeNull();
+    expect(result.movedTextNode!.textContent).toBe('typed');
+    expect(p.firstChild!.textContent).toBe('typed');
+  });
 
-    const triggerElements = new Map<string, HTMLElement>([['trigger-1-cancelled', trigger]]);
-
-    const result = extractTextFromCaretSpots(new Map(), triggerElements, false);
-
-    expect(trigger.textContent).toBe('@');
-    expect(p.lastChild!.textContent).toBe('hello');
+  test('skips portal container when wrapper has no parentElement', () => {
+    const portalContainers = new Map<string, PortalContainer>();
+    const orphanContainer = document.createElement('span');
+    orphanContainer.textContent = 'orphan';
+    portalContainers.set('orphan-1', { id: 'orphan-1', element: orphanContainer, label: 'orphan' });
+    const result = extractTextFromCaretSpots(portalContainers, false);
     expect(result.movedTextNode).toBeNull();
   });
 });
