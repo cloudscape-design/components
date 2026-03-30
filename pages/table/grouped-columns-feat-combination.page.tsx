@@ -709,6 +709,7 @@ type DemoContext = React.Context<
     empty: boolean;
     cellVerticalAlign: string;
     sortingDisabled: boolean;
+    enableColumnFiltering: boolean;
   }>
 >;
 
@@ -736,6 +737,7 @@ export default function GroupedColumnsBugBash() {
       empty = false,
       cellVerticalAlign = 'middle',
       sortingDisabled = false,
+      enableColumnFiltering = true,
     },
     setUrlParams,
   } = useContext(AppContext as DemoContext);
@@ -941,6 +943,12 @@ export default function GroupedColumnsBugBash() {
             >
               RTL
             </Toggle>
+            <Toggle
+              checked={enableColumnFiltering}
+              onChange={({ detail }) => setUrlParams({ enableColumnFiltering: detail.checked })}
+            >
+              Column filtering
+            </Toggle>
           </SpaceBetween>
         </SpaceBetween>
 
@@ -1011,6 +1019,10 @@ export default function GroupedColumnsBugBash() {
             preferences={
               <CollectionPreferences
                 {...collectionPreferencesProps}
+                contentDisplayPreference={{
+                  ...collectionPreferencesProps.contentDisplayPreference!,
+                  enableColumnFiltering,
+                }}
                 preferences={preferences}
                 onConfirm={({ detail }) => setPreferences(detail)}
               />
