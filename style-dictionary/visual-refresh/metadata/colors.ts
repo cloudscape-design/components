@@ -565,6 +565,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonInlineIconDefault: {
+    description: 'The default color of inline button icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconDisabled: {
+    description: 'The color of inline button icons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconHover: {
+    description: 'The color of inline button icons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
     themeable: true,
