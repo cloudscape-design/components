@@ -11725,13 +11725,6 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
-      "description": "Maximum height constraint for the dropdown content in pixels.
-When set, constrains the calculated height to not exceed this value.",
-      "name": "maxHeight",
-      "optional": true,
-      "type": "number",
-    },
-    {
       "description": "Maximum width for the dropdown in pixels. If no value is specified, the
 dropdown will expand to fit its content.",
       "name": "maxWidth",
@@ -11796,40 +11789,6 @@ dropdown will shrink to fit its content.",
         "core",
       ],
       "type": "DropdownProps.Style",
-    },
-    {
-      "description": "Explicit ID for the trigger element, used as the referrer ID for portal mode.
-Use this when \`triggerRef\` is provided.",
-      "name": "triggerId",
-      "optional": true,
-      "type": "string",
-    },
-    {
-      "description": "Optional ref to an external element used for positioning calculations.
-When provided, the \`trigger\` prop is not rendered and this ref's element
-is used as the positioning anchor for the dropdown instead.",
-      "inlineType": {
-        "name": "React.RefObject<HTMLElement>",
-        "properties": [
-          {
-            "inlineType": {
-              "name": "NonNullable<T>",
-              "type": "union",
-              "values": [
-                "T",
-                "{}",
-              ],
-            },
-            "name": "current",
-            "optional": false,
-            "type": "NonNullable<T>",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "triggerRef",
-      "optional": true,
-      "type": "React.RefObject<HTMLElement>",
     },
   ],
   "regions": [
