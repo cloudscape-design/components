@@ -20,9 +20,8 @@ Mobile browsers and Microsoft Internet Explorer are not supported. All viewport 
 
 Our public API consists of:
 
-- [Components APIs](https://cloudscape.design/components) (properties, slots, events, functions)
+- [Components APIs](https://cloudscape.design/components) (properties, slots, events, functions, TypeScript definitions)
 - [Test utilities](https://cloudscape.design/get-started/testing/introduction/)
-- TypeScript definitions
 - [Design tokens](https://cloudscape.design/foundation/visual-foundation/design-tokens)
 
 The inner HTML structure and class names of our components are not part of our APIs. Modifications to those are not considered breaking changes.

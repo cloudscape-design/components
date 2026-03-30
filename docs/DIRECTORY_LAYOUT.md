@@ -24,6 +24,8 @@
 │   │   ├── dom                 - main source code for test utils
 │   │   └── selectors           - utils for integration testing, generated from the code in `dom` folder
 │   │
+│   ├── i18n                    - internationalization: messages, providers, and the useInternalI18n hook
+│   │
 │   └── internal                - library internals
 │       ├── base-component      - necessary declarations for every public component
 │       ├── components          - internal utility components
@@ -37,5 +39,5 @@
 │   ├── components-definitions  - generated metadata for components
 │   └── design-tokens           - exported design tokens
 │
-└── style-dictionary            - style dictionary tokens and roles
+└── style-dictionary            - design token definitions (colors, spacing, typography, etc.) 
 ```

@@ -1,3 +1,5 @@
+# AGENTS.md
+
 React component library for [Cloudscape Design System](https://cloudscape.design/) — an open source design system for building accessible, inclusive web experiences at scale.
 
 ## Setup

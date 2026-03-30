@@ -1,16 +1,5 @@
 # Writing Tests
 
-## Test Utils
-
-Test-utils core is a separate package: https://github.com/cloudscape-design/test-utils
-
-- Test-utils should not have any dependencies — they can be used with any tech stack.
-- Test-utils extend `ComponentWrapper`. `ElementWrapper` is only a return type when no more specific type is available.
-- Methods must have explicitly declared return types (enforced via ESLint).
-- Wrapper classes must have a static `rootSelector` property.
-- For methods that always return a value, add a non-null assertion.
-- Adding `null` as a return type is a breaking change. Removing `null` is not.
-
 ## Unit Tests
 
 Location: `src/<component-name>/__tests__/`
@@ -19,10 +8,39 @@ Use `react-testing-library` to render, combined with test-utils. Prefer test-uti
 
 ### Snapshot Tests
 
-Snapshot tests guard generated artifacts (API definitions, test-util wrappers, design tokens, etc.) against unintended changes. Running the unit and integration tests will update the snapshots accordingly.
+Snapshot tests guard generated artifacts (API definitions, test-util wrappers, design tokens, etc.) against unintended changes. They are grouped inside the global `src/__tests__/` and `src/__integ__/` folders.
+
+The project must be fully built before updating snapshots, so that documenter docs are generated:
+
+```
+npm run build
+```
+
+Update unit test snapshots:
+
+```
+TZ=UTC npx jest -u -c jest.unit.config.js src/__tests__/
+```
+
+If design tokens are changed, update integ test snapshots as well:
+
+```
+NODE_OPTIONS=--experimental-vm-modules npx jest -u -c jest.integ.config.js src/__integ__/
+```
 
 ## Integration Tests
 
 Location: `src/<component-name>/__integ__/`
 
 Integration tests run in a real browser against dev pages (see [DEV_PAGES.md](DEV_PAGES.md)). Use `createWrapper` from `test-utils/selectors` (not `test-utils/dom` — selectors generate CSS selectors for browser tests, while dom wrappers operate on DOM nodes for unit tests).
+
+## Accessibility in Unit Tests
+
+Use the `toValidateA11y` Jest matcher to run axe and HTML validation on rendered components:
+
+```tsx
+const { container } = render(<MyComponent />);
+await expect(container).toValidateA11y();
+```
+
+It runs axe-core (with color-contrast disabled, since JSDOM can't compute it) and html-validate on the element. Import `src/__a11y__/to-validate-a11y` to register the matcher.

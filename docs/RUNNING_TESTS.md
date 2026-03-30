@@ -4,7 +4,7 @@
 
 ```
 npm test               # all tests
-npm run test:unit      # unit + build-tool tests
+npm run test:unit      # unit tests
 npm run test:integ     # integration tests (starts dev server automatically)
 npm run test:motion    # motion tests (starts dev server automatically)
 npm run test:a11y      # accessibility tests
@@ -14,10 +14,10 @@ The npm scripts use gulp tasks that handle env vars (`TZ=UTC`, `NODE_OPTIONS=--e
 
 ## Test Types
 
-- **Build-tool tests** — test the build-tools code in a NodeJS context.
 - **Unit tests** — emulate a browser environment using JSDOM.
 - **Integration tests** — test against real browser behavior on Chrome, with motion disabled.
 - **Motion tests** — run a specific set of tests on Chrome, with motion enabled.
+- **Accessibility tests** — run [axe](https://github.com/dequelabs/axe-core) checks on all dev pages across themes and color modes (`src/__a11y__/`).
 
 ## Targeting Specific Files
 

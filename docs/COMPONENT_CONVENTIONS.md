@@ -8,15 +8,13 @@ Each component is exposed from `src/<component-name>/index.tsx`.
 
 ### Internal Component (`internal.tsx`)
 
-For components used in composition, a private counterpart lives at `internal.tsx`. The public component must not add behavior beyond what the internal component provides.
+The APIs exported from `src/<component>/index.tsx` are public and must not be used internally by other components. For internal usage, each component exposes a private counterpart at `internal.tsx`.
 
 ## Props & Interfaces
 
 - Props interface: `${ComponentName}Props`, namespace sub-types under it (e.g. `${ComponentName}Props.Variant`)
 - Union types must be type aliases (no inline unions)
 - Array types must use `ReadonlyArray<T>`
-- Cast string props to string at runtime if rendered in JSX — React accepts JSX content there
-- Component return type must be exactly `JSX.Element` — `null` or arrays break the doc generator
 
 For how to document props, see [API_DOCS.md](API_DOCS.md).
 
@@ -28,8 +26,15 @@ Events are similar to native events with `event.preventDefault()` for cancelable
 
 ## Refs
 
-- Use `useForwardFocus(ref, elementRef)` for simple focus delegation
-- For `React.forwardRef` generics, create a `${ComponentName}ForwardRefType` interface
+The component ref API does not give access to the underlying DOM node. Instead, we expose specific methods — most commonly `focus()`, for which a dedicated util `useForwardFocus` is available.
+
+When a component accepts a ref, create `${ComponentName}ForwardRefType` as follows:
+
+```tsx
+interface MyComponentForwardRefType {
+  <T>(props: MyComponentProps<T> & { ref?: React.Ref<MyComponentProps.Ref> }): JSX.Element;
+}
+```
 
 ## Controllable Components
 
@@ -45,8 +50,23 @@ Implementation:
 
 ## I18n
 
-Centralize all translatable strings under a skippable property (e.g. `i18nStrings`).
+Centralize all translatable strings under a skippable property (e.g. `i18nStrings`). Internationalization code lives in `src/i18n/`. The `useInternalI18n` hook is what components use to resolve translated strings.
+
+```tsx
+const i18n = useInternalI18n('alert');
+<InternalButton ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)} />
+```
 
 ## Dependencies
 
 Before adding any dependency: must support React 16.8+ and latest 3 major Chrome/Firefox/Edge, no global state, ESM preferred.
+
+## Test Utils
+
+Test-utils core is a separate package: https://github.com/cloudscape-design/test-utils
+
+- Test-utils should not have any dependencies — they can be used with any tech stack.
+- Test-utils extend `ComponentWrapper`. `ElementWrapper` is only a return type when no more specific type is available.
+- Methods must have explicitly declared return types (enforced via ESLint).
+- Wrapper classes must have a static `rootSelector` property.
+- For methods that always return a value, add a non-null assertion.
