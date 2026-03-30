@@ -506,7 +506,8 @@ export namespace PromptInputProps {
     setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
 
     /**
-     * Inserts text at a specified position. Triggers input events and menu detection when `menus` or `tokens` is defined.
+     * Inserts text at a specified position. Only supported when `menus` or `tokens` is defined.
+     * Triggers input events and menu detection.
      *
      * @param text The text to insert.
      * @param caretStart Position to insert at. Defaults to current caret position or 0.
