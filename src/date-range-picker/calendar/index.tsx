@@ -52,6 +52,7 @@ export default function DateRangePickerCalendar({
   dateInputFormat,
   customAbsoluteRangeControl,
   granularity = 'day',
+  referrerId,
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
   const isMonthPicker = granularity === 'month';
@@ -273,6 +274,7 @@ export default function DateRangePickerCalendar({
               selectedStartDate={value?.start?.date ? parseDate(value.start.date, !isMonthPicker) : null}
               selectedEndDate={value?.end?.date ? parseDate(value.end.date, !isMonthPicker) : null}
               headingIdPrefix={headingIdPrefix}
+              referrerId={referrerId}
             />
           </div>
 

@@ -504,8 +504,8 @@ const InternalDropdown = ({
     };
   }, [open, expandToViewport, isMobile, triggerRef]);
 
-  const generatedReferrerId = useUniqueId();
-  const referrerId = externalTriggerId || generatedReferrerId;
+  const internalReferrerId = useUniqueId();
+  const referrerId = externalTriggerId ?? internalReferrerId;
 
   // Compute CSS variable values for min/max width
   // These will be used by the use-flexible-width CSS class

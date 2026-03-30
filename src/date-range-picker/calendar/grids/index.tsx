@@ -62,6 +62,7 @@ export const Grids = ({
   headingIdPrefix,
   startOfWeek = 0,
   granularity = 'day',
+  referrerId,
 }: SelectGridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
@@ -196,6 +197,7 @@ export const Grids = ({
             className={testutilStyles['first-grid']}
             baseDate={addPages(baseDate, -1)}
             ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
+            referrerId={referrerId}
           />
         )}
         <Grid
@@ -204,6 +206,7 @@ export const Grids = ({
           className={testutilStyles['second-grid']}
           baseDate={baseDate}
           ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
+          referrerId={referrerId}
         />
       </InternalSpaceBetween>
     </div>

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -583,5 +583,47 @@ describe('Date range picker', () => {
         });
       });
     });
+  });
+});
+
+describe('disabled reason behavior', () => {
+  const findDate = (wrapper: DateRangePickerWrapper) => wrapper.findDropdown()!.findDateAt('left', 1, 1);
+
+  test('clicking on disabled reason does not close the calendar', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      rangeSelectorMode: 'absolute-only',
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findDropdown()).not.toBe(null);
+
+    findDate(wrapper).focus();
+    expect(findDate(wrapper).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    findDate(wrapper).findDisabledReason()!.click();
+    expect(findDate(wrapper).findDisabledReason()).not.toBe(null);
+    expect(wrapper.findDropdown()).not.toBe(null);
+  });
+
+  test('disabled reason tooltip can be closed with Escape', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      rangeSelectorMode: 'absolute-only',
+      isDateEnabled: () => false,
+      dateDisabledReason: () => 'Test',
+    });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findDropdown()).not.toBe(null);
+
+    findDate(wrapper).focus();
+    expect(findDate(wrapper).findDisabledReason()!.getElement()).toHaveTextContent('Test');
+
+    fireEvent.keyDown(findDate(wrapper).getElement(), { key: 'Escape', code: 'Escape' });
+    expect(wrapper.findDropdown()).not.toBe(null);
+    expect(findDate(wrapper).findDisabledReason()).toBe(null);
   });
 });

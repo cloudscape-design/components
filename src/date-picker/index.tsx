@@ -180,6 +180,8 @@ const DatePicker = React.forwardRef(
 
     baseProps.className = clsx(baseProps.className, styles.root, styles['date-picker-container']);
 
+    const referrerId = useUniqueId();
+
     return (
       <div {...baseProps} ref={mergedRef} onKeyDown={!disabled && !readOnly ? onWrapperKeyDownHandler : undefined}>
         {disabled || readOnly ? (
@@ -195,6 +197,7 @@ const DatePicker = React.forwardRef(
             expandToViewport={expandToViewport}
             scrollable={false}
             dropdownId={dropdownId}
+            triggerId={referrerId}
             content={
               isDropDownOpen ? (
                 <FocusLock className={styles['focus-lock']} autoFocus={true}>
@@ -220,6 +223,7 @@ const DatePicker = React.forwardRef(
                         nextMonthAriaLabel: i18nStrings?.nextMonthAriaLabel ?? nextMonthAriaLabel,
                         previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                       }}
+                      referrerId={referrerId}
                     />
                     <InternalLiveRegion id={calendarDescriptionId} hidden={true} tagName="span">
                       {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
