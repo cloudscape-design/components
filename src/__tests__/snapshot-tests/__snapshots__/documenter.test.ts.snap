@@ -37431,7 +37431,16 @@ Returns \`null\` when this item is a leaf column (has no nested children).
 The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
 nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
           "name": "findChildrenOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": true,
             "name": "Array",
@@ -42462,6 +42471,7 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the collection preferences component used in the table.",
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -42470,17 +42480,14 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns all column header cells in the last header row (leaf columns).
-For tables without column grouping this is equivalent to querying \`tr > *\`.
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all cells in the last header row (leaf columns).
+For tables without column grouping this is equivalent to querying all \`<th>\` elements.
 For tables with column grouping this returns only the leaf-level column headers,
 not the group header cells above them.
 
-Pass \`{ level }\` to target a specific header row (1-based). Level 1 is the
-topmost row (group headers); the last level is always the leaf-column row.
-
-Pass \`{ groupId }\` to return only the leaf column headers that are direct
-children of the specified group. This uses the \`data-column-group-id\` attribute
-set on each leaf \`<th>\` by the renderer.",
+Both \`level\` and \`groupId\` can be combined to narrow the result set.",
           "name": "findColumnHeaders",
           "parameters": [
             {
@@ -42503,30 +42510,21 @@ set on each leaf \`<th>\` by the renderer.",
           },
         },
         {
-          "description": "Returns the element the user clicks when resizing a column or group header.
-Targets the leaf-column header row by default.
+          "description": "Returns the element the user clicks when resizing a column.
 
-Pass \`{ level }\` to target a specific header row (1-based).
-
-Pass \`{ groupId }\` to return the resizer of the group header cell with that ID.
-When \`groupId\` is provided, \`columnIndex\` is ignored.",
+Targets leaf-column headers (\`scope="col"\`), which reliably identifies
+individual columns regardless of which \`<tr>\` they appear in. In grouped
+tables, leaf columns may span multiple rows and sit in an earlier \`<tr>\`
+rather than the last one.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the column containing the resizer (ignored when groupId is set).",
+              "description": "1-based index of the leaf column containing the resizer.",
               "flags": {
                 "isOptional": false,
               },
               "name": "columnIndex",
               "typeName": "number",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "option",
-              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
             },
           ],
           "returnType": {
@@ -42609,6 +42607,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the currently active inline editing cell.",
           "name": "findEditingCell",
           "parameters": [],
           "returnType": {
@@ -42622,6 +42621,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the cancel button of the currently active inline editing cell.",
           "name": "findEditingCellCancelButton",
           "parameters": [],
           "returnType": {
@@ -42635,6 +42635,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the save button of the currently active inline editing cell.",
           "name": "findEditingCellSaveButton",
           "parameters": [],
           "returnType": {
@@ -42662,6 +42663,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the empty state slot of the table.",
           "name": "findEmptySlot",
           "parameters": [],
           "returnType": {
@@ -42698,6 +42700,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the filter slot of the table.",
           "name": "findFilterSlot",
           "parameters": [],
           "returnType": {
@@ -42711,6 +42714,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the footer slot of the table.",
           "name": "findFooterSlot",
           "parameters": [],
           "returnType": {
@@ -42738,6 +42742,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the header slot of the table.",
           "name": "findHeaderSlot",
           "parameters": [],
           "returnType": {
@@ -42776,6 +42781,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the loading text element of the table.",
           "name": "findLoadingText",
           "parameters": [],
           "returnType": {
@@ -42789,6 +42795,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the pagination component used in the table.",
           "name": "findPagination",
           "parameters": [],
           "returnType": {
@@ -42797,6 +42804,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the property filter component used in the table.",
           "name": "findPropertyFilter",
           "parameters": [],
           "returnType": {
@@ -42819,6 +42827,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns all table rows within the table body.",
           "name": "findRows",
           "parameters": [],
           "returnType": {
@@ -42855,6 +42864,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the "select all" checkbox or radio button in the table header.",
           "name": "findSelectAllTrigger",
           "parameters": [],
           "returnType": {
@@ -42868,6 +42878,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns all selected table rows.",
           "name": "findSelectedRows",
           "parameters": [],
           "returnType": {
@@ -42881,6 +42892,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the text filter component used in the table.",
           "name": "findTextFilter",
           "parameters": [],
           "returnType": {
@@ -48369,7 +48381,16 @@ Returns \`null\` when this item is a leaf column (has no nested children).
 The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
 nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
           "name": "findChildrenOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": true,
             "name": "MultiElementWrapper",
@@ -51832,6 +51853,7 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the collection preferences component used in the table.",
           "name": "findCollectionPreferences",
           "parameters": [],
           "returnType": {
@@ -51840,17 +51862,14 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
-          "description": "Returns all column header cells in the last header row (leaf columns).
-For tables without column grouping this is equivalent to querying \`tr > *\`.
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all cells in the last header row (leaf columns).
+For tables without column grouping this is equivalent to querying all \`<th>\` elements.
 For tables with column grouping this returns only the leaf-level column headers,
 not the group header cells above them.
 
-Pass \`{ level }\` to target a specific header row (1-based). Level 1 is the
-topmost row (group headers); the last level is always the leaf-column row.
-
-Pass \`{ groupId }\` to return only the leaf column headers that are direct
-children of the specified group. This uses the \`data-column-group-id\` attribute
-set on each leaf \`<th>\` by the renderer.",
+Both \`level\` and \`groupId\` can be combined to narrow the result set.",
           "name": "findColumnHeaders",
           "parameters": [
             {
@@ -51873,30 +51892,21 @@ set on each leaf \`<th>\` by the renderer.",
           },
         },
         {
-          "description": "Returns the element the user clicks when resizing a column or group header.
-Targets the leaf-column header row by default.
+          "description": "Returns the element the user clicks when resizing a column.
 
-Pass \`{ level }\` to target a specific header row (1-based).
-
-Pass \`{ groupId }\` to return the resizer of the group header cell with that ID.
-When \`groupId\` is provided, \`columnIndex\` is ignored.",
+Targets leaf-column headers (\`scope="col"\`), which reliably identifies
+individual columns regardless of which \`<tr>\` they appear in. In grouped
+tables, leaf columns may span multiple rows and sit in an earlier \`<tr>\`
+rather than the last one.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the column containing the resizer (ignored when groupId is set).",
+              "description": "1-based index of the leaf column containing the resizer.",
               "flags": {
                 "isOptional": false,
               },
               "name": "columnIndex",
               "typeName": "number",
-            },
-            {
-              "defaultValue": "{}",
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "option",
-              "typeName": "{ groupId?: string | undefined; level?: number | undefined; }",
             },
           ],
           "returnType": {
@@ -51959,6 +51969,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the currently active inline editing cell.",
           "name": "findEditingCell",
           "parameters": [],
           "returnType": {
@@ -51967,6 +51978,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the cancel button of the currently active inline editing cell.",
           "name": "findEditingCellCancelButton",
           "parameters": [],
           "returnType": {
@@ -51975,6 +51987,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the save button of the currently active inline editing cell.",
           "name": "findEditingCellSaveButton",
           "parameters": [],
           "returnType": {
@@ -51992,6 +52005,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the empty state slot of the table.",
           "name": "findEmptySlot",
           "parameters": [],
           "returnType": {
@@ -52018,6 +52032,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the filter slot of the table.",
           "name": "findFilterSlot",
           "parameters": [],
           "returnType": {
@@ -52026,6 +52041,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the footer slot of the table.",
           "name": "findFooterSlot",
           "parameters": [],
           "returnType": {
@@ -52043,6 +52059,7 @@ Targets the leaf-column header row by default.",
           },
         },
         {
+          "description": "Returns the header slot of the table.",
           "name": "findHeaderSlot",
           "parameters": [],
           "returnType": {
@@ -52071,6 +52088,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the loading text element of the table.",
           "name": "findLoadingText",
           "parameters": [],
           "returnType": {
@@ -52079,6 +52097,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the pagination component used in the table.",
           "name": "findPagination",
           "parameters": [],
           "returnType": {
@@ -52087,6 +52106,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the property filter component used in the table.",
           "name": "findPropertyFilter",
           "parameters": [],
           "returnType": {
@@ -52104,6 +52124,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns all table rows within the table body.",
           "name": "findRows",
           "parameters": [],
           "returnType": {
@@ -52135,6 +52156,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the "select all" checkbox or radio button in the table header.",
           "name": "findSelectAllTrigger",
           "parameters": [],
           "returnType": {
@@ -52143,6 +52165,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns all selected table rows.",
           "name": "findSelectedRows",
           "parameters": [],
           "returnType": {
@@ -52156,6 +52179,7 @@ Note: when used with collection-hooks the \`trackBy\` is set automatically from 
           },
         },
         {
+          "description": "Returns the text filter component used in the table.",
           "name": "findTextFilter",
           "parameters": [],
           "returnType": {
