@@ -129,7 +129,8 @@ export function detectTriggersInText(
   text: string,
   menus: readonly PromptInputProps.MenuDefinition[],
   precedingTokens: readonly PromptInputProps.InputToken[],
-  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean,
+  cancelledIds?: Set<string>
 ): PromptInputProps.InputToken[] {
   const results: PromptInputProps.InputToken[] = [];
   let position = 0;
@@ -148,11 +149,13 @@ export function detectTriggersInText(
     }
 
     if (match.cancelled) {
+      const cancelledId = generateTokenId();
+      cancelledIds?.add(cancelledId);
       results.push({
         type: 'trigger',
         value: '',
         triggerChar: match.menu.trigger,
-        id: generateTokenId() + '-cancelled',
+        id: cancelledId,
       });
       position = match.index + match.menu.trigger.length;
     } else {

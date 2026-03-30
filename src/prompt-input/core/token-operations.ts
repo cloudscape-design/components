@@ -334,7 +334,8 @@ export function findLastPinnedTokenIndex(tokens: readonly PromptInputProps.Input
 export function detectTriggersInTokens(
   tokens: readonly PromptInputProps.InputToken[],
   menus: readonly PromptInputProps.MenuDefinition[],
-  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean,
+  cancelledIds?: Set<string>
 ): PromptInputProps.InputToken[] {
   const result: PromptInputProps.InputToken[] = [];
 
@@ -342,7 +343,7 @@ export function detectTriggersInTokens(
     const token = tokens[i];
 
     // Skip cancelled triggers — don't re-parse their adjacent text
-    if (isTriggerToken(token) && token.id?.endsWith('-cancelled')) {
+    if (isTriggerToken(token) && token.id && cancelledIds?.has(token.id)) {
       result.push(token);
       continue;
     }
@@ -381,13 +382,18 @@ export function detectTriggersInTokens(
     }
 
     if (isTextToken(token)) {
-      result.push(...detectTriggersInText(token.value, menus, result, onTriggerDetected));
+      result.push(...detectTriggersInText(token.value, menus, result, onTriggerDetected, cancelledIds));
     } else {
       result.push(token);
     }
   }
 
   return result;
+}
+
+export interface ProcessTokensResult {
+  tokens: PromptInputProps.InputToken[];
+  cancelledIds: Set<string>;
 }
 
 export function processTokens(
@@ -398,11 +404,12 @@ export function processTokens(
     detectTriggers?: boolean;
   },
   onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
-): PromptInputProps.InputToken[] {
+): ProcessTokensResult {
   let result = [...tokens];
+  const cancelledIds = new Set<string>();
 
   if (options.detectTriggers && config.menus) {
-    result = detectTriggersInTokens(result, config.menus, onTriggerDetected);
+    result = detectTriggersInTokens(result, config.menus, onTriggerDetected, cancelledIds);
   }
 
   // Ensure all tokens have IDs for DOM element tracking
@@ -416,5 +423,5 @@ export function processTokens(
     return token;
   });
 
-  return result;
+  return { tokens: result, cancelledIds };
 }

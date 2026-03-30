@@ -38,39 +38,9 @@ function extractFromSpot(spot: HTMLElement, trackCaret: boolean): Text | null {
   return caretWasHere ? textNode : null;
 }
 
-/** Extracts typed text from a cancelled trigger, moving filter text to the paragraph level. */
-function extractFromCancelledTrigger(trigger: HTMLElement, trackCaret: boolean): Text | null {
-  if (!trigger.id?.endsWith('-cancelled')) {
-    return null;
-  }
-
-  const filterText = (trigger.textContent || '').substring(1);
-  if (!filterText) {
-    return null;
-  }
-
-  let caretWasHere = false;
-  if (trackCaret) {
-    const selection = window.getSelection();
-    if (selection?.rangeCount && trigger.contains(selection.getRangeAt(0).startContainer)) {
-      caretWasHere = true;
-    }
-  }
-
-  const textNode = document.createTextNode(filterText);
-  insertAfter(textNode, trigger);
-  trigger.textContent = (trigger.textContent || '').charAt(0);
-
-  return caretWasHere ? textNode : null;
-}
-
-/**
- * Extracts typed text from caret spots and cancelled triggers, moving it to the paragraph level.
- * Derives caret-spot elements from portal containers and trigger element maps — no DOM queries.
- */
+/** Extracts typed text from caret spots, moving it to the paragraph level. */
 export function extractTextFromCaretSpots(
   portalContainers: Map<string, PortalContainer>,
-  triggerElements: Map<string, HTMLElement>,
   trackCaret: boolean
 ): TextExtractionResult {
   let movedTextNode: Text | null = null;
@@ -88,13 +58,6 @@ export function extractTextFromCaretSpots(
           movedTextNode = result;
         }
       }
-    }
-  }
-
-  for (const trigger of triggerElements.values()) {
-    const result = extractFromCancelledTrigger(trigger, trackCaret);
-    if (result) {
-      movedTextNode = result;
     }
   }
 

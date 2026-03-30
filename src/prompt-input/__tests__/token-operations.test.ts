@@ -125,7 +125,6 @@ describe('extractTokensFromDOM', () => {
     br.setAttribute('data-id', ElementType.TrailingBreak);
     p.appendChild(br);
     el.appendChild(p);
-
     expect(extractTokensFromDOM(el)).toEqual([]);
   });
 
@@ -134,7 +133,6 @@ describe('extractTokensFromDOM', () => {
     const p = document.createElement('p');
     p.appendChild(document.createTextNode('hello world'));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('hello world')]);
   });
@@ -147,7 +145,6 @@ describe('extractTokensFromDOM', () => {
     p2.appendChild(document.createTextNode('line2'));
     el.appendChild(p1);
     el.appendChild(p2);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('line1'), brk(), text('line2')]);
   });
@@ -161,7 +158,6 @@ describe('extractTokensFromDOM', () => {
     triggerSpan.textContent = '@user';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     expect(tokens).toHaveLength(1);
     expect(tokens[0].type).toBe('trigger');
@@ -179,7 +175,6 @@ describe('extractTokensFromDOM', () => {
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     expect(tokens).toHaveLength(1);
     expect(tokens[0].type).toBe('reference');
@@ -199,7 +194,6 @@ describe('extractTokensFromDOM', () => {
     pinnedSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(pinnedSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
@@ -211,7 +205,6 @@ describe('extractTokensFromDOM', () => {
     const p = document.createElement('p');
     p.appendChild(document.createTextNode(`hello${SPECIAL_CHARS.ZERO_WIDTH_CHARACTER}world`));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('helloworld')]);
   });
@@ -225,7 +218,6 @@ describe('extractTokensFromDOM', () => {
     // No text content = empty label
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     expect(tokens).toHaveLength(0);
   });
@@ -238,7 +230,6 @@ describe('extractTokensFromDOM', () => {
     triggerSpan.textContent = 'noTriggerChar';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     // No menus provided, so no trigger char can be found
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('noTriggerChar')]);
@@ -251,23 +242,18 @@ describe('extractTokensFromDOM', () => {
     refSpan.setAttribute('data-type', ElementType.Reference);
     refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
-
     const cursorBefore = document.createElement('span');
     cursorBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
     cursorBefore.textContent = 'before';
-
     const labelText = document.createTextNode('Alice');
-
     const cursorAfter = document.createElement('span');
     cursorAfter.setAttribute('data-type', ElementType.CaretSpotAfter);
     cursorAfter.textContent = 'after';
-
     refSpan.appendChild(cursorBefore);
     refSpan.appendChild(labelText);
     refSpan.appendChild(cursorAfter);
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     // Should have: text("before"), reference(Alice), text("after")
     expect(tokens).toHaveLength(3);
@@ -332,9 +318,7 @@ describe('handleMenuSelection', () => {
   test('replaces trigger with reference token (non-pinned)', () => {
     const activeTrigger = trigger('us', '@', 'trigger-1');
     const tokens: PromptInputProps.InputToken[] = [text('hello '), activeTrigger];
-
     const result = handleMenuSelection(tokens, { value: 'user-1', label: 'Alice' }, 'mentions', false, activeTrigger);
-
     expect(result.tokens).toHaveLength(2);
     expect(result.tokens[0]).toEqual(text('hello '));
     expect(result.tokens[1].type).toBe('reference');
@@ -354,9 +338,7 @@ describe('handleMenuSelection', () => {
       activeTrigger,
       text('hello'),
     ];
-
     const result = handleMenuSelection(tokens, { value: 'file-1', label: '#newfile' }, 'files', true, activeTrigger);
-
     // Trigger should be removed, pinned token inserted after existing pinned tokens
     const pinnedTokens = result.tokens.filter(
       t => t.type === 'reference' && (t as PromptInputProps.ReferenceToken).pinned
@@ -368,9 +350,7 @@ describe('handleMenuSelection', () => {
   test('handles selection when trigger is the only token', () => {
     const activeTrigger = trigger('user', '@', 'trigger-1');
     const tokens: PromptInputProps.InputToken[] = [activeTrigger];
-
     const result = handleMenuSelection(tokens, { value: 'user-1', label: 'Alice' }, 'mentions', false, activeTrigger);
-
     expect(result.tokens).toHaveLength(1);
     expect(result.tokens[0].type).toBe('reference');
   });
@@ -378,9 +358,7 @@ describe('handleMenuSelection', () => {
   test('uses value as label fallback when label is empty', () => {
     const activeTrigger = trigger('', '@', 'trigger-1');
     const tokens: PromptInputProps.InputToken[] = [activeTrigger];
-
     const result = handleMenuSelection(tokens, { value: 'user-1', label: '' }, 'mentions', false, activeTrigger);
-
     expect(result.insertedToken.label).toBe('user-1');
   });
 });
@@ -389,20 +367,20 @@ describe('processTokens', () => {
   test('detects triggers when detectTriggers is true', () => {
     const tokens = [text('hello @user')];
     const config = { menus: [mentionsMenu] };
-    const result = processTokens(tokens, config, { source: 'user-input', detectTriggers: true });
+    const { tokens: result } = processTokens(tokens, config, { source: 'user-input', detectTriggers: true });
     expect(result.some(t => t.type === 'trigger')).toBe(true);
   });
 
   test('does not detect triggers when detectTriggers is false', () => {
     const tokens = [text('hello @user')];
     const config = { menus: [mentionsMenu] };
-    const result = processTokens(tokens, config, { source: 'user-input', detectTriggers: false });
+    const { tokens: result } = processTokens(tokens, config, { source: 'user-input', detectTriggers: false });
     expect(result.every(t => t.type === 'text')).toBe(true);
   });
 
   test('assigns IDs to trigger tokens without IDs', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'trigger', value: 'user', triggerChar: '@' } as any];
-    const result = processTokens(tokens, {}, { source: 'user-input' });
+    const { tokens: result } = processTokens(tokens, {}, { source: 'user-input' });
     const token = result[0];
     expect(isTriggerToken(token)).toBe(true);
     if (isTriggerToken(token)) {
@@ -415,7 +393,7 @@ describe('processTokens', () => {
     const tokens: PromptInputProps.InputToken[] = [
       { type: 'reference', id: '', label: 'Alice', value: 'user-1', menuId: 'mentions' } as any,
     ];
-    const result = processTokens(tokens, {}, { source: 'user-input' });
+    const { tokens: result } = processTokens(tokens, {}, { source: 'user-input' });
     const token = result[0];
     expect(isReferenceToken(token)).toBe(true);
     if (isReferenceToken(token)) {
@@ -426,7 +404,7 @@ describe('processTokens', () => {
 
   test('preserves existing IDs', () => {
     const tokens: PromptInputProps.InputToken[] = [trigger('user', '@', 'existing-id')];
-    const result = processTokens(tokens, {}, { source: 'user-input' });
+    const { tokens: result } = processTokens(tokens, {}, { source: 'user-input' });
     const token = result[0];
     expect(isTriggerToken(token)).toBe(true);
     if (isTriggerToken(token)) {
@@ -436,13 +414,13 @@ describe('processTokens', () => {
 
   test('does not detect triggers when menus config is undefined', () => {
     const tokens = [text('hello @user')];
-    const result = processTokens(tokens, {}, { source: 'user-input', detectTriggers: true });
+    const { tokens: result } = processTokens(tokens, {}, { source: 'user-input', detectTriggers: true });
     expect(result.every(t => t.type === 'text')).toBe(true);
   });
 
   test('passes through text tokens unchanged when no trigger detection', () => {
     const tokens = [text('hello'), brk(), text('world')];
-    const result = processTokens(tokens, {}, { source: 'external' });
+    const { tokens: result } = processTokens(tokens, {}, { source: 'external' });
     expect(result).toHaveLength(3);
     expect(result[0]).toEqual(expect.objectContaining({ type: 'text', value: 'hello' }));
     expect(result[1]).toEqual(expect.objectContaining({ type: 'break' }));
@@ -463,7 +441,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     triggerSpan.textContent = 'prefix@user';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     // Should extract "prefix" as text and "@user" as trigger
     expect(tokens.some(t => t.type === 'text' && t.value === 'prefix')).toBe(true);
@@ -484,7 +461,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
         } as any,
       ],
     };
-
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
@@ -495,7 +471,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [groupedMenu]);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
@@ -516,7 +491,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     p.appendChild(refSpan);
     p.appendChild(document.createTextNode(' world'));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     expect(tokens).toHaveLength(3);
     expect(tokens[0]).toEqual(text('hello '));
@@ -531,7 +505,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     p.appendChild(document.createTextNode('hello'));
     p.appendChild(document.createElement('br'));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('hello')]);
   });
@@ -550,7 +523,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     triggerSpan.textContent = '@user /cmd';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu, slashMenu]);
     const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
     expect(triggerTokens).toHaveLength(2);
@@ -569,7 +541,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     triggerSpan.textContent = '';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toHaveLength(0);
   });
@@ -581,7 +552,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     // A plain BR without data-id=trailing-break should NOT be treated as empty
     p.appendChild(document.createElement('br'));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     // Plain BR is skipped by extractTokensFromNode, so paragraph yields no tokens
     expect(tokens).toHaveLength(0);
@@ -594,7 +564,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     p.appendChild(document.createTextNode('hello'));
     p.appendChild(document.createComment('a comment'));
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('hello')]);
   });
@@ -608,7 +577,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     unknownSpan.appendChild(document.createTextNode('nested text'));
     p.appendChild(unknownSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el);
     expect(tokens).toEqual([text('nested text')]);
   });
@@ -628,7 +596,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     triggerSpan.textContent = '@user/cmd';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu, slashMenu]);
     // The @ trigger is found first; the / is inside the filter text without preceding space
     const triggerTokens = tokens.filter(t => t.type === 'trigger');
@@ -645,7 +612,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     triggerSpan.textContent = '@@bob';
     p.appendChild(triggerSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     const triggerTokens = tokens.filter(t => t.type === 'trigger');
     expect(triggerTokens).toHaveLength(2);
@@ -672,7 +638,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     refSpan.appendChild(cursorAfter);
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     // Empty label means the reference token itself is skipped,
     // but cursor spot zero-width chars may produce text tokens
@@ -691,7 +656,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
         } as any,
       ],
     };
-
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
@@ -702,12 +666,383 @@ describe('extractTokensFromDOM - advanced cases', () => {
     refSpan.appendChild(document.createTextNode('NonExistentUser'));
     p.appendChild(refSpan);
     el.appendChild(p);
-
     const tokens = extractTokensFromDOM(el, [groupedMenu]);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     // Option not found, so value stays empty and label is the raw text
     expect(refToken.value).toBe('');
     expect(refToken.label).toBe('NonExistentUser');
+  });
+});
+
+describe('getPromptText - space insertion', () => {
+  test('inserts space between reference and adjacent text without whitespace', () => {
+    const tokens: PromptInputProps.InputToken[] = [ref('r1', 'Alice', 'user-1', 'mentions'), text('hello')];
+    const result = getPromptText(tokens);
+    expect(result).toBe('Alice hello');
+  });
+
+  test('does not insert space when text starts with space', () => {
+    const tokens: PromptInputProps.InputToken[] = [ref('r1', 'Alice', 'user-1', 'mentions'), text(' hello')];
+    expect(getPromptText(tokens)).toBe('Alice hello');
+  });
+
+  test('does not insert space after newline', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('line1'), brk(), ref('r1', 'Alice', 'user-1', 'mentions')];
+    expect(getPromptText(tokens)).toBe('line1\nAlice');
+  });
+
+  test('inserts space between two adjacent references', () => {
+    const tokens: PromptInputProps.InputToken[] = [
+      ref('r1', 'Alice', 'user-1', 'mentions'),
+      ref('r2', 'Bob', 'user-2', 'mentions'),
+    ];
+    expect(getPromptText(tokens)).toBe('Alice Bob');
+  });
+
+  test('skips empty text segments', () => {
+    const tokens: PromptInputProps.InputToken[] = [text(''), ref('r1', 'Alice', 'user-1', 'mentions')];
+    expect(getPromptText(tokens)).toBe('Alice');
+  });
+
+  test('uses value as fallback when reference has no label', () => {
+    const tokens: PromptInputProps.InputToken[] = [ref('r1', '', 'user-1', 'mentions')];
+    expect(getPromptText(tokens)).toBe('user-1');
+  });
+
+  test('inserts space before reference when previous token is text without trailing space', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello'), ref('r1', 'Alice', 'user-1', 'mentions')];
+    expect(getPromptText(tokens)).toBe('hello Alice');
+  });
+});
+
+describe('detectTriggersInTokens - edge cases', () => {
+  test('skips cancelled triggers without re-parsing', () => {
+    const cancelledIds = new Set(['trig-1']);
+    const tokens: PromptInputProps.InputToken[] = [trigger('user', '@', 'trig-1')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu], undefined, cancelledIds);
+    expect(result).toHaveLength(1);
+    expect((result[0] as PromptInputProps.TriggerToken).id).toBe('trig-1');
+  });
+
+  test('empty trigger at end of tokens array is not collapsed with next', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('', '@', 'trig-1')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toHaveLength(1);
+    expect((result[0] as PromptInputProps.TriggerToken).value).toBe('');
+  });
+
+  test('empty trigger followed by space-prefixed text is not collapsed', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('', '@', 'trig-1'), text(' hello')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toHaveLength(2);
+    expect((result[0] as PromptInputProps.TriggerToken).value).toBe('');
+    expect(result[1]).toEqual(text(' hello'));
+  });
+
+  test('non-empty trigger at end of tokens array is not merged with next', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('bob', '@', 'trig-1')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result).toHaveLength(1);
+    expect((result[0] as PromptInputProps.TriggerToken).value).toBe('bob');
+  });
+
+  test('calls onTriggerDetected callback when trigger is detected in text', () => {
+    const onTriggerDetected = jest.fn().mockReturnValue(true);
+    const tokens: PromptInputProps.InputToken[] = [text('hello @user')];
+    detectTriggersInTokens(tokens, [mentionsMenu], onTriggerDetected);
+    expect(onTriggerDetected).toHaveBeenCalled();
+  });
+});
+
+describe('extractTokensFromDOM - reference with value lookup by value', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('looks up option by value when label does not match', () => {
+    const menuWithValues: PromptInputProps.MenuDefinition = {
+      id: 'mentions',
+      trigger: '@',
+      options: [{ value: 'user-1', label: 'Alice' }],
+    };
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-1';
+    // Use the value as the text content (not the label)
+    refSpan.appendChild(document.createTextNode('user-1'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [menuWithValues]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.value).toBe('user-1');
+    expect(refToken.label).toBe('Alice');
+  });
+
+  test('reference without menuId keeps empty value', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    // No data-menu-id attribute
+    refSpan.id = 'ref-1';
+    refSpan.appendChild(document.createTextNode('SomeLabel'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.value).toBe('');
+    expect(refToken.label).toBe('SomeLabel');
+  });
+
+  test('reference with menuId but no matching menu keeps empty value', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'nonexistent');
+    refSpan.id = 'ref-1';
+    refSpan.appendChild(document.createTextNode('SomeLabel'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.value).toBe('');
+  });
+
+  test('extractTokensFromDOM with useAtStart menu skips nested trigger detection', () => {
+    const useAtStartMenu: PromptInputProps.MenuDefinition = {
+      id: 'commands',
+      trigger: '/',
+      options: [],
+      useAtStart: true,
+    };
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const triggerSpan = document.createElement('span');
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
+    triggerSpan.textContent = '@user /cmd';
+    p.appendChild(triggerSpan);
+    el.appendChild(p);
+    // useAtStart menus are skipped during nested trigger detection
+    const tokens = extractTokensFromDOM(el, [mentionsMenu, useAtStartMenu]);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    // Only the @ trigger should be found; / is useAtStart so skipped for nesting
+    expect(triggerTokens).toHaveLength(1);
+    expect(triggerTokens[0].triggerChar).toBe('@');
+    expect(triggerTokens[0].value).toBe('user /cmd');
+  });
+
+  test('extractTokensFromDOM with empty text node returns no tokens', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode(''));
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el);
+    expect(tokens).toHaveLength(0);
+  });
+});
+
+describe('processTokens - onTriggerDetected callback', () => {
+  test('passes onTriggerDetected to detectTriggersInTokens', () => {
+    const onTriggerDetected = jest.fn().mockReturnValue(true);
+    const tokens = [text('hello @user')];
+    const config = { menus: [mentionsMenu] };
+    processTokens(tokens, config, { source: 'user-input', detectTriggers: true }, onTriggerDetected);
+    expect(onTriggerDetected).toHaveBeenCalled();
+  });
+});
+
+describe('extractTokensFromDOM - trigger token edge cases', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('trigger element with no id generates one', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const triggerSpan = document.createElement('span');
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
+    // No id set
+    triggerSpan.textContent = '@user';
+    p.appendChild(triggerSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const triggerToken = tokens.find(t => t.type === 'trigger') as PromptInputProps.TriggerToken;
+    expect(triggerToken).toBeDefined();
+    expect(triggerToken.id).toBeDefined();
+    expect(triggerToken.id).not.toBe('');
+  });
+
+  test('reference element with HTMLElement child that is not a caret spot contributes to label', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-1';
+    // Add a non-caret-spot child element
+    const labelSpan = document.createElement('span');
+    labelSpan.setAttribute('contenteditable', 'false');
+    labelSpan.textContent = 'Alice';
+    refSpan.appendChild(labelSpan);
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.label).toBe('Alice');
+    expect(refToken.value).toBe('user-1');
+  });
+
+  test('reference element with text node child contributes to label', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-1';
+    // Direct text node child
+    refSpan.appendChild(document.createTextNode('Bob'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.label).toBe('Bob');
+    expect(refToken.value).toBe('user-2');
+  });
+
+  test('reference with no menus provided keeps empty value', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-1';
+    refSpan.appendChild(document.createTextNode('Alice'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    // No menus passed
+    const tokens = extractTokensFromDOM(el);
+    expect(tokens).toHaveLength(1);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.value).toBe('');
+  });
+
+  test('findOptionInMenu finds option by value in flat options', () => {
+    const menuWithValues: PromptInputProps.MenuDefinition = {
+      id: 'mentions',
+      trigger: '@',
+      options: [
+        { value: 'user-1', label: 'Alice' },
+        { value: 'user-2', label: 'Bob' },
+      ],
+    };
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.setAttribute('data-menu-id', 'mentions');
+    refSpan.id = 'ref-1';
+    refSpan.appendChild(document.createTextNode('user-2'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [menuWithValues]);
+    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
+    expect(refToken.value).toBe('user-2');
+    expect(refToken.label).toBe('Bob');
+  });
+
+  test('extractTokensFromDOM handles non-HTMLElement non-text node', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    // Add a processing instruction or comment node
+    const comment = document.createComment('test');
+    p.appendChild(comment);
+    p.appendChild(document.createTextNode('hello'));
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el);
+    expect(tokens).toEqual([text('hello')]);
+  });
+});
+
+describe('detectTriggersInTokens - empty trigger followed by empty text', () => {
+  test('empty trigger followed by empty text token is not collapsed', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('', '@', 'trig-1'), text('')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    // Empty text token has length 0, so the collapse condition (next.value.length > 0) is false
+    expect(result.some(t => t.type === 'trigger')).toBe(true);
+  });
+
+  test('non-empty trigger followed by empty text token is not merged', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('bob', '@', 'trig-1'), text('')];
+    const result = detectTriggersInTokens(tokens, [mentionsMenu]);
+    expect(result.some(t => t.type === 'trigger' && (t as PromptInputProps.TriggerToken).value === 'bob')).toBe(true);
+  });
+});
+
+describe('extractTokensFromDOM - nested trigger split with whitespace', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('splits trigger when nested trigger has whitespace before it (space before nested)', () => {
+    const slashMenu: PromptInputProps.MenuDefinition = {
+      id: 'commands',
+      trigger: '/',
+      options: [],
+    };
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const triggerSpan = document.createElement('span');
+    triggerSpan.setAttribute('data-type', ElementType.Trigger);
+    // Trigger text with space before nested trigger: "@user /cmd"
+    // This should split into trigger(@, "user"), text(" "), trigger(/, "cmd")
+    triggerSpan.textContent = '@user  /cmd';
+    p.appendChild(triggerSpan);
+    el.appendChild(p);
+    const tokens = extractTokensFromDOM(el, [mentionsMenu, slashMenu]);
+    const triggerTokens = tokens.filter(t => t.type === 'trigger') as PromptInputProps.TriggerToken[];
+    expect(triggerTokens.length).toBe(2);
+    expect(triggerTokens[0].triggerChar).toBe('@');
+    expect(triggerTokens[0].value).toBe('user');
+    expect(triggerTokens[1].triggerChar).toBe('/');
+    expect(triggerTokens[1].value).toBe('cmd');
+    // There should be a space text token between them
+    const textTokens = tokens.filter(t => t.type === 'text');
+    expect(textTokens.length).toBeGreaterThanOrEqual(1);
+  });
+});
+
+describe('getPromptText - empty trigger segment', () => {
+  test('skips trigger with empty value and empty triggerChar', () => {
+    // This is an edge case where a trigger token produces an empty segment
+    const tokens: PromptInputProps.InputToken[] = [
+      text('hello'),
+      { type: 'trigger', value: '', triggerChar: '', id: 'empty-trig' } as any,
+      text(' world'),
+    ];
+    const result = getPromptText(tokens);
+    // Empty trigger segment is skipped
+    expect(result).toBe('hello world');
   });
 });

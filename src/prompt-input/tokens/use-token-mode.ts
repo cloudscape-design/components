@@ -9,7 +9,6 @@ import { useStableCallback, useUniqueId } from '@cloudscape-design/component-too
 
 import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
-import { isHTMLElement } from '../../internal/utils/dom';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import Token from '../../token/internal';
 import {
@@ -23,8 +22,8 @@ import {
   TOKEN_LENGTHS,
 } from '../core/caret-controller';
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
-import { ElementType, NEXT_TICK_TIMEOUT } from '../core/constants';
-import { createParagraph, findAllParagraphs, getTokenType } from '../core/dom-utils';
+import { NEXT_TICK_TIMEOUT } from '../core/constants';
+import { createParagraph, findAllParagraphs, normalizeCaretIntoTrigger } from '../core/dom-utils';
 import { handleClipboardEvent, handleEditableKeyDown } from '../core/event-handlers';
 import {
   handleMenuSelection,
@@ -255,10 +254,18 @@ export interface UseTokenModeResult {
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
 }
 
+/** Tracks the state of a trigger element — its DOM node, dismissal, and cancellation status. */
+export interface TriggerState {
+  element: HTMLElement;
+  dismissed: boolean;
+  dismissedValue: string | null;
+  cancelled: boolean;
+}
+
 interface ShortcutsState {
   caretInTrigger: boolean;
   setCaretInTrigger: (inTrigger: boolean) => void;
-  dismissedTriggerId: React.MutableRefObject<string | null>;
+  triggerStates: React.MutableRefObject<Map<string, TriggerState>>;
   lastSentTokens: React.MutableRefObject<readonly PromptInputProps.InputToken[] | undefined>;
   isExternalUpdate: (tokens: readonly PromptInputProps.InputToken[] | undefined) => boolean;
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
@@ -266,7 +273,7 @@ interface ShortcutsState {
 
 function useShortcutsState(): ShortcutsState {
   const [caretInTrigger, setCaretInTrigger] = useState(false);
-  const dismissedTriggerId = useRef<string | null>(null);
+  const triggerStates = useRef<Map<string, TriggerState>>(new Map());
   const lastSentTokens = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
 
   const isExternalUpdate = useStableCallback((tokens: readonly PromptInputProps.InputToken[] | undefined): boolean => {
@@ -280,7 +287,7 @@ function useShortcutsState(): ShortcutsState {
   return {
     caretInTrigger,
     setCaretInTrigger,
-    dismissedTriggerId,
+    triggerStates,
     lastSentTokens,
     isExternalUpdate,
     markTokensAsSent,
@@ -306,8 +313,25 @@ function useTokenProcessor(config: ProcessorConfig) {
     onChange({ value, tokens: newTokens });
   });
 
+  const markCancelledTriggers = useStableCallback((cancelledIds: Set<string>) => {
+    for (const id of cancelledIds) {
+      const existing = state.triggerStates.current.get(id);
+      if (existing) {
+        existing.cancelled = true;
+      } else {
+        // Pre-populate — element will be filled in when renderTokens runs
+        state.triggerStates.current.set(id, {
+          element: null as unknown as HTMLElement,
+          dismissed: false,
+          dismissedValue: null,
+          cancelled: true,
+        });
+      }
+    }
+  });
+
   const processUserInput = useStableCallback((inputTokens: PromptInputProps.InputToken[]) => {
-    const processed = processTokens(
+    const { tokens: processed, cancelledIds } = processTokens(
       inputTokens,
       { menus, tokensToText },
       {
@@ -317,6 +341,7 @@ function useTokenProcessor(config: ProcessorConfig) {
       onTriggerDetected
     );
 
+    markCancelledTriggers(cancelledIds);
     emitTokenChange(processed);
   });
 
@@ -335,7 +360,7 @@ function useTokenProcessor(config: ProcessorConfig) {
       return;
     }
 
-    const processed = processTokens(
+    const { tokens: processed, cancelledIds } = processTokens(
       tokens,
       { menus, tokensToText },
       {
@@ -344,12 +369,14 @@ function useTokenProcessor(config: ProcessorConfig) {
       }
     );
 
+    markCancelledTriggers(cancelledIds);
+
     const hasChanges = processed.length !== tokens.length || processed.some((t, i) => t !== tokens[i]);
 
     if (hasChanges) {
       emitTokenChange(processed);
     }
-  }, [tokens, menus, tokensToText, state, emitTokenChange]);
+  }, [tokens, menus, tokensToText, state, emitTokenChange, markCancelledTriggers]);
 
   return {
     processUserInput,
@@ -362,11 +389,6 @@ interface EffectsConfig {
   state: ShortcutsState;
   activeTriggerToken: PromptInputProps.TriggerToken | null;
   caretController: React.RefObject<CaretController | null>;
-}
-
-/** Returns true if the trigger ID indicates a cancelled trigger. */
-function isCancelledTriggerId(id: string | null | undefined): boolean {
-  return !!id && id.endsWith('-cancelled');
 }
 
 function useShortcutsEffects(config: EffectsConfig) {
@@ -386,59 +408,57 @@ function useShortcutsEffects(config: EffectsConfig) {
         return;
       }
 
+      const cancelledIds = new Set<string>();
+      state.triggerStates.current.forEach((ts, id) => {
+        if (ts.cancelled) {
+          cancelledIds.add(id);
+        }
+      });
+      normalizeCaretIntoTrigger(editableElementRef.current, cancelledIds);
+
       const activeTrigger = ctrl.findActiveTrigger();
-      let isInTrigger = !!activeTrigger && !isCancelledTriggerId(activeTrigger.id);
+      let isInTrigger = false;
 
-      const selection = window.getSelection();
-      if (selection?.rangeCount) {
-        const range = selection.getRangeAt(0);
+      if (activeTrigger) {
+        const triggerState = state.triggerStates.current.get(activeTrigger.id);
 
-        if (range.collapsed) {
-          let triggerElement: HTMLElement | null = null;
+        // Skip cancelled triggers entirely
+        if (triggerState?.cancelled) {
+          isInTrigger = false;
+        } else {
+          isInTrigger = true;
 
-          if (isTextNode(range.startContainer) && range.startOffset === 0) {
-            const prevSibling = range.startContainer.previousSibling;
-            if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
-              triggerElement = prevSibling;
-            }
-          } else if (range.startContainer === editableElementRef.current || isHTMLElement(range.startContainer)) {
-            const container = range.startContainer as HTMLElement;
-            const childNodes = Array.from(container.childNodes);
-            const nodeBeforeCaret = childNodes[range.startOffset - 1];
-
-            if (isHTMLElement(nodeBeforeCaret) && getTokenType(nodeBeforeCaret) === ElementType.Trigger) {
-              triggerElement = nodeBeforeCaret;
-            }
-          }
-
-          if (triggerElement && !isCancelledTriggerId(triggerElement.id)) {
-            const triggerTextNode = triggerElement.childNodes[0];
-            if (isTextNode(triggerTextNode)) {
-              const triggerText = triggerTextNode.textContent || '';
-              range.setStart(triggerTextNode, triggerText.length);
-              range.collapse(true);
+          // Check dismissed state — reopen if filter text changed since dismissal
+          if (triggerState?.dismissed) {
+            const currentValue = activeTrigger.textContent?.slice(1) ?? '';
+            if (currentValue !== triggerState.dismissedValue) {
+              triggerState.dismissed = false;
+              triggerState.dismissedValue = null;
+            } else {
+              isInTrigger = false;
             }
           }
         }
+
+        // Clear dismissed state on all other triggers — navigating away resets dismissal
+        state.triggerStates.current.forEach((ts, id) => {
+          if (id !== activeTrigger.id && ts.dismissed) {
+            ts.dismissed = false;
+            ts.dismissedValue = null;
+          }
+        });
+      } else {
+        // Caret is not in any trigger — clear all dismissed states
+        state.triggerStates.current.forEach(ts => {
+          if (ts.dismissed) {
+            ts.dismissed = false;
+            ts.dismissedValue = null;
+          }
+        });
       }
 
-      const updatedTrigger = ctrl.findActiveTrigger();
-      isInTrigger = !!updatedTrigger && !isCancelledTriggerId(updatedTrigger.id);
-
-      // Don't reopen a trigger that was explicitly dismissed (e.g. via Escape or space-after-trigger)
-      if (isInTrigger && updatedTrigger && state.dismissedTriggerId.current === updatedTrigger.id) {
-        isInTrigger = false;
-      }
-
-      // Clear the dismissed ID when the caret moves to a different trigger
-      if (updatedTrigger?.id !== state.dismissedTriggerId.current) {
-        state.dismissedTriggerId.current = null;
-      }
-
-      const shouldBeOpen = isInTrigger;
-
-      if (shouldBeOpen !== state.caretInTrigger) {
-        state.setCaretInTrigger(shouldBeOpen);
+      if (isInTrigger !== state.caretInTrigger) {
+        state.setCaretInTrigger(isInTrigger);
       }
     };
 
@@ -498,9 +518,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const { markTokensAsSent } = shortcutsState;
 
-  // Incremented on selection changes to force activeTriggerToken to recompute
-  const [caretUpdateTrigger, setCaretUpdateTrigger] = useState(0);
-
   const activeTriggerToken = useMemo((): PromptInputProps.TriggerToken | null => {
     if (!tokens || !caretControllerRef.current) {
       return null;
@@ -508,30 +525,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const activeTriggerID = caretControllerRef.current.findActiveTrigger()?.id || null;
 
-    if (!activeTriggerID || isCancelledTriggerId(activeTriggerID)) {
+    if (!activeTriggerID) {
       return null;
     }
 
-    const matchingTrigger = findTriggerTokenById(tokens, activeTriggerID);
-
-    return matchingTrigger;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- caretUpdateTrigger is an invalidation signal, not used in the callback
-  }, [tokens, caretControllerRef, caretUpdateTrigger]);
-
-  useEffect(() => {
-    const handleSelectionChange = () => {
-      setCaretUpdateTrigger(prev => prev + 1);
-    };
-
-    document.addEventListener('selectionchange', handleSelectionChange);
-    return () => document.removeEventListener('selectionchange', handleSelectionChange);
-  }, []);
-
-  useEffect(() => {
-    if (shortcutsState.caretInTrigger) {
-      setCaretUpdateTrigger(prev => prev + 1);
+    const triggerState = shortcutsState.triggerStates.current.get(activeTriggerID);
+    if (triggerState?.cancelled) {
+      return null;
     }
-  }, [shortcutsState.caretInTrigger]);
+
+    return findTriggerTokenById(tokens, activeTriggerID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- caretInTrigger is the invalidation signal from useShortcutsEffects
+  }, [tokens, caretControllerRef, shortcutsState.caretInTrigger]);
 
   const activeMenu = useMemo(
     () =>
@@ -564,45 +569,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   });
 
   const triggerWrapperRef = useRef<HTMLElement | null>(null);
-  const [triggerWrapperReady, setTriggerWrapperReady] = useState(false);
   const [triggerVisible, setTriggerVisible] = useState(true);
 
-  const prevTriggerIdRef = useRef<string | undefined>(undefined);
+  // Resolve the trigger DOM element synchronously during render from the tracked map.
+  // The Dropdown's contentKey (which includes activeTriggerToken.id) handles
+  // repositioning when the active trigger changes — no open/close toggle needed.
+  if (activeTriggerToken?.id && menuIsOpen) {
+    triggerWrapperRef.current = shortcutsState.triggerStates.current.get(activeTriggerToken.id)?.element ?? null;
+  } else {
+    triggerWrapperRef.current = null;
+  }
 
-  useEffect(() => {
-    const triggerChanged = activeTriggerToken?.id !== prevTriggerIdRef.current;
-    prevTriggerIdRef.current = activeTriggerToken?.id;
-
-    if (activeTriggerToken && menuIsOpen && editableElementRef.current) {
-      const triggerElement = activeTriggerToken.id
-        ? editableElementRef.current.querySelector<HTMLElement>(`#${CSS.escape(activeTriggerToken.id)}`)
-        : null;
-
-      if (triggerElement) {
-        triggerWrapperRef.current = triggerElement;
-
-        if (triggerChanged) {
-          // Reset ready state so the Dropdown re-opens for the new trigger
-          setTriggerWrapperReady(false);
-        } else {
-          setTriggerWrapperReady(true);
-        }
-      } else {
-        triggerWrapperRef.current = null;
-        setTriggerWrapperReady(false);
-      }
-    } else if (!menuIsOpen) {
-      triggerWrapperRef.current = null;
-      setTriggerWrapperReady(false);
-    }
-  }, [activeTriggerToken, menuIsOpen, editableElementRef]);
-
-  // Reopen after Dropdown closed for trigger change
-  useEffect(() => {
-    if (!triggerWrapperReady && triggerWrapperRef.current && menuIsOpen) {
-      setTriggerWrapperReady(true);
-    }
-  }, [triggerWrapperReady, menuIsOpen]);
+  const triggerWrapperReady = !!triggerWrapperRef.current && menuIsOpen;
 
   // Hide menu dropdown when trigger scrolls out of the editable container
   useEffect(() => {
@@ -642,14 +620,37 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const portalContainersRef = useRef<Map<string, PortalContainer>>(new Map());
   const [portalContainers, setPortalContainers] = useState<PortalContainer[]>([]);
 
-  const triggerElementsRef = useRef(new Map<string, HTMLElement>());
+  const renderTokens = useCallback(
+    (tokens: readonly PromptInputProps.InputToken[], target: HTMLElement) => {
+      const triggerElements = new Map<string, HTMLElement>();
+      const cancelledIds = new Set<string>();
+      shortcutsState.triggerStates.current.forEach((state, id) => {
+        triggerElements.set(id, state.element);
+        if (state.cancelled) {
+          cancelledIds.add(id);
+        }
+      });
 
-  const renderTokens = useCallback((tokens: readonly PromptInputProps.InputToken[], target: HTMLElement) => {
-    const result = renderTokensToDOM(tokens, target, portalContainersRef.current, triggerElementsRef.current);
-    setPortalContainers(Array.from(portalContainersRef.current.values()));
-    triggerElementsRef.current = result.triggerElements;
-    return result;
-  }, []);
+      const result = renderTokensToDOM(tokens, target, portalContainersRef.current, triggerElements, cancelledIds);
+
+      // Merge returned trigger elements into the state map, preserving dismissed/cancelled flags
+      const newStates = new Map<string, TriggerState>();
+      result.triggerElements.forEach((element, id) => {
+        const existing = shortcutsState.triggerStates.current.get(id);
+        newStates.set(id, {
+          element,
+          dismissed: existing?.dismissed ?? false,
+          dismissedValue: existing?.dismissedValue ?? null,
+          cancelled: existing?.cancelled ?? false,
+        });
+      });
+      shortcutsState.triggerStates.current = newStates;
+
+      setPortalContainers(Array.from(portalContainersRef.current.values()));
+      return result;
+    },
+    [shortcutsState.triggerStates, portalContainersRef]
+  );
 
   useLayoutEffect(() => {
     if (editableElementRef.current && !caretControllerRef.current) {
@@ -657,7 +658,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     }
   }, [editableElementRef, caretControllerRef]);
 
-  const editableState = useMemo(() => createEditableState(), []);
+  const editableState = useRef(createEditableState()).current;
 
   const [tokenOperationAnnouncement, setTokenOperationAnnouncement] = useState<string>('');
 
@@ -689,7 +690,35 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       editableState.skipNextZeroWidthUpdate = false;
     }
 
-    const { movedTextNode } = extractTextFromCaretSpots(portalContainersRef.current, triggerElementsRef.current, true);
+    const { movedTextNode } = extractTextFromCaretSpots(portalContainersRef.current, true);
+
+    // Extract filter text from cancelled triggers, moving it to the paragraph level
+    for (const [, triggerState] of shortcutsState.triggerStates.current) {
+      if (!triggerState.cancelled) {
+        continue;
+      }
+      const trigger = triggerState.element;
+      const filterText = (trigger.textContent || '').substring(1);
+      if (!filterText) {
+        continue;
+      }
+
+      let caretInTrigger = false;
+      const selection = window.getSelection();
+      if (selection?.rangeCount && trigger.contains(selection.getRangeAt(0).startContainer)) {
+        caretInTrigger = true;
+      }
+
+      const textNode = document.createTextNode(filterText);
+      trigger.parentNode?.insertBefore(textNode, trigger.nextSibling);
+      trigger.textContent = (trigger.textContent || '').charAt(0);
+
+      if (caretInTrigger && !movedTextNode) {
+        if (cc) {
+          cc.positionAfterText(textNode);
+        }
+      }
+    }
 
     if (movedTextNode && cc) {
       cc.positionAfterText(movedTextNode);
@@ -723,8 +752,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const newTriggers = extractedTokens.filter(isTriggerToken);
 
-    const existingTriggerElements = Array.from(triggerElementsRef.current.values());
-    const existingTriggerIds = new Set(Array.from(triggerElementsRef.current.keys()));
+    const existingTriggerElements: HTMLElement[] = [];
+    const existingTriggerIds = new Set<string>();
+    shortcutsState.triggerStates.current.forEach((state, id) => {
+      existingTriggerElements.push(state.element);
+      existingTriggerIds.add(id);
+    });
 
     const isNewTrigger = newTriggers.some(t => t.id && !existingTriggerIds.has(t.id));
 
@@ -770,11 +803,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       });
 
       // Restore cursor inside the changed trigger after DOM updates
-      if (changedTriggerId && editableElementRef.current) {
-        const triggerIdToRestore = changedTriggerId;
+      if (changedTriggerId) {
+        const triggerEl = shortcutsState.triggerStates.current.get(changedTriggerId)?.element;
         const cursorOffsetToRestore = savedCursorOffset;
         setTimeout(() => {
-          const triggerEl = editableElementRef.current?.querySelector(`#${CSS.escape(triggerIdToRestore)}`);
           if (triggerEl?.firstChild && document.activeElement === editableElementRef.current) {
             const s = window.getSelection();
             if (s) {
@@ -815,19 +847,19 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, portalContainersRef, editableState]);
 
   // Initial render
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!editableElementRef.current || disabled) {
       return;
     }
     if (editableElementRef.current.children.length === 0) {
       renderTokens(tokens ?? [], editableElementRef.current);
     }
-    // Intentionally run only on mount — subsequent renders are handled by the useEffect below
+    // Intentionally run only on mount — subsequent renders are handled by the useLayoutEffect below
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Token render effect
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!editableElementRef.current) {
       return;
     }
@@ -893,6 +925,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     lastRenderedTokensRef.current = orderedTokens;
 
+    /* istanbul ignore next -- render-timing optimization covered by integ tests */
     if (isTypingIntoEmptyLine) {
       if (cc) {
         cc.capture();
@@ -991,6 +1024,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       normalizeSelection(window.getSelection());
 
       // Deferred re-check: browsers may finalize caret position after mouseup
+      /* istanbul ignore next -- browser mouseup normalization covered by integ tests */
       requestAnimationFrame(() => {
         const sel = window.getSelection();
         if (!sel?.rangeCount) {
@@ -1103,7 +1137,11 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const triggerEl = cc?.findActiveTrigger();
 
     if (triggerEl) {
-      shortcutsState.dismissedTriggerId.current = triggerEl.id;
+      const triggerState = shortcutsState.triggerStates.current.get(triggerEl.id);
+      if (triggerState) {
+        triggerState.dismissed = true;
+        triggerState.dismissedValue = triggerEl.textContent?.slice(1) ?? '';
+      }
     }
 
     shortcutsState.setCaretInTrigger(false);

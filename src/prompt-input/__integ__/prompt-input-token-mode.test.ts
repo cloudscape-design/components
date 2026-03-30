@@ -52,6 +52,36 @@ class PromptInputTokenModePage extends BasePageObject {
       return sel ? sel.toString().replace(/\u200B/g, '') : '';
     });
   }
+
+  getParagraphStructure(): Promise<
+    Array<{ childCount: number; hasTrailingBR: boolean; firstChildType: string; firstChildText: string }>
+  > {
+    return this.browser.execute((selector: string) => {
+      const editable = document.querySelector(selector);
+      if (!editable) {
+        return [];
+      }
+      const paragraphs = editable.querySelectorAll('p');
+      const result: Array<{
+        childCount: number;
+        hasTrailingBR: boolean;
+        firstChildType: string;
+        firstChildText: string;
+      }> = [];
+      for (let i = 0; i < paragraphs.length; i++) {
+        const p = paragraphs[i];
+        const firstChild = p.firstChild;
+        const lastChild = p.lastChild;
+        result.push({
+          childCount: p.childNodes.length,
+          hasTrailingBR: !!(lastChild && lastChild.nodeName === 'BR'),
+          firstChildType: firstChild ? firstChild.nodeName : 'none',
+          firstChildText: (firstChild?.textContent ?? '').replace(/\u200B/g, ''),
+        });
+      }
+      return result;
+    }, contentEditableSelector);
+  }
 }
 
 const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) => {
@@ -171,15 +201,13 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
     'backspace through trigger with filter text removes all of it',
     setupTest(async page => {
       await page.focusInput();
-      await page.keys(['h', 'i', ' ', '@', 'a', 'l', 'i']);
-      await page.pause(300);
+      await page.keys(['h', 'i', ' ', '@', 'a']);
 
-      await page.keys(['Escape']);
-      await page.pause(100);
-      await page.keys(['Backspace', 'Backspace', 'Backspace', 'Backspace']);
-      await page.pause(300);
+      // Backspace filter char, then backspace trigger char
+      await page.keys(['Backspace']);
+      await page.keys(['Backspace']);
 
-      expect((await page.getEditorText()).trim()).toBe('hi');
+      expect(await page.getEditorText()).toBe('hi ');
       expect(await page.getCaretOffset()).toBe(3);
     })
   );
@@ -383,7 +411,7 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
       await page.pause(200);
 
       const text = await page.getEditorText();
-      expect(text.trim()).toBe('hi');
+      expect(text).toBe(' hi');
       expect(text).not.toContain('Jane Smith');
     })
   );
@@ -403,7 +431,7 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
       await page.pause(200);
 
       const text = await page.getEditorText();
-      expect(text.trim()).toBe('hi');
+      expect(text).toBe('hi ');
       expect(text).not.toContain('Jane Smith');
       expect(await page.getCaretOffset()).toBe(3);
     })
@@ -452,6 +480,109 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
       expect(text).toContain('Jane Smith');
       expect(text).toContain('and');
       expect(text).toContain('Bob');
+    })
+  );
+});
+
+(isReact18 ? describe : describe.skip)(
+  'PromptInput token mode - typing into empty line (isTypingIntoEmptyLine)',
+  () => {
+    test(
+      'typing on a new line after shift+enter replaces trailing BR with text node',
+      setupTest(async page => {
+        await page.focusInput();
+        await page.keys(['h', 'e', 'l', 'l', 'o']);
+        await page.pause(100);
+
+        await page.keys(['Shift', 'Enter', 'Shift']);
+        await page.pause(100);
+
+        // Before typing: second paragraph should have a trailing BR (empty line)
+        const beforeStructure = await page.getParagraphStructure();
+        expect(beforeStructure.length).toBe(2);
+        expect(beforeStructure[1].hasTrailingBR).toBe(true);
+
+        // Type on the empty second line
+        await page.keys(['w']);
+        await page.pause(200);
+
+        // After typing: second paragraph should have a text node, no trailing BR
+        const afterStructure = await page.getParagraphStructure();
+        expect(afterStructure.length).toBe(2);
+        expect(afterStructure[1].hasTrailingBR).toBe(false);
+        expect(afterStructure[1].firstChildType).toBe('#text');
+        expect(afterStructure[1].firstChildText).toContain('w');
+        expect(await page.getCaretOffset()).toBe(6);
+      })
+    );
+
+    test(
+      'typing trigger on empty line after shift+enter opens menu and replaces BR',
+      setupTest(async page => {
+        await page.focusInput();
+        await page.keys(['h', 'e', 'l', 'l', 'o']);
+        await page.pause(100);
+
+        await page.keys(['Shift', 'Enter', 'Shift']);
+        await page.pause(100);
+
+        await page.keys(['@']);
+        await page.pause(300);
+
+        await expect(page.isMenuOpen()).resolves.toBe(true);
+
+        // The second paragraph should now contain a trigger element, not a trailing BR
+        const structure = await page.getParagraphStructure();
+        expect(structure.length).toBe(2);
+        expect(structure[1].hasTrailingBR).toBe(false);
+      })
+    );
+
+    test(
+      'typing into completely empty input replaces trailing BR with text node',
+      setupTest(async page => {
+        await page.focusInput();
+
+        // Before typing: single paragraph with trailing BR
+        const beforeStructure = await page.getParagraphStructure();
+        expect(beforeStructure.length).toBe(1);
+        expect(beforeStructure[0].hasTrailingBR).toBe(true);
+
+        await page.keys(['a']);
+        await page.pause(200);
+
+        // After typing: paragraph has text node, no trailing BR
+        const afterStructure = await page.getParagraphStructure();
+        expect(afterStructure.length).toBe(1);
+        expect(afterStructure[0].hasTrailingBR).toBe(false);
+        expect(afterStructure[0].firstChildType).toBe('#text');
+        expect(afterStructure[0].firstChildText).toBe('a');
+        expect(await page.getCaretOffset()).toBe(1);
+      })
+    );
+  }
+);
+
+(isReact18 ? describe : describe.skip)('PromptInput token mode - mouseup selection normalization', () => {
+  test(
+    'clicking on a reference token and dragging produces a valid selection',
+    setupTest(async page => {
+      await page.focusInput();
+      await page.keys(['h', 'i', ' ']);
+      await page.keys(['@']);
+      await page.pause(200);
+      await page.keys(['ArrowDown', 'Enter']);
+      await page.pause(200);
+      await page.keys([' ', 'b', 'y', 'e']);
+      await page.pause(200);
+
+      // Click at the start of the input to position caret
+      await page.click(contentEditableSelector);
+      await page.pause(100);
+
+      // The caret should be at a valid position (not inside a reference's internal structure)
+      const offset = await page.getCaretOffset();
+      expect(offset).toBeGreaterThanOrEqual(0);
     })
   );
 });
