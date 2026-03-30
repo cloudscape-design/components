@@ -256,7 +256,7 @@ export interface UseTokenModeResult {
 
 /** Tracks the state of a trigger element — its DOM node, dismissal, and cancellation status. */
 export interface TriggerState {
-  element: HTMLElement;
+  element: HTMLElement | null;
   dismissed: boolean;
   dismissedValue: string | null;
   cancelled: boolean;
@@ -321,7 +321,7 @@ function useTokenProcessor(config: ProcessorConfig) {
       } else {
         // Pre-populate — element will be filled in when renderTokens runs
         state.triggerStates.current.set(id, {
-          element: null as unknown as HTMLElement,
+          element: null,
           dismissed: false,
           dismissedValue: null,
           cancelled: true,
@@ -625,7 +625,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       const triggerElements = new Map<string, HTMLElement>();
       const cancelledIds = new Set<string>();
       shortcutsState.triggerStates.current.forEach((state, id) => {
-        triggerElements.set(id, state.element);
+        if (state.element) {
+          triggerElements.set(id, state.element);
+        }
         if (state.cancelled) {
           cancelledIds.add(id);
         }
@@ -698,6 +700,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         continue;
       }
       const trigger = triggerState.element;
+      if (!trigger) {
+        continue;
+      }
       const filterText = (trigger.textContent || '').substring(1);
       if (!filterText) {
         continue;
@@ -752,7 +757,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const newTriggers = extractedTokens.filter(isTriggerToken);
 
-    const existingTriggerElements: HTMLElement[] = [];
+    const existingTriggerElements: (HTMLElement | null)[] = [];
     const existingTriggerIds = new Set<string>();
     shortcutsState.triggerStates.current.forEach((state, id) => {
       existingTriggerElements.push(state.element);
@@ -762,7 +767,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const isNewTrigger = newTriggers.some(t => t.id && !existingTriggerIds.has(t.id));
 
     const hasStylingChange = newTriggers.some(newT => {
-      const domElement = existingTriggerElements.find(el => el.id === newT.id);
+      const domElement = existingTriggerElements.find(el => el?.id === newT.id);
       if (!domElement) {
         return false;
       }
@@ -785,7 +790,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     } else if (hasStylingChange) {
       // Track which trigger had its styling changed for cursor restoration
       const changedTriggerId = newTriggers.find(newT => {
-        const domElement = existingTriggerElements.find(el => el.id === newT.id);
+        const domElement = existingTriggerElements.find(el => el?.id === newT.id);
         if (!domElement) {
           return false;
         }
@@ -795,7 +800,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       })?.id;
 
       newTriggers.forEach(newT => {
-        const domElement = existingTriggerElements.find(el => el.id === newT.id);
+        const domElement = existingTriggerElements.find(el => el?.id === newT.id);
         if (domElement) {
           const shouldHaveClass = newT.value.length > 0;
           domElement.className = `${styles['trigger-base']} ${shouldHaveClass ? styles['trigger-token'] : ''}`;
