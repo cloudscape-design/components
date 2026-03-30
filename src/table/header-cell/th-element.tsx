@@ -145,6 +145,7 @@ export function TableThElement({
       {...(colSpan && colSpan > 1 ? { colSpan } : {})}
       {...(rowSpan && rowSpan > 1 ? { rowSpan } : {})}
       {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
+      {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
     >
       {children}
     </th>
