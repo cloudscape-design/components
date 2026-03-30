@@ -252,12 +252,30 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
    *
    * Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+   *
+   * Each entry is one of the following:
+   * - `ColumnDisplay` - Represents a single column.
+   *   - `type` ('column') - (Optional) Identifies the entry as a column. Defaults to `'column'` when omitted.
+   *   - `id` (string) - The column identifier. Must match a column `id` from `columnDefinitions`.
+   *   - `visible` (boolean) - Whether the column is visible.
+   * - `GroupDisplay` - Represents a column group.
+   *   - `type` ('group') - Identifies the entry as a group.
+   *   - `id` (string) - The group identifier. Must match a group `id` from `groupDefinitions`.
+   *   - `visible` (boolean) - Whether the group is visible.
+   *   - `children` (ReadonlyArray<ColumnDisplayProperties>) - The columns or nested groups within this group.
    */
   columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
    * Defines the column groups. Each group has an `id` and `header` used to label the group header cell.
-   * The hierarchy is encoded in the `columnDisplay` property via nested `ColumnDisplayGroup` entries.
+   *
+   * When using grouped columns, you must also provide the `columnDisplay` property with `{ type: 'group', id, children }` entries
+   * to assign columns to their respective groups and define the display hierarchy.
+   *
+   * Each group definition contains the following:
+   * - `id` (string) - A unique identifier for the group.
+   * - `header` (ReactNode) - The content displayed in the group header cell.
+   * - `ariaLabel` ((LabelData) => string) - (Optional) A function that provides an `aria-label` for the group header.
    */
   groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition<T>>;
 
@@ -616,7 +634,7 @@ export namespace TableProps {
   ) => Promise<void> | void;
 
   export interface ColumnDisplay {
-    type?: 'column' | undefined;
+    type?: 'column';
     id: string;
     visible: boolean;
   }
