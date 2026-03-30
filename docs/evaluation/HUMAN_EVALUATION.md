@@ -22,7 +22,7 @@
 | B1 | Create a dev page for the badge component using app context to control color | without AGENTS.MD | | | | | | | |
 | | | with AGENTS.md | Yes | 5 | — | 4.77 | 1m 22s | Claude Opus 4.6. Working solution, uses SimplePage template, typed AppContext, all 9 color options. Read ~8 files to match conventions. | [response](responses/with/B1.md) |
 | B2 | Write a style API for the token component | without AGENTS.MD | | | | | | | |
-| | | with AGENTS.md | | | | | | | |
+| | | with AGENTS.md | Somewhat | 4 | No tests, required follow-up for SCSS/build-tools wiring. Similar to without AGENTS.md. | 23.45 | 6m 8s | Claude Opus 4.6. Needed 2 prompts. First created style.tsx + interfaces, second wired SCSS custom props and build-tools. No tests included. | [response](responses/with/B2.md) |
 | B3 | Add a size prop to badge component | without AGENTS.MD | | | | | | | |
 | | | with AGENTS.md | | | | | | | |
 | B4 (optional if the AI didn't implement it in B3) | Write a unit test for the new size prop in badge | without AGENTS.MD | | | | | | | |
