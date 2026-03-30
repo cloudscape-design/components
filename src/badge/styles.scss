@@ -9,8 +9,6 @@
 .badge {
   @include styles.styles-reset;
 
-  @include styles.font-body-s;
-  line-height: awsui.$line-height-body-m;
   display: inline-block;
   border-start-start-radius: awsui.$border-radius-badge;
   border-start-end-radius: awsui.$border-radius-badge;
@@ -22,6 +20,17 @@
   padding-block: 0;
   padding-inline: awsui.$space-xs;
   color: awsui.$color-text-notification-default;
+
+  &.badge-size-small {
+    @include styles.font-body-s;
+    line-height: awsui.$line-height-body-m;
+  }
+
+  &.badge-size-large {
+    @include styles.font-body-m;
+    line-height: awsui.$line-height-body-m;
+    padding-inline: awsui.$space-s;
+  }
 
   &.badge-color-grey {
     background-color: awsui.$color-background-notification-grey;
