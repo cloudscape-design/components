@@ -2053,27 +2053,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#aab7b8",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -4974,27 +4953,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#aab7b8",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
           },
         },
         "color-text-button-link-active": {
@@ -7899,27 +7857,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#aab7b8",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -10822,27 +10759,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#aab7b8",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -13743,27 +13659,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#aab7b8",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#16191f",
           },
         },
         "color-text-button-link-active": {
@@ -16668,27 +16563,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#687078",
-            "light": "#687078",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -19591,27 +19465,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#879596",
       },
     },
-    "color-text-button-inline-icon-default": {
-      "$description": "The default color of inline button icons.",
-      "$value": {
-        "dark": "#d5dbdb",
-        "light": "#545b64",
-      },
-    },
-    "color-text-button-inline-icon-disabled": {
-      "$description": "The color of inline button icons in disabled state.",
-      "$value": {
-        "dark": "#687078",
-        "light": "#aab7b8",
-      },
-    },
-    "color-text-button-inline-icon-hover": {
-      "$description": "The color of inline button icons in hover state.",
-      "$value": {
-        "dark": "#fafafa",
-        "light": "#16191f",
-      },
-    },
     "color-text-button-link-active": {
       "$description": "The text color of link buttons in active state.",
       "$value": {
@@ -20292,6 +20145,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "12px",
         "compact": "8px",
+    "space-button-horizontal": {
+      "$description": "The horizontal padding inside buttons.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-button-vertical": {
+      "$description": "The vertical padding inside buttons.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-button-horizontal": {
@@ -22517,27 +22382,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#b4b4bb",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
           },
         },
         "color-text-button-link-active": {
@@ -25442,27 +25286,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#656871",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#75cfff",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -28363,27 +28186,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#b4b4bb",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
           },
         },
         "color-text-button-link-active": {
@@ -31288,27 +31090,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#b4b4bb",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#002b66",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -34209,27 +33990,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#b4b4bb",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#ffffff",
-            "light": "#ffffff",
           },
         },
         "color-text-button-link-active": {
@@ -37134,27 +36894,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#b4b4bb",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -40055,27 +39794,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
-          },
-        },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#656871",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#75cfff",
           },
         },
         "color-text-button-link-active": {
@@ -42980,27 +42698,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
-        "color-text-button-inline-icon-default": {
-          "$description": "The default color of inline button icons.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
-        "color-text-button-inline-icon-disabled": {
-          "$description": "The color of inline button icons in disabled state.",
-          "$value": {
-            "dark": "#656871",
-            "light": "#656871",
-          },
-        },
-        "color-text-button-inline-icon-hover": {
-          "$description": "The color of inline button icons in hover state.",
-          "$value": {
-            "dark": "#75cfff",
-            "light": "#75cfff",
-          },
-        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -45903,27 +45600,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#8c8c94",
       },
     },
-    "color-text-button-inline-icon-default": {
-      "$description": "The default color of inline button icons.",
-      "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
-      },
-    },
-    "color-text-button-inline-icon-disabled": {
-      "$description": "The color of inline button icons in disabled state.",
-      "$value": {
-        "dark": "#656871",
-        "light": "#b4b4bb",
-      },
-    },
-    "color-text-button-inline-icon-hover": {
-      "$description": "The color of inline button icons in hover state.",
-      "$value": {
-        "dark": "#75cfff",
-        "light": "#002b66",
-      },
-    },
     "color-text-button-link-active": {
       "$description": "The text color of link buttons in active state.",
       "$value": {
@@ -46604,6 +46280,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "8px",
         "compact": "4px",
+    "space-button-horizontal": {
+      "$description": "The horizontal padding inside buttons.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "16px",
+      },
+    },
+    "space-button-vertical": {
+      "$description": "The vertical padding inside buttons.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-button-horizontal": {
