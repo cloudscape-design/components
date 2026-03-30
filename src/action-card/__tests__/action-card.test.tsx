@@ -249,4 +249,71 @@ describe('ActionCard Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-labelledby');
     });
   });
+
+  describe('variant', () => {
+    test('renders with embedded variant', () => {
+      const wrapper = renderActionCard({ variant: 'embedded', header: 'Header' });
+      expect(wrapper.getElement()).toBeTruthy();
+    });
+  });
+
+  describe('iconVerticalAlignment', () => {
+    test('places icon in header row when alignment is top and header is present', () => {
+      const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'top', header: 'Header' });
+      expect(wrapper.findIcon()).not.toBeNull();
+      expect(wrapper.findHeader()).not.toBeNull();
+    });
+
+    test('places icon outside header row when alignment is center', () => {
+      const wrapper = renderActionCard({
+        icon: <span>icon</span>,
+        iconVerticalAlignment: 'center',
+        header: 'Header',
+      });
+      expect(wrapper.findIcon()).not.toBeNull();
+      expect(wrapper.findHeader()).not.toBeNull();
+    });
+
+    test('places icon outside header row when there is no header', () => {
+      const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'top' });
+      expect(wrapper.findIcon()).not.toBeNull();
+      expect(wrapper.findHeader()).toBeNull();
+    });
+  });
+
+  describe('padding options', () => {
+    test('renders with disableHeaderPaddings', () => {
+      const wrapper = renderActionCard({ header: 'Header', disableHeaderPaddings: true });
+      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header');
+    });
+
+    test('renders with disableContentPaddings', () => {
+      const wrapper = renderActionCard({ children: 'Content', disableContentPaddings: true });
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content');
+    });
+  });
+
+  describe('description with header', () => {
+    test('renders both header and description together', () => {
+      const wrapper = renderActionCard({ header: 'Header', description: 'Description' });
+      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header');
+      expect(wrapper.findDescription()!.getElement()).toHaveTextContent('Description');
+    });
+  });
+
+  describe('disabled styling', () => {
+    test('applies disabled styling to header and description', () => {
+      const wrapper = renderActionCard({ header: 'Header', description: 'Description', disabled: true });
+      expect(wrapper.findHeader()).not.toBeNull();
+      expect(wrapper.findDescription()).not.toBeNull();
+      expect(wrapper.isDisabled()).toBe(true);
+    });
+  });
+
+  describe('no icon', () => {
+    test('renders no icon when icon prop is not specified', () => {
+      const wrapper = renderActionCard({ header: 'Header' });
+      expect(wrapper.findIcon()).toBeNull();
+    });
+  });
 });
