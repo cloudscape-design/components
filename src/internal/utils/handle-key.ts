@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { KeyCode } from '../keycode';
+import { KeyCode, KeyCodeA, KeyCodeDelete } from '../keycode';
 import { isHTMLElement, isSVGElement } from './dom';
 
 export function isEventLike(event: any): event is EventLike {
@@ -64,7 +64,7 @@ export default function handleKey(
   }
 ) {
   switch (event.keyCode) {
-    case KeyCode.a:
+    case KeyCodeA:
       if ((event.ctrlKey || event.metaKey) && onSelectAll) {
         onSelectAll();
       } else {
@@ -74,7 +74,7 @@ export default function handleKey(
     case KeyCode.backspace:
       onBackspace?.();
       break;
-    case KeyCode.delete:
+    case KeyCodeDelete:
       onDelete?.();
       break;
     case KeyCode.down:

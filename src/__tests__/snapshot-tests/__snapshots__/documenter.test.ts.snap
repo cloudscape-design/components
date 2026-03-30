@@ -20615,7 +20615,10 @@ Requires React 18.",
     },
     {
       "description": "Inserts text at a specified position. Only supported when \`menus\` or \`tokens\` is defined.
-Triggers input events and menu detection.",
+Triggers input events and menu detection.
+
+When pinned reference tokens are present, \`caretStart\` and \`caretEnd\` are automatically
+shifted to account for their positions.",
       "name": "insertText",
       "parameters": [
         {
@@ -40890,8 +40893,7 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
-          "description": "Finds the contentEditable element used when menus are defined.
-Returns null if the component does not have menus defined.",
+          "description": "Finds the contentEditable element used when \`menus\` or \`tokens\` is defined.",
           "name": "findContentEditableElement",
           "parameters": [],
           "returnType": {
@@ -40920,8 +40922,8 @@ Returns null if the component does not have menus defined.",
         {
           "description": "Finds the native textarea element.
 
-Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
-In this case, use findContentEditableElement() or getValue() instead.",
+Note: When \`menus\` or \`tokens\` is defined, the component uses a contentEditable element instead of a textarea.
+In this case, use findContentEditableElement() instead.",
           "name": "findNativeTextarea",
           "parameters": [],
           "returnType": {
@@ -40935,7 +40937,7 @@ In this case, use findContentEditableElement() or getValue() instead.",
           },
         },
         {
-          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
+          "description": "Finds the menu dropdown when \`menus\` or \`tokens\` is defined.",
           "name": "findOpenMenu",
           "parameters": [],
           "returnType": {
@@ -40973,19 +40975,11 @@ In this case, use findContentEditableElement() or getValue() instead.",
         {
           "description": "Gets the value of the component.
 
-Returns the current value of the textarea.",
-          "name": "getTextareaValue",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "string",
-          },
-        },
-        {
-          "description": "Gets the value of the component.
+Returns the current value of the textarea.
 
-Returns the current value of the textarea (when no menus are defined) or the text content of the contentEditable element (when menus are defined).",
-          "name": "getValue",
+When \`menus\` or \`tokens\` is defined, the component uses a contentEditable element.
+Use findContentEditableElement().getElement().textContent instead.",
+          "name": "getTextareaValue",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -41038,7 +41032,10 @@ Returns the current value of the textarea (when no menus are defined) or the tex
           },
         },
         {
-          "description": "Sets the value of the textarea and calls the onChange handler.",
+          "description": "Sets the value of the textarea and calls the onChange handler.
+
+When \`menus\` or \`tokens\` is defined, the component uses a contentEditable element
+and this method will have no effect.",
           "name": "setTextareaValue",
           "parameters": [
             {
@@ -50488,8 +50485,7 @@ If not specified, the method returns the result text that is currently displayed
           },
         },
         {
-          "description": "Finds the contentEditable element used when menus are defined.
-Returns null if the component does not have menus defined.",
+          "description": "Finds the contentEditable element used when \`menus\` or \`tokens\` is defined.",
           "name": "findContentEditableElement",
           "parameters": [],
           "returnType": {
@@ -50508,8 +50504,8 @@ Returns null if the component does not have menus defined.",
         {
           "description": "Finds the native textarea element.
 
-Note: When menus are defined, the component uses a contentEditable element instead of a textarea.
-In this case, use findContentEditableElement() or getValue() instead.",
+Note: When \`menus\` or \`tokens\` is defined, the component uses a contentEditable element instead of a textarea.
+In this case, use findContentEditableElement() instead.",
           "name": "findNativeTextarea",
           "parameters": [],
           "returnType": {
@@ -50518,7 +50514,7 @@ In this case, use findContentEditableElement() or getValue() instead.",
           },
         },
         {
-          "description": "Finds the menu dropdown (always in portal due to expandToViewport=true).",
+          "description": "Finds the menu dropdown when \`menus\` or \`tokens\` is defined.",
           "name": "findOpenMenu",
           "parameters": [],
           "returnType": {

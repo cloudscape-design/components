@@ -4,8 +4,8 @@ import * as React from 'react';
 import { act, render } from '@testing-library/react';
 
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { KeyCode } from '../../internal/keycode';
+import createWrapper, { PromptInputWrapper } from '../../../lib/components/test-utils/dom';
+import { KeyCode, KeyCodeA, KeyCodeDelete } from '../../internal/keycode';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -67,6 +67,10 @@ function renderTokenMode({
   return { wrapper, container: renderResult.container, rerender: renderResult.rerender };
 }
 
+function getValue(wrapper: PromptInputWrapper): string {
+  return wrapper.findContentEditableElement()?.getElement().textContent || '';
+}
+
 function getCaretOffset(): number {
   const sel = window.getSelection();
   if (!sel || sel.rangeCount === 0) {
@@ -81,21 +85,20 @@ describe('token mode rendering and props', () => {
     expect(wrapper.findContentEditableElement()).not.toBeNull();
   });
 
-  test('does not render native textarea when menus are provided', () => {
-    const { wrapper } = renderTokenMode();
-    // In token mode, findNativeTextarea may still exist as hidden input for form submission
-    // but the contentEditable is the primary input
-    expect(wrapper.findContentEditableElement()!.getElement()).toHaveAttribute('contenteditable', 'true');
+  test('does not render contentEditable when tokens are not defined', () => {
+    const renderResult = render(<PromptInput value="hello" actionButtonIconName="send" ariaLabel="Chat input" />);
+    const wrapper = createWrapper(renderResult.container).findPromptInput()!;
+    expect(wrapper.findContentEditableElement()).toBeNull();
   });
 
   test('renders with empty tokens', () => {
     const { wrapper } = renderTokenMode({ props: { tokens: [] } });
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('renders text tokens', () => {
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello world' }] } });
-    expect(wrapper.getValue()).toBe('hello world');
+    expect(getValue(wrapper)).toBe('hello world');
   });
 
   test('renders reference tokens', () => {
@@ -107,7 +110,7 @@ describe('token mode rendering and props', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('hello');
     expect(value).toContain('Alice');
   });
@@ -122,7 +125,7 @@ describe('token mode rendering and props', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('line1');
     expect(value).toContain('line2');
   });
@@ -142,7 +145,7 @@ describe('token mode rendering and props', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('/dev');
     expect(value).toContain('hello');
   });
@@ -156,7 +159,7 @@ describe('token mode rendering and props', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('hello');
     expect(value).toContain('@ali');
   });
@@ -188,7 +191,7 @@ describe('token mode rendering and props', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('Developer Mode');
     expect(value).toContain('hello');
   });
@@ -732,7 +735,7 @@ describe('menu interactions and selection', () => {
     // Select an option
     wrapper.selectMenuOptionByValue('user-1');
     // After selection, the reference should be in the value
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('Alice');
     expect(value).toContain('hello');
     // Menu should be closed
@@ -850,7 +853,7 @@ describe('menu interactions and selection', () => {
     // Menu should close after selection
     expect(wrapper.isMenuOpen()).toBe(false);
     // The value should contain the selected reference label
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('Bob');
   });
 
@@ -1365,7 +1368,7 @@ describe('menu interactions and selection', () => {
 describe('external token updates and processing', () => {
   test('updates display when tokens prop changes to include a new reference', () => {
     const { rerender, container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-    expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('hello');
     act(() => {
       rerender(
         <PromptInput
@@ -1382,7 +1385,7 @@ describe('external token updates and processing', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('Charlie');
     expect(value).toContain('world');
@@ -1390,7 +1393,7 @@ describe('external token updates and processing', () => {
 
   test('renders a reference token added externally', () => {
     const { rerender, container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-    expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('hello');
     act(() => {
       rerender(
         <PromptInput
@@ -1406,14 +1409,14 @@ describe('external token updates and processing', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('Bob');
   });
 
   test('clearing tokens to empty array shows empty state', () => {
     const { rerender, container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-    expect(createWrapper(container).findPromptInput()!.getValue()).toBe('hello');
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('hello');
     act(() => {
       rerender(
         <PromptInput
@@ -1425,7 +1428,7 @@ describe('external token updates and processing', () => {
         />
       );
     });
-    expect(createWrapper(container).findPromptInput()!.getValue()).toBe('');
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('');
   });
 
   test('tokens with trigger characters in text are detected and processed on external update', () => {
@@ -1563,7 +1566,7 @@ describe('token ordering and multiple menus', () => {
   test('component accepts multiple menu definitions', () => {
     const { wrapper } = renderTokenMode({ props: { menus: multipleMenus, tokens: [] } });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('renders tokens from different menus', () => {
@@ -1577,7 +1580,7 @@ describe('token ordering and multiple menus', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('Alice');
     expect(value).toContain('Developer Mode');
   });
@@ -1591,7 +1594,7 @@ describe('token ordering and multiple menus', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     // Pinned tokens are enforced to appear first
     const devIndex = value.indexOf('/dev');
     const helloIndex = value.indexOf('hello');
@@ -1608,7 +1611,7 @@ describe('token ordering and multiple menus', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     // Pinned token should come first
     const pinnedIndex = value.indexOf('/creative');
     const textIndex = value.indexOf('some text');
@@ -1675,7 +1678,7 @@ describe('keyboard handlers', () => {
     const editable = wrapper.findContentEditableElement()!.getElement();
     const event = new KeyboardEvent('keydown', {
       key: 'a',
-      keyCode: KeyCode.a,
+      keyCode: KeyCodeA,
       ctrlKey: true,
       bubbles: true,
       cancelable: true,
@@ -1691,7 +1694,7 @@ describe('keyboard handlers', () => {
     const editable = wrapper.findContentEditableElement()!.getElement();
     const event = new KeyboardEvent('keydown', {
       key: 'a',
-      keyCode: KeyCode.a,
+      keyCode: KeyCodeA,
       metaKey: true,
       bubbles: true,
       cancelable: true,
@@ -1766,7 +1769,7 @@ describe('keyboard handlers', () => {
     });
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -1855,7 +1858,7 @@ describe('keyboard handlers', () => {
     });
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -2021,7 +2024,7 @@ describe('menu dropdown', () => {
     });
     // Component renders with pending status without errors
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
+    expect(getValue(wrapper)).toContain('@');
   });
 
   test('renders error status with recovery button in dropdown', () => {
@@ -2058,7 +2061,7 @@ describe('menu dropdown', () => {
       ref.current!.focus();
     });
     // Verify the trigger token is rendered in the editable
-    expect(wrapper.getValue()).toContain('@');
+    expect(getValue(wrapper)).toContain('@');
   });
 
   test('menu dropdown handles items list change', () => {
@@ -2086,7 +2089,7 @@ describe('menu dropdown', () => {
     });
 
     // Component should handle the items change and still render the trigger
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('@ali');
   });
 });
@@ -2124,7 +2127,7 @@ describe('menu state', () => {
     ];
     const { wrapper } = renderTokenMode({ props: { menus: groupedMenus, tokens: [] } });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('renders with manual filteringType', () => {
@@ -2132,7 +2135,7 @@ describe('menu state', () => {
       props: { menus: [{ id: 'search', trigger: '@', options: mentionOptions, filteringType: 'manual' }], tokens: [] },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('renders with disabled options', () => {
@@ -2153,7 +2156,7 @@ describe('menu state', () => {
       },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('fires onMenuLoadItems for manual filtering menu with trigger', () => {
@@ -2253,7 +2256,7 @@ describe('menu state', () => {
     });
     // Should render without errors
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('#');
+    expect(getValue(wrapper)).toContain('#');
   });
 
   test('auto filtering filters options by typed text', () => {
@@ -2323,7 +2326,7 @@ describe('menu state', () => {
     });
     // The error status with recovery text should render a recovery button
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('@');
+    expect(getValue(wrapper)).toContain('@');
   });
 
   test('selecting disabled option does not fire onMenuItemSelect', () => {
@@ -2602,7 +2605,7 @@ describe('internal.tsx paths', () => {
     );
     const promptInput = createWrapper(container).findPromptInput()!;
     expect(promptInput.findContentEditableElement()).not.toBeNull();
-    expect(promptInput.getValue()).toContain('hello');
+    expect(getValue(promptInput)).toContain('hello');
   });
 
   test('setSelectionRange sets caret position in token mode', () => {
@@ -2708,7 +2711,7 @@ describe('internal.tsx paths', () => {
     );
     wrapper = createWrapper(container).findPromptInput()!;
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('hello');
+    expect(getValue(wrapper)).toContain('hello');
   });
 
   test.each([{ maxRows: 0 }, { maxRows: -5 }])('maxRows=$maxRows falls back to DEFAULT_MAX_ROWS', ({ maxRows }) => {
@@ -2724,7 +2727,7 @@ describe('internal.tsx paths', () => {
     );
     const wrapper = createWrapper(container).findPromptInput()!;
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toContain('hello');
+    expect(getValue(wrapper)).toContain('hello');
   });
 
   test('minRows is respected in token mode', () => {
@@ -2740,7 +2743,7 @@ describe('internal.tsx paths', () => {
     );
     const wrapper = createWrapper(container).findPromptInput()!;
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('action button is disabled when disableActionButton is true', () => {
@@ -2954,52 +2957,6 @@ describe('internal.tsx paths', () => {
     expect(textarea.selectionEnd).toBe(5);
   });
 
-  test('insertText in textarea mode inserts text and fires onChange', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    render(
-      <PromptInput
-        value="hello"
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        i18nStrings={defaultI18nStrings}
-        ref={ref}
-        onChange={onChange}
-      />
-    );
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      ref.current!.insertText(' world');
-    });
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: expect.objectContaining({ value: expect.stringContaining('world') }) })
-    );
-  });
-
-  test('insertText in textarea mode with caretStart and caretEnd', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    render(
-      <PromptInput
-        value="helloworld"
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        i18nStrings={defaultI18nStrings}
-        ref={ref}
-        onChange={onChange}
-      />
-    );
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      ref.current!.insertText(' ', 5, 6);
-    });
-    expect(onChange).toHaveBeenCalled();
-  });
-
   test('menu dropdown renders when trigger is present and has matching options', () => {
     const { wrapper } = renderTokenMode({
       props: { tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'cr1' }] },
@@ -3039,7 +2996,7 @@ describe('internal.tsx paths', () => {
     const { wrapper } = renderTokenMode({
       props: { tokens: [{ type: 'text', value: 'test' }], i18nStrings: undefined as any },
     });
-    expect(wrapper.getValue()).toBe('test');
+    expect(getValue(wrapper)).toBe('test');
   });
 
   test('renders in textarea mode when no menus provided', () => {
@@ -3047,46 +3004,6 @@ describe('internal.tsx paths', () => {
     const wrapper = createWrapper(renderResult.container).findPromptInput()!;
     // In textarea mode, findContentEditableElement returns null
     expect(wrapper.findNativeTextarea()).not.toBeNull();
-  });
-
-  test('textarea mode insertText inserts at current position', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    render(
-      <PromptInput value="hello" onChange={onChange} actionButtonIconName="send" ariaLabel="Chat input" ref={ref} />
-    );
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      ref.current!.insertText(' world');
-    });
-    expect(onChange).toHaveBeenCalled();
-    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-    expect(lastCall.detail.value).toContain('world');
-  });
-
-  test('textarea mode insertText with caretStart and caretEnd', () => {
-    const onChange = jest.fn();
-    const ref = React.createRef<PromptInputProps.Ref>();
-    render(
-      <PromptInput
-        value="helloworld"
-        onChange={onChange}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        ref={ref}
-      />
-    );
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      ref.current!.insertText(' ', 5, 6);
-    });
-    expect(onChange).toHaveBeenCalled();
-    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-    expect(lastCall.detail.value).toContain('hello');
   });
 
   test('textarea mode select() selects all text', () => {
@@ -3131,18 +3048,11 @@ describe('internal.tsx paths', () => {
     );
   });
 
-  test('textarea mode insertText does nothing when disabled', () => {
+  test('insertText does nothing in textarea mode', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
     render(
-      <PromptInput
-        value="hello"
-        onChange={onChange}
-        disabled={true}
-        actionButtonIconName="send"
-        ariaLabel="Chat input"
-        ref={ref}
-      />
+      <PromptInput value="hello" onChange={onChange} actionButtonIconName="send" ariaLabel="Chat input" ref={ref} />
     );
     act(() => {
       ref.current!.insertText(' world');
@@ -3152,7 +3062,7 @@ describe('internal.tsx paths', () => {
 
   test.each([{ maxRows: -1 }, { maxRows: 0 }])('renders with maxRows=$maxRows via renderTokenMode', ({ maxRows }) => {
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }], maxRows } });
-    expect(wrapper.getValue()).toBe('hello');
+    expect(getValue(wrapper)).toBe('hello');
   });
 
   test('insertText with no selection range falls back gracefully', () => {
@@ -3237,7 +3147,7 @@ describe('internal.tsx paths', () => {
   test('component renders correctly when supportsTokenMode is true', () => {
     // supportsTokenMode is mocked to return 18, so this path is covered
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'test content' }] } });
-    expect(wrapper.getValue()).toBe('test content');
+    expect(getValue(wrapper)).toBe('test content');
   });
 
   test('renders with invalid state', () => {
@@ -3249,7 +3159,7 @@ describe('internal.tsx paths', () => {
 
   test('renders with warning state and preserves content', () => {
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-    expect(wrapper.getValue()).toBe('hello');
+    expect(getValue(wrapper)).toBe('hello');
   });
 
   test('renders with spellcheck disabled', () => {
@@ -3409,7 +3319,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('Alice');
   });
 
@@ -3506,7 +3416,7 @@ describe('token render effect', () => {
     });
 
     // Should not throw — caret position is adjusted for the removed reference
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('world');
     expect(value).not.toContain('Alice');
@@ -3519,7 +3429,7 @@ describe('token render effect', () => {
       { type: 'reference', id: 'p1', label: '/dev', value: 'dev', menuId: 'mode', pinned: true },
     ];
     const { container } = renderTokenMode({ props: { tokens } });
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('/dev');
   });
 
@@ -3549,7 +3459,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('@ali');
     expect(value).toContain('rest');
   });
@@ -3626,7 +3536,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('/dev');
   });
 
@@ -3655,7 +3565,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hi');
     // Caret should be adjusted to valid position
     expect(getCaretOffset()).toBeGreaterThanOrEqual(0);
@@ -3696,7 +3606,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('aaa');
     expect(value).toContain('bbb');
     expect(value).toContain('Bob');
@@ -3734,7 +3644,7 @@ describe('token render effect', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('@');
   });
 });
@@ -3853,7 +3763,7 @@ describe('handleInput scenarios', () => {
       );
     });
 
-    const updatedValue = createWrapper(container).findPromptInput()!.getValue();
+    const updatedValue = getValue(createWrapper(container).findPromptInput()!);
     expect(updatedValue).toContain('@Bob');
   });
 
@@ -3874,7 +3784,7 @@ describe('handleInput scenarios', () => {
       ref.current!.insertText('@', 0, 1);
     });
     expect(wrapper.isMenuOpen()).toBe(true);
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('@');
   });
 
@@ -4119,7 +4029,7 @@ describe('token-renderer', () => {
     const el = wrapper.findContentEditableElement()!.getElement();
     const pinnedEl = el.querySelector('[data-type="pinned"]');
     expect(pinnedEl).not.toBeNull();
-    expect(wrapper.getValue()).toContain('/dev');
+    expect(getValue(wrapper)).toContain('/dev');
   });
 
   test('renders break tokens as separate paragraphs', () => {
@@ -4631,7 +4541,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('w');
     // Caret should be in the new paragraph
@@ -4661,7 +4571,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('Alice');
     expect(value).toContain('hi');
   });
@@ -4687,7 +4597,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('a');
     // Caret offset should be valid after text appears
     expect(getCaretOffset()).toBeGreaterThanOrEqual(0);
@@ -4723,7 +4633,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('x');
   });
@@ -4755,7 +4665,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('Alice');
   });
 
@@ -4793,7 +4703,7 @@ describe('detectTypingContext', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('line1');
     expect(value).toContain('line2');
     expect(value).toContain('x');
@@ -4853,7 +4763,7 @@ describe('use-token-mode', () => {
     const editable = wrapper.findContentEditableElement()!.getElement();
     const event = new KeyboardEvent('keydown', {
       key: 'a',
-      keyCode: KeyCode.a,
+      keyCode: KeyCodeA,
       ctrlKey: true,
       bubbles: true,
       cancelable: true,
@@ -4879,7 +4789,7 @@ describe('use-token-mode', () => {
   test('renders with three different menu triggers', () => {
     const { wrapper } = renderTokenMode({ props: { menus: multiMenus, tokens: [] } });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
-    expect(wrapper.getValue()).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 
   test('@ trigger opens mentions menu', () => {
@@ -4918,7 +4828,7 @@ describe('use-token-mode', () => {
         ],
       },
     });
-    const value = wrapper.getValue();
+    const value = getValue(wrapper);
     expect(value).toContain('Alice');
     expect(value).toContain('Bug');
     expect(value).toContain('hello');
@@ -5125,7 +5035,7 @@ describe('token mode misc', () => {
         />
       );
     });
-    expect(wrapper.getValue()).toBe('hello ');
+    expect(getValue(wrapper)).toBe('hello ');
     const offsetAfter = getCaretOffset();
     expect(offsetAfter).toBe(6);
   });
@@ -5160,7 +5070,7 @@ describe('token mode misc', () => {
         />
       );
     });
-    expect(wrapper.getValue()).toBe('hi ');
+    expect(getValue(wrapper)).toBe('hi ');
     const offsetAfter = getCaretOffset();
     expect(offsetAfter).toBe(3);
   });
@@ -5188,7 +5098,7 @@ describe('token mode misc', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('@');
   });
 
@@ -5225,7 +5135,7 @@ describe('token mode misc', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('@');
   });
@@ -5259,7 +5169,7 @@ describe('token mode misc', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(getCaretOffset()).toBeGreaterThanOrEqual(0);
   });
@@ -5296,7 +5206,7 @@ describe('token mode misc', () => {
       props: { tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }] },
     });
     // Verify reference is rendered
-    expect(wrapper.getValue()).toContain('Alice');
+    expect(getValue(wrapper)).toContain('Alice');
     // Unmount — this should clean up resize listener and clear containers
     const { unmount } = render(<div />, { container });
     unmount();
@@ -5316,7 +5226,7 @@ describe('token mode misc', () => {
       window.dispatchEvent(new Event('resize'));
     });
     // The component should still render correctly and preserve content after resize
-    expect(wrapper.getValue()).toBe('hello');
+    expect(getValue(wrapper)).toBe('hello');
   });
 
   test('Enter key fires onAction through the keyboard handler config', () => {
@@ -5340,7 +5250,7 @@ describe('token mode misc', () => {
     // The trigger char '!' does not match any menu, so no menu opens
     expect(wrapper.isMenuOpen()).toBe(false);
     // But the token still renders
-    expect(wrapper.getValue()).toContain('!test');
+    expect(getValue(wrapper)).toContain('!test');
   });
 
   test('rendering with undefined menus does not crash', () => {
@@ -5389,7 +5299,7 @@ describe('token mode misc', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('world');
     const el = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
@@ -5427,7 +5337,7 @@ describe('token mode misc', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('hello');
     expect(value).toContain('@');
   });
@@ -5645,7 +5555,7 @@ describe('shouldRerender', () => {
       );
     });
 
-    const value = createWrapper(container).findPromptInput()!.getValue();
+    const value = getValue(createWrapper(container).findPromptInput()!);
     expect(value).toContain('Bob');
     expect(value).not.toContain('Alice');
   });
@@ -5939,7 +5849,7 @@ describe('full-flow trigger operations', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -5979,7 +5889,7 @@ describe('full-flow trigger operations', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
     expect(onChange).toHaveBeenCalled();
@@ -6073,7 +5983,7 @@ describe('full-flow trigger operations', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -6129,7 +6039,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -6161,7 +6071,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -6332,7 +6242,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
     sel.addRange(range);
     act(() => {
       editable.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCode.delete, bubbles: true, cancelable: true })
+        new KeyboardEvent('keydown', { key: 'Delete', keyCode: KeyCodeDelete, bubbles: true, cancelable: true })
       );
     });
 
@@ -6398,7 +6308,7 @@ function renderStatefulTokenMode({
 describe('test-utils wrapper', () => {
   test('getValue returns text content from contentEditable', () => {
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello world' }] } });
-    expect(wrapper.getValue()).toBe('hello world');
+    expect(getValue(wrapper)).toBe('hello world');
   });
 
   test('isMenuOpen returns false when no menu is open', () => {
@@ -6428,7 +6338,7 @@ describe('test-utils wrapper', () => {
     });
     // Menu should close after selection and reference should be inserted
     expect(wrapper.isMenuOpen()).toBe(false);
-    expect(wrapper.getValue()).toContain('Alice');
+    expect(getValue(wrapper)).toContain('Alice');
   });
 
   test('selectMenuOptionByValue throws when menu is not open', () => {
@@ -6461,7 +6371,7 @@ describe('test-utils wrapper', () => {
     // Menu should close after selection
     expect(wrapper.isMenuOpen()).toBe(false);
     // Reference token should be inserted
-    expect(wrapper.getValue()).toContain('Alice');
+    expect(getValue(wrapper)).toContain('Alice');
   });
 
   test('selectMenuOptionByValue selects from open menu', () => {
@@ -6478,7 +6388,7 @@ describe('test-utils wrapper', () => {
       wrapper.selectMenuOptionByValue('user-2');
     });
     expect(wrapper.isMenuOpen()).toBe(false);
-    expect(wrapper.getValue()).toContain('Bob');
+    expect(getValue(wrapper)).toContain('Bob');
   });
 
   test('selectMenuOption throws when option index is invalid', () => {
