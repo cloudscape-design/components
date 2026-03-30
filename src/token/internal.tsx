@@ -13,6 +13,7 @@ import LiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
+import { getTokenStyles } from './styles';
 
 import legacyTestingStyles from '../token-group/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -39,6 +40,7 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  style,
 
   // Internal
   role,
@@ -138,6 +140,7 @@ function InternalToken({
           !isInline && !onDismiss && styles['token-box-without-dismiss'],
           disableInnerPadding && styles['disable-padding']
         )}
+        style={getTokenStyles(style)}
       >
         <Option
           className={clsx(isInline && styles['token-option-inline'])}

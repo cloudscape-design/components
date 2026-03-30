@@ -69,8 +69,47 @@ export interface TokenProps extends BaseComponentProps {
    * Only applies to plain text labels.
    */
   tooltipContent?: string;
+
+  /**
+   * An object containing CSS properties to customize the token's visual appearance.
+   * Refer to the [style](/components/token/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: TokenProps.Style;
 }
 
 export namespace TokenProps {
   export type Variant = 'normal' | 'inline';
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: {
+        default?: string;
+        disabled?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    dismissButton?: {
+      color?: {
+        default?: string;
+        hover?: string;
+        disabled?: string;
+      };
+    };
+  }
 }

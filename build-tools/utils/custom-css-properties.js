@@ -167,5 +167,9 @@ const customCssPropertiesList = [
   'styleSliderHandleBackgroundHover',
   'styleSliderHandleBackgroundActive',
   'styleSliderHandleBorderRadius',
+  // Token style properties
+  'styleTokenDismissButtonColorDefault',
+  'styleTokenDismissButtonColorHover',
+  'styleTokenDismissButtonColorDisabled',
 ];
 module.exports = customCssPropertiesList;

@@ -26,6 +26,6 @@ This serves as the baseline to compare against results with AGENTS.MD.
 | Test | Prompt | Response | Was the response helpful? | Was the response Accurate? (1-5) | What was missing? | Token cost / Credits Used | Response time | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | B1 | Create a dev page for the badge component using app context to control color | [B1](responses/without/B1.md) | | | | | | |
-| B2 | Write a style API for the token component | [B2](responses/without/B2.md) | | | | | | |
+| B2 | Write a style API for the token component | [B2](responses/without/B2.md) | Yes | 4 | Required a follow-up prompt to wire up CSS custom properties and SCSS `var()` fallbacks. Didn't include tests. Didn't update token-group which also renders tokens. Missing readonly state for `backgroundColor.readonly` in SCSS. | 9.29 / 11.13 | 3m 1s / 3m 30s | Followed the established pattern correctly (SYSTEM guard, customCssProps, var() fallbacks). Good that it reused generic properties for root and created token-specific ones only for dismiss button. Needed prompting to complete the full implementation (CSS + build-tools). No tests included. |
 | B3 | Add a size prop to badge component | [B3](responses/without/B3.md) | | | | | | |
 | B4 | Write a unit test for the new size prop in badge | [B4](responses/without/B4.md) | | | | | | |
