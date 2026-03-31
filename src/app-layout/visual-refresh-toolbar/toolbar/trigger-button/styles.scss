@@ -40,10 +40,10 @@
   }
 
   &.circle {
-    border-start-start-radius: 50%;
-    border-start-end-radius: 50%;
-    border-end-start-radius: 50%;
-    border-end-end-radius: 50%;
+    border-start-start-radius: awsui.$border-radius-button;
+    border-start-end-radius: awsui.$border-radius-button;
+    border-end-start-radius: awsui.$border-radius-button;
+    border-end-end-radius: awsui.$border-radius-button;
     block-size: 30px;
     inline-size: 30px;
 
