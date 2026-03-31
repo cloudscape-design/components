@@ -69,6 +69,7 @@
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
   row-gap: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
+  align-items: center;
 
   &.no-wrap {
     flex-wrap: nowrap;
