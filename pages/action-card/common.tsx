@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Box, Button, Icon } from '~components';
+import { Box, Icon } from '~components';
 
 export const shortHeader = 'Card header';
 export const longHeader =
@@ -20,8 +20,7 @@ export const icon = <Icon name="angle-right" />;
 
 export const reactNodeContent = (
   <Box padding="xs">
-    <div>This is a React Node</div>
-    <Button>Test Button</Button>
+    <span>This is a React Node</span>
   </Box>
 );
 
