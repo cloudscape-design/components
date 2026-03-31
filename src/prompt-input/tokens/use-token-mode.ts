@@ -1247,7 +1247,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   useEffect(() => {
     const justOpened = menuIsOpen && !prevMenuOpenRef.current;
     const itemsChanged =
-      menuIsOpen && prevMenuOpenRef.current && menuItemsState.items.length !== prevItemsLengthRef.current;
+      menuIsOpen && prevMenuOpenRef.current && prevItemsLengthRef.current === 0 && menuItemsState.items.length > 0;
 
     if ((justOpened || itemsChanged) && menuItemsHandlers && menuItemsState && menuItemsState.items.length > 0) {
       // Reset highlight so goHomeWithKeyboard triggers a state change even at index 0
@@ -1259,7 +1259,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     prevMenuOpenRef.current = menuIsOpen;
     prevItemsLengthRef.current = menuItemsState?.items.length ?? 0;
-  }, [menuIsOpen, menuItemsHandlers, menuItemsState, menuItemsState.items.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only needs to react to menu open/close and item count changes
+  }, [menuIsOpen, menuItemsState.items.length]);
 
   useEffect(() => {
     if (activeTriggerToken && activeMenu && onMenuFilter) {
