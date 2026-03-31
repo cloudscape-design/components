@@ -40,6 +40,24 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+export const css_style_api = {
+  root: {
+    className: 'awsui-style-button-root',
+    attributes: {
+      'data-awsui-style-variant': ['primary', 'normal', 'link', 'icon', 'inline-icon', 'inline-icon-pointer-target', 'flashbar-icon', 'breadcrumb-group', 'menu-trigger', 'modal-dismiss'],
+    },
+  },
+  anchor: {
+    className: 'awsui-style-button-anchor',
+  },
+  button: {
+    className: 'awsui-style-button-button',
+  },
+  icon: {
+    className: 'awsui-style-button-icon',
+  },
+};
+
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?:
     | ButtonProps['variant']
@@ -220,7 +238,12 @@ export const InternalButton = React.forwardRef(
       'aria-controls': ariaControls,
       // add ariaLabel as `title` as visible hint text
       title: __title ?? ariaLabel,
-      className: buttonClass,
+      className: clsx(
+        buttonClass,
+        css_style_api.root.className,
+        isAnchor ? css_style_api.anchor.className : css_style_api.button.className
+      ),
+      'data-awsui-style-variant': variant,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),

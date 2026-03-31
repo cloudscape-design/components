@@ -1,0 +1,16 @@
+@layer application, awsui-components;
+
+@layer application {
+  .awsui-style-button-button {
+    border-color: red;
+    background-color: blue;
+    color: white;
+    border-radius: 0px;
+    border-start-start-radius: 0px;
+  }
+
+  .awsui-style-button-root[data-awsui-style-variant="primary"] {
+    background-color: green;
+    border-color: darkgreen;
+  }
+}

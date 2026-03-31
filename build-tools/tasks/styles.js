@@ -81,6 +81,7 @@ function stylesTask(theme) {
       descriptions,
       jsonSchema: true,
       failOnDeprecations: true,
+      layerName: 'awsui-components',
     });
   });
 }
