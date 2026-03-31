@@ -148,12 +148,25 @@ describe('ActionCard Component', () => {
       expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'custom-id');
     });
 
-    test('auto-generates aria-describedby from description when no ariaDescribedby provided', () => {
-      const wrapper = renderActionCard({ description: 'Desc' });
+    test('auto-generates aria-describedby from description when header is provided', () => {
+      const wrapper = renderActionCard({ header: 'Header', description: 'Desc' });
       const describedBy = wrapper.getElement().getAttribute('aria-describedby');
       expect(describedBy).toBeTruthy();
       const descEl = wrapper.getElement().querySelector(`#${describedBy}`);
       expect(descEl).toHaveTextContent('Desc');
+    });
+
+    test('auto-generates aria-describedby from description when ariaLabel is provided', () => {
+      const wrapper = renderActionCard({ ariaLabel: 'Label', description: 'Desc' });
+      const describedBy = wrapper.getElement().getAttribute('aria-describedby');
+      expect(describedBy).toBeTruthy();
+      const descEl = wrapper.getElement().querySelector(`#${describedBy}`);
+      expect(descEl).toHaveTextContent('Desc');
+    });
+
+    test('does not set aria-describedby when description is provided without header or ariaLabel', () => {
+      const wrapper = renderActionCard({ description: 'Desc' });
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
     });
 
     test('does not set aria-describedby when neither ariaDescribedby nor description provided', () => {
@@ -234,14 +247,11 @@ describe('ActionCard Component', () => {
   });
 
   describe('description without header', () => {
-    test('renders description and sets aria-describedby when only description is provided', () => {
+    test('renders description without aria-describedby when only description is provided', () => {
       const wrapper = renderActionCard({ description: 'Only description' });
       expect(wrapper.findDescription()!.getElement()).toHaveTextContent('Only description');
       expect(wrapper.findHeader()).toBeNull();
-
-      const describedBy = wrapper.getElement().getAttribute('aria-describedby');
-      expect(describedBy).toBeTruthy();
-      expect(wrapper.getElement().querySelector(`#${describedBy}`)).toHaveTextContent('Only description');
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
     });
 
     test('does not set aria-labelledby when only description is provided', () => {

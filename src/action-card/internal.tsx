@@ -147,7 +147,7 @@ const InternalActionCard = React.forwardRef(
         onClick={handleClick}
         aria-label={ariaLabel}
         aria-labelledby={!ariaLabel && header ? headerId : undefined}
-        aria-describedby={ariaDescribedby || (description ? descriptionId : undefined)}
+        aria-describedby={ariaDescribedby || (description && (ariaLabel || header) ? descriptionId : undefined)}
         aria-disabled={disabled || undefined}
       >
         {contentElement}
