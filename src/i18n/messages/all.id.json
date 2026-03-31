@@ -158,7 +158,7 @@
     "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
-    "i18nStrings.datePlaceholder": "TTTT-BB-HH",
+    "i18nStrings.datePlaceholder": "HH-BB-TTTT",
     "i18nStrings.isoDatePlaceholder": "TTTT-BB-HH",
     "i18nStrings.slashedDatePlaceholder": "TTTT/BB/HH",
     "i18nStrings.timePlaceholder": "jj:mm:dd",
