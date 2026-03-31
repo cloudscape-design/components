@@ -82,7 +82,7 @@ const InternalPromptInput = React.forwardRef(
       __internalRootRef,
       ...rest
     }: InternalPromptInputProps,
-    ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement>
+    ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
