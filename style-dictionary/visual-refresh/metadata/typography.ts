@@ -79,8 +79,13 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  fontWeightNotificationHeader: {
-    description: 'The default font weight for alert and flashbar header text.',
+  fontWeightAlertHeader: {
+    description: 'The default font weight for alert header text.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightFlashbarHeader: {
+    description: 'The default font weight for flashbar header text.',
     themeable: true,
     public: true,
   },
