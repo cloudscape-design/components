@@ -89,6 +89,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
+          "$value": "1px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -2469,6 +2485,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -2621,6 +2641,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -2858,6 +2885,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
+          "$value": "1px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -5238,6 +5281,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -5390,6 +5437,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -5627,6 +5681,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of alerts.",
           "$value": "1px",
         },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
+          "$value": "1px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -8007,6 +8077,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -8159,6 +8233,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -8394,6 +8475,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
         "border-width-button": {
@@ -10776,6 +10873,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -10928,6 +11029,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -11163,6 +11271,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
         "border-width-button": {
@@ -13545,6 +13669,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -13697,6 +13825,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -13932,6 +14067,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
         "border-width-button": {
@@ -16314,6 +16465,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for h5s.",
           "$value": "400",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -16466,6 +16621,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -16701,6 +16863,22 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-alert": {
       "$description": "The border width of alerts.",
+      "$value": "1px",
+    },
+    "border-width-alert-block-end": {
+      "$description": "The block-end border width of alerts.",
+      "$value": "1px",
+    },
+    "border-width-alert-block-start": {
+      "$description": "The block-start border width of alerts.",
+      "$value": "1px",
+    },
+    "border-width-alert-inline-end": {
+      "$description": "The inline-end border width of alerts.",
+      "$value": "1px",
+    },
+    "border-width-alert-inline-start": {
+      "$description": "The inline-start border width of alerts.",
       "$value": "1px",
     },
     "border-width-button": {
@@ -19083,6 +19261,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font weight for h5s.",
       "$value": "400",
     },
+    "font-weight-notification-header": {
+      "$description": "The default font weight for alert and flashbar header text.",
+      "$value": "700",
+    },
     "letter-spacing-display-l": {
       "$description": "The default letter spacing for large display text.",
       "$value": "normal",
@@ -19235,6 +19417,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+      },
+    },
+    "space-alert-vertical": {
+      "$description": "The vertical padding inside alert components.",
+      "$value": {
+        "comfortable": "12px",
+        "compact": "8px",
       },
     },
     "space-container-horizontal": {
@@ -19475,6 +19664,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -21857,6 +22062,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -22009,6 +22218,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -22244,6 +22460,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -24626,6 +24858,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -24778,6 +25014,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -25013,6 +25256,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -27395,6 +27654,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -27547,6 +27810,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -27782,6 +28052,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -30164,6 +30450,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -30316,6 +30606,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -30551,6 +30848,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -32933,6 +33246,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -33085,6 +33402,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -33320,6 +33644,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-alert": {
           "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
         "border-width-button": {
@@ -35702,6 +36042,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -35854,6 +36198,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -36091,6 +36442,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
+          "$value": "2px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -38471,6 +38838,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -38623,6 +38994,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -38860,6 +39238,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of alerts.",
           "$value": "2px",
         },
+        "border-width-alert-block-end": {
+          "$description": "The block-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-block-start": {
+          "$description": "The block-start border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-end": {
+          "$description": "The inline-end border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-alert-inline-start": {
+          "$description": "The inline-start border width of alerts.",
+          "$value": "2px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -41240,6 +41634,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for h5s.",
           "$value": "700",
         },
+        "font-weight-notification-header": {
+          "$description": "The default font weight for alert and flashbar header text.",
+          "$value": "700",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -41392,6 +41790,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "space-alert-vertical": {
+          "$description": "The vertical padding inside alert components.",
+          "$value": {
+            "comfortable": "8px",
+            "compact": "4px",
           },
         },
         "space-container-horizontal": {
@@ -41627,6 +42032,22 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-alert": {
       "$description": "The border width of alerts.",
+      "$value": "2px",
+    },
+    "border-width-alert-block-end": {
+      "$description": "The block-end border width of alerts.",
+      "$value": "2px",
+    },
+    "border-width-alert-block-start": {
+      "$description": "The block-start border width of alerts.",
+      "$value": "2px",
+    },
+    "border-width-alert-inline-end": {
+      "$description": "The inline-end border width of alerts.",
+      "$value": "2px",
+    },
+    "border-width-alert-inline-start": {
+      "$description": "The inline-start border width of alerts.",
       "$value": "2px",
     },
     "border-width-button": {
@@ -44009,6 +44430,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font weight for h5s.",
       "$value": "700",
     },
+    "font-weight-notification-header": {
+      "$description": "The default font weight for alert and flashbar header text.",
+      "$value": "700",
+    },
     "letter-spacing-display-l": {
       "$description": "The default letter spacing for large display text.",
       "$value": "-0.03em",
@@ -44161,6 +44586,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "space-alert-vertical": {
+      "$description": "The vertical padding inside alert components.",
+      "$value": {
+        "comfortable": "8px",
+        "compact": "4px",
       },
     },
     "space-container-horizontal": {
