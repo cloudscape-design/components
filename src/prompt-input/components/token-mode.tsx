@@ -130,7 +130,9 @@ export default function TokenMode({
           triggerRef={triggerWrapperRef}
           triggerId={activeTriggerToken?.id}
           contentKey={
-            triggerWrapperReady ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}` : undefined
+            triggerWrapperReady
+              ? `trigger-${activeTriggerToken?.id}-${activeTriggerToken?.triggerChar}-${menuItemsState ? menuItemsState.items.length > 0 : false}`
+              : undefined
           }
           /* istanbul ignore next -- integ test: src/prompt-input/__integ__/prompt-input-token-mode.test.ts > "clicking a menu option inserts reference and retains focus" */
           onMouseDown={event => {
