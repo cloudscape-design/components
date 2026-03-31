@@ -6421,3 +6421,84 @@ describe('test-utils wrapper', () => {
     }).toThrow('Option with value "nonexistent" not found in menu');
   });
 });
+
+describe('i18n token aria label format callbacks', () => {
+  test('tokenInsertedAriaLabel is called with token label after menu selection', () => {
+    const tokenInsertedAriaLabel = jest.fn((token: { label?: string; value: string }) => `${token.label} added`);
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = renderStatefulTokenMode({
+      props: { tokens: [], i18nStrings: { ...defaultI18nStrings, tokenInsertedAriaLabel } },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('@', 0, 1);
+    });
+    wrapper.selectMenuOptionByValue('user-1');
+    expect(tokenInsertedAriaLabel).toHaveBeenCalledWith(expect.objectContaining({ label: 'Alice', value: 'user-1' }));
+  });
+
+  test('tokenPinnedAriaLabel is called when pinned reference is inserted', () => {
+    const tokenPinnedAriaLabel = jest.fn((token: { label?: string; value: string }) => `${token.label} pinned`);
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const menusWithUseAtStart: PromptInputProps.MenuDefinition[] = [
+      { id: 'commands', trigger: '/', options: commandOptions, filteringType: 'auto', useAtStart: true },
+    ];
+    const { wrapper } = renderStatefulTokenMode({
+      props: { tokens: [], menus: menusWithUseAtStart, i18nStrings: { ...defaultI18nStrings, tokenPinnedAriaLabel } },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('/', 0, 1);
+    });
+    expect(wrapper.isMenuOpen()).toBe(true);
+    wrapper.selectMenuOptionByValue('dev');
+    expect(tokenPinnedAriaLabel).toHaveBeenCalledWith(
+      expect.objectContaining({ label: 'Developer Mode', value: 'dev' })
+    );
+  });
+});
+
+describe('onTriggerDetected callback', () => {
+  test('onTriggerDetected is called when a trigger character is typed', () => {
+    const onTriggerDetected = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderStatefulTokenMode({
+      props: { tokens: [], onTriggerDetected },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('@');
+    });
+    expect(onTriggerDetected).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: expect.objectContaining({ menuId: 'mentions', triggerChar: '@' }),
+      })
+    );
+  });
+
+  test('onTriggerDetected can cancel trigger creation via preventDefault', () => {
+    const onTriggerDetected = jest.fn(event => event.preventDefault());
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = renderStatefulTokenMode({
+      props: { tokens: [], onTriggerDetected },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('@');
+    });
+    expect(onTriggerDetected).toHaveBeenCalled();
+    expect(wrapper.isMenuOpen()).toBe(false);
+  });
+});
