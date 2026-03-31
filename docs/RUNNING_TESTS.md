@@ -38,7 +38,7 @@ NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.motion.con
 
 ## ChromeDriver
 
-If you're running integration tests on a Mac, make sure you have ChromeDriver:
+Integration and motion tests require ChromeDriver:
 
 ```
 npm i -g chromedriver
