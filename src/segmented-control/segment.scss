@@ -21,6 +21,7 @@ $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-b
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
+$segment-radius: calc(awsui.$border-radius-button - 3px);
 
 .segment {
   @include styles.font-body-m;
@@ -34,10 +35,10 @@ $segment-divider-width: 1px;
   color: $default-color;
   overflow: visible;
 
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  border-start-start-radius: $segment-radius;
+  border-start-end-radius: $segment-radius;
+  border-end-start-radius: $segment-radius;
+  border-end-end-radius: $segment-radius;
 
   position: relative;
   block-size: calc(100% - $segment-gap);
