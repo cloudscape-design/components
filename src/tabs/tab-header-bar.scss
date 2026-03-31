@@ -6,8 +6,7 @@
 /* stylelint-disable selector-max-type */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/styles//foundation' as foundation;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $separator-color: awsui.$color-border-tabs-divider;
@@ -231,11 +230,11 @@ $label-horizontal-spacing: awsui.$space-xs;
     outline: none;
   }
 
-  @include focus-visible.when-visible {
-    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+#{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
+  &:focus-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-tabs-focus-outline-gutter,
       $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),

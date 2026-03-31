@@ -9,7 +9,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
 $default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
@@ -60,11 +59,11 @@ $segment-divider-width: 1px;
     color: $disabled-color;
   }
 
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+#{custom-props.$styleFocusRingBoxShadow}: 0 0 0
     var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
     var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
-  @include focus-visible.when-visible {
+  &:focus-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-segmented-control-focus-outline-gutter,
       $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
