@@ -27,8 +27,10 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  border-block: awsui.$border-width-alert solid;
-  border-inline: awsui.$border-width-alert solid;
+  border-block-start: awsui.$border-width-alert-block-start solid;
+  border-block-end: awsui.$border-width-alert-block-end solid;
+  border-inline-start: awsui.$border-width-alert-inline-start solid;
+  border-inline-end: awsui.$border-width-alert-inline-end solid;
   border-start-start-radius: awsui.$border-radius-alert;
   border-start-end-radius: awsui.$border-radius-alert;
   border-end-start-radius: awsui.$border-radius-alert;
@@ -61,7 +63,7 @@
 
 .header,
 .header-replacement {
-  font-weight: styles.$font-weight-bold;
+  font-weight: awsui.$font-weight-notification-header;
 }
 
 .action {
