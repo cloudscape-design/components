@@ -131,6 +131,7 @@ export namespace ContainerProps {
       borderRadius?: string;
       borderWidth?: string;
       boxShadow?: string;
+      color?: string;
     };
     content?: {
       paddingBlock?: string;
