@@ -569,7 +569,7 @@ export default function PromptInputShortcutsPage() {
                 ? [
                     {
                       label: 'Last submitted text',
-                      value: <code>{extractedText}</code>,
+                      value: <code style={{ whiteSpace: 'pre' }}>{extractedText}</code>,
                     },
                   ]
                 : []),
@@ -577,7 +577,7 @@ export default function PromptInputShortcutsPage() {
                 ? [
                     {
                       label: 'Current tokens',
-                      value: <code>{JSON.stringify(tokens, null, 2)}</code>,
+                      value: <code style={{ whiteSpace: 'pre' }}>{JSON.stringify(tokens, null, 2)}</code>,
                     },
                   ]
                 : []),
