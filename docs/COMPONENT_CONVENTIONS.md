@@ -14,7 +14,6 @@ The APIs exported from `src/<component>/index.tsx` are public and must not be us
 
 - Props interface: `${ComponentName}Props`, namespace sub-types under it (e.g. `${ComponentName}Props.Variant`)
 - Union types must be type aliases (no inline unions)
-- Array types must use `ReadonlyArray<T>`
 
 For how to document props, see [API_DOCS.md](API_DOCS.md).
 
