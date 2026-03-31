@@ -21,8 +21,8 @@ const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
 const defaultScreen = { width: 1680, height: 800 };
 
-function delay() {
-  return new Promise(resolve => setTimeout(resolve));
+function delay(t: number) {
+  return new Promise(resolve => setTimeout(resolve, t));
 }
 
 class TablePage extends BasePageObject {
@@ -349,7 +349,7 @@ test(
     await page.resizeColumn(2, 100);
     const oldWidth = await page.getColumnWidth(2);
     await page.click('#reset-state');
-    await delay();
+    await delay(100);
     const newWidth = await page.getColumnWidth(2);
     expect(oldWidth).toEqual(newWidth);
   })
