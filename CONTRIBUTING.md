@@ -6,7 +6,6 @@ Use this repository to [create bug reports or feature requests](https://github.c
 
 ## Documentation
 
-For setup, building, and running locally, see [Setup](docs/SETUP.md).
 For detailed guides on component conventions, styling, writing tests, and more, see the [Cloudscape Components Guide](docs/CLOUDSCAPE_COMPONENTS_GUIDE.md).
 
 ## How to contribute code
@@ -39,35 +38,15 @@ Clone this repository and install the dependencies:
 ```
 git clone git@github.com:cloudscape-design/components.git
 cd components
-npm install
 ```
 
-To generate the build artifacts, run the following command:
-
-```
-npm run build
-```
-
-Then, start the dev-server by running:
-
-```
-npm start
-```
-
-This will open a webpack-dev-server at http://localhost:8080 and watch for file changes.
+For setup, building, and running locally, see [Setup](docs/SETUP.md).
 
 ### Quick rebuild
 
 To quickly rebuild this package, run `npm run quick-build`. This runs only the source code build, skipping documentation and screenshot testing builds.
 
 ### Running tests
-
-```
-npm test               # all tests
-npm run test:unit      # unit + build-tool tests
-npm run test:integ     # integration tests
-npm run test:motion    # motion tests
-```
 
 For targeting specific files, updating snapshots, ChromeDriver setup, and visual regression tests, see [docs/RUNNING_TESTS.md](docs/RUNNING_TESTS.md).
 
