@@ -19,7 +19,7 @@ For how to document props, see [API_DOCS.md](API_DOCS.md).
 
 ## Events
 
-Use `CancelableEventHandler<DetailType>` or `NonCancelableEventHandler<DetailType>`. All `on*` props must use these interfaces (build fails otherwise).
+Use `CancelableEventHandler<DetailType>` or `NonCancelableEventHandler<DetailType>`. All `on*` props must use these interfaces (the build fails otherwise).
 
 Events are similar to native events with `event.preventDefault()` for cancelable events, but are not dispatched via DOM.
 
@@ -51,14 +51,9 @@ Implementation:
 
 Centralize all translatable strings under a skippable property (e.g. `i18nStrings`). Internationalization code lives in `src/i18n/`. The `useInternalI18n` hook is what components use to resolve translated strings.
 
-```tsx
-const i18n = useInternalI18n('alert');
-<InternalButton ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)} />
-```
-
 ## Dependencies
 
-Before adding any dependency: must support React 16.8+ and latest 3 major Chrome/Firefox/Edge, no global state, ESM preferred.
+Any new dependencies must support React 16.8+ and latest 3 major Chrome/Firefox/Edge, no global state. ESM preferred.
 
 ## Test Utils
 

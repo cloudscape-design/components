@@ -36,9 +36,9 @@ NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.motion.con
 
 > **Note:** When running jest directly you may see errors about `--experimental-vm-modules`. The npm scripts handle this automatically, but when calling jest directly you need to set the flag yourself (see examples above).
 
-## ChromeDriver (macOS)
+## ChromeDriver
 
-Integration and motion tests require ChromeDriver:
+If you're running integration tests on a Mac, make sure you have ChromeDriver:
 
 ```
 npm i -g chromedriver
@@ -46,7 +46,7 @@ npm i -g chromedriver
 
 ## Updating Snapshots
 
-When component APIs change, you may need to update test snapshots. When design tokens are touched, you must also run integ tests to update their snapshots Before updating, run a full build (`npm run build`) so that documenter docs are generated. Use the `-u` flag to update:
+When component APIs change, you may need to update test snapshots. When design tokens are touched, you must also run integration tests to update their snapshots Before updating, run a full build (`npm run build`) so that documenter docs are generated. Use the `-u` flag to update:
 
 ```
 # Unit snapshots
