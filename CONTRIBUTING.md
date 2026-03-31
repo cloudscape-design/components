@@ -6,7 +6,8 @@ Use this repository to [create bug reports or feature requests](https://github.c
 
 ## Documentation
 
-For detailed guides on component conventions, styling, writing tests, supported platforms, and more, see the [General Guide](docs/GENERAL_GUIDE.md).
+For setup, building, and running locally, see [Setup](docs/SETUP.md).
+For detailed guides on component conventions, styling, writing tests, and more, see the [Cloudscape Components Guide](docs/CLOUDSCAPE_COMPONENTS_GUIDE.md).
 
 ## How to contribute code
 

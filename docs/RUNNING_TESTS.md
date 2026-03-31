@@ -17,7 +17,7 @@ The npm scripts use gulp tasks that handle env vars (`TZ=UTC`, `NODE_OPTIONS=--e
 - **Unit tests** — emulate a browser environment using JSDOM.
 - **Integration tests** — test against real browser behavior on Chrome, with motion disabled.
 - **Motion tests** — run a specific set of tests on Chrome, with motion enabled.
-- **Accessibility tests** — run [axe](https://github.com/dequelabs/axe-core) checks on all dev pages across themes and color modes (`src/__a11y__/`).
+- **Accessibility tests** — run on all test pages across themes and color modes (`src/__a11y__/`).
 
 ## Targeting Specific Files
 
@@ -54,13 +54,10 @@ TZ=UTC  npx jest -u snapshot -c jest.unit.config.js src/
 
 ## Visual Regression Tests
 
+> **Note:** The components repository does not have visual regression tests on GitHub. This section applies to other repositories such as chat-components, code-view, chart-components, and board-components.
+
 Visual regression tests for permutation pages run automatically when opening a pull request in GitHub.
 
-To check results: look at the "Visual Regression Tests" action in the PR. The "Test for regressions" step logs which pages failed. For a full report, download the `visual-regression-results` artifact from the action summary and open `html_report/index.html` in your browser.
+To check results: look at the "Visual Regression Tests" action in the PR. The "Test for regressions" step logs which pages failed. For a full report, download the `visual-regression-snapshots-results` artifact from the action summary.
 
 If changes are expected, call it out in your PR comments.
-
-
-### Run visual regression tests
-
-Visual regression tests for the permutation pages are automatically run when opening a pull request in GitHub.

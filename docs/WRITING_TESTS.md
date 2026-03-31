@@ -32,7 +32,7 @@ NODE_OPTIONS=--experimental-vm-modules npx jest -u -c jest.integ.config.js src/_
 
 Location: `src/<component-name>/__integ__/`
 
-Integration tests run in a real browser against dev pages (see [DEV_PAGES.md](DEV_PAGES.md)). Use `createWrapper` from `test-utils/selectors` (not `test-utils/dom` — selectors generate CSS selectors for browser tests, while dom wrappers operate on DOM nodes for unit tests).
+Integration tests run in a real browser against test pages. Use `createWrapper` from `test-utils/selectors` (not `test-utils/dom` — selectors generate CSS selectors for browser tests, while dom wrappers operate on DOM nodes for unit tests).
 
 ## Accessibility in Unit Tests
 
@@ -42,5 +42,3 @@ Use the `toValidateA11y` Jest matcher to run axe and HTML validation on rendered
 const { container } = render(<MyComponent />);
 await expect(container).toValidateA11y();
 ```
-
-It runs axe-core (with color-contrast disabled, since JSDOM can't compute it) and html-validate on the element. Import `src/__a11y__/to-validate-a11y` to register the matcher.

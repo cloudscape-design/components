@@ -8,6 +8,7 @@ This project uses `@cloudscape-design/documenter` to generate API docs from JSDo
 - `@analytics` — marks analytics metadata properties
 - `@deprecated` — marks deprecated properties (include replacement info)
 - `@displayname` — overrides the display name (e.g. `children` → `text`)
+- `@awsuiSystem` — tags a property or import by internal system (e.g. `@awsuiSystem core`), used for internal classification
 
 ## Sub-types
 
