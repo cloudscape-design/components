@@ -2461,8 +2461,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -2484,10 +2492,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -5257,8 +5261,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -5280,10 +5292,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -8053,8 +8061,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -8076,10 +8092,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -10849,8 +10861,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -10872,10 +10892,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -13645,8 +13661,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -13668,10 +13692,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -16441,8 +16461,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -16464,10 +16492,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "400",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
-          "$value": "700",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -19237,8 +19261,16 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font size for h5s.",
       "$value": "16px",
     },
+    "font-weight-alert-header": {
+      "$description": "The default font weight for alert header text.",
+      "$value": "700",
+    },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
+      "$value": "700",
+    },
+    "font-weight-flashbar-header": {
+      "$description": "The default font weight for flashbar header text.",
       "$value": "700",
     },
     "font-weight-heading-l": {
@@ -19260,10 +19292,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "400",
-    },
-    "font-weight-notification-header": {
-      "$description": "The default font weight for alert and flashbar header text.",
-      "$value": "700",
     },
     "letter-spacing-display-l": {
       "$description": "The default letter spacing for large display text.",
@@ -22038,8 +22066,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -22060,10 +22096,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -24834,8 +24866,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -24856,10 +24896,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -27630,8 +27666,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -27652,10 +27696,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -30426,8 +30466,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -30448,10 +30496,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -33222,8 +33266,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -33244,10 +33296,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -36018,8 +36066,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -36040,10 +36096,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -38814,8 +38866,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -38836,10 +38896,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -41610,8 +41666,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-alert-header": {
+          "$description": "The default font weight for alert header text.",
+          "$value": "700",
+        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-flashbar-header": {
+          "$description": "The default font weight for flashbar header text.",
           "$value": "700",
         },
         "font-weight-heading-l": {
@@ -41632,10 +41696,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "700",
-        },
-        "font-weight-notification-header": {
-          "$description": "The default font weight for alert and flashbar header text.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -44406,8 +44466,16 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font size for h5s.",
       "$value": "14px",
     },
+    "font-weight-alert-header": {
+      "$description": "The default font weight for alert header text.",
+      "$value": "700",
+    },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
+      "$value": "700",
+    },
+    "font-weight-flashbar-header": {
+      "$description": "The default font weight for flashbar header text.",
       "$value": "700",
     },
     "font-weight-heading-l": {
@@ -44428,10 +44496,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
-      "$value": "700",
-    },
-    "font-weight-notification-header": {
-      "$description": "The default font weight for alert and flashbar header text.",
       "$value": "700",
     },
     "letter-spacing-display-l": {
