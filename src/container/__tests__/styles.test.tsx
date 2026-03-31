@@ -13,6 +13,7 @@ const allStyles = {
     borderRadius: '8px',
     borderWidth: '1px',
     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+    color: '#000000',
   },
   content: {
     paddingBlock: '16px',
