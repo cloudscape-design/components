@@ -268,8 +268,21 @@ export class CaretController {
       return;
     }
 
+    if (this.element.ownerDocument.activeElement !== this.element) {
+      this.element.focus();
+    }
+
+    const paragraphs = findAllParagraphs(this.element);
+    if (paragraphs.length === 0) {
+      return;
+    }
+
+    const firstP = paragraphs[0];
+    const lastP = paragraphs[paragraphs.length - 1];
+
     const range = this.element.ownerDocument.createRange();
-    range.selectNodeContents(this.element);
+    range.setStart(firstP, 0);
+    range.setEnd(lastP, lastP.childNodes.length);
     selection.removeAllRanges();
     selection.addRange(range);
   }
