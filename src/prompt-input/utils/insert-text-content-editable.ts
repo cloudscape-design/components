@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CaretController } from '../core/caret-controller';
+import { CaretController, getOwnerSelection } from '../core/caret-controller';
 
 /**
  * Inserts text into a contentEditable element at a specific position.
@@ -22,13 +22,13 @@ export function insertTextIntoContentEditable(
   const insertPosition = caretStart ?? caretController.getPosition();
   caretController.setPosition(insertPosition);
 
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(element);
   if (!selection?.rangeCount) {
     return;
   }
 
   const range = selection.getRangeAt(0);
-  range.insertNode(document.createTextNode(text));
+  range.insertNode(element.ownerDocument.createTextNode(text));
 
   const finalPosition = caretEnd ?? insertPosition + text.length;
 
@@ -39,5 +39,5 @@ export function insertTextIntoContentEditable(
   caretController.setPosition(finalPosition);
 
   // Trigger menu state detection via the selectionchange listener in useShortcutsEffects.
-  document.dispatchEvent(new Event('selectionchange'));
+  element.ownerDocument.dispatchEvent(new Event('selectionchange'));
 }

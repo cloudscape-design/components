@@ -15,6 +15,7 @@ import {
   calculateTokenPosition,
   CaretController,
   findContainingReference,
+  getOwnerSelection,
   isNonTypeablePosition,
   normalizeCollapsedCaret,
   normalizeSelection,
@@ -464,7 +465,8 @@ function useShortcutsEffects(config: EffectsConfig) {
 
     checkMenuState();
 
-    document.addEventListener('selectionchange', checkMenuState);
+    const ownerDoc = editableElementRef.current.ownerDocument;
+    ownerDoc.addEventListener('selectionchange', checkMenuState);
 
     const scrollableParent = getFirstScrollableParent(editableElementRef.current);
     if (scrollableParent) {
@@ -472,7 +474,7 @@ function useShortcutsEffects(config: EffectsConfig) {
     }
 
     return () => {
-      document.removeEventListener('selectionchange', checkMenuState);
+      ownerDoc.removeEventListener('selectionchange', checkMenuState);
       if (scrollableParent) {
         scrollableParent.removeEventListener('scroll', checkMenuState);
       }
@@ -681,7 +683,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const cc = caretControllerRef.current;
 
     // Capture DOM cursor position before processing
-    const sel = window.getSelection();
+    const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
     const savedCursorOffset = sel?.rangeCount ? sel.getRangeAt(0).startOffset : 0;
 
     if (cc) {
@@ -709,12 +711,12 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       }
 
       let caretInTrigger = false;
-      const selection = window.getSelection();
+      const selection = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
       if (selection?.rangeCount && trigger.contains(selection.getRangeAt(0).startContainer)) {
         caretInTrigger = true;
       }
 
-      const textNode = document.createTextNode(filterText);
+      const textNode = trigger.ownerDocument.createTextNode(filterText);
       trigger.parentNode?.insertBefore(textNode, trigger.nextSibling);
       trigger.textContent = (trigger.textContent || '').charAt(0);
 
@@ -812,11 +814,14 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         const triggerEl = shortcutsState.triggerStates.current.get(changedTriggerId)?.element;
         const cursorOffsetToRestore = savedCursorOffset;
         setTimeout(() => {
-          if (triggerEl?.firstChild && document.activeElement === editableElementRef.current) {
-            const s = window.getSelection();
+          if (
+            triggerEl?.firstChild &&
+            editableElementRef.current?.ownerDocument.activeElement === editableElementRef.current
+          ) {
+            const s = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
             if (s) {
               const maxOffset = triggerEl.firstChild.textContent?.length || 0;
-              const range = document.createRange();
+              const range = editableElementRef.current!.ownerDocument.createRange();
               range.setStart(triggerEl.firstChild, Math.min(cursorOffsetToRestore, maxOffset));
               range.collapse(true);
               s.removeAllRanges();
@@ -840,7 +845,11 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
       renderTokens(mergedTokens, editableElementRef.current);
 
-      if (editableElementRef.current && document.activeElement === editableElementRef.current && cc) {
+      if (
+        editableElementRef.current &&
+        editableElementRef.current.ownerDocument.activeElement === editableElementRef.current &&
+        cc
+      ) {
         cc.setPosition(adjustedPosition);
       }
     }
@@ -1017,21 +1026,23 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   useEffect(() => {
     const handleSelectionChange = () => {
-      normalizeCollapsedCaret(window.getSelection());
-      normalizeSelection(window.getSelection());
+      const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
+      normalizeCollapsedCaret(sel);
+      normalizeSelection(sel);
     };
     const handleMouseDown = () => {
       setMouseDown(true);
     };
     const handleMouseUp = () => {
       setMouseDown(false);
-      normalizeCollapsedCaret(window.getSelection());
-      normalizeSelection(window.getSelection());
+      const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
+      normalizeCollapsedCaret(sel);
+      normalizeSelection(sel);
 
       // Deferred re-check: browsers may finalize caret position after mouseup
       /* istanbul ignore next -- browser mouseup normalization covered by integ tests */
       requestAnimationFrame(() => {
-        const sel = window.getSelection();
+        const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
         if (!sel?.rangeCount) {
           return;
         }
@@ -1067,15 +1078,20 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       });
     };
 
-    document.addEventListener('selectionchange', handleSelectionChange);
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mouseup', handleMouseUp);
+    const ownerDoc = editableElementRef.current?.ownerDocument;
+    if (!ownerDoc) {
+      return;
+    }
+    ownerDoc.addEventListener('selectionchange', handleSelectionChange);
+    ownerDoc.addEventListener('mousedown', handleMouseDown);
+    ownerDoc.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      document.removeEventListener('selectionchange', handleSelectionChange);
-      document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mouseup', handleMouseUp);
+      ownerDoc.removeEventListener('selectionchange', handleSelectionChange);
+      ownerDoc.removeEventListener('mousedown', handleMouseDown);
+      ownerDoc.removeEventListener('mouseup', handleMouseUp);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only needs to run on mount
   }, []);
 
   const handleMenuSelect = useStableCallback((option: MenuItem) => {
@@ -1152,9 +1168,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     shortcutsState.setCaretInTrigger(false);
 
     if (triggerEl) {
-      const sel = window.getSelection();
+      const sel = getOwnerSelection(triggerEl);
       if (sel) {
-        const range = document.createRange();
+        const range = triggerEl.ownerDocument.createRange();
         range.setStartAfter(triggerEl);
         range.collapse(true);
         sel.removeAllRanges();

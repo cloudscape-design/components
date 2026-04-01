@@ -5,7 +5,7 @@ import { PromptInputProps } from '../interfaces';
 import { calculateTotalTokenLength, TOKEN_LENGTHS } from './caret-controller';
 import { generateTokenId } from './dom-utils';
 import { findLastPinnedTokenIndex } from './token-operations';
-import { isBreakTextToken, isPinnedReferenceToken, isTextToken, isTriggerToken } from './type-guards';
+import { isBreakTextToken, isPinnedReferenceToken, isReferenceToken, isTextToken, isTriggerToken } from './type-guards';
 
 export { findAdjacentToken } from './dom-utils';
 
@@ -234,6 +234,13 @@ export function getCaretPositionAfterTokenRemoval(
 
   for (let i = 0; i < minLen; i++) {
     if (prevTokens[i].type !== newTokens[i].type) {
+      break;
+    }
+    if (
+      isReferenceToken(prevTokens[i]) &&
+      isReferenceToken(newTokens[i]) &&
+      (prevTokens[i] as PromptInputProps.ReferenceToken).id !== (newTokens[i] as PromptInputProps.ReferenceToken).id
+    ) {
       break;
     }
     if (

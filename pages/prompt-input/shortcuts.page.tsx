@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
+import { HashRouter } from 'react-router-dom';
 
 import {
   Box,
@@ -17,9 +18,10 @@ import {
 } from '~components';
 import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 
-import AppContext, { AppContextType } from '../app/app-context';
+import AppContext, { AppContextProvider, AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 import { i18nStrings } from '../file-upload/shared';
+import { IframeWrapper } from '../utils/iframe-wrapper';
 
 const MAX_CHARS = 2000;
 
@@ -39,6 +41,7 @@ type DemoContext = React.Context<
     enableSpellcheck: boolean;
     hasName: boolean;
     enableAutoFocus: boolean;
+    useIframe: boolean;
   }>
 >;
 
@@ -183,6 +186,36 @@ const topicOptions: (OptionDefinition | OptionGroup)[] = [
 ];
 
 export default function PromptInputShortcutsPage() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const { useIframe } = urlParams;
+
+  return (
+    <div>
+      <div style={{ padding: '8px 16px' }}>
+        <Checkbox checked={useIframe} onChange={() => setUrlParams({ useIframe: !useIframe })}>
+          Render in iframe
+        </Checkbox>
+      </div>
+      {useIframe ? (
+        <IframeWrapper id="shortcuts-iframe" AppComponent={ShortcutsDemoWithProviders} />
+      ) : (
+        <ShortcutsDemo />
+      )}
+    </div>
+  );
+}
+
+function ShortcutsDemoWithProviders() {
+  return (
+    <HashRouter>
+      <AppContextProvider>
+        <ShortcutsDemo />
+      </AppContextProvider>
+    </HashRouter>
+  );
+}
+
+function ShortcutsDemo() {
   const [tokens, setTokens] = useState<readonly PromptInputProps.InputToken[]>([]);
   const [plainTextValue, setPlainTextValue] = useState<string>('');
   const [files, setFiles] = useState<File[]>([]);
@@ -410,92 +443,47 @@ export default function PromptInputShortcutsPage() {
           </Checkbox>
           <Checkbox
             checked={hasSecondaryContent}
-            onChange={() =>
-              setUrlParams({
-                hasSecondaryContent: !hasSecondaryContent,
-              })
-            }
+            onChange={() => setUrlParams({ hasSecondaryContent: !hasSecondaryContent })}
           >
             Secondary content
           </Checkbox>
           <Checkbox
             checked={hasSecondaryActions}
-            onChange={() =>
-              setUrlParams({
-                hasSecondaryActions: !hasSecondaryActions,
-              })
-            }
+            onChange={() => setUrlParams({ hasSecondaryActions: !hasSecondaryActions })}
           >
             Secondary actions
           </Checkbox>
           <Checkbox
             checked={hasPrimaryActions}
-            onChange={() =>
-              setUrlParams({
-                hasPrimaryActions: !hasPrimaryActions,
-              })
-            }
+            onChange={() => setUrlParams({ hasPrimaryActions: !hasPrimaryActions })}
           >
             Custom primary actions
           </Checkbox>
           <Checkbox
             checked={hasInfiniteMaxRows}
-            onChange={() =>
-              setUrlParams({
-                hasInfiniteMaxRows: !hasInfiniteMaxRows,
-              })
-            }
+            onChange={() => setUrlParams({ hasInfiniteMaxRows: !hasInfiniteMaxRows })}
           >
             Infinite max rows
           </Checkbox>
           <Checkbox
             checked={disableActionButton}
-            onChange={() =>
-              setUrlParams({
-                disableActionButton: !disableActionButton,
-              })
-            }
+            onChange={() => setUrlParams({ disableActionButton: !disableActionButton })}
           >
             Disable action button
           </Checkbox>
           <Checkbox
             checked={disableBrowserAutocorrect}
-            onChange={() =>
-              setUrlParams({
-                disableBrowserAutocorrect: !disableBrowserAutocorrect,
-              })
-            }
+            onChange={() => setUrlParams({ disableBrowserAutocorrect: !disableBrowserAutocorrect })}
           >
             Disable browser autocorrect
           </Checkbox>
-          <Checkbox
-            checked={enableSpellcheck}
-            onChange={() =>
-              setUrlParams({
-                enableSpellcheck: !enableSpellcheck,
-              })
-            }
-          >
+          <Checkbox checked={enableSpellcheck} onChange={() => setUrlParams({ enableSpellcheck: !enableSpellcheck })}>
             Enable spellcheck
           </Checkbox>
-          <Checkbox
-            checked={hasName}
-            onChange={() =>
-              setUrlParams({
-                hasName: !hasName,
-              })
-            }
-          >
+          <Checkbox checked={hasName} onChange={() => setUrlParams({ hasName: !hasName })}>
             Has name attribute (for forms)
           </Checkbox>
-          <Checkbox
-            checked={enableAutoFocus}
-            onChange={() =>
-              setUrlParams({
-                enableAutoFocus: !enableAutoFocus,
-              })
-            }
-          >
+          <Checkbox checked={enableAutoFocus} onChange={() => setUrlParams({ enableAutoFocus: !enableAutoFocus })}>
             Enable auto focus
           </Checkbox>
         </FormField>

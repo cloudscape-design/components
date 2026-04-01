@@ -89,28 +89,29 @@ function groupTokensIntoParagraphs(tokens: readonly PromptInputProps.InputToken[
 }
 
 /** Creates an invisible span with a zero-width character to provide a valid caret position next to reference tokens. */
-function createCaretSpot(type: string): HTMLSpanElement {
-  const caretSpot = document.createElement('span');
+function createCaretSpot(type: string, ownerDoc: Document): HTMLSpanElement {
+  const caretSpot = ownerDoc.createElement('span');
   caretSpot.setAttribute('data-type', type);
   caretSpot.setAttribute('contenteditable', 'true');
   caretSpot.setAttribute('aria-hidden', 'true');
-  caretSpot.appendChild(document.createTextNode(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER));
+  caretSpot.appendChild(ownerDoc.createTextNode(SPECIAL_CHARS.ZERO_WIDTH_CHARACTER));
   return caretSpot;
 }
 
 function createReferenceWithCaretSpots(
   token: PromptInputProps.ReferenceToken,
-  portalContainers: Map<string, PortalContainer>
+  portalContainers: Map<string, PortalContainer>,
+  ownerDoc: Document
 ): HTMLSpanElement {
-  const wrapper = document.createElement('span');
+  const wrapper = ownerDoc.createElement('span');
   wrapper.className = styles['reference-wrapper'];
   wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
   const instanceId = token.id && token.id !== '' ? token.id : generateTokenId();
   wrapper.id = instanceId;
   wrapper.setAttribute('data-menu-id', token.menuId);
 
-  const caretSpotBefore = createCaretSpot(ElementType.CaretSpotBefore);
-  const element = document.createElement('span');
+  const caretSpotBefore = createCaretSpot(ElementType.CaretSpotBefore, ownerDoc);
+  const element = ownerDoc.createElement('span');
   element.className = styles['token-container'];
   element.setAttribute('contenteditable', 'false');
 
@@ -121,7 +122,7 @@ function createReferenceWithCaretSpots(
     label: token.label,
   });
 
-  const caretSpotAfter = createCaretSpot(ElementType.CaretSpotAfter);
+  const caretSpotAfter = createCaretSpot(ElementType.CaretSpotAfter, ownerDoc);
 
   wrapper.appendChild(caretSpotBefore);
   wrapper.appendChild(element);
@@ -160,6 +161,7 @@ export function renderTokensToDOM(
 
   const existingParagraphs = findAllParagraphs(targetElement);
   const paragraphGroups = groupTokensIntoParagraphs(tokens);
+  const ownerDoc = targetElement.ownerDocument;
 
   let newTriggerElement: HTMLElement | null = null;
   let lastReferenceWithCaretSpots: HTMLElement | null = null;
@@ -183,7 +185,7 @@ export function renderTokensToDOM(
 
       if (isTextToken(token)) {
         if (token.value) {
-          newNodes.push(document.createTextNode(token.value));
+          newNodes.push(ownerDoc.createTextNode(token.value));
         }
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
@@ -196,7 +198,7 @@ export function renderTokensToDOM(
           span = reusableTriggers.get(triggerId)!;
           reusableTriggers.delete(triggerId);
         } else {
-          span = document.createElement('span');
+          span = ownerDoc.createElement('span');
           span.setAttribute('data-type', ElementType.Trigger);
           span.id = triggerId;
           span.setAttribute('data-id', triggerId);
@@ -233,7 +235,7 @@ export function renderTokensToDOM(
           }
         }
 
-        const wrapper = createReferenceWithCaretSpots(token, portalContainers);
+        const wrapper = createReferenceWithCaretSpots(token, portalContainers, ownerDoc);
         newNodes.push(wrapper);
         lastReferenceWithCaretSpots = wrapper;
       }

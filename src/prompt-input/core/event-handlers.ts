@@ -8,7 +8,7 @@ import { isHTMLElement } from '../../internal/utils/dom';
 import handleKey from '../../internal/utils/handle-key';
 import { PromptInputProps } from '../interfaces';
 import { EditableState } from '../tokens/use-token-mode';
-import { CaretController, TOKEN_LENGTHS } from './caret-controller';
+import { CaretController, getOwnerSelection, TOKEN_LENGTHS } from './caret-controller';
 import { ElementType } from './constants';
 import {
   createParagraph,
@@ -168,6 +168,7 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
           getMenuStatusType: props.getMenuStatusType,
           closeMenu: props.closeMenu,
           caretController: caretController ?? undefined,
+          editableElement: editableElement ?? undefined,
         });
       }
     },
@@ -223,7 +224,7 @@ export function splitParagraphAtCaret(
   caretController: CaretController | null,
   suppressInputEvent = false
 ): void {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return;
   }
@@ -236,7 +237,7 @@ export function splitParagraphAtCaret(
     return;
   }
 
-  const afterRange = document.createRange();
+  const afterRange = editableElement.ownerDocument.createRange();
   afterRange.setStart(range.startContainer, range.startOffset);
   afterRange.setEndAfter(currentP.lastChild || currentP);
 
@@ -319,7 +320,7 @@ export function handleReferenceTokenDeletion(
   i18nStrings: PromptInputProps.I18nStrings | undefined,
   caretController: CaretController | null
 ): boolean {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return false;
   }
@@ -428,7 +429,7 @@ function normalizeCaretOutOfReference(
   const newOffset = direction === 'backward' ? wrapperIndex : wrapperIndex + 1;
 
   event.preventDefault();
-  const newRange = document.createRange();
+  const newRange = paragraph.ownerDocument.createRange();
   newRange.setStart(paragraph, newOffset);
   newRange.collapse(true);
   selection.removeAllRanges();
@@ -442,7 +443,7 @@ export function handleInlineStart(
   caretController: CaretController | null,
   announceTokenOperation?: (message: string) => void
 ): void {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(event.currentTarget);
   if (!selection?.rangeCount) {
     return;
   }
@@ -476,7 +477,7 @@ export function handleInlineEnd(
   caretController: CaretController | null,
   announceTokenOperation?: (message: string) => void
 ): void {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(event.currentTarget);
   if (!selection?.rangeCount) {
     return;
   }
@@ -638,7 +639,7 @@ export function handleSpaceAfterClosedTrigger(
     return false;
   }
 
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return false;
   }
@@ -682,7 +683,7 @@ export function handleSpaceAfterClosedTrigger(
 
   event.preventDefault();
 
-  const spaceNode = document.createTextNode(' ');
+  const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
 
   if (caretController) {
@@ -769,7 +770,7 @@ export function handleBackspaceAtParagraphStart(
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
   caretController: CaretController | null
 ): boolean {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return false;
   }
@@ -819,7 +820,7 @@ export function handleDeleteAtParagraphEnd(
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void,
   caretController: CaretController | null
 ): boolean {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return false;
   }
@@ -877,7 +878,7 @@ export function handleDeleteAtParagraphEnd(
 
 /** Handles copy/cut events on the contentEditable element. */
 export function handleClipboardEvent(event: React.ClipboardEvent, editableElement: HTMLElement, isCut: boolean): void {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection || selection.rangeCount === 0) {
     return;
   }

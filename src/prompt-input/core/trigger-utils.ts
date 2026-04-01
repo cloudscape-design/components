@@ -3,7 +3,7 @@
 
 import { isHTMLElement } from '../../internal/utils/dom';
 import { PromptInputProps } from '../interfaces';
-import { calculateTokenPosition, CaretController } from './caret-controller';
+import { calculateTokenPosition, CaretController, getOwnerSelection } from './caret-controller';
 import { ElementType } from './constants';
 import { getTokenType, insertAfter } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
@@ -17,11 +17,13 @@ interface TriggerSpaceHandlerProps {
   getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
   closeMenu: () => void;
   caretController?: CaretController;
+  editableElement?: HTMLElement;
 }
 
 /** Finds the trigger element at the current caret position. */
-function findTriggerAtCaret(): HTMLElement | null {
-  const selection = window.getSelection();
+/** Finds the trigger element at the current caret position. */
+function findTriggerAtCaret(editableElement?: HTMLElement): HTMLElement | null {
+  const selection = editableElement ? getOwnerSelection(editableElement) : window.getSelection();
   if (!selection?.rangeCount) {
     return null;
   }
@@ -48,12 +50,13 @@ function finalizeSpaceInsertion(spaceNode: Text, props: Pick<TriggerSpaceHandler
 
 /** Handles space key press when a trigger menu is open. Returns true if handled. */
 export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: TriggerSpaceHandlerProps): boolean {
-  const { menuItemsState, menuItemsHandlers, getMenuStatusType, closeMenu } = props;
+  const { menuItemsState, menuItemsHandlers, getMenuStatusType, closeMenu, editableElement } = props;
   const items = menuItemsState.items;
   const statusType = getMenuStatusType?.() ?? 'finished';
   const isLoading = statusType === 'loading' || statusType === 'pending';
 
-  const triggerElement = findTriggerAtCaret();
+  const ownerElement = editableElement ?? (event.currentTarget as HTMLElement);
+  const triggerElement = findTriggerAtCaret(ownerElement);
   if (!triggerElement) {
     return false;
   }
@@ -78,7 +81,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     triggerElement.textContent = triggerChar + cleanFilterText;
     triggerElement.className = cleanFilterText.length > 0 ? styles['trigger-token'] : '';
 
-    const oneSpace = document.createTextNode(' ');
+    const oneSpace = triggerElement.ownerDocument.createTextNode(' ');
     insertAfter(oneSpace, triggerElement);
     finalizeSpaceInsertion(oneSpace, props);
 
@@ -90,7 +93,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     event.preventDefault();
     closeMenu();
 
-    const spaceNode = document.createTextNode(' ');
+    const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
     insertAfter(spaceNode, triggerElement);
     finalizeSpaceInsertion(spaceNode, props);
 
@@ -98,7 +101,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
   }
 
   // Caret right after trigger char with filter text ahead — split filter out of trigger
-  const selection = window.getSelection();
+  const selection = ownerElement ? getOwnerSelection(ownerElement) : window.getSelection();
   const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
   if (
     filterText.length > 0 &&
@@ -113,7 +116,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     triggerElement.textContent = triggerChar;
     triggerElement.className = '';
 
-    const textAfter = document.createTextNode(' ' + filterText);
+    const textAfter = triggerElement.ownerDocument.createTextNode(' ' + filterText);
     insertAfter(textAfter, triggerElement);
     finalizeSpaceInsertion(textAfter, props);
 
@@ -128,7 +131,7 @@ export function handleDeleteAfterTrigger(
   event: React.KeyboardEvent<HTMLDivElement>,
   editableElement: HTMLDivElement
 ): boolean {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount || !selection.getRangeAt(0).collapsed) {
     return false;
   }
