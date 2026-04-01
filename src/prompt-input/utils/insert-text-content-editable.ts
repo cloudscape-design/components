@@ -13,7 +13,7 @@ import { CaretController, getOwnerSelection } from '../core/caret-controller';
 export function insertTextIntoContentEditable(
   element: HTMLElement,
   text: string,
-  caretStart: number | undefined,
+  caretStart: number,
   caretEnd: number | undefined,
   caretController: CaretController
 ): void {

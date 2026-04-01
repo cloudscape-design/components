@@ -26,6 +26,8 @@
 // token-renderer creates the DOM containers; the parent renders content into them.
 //
 
+import clsx from 'clsx';
+
 import { getReactMajorVersion } from '../../internal/utils/react-version';
 import { PromptInputProps } from '../interfaces';
 import { ElementType, SPECIAL_CHARS } from './constants';
@@ -204,7 +206,7 @@ export function renderTokensToDOM(
           span.setAttribute('data-id', triggerId);
         }
 
-        const classes = `${styles['trigger-base']} ${hasFilterText && styles['trigger-token']}`;
+        const classes = clsx(styles['trigger-base'], hasFilterText && styles['trigger-token']);
 
         span.className = classes;
         span.textContent = token.triggerChar + token.value;
