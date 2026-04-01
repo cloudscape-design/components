@@ -66,30 +66,35 @@ export function createEditableState(): EditableState {
  * tokens already match the DOM, so text comparisons won't trigger unnecessary
  * re-renders. External updates (parent replacing tokens) will be detected by
  * the value difference and trigger a re-render.
+ *
+ * Returns 'none' if no changes, 'text-only' if only text values differ
+ * (same count, types, and IDs), or 'structural' for any other change.
  */
-function shouldRerender(
+function classifyChange(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
   newTokens: readonly PromptInputProps.InputToken[] | undefined
-): boolean {
+): 'none' | 'text-only' | 'structural' {
   if (!oldTokens || !newTokens) {
-    return true;
+    return 'structural';
   }
 
   if (oldTokens.length !== newTokens.length) {
-    return true;
+    return 'structural';
   }
+
+  let hasTextDiff = false;
 
   for (let i = 0; i < oldTokens.length; i++) {
     const oldToken = oldTokens[i];
     const newToken = newTokens[i];
 
     if (oldToken.type !== newToken.type) {
-      return true;
+      return 'structural';
     }
 
     if (isReferenceToken(oldToken) && isReferenceToken(newToken)) {
       if (oldToken.id !== newToken.id) {
-        return true;
+        return 'structural';
       }
     }
 
@@ -97,18 +102,18 @@ function shouldRerender(
     // styling update path — only ID changes require a full re-render.
     if (isTriggerToken(oldToken) && isTriggerToken(newToken)) {
       if (oldToken.id !== newToken.id) {
-        return true;
+        return 'structural';
       }
     }
 
     if (isTextToken(oldToken) && isTextToken(newToken)) {
       if (oldToken.value !== newToken.value) {
-        return true;
+        hasTextDiff = true;
       }
     }
   }
 
-  return false;
+  return hasTextDiff ? 'text-only' : 'none';
 }
 
 /**
@@ -270,8 +275,9 @@ export interface TriggerState {
 }
 
 interface ShortcutsState {
-  caretInTrigger: boolean;
-  setCaretInTrigger: (inTrigger: boolean) => void;
+  /** The ID of the trigger the caret is currently in, or null if not in any trigger. */
+  caretInTrigger: string | null;
+  setCaretInTrigger: (triggerId: string | null) => void;
   triggerStates: React.MutableRefObject<Map<string, TriggerState>>;
   lastSentTokens: React.MutableRefObject<readonly PromptInputProps.InputToken[] | undefined>;
   isExternalUpdate: (tokens: readonly PromptInputProps.InputToken[] | undefined) => boolean;
@@ -279,7 +285,7 @@ interface ShortcutsState {
 }
 
 function useShortcutsState(): ShortcutsState {
-  const [caretInTrigger, setCaretInTrigger] = useState(false);
+  const [caretInTrigger, setCaretInTrigger] = useState<string | null>(null);
   const triggerStates = useRef<Map<string, TriggerState>>(new Map());
   const lastSentTokens = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
 
@@ -405,7 +411,7 @@ function useShortcutsEffects(config: EffectsConfig) {
     const hasTriggers = tokens?.some(isTriggerToken);
 
     if (!hasTriggers || !editableElementRef.current) {
-      state.setCaretInTrigger(false);
+      state.setCaretInTrigger(null);
       return;
     }
 
@@ -424,16 +430,16 @@ function useShortcutsEffects(config: EffectsConfig) {
       normalizeCaretIntoTrigger(editableElementRef.current, cancelledIds);
 
       const activeTrigger = ctrl.findActiveTrigger();
-      let isInTrigger = false;
+      let activeTriggerIdForMenu: string | null = null;
 
       if (activeTrigger) {
         const triggerState = state.triggerStates.current.get(activeTrigger.id);
 
         // Skip cancelled triggers entirely
         if (triggerState?.cancelled) {
-          isInTrigger = false;
+          activeTriggerIdForMenu = null;
         } else {
-          isInTrigger = true;
+          activeTriggerIdForMenu = activeTrigger.id;
 
           // Check dismissed state — reopen if filter text changed since dismissal
           if (triggerState?.dismissed) {
@@ -442,7 +448,7 @@ function useShortcutsEffects(config: EffectsConfig) {
               triggerState.dismissed = false;
               triggerState.dismissedValue = null;
             } else {
-              isInTrigger = false;
+              activeTriggerIdForMenu = null;
             }
           }
         }
@@ -464,8 +470,8 @@ function useShortcutsEffects(config: EffectsConfig) {
         });
       }
 
-      if (isInTrigger !== state.caretInTrigger) {
-        state.setCaretInTrigger(isInTrigger);
+      if (activeTriggerIdForMenu !== state.caretInTrigger) {
+        state.setCaretInTrigger(activeTriggerIdForMenu);
       }
     };
 
@@ -907,12 +913,26 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     const triggerTransition = detectTriggerTransition(lastRenderedTokensRef.current, orderedTokens);
 
-    const needsRerender =
-      stateChanged || shouldRerender(lastRenderedTokensRef.current, orderedTokens) || triggerTransition > 0;
+    const changeType = classifyChange(lastRenderedTokensRef.current, orderedTokens);
+    const needsRerender = stateChanged || changeType !== 'none' || triggerTransition > 0;
 
     if (!needsRerender) {
       positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc);
 
+      lastRenderedTokensRef.current = orderedTokens;
+      return;
+    }
+
+    // Text-only changes from user input are already reflected in the DOM by the
+    // browser's native editing. Skip re-render to preserve cursor position —
+    // re-rendering would read a corrupted position from normalizeCaretIntoTrigger.
+    // External updates still need a re-render (isExternalUpdate returns true).
+    if (
+      changeType === 'text-only' &&
+      !stateChanged &&
+      triggerTransition === 0 &&
+      !shortcutsState.isExternalUpdate(tokens)
+    ) {
       lastRenderedTokensRef.current = orderedTokens;
       return;
     }
@@ -935,9 +955,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       renderTokens(orderedTokens, editableElementRef.current);
       lastRenderedTokensRef.current = orderedTokens;
       const triggerIndex = orderedTokens.indexOf(newTrigger);
-      const posAfterTriggerChar =
-        (triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0) +
-        TOKEN_LENGTHS.trigger(newTrigger.value);
+      const posBeforeTrigger = triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0;
+      const posAfterTriggerChar = posBeforeTrigger + newTrigger.triggerChar.length;
       cc.setPosition(posAfterTriggerChar);
       adjustInputHeight();
       return;
@@ -1055,6 +1074,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     portalContainersRef,
     editableState,
     renderTokens,
+    shortcutsState,
   ]);
 
   useEffect(() => {
@@ -1132,7 +1152,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return;
     }
 
-    shortcutsState.setCaretInTrigger(false);
+    shortcutsState.setCaretInTrigger(null);
 
     const result = handleMenuSelection(
       tokens,
@@ -1196,7 +1216,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       }
     }
 
-    shortcutsState.setCaretInTrigger(false);
+    shortcutsState.setCaretInTrigger(null);
 
     if (triggerEl) {
       const sel = getOwnerSelection(triggerEl);
@@ -1226,7 +1246,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       getMenuItemsHandlers: () => menuStateRef.current.itemsHandlers,
       getMenuStatusType: () => activeMenu?.statusType,
       closeMenu,
-      menuIsOpen,
       onAction: onAction ? detail => fireNonCancelableEvent(onAction, detail) : undefined,
       onChange,
       markTokensAsSent,

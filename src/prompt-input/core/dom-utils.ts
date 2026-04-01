@@ -209,7 +209,11 @@ export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelle
   if (isTextNode(range.startContainer) && range.startOffset === 0) {
     const prevSibling = range.startContainer.previousSibling;
     if (isHTMLElement(prevSibling) && getTokenType(prevSibling) === ElementType.Trigger) {
-      triggerElement = prevSibling;
+      // Only nudge when the text node is empty — a non-empty node means the
+      // cursor is legitimately positioned at the start of user text.
+      if (!range.startContainer.textContent) {
+        triggerElement = prevSibling;
+      }
     }
   } else if (range.startContainer === editableElement || isHTMLElement(range.startContainer)) {
     const container = range.startContainer as HTMLElement;

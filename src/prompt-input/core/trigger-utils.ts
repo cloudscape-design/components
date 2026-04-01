@@ -201,20 +201,6 @@ export function detectTriggerTransition(
       return calculateTokenPosition(newTokens, i - 1) + 1;
     }
 
-    // Space added before existing text after trigger
-    if (
-      isTextToken(newToken) &&
-      oldToken &&
-      isTextToken(oldToken) &&
-      prevNewToken &&
-      isTriggerToken(prevNewToken) &&
-      newToken.value.length === oldToken.value.length + 1 &&
-      newToken.value.startsWith(' ') &&
-      newToken.value.substring(1) === oldToken.value
-    ) {
-      return calculateTokenPosition(newTokens, i - 1) + 1;
-    }
-
     // Trigger absorbed adjacent text (value grew by more than 1 character)
     if (
       isTriggerToken(newToken) &&
