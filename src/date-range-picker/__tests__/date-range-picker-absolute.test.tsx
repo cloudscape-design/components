@@ -1154,6 +1154,71 @@ describe('Date range picker', () => {
         });
       });
 
+      describe('absoluteMultiGridStartPeriod', () => {
+        test('defaults to "current" - header shows start date period on the left grid', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
+          });
+
+          wrapper.findTrigger().click();
+
+          // Default "current" means the start date's month/year appears in the left grid
+          // For day: left=March 2020, right=April 2020, header shows "March 2020April 2020"
+          // For month: left=2020, right=2021, header shows "20202021"
+          const expectedResult = granularity === 'day' ? 'March 2020' : '20202021';
+          expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent(expectedResult);
+        });
+
+        test('"current" explicitly set shows same as default', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            absoluteMultiGridStartPeriod: 'current',
+            value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
+          });
+
+          wrapper.findTrigger().click();
+
+          const expectedResult = granularity === 'day' ? 'March 2020' : '20202021';
+          expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent(expectedResult);
+        });
+
+        test('"previous" shows the previous period on the left grid', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            absoluteMultiGridStartPeriod: 'previous',
+            value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
+          });
+
+          wrapper.findTrigger().click();
+
+          // "previous" means start date's month/year is shown on the right grid, previous on the left
+          // For day: left=February 2020, right=March 2020, header shows "February 2020March 2020"
+          // For month: left=2019, right=2020, header shows "20192020"
+          const expectedResult = granularity === 'day' ? 'February 2020' : '20192020';
+          expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent(expectedResult);
+        });
+
+        test('"previous" allows start date to be visible in right grid', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            absoluteMultiGridStartPeriod: 'previous',
+            value: { type: 'absolute', startDate: '2021-06-15T00:00:00+08:45', endDate: '2021-06-20T23:59:59+08:45' },
+          });
+
+          wrapper.findTrigger().click();
+
+          // For day: left=May 2021, right=June 2021
+          // For month: left=2020, right=2021
+          const expectedResult = granularity === 'day' ? 'May 2021' : '20202021';
+          expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent(expectedResult);
+        });
+      });
+
       describe('i18n', () => {
         describe.each([true, false] as const)('With dateOnly of %s', dateOnly => {
           test('supports using absolute range with i18n defaults', () => {
