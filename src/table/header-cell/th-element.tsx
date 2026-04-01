@@ -42,23 +42,11 @@ export interface TableThElementProps {
   rowSpan?: number;
   scope?: 'col' | 'colgroup';
   /**
-   * When true, the cell is a hidden placeholder (not a real header).
-   * A distinct data-focus-id prefix ("header-placeholder-") is used so that
-   * focusedComponent matching never accidentally triggers header-cell-fake-focus
-   * on the real leaf cell that shares the same columnId.
-   */
-  isPlaceholder?: boolean;
-  /**
    * ID of the direct parent group for this leaf column cell.
    * Used as a `data-column-group-id` test-utils hook to allow querying columns by group.
    * Omit for top-level columns that have no group parent.
    */
   columnGroupId?: string;
-  /**
-   * When true, the cell spans multiple header rows (leaf column in a grouped table).
-   * Applies bottom-alignment so content sits flush with grouped column labels in the last row.
-   */
-  spansRows?: boolean;
   /**
    * When true, this cell is the rightmost child within its parent group.
    * Its divider/resizer extends fully to connect to the parent group's horizontal border.
@@ -89,9 +77,7 @@ export function TableThElement({
   colSpan,
   rowSpan,
   scope,
-  isPlaceholder,
   columnGroupId,
-  spansRows,
   isLastChildOfGroup,
   ...props
 }: TableThElementProps) {
@@ -109,7 +95,6 @@ export function TableThElement({
 
   return (
     <th
-      data-focus-id={isPlaceholder ? `header-placeholder-${String(columnId)}` : `header-${String(columnId)}`}
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
@@ -129,7 +114,7 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
-          [styles['header-cell-spans-rows']]: spansRows,
+          [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
           [styles['header-cell-grouped']]: !!columnGroupId,
           [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
         },

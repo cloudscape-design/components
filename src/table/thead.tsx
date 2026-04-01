@@ -260,7 +260,7 @@ const Thead = React.forwardRef(
                     group={groupDefinition}
                     colspan={col.colspan}
                     rowspan={col.rowspan}
-                    spansRows={col.rowspan > 1}
+                    // spansRows={col.rowspan > 1}
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
                     resizableColumns={resizableColumns}
@@ -320,7 +320,6 @@ const Thead = React.forwardRef(
                     hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
                     colSpan={col.colspan}
                     rowSpan={col.rowspan}
-                    spansRows={col.rowspan > 1}
                     isLastChildOfGroup={isLastChildOfGroup}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined

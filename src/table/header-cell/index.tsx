@@ -55,8 +55,6 @@ export interface TableHeaderCellProps<ItemType> {
   rowSpan?: number;
   /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
   columnGroupId?: string;
-  /** When true, applies bottom-alignment (cell spans multiple header rows in a grouped table). */
-  spansRows?: boolean;
   /** When true, this cell is the rightmost child within its parent group. */
   isLastChildOfGroup?: boolean;
 }
@@ -93,7 +91,6 @@ export function TableHeaderCell<ItemType>({
   colSpan,
   rowSpan,
   columnGroupId,
-  spansRows,
   isLastChildOfGroup,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -155,7 +152,6 @@ export function TableHeaderCell<ItemType>({
       colSpan={colSpan}
       rowSpan={rowSpan}
       columnGroupId={columnGroupId}
-      spansRows={spansRows}
       isLastChildOfGroup={isLastChildOfGroup}
       {...(sortingDisabled
         ? {}

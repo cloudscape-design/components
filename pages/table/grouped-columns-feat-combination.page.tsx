@@ -1037,7 +1037,8 @@ export default function GroupedColumnsBugBash() {
           />
         </div>
       </SpaceBetween>
-      <SpaceBetween size={'xxl'}>lol</SpaceBetween>
+      {/* to test the sticky header */}
+      <div style={{ height: '2000px' }} />
     </SimplePage>
   );
 }
