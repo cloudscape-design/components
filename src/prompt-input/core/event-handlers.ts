@@ -19,6 +19,7 @@ import {
   insertAfter,
   isCaretSpotType,
   isElementEffectivelyEmpty,
+  isEmptyState,
   isReferenceElementType,
   setEmptyState,
   stripZeroWidthCharacters,
@@ -330,24 +331,57 @@ export function handleReferenceTokenDeletion(
   if (!range.collapsed) {
     event.preventDefault();
 
+    // Capture the caret position at the start of the selection before deleting.
+    let caretPosAfterDelete: number | null = null;
+    if (caretController) {
+      caretPosAfterDelete = caretController.getPosition();
+    }
+
+    // Identify the paragraphs that the selection starts and ends in before deleting.
+    const startP = findUpUntil(
+      isHTMLElement(range.startContainer) ? range.startContainer : range.startContainer.parentElement!,
+      node => node.nodeName === 'P'
+    );
+    const endP = findUpUntil(
+      isHTMLElement(range.endContainer) ? range.endContainer : range.endContainer.parentElement!,
+      node => node.nodeName === 'P'
+    );
+
     range.deleteContents();
 
-    // Clean up empty paragraphs left behind after deleting across paragraph boundaries
-    const paragraphs = findAllParagraphs(editableElement);
-    const allEmpty = paragraphs.every(p => isElementEffectivelyEmpty(p));
+    // If the selection spanned multiple paragraphs, merge the end paragraph's
+    // remaining content into the start paragraph and remove the empty shells.
+    if (startP && endP && startP !== endP) {
+      // Move surviving children from endP into startP
+      while (endP.firstChild) {
+        if (isBRElement(endP.firstChild)) {
+          endP.removeChild(endP.firstChild);
+        } else {
+          startP.appendChild(endP.firstChild);
+        }
+      }
 
-    if (allEmpty) {
-      setEmptyState(editableElement);
-    } else if (paragraphs.length > 1) {
-      const firstNonEmpty = paragraphs.find(p => !isElementEffectivelyEmpty(p))!;
-      for (const p of paragraphs) {
-        if (p !== firstNonEmpty) {
-          p.remove();
+      // Remove endP and any now-empty paragraphs between start and end
+      const paragraphs = findAllParagraphs(editableElement);
+      const startIdx = paragraphs.indexOf(startP as HTMLParagraphElement);
+      for (let i = paragraphs.length - 1; i > startIdx; i--) {
+        if (isElementEffectivelyEmpty(paragraphs[i]) || paragraphs[i] === endP) {
+          paragraphs[i].remove();
         }
       }
     }
 
+    // Handle the case where everything was deleted
+    if (isEmptyState(editableElement) || findAllParagraphs(editableElement).length === 0) {
+      setEmptyState(editableElement);
+    }
+
     editableElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Restore caret to where the selection started
+    if (caretController && caretPosAfterDelete !== null) {
+      caretController.setPosition(caretPosAfterDelete);
+    }
 
     return true;
   }
