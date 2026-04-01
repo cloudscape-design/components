@@ -191,7 +191,6 @@ const InternalPromptInput = React.forwardRef(
     const tokenMode = useTokenMode({
       editableElementRef,
       caretControllerRef,
-      isTokenMode,
       tokens,
       tokensToText,
       menus,

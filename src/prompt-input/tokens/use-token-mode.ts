@@ -96,6 +96,8 @@ function shouldRerender(
       }
     }
 
+    // Trigger value (filter text) changes are handled incrementally by handleInput's
+    // styling update path — only ID changes require a full re-render.
     if (isTriggerToken(oldToken) && isTriggerToken(newToken)) {
       if (oldToken.id !== newToken.id) {
         return true;
@@ -150,8 +152,10 @@ function findTriggerTokenById(
 }
 
 /**
- * Detects whether the user is typing into an empty line based on the transition
- * from the last rendered tokens to the current ordered tokens.
+ * Updates `isTypingIntoEmptyLineRef` based on the transition from the last
+ * rendered tokens to the current ordered tokens. Returns the updated value.
+ *
+ * Mutates the ref as a side effect so callers don't need a separate setState.
  */
 function detectTypingContext(
   lastRenderedTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -192,7 +196,6 @@ export interface UseTokenModeConfig {
   editableElementRef: React.RefObject<HTMLDivElement>;
   caretControllerRef: React.MutableRefObject<CaretController | null>;
 
-  isTokenMode: boolean;
   tokens?: readonly PromptInputProps.InputToken[];
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
   menus?: readonly PromptInputProps.MenuDefinition[];
@@ -681,6 +684,11 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const lastReadOnlyRef = useRef(readOnly);
   const isTypingIntoEmptyLineRef = useRef(false);
 
+  // Ref to avoid recreating handleInput when menus changes (new array reference each render).
+  // handleInput reads menus only for trigger detection during DOM extraction.
+  const menusRef = useRef(menus);
+  menusRef.current = menus;
+
   const handleInput = useCallback(() => {
     if (!editableElementRef.current) {
       return;
@@ -761,7 +769,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       }
     }
 
-    let extractedTokens = extractTokensFromDOM(editableElementRef.current, menus);
+    let extractedTokens = extractTokensFromDOM(editableElementRef.current, menusRef.current);
 
     const newTriggers = extractedTokens.filter(isTriggerToken);
 
@@ -863,8 +871,16 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     processUserInput(extractedTokens);
 
     adjustInputHeight();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- menus is excluded to avoid recreating the callback on every render
-  }, [processUserInput, adjustInputHeight, editableElementRef, caretControllerRef, portalContainersRef, editableState]);
+  }, [
+    processUserInput,
+    adjustInputHeight,
+    editableElementRef,
+    caretControllerRef,
+    portalContainersRef,
+    editableState,
+    renderTokens,
+    shortcutsState.triggerStates,
+  ]);
 
   // Initial render
   useLayoutEffect(() => {
@@ -1041,10 +1057,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     editableElementRef,
     portalContainersRef,
     editableState,
-    lastRenderedTokensRef,
-    lastDisabledRef,
-    lastReadOnlyRef,
-    isTypingIntoEmptyLineRef,
     renderTokens,
   ]);
 
@@ -1158,13 +1170,11 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     });
   });
 
-  const menuItemsResult = useMenuItems({
+  const [menuItemsState, menuItemsHandlers] = useMenuItems({
     menu: activeMenu ?? { id: '', trigger: '', options: [] },
     filterText: menuFilterText,
     onSelectItem: handleMenuSelect,
   });
-
-  const [menuItemsState, menuItemsHandlers] = menuItemsResult;
 
   const menuStateRef = useRef({
     itemsState: menuItemsState,
@@ -1248,14 +1258,15 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   }, []);
 
   useEffect(() => {
+    const ownerWindow = editableElementRef.current?.ownerDocument.defaultView ?? window;
     const handleResize = () => adjustInputHeight();
-    window.addEventListener('resize', handleResize);
+    ownerWindow.addEventListener('resize', handleResize);
     const containers = portalContainersRef.current;
     return () => {
-      window.removeEventListener('resize', handleResize);
+      ownerWindow.removeEventListener('resize', handleResize);
       containers.clear();
     };
-  }, [adjustInputHeight]);
+  }, [adjustInputHeight, editableElementRef]);
 
   const menuLoadMoreResult = useMenuLoadMore({
     menu: activeMenu ?? { id: '', trigger: '', options: [] },
@@ -1286,10 +1297,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   useEffect(() => {
     const justOpened = menuIsOpen && !prevMenuOpenRef.current;
-    const itemsChanged =
+    const itemsLoaded =
       menuIsOpen && prevMenuOpenRef.current && prevItemsLengthRef.current === 0 && menuItemsState.items.length > 0;
 
-    if ((justOpened || itemsChanged) && menuItemsHandlers && menuItemsState && menuItemsState.items.length > 0) {
+    if ((justOpened || itemsLoaded) && menuItemsHandlers && menuItemsState && menuItemsState.items.length > 0) {
       // Reset highlight so goHomeWithKeyboard triggers a state change even at index 0
       menuItemsHandlers.resetHighlightWithKeyboard();
       setTimeout(() => {
