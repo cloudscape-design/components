@@ -1,0 +1,20 @@
+## Setup
+
+```
+npm install
+```
+
+## Building
+
+- `npm run quick-build` — fast dev build (compiles TS and SCSS files and generates icons, i18n and test utils). Use this for local development.
+- `npm run build` — full production build (quick-build + dev pages, theming, docs, size-limit). Use this before publishing or to verify everything works end-to-end.
+- `npm run build:react18` — production build targeting React 18.
+
+## Running Locally
+
+```
+npm run start          # starts watcher + dev server for development pages
+npm run start:react18  # starts watcher + dev server (React 18)
+```
+
+The dev server runs at `http://localhost:8080`. Pages are served from `pages/<component-name>/`.

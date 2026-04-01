@@ -41,6 +41,7 @@ export interface OptionsListProps extends BaseComponentProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  ariaRequired?: boolean;
   decreaseBlockMargin?: boolean;
   embedded?: boolean;
   stickyItemBlockSize?: number | null;
@@ -77,6 +78,7 @@ const OptionsList = (
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
+    ariaRequired,
     embedded,
     stickyItemBlockSize,
     isMultiSelect,
@@ -130,6 +132,7 @@ const OptionsList = (
       aria-labelledby={ariaLabelledby}
       aria-describedby={ariaDescribedby}
       aria-multiselectable={role === 'listbox' && isMultiSelect ? true : undefined}
+      aria-required={ariaRequired}
     >
       {open && children}
     </Tag>

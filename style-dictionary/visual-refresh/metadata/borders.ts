@@ -114,6 +114,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthAlertBlockStart: {
+    description: 'The block-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertBlockEnd: {
+    description: 'The block-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineStart: {
+    description: 'The inline-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineEnd: {
+    description: 'The inline-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
   borderWidthButton: {
     description: 'The border width of buttons.',
     public: true,
