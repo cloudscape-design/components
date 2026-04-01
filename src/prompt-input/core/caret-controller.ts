@@ -8,7 +8,6 @@ import {
   findAllParagraphs,
   findElement,
   getTokenType,
-  isCaretSpotType,
   isEmptyState,
   isReferenceElementType,
   stripZeroWidthCharacters,
@@ -57,6 +56,7 @@ interface CaretState {
   isValid: boolean;
 }
 
+/** A resolved position within the DOM: a node and an offset into it. */
 interface DOMLocation {
   node: Node;
   offset: number;
@@ -73,6 +73,30 @@ export class CaretController {
   constructor(element: HTMLElement) {
     this.element = element;
     this.state = { start: 0, end: undefined, isValid: false };
+  }
+
+  /**
+   * Creates a DOM Range from resolved start/end locations and applies it to the given selection.
+   * Returns the created Range for further use (e.g. scroll-into-view checks).
+   */
+  applyRange(
+    ownerDocument: Document,
+    selection: Selection,
+    startLocation: DOMLocation,
+    endLocation?: DOMLocation
+  ): Range {
+    const range = ownerDocument.createRange();
+    range.setStart(startLocation.node, startLocation.offset);
+
+    if (endLocation) {
+      range.setEnd(endLocation.node, endLocation.offset);
+    } else {
+      range.collapse(true);
+    }
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+    return range;
   }
 
   /** Returns the logical length of a DOM node based on its token type. */
@@ -166,22 +190,9 @@ export class CaretController {
       return;
     }
 
-    const range = ownerDocument.createRange();
-    range.setStart(startLocation.node, startLocation.offset);
+    const endLocation = end !== undefined && end !== start ? (this.findDOMLocation(end) ?? undefined) : undefined;
 
-    if (end !== undefined && end !== start) {
-      const endLocation = this.findDOMLocation(end);
-      if (endLocation) {
-        range.setEnd(endLocation.node, endLocation.offset);
-      } else {
-        range.collapse(true);
-      }
-    } else {
-      range.collapse(true);
-    }
-
-    selection.removeAllRanges();
-    selection.addRange(range);
+    const range = this.applyRange(ownerDocument, selection, startLocation, endLocation);
 
     this.state = { start, end, isValid: true };
 
@@ -195,24 +206,20 @@ export class CaretController {
       rangeRect.right > elementRect.right;
 
     if (isOutOfView) {
+      // Insert a temporary span to scroll to, then remove it and restore the range.
+      // Note: insertNode splits the text node at the range start. The split nodes are
+      // not merged here — they'll be reconciled on the next renderTokensToDOM call.
       const tempSpan = ownerDocument.createElement('span');
       range.insertNode(tempSpan);
       tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       tempSpan.remove();
 
-      range.setStart(startLocation.node, startLocation.offset);
-      if (end !== undefined && end !== start) {
-        const endLocation = this.findDOMLocation(end);
-        if (endLocation) {
-          range.setEnd(endLocation.node, endLocation.offset);
-        } else {
-          range.collapse(true);
-        }
-      } else {
-        range.collapse(true);
+      // Re-resolve locations: insertNode splits text nodes, invalidating the original offsets.
+      const freshStart = this.findDOMLocation(start);
+      const freshEnd = end !== undefined && end !== start ? (this.findDOMLocation(end) ?? undefined) : undefined;
+      if (freshStart) {
+        this.applyRange(ownerDocument, selection, freshStart, freshEnd);
       }
-      selection.removeAllRanges();
-      selection.addRange(range);
     }
 
     ownerDocument.dispatchEvent(new Event('selectionchange'));
@@ -252,7 +259,9 @@ export class CaretController {
     this.setPosition(this.state.start + offset, this.state.end !== undefined ? this.state.end + offset : undefined);
   }
 
-  /** Overrides the captured state so the next restore() positions to a calculated location. */
+  /** Overrides the captured state so the next restore() positions to a calculated location.
+   *  Currently used only in tests — consider removing if no production use case emerges.
+   */
   setCapturedPosition(start: number, end?: number): void {
     this.state = { start, end, isValid: true };
   }
@@ -490,211 +499,5 @@ export class CaretController {
     }
 
     return count;
-  }
-}
-
-let isMouseDown = false;
-
-/** Updates the mouse-down tracking flag used to skip selection normalization during drag. */
-export function setMouseDown(value: boolean): void {
-  isMouseDown = value;
-}
-
-/**
- * Checks whether a node is inside a reference element's internals or directly
- * on the contentEditable div (not inside a paragraph). These are non-typeable
- * positions where the caret should not rest.
- */
-export function isNonTypeablePosition(node: Node | null): boolean {
-  while (node) {
-    if (node.nodeName === 'P') {
-      return false;
-    }
-    if (isHTMLElement(node)) {
-      if (isReferenceElementType(getTokenType(node))) {
-        return true;
-      }
-      if (node.getAttribute('contenteditable') === 'true') {
-        return true;
-      }
-    }
-    node = node.parentNode;
-  }
-  return false;
-}
-
-/**
- * Finds the reference wrapper element that contains the given node, if any.
- * Returns null if the node is not inside a reference element.
- */
-export function findContainingReference(node: Node | null): HTMLElement | null {
-  while (node) {
-    if (node.nodeName === 'P') {
-      return null;
-    }
-    if (isHTMLElement(node) && isReferenceElementType(getTokenType(node))) {
-      return node;
-    }
-    node = node.parentNode;
-  }
-  return null;
-}
-
-/**
- * Moves a collapsed caret out of non-typeable positions into the parent paragraph.
- * Handles caret inside reference element internals (caret spots, token container)
- * and caret on the contentEditable div itself (clicking on padding).
- * Some browsers (notably Firefox) may place the caret in these positions on focus
- * or imprecise clicks.
- */
-export function normalizeCollapsedCaret(selection: Selection | null): void {
-  if (!selection?.rangeCount) {
-    return;
-  }
-
-  const range = selection.getRangeAt(0);
-
-  if (!range.collapsed) {
-    return;
-  }
-
-  const container = range.startContainer;
-
-  // Walk up from the caret position to find a reference wrapper.
-  let node: Node | null = isTextNode(container) ? container.parentElement : (container as HTMLElement);
-  let wrapper: HTMLElement | null = null;
-  let caretSpotType: ElementType | null = null;
-
-  while (node && isHTMLElement(node)) {
-    const tokenType = getTokenType(node);
-
-    if (isCaretSpotType(tokenType)) {
-      caretSpotType = tokenType as ElementType;
-    }
-
-    if (isReferenceElementType(tokenType)) {
-      wrapper = node;
-      break;
-    }
-
-    node = node.parentElement;
-  }
-
-  if (!wrapper) {
-    return;
-  }
-
-  const paragraph = wrapper.parentElement;
-  if (!paragraph) {
-    return;
-  }
-
-  const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-
-  // If we know the caret was in the before-spot, position before the wrapper.
-  // Otherwise position after it (after-spot, token container, or wrapper itself).
-  const newOffset = caretSpotType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
-
-  // Guard: skip if the selection is already at the target position.
-  if (range.startContainer === paragraph && range.startOffset === newOffset) {
-    return;
-  }
-
-  const newRange = container.ownerDocument!.createRange();
-  newRange.setStart(paragraph, newOffset);
-  newRange.collapse(true);
-  selection.removeAllRanges();
-  selection.addRange(newRange);
-}
-
-/** Adjusts non-collapsed selection boundaries to exclude caret spot elements. */
-export function normalizeSelection(selection: Selection | null, skipCaretSpots: boolean = false): void {
-  if (!selection?.rangeCount) {
-    return;
-  }
-
-  const range = selection.getRangeAt(0);
-
-  if (range.collapsed || isMouseDown || skipCaretSpots) {
-    return;
-  }
-
-  const normalizeBoundary = (container: Node) => {
-    if (!isTextNode(container)) {
-      return null;
-    }
-
-    const parent = container.parentElement;
-    if (!parent) {
-      return null;
-    }
-
-    const parentType = getTokenType(parent);
-    if (!isCaretSpotType(parentType)) {
-      return null;
-    }
-
-    const wrapper = parent.parentElement;
-    if (!wrapper || !isReferenceElementType(getTokenType(wrapper))) {
-      return null;
-    }
-
-    const paragraph = wrapper.parentElement;
-    if (!paragraph) {
-      return null;
-    }
-
-    const wrapperIndex = Array.from(paragraph.childNodes).indexOf(wrapper);
-    const newOffset = parentType === ElementType.CaretSpotBefore ? wrapperIndex : wrapperIndex + 1;
-
-    return { container: paragraph, offset: newOffset };
-  };
-
-  const normalizedStart = normalizeBoundary(range.startContainer);
-  const normalizedEnd = normalizeBoundary(range.endContainer);
-
-  if (!normalizedStart && !normalizedEnd) {
-    return;
-  }
-
-  const newStartContainer = normalizedStart?.container ?? range.startContainer;
-  const newStartOffset = normalizedStart?.offset ?? range.startOffset;
-  const newEndContainer = normalizedEnd?.container ?? range.endContainer;
-  const newEndOffset = normalizedEnd?.offset ?? range.endOffset;
-
-  // Guard: skip if the selection already matches the normalized boundaries.
-  // Prevents Safari from entering an infinite selectionchange loop in RTL.
-  if (
-    range.startContainer === newStartContainer &&
-    range.startOffset === newStartOffset &&
-    range.endContainer === newEndContainer &&
-    range.endOffset === newEndOffset
-  ) {
-    return;
-  }
-
-  // Determine if the selection is backward (focus before anchor in document order).
-  // Range always has start <= end, but the user may be selecting in reverse.
-  const isBackward =
-    selection.anchorNode === range.endContainer &&
-    selection.anchorOffset === range.endOffset &&
-    selection.focusNode === range.startContainer &&
-    selection.focusOffset === range.startOffset;
-
-  if (isBackward) {
-    // Preserve backward direction: collapse to anchor (end), extend to focus (start)
-    const anchorContainer = normalizedEnd?.container ?? range.endContainer;
-    const anchorOffset = normalizedEnd?.offset ?? range.endOffset;
-    const focusContainer = normalizedStart?.container ?? range.startContainer;
-    const focusOffset = normalizedStart?.offset ?? range.startOffset;
-
-    selection.collapse(anchorContainer, anchorOffset);
-    selection.extend(focusContainer, focusOffset);
-  } else {
-    const updatedRange = range.startContainer.ownerDocument!.createRange();
-    updatedRange.setStart(newStartContainer, newStartOffset);
-    updatedRange.setEnd(newEndContainer, newEndOffset);
-    selection.removeAllRanges();
-    selection.addRange(updatedRange);
   }
 }
