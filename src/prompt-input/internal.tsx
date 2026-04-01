@@ -88,13 +88,12 @@ const InternalPromptInput = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('prompt-input');
-    const effectiveActionButtonAriaLabel = i18n(
-      'i18nStrings.actionButtonAriaLabel',
-      i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel
-    );
 
     const effectiveI18nStrings: PromptInputProps.I18nStrings = {
-      actionButtonAriaLabel: effectiveActionButtonAriaLabel,
+      actionButtonAriaLabel: i18n(
+        'i18nStrings.actionButtonAriaLabel',
+        i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel
+      ),
       menuErrorIconAriaLabel: i18n('i18nStrings.menuErrorIconAriaLabel', i18nStrings?.menuErrorIconAriaLabel),
       menuRecoveryText: i18n('i18nStrings.menuRecoveryText', i18nStrings?.menuRecoveryText),
       menuLoadingText: i18n('i18nStrings.menuLoadingText', i18nStrings?.menuLoadingText),
@@ -356,7 +355,7 @@ const InternalPromptInput = React.forwardRef(
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
-            ariaLabel={effectiveActionButtonAriaLabel}
+            ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}
             iconName={actionButtonIconName}
