@@ -10,12 +10,14 @@ import { getLogicalBoundingClientRect, getScrollInlineStart } from '@cloudscape-
 import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
 import {
   CellOffsets,
+  GroupHierarchyInfo,
   StickyColumnsCellState,
+  StickyColumnsGroupHeaderState,
   StickyColumnsProps,
   StickyColumnsState,
   StickyColumnsWrapperState,
 } from './interfaces';
-import { isCellStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils';
+import { isCellStatesEqual, isGroupHeaderStatesEqual, isWrapperStatesEqual, updateCellOffsets } from './utils';
 
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
@@ -37,6 +39,7 @@ export function useStickyColumns({
   visibleColumns,
   stickyColumnsFirst,
   stickyColumnsLast,
+  groupHierarchy,
 }: StickyColumnsProps): StickyColumnsModel {
   const store = useMemo(() => new StickyColumnsStore(), []);
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
@@ -54,6 +57,7 @@ export function useStickyColumns({
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
+        groupHierarchy,
       });
     }
   });
@@ -71,9 +75,10 @@ export function useStickyColumns({
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
+        groupHierarchy,
       });
     }
-  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
+  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns, groupHierarchy]);
 
   // Update wrapper styles imperatively to avoid unnecessary re-renders.
   useEffect(() => {
@@ -215,6 +220,92 @@ export function useStickyCellStyles({
   };
 }
 
+interface UseStickyGroupHeaderStylesProps {
+  stickyColumns: StickyColumnsModel;
+  groupId: string;
+  getClassName: (styles: null | StickyColumnsGroupHeaderState) => Record<string, boolean>;
+}
+
+interface StickyGroupHeaderStyles {
+  ref: React.RefCallback<HTMLElement>;
+  innerRef: React.RefCallback<HTMLElement>;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export function useStickyGroupHeaderStyles({
+  stickyColumns,
+  groupId,
+  getClassName,
+}: UseStickyGroupHeaderStylesProps): StickyGroupHeaderStyles {
+  const unsubscribeRef = useRef<null | (() => void)>(null);
+  const innerElementRef = useRef<null | HTMLElement>(null);
+
+  const refCallback = useCallback(
+    (thElement: null | HTMLElement) => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+
+      const selector = (state: StickyColumnsState) => state.groupHeaderState.get(groupId) ?? null;
+
+      const updateStyles = (
+        state: null | StickyColumnsGroupHeaderState,
+        prev: null | StickyColumnsGroupHeaderState
+      ) => {
+        if (isGroupHeaderStatesEqual(state, prev)) {
+          return;
+        }
+
+        const className = getClassName(state);
+        if (thElement) {
+          Object.keys(className).forEach(key => {
+            if (className[key]) {
+              thElement.classList.add(key);
+            } else {
+              thElement.classList.remove(key);
+            }
+          });
+          thElement.style.position = state?.position ?? '';
+          thElement.style.zIndex = state?.zIndex !== undefined && state?.zIndex !== '' ? `${state.zIndex}` : '';
+          thElement.style.insetInlineStart =
+            state?.offset.insetInlineStart !== undefined ? `${state.offset.insetInlineStart}px` : '';
+          thElement.style.insetInlineEnd =
+            state?.offset.insetInlineEnd !== undefined ? `${state.offset.insetInlineEnd}px` : '';
+          thElement.style.clipPath = state?.clipPath ?? '';
+        }
+
+        const innerEl = innerElementRef.current;
+        if (innerEl) {
+          innerEl.style.maxWidth = state?.maxWidth !== undefined && state?.maxWidth !== '' ? `${state.maxWidth}px` : '';
+          innerEl.style.insetInlineStart = state?.innerInsetInlineStart ?? '';
+          innerEl.style.insetInlineEnd = state?.innerInsetInlineEnd ?? '';
+        }
+      };
+
+      if (thElement) {
+        unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) => {
+          updateStyles(selector(newState), selector(prevState));
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [groupId, stickyColumns.store]
+  );
+
+  const innerRefCallback = useCallback((node: null | HTMLElement) => {
+    innerElementRef.current = node;
+  }, []);
+
+  const groupStyles = stickyColumns.store.get().groupHeaderState.get(groupId);
+  return {
+    ref: refCallback,
+    innerRef: innerRefCallback,
+    className: groupStyles ? clsx(getClassName(groupStyles)) : undefined,
+    style: groupStyles?.offset ?? undefined,
+  };
+}
+
 interface UpdateCellStylesProps {
   wrapper: HTMLElement;
   table: HTMLElement;
@@ -222,6 +313,7 @@ interface UpdateCellStylesProps {
   visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
+  groupHierarchy?: GroupHierarchyInfo[];
 }
 
 class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
@@ -235,7 +327,11 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private padInlineStart = false;
 
   constructor() {
-    super({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } });
+    super({
+      cellState: new Map(),
+      wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 },
+      groupHeaderState: new Map(),
+    });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -245,12 +341,15 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     if (hasStickyColumns || hadStickyColumns) {
       this.updateScroll(props);
       this.updateCellOffsets(props);
+      const cellState = this.generateCellStyles(props);
+      const groupHeaderState = this.generateGroupHeaderStyles(props, cellState);
       this.set(() => ({
-        cellState: this.generateCellStyles(props),
+        cellState,
         wrapperState: {
           scrollPaddingInlineStart: this.cellOffsets.stickyWidthInlineStart,
           scrollPaddingInlineEnd: this.cellOffsets.stickyWidthInlineEnd,
         },
+        groupHeaderState,
       }));
     }
   }
@@ -305,6 +404,149 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       });
       return acc;
     }, new Map<PropertyKey, StickyColumnsCellState>());
+  };
+
+  // Computes group header sticky state using live bounding rects from the wrapper
+  // and group <th> elements. This is the hybrid approach: the store has the correct
+  // wrapper ref (fixing the dual-thead bug) and runs synchronously (fixing frame lag),
+  // while using live DOM measurements for dynamic maxWidth (matching the visual behavior
+  // of the original per-cell computeVisibleWidth).
+  private generateGroupHeaderStyles = (
+    props: UpdateCellStylesProps,
+    cellState: Map<PropertyKey, StickyColumnsCellState>
+  ): Map<string, StickyColumnsGroupHeaderState> => {
+    const groupHeaderState = new Map<string, StickyColumnsGroupHeaderState>();
+    if (!props.groupHierarchy || !this.isEnabled(props)) {
+      return groupHeaderState;
+    }
+
+    const wrapperRect = props.wrapper.getBoundingClientRect();
+    const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
+    const firstRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
+
+    for (const group of props.groupHierarchy) {
+      const firstChildState = cellState.get(group.firstChildColumnId);
+      const lastChildState = cellState.get(group.lastChildColumnId);
+
+      const isStickyFirst = firstChildState?.offset.insetInlineStart !== undefined;
+      const isStickyLast = lastChildState?.offset.insetInlineEnd !== undefined;
+      const hasStickyLastChildren = group.childColumnIds.some(
+        id => cellState.get(id)?.offset.insetInlineEnd !== undefined
+      );
+
+      if (!isStickyFirst && !isStickyLast) {
+        continue;
+      }
+
+      const thEl = props.cells.get(group.groupId);
+      if (!thEl) {
+        continue;
+      }
+      const thRect = thEl.getBoundingClientRect();
+
+      const stickyLeft = firstChildState?.offset.insetInlineStart ?? 0;
+
+      // Compute offset
+      const offset: { insetInlineStart?: number; insetInlineEnd?: number } = {};
+      if (isStickyFirst) {
+        offset.insetInlineStart = stickyLeft;
+      }
+      if (isStickyLast) {
+        offset.insetInlineEnd = lastChildState!.offset.insetInlineEnd;
+      }
+
+      // Dynamic maxWidth using live bounding rects — ported from computeVisibleWidth
+      let maxWidth: number;
+      if (hasStickyLastChildren) {
+        // For sticky-last: visible portion from the right, clamped to visible part of <th>
+        const visibleFromRight = Math.max(
+          0,
+          Math.min(thRect.right, wrapperRect.right) - Math.max(thRect.left, wrapperRect.left)
+        );
+        // Floor: must always cover stuck children
+        let leftmostStuckLastLeft = Infinity;
+        for (const id of group.childColumnIds) {
+          const cs = cellState.get(id);
+          if (cs?.offset.insetInlineEnd !== undefined) {
+            const childEl = props.cells.get(id);
+            if (childEl) {
+              leftmostStuckLastLeft = Math.min(leftmostStuckLastLeft, childEl.getBoundingClientRect().left);
+            }
+          }
+        }
+        const stuckChildrenWidth =
+          leftmostStuckLastLeft !== Infinity ? Math.max(0, thRect.right - leftmostStuckLastLeft) : 0;
+        maxWidth = Math.max(stuckChildrenWidth, visibleFromRight);
+      } else {
+        // For sticky-first: compute floor from stuck children and ceiling from visible area
+        const paddingStart = parseFloat(getComputedStyle(thEl).paddingInlineStart) || 0;
+        const screenLeft = Math.max(thRect.left, wrapperRect.left + stickyLeft) + paddingStart;
+
+        let floor = 0;
+        for (const id of group.childColumnIds) {
+          const cs = cellState.get(id);
+          if (cs?.offset.insetInlineStart !== undefined) {
+            const childEl = props.cells.get(id);
+            if (childEl) {
+              floor = Math.max(floor, childEl.getBoundingClientRect().right - screenLeft);
+            }
+          }
+        }
+
+        // Find last child element for ceiling
+        const lastChildEl = props.cells.get(group.lastChildColumnId);
+        const ceilingRight = Math.min(
+          thRect.right,
+          lastChildEl ? lastChildEl.getBoundingClientRect().right : thRect.right,
+          wrapperRect.right
+        );
+        maxWidth = Math.max(floor, Math.max(0, ceilingRight - screenLeft));
+      }
+
+      // Determine isStuck for clip-path (position is always sticky when group has sticky children)
+      const isStuckFirst = isStickyFirst && stickyLeft > 0 && this.isStuckToTheInlineStart;
+      const isStuckLast = hasStickyLastChildren;
+
+      // Clip-path to prevent the <th> from covering adjacent columns
+      let clipPath = '';
+      if (isStuckFirst) {
+        const paddingStart = parseFloat(getComputedStyle(thEl).paddingInlineStart) || 0;
+        const screenLeft = Math.max(thRect.left, wrapperRect.left + stickyLeft) + paddingStart;
+        const visibleRight = screenLeft + maxWidth;
+        const trimRight = Math.max(0, thRect.right - visibleRight);
+        clipPath = trimRight > 0 ? `inset(0 ${trimRight}px 0 -24px)` : '';
+      } else if (isStuckLast) {
+        const visibleLeft = thRect.right - maxWidth;
+        const trimLeft = Math.max(0, visibleLeft - thRect.left);
+        clipPath = trimLeft > 0 ? `inset(0 -24px 0 ${trimLeft}px)` : '';
+      }
+
+      // Boundary flags
+      const lastChildIndex = props.visibleColumns.indexOf(group.lastChildColumnId);
+      const firstChildIndex = props.visibleColumns.indexOf(group.firstChildColumnId);
+      const lastInsetInlineStart =
+        isStickyFirst && this.isStuckToTheInlineStart && lastChildIndex === lastLeftStickyColumnIndex;
+      const lastInsetInlineEnd =
+        isStickyLast && this.isStuckToTheInlineEnd && firstChildIndex === firstRightStickyColumnIndex;
+
+      // Inner wrapper positioning
+      const innerInsetInlineStart = hasStickyLastChildren ? 'auto' : stickyLeft > 0 ? `${stickyLeft}px` : '';
+      const innerInsetInlineEnd = hasStickyLastChildren ? '0' : '';
+
+      groupHeaderState.set(group.groupId, {
+        offset,
+        position: 'sticky',
+        zIndex: 800,
+        maxWidth: maxWidth >= thEl.offsetWidth ? '' : maxWidth,
+        clipPath,
+        innerInsetInlineStart,
+        innerInsetInlineEnd,
+        lastInsetInlineStart,
+        lastInsetInlineEnd,
+      });
+    }
+
+    return groupHeaderState;
   };
 
   private updateCellOffsets = (props: UpdateCellStylesProps): void => {
