@@ -912,6 +912,24 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return;
     }
 
+    // A new trigger appeared (e.g. user typed a trigger char, possibly replacing a selection).
+    // Position the caret after the trigger character so the user can start typing a filter.
+    const newTrigger =
+      orderedTokens &&
+      prevOrderedTokens &&
+      orderedTokens.find(t => isTriggerToken(t) && !prevOrderedTokens.some(p => isTriggerToken(p) && p.id === t.id));
+    if (newTrigger && isTriggerToken(newTrigger) && cc) {
+      renderTokens(orderedTokens, editableElementRef.current);
+      lastRenderedTokensRef.current = orderedTokens;
+      const triggerIndex = orderedTokens.indexOf(newTrigger);
+      const posAfterTriggerChar =
+        (triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0) +
+        TOKEN_LENGTHS.trigger(newTrigger.value);
+      cc.setPosition(posAfterTriggerChar);
+      adjustInputHeight();
+      return;
+    }
+
     if (
       lastRenderedTokensRef.current &&
       orderedTokens &&
