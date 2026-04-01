@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  spaceAlertVertical: {
+    description: 'The vertical padding inside alert components.',
+    public: true,
+    themeable: true,
+  },
   spaceScaled2xL: { sassName: '$space-scaled-2x-l' },
   spaceScaled2xM: { sassName: '$space-scaled-2x-m' },
   spaceScaled2xNone: { sassName: '$space-scaled-2x-none' },
