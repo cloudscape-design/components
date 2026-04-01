@@ -11,18 +11,15 @@ import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import Token from '../../token/internal';
+import { calculateTokenPosition, CaretController, getOwnerSelection, TOKEN_LENGTHS } from '../core/caret-controller';
+import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
 import {
-  calculateTokenPosition,
-  CaretController,
   findContainingReference,
-  getOwnerSelection,
   isNonTypeablePosition,
   normalizeCollapsedCaret,
   normalizeSelection,
   setMouseDown,
-  TOKEN_LENGTHS,
-} from '../core/caret-controller';
-import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
+} from '../core/caret-utils';
 import { NEXT_TICK_TIMEOUT } from '../core/constants';
 import { createParagraph, findAllParagraphs, normalizeCaretIntoTrigger } from '../core/dom-utils';
 import { handleClipboardEvent, handleEditableKeyDown } from '../core/event-handlers';
