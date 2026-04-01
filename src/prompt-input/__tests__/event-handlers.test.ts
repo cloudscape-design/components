@@ -2062,6 +2062,40 @@ describe('handleReferenceTokenDeletion - non-collapsed selection cleanup', () =>
     handleReferenceTokenDeletion(event, false, el, mockState, undefined, undefined, null);
     expect(event.isDefaultPrevented()).toBe(true);
   });
+
+  test('merges remaining content from end paragraph into start paragraph', () => {
+    const firstP = addParagraph(el, 'Line A');
+    addParagraph(el, 'Line B');
+    const lastP = addParagraph(el, 'Line C');
+    // Select from middle of first to middle of last: "e A\nLine B\nLin"
+    setSelection(firstP.firstChild!, 3, lastP.firstChild!, 3);
+    const event = makeKeyboardEvent('Backspace');
+    const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
+    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
+    // Should merge: "Lin" + "e C" = "Line C" in one paragraph
+    const paragraphs = el.querySelectorAll('p');
+    expect(paragraphs).toHaveLength(1);
+    expect(paragraphs[0].textContent).toBe('Line C');
+  });
+
+  test('preserves paragraphs outside the selection range', () => {
+    addParagraph(el, 'Keep me');
+    const deleteStart = addParagraph(el, 'Delete this');
+    const deleteEnd = addParagraph(el, 'And this');
+    addParagraph(el, 'Keep me too');
+    // Select all of the two middle paragraphs
+    setSelection(deleteStart.firstChild!, 0, deleteEnd.firstChild!, deleteEnd.firstChild!.textContent!.length);
+    const event = makeKeyboardEvent('Backspace');
+    const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
+    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    expect(event.isDefaultPrevented()).toBe(true);
+    const paragraphs = el.querySelectorAll('p');
+    expect(paragraphs.length).toBeGreaterThanOrEqual(2);
+    const texts = Array.from(paragraphs).map(p => p.textContent);
+    expect(texts).toContain('Keep me');
+    expect(texts).toContain('Keep me too');
+  });
 });
 
 describe('handleReferenceTokenDeletion - announcer with no label', () => {

@@ -442,6 +442,21 @@ describe('getCaretPositionAfterTokenRemoval', () => {
     const tokens = [text('hello'), ref('r1', 'Alice', 'alice', 'mentions')];
     expect(getCaretPositionAfterTokenRemoval(3, tokens, tokens)).toBeNull();
   });
+
+  test('detects divergence when consecutive references have different IDs', () => {
+    // [ref-A, ref-B, ref-C] → [ref-A, ref-C] (middle deleted)
+    const prev = [ref('r1', 'A', 'a', 'm'), ref('r2', 'B', 'b', 'm'), ref('r3', 'C', 'c', 'm')];
+    const next = [ref('r1', 'A', 'a', 'm'), ref('r3', 'C', 'c', 'm')];
+    // Divergence at index 1 (ref-B vs ref-C), diffPosition = 1 (one REFERENCE before)
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+  });
+
+  test('returns end position when last reference is removed from consecutive refs', () => {
+    const prev = [ref('r1', 'A', 'a', 'm'), ref('r2', 'B', 'b', 'm')];
+    const next = [ref('r1', 'A', 'a', 'm')];
+    // Different lengths → divergence at index 1 after ref-A, diffPosition = 1
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+  });
 });
 
 describe('detectTriggersInText - trigger char breaks filter text', () => {
