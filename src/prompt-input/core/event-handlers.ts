@@ -47,7 +47,6 @@ export interface KeyboardHandlerProps {
   getMenuItemsHandlers: () => MenuItemsHandlers | null;
   getMenuStatusType?: () => PromptInputProps.MenuDefinition['statusType'];
   closeMenu: () => void;
-  menuIsOpen: boolean;
 
   // Callbacks
   onAction?: (detail: PromptInputProps.ActionDetail) => void;
@@ -159,7 +158,7 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
       }
     },
     onSpace: () => {
-      if (editableElement && handleSpaceAfterClosedTrigger(event, editableElement, props.menuIsOpen, caretController)) {
+      if (editableElement && handleSpaceAfterClosedTrigger(event, editableElement, menuOpen, caretController)) {
         return;
       }
       if (menuOpen && menuItemsHandlers && menuItemsState) {
@@ -432,7 +431,6 @@ export function handleReferenceTokenDeletion(
   return true;
 }
 
-/** Handles left/right arrow key navigation, jumping over atomic reference tokens. */
 /** If the caret is inside a reference's caret-spot, normalizes it to the paragraph level. */
 function normalizeCaretOutOfReference(
   container: Node,
@@ -717,12 +715,12 @@ export function handleSpaceAfterClosedTrigger(
 
   event.preventDefault();
 
-  const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
-  insertAfter(spaceNode, triggerElement);
-
   if (caretController) {
     caretController.capture();
   }
+
+  const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
+  insertAfter(spaceNode, triggerElement);
 
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));
 

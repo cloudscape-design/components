@@ -349,12 +349,12 @@ describe('detectTriggerTransition', () => {
     expect(pos).toBe(2);
   });
 
-  test('detects space added before existing text after trigger', () => {
+  test('returns 0 for space added before existing text after trigger', () => {
     const old = [trigger('bob', 't1'), text('rest')];
     const next = [trigger('bob', 't1'), text(' rest')];
     const pos = detectTriggerTransition(old, next);
-    // Caret after space: trigger @bob (4) + 1 = 5
-    expect(pos).toBe(5);
+    // Not a trigger transition — handled by handleSpaceAfterClosedTrigger
+    expect(pos).toBe(0);
   });
 
   test('does not match filter-cleared when next token is space-prefixed text (split case)', () => {
