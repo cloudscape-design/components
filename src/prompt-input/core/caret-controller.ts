@@ -15,6 +15,11 @@ import {
 } from './dom-utils';
 import { isBreakTextToken, isTextNode, isTextToken, isTriggerToken } from './type-guards';
 
+/** Returns the Selection from the element's owning window, supporting iframe contexts. */
+export function getOwnerSelection(element: Node): Selection | null {
+  return (element.ownerDocument?.defaultView ?? window).getSelection();
+}
+
 /** Logical lengths for each token type, used for cursor position calculations. */
 export const TOKEN_LENGTHS = {
   REFERENCE: 1,
@@ -85,7 +90,7 @@ export class CaretController {
 
   /** Returns the current logical caret position from the DOM selection. */
   getPosition(): number {
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (!selection?.rangeCount) {
       return 0;
     }
@@ -100,7 +105,7 @@ export class CaretController {
 
   /** Finds the trigger element at the current caret position, if any. */
   findActiveTrigger(): HTMLElement | null {
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (!selection?.rangeCount) {
       return null;
     }
@@ -145,7 +150,8 @@ export class CaretController {
    * @param end optional logical end position for range selection
    */
   setPosition(start: number, end?: number): void {
-    if (document.activeElement !== this.element) {
+    const ownerDocument = this.element.ownerDocument;
+    if (ownerDocument.activeElement !== this.element) {
       this.element.focus();
     }
 
@@ -155,12 +161,12 @@ export class CaretController {
       return;
     }
 
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (!selection) {
       return;
     }
 
-    const range = document.createRange();
+    const range = ownerDocument.createRange();
     range.setStart(startLocation.node, startLocation.offset);
 
     if (end !== undefined && end !== start) {
@@ -189,7 +195,7 @@ export class CaretController {
       rangeRect.right > elementRect.right;
 
     if (isOutOfView) {
-      const tempSpan = document.createElement('span');
+      const tempSpan = ownerDocument.createElement('span');
       range.insertNode(tempSpan);
       tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       tempSpan.remove();
@@ -209,12 +215,12 @@ export class CaretController {
       selection.addRange(range);
     }
 
-    document.dispatchEvent(new Event('selectionchange'));
+    ownerDocument.dispatchEvent(new Event('selectionchange'));
   }
 
   /** Captures the current caret/selection state for later restoration. */
   capture(): void {
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (!selection?.rangeCount) {
       this.state = { start: 0, end: undefined, isValid: false };
       return;
@@ -239,7 +245,7 @@ export class CaretController {
 
   /** Restores the caret to the previously captured state. */
   restore(offset = 0): void {
-    if (!this.state.isValid || document.activeElement !== this.element) {
+    if (!this.state.isValid || this.element.ownerDocument.activeElement !== this.element) {
       return;
     }
 
@@ -253,7 +259,7 @@ export class CaretController {
 
   /** Selects all content in the element. */
   selectAll(): void {
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (!selection) {
       return;
     }
@@ -262,7 +268,7 @@ export class CaretController {
       return;
     }
 
-    const range = document.createRange();
+    const range = this.element.ownerDocument.createRange();
     range.selectNodeContents(this.element);
     selection.removeAllRanges();
     selection.addRange(range);
@@ -270,11 +276,11 @@ export class CaretController {
 
   /** Positions the caret at the end of a text node. */
   positionAfterText(textNode: Text): void {
-    const range = document.createRange();
+    const range = this.element.ownerDocument.createRange();
     range.setStart(textNode, textNode.textContent?.length || 0);
     range.collapse(true);
 
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(this.element);
     if (selection) {
       selection.removeAllRanges();
       selection.addRange(range);
@@ -581,7 +587,7 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
     return;
   }
 
-  const newRange = document.createRange();
+  const newRange = container.ownerDocument!.createRange();
   newRange.setStart(paragraph, newOffset);
   newRange.collapse(true);
   selection.removeAllRanges();
@@ -672,7 +678,7 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
     selection.collapse(anchorContainer, anchorOffset);
     selection.extend(focusContainer, focusOffset);
   } else {
-    const updatedRange = document.createRange();
+    const updatedRange = range.startContainer.ownerDocument!.createRange();
     updatedRange.setStart(newStartContainer, newStartOffset);
     updatedRange.setEnd(newEndContainer, newEndOffset);
     selection.removeAllRanges();

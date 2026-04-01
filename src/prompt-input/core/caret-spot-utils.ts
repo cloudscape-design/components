@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { getOwnerSelection } from './caret-controller';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import { insertAfter, stripZeroWidthCharacters } from './dom-utils';
 import { PortalContainer } from './token-renderer';
@@ -18,13 +19,13 @@ function extractFromSpot(spot: HTMLElement, trackCaret: boolean): Text | null {
 
   let caretWasHere = false;
   if (trackCaret) {
-    const selection = window.getSelection();
+    const selection = getOwnerSelection(spot);
     if (selection?.rangeCount && spot.contains(selection.getRangeAt(0).startContainer)) {
       caretWasHere = true;
     }
   }
 
-  const textNode = document.createTextNode(extraText);
+  const textNode = spot.ownerDocument.createTextNode(extraText);
   const wrapper = spot.parentElement!;
   const isBefore = spot.getAttribute('data-type') === ElementType.CaretSpotBefore;
 

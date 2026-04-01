@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { isHTMLElement } from '../../internal/utils/dom';
+import { getOwnerSelection } from './caret-controller';
 import { ElementType, SPECIAL_CHARS } from './constants';
 import { isBRElement, isTextNode } from './type-guards';
 
@@ -42,15 +43,15 @@ export function insertAfter(newNode: Node, referenceNode: Node): void {
 }
 
 /** Creates a styled paragraph element for the contentEditable container. */
-export function createParagraph(): HTMLParagraphElement {
-  const p = document.createElement('p');
+export function createParagraph(ownerDoc: Document = document): HTMLParagraphElement {
+  const p = ownerDoc.createElement('p');
   p.className = styles.paragraph;
   return p;
 }
 
 /** Creates a trailing BR element used as a placeholder in empty paragraphs. */
-export function createTrailingBreak(): HTMLBRElement {
-  const br = document.createElement('br');
+export function createTrailingBreak(ownerDoc: Document = document): HTMLBRElement {
+  const br = ownerDoc.createElement('br');
   br.setAttribute('data-id', ElementType.TrailingBreak);
   return br;
 }
@@ -193,7 +194,7 @@ export function findAdjacentToken(
  * @param cancelledIds Set of trigger IDs that are cancelled — caret won't be nudged into these.
  */
 export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelledIds?: Set<string>): void {
-  const selection = window.getSelection();
+  const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
     return;
   }

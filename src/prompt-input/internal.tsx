@@ -282,7 +282,7 @@ const InternalPromptInput = React.forwardRef(
             const [start, end] = args;
             const actualEnd = end ?? undefined;
             caretControllerRef.current.setPosition(start ?? 0, actualEnd);
-            document.dispatchEvent(new Event('selectionchange'));
+            editableElementRef.current?.ownerDocument.dispatchEvent(new Event('selectionchange'));
           } else {
             textareaRef.current?.setSelectionRange(...args);
           }
