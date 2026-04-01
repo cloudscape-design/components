@@ -65,10 +65,10 @@ export function createEditableState(): EditableState {
 /**
  * Determines if the token array changed structurally and needs a full DOM re-render.
  *
- * Only compares token types and IDs — NOT text or trigger values. Value changes from
- * normal typing are already reflected in the DOM by the browser's native editing.
- * Re-rendering on every value change would destroy the cursor position. Structural changes (token added/removed/reordered, reference
- * swapped) do require a re-render since the DOM element structure must change.
+ * Compares token types, IDs, and text values. During normal typing the extracted
+ * tokens already match the DOM, so text comparisons won't trigger unnecessary
+ * re-renders. External updates (parent replacing tokens) will be detected by
+ * the value difference and trigger a re-render.
  */
 function shouldRerender(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -98,6 +98,12 @@ function shouldRerender(
 
     if (isTriggerToken(oldToken) && isTriggerToken(newToken)) {
       if (oldToken.id !== newToken.id) {
+        return true;
+      }
+    }
+
+    if (isTextToken(oldToken) && isTextToken(newToken)) {
+      if (oldToken.value !== newToken.value) {
         return true;
       }
     }
