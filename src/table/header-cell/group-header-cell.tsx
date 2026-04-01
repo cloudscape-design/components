@@ -43,7 +43,6 @@ export interface TableGroupHeaderCellProps {
   resizerTooltipText?: string;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
-  spansRows?: boolean;
   isLastChildOfGroup?: boolean;
   columnGroupId?: string;
   isLastInRow?: boolean;
@@ -75,7 +74,6 @@ export function TableGroupHeaderCell({
   resizerTooltipText,
   variant,
   tableVariant,
-  spansRows,
   isLastChildOfGroup,
   columnGroupId,
 }: TableGroupHeaderCellProps) {
@@ -181,15 +179,15 @@ export function TableGroupHeaderCell({
     }
 
     if (isStuckFirst) {
-      const visibleRight = screenLeft + maxWidth;
-      const trimRight = Math.max(0, thRect.right - visibleRight);
-      thEl.style.clipPath = trimRight > 0 ? `inset(0 ${trimRight}px 0 -24px)` : '';
+      // const visibleRight = screenLeft + maxWidth;
+      // const trimRight = Math.max(0, thRect.right - visibleRight);
+      // thEl.style.clipPath = trimRight > 0 ? `inset(0 ${trimRight}px 0 -24px)` : '';
     } else if (isStuckLast) {
-      const visibleLeft = thRect.right - maxWidth;
-      const trimLeft = Math.max(0, visibleLeft - thRect.left);
-      thEl.style.clipPath = trimLeft > 0 ? `inset(0 -24px 0 ${trimLeft}px)` : '';
+      // const visibleLeft = thRect.right - maxWidth;
+      // const trimLeft = Math.max(0, visibleLeft - thRect.left);
+      // thEl.style.clipPath = trimLeft > 0 ? `inset(0 -24px 0 ${trimLeft}px)` : '';
     } else {
-      thEl.style.clipPath = '';
+      // thEl.style.clipPath = '';
     }
 
     if (isStuckFirst) {
@@ -365,7 +363,6 @@ export function TableGroupHeaderCell({
       colSpan={colspan}
       rowSpan={rowspan}
       scope="colgroup"
-      spansRows={spansRows}
       isLastChildOfGroup={isLastChildOfGroup}
       columnGroupId={columnGroupId}
     >

@@ -40,7 +40,6 @@ export function TableHeaderSelectionCell({
       colIndex={0}
       focusedComponent={focusedComponent}
       ariaLabel={selectAllProps?.selectionGroupLabel}
-      spansRows={!!props.rowSpan && props.rowSpan > 1}
       {...getAnalyticsMetadataAttribute({
         action: selectAllProps?.checked ? 'deselectAll' : 'selectAll',
       })}
