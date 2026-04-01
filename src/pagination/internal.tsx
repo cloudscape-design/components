@@ -17,6 +17,7 @@ import { getBaseProps } from '../internal/base-component';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { usePrevious } from '../internal/hooks/use-previous';
 import InternalPopover from '../popover/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
@@ -120,7 +121,7 @@ const InternalPagination = React.forwardRef(
     const baseProps = getBaseProps(rest);
     const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
     const [jumpToPageValue, setJumpToPageValue] = useState(currentPageIndex?.toString());
-    const prevLoadingRef = React.useRef(jumpToPage?.loading);
+    const previousLoading = usePrevious(jumpToPage?.loading);
     const jumpToPageInputRef = useRef<HTMLInputElement>(null);
     const [hasError, setHasError] = useState(false);
 
@@ -133,11 +134,10 @@ const InternalPagination = React.forwardRef(
 
     // Sync input with currentPageIndex after loading completes
     React.useEffect(() => {
-      if (prevLoadingRef.current && !jumpToPage?.loading) {
+      if (previousLoading && !jumpToPage?.loading) {
         setJumpToPageValue(String(currentPageIndex));
       }
-      prevLoadingRef.current = jumpToPage?.loading;
-    }, [jumpToPage?.loading, currentPageIndex]);
+    }, [previousLoading, jumpToPage?.loading, currentPageIndex]);
 
     const paginationLabel = ariaLabels?.paginationLabel ?? '';
     const nextPageLabel = i18n('ariaLabels.nextPageLabel', ariaLabels?.nextPageLabel) ?? '';
