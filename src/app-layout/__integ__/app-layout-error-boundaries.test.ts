@@ -67,8 +67,10 @@ describe('Visual refresh toolbar only', () => {
         `should handle error boundary in ${areaName}`,
         setupTest({ hasParentErrorBoundary: 'true' }, async page => {
           await page.click(selector);
-          await page.expectConsoleErrors();
-          await page.expectContentAreaStaysFunctional();
+          await page.waitForAssertion(async () => {
+            await page.expectConsoleErrors();
+            await page.expectContentAreaStaysFunctional();
+          });
         })
       );
     });
@@ -80,8 +82,10 @@ describe('Visual refresh toolbar only', () => {
         `should handle error boundary in ${areaName}`,
         setupTest({ hasParentErrorBoundary: 'false' }, async page => {
           await page.click(selector);
-          await page.expectConsoleErrors();
-          await page.expectContentAreaStaysFunctional();
+          await page.waitForAssertion(async () => {
+            await page.expectConsoleErrors();
+            await page.expectContentAreaStaysFunctional();
+          });
         })
       );
     });
