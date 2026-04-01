@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -49,6 +49,7 @@ import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
 import { useStickyColumns } from './sticky-columns';
+import { GroupHierarchyInfo } from './sticky-columns/interfaces';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
 import {
@@ -106,6 +107,37 @@ function TableColGroup({
       })}
     </colgroup>
   );
+}
+
+function buildGroupHierarchy(hierarchicalStructure: {
+  rows: Array<{ columns: Array<{ isGroup: boolean; id: string; parentGroupIds: string[] }> }>;
+}): GroupHierarchyInfo[] {
+  if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+    return [];
+  }
+  const hierarchy: GroupHierarchyInfo[] = [];
+  const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+  for (let rowIndex = 0; rowIndex < hierarchicalStructure.rows.length - 1; rowIndex++) {
+    for (const col of hierarchicalStructure.rows[rowIndex].columns) {
+      if (col.isGroup) {
+        const childColumnIds: PropertyKey[] = [];
+        for (const leafCol of leafRow.columns) {
+          if (!leafCol.isGroup && leafCol.parentGroupIds.includes(col.id)) {
+            childColumnIds.push(leafCol.id);
+          }
+        }
+        if (childColumnIds.length > 0) {
+          hierarchy.push({
+            groupId: col.id,
+            childColumnIds,
+            firstChildColumnId: childColumnIds[0],
+            lastChildColumnId: childColumnIds[childColumnIds.length - 1],
+          });
+        }
+      }
+    }
+  }
+  return hierarchy;
 }
 
 type InternalTableProps<T> = SomeRequired<
@@ -416,10 +448,16 @@ const InternalTable = React.forwardRef(
       visibleColumnIdsWithSelection.push(columnId);
     }
 
+    const groupHierarchy = useMemo(
+      () => (hierarchicalStructure ? buildGroupHierarchy(hierarchicalStructure) : undefined),
+      [hierarchicalStructure]
+    );
+
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
+      groupHierarchy,
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);

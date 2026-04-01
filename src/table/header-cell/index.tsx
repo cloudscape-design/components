@@ -224,6 +224,8 @@ export function TableHeaderCell<ItemType>({
           ariaLabelledby={headerId}
           minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           roleDescription={i18n('ariaLabels.resizerRoleDescription', resizerRoleDescription)}
+          // TODO: Replace with this when strings are available
+          // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
         />
