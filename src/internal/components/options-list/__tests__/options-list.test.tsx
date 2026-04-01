@@ -57,6 +57,15 @@ test('supports ariaLabelledby', () => {
   expect(container.querySelector('[role=listbox]')).toHaveAttribute('aria-labelledby', 'someid');
 });
 
+test('supports ariaRequired', () => {
+  const container = renderList(
+    <OptionsList open={true} statusType="pending" ariaRequired={true}>
+      <div>Option</div>
+    </OptionsList>
+  );
+  expect(container.querySelector('[role=listbox]')).toHaveAttribute('aria-required', 'true');
+});
+
 test('onLoadMore fires when dropdown opens and its bottom is on the screen', () => {
   const onLoadMore = jest.fn();
   const { rerender } = render(
