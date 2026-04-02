@@ -319,11 +319,11 @@ const InternalPagination = React.forwardRef(
                   }}
                 />
               </div>
-              {hasError ? (
+              {hasError && !jumpToPage?.loading ? (
                 <InternalPopover
                   size="medium"
                   dismissButton={false}
-                  __visible={hasError && !jumpToPage?.loading}
+                  __visible={true}
                   content={jumpToPageError}
                   position="bottom"
                   triggerType="custom"
