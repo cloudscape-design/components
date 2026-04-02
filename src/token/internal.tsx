@@ -13,6 +13,7 @@ import LiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
 import DismissButton from './dismiss-button';
 import { TokenProps } from './interfaces';
+import { getTokenRootStyles } from './styles';
 
 import legacyTestingStyles from '../token-group/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -49,6 +50,7 @@ function InternalToken({
   ...restProps
 }: InternalTokenProps) {
   const baseProps = getBaseProps(restProps);
+  const tokenRootStyleProps = getTokenRootStyles(restProps.style);
   const labelContainerRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -138,6 +140,7 @@ function InternalToken({
           !isInline && !onDismiss && styles['token-box-without-dismiss'],
           disableInnerPadding && styles['disable-padding']
         )}
+        style={tokenRootStyleProps}
       >
         <Option
           className={clsx(isInline && styles['token-option-inline'])}

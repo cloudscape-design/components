@@ -114,6 +114,31 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthAlertBlockStart: {
+    description: 'The block-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertBlockEnd: {
+    description: 'The block-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineStart: {
+    description: 'The inline-start border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthAlertInlineEnd: {
+    description: 'The inline-end border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthCard: {
+    description: 'The border width of a card.',
+    public: true,
+    themeable: true,
+  },
   borderWidthButton: {
     description: 'The border width of buttons.',
     public: true,
@@ -161,6 +186,16 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthIconLarge: {
     description: 'The visual stroke width of large icons.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusCardDefault: {
+    description: 'The border radius of default cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusCardEmbedded: {
+    description: 'The border radius of embedded cards.',
     public: true,
     themeable: true,
   },

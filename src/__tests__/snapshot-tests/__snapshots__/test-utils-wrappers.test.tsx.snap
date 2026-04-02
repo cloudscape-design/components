@@ -37,6 +37,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
@@ -52,6 +53,7 @@ import HelpPanelWrapper from './help-panel';
 import HotspotWrapper from './hotspot';
 import IconWrapper from './icon';
 import InputWrapper from './input';
+import ItemCardWrapper from './item-card';
 import KeyValuePairsWrapper from './key-value-pairs';
 import LineChartWrapper from './line-chart';
 import LinkWrapper from './link';
@@ -127,6 +129,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
@@ -142,6 +145,7 @@ export { HelpPanelWrapper };
 export { HotspotWrapper };
 export { IconWrapper };
 export { InputWrapper };
+export { ItemCardWrapper };
 export { KeyValuePairsWrapper };
 export { LineChartWrapper };
 export { LinkWrapper };
@@ -976,6 +980,34 @@ findAllDrawers(selector?: string): Array<DrawerWrapper>;
  */
 findClosestDrawer(): DrawerWrapper | null;
 /**
+ * Returns the wrapper of the first Dropdown that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Dropdown.
+ * If no matching Dropdown is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DropdownWrapper | null}
+ */
+findDropdown(selector?: string): DropdownWrapper | null;
+
+/**
+ * Returns an array of Dropdown wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Dropdowns inside the current wrapper.
+ * If no matching Dropdown is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DropdownWrapper>}
+ */
+findAllDropdowns(selector?: string): Array<DropdownWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Dropdown for the current element,
+ * or the element itself if it is an instance of Dropdown.
+ * If no Dropdown is found, returns \`null\`.
+ *
+ * @returns {DropdownWrapper | null}
+ */
+findClosestDropdown(): DropdownWrapper | null;
+/**
  * Returns the wrapper of the first ErrorBoundary that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first ErrorBoundary.
  * If no matching ErrorBoundary is found, returns \`null\`.
@@ -1395,6 +1427,34 @@ findAllInputs(selector?: string): Array<InputWrapper>;
  * @returns {InputWrapper | null}
  */
 findClosestInput(): InputWrapper | null;
+/**
+ * Returns the wrapper of the first ItemCard that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ItemCard.
+ * If no matching ItemCard is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ItemCardWrapper | null}
+ */
+findItemCard(selector?: string): ItemCardWrapper | null;
+
+/**
+ * Returns an array of ItemCard wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ItemCards inside the current wrapper.
+ * If no matching ItemCard is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ItemCardWrapper>}
+ */
+findAllItemCards(selector?: string): Array<ItemCardWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ItemCard for the current element,
+ * or the element itself if it is an instance of ItemCard.
+ * If no ItemCard is found, returns \`null\`.
+ *
+ * @returns {ItemCardWrapper | null}
+ */
+findClosestItemCard(): ItemCardWrapper | null;
 /**
  * Returns the wrapper of the first KeyValuePairs that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first KeyValuePairs.
@@ -3023,6 +3083,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findDropdown = function(selector) {
+  let rootSelector = \`.\${DropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DropdownWrapper && DropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DropdownWrapper.rootSelector}, .\${DropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllDropdowns = function(selector) {
+  return this.findAllComponents(DropdownWrapper, selector);
+};
 ElementWrapper.prototype.findErrorBoundary = function(selector) {
   let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
   if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
@@ -3217,6 +3290,19 @@ ElementWrapper.prototype.findInput = function(selector) {
 
 ElementWrapper.prototype.findAllInputs = function(selector) {
   return this.findAllComponents(InputWrapper, selector);
+};
+ElementWrapper.prototype.findItemCard = function(selector) {
+  let rootSelector = \`.\${ItemCardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ItemCardWrapper && ItemCardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ItemCardWrapper.rootSelector}, .\${ItemCardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ItemCardWrapper);
+};
+
+ElementWrapper.prototype.findAllItemCards = function(selector) {
+  return this.findAllComponents(ItemCardWrapper, selector);
 };
 ElementWrapper.prototype.findKeyValuePairs = function(selector) {
   let rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
@@ -3944,6 +4030,11 @@ ElementWrapper.prototype.findClosestDrawer = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(DrawerWrapper);
 };
+ElementWrapper.prototype.findClosestDropdown = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DropdownWrapper);
+};
 ElementWrapper.prototype.findClosestErrorBoundary = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4018,6 +4109,11 @@ ElementWrapper.prototype.findClosestInput = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(InputWrapper);
+};
+ElementWrapper.prototype.findClosestItemCard = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ItemCardWrapper);
 };
 ElementWrapper.prototype.findClosestKeyValuePairs = function() {
   // casting to 'any' is needed to avoid this issue with generics
@@ -4291,6 +4387,7 @@ import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
 import DrawerWrapper from './drawer';
+import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
 import ExpandableSectionWrapper from './expandable-section';
 import FileDropzoneWrapper from './file-dropzone';
@@ -4306,6 +4403,7 @@ import HelpPanelWrapper from './help-panel';
 import HotspotWrapper from './hotspot';
 import IconWrapper from './icon';
 import InputWrapper from './input';
+import ItemCardWrapper from './item-card';
 import KeyValuePairsWrapper from './key-value-pairs';
 import LineChartWrapper from './line-chart';
 import LinkWrapper from './link';
@@ -4381,6 +4479,7 @@ export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
 export { DrawerWrapper };
+export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
 export { ExpandableSectionWrapper };
 export { FileDropzoneWrapper };
@@ -4396,6 +4495,7 @@ export { HelpPanelWrapper };
 export { HotspotWrapper };
 export { IconWrapper };
 export { InputWrapper };
+export { ItemCardWrapper };
 export { KeyValuePairsWrapper };
 export { LineChartWrapper };
 export { LinkWrapper };
@@ -4922,6 +5022,23 @@ findDrawer(selector?: string): DrawerWrapper;
  */
 findAllDrawers(selector?: string): MultiElementWrapper<DrawerWrapper>;
 /**
+ * Returns a wrapper that matches the Dropdowns with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Dropdowns.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DropdownWrapper}
+ */
+findDropdown(selector?: string): DropdownWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Dropdowns with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Dropdowns.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<DropdownWrapper>}
+ */
+findAllDropdowns(selector?: string): MultiElementWrapper<DropdownWrapper>;
+/**
  * Returns a wrapper that matches the ErrorBoundaries with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches ErrorBoundaries.
  *
@@ -5176,6 +5293,23 @@ findInput(selector?: string): InputWrapper;
  * @returns {MultiElementWrapper<InputWrapper>}
  */
 findAllInputs(selector?: string): MultiElementWrapper<InputWrapper>;
+/**
+ * Returns a wrapper that matches the ItemCards with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ItemCards.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ItemCardWrapper}
+ */
+findItemCard(selector?: string): ItemCardWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ItemCards with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ItemCards.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ItemCardWrapper>}
+ */
+findAllItemCards(selector?: string): MultiElementWrapper<ItemCardWrapper>;
 /**
  * Returns a wrapper that matches the KeyValuePairs with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches KeyValuePairs.
@@ -6309,6 +6443,19 @@ ElementWrapper.prototype.findDrawer = function(selector) {
 ElementWrapper.prototype.findAllDrawers = function(selector) {
   return this.findAllComponents(DrawerWrapper, selector);
 };
+ElementWrapper.prototype.findDropdown = function(selector) {
+  let rootSelector = \`.\${DropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DropdownWrapper && DropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DropdownWrapper.rootSelector}, .\${DropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllDropdowns = function(selector) {
+  return this.findAllComponents(DropdownWrapper, selector);
+};
 ElementWrapper.prototype.findErrorBoundary = function(selector) {
   let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
   if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
@@ -6503,6 +6650,19 @@ ElementWrapper.prototype.findInput = function(selector) {
 
 ElementWrapper.prototype.findAllInputs = function(selector) {
   return this.findAllComponents(InputWrapper, selector);
+};
+ElementWrapper.prototype.findItemCard = function(selector) {
+  let rootSelector = \`.\${ItemCardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ItemCardWrapper && ItemCardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ItemCardWrapper.rootSelector}, .\${ItemCardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ItemCardWrapper);
+};
+
+ElementWrapper.prototype.findAllItemCards = function(selector) {
+  return this.findAllComponents(ItemCardWrapper, selector);
 };
 ElementWrapper.prototype.findKeyValuePairs = function(selector) {
   let rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;

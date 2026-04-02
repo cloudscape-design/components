@@ -1,0 +1,11 @@
+name: Dependabot lockfile cleanup
+
+on:
+  pull_request_target:
+    types:
+      - opened
+
+jobs:
+  cleanup:
+    uses: cloudscape-design/actions/.github/workflows/dependabot-lockfile-cleanup.yml@main
+    secrets: inherit

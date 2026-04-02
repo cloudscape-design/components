@@ -367,6 +367,20 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.findDropdown({ expandToViewport }).getElement().parentNode!.querySelector(`#${controlledId}`)!
       ).toHaveAccessibleName('select-label');
     });
+
+    test('listbox should receive aria-required when that property is set', () => {
+      const { wrapper } = renderSelect({
+        ariaRequired: true,
+      });
+      wrapper.openDropdown();
+      expect(
+        wrapper
+          .findDropdown({ expandToViewport })
+          .getElement()
+          .parentNode!.querySelector(`[role=listbox]`)!
+          .getAttribute('aria-required')
+      ).toBe('true');
+    });
   });
 
   describe('Filtering results', () => {

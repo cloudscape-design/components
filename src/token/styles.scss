@@ -5,7 +5,9 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 
@@ -21,12 +23,20 @@
   border-inline: awsui.$border-width-field solid transparent;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
-  color: awsui.$color-text-button-inline-icon-default;
+  color: var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default);
   background-color: transparent;
   cursor: pointer;
 
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(0px);
+    @include styles.focus-highlight(
+      $gutter: 0px,
+      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    );
   }
 
   &:focus {
@@ -35,7 +45,7 @@
   }
 
   &:hover {
-    color: awsui.$color-text-button-inline-icon-hover;
+    color: var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover);
   }
 
   &-inline {
@@ -99,21 +109,29 @@
 
 .token-box-readonly,
 .token-box-disabled {
-  border-color: awsui.$color-border-input-disabled;
-  background-color: awsui.$color-background-container-content;
   pointer-events: none;
 
   > .dismiss-button {
-    color: awsui.$color-text-button-inline-icon-disabled;
     cursor: initial;
+  }
+}
 
-    &:hover {
-      color: awsui.$color-text-button-inline-icon-disabled;
-    }
+.token-box-readonly {
+  border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
+  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
+
+  > .dismiss-button {
+    color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
   }
 }
 
 .token-box-disabled {
-  border-color: awsui.$color-border-control-disabled;
+  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
+  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
   color: awsui.$color-text-disabled;
+
+  // stylelint-disable-next-line no-descending-specificity
+  > .dismiss-button {
+    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
+  }
 }

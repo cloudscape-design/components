@@ -2,13 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ReactNode } from 'react';
 
+import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import {
-  BaseDropdownHostProps,
-  OptionsFilteringType,
-  OptionsLoadItemsDetail,
-} from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';

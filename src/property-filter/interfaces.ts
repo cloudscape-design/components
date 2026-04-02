@@ -20,8 +20,8 @@ import {
 } from '@cloudscape-design/collection-hooks';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { FormFieldControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import Button from '~components/button';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown/internal';
 
 import ListContent from './list-content';
 

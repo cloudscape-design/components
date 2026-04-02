@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
-import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -195,7 +195,7 @@ const InternalMultiselect = React.forwardRef(
                   <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
                 ) : null
               }
-              menuProps={multiselectProps.getMenuProps()}
+              menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
               getOptionProps={multiselectProps.getOptionProps}
               filteredOptions={multiselectProps.filteredOptions}
               filteringValue={filteringValue}

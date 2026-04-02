@@ -7,10 +7,10 @@ import clsx from 'clsx';
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useFormFieldContext } from '../contexts/form-field';
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import {

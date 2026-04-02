@@ -86,6 +86,7 @@ export function Grid({
   className,
   startOfWeek: rawStartOfWeek = 0,
   granularity = 'day',
+  referrerId,
 }: GridProps) {
   const baseDateTime = baseDate?.getTime();
   const i18n = useInternalI18n('date-range-picker');
@@ -275,6 +276,7 @@ export function Grid({
                       aria-disabled={!isEnabled}
                       tabIndex={tabIndex}
                       disabledReason={isDisabledWithReason ? disabledReason : undefined}
+                      referrerId={referrerId}
                       {...handlers}
                     >
                       <span className={styles[`${granularity}-inner`]} aria-hidden="true">

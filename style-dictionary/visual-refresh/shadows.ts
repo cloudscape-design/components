@@ -4,6 +4,8 @@ import { expandColorDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.ShadowsDictionary = {
+  shadowCard: 'none',
+  shadowItemCard: '{shadowCard}',
   shadowContainer: {
     light: '0px 0px 1px 1px #e9ebed, 0px 1px 8px 2px rgba(0, 7, 22, 0.12)', // 1px grey-200 faux border
     dark: '0px 1px 8px 2px rgba(0, 7, 22, 0.6)',

@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  spaceAlertVertical: {
+    description: 'The vertical padding inside alert components.',
+    public: true,
+    themeable: true,
+  },
   spaceScaled2xL: { sassName: '$space-scaled-2x-l' },
   spaceScaled2xM: { sassName: '$space-scaled-2x-m' },
   spaceScaled2xNone: { sassName: '$space-scaled-2x-none' },
@@ -108,6 +113,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The XXXS spacing unit which scales between modes.',
     public: true,
     themeable: false,
+  },
+  spaceCardHorizontalDefault: {
+    description: 'The default horizontal padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside embedded a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalDefault: {
+    description: 'The default vertical padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalEmbedded: {
+    description: 'The vertical padding inside embedded a card.',
+    public: true,
+    themeable: true,
   },
   spaceContainerHorizontal: {
     description: 'The horizontal padding inside a container.',
