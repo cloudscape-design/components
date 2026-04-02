@@ -116,7 +116,7 @@ const InternalPromptInput = React.forwardRef(
       ),
     };
 
-    const isTokenMode = !!menus && supportsTokenMode;
+    const isTokenMode = !!tokens && supportsTokenMode;
 
     if (isDevelopment) {
       if ((menus || tokens) && !supportsTokenMode) {
@@ -280,7 +280,6 @@ const InternalPromptInput = React.forwardRef(
             const [start, end] = args;
             const actualEnd = end ?? undefined;
             caretControllerRef.current.setPosition(start ?? 0, actualEnd);
-            editableElementRef.current?.ownerDocument.dispatchEvent(new Event('selectionchange'));
           } else {
             textareaRef.current?.setSelectionRange(...args);
           }

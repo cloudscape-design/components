@@ -44,7 +44,7 @@ function createReferenceWrapper(
   wrapper.appendChild(container);
   wrapper.appendChild(after);
 
-  portalContainers.set(id, { id, element: container, label });
+  portalContainers.set(id, { id, element: container, label, value: '', menuId: '' });
 
   return wrapper;
 }
@@ -179,7 +179,13 @@ describe('extractTextFromCaretSpots', () => {
     const portalContainers = new Map<string, PortalContainer>();
     const orphanContainer = document.createElement('span');
     orphanContainer.textContent = 'orphan';
-    portalContainers.set('orphan-1', { id: 'orphan-1', element: orphanContainer, label: 'orphan' });
+    portalContainers.set('orphan-1', {
+      id: 'orphan-1',
+      element: orphanContainer,
+      label: 'orphan',
+      value: '',
+      menuId: '',
+    });
     const result = extractTextFromCaretSpots(portalContainers, false);
     expect(result.movedTextNode).toBeNull();
   });

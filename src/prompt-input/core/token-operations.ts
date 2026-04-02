@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isHTMLElement } from '../../internal/utils/dom';
 import type { PromptInputProps } from '../interfaces';
 import { ElementType, SPECIAL_CHARS } from './constants';
@@ -11,10 +10,10 @@ import {
   generateTokenId,
   getTokenType,
   hasOnlyTrailingBR,
-  isCaretSpotType,
   isReferenceElementType,
   stripZeroWidthCharacters,
 } from './dom-utils';
+import { PortalContainer } from './token-renderer';
 import { detectTriggersInText, mergeConsecutiveTextTokens } from './token-utils';
 import {
   isBreakTextToken,
@@ -32,31 +31,10 @@ export interface ShortcutsConfig {
   tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
 }
 
-/**
- * Looks up an option's value from menu definitions by label. Used during DOM extraction
- * to recover reference token values — we store only the label in the DOM, not the value.
- */
-function findOptionInMenu(
-  options: readonly (OptionDefinition | OptionGroup)[],
-  labelOrValue: string
-): OptionDefinition | undefined {
-  const key: keyof OptionGroup = 'options';
-  for (const item of options) {
-    if (key in item) {
-      const found = item.options?.find(opt => opt.value === labelOrValue || opt.label === labelOrValue);
-      if (found) {
-        return found;
-      }
-    } else if (item.value === labelOrValue || item.label === labelOrValue) {
-      return item;
-    }
-  }
-  return undefined;
-}
-
 export function extractTokensFromDOM(
   element: HTMLElement,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  menus?: readonly PromptInputProps.MenuDefinition[],
+  portalContainers?: Map<string, PortalContainer>
 ): PromptInputProps.InputToken[] {
   const paragraphs = findAllParagraphs(element);
 
@@ -74,7 +52,7 @@ export function extractTokensFromDOM(
   const allTokens: PromptInputProps.InputToken[] = [];
 
   paragraphs.forEach((p, pIndex) => {
-    const paragraphTokens = extractTokensFromParagraph(p, menus);
+    const paragraphTokens = extractTokensFromParagraph(p, menus, portalContainers);
 
     if (pIndex > 0) {
       allTokens.push({ type: 'break', value: SPECIAL_CHARS.NEWLINE });
@@ -89,16 +67,18 @@ export function extractTokensFromDOM(
 /** Extracts tokens from a single paragraph element by processing each child node. */
 function extractTokensFromParagraph(
   p: HTMLElement,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  menus?: readonly PromptInputProps.MenuDefinition[],
+  portalContainers?: Map<string, PortalContainer>
 ): PromptInputProps.InputToken[] {
-  const tokens = Array.from(p.childNodes).flatMap(node => extractTokensFromNode(node, menus));
+  const tokens = Array.from(p.childNodes).flatMap(node => extractTokensFromNode(node, menus, portalContainers));
   return mergeConsecutiveTextTokens(tokens);
 }
 
 /** Converts a single DOM node into zero or more tokens. */
 function extractTokensFromNode(
   node: Node,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  menus?: readonly PromptInputProps.MenuDefinition[],
+  portalContainers?: Map<string, PortalContainer>
 ): PromptInputProps.InputToken[] {
   if (isTextNode(node)) {
     const text = stripZeroWidthCharacters(node.textContent || '');
@@ -120,11 +100,11 @@ function extractTokensFromNode(
   }
 
   if (isReferenceElementType(tokenType)) {
-    return extractReferenceToken(node, tokenType, menus);
+    return extractReferenceToken(node, tokenType, portalContainers);
   }
 
   // Unknown element — recurse into children
-  return Array.from(node.childNodes).flatMap(child => extractTokensFromNode(child, menus));
+  return Array.from(node.childNodes).flatMap(child => extractTokensFromNode(child, menus, portalContainers));
 }
 
 /** Extracts trigger tokens from a trigger DOM element, handling nested triggers. */
@@ -206,7 +186,7 @@ function extractTriggerTokens(
 function extractReferenceToken(
   node: HTMLElement,
   tokenType: string | null,
-  menus?: readonly PromptInputProps.MenuDefinition[]
+  portalContainers?: Map<string, PortalContainer>
 ): PromptInputProps.InputToken[] {
   const tokens: PromptInputProps.InputToken[] = [];
 
@@ -219,35 +199,13 @@ function extractReferenceToken(
     }
   }
 
-  // Extract label from non-cursor-spot children
-  let label = '';
-  for (const child of Array.from(node.childNodes)) {
-    if (isTextNode(child)) {
-      label += child.textContent || '';
-    } else if (isHTMLElement(child)) {
-      const childType = getTokenType(child);
-      if (!isCaretSpotType(childType)) {
-        label += child.textContent || '';
-      }
-    }
-  }
-  label = stripZeroWidthCharacters(label).trim();
-
   const instanceId = node.id || '';
-  const menuId = node.getAttribute('data-menu-id') || '';
 
-  // Look up option value from menu definition
-  let value = '';
-  if (menuId && menus && label) {
-    const menu = menus.find(m => m.id === menuId);
-    if (menu) {
-      const option = findOptionInMenu(menu.options, label);
-      if (option) {
-        value = option.value || '';
-        label = option.label || option.value || label;
-      }
-    }
-  }
+  // Portal containers are the source of truth for reference token properties.
+  const portalContainer = portalContainers?.get(instanceId);
+  const value = portalContainer?.value ?? '';
+  const label = portalContainer?.label ?? '';
+  const menuId = portalContainer?.menuId ?? '';
 
   const token: PromptInputProps.ReferenceToken = {
     type: 'reference',
@@ -260,7 +218,6 @@ function extractReferenceToken(
     token.pinned = true;
   }
 
-  // Only add reference token if it has a label (skip empty/corrupted tokens)
   if (label) {
     tokens.push(token);
   }
@@ -343,7 +300,7 @@ export function detectTriggersInTokens(
     const token = tokens[i];
 
     // Skip cancelled triggers — don't re-parse their adjacent text
-    if (isTriggerToken(token) && token.id && cancelledIds?.has(token.id)) {
+    if (isTriggerToken(token) && cancelledIds?.has(token.id)) {
       result.push(token);
       continue;
     }
@@ -403,10 +360,11 @@ export function processTokens(
     source: UpdateSource;
     detectTriggers?: boolean;
   },
-  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean,
+  existingCancelledIds?: Set<string>
 ): ProcessTokensResult {
   let result = [...tokens];
-  const cancelledIds = new Set<string>();
+  const cancelledIds = new Set<string>(existingCancelledIds);
 
   if (options.detectTriggers && config.menus) {
     result = detectTriggersInTokens(result, config.menus, onTriggerDetected, cancelledIds);

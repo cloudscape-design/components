@@ -54,6 +54,10 @@ export interface PortalContainer {
   element: HTMLElement;
   /** Label for the token */
   label: string;
+  /** Value for the token */
+  value: string;
+  /** Menu ID the token was selected from */
+  menuId: string;
 }
 
 interface ParagraphGroup {
@@ -108,9 +112,8 @@ function createReferenceWithCaretSpots(
   const wrapper = ownerDoc.createElement('span');
   wrapper.className = styles['reference-wrapper'];
   wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
-  const instanceId = token.id && token.id !== '' ? token.id : generateTokenId();
+  const instanceId = token.id || generateTokenId();
   wrapper.id = instanceId;
-  wrapper.setAttribute('data-menu-id', token.menuId);
 
   const caretSpotBefore = createCaretSpot(ElementType.CaretSpotBefore, ownerDoc);
   const element = ownerDoc.createElement('span');
@@ -122,6 +125,8 @@ function createReferenceWithCaretSpots(
     id: instanceId,
     element,
     label: token.label,
+    value: token.value,
+    menuId: token.menuId,
   });
 
   const caretSpotAfter = createCaretSpot(ElementType.CaretSpotAfter, ownerDoc);
@@ -163,7 +168,7 @@ export function renderTokensToDOM(
 
   const existingParagraphs = findAllParagraphs(targetElement);
   const paragraphGroups = groupTokensIntoParagraphs(tokens);
-  const ownerDoc = targetElement.ownerDocument;
+  const ownerDoc = targetElement.ownerDocument ?? document;
 
   let newTriggerElement: HTMLElement | null = null;
   let lastReferenceWithCaretSpots: HTMLElement | null = null;
@@ -191,7 +196,7 @@ export function renderTokensToDOM(
         }
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
-        const triggerId = token.id && token.id !== '' ? token.id : generateTokenId();
+        const triggerId = token.id || generateTokenId();
         const isNewTrigger = !reusableTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
         const isCancelled = cancelledTriggerIds?.has(triggerId) ?? false;
@@ -227,6 +232,8 @@ export function renderTokensToDOM(
             if (isReferenceElementType(tokenType)) {
               // Reuse existing container — update props in case they changed.
               existingContainer.label = token.label;
+              existingContainer.value = token.value;
+              existingContainer.menuId = token.menuId;
               portalContainers.set(token.id!, existingContainer);
 
               newNodes.push(existingWrapper);

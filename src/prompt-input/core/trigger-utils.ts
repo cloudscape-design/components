@@ -64,6 +64,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
   const triggerText = triggerElement.textContent || '';
   const triggerChar = triggerText[0];
   const filterText = triggerText.substring(1);
+  const ownerDoc = triggerElement.ownerDocument ?? document;
 
   // Single match while not loading — auto-select it
   const selectableItems = items.filter(item => item.type !== 'parent');
@@ -81,7 +82,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     triggerElement.textContent = triggerChar + cleanFilterText;
     triggerElement.className = cleanFilterText.length > 0 ? styles['trigger-token'] : '';
 
-    const oneSpace = triggerElement.ownerDocument.createTextNode(' ');
+    const oneSpace = ownerDoc.createTextNode(' ');
     insertAfter(oneSpace, triggerElement);
     finalizeSpaceInsertion(oneSpace, props);
 
@@ -93,7 +94,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     event.preventDefault();
     closeMenu();
 
-    const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
+    const spaceNode = ownerDoc.createTextNode(' ');
     insertAfter(spaceNode, triggerElement);
     finalizeSpaceInsertion(spaceNode, props);
 
@@ -116,7 +117,7 @@ export function handleSpaceInOpenMenu(event: React.KeyboardEvent, props: Trigger
     triggerElement.textContent = triggerChar;
     triggerElement.className = '';
 
-    const textAfter = triggerElement.ownerDocument.createTextNode(' ' + filterText);
+    const textAfter = ownerDoc.createTextNode(' ' + filterText);
     insertAfter(textAfter, triggerElement);
     finalizeSpaceInsertion(textAfter, props);
 
@@ -186,7 +187,8 @@ export function detectTriggerTransition(
     const prevNewToken = i > 0 ? newTokens[i - 1] : null;
     const prevOldToken = i > 0 && i - 1 < oldTokens.length ? oldTokens[i - 1] : null;
 
-    // Space split: trigger's filter text was pushed into a following text token
+    // Space split: trigger's filter text was pushed into a following text token.
+    // Either the text token is new (old array was shorter) or it grew.
     if (
       isTextToken(newToken) &&
       newToken.value.startsWith(' ') &&
@@ -196,7 +198,8 @@ export function detectTriggerTransition(
       prevOldToken &&
       isTriggerToken(prevOldToken) &&
       prevNewToken.id === prevOldToken.id &&
-      prevOldToken.value.length > 0
+      prevOldToken.value.length > 0 &&
+      (!oldToken || (isTextToken(oldToken) && newToken.value.length > oldToken.value.length))
     ) {
       return calculateTokenPosition(newTokens, i - 1) + 1;
     }

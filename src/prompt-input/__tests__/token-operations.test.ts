@@ -13,6 +13,7 @@ import {
   getPromptText,
   processTokens,
 } from '../core/token-operations';
+import { PortalContainer } from '../core/token-renderer';
 import { isReferenceToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
 
@@ -33,14 +34,25 @@ const ref = (
   menuId,
   ...(pinned !== undefined && { pinned }),
 });
-const trigger = (value: string, triggerChar: string, id?: string): PromptInputProps.TriggerToken => ({
+const trigger = (value: string, triggerChar: string, id: string = 'trigger-id'): PromptInputProps.TriggerToken => ({
   type: 'trigger',
   value,
   triggerChar,
-  ...(id && { id }),
+  id,
 });
 const pinnedRef = (id: string, label: string, value: string, menuId: string): PromptInputProps.ReferenceToken =>
   ref(id, label, value, menuId, true);
+
+/** Creates a portal containers map for testing extractTokensFromDOM. */
+function createPortals(
+  ...entries: Array<{ id: string; label: string; value: string; menuId: string }>
+): Map<string, PortalContainer> {
+  const map = new Map<string, PortalContainer>();
+  for (const entry of entries) {
+    map.set(entry.id, { ...entry, element: document.createElement('span') });
+  }
+  return map;
+}
 
 const mentionsMenu: PromptInputProps.MenuDefinition = {
   id: 'mentions',
@@ -165,17 +177,17 @@ describe('extractTokensFromDOM', () => {
     expect((tokens[0] as PromptInputProps.TriggerToken).triggerChar).toBe('@');
   });
 
-  test('extracts reference tokens with menu lookup', () => {
+  test('extracts reference tokens from portal containers', () => {
     const el = createContentEditable();
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(1);
     expect(tokens[0].type).toBe('reference');
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
@@ -189,12 +201,12 @@ describe('extractTokensFromDOM', () => {
     const p = document.createElement('p');
     const pinnedSpan = document.createElement('span');
     pinnedSpan.setAttribute('data-type', ElementType.Pinned);
-    pinnedSpan.setAttribute('data-menu-id', 'mentions');
     pinnedSpan.id = 'pinned-1';
     pinnedSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(pinnedSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'pinned-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     expect(refToken.pinned).toBe(true);
@@ -214,7 +226,6 @@ describe('extractTokensFromDOM', () => {
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     // No text content = empty label
     p.appendChild(refSpan);
     el.appendChild(p);
@@ -240,7 +251,6 @@ describe('extractTokensFromDOM', () => {
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     const cursorBefore = document.createElement('span');
     cursorBefore.setAttribute('data-type', ElementType.CaretSpotBefore);
@@ -254,7 +264,8 @@ describe('extractTokensFromDOM', () => {
     refSpan.appendChild(cursorAfter);
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     // Should have: text("before"), reference(Alice), text("after")
     expect(tokens).toHaveLength(3);
     expect(tokens[0]).toEqual(text('before'));
@@ -466,12 +477,12 @@ describe('extractTokensFromDOM - advanced cases', () => {
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'grouped');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [groupedMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-a1', menuId: 'grouped' });
+    const tokens = extractTokensFromDOM(el, [groupedMenu], portals);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     expect(refToken.value).toBe('user-a1');
@@ -485,13 +496,13 @@ describe('extractTokensFromDOM - advanced cases', () => {
     p.appendChild(document.createTextNode('hello '));
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     p.appendChild(document.createTextNode(' world'));
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(3);
     expect(tokens[0]).toEqual(text('hello '));
     expect(tokens[1].type).toBe('reference');
@@ -625,7 +636,6 @@ describe('extractTokensFromDOM - advanced cases', () => {
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-empty';
     // Only cursor spots with zero-width characters, no actual label content
     const cursorBefore = document.createElement('span');
@@ -645,33 +655,20 @@ describe('extractTokensFromDOM - advanced cases', () => {
     expect(refTokens).toHaveLength(0);
   });
 
-  test('findOptionInMenu returns undefined when option not found in grouped menu', () => {
-    const groupedMenu: PromptInputProps.MenuDefinition = {
-      id: 'grouped',
-      trigger: '@',
-      options: [
-        {
-          label: 'Team A',
-          options: [{ value: 'user-a1', label: 'Alice' }],
-        } as any,
-      ],
-    };
+  test('reference without portal container has empty values', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'grouped');
-    refSpan.id = 'ref-notfound';
-    refSpan.appendChild(document.createTextNode('NonExistentUser'));
+    refSpan.id = 'ref-noportal';
+    refSpan.appendChild(document.createTextNode('Unknown'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [groupedMenu]);
-    expect(tokens).toHaveLength(1);
-    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
-    // Option not found, so value stays empty and label is the raw text
-    expect(refToken.value).toBe('');
-    expect(refToken.label).toBe('NonExistentUser');
+    // No portal containers provided — reference has empty value/label/menuId
+    const tokens = extractTokensFromDOM(el);
+    const refTokens = tokens.filter(t => t.type === 'reference');
+    expect(refTokens).toHaveLength(0); // Skipped because label is empty
   });
 });
 
@@ -755,68 +752,44 @@ describe('detectTriggersInTokens - edge cases', () => {
   });
 });
 
-describe('extractTokensFromDOM - reference with value lookup by value', () => {
+describe('extractTokensFromDOM - reference values from portal containers', () => {
   afterEach(() => {
     document.body.innerHTML = '';
   });
 
-  test('looks up option by value when label does not match', () => {
-    const menuWithValues: PromptInputProps.MenuDefinition = {
-      id: 'mentions',
-      trigger: '@',
-      options: [{ value: 'user-1', label: 'Alice' }],
-    };
+  test('reference without portal container is skipped (no label)', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
-    // Use the value as the text content (not the label)
-    refSpan.appendChild(document.createTextNode('user-1'));
+    refSpan.appendChild(document.createTextNode('SomeLabel'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [menuWithValues]);
+    // No portal containers — label/value come back empty, reference is skipped
+    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const refTokens = tokens.filter(t => t.type === 'reference');
+    expect(refTokens).toHaveLength(0);
+  });
+
+  test('reference with portal container has correct value and label', () => {
+    const el = document.createElement('div');
+    document.body.appendChild(el);
+    const p = document.createElement('p');
+    const refSpan = document.createElement('span');
+    refSpan.setAttribute('data-type', ElementType.Reference);
+    refSpan.id = 'ref-1';
+    refSpan.appendChild(document.createTextNode('Alice'));
+    p.appendChild(refSpan);
+    el.appendChild(p);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     expect(refToken.value).toBe('user-1');
     expect(refToken.label).toBe('Alice');
-  });
-
-  test('reference without menuId keeps empty value', () => {
-    const el = document.createElement('div');
-    document.body.appendChild(el);
-    const p = document.createElement('p');
-    const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ElementType.Reference);
-    // No data-menu-id attribute
-    refSpan.id = 'ref-1';
-    refSpan.appendChild(document.createTextNode('SomeLabel'));
-    p.appendChild(refSpan);
-    el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
-    expect(tokens).toHaveLength(1);
-    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
-    expect(refToken.value).toBe('');
-    expect(refToken.label).toBe('SomeLabel');
-  });
-
-  test('reference with menuId but no matching menu keeps empty value', () => {
-    const el = document.createElement('div');
-    document.body.appendChild(el);
-    const p = document.createElement('p');
-    const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'nonexistent');
-    refSpan.id = 'ref-1';
-    refSpan.appendChild(document.createTextNode('SomeLabel'));
-    p.appendChild(refSpan);
-    el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
-    expect(tokens).toHaveLength(1);
-    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
-    expect(refToken.value).toBe('');
+    expect(refToken.menuId).toBe('mentions');
   });
 
   test('extractTokensFromDOM with useAtStart menu skips nested trigger detection', () => {
@@ -886,88 +859,58 @@ describe('extractTokensFromDOM - trigger token edge cases', () => {
     expect(triggerToken.id).not.toBe('');
   });
 
-  test('reference element with HTMLElement child that is not a caret spot contributes to label', () => {
+  test('reference element with HTMLElement child uses portal container for label', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
-    // Add a non-caret-spot child element
     const labelSpan = document.createElement('span');
     labelSpan.setAttribute('contenteditable', 'false');
     labelSpan.textContent = 'Alice';
     refSpan.appendChild(labelSpan);
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     expect(refToken.label).toBe('Alice');
     expect(refToken.value).toBe('user-1');
   });
 
-  test('reference element with text node child contributes to label', () => {
+  test('reference element with text node child uses portal container for label', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
-    // Direct text node child
     refSpan.appendChild(document.createTextNode('Bob'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [mentionsMenu]);
+    const portals = createPortals({ id: 'ref-1', label: 'Bob', value: 'user-2', menuId: 'mentions' });
+    const tokens = extractTokensFromDOM(el, [mentionsMenu], portals);
     expect(tokens).toHaveLength(1);
     const refToken = tokens[0] as PromptInputProps.ReferenceToken;
     expect(refToken.label).toBe('Bob');
     expect(refToken.value).toBe('user-2');
   });
 
-  test('reference with no menus provided keeps empty value', () => {
+  test('reference without portal container is skipped', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const refSpan = document.createElement('span');
     refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
     refSpan.id = 'ref-1';
     refSpan.appendChild(document.createTextNode('Alice'));
     p.appendChild(refSpan);
     el.appendChild(p);
-    // No menus passed
     const tokens = extractTokensFromDOM(el);
-    expect(tokens).toHaveLength(1);
-    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
-    expect(refToken.value).toBe('');
-  });
-
-  test('findOptionInMenu finds option by value in flat options', () => {
-    const menuWithValues: PromptInputProps.MenuDefinition = {
-      id: 'mentions',
-      trigger: '@',
-      options: [
-        { value: 'user-1', label: 'Alice' },
-        { value: 'user-2', label: 'Bob' },
-      ],
-    };
-    const el = document.createElement('div');
-    document.body.appendChild(el);
-    const p = document.createElement('p');
-    const refSpan = document.createElement('span');
-    refSpan.setAttribute('data-type', ElementType.Reference);
-    refSpan.setAttribute('data-menu-id', 'mentions');
-    refSpan.id = 'ref-1';
-    refSpan.appendChild(document.createTextNode('user-2'));
-    p.appendChild(refSpan);
-    el.appendChild(p);
-    const tokens = extractTokensFromDOM(el, [menuWithValues]);
-    const refToken = tokens[0] as PromptInputProps.ReferenceToken;
-    expect(refToken.value).toBe('user-2');
-    expect(refToken.label).toBe('Bob');
+    const refTokens = tokens.filter(t => t.type === 'reference');
+    expect(refTokens).toHaveLength(0);
   });
 
   test('extractTokensFromDOM handles non-HTMLElement non-text node', () => {

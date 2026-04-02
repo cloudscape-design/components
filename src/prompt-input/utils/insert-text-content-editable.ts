@@ -6,9 +6,7 @@ import { CaretController, getOwnerSelection } from '../core/caret-controller';
 /**
  * Inserts text into a contentEditable element at a specific position.
  * After insertion, dispatches an input event so the token processor picks up
- * the change, then positions the caret at `caretEnd` (or end of inserted text).
- * Finally dispatches `selectionchange` so `checkMenuState` can detect whether
- * the caret landed inside a trigger and open the menu accordingly.
+ * the change, then sets the desired caret position for the next render cycle.
  */
 export function insertTextIntoContentEditable(
   element: HTMLElement,
@@ -19,6 +17,7 @@ export function insertTextIntoContentEditable(
 ): void {
   element.focus();
 
+  const ownerDoc = element.ownerDocument ?? document;
   const insertPosition = caretStart ?? caretController.getPosition();
   caretController.setPosition(insertPosition);
 
@@ -28,16 +27,14 @@ export function insertTextIntoContentEditable(
   }
 
   const range = selection.getRangeAt(0);
-  range.insertNode(element.ownerDocument.createTextNode(text));
+  range.insertNode(ownerDoc.createTextNode(text));
 
   const finalPosition = caretEnd ?? insertPosition + text.length;
 
   // Notify the token processor of the DOM change
   element.dispatchEvent(new Event('input', { bubbles: true }));
 
-  // Position the caret — this may land inside a trigger element
-  caretController.setPosition(finalPosition);
-
-  // Trigger menu state detection via the selectionchange listener in useShortcutsEffects.
-  element.ownerDocument.dispatchEvent(new Event('selectionchange'));
+  // Set the desired caret position AFTER handleInput has run (which calls cc.capture).
+  // The token render effect's cc.restore() will use this position.
+  caretController.setCapturedPosition(finalPosition);
 }

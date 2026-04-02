@@ -11,7 +11,7 @@ import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import Token from '../../token/internal';
-import { calculateTokenPosition, CaretController, getOwnerSelection, TOKEN_LENGTHS } from '../core/caret-controller';
+import { calculateTokenPosition, CaretController, getOwnerSelection } from '../core/caret-controller';
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
 import {
   findContainingReference,
@@ -31,7 +31,7 @@ import {
   useMenuItems,
   useMenuLoadMore,
 } from '../core/menu-state';
-import { extractTokensFromDOM, getPromptText } from '../core/token-operations';
+import { extractTokensFromDOM, getPromptText, processTokens } from '../core/token-operations';
 import { PortalContainer, renderTokensToDOM } from '../core/token-renderer';
 import {
   enforcePinnedTokenOrdering,
@@ -40,9 +40,9 @@ import {
   mergeConsecutiveTextTokens,
 } from '../core/token-utils';
 import { detectTriggerTransition } from '../core/trigger-utils';
-import { isBreakTextToken, isReferenceToken, isTextNode, isTextToken, isTriggerToken } from '../core/type-guards';
+import { isReferenceToken, isTextNode, isTextToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
-import { TriggerState, useShortcutsEffects, useShortcutsState, useTokenProcessor } from './use-shortcuts';
+import { ShortcutsState, useShortcutsEffects, useShortcutsState } from './use-shortcuts';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -68,8 +68,9 @@ export function createEditableState(): EditableState {
  * re-renders. External updates (parent replacing tokens) will be detected by
  * the value difference and trigger a re-render.
  *
- * Returns 'none' if no changes, 'text-only' if only text values differ
- * (same count, types, and IDs), or 'structural' for any other change.
+ * Returns 'none' if no changes, 'text-only' if only token values differ
+ * (same count, types, and IDs — covers both text and trigger filter changes),
+ * or 'structural' for any other change.
  */
 function classifyChange(
   oldTokens: readonly PromptInputProps.InputToken[] | undefined,
@@ -99,11 +100,18 @@ function classifyChange(
       }
     }
 
-    // Trigger value (filter text) changes are handled incrementally by handleInput's
-    // styling update path — only ID changes require a full re-render.
     if (isTriggerToken(oldToken) && isTriggerToken(newToken)) {
       if (oldToken.id !== newToken.id) {
         return 'structural';
+      }
+      // Transition between empty and non-empty filter text changes the underline styling.
+      const wasEmpty = oldToken.value.length === 0;
+      const isEmpty = newToken.value.length === 0;
+      if (wasEmpty !== isEmpty) {
+        return 'structural';
+      }
+      if (oldToken.value !== newToken.value) {
+        hasTextDiff = true;
       }
     }
 
@@ -154,46 +162,6 @@ function findTriggerTokenById(
   return null;
 }
 
-/**
- * Updates `isTypingIntoEmptyLineRef` based on the transition from the last
- * rendered tokens to the current ordered tokens. Returns the updated value.
- *
- * Mutates the ref as a side effect so callers don't need a separate setState.
- */
-function detectTypingContext(
-  lastRenderedTokens: readonly PromptInputProps.InputToken[] | undefined,
-  orderedTokens: readonly PromptInputProps.InputToken[] | undefined,
-  isTypingIntoEmptyLineRef: React.MutableRefObject<boolean>
-): boolean {
-  const prevLastToken = lastRenderedTokens?.[lastRenderedTokens.length - 1];
-  const justStartedNewLine = prevLastToken && isBreakTextToken(prevLastToken);
-  const wasCompletelyEmpty = !lastRenderedTokens || lastRenderedTokens.length === 0;
-  const justAfterReference = prevLastToken && isReferenceToken(prevLastToken);
-
-  let currentLineIsText = false;
-  if (orderedTokens && orderedTokens.length > 0) {
-    let lastBreakIndex = -1;
-    for (let i = orderedTokens.length - 1; i >= 0; i--) {
-      if (isBreakTextToken(orderedTokens[i])) {
-        lastBreakIndex = i;
-        break;
-      }
-    }
-    const currentLineTokens = orderedTokens.slice(lastBreakIndex + 1);
-    currentLineIsText = currentLineTokens.length > 0 && currentLineTokens.every(isTextToken);
-  }
-
-  if (!orderedTokens || orderedTokens.length === 0) {
-    isTypingIntoEmptyLineRef.current = false;
-  } else if ((justStartedNewLine || wasCompletelyEmpty || justAfterReference) && currentLineIsText) {
-    isTypingIntoEmptyLineRef.current = true;
-  } else if (!currentLineIsText) {
-    isTypingIntoEmptyLineRef.current = false;
-  }
-
-  return isTypingIntoEmptyLineRef.current;
-}
-
 /** Configuration for the useTokenMode hook — all props needed to drive token-mode behavior. */
 export interface UseTokenModeConfig {
   editableElementRef: React.RefObject<HTMLDivElement>;
@@ -237,7 +205,7 @@ export interface UseTokenModeResult {
   /** Snapshot of portal containers for rendering portals. Updated after each renderTokensToDOM call. */
   portalContainers: PortalContainer[];
   /** Portal elements to render — renders Token components into DOM containers via createPortal. */
-  portals: React.ReactNode;
+  portals: React.ReactPortal[];
 
   editableState: EditableState;
 
@@ -265,6 +233,114 @@ export interface UseTokenModeResult {
   tokenOperationAnnouncement: string;
 
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
+}
+
+interface ProcessorConfig {
+  tokens?: readonly PromptInputProps.InputToken[];
+  menus?: readonly PromptInputProps.MenuDefinition[];
+  tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
+  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
+  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean;
+  state: ShortcutsState;
+}
+
+/**
+ * Processes token changes from both user input and external (parent) updates.
+ *
+ * For user input: runs trigger detection on extracted DOM tokens and emits
+ * the processed result via onChange.
+ *
+ * For external updates: detects if the parent provided new tokens that need
+ * trigger detection or ID assignment, and emits corrected tokens if so.
+ * Skips processing when the tokens reference matches what we last emitted
+ * (for example, the parent is echoing back our own onChange).
+ */
+function useTokenProcessor(config: ProcessorConfig) {
+  const { tokens, menus, tokensToText, onChange, onTriggerDetected, state } = config;
+
+  const emitTokenChange = useStableCallback((newTokens: PromptInputProps.InputToken[]) => {
+    const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
+    state.markTokensAsSent(newTokens);
+    onChange({ value, tokens: newTokens });
+  });
+
+  const markCancelledTriggers = useStableCallback((cancelledIds: Set<string>) => {
+    for (const id of cancelledIds) {
+      state.cancelledTriggerIds.current.add(id);
+    }
+  });
+
+  /** Processes tokens extracted from the DOM after user input. */
+  const processUserInput = useStableCallback((inputTokens: PromptInputProps.InputToken[]) => {
+    const { tokens: processed, cancelledIds } = processTokens(
+      inputTokens,
+      { menus, tokensToText },
+      {
+        source: 'user-input',
+        detectTriggers: true,
+      },
+      onTriggerDetected,
+      state.cancelledTriggerIds.current
+    );
+
+    markCancelledTriggers(cancelledIds);
+    emitTokenChange(processed);
+  });
+
+  /** Processes external token updates from the parent component. */
+  useEffect(() => {
+    // Skip if these are the tokens we just emitted — the parent is echoing back our onChange
+    if (state.lastEmittedTokensRef.current === tokens) {
+      return;
+    }
+
+    if (!tokens) {
+      return;
+    }
+
+    const { tokens: processed, cancelledIds } = processTokens(
+      tokens,
+      { menus, tokensToText },
+      {
+        source: 'external',
+        detectTriggers: true,
+      },
+      undefined,
+      state.cancelledTriggerIds.current
+    );
+
+    markCancelledTriggers(cancelledIds);
+
+    // Only emit if processing actually changed the tokens (e.g., new triggers detected,
+    // IDs assigned). Compare by type, value, and ID to avoid false positives from
+    // reference inequality after processTokens creates new token objects.
+    const hasChanges =
+      processed.length !== tokens.length ||
+      processed.some((t, i) => {
+        const orig = tokens[i];
+        if (t.type !== orig.type || t.value !== orig.value) {
+          return true;
+        }
+        if (isReferenceToken(t) && isReferenceToken(orig) && t.id !== orig.id) {
+          return true;
+        }
+        if (isTriggerToken(t) && isTriggerToken(orig) && t.id !== orig.id) {
+          return true;
+        }
+        return false;
+      });
+
+    if (hasChanges) {
+      emitTokenChange(processed);
+    } else {
+      // Mark as seen even when no changes — prevents re-processing on next render
+      state.lastEmittedTokensRef.current = tokens;
+    }
+  }, [tokens, menus, tokensToText, state, emitTokenChange, markCancelledTriggers]);
+
+  return {
+    processUserInput,
+  };
 }
 
 /** Encapsulates all token-mode logic: trigger detection, menu state, keyboard handling, and rendering. */
@@ -316,8 +392,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return null;
     }
 
-    const triggerState = shortcutsState.triggerStates.current.get(activeTriggerID);
-    if (triggerState?.cancelled) {
+    if (shortcutsState.cancelledTriggerIds.current.has(activeTriggerID)) {
       return null;
     }
 
@@ -362,7 +437,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   // The Dropdown's contentKey (which includes activeTriggerToken.id) handles
   // repositioning when the active trigger changes — no open/close toggle needed.
   if (activeTriggerToken?.id && menuIsOpen) {
-    triggerWrapperRef.current = shortcutsState.triggerStates.current.get(activeTriggerToken.id)?.element ?? null;
+    triggerWrapperRef.current = shortcutsState.triggerElementsRef.current.get(activeTriggerToken.id) ?? null;
   } else {
     triggerWrapperRef.current = null;
   }
@@ -409,36 +484,21 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const renderTokens = useCallback(
     (tokens: readonly PromptInputProps.InputToken[], target: HTMLElement) => {
-      const triggerElements = new Map<string, HTMLElement>();
-      const cancelledIds = new Set<string>();
-      shortcutsState.triggerStates.current.forEach((state, id) => {
-        if (state.element) {
-          triggerElements.set(id, state.element);
-        }
-        if (state.cancelled) {
-          cancelledIds.add(id);
-        }
-      });
+      const result = renderTokensToDOM(
+        tokens,
+        target,
+        portalContainersRef.current,
+        shortcutsState.triggerElementsRef.current,
+        shortcutsState.cancelledTriggerIds.current
+      );
 
-      const result = renderTokensToDOM(tokens, target, portalContainersRef.current, triggerElements, cancelledIds);
-
-      // Merge returned trigger elements into the state map, preserving dismissed/cancelled flags
-      const newStates = new Map<string, TriggerState>();
-      result.triggerElements.forEach((element, id) => {
-        const existing = shortcutsState.triggerStates.current.get(id);
-        newStates.set(id, {
-          element,
-          dismissed: existing?.dismissed ?? false,
-          dismissedValue: existing?.dismissedValue ?? null,
-          cancelled: existing?.cancelled ?? false,
-        });
-      });
-      shortcutsState.triggerStates.current = newStates;
+      // Update trigger element map from render result
+      shortcutsState.triggerElementsRef.current = new Map(result.triggerElements);
 
       setPortalContainers(Array.from(portalContainersRef.current.values()));
       return result;
     },
-    [shortcutsState.triggerStates, portalContainersRef]
+    [shortcutsState.triggerElementsRef, shortcutsState.cancelledTriggerIds, portalContainersRef]
   );
 
   useLayoutEffect(() => {
@@ -458,10 +518,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const lastRenderedTokensRef = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
   const lastDisabledRef = useRef(disabled);
   const lastReadOnlyRef = useRef(readOnly);
-  const isTypingIntoEmptyLineRef = useRef(false);
 
-  // Ref to avoid recreating handleInput when menus changes (new array reference each render).
-  // handleInput reads menus only for trigger detection during DOM extraction.
+  // Refs to avoid recreating handleInput when these change (new array reference each render).
   const menusRef = useRef(menus);
   menusRef.current = menus;
 
@@ -470,11 +528,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       return;
     }
 
+    const ownerDoc = editableElementRef.current.ownerDocument ?? document;
     const cc = caretControllerRef.current;
-
-    // Capture DOM cursor position before processing
-    const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
-    const savedCursorOffset = sel?.rangeCount ? sel.getRangeAt(0).startOffset : 0;
 
     if (cc) {
       cc.capture();
@@ -487,11 +542,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const { movedTextNode } = extractTextFromCaretSpots(portalContainersRef.current, true);
 
     // Extract filter text from cancelled triggers, moving it to the paragraph level
-    for (const [, triggerState] of shortcutsState.triggerStates.current) {
-      if (!triggerState.cancelled) {
-        continue;
-      }
-      const trigger = triggerState.element;
+    for (const id of shortcutsState.cancelledTriggerIds.current) {
+      const trigger =
+        shortcutsState.triggerElementsRef.current.get(id) ??
+        (editableElementRef.current.querySelector(`#${CSS.escape(id)}`) as HTMLElement | null);
       if (!trigger) {
         continue;
       }
@@ -506,7 +560,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         caretInTrigger = true;
       }
 
-      const textNode = trigger.ownerDocument.createTextNode(filterText);
+      const textNode = ownerDoc.createTextNode(filterText);
       trigger.parentNode?.insertBefore(textNode, trigger.nextSibling);
       trigger.textContent = (trigger.textContent || '').charAt(0);
 
@@ -545,81 +599,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       }
     }
 
-    let extractedTokens = extractTokensFromDOM(editableElementRef.current, menusRef.current);
+    let extractedTokens = extractTokensFromDOM(
+      editableElementRef.current,
+      menusRef.current,
+      portalContainersRef.current
+    );
 
+    // When a new trigger appears in the DOM, render immediately to ensure the
+    // trigger element exists before subsequent caret operations.
     const newTriggers = extractedTokens.filter(isTriggerToken);
-
-    const existingTriggerElements: (HTMLElement | null)[] = [];
-    const existingTriggerIds = new Set<string>();
-    shortcutsState.triggerStates.current.forEach((state, id) => {
-      existingTriggerElements.push(state.element);
-      existingTriggerIds.add(id);
-    });
-
-    const isNewTrigger = newTriggers.some(t => t.id && !existingTriggerIds.has(t.id));
-
-    const hasStylingChange = newTriggers.some(newT => {
-      const domElement = existingTriggerElements.find(el => el?.id === newT.id);
-      if (!domElement) {
-        return false;
-      }
-
-      const currentHasClass = domElement.className.includes('trigger-token');
-      const shouldHaveClass = newT.value.length > 0;
-      return currentHasClass !== shouldHaveClass;
-    });
-
-    if (isNewTrigger) {
-      if (cc) {
-        cc.capture();
-      }
-
+    const existingTriggerIds = new Set(shortcutsState.triggerElementsRef.current.keys());
+    if (newTriggers.some(t => !existingTriggerIds.has(t.id))) {
       renderTokens(extractedTokens, editableElementRef.current);
-
-      if (cc) {
-        cc.restore();
-      }
-    } else if (hasStylingChange) {
-      // Track which trigger had its styling changed for cursor restoration
-      const changedTriggerId = newTriggers.find(newT => {
-        const domElement = existingTriggerElements.find(el => el?.id === newT.id);
-        if (!domElement) {
-          return false;
-        }
-        const currentHasClass = domElement.className.includes('trigger-token');
-        const shouldHaveClass = newT.value.length > 0;
-        return currentHasClass !== shouldHaveClass;
-      })?.id;
-
-      newTriggers.forEach(newT => {
-        const domElement = existingTriggerElements.find(el => el?.id === newT.id);
-        if (domElement) {
-          const shouldHaveClass = newT.value.length > 0;
-          domElement.className = `${styles['trigger-base']} ${shouldHaveClass ? styles['trigger-token'] : ''}`;
-        }
-      });
-
-      // Restore cursor inside the changed trigger after DOM updates
-      if (changedTriggerId) {
-        const triggerEl = shortcutsState.triggerStates.current.get(changedTriggerId)?.element;
-        const cursorOffsetToRestore = savedCursorOffset;
-        setTimeout(() => {
-          if (
-            triggerEl?.firstChild &&
-            editableElementRef.current?.ownerDocument.activeElement === editableElementRef.current
-          ) {
-            const s = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
-            if (s) {
-              const maxOffset = triggerEl.firstChild.textContent?.length || 0;
-              const range = editableElementRef.current!.ownerDocument.createRange();
-              range.setStart(triggerEl.firstChild, Math.min(cursorOffsetToRestore, maxOffset));
-              range.collapse(true);
-              s.removeAllRanges();
-              s.addRange(range);
-            }
-          }
-        }, 0);
-      }
     }
 
     const movedTokens = enforcePinnedTokenOrdering(extractedTokens);
@@ -635,11 +626,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
       renderTokens(mergedTokens, editableElementRef.current);
 
-      if (
-        editableElementRef.current &&
-        editableElementRef.current.ownerDocument.activeElement === editableElementRef.current &&
-        cc
-      ) {
+      if (editableElementRef.current && ownerDoc.activeElement === editableElementRef.current && cc) {
         cc.setPosition(adjustedPosition);
       }
     }
@@ -655,20 +642,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     portalContainersRef,
     editableState,
     renderTokens,
-    shortcutsState.triggerStates,
+    shortcutsState.triggerElementsRef,
+    shortcutsState.cancelledTriggerIds,
   ]);
-
-  // Initial render
-  useLayoutEffect(() => {
-    if (!editableElementRef.current || disabled) {
-      return;
-    }
-    if (editableElementRef.current.children.length === 0) {
-      renderTokens(tokens ?? [], editableElementRef.current);
-    }
-    // Intentionally run only on mount — subsequent renders are handled by the useLayoutEffect below
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Token render effect
   useLayoutEffect(() => {
@@ -698,13 +674,15 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
     // Text-only changes from user input are already reflected in the DOM by the
     // browser's native editing. Skip re-render to preserve cursor position —
+    // Text-only changes from user input are already reflected in the DOM by the
+    // browser's native editing. Skip re-render to preserve cursor position —
     // re-rendering would read a corrupted position from normalizeCaretIntoTrigger.
-    // External updates still need a re-render (isExternalUpdate returns true).
+    // External updates still need a re-render.
     if (
       changeType === 'text-only' &&
       !stateChanged &&
       triggerTransition === 0 &&
-      !shortcutsState.isExternalUpdate(tokens)
+      shortcutsState.lastEmittedTokensRef.current === tokens
     ) {
       lastRenderedTokensRef.current = orderedTokens;
       return;
@@ -727,10 +705,15 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     if (newTrigger && isTriggerToken(newTrigger) && cc) {
       renderTokens(orderedTokens, editableElementRef.current);
       lastRenderedTokensRef.current = orderedTokens;
-      const triggerIndex = orderedTokens.indexOf(newTrigger);
-      const posBeforeTrigger = triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0;
-      const posAfterTriggerChar = posBeforeTrigger + newTrigger.triggerChar.length;
-      cc.setPosition(posAfterTriggerChar);
+      // Use the saved position from insertText if available, otherwise position after the trigger char
+      const savedPos = cc.getSavedPosition();
+      if (savedPos !== null) {
+        cc.setPosition(savedPos);
+      } else {
+        const triggerIndex = orderedTokens.indexOf(newTrigger);
+        const posBeforeTrigger = triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0;
+        cc.setPosition(posBeforeTrigger + newTrigger.triggerChar.length);
+      }
       adjustInputHeight();
       return;
     }
@@ -760,55 +743,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       }
     }
 
-    const isTypingIntoEmptyLine = detectTypingContext(
-      lastRenderedTokensRef.current,
-      orderedTokens,
-      isTypingIntoEmptyLineRef
-    );
-
     lastRenderedTokensRef.current = orderedTokens;
-
-    /* istanbul ignore next -- render-timing optimization covered by integ tests */
-    if (isTypingIntoEmptyLine) {
-      if (cc) {
-        cc.capture();
-      }
-
-      const renderResult = renderTokens(orderedTokens ?? [], editableElementRef.current);
-
-      if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
-        adjustInputHeight();
-        return;
-      }
-
-      const oldTriggerIds = new Set((lastRenderedTokensRef.current ?? []).filter(isTriggerToken).map(t => t.id));
-      const newTriggerIds = (orderedTokens ?? []).filter(isTriggerToken).map(t => t.id);
-      const hasNewTriggerId = newTriggerIds.some(id => !oldTriggerIds.has(id));
-
-      if (renderResult.newTriggerElement && hasNewTriggerId && cc) {
-        const triggerTokens = (orderedTokens ?? []).filter(isTriggerToken);
-        if (triggerTokens.length > 0) {
-          const lastTrigger = triggerTokens[triggerTokens.length - 1];
-          const triggerIndex = (orderedTokens ?? []).indexOf(lastTrigger);
-
-          const positionBeforeTrigger =
-            triggerIndex > 0 ? calculateTokenPosition(orderedTokens ?? [], triggerIndex - 1) : 0;
-
-          const positionAfterTrigger = positionBeforeTrigger + TOKEN_LENGTHS.trigger(lastTrigger.value);
-
-          cc.setPosition(positionAfterTrigger);
-          adjustInputHeight();
-          return;
-        }
-      }
-
-      if (cc) {
-        cc.restore();
-      }
-
-      adjustInputHeight();
-      return;
-    }
 
     if (cc) {
       cc.capture();
@@ -904,10 +839,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       });
     };
 
-    const ownerDoc = editableElementRef.current?.ownerDocument;
-    if (!ownerDoc) {
-      return;
-    }
+    const ownerDoc = editableElementRef.current?.ownerDocument ?? document;
     ownerDoc.addEventListener('selectionchange', handleSelectionChange);
     ownerDoc.addEventListener('mousedown', handleMouseDown);
     ownerDoc.addEventListener('mouseup', handleMouseUp);
@@ -978,29 +910,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   };
 
   const closeMenu = useStableCallback(() => {
-    const cc = caretControllerRef.current;
-    const triggerEl = cc?.findActiveTrigger();
-
-    if (triggerEl) {
-      const triggerState = shortcutsState.triggerStates.current.get(triggerEl.id);
-      if (triggerState) {
-        triggerState.dismissed = true;
-        triggerState.dismissedValue = triggerEl.textContent?.slice(1) ?? '';
-      }
-    }
-
+    shortcutsState.menuJustClosed.current = shortcutsState.caretInTrigger;
     shortcutsState.setCaretInTrigger(null);
-
-    if (triggerEl) {
-      const sel = getOwnerSelection(triggerEl);
-      if (sel) {
-        const range = triggerEl.ownerDocument.createRange();
-        range.setStartAfter(triggerEl);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }
-    }
   });
 
   const handleEditableElementKeyDown = useStableCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -1047,7 +958,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   }, []);
 
   useEffect(() => {
-    const ownerWindow = editableElementRef.current?.ownerDocument.defaultView ?? window;
+    const ownerWindow = (editableElementRef.current?.ownerDocument ?? document).defaultView ?? window;
     const handleResize = () => adjustInputHeight();
     ownerWindow.addEventListener('resize', handleResize);
     const containers = portalContainersRef.current;
@@ -1185,13 +1096,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const portals = portalContainers.map(container =>
     ReactDOM.createPortal(
-      React.createElement(Token, {
-        key: container.id,
-        variant: 'inline' as const,
-        label: container.label,
-        disabled: !!disabled,
-        readOnly: !!readOnly,
-      }),
+      <Token key={container.id} variant="inline" label={container.label} disabled={!!disabled} readOnly={!!readOnly} />,
       container.element
     )
   );

@@ -75,6 +75,10 @@ export class CaretController {
     this.state = { start: 0, end: undefined, isValid: false };
   }
 
+  private get ownerDoc(): Document {
+    return this.element.ownerDocument ?? document;
+  }
+
   /**
    * Creates a DOM Range from resolved start/end locations and applies it to the given selection.
    * Returns the created Range for further use (e.g. scroll-into-view checks).
@@ -174,7 +178,7 @@ export class CaretController {
    * @param end optional logical end position for range selection
    */
   setPosition(start: number, end?: number): void {
-    const ownerDocument = this.element.ownerDocument;
+    const ownerDocument = this.ownerDoc;
     if (ownerDocument.activeElement !== this.element) {
       this.element.focus();
     }
@@ -252,7 +256,7 @@ export class CaretController {
 
   /** Restores the caret to the previously captured state. */
   restore(offset = 0): void {
-    if (!this.state.isValid || this.element.ownerDocument.activeElement !== this.element) {
+    if (!this.state.isValid || this.ownerDoc.activeElement !== this.element) {
       return;
     }
 
@@ -277,7 +281,7 @@ export class CaretController {
       return;
     }
 
-    if (this.element.ownerDocument.activeElement !== this.element) {
+    if (this.ownerDoc.activeElement !== this.element) {
       this.element.focus();
     }
 
@@ -289,7 +293,7 @@ export class CaretController {
     const firstP = paragraphs[0];
     const lastP = paragraphs[paragraphs.length - 1];
 
-    const range = this.element.ownerDocument.createRange();
+    const range = this.ownerDoc.createRange();
     range.setStart(firstP, 0);
     range.setEnd(lastP, lastP.childNodes.length);
     selection.removeAllRanges();
@@ -298,7 +302,7 @@ export class CaretController {
 
   /** Positions the caret at the end of a text node. */
   positionAfterText(textNode: Text): void {
-    const range = this.element.ownerDocument.createRange();
+    const range = this.ownerDoc.createRange();
     range.setStart(textNode, textNode.textContent?.length || 0);
     range.collapse(true);
 
@@ -393,6 +397,9 @@ export class CaretController {
     const childIndex = Array.from(p.childNodes).indexOf(child);
 
     if (tokenType === ElementType.Trigger) {
+      if (offsetInChild === 0) {
+        return { node: p, offset: childIndex };
+      }
       const triggerTextNode = child.childNodes[0];
       if (triggerTextNode && isTextNode(triggerTextNode)) {
         return { node: triggerTextNode, offset: offsetInChild };
