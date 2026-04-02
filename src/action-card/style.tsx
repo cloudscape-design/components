@@ -6,7 +6,7 @@ import { ActionCardProps } from './interfaces';
 
 export function getRootStyles(style: ActionCardProps.Style | undefined) {
   if (SYSTEM !== 'core' || !style?.root) {
-    return undefined;
+    return {};
   }
 
   return {
@@ -50,7 +50,7 @@ export function getRootStyles(style: ActionCardProps.Style | undefined) {
 
 export function getHeaderStyles(style: ActionCardProps.Style | undefined) {
   if (SYSTEM !== 'core' || !style?.header) {
-    return undefined;
+    return {};
   }
 
   return {
@@ -61,7 +61,7 @@ export function getHeaderStyles(style: ActionCardProps.Style | undefined) {
 
 export function getContentStyles(style: ActionCardProps.Style | undefined) {
   if (SYSTEM !== 'core' || !style?.content) {
-    return undefined;
+    return {};
   }
 
   return {

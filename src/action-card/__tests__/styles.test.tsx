@@ -59,22 +59,51 @@ describe('getRootStyles', () => {
     jest.resetModules();
   });
 
-  test('handles all possible style configurations', () => {
-    expect(getRootStyles(undefined)).toMatchSnapshot();
-    expect(getRootStyles({})).toMatchSnapshot();
+  test('returns empty object when style is undefined', () => {
+    expect(getRootStyles(undefined)).toEqual({});
+  });
+
+  test('returns empty object when style has no root', () => {
+    expect(getRootStyles({})).toEqual({});
+  });
+
+  test('returns all CSS custom properties when all root styles are provided', () => {
     expect(getRootStyles(allStyles)).toMatchSnapshot();
   });
 
-  test('returns undefined when SYSTEM is not core', async () => {
-    jest.resetModules();
-    jest.doMock('../../internal/environment', () => ({
-      SYSTEM: 'visual-refresh',
-    }));
+  test('returns only background properties when only background is set', () => {
+    const result = getRootStyles({ root: { background: allStyles.root!.background } });
+    expect(result).toMatchSnapshot();
+  });
 
-    const { getRootStyles: getRootStylesNonCore } = await import('../style');
+  test('returns only borderColor properties when only borderColor is set', () => {
+    const result = getRootStyles({ root: { borderColor: allStyles.root!.borderColor } });
+    expect(result).toMatchSnapshot();
+  });
 
-    const result = getRootStylesNonCore(allStyles);
-    expect(result).toBeUndefined();
+  test('returns only borderRadius properties when only borderRadius is set', () => {
+    const result = getRootStyles({ root: { borderRadius: allStyles.root!.borderRadius } });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('returns only borderWidth properties when only borderWidth is set', () => {
+    const result = getRootStyles({ root: { borderWidth: allStyles.root!.borderWidth } });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('returns only boxShadow properties when only boxShadow is set', () => {
+    const result = getRootStyles({ root: { boxShadow: allStyles.root!.boxShadow } });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('returns only focusRing properties when only focusRing is set', () => {
+    const result = getRootStyles({ root: { focusRing: allStyles.root!.focusRing } });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('returns empty object when root has no style sub-properties', () => {
+    const result = getRootStyles({ root: {} });
+    expect(result).toEqual({});
   });
 });
 
@@ -83,13 +112,22 @@ describe('getContentStyles', () => {
     jest.resetModules();
   });
 
-  test('handles all possible style configurations', () => {
-    expect(getContentStyles(undefined)).toMatchSnapshot();
-    expect(getContentStyles({})).toMatchSnapshot();
-    expect(getContentStyles(allStyles)).toMatchSnapshot();
+  test('returns empty object when style is undefined', () => {
+    expect(getContentStyles(undefined)).toEqual({});
   });
 
-  test('returns undefined when SYSTEM is not core', async () => {
+  test('returns empty object when style has no content', () => {
+    expect(getContentStyles({})).toEqual({});
+  });
+
+  test('returns when content styles are provided', () => {
+    expect(getContentStyles(allStyles)).toEqual({
+      paddingBlock: '16px',
+      paddingInline: '20px',
+    });
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
     jest.resetModules();
     jest.doMock('../../internal/environment', () => ({
       SYSTEM: 'visual-refresh',
@@ -98,7 +136,7 @@ describe('getContentStyles', () => {
     const { getContentStyles: getContentStylesNonCore } = await import('../style');
 
     const result = getContentStylesNonCore(allStyles);
-    expect(result).toBeUndefined();
+    expect(result).toEqual({});
   });
 });
 
@@ -107,13 +145,22 @@ describe('getHeaderStyles', () => {
     jest.resetModules();
   });
 
-  test('handles all possible style configurations', () => {
-    expect(getHeaderStyles(undefined)).toMatchSnapshot();
-    expect(getHeaderStyles({})).toMatchSnapshot();
-    expect(getHeaderStyles(allStyles)).toMatchSnapshot();
+  test('returns empty object when style is undefined', () => {
+    expect(getHeaderStyles(undefined)).toEqual({});
   });
 
-  test('returns undefined when SYSTEM is not core', async () => {
+  test('returns empty object when style has no header', () => {
+    expect(getHeaderStyles({})).toEqual({});
+  });
+
+  test('returns padding properties when header styles are provided', () => {
+    expect(getHeaderStyles(allStyles)).toEqual({
+      paddingBlock: '12px',
+      paddingInline: '20px',
+    });
+  });
+
+  test('returns empty object when SYSTEM is not core', async () => {
     jest.resetModules();
     jest.doMock('../../internal/environment', () => ({
       SYSTEM: 'visual-refresh',
@@ -122,6 +169,6 @@ describe('getHeaderStyles', () => {
     const { getHeaderStyles: getHeaderStylesNonCore } = await import('../style');
 
     const result = getHeaderStylesNonCore(allStyles);
-    expect(result).toBeUndefined();
+    expect(result).toEqual({});
   });
 });

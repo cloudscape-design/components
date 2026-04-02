@@ -326,4 +326,34 @@ describe('ActionCard Component', () => {
       expect(wrapper.findIcon()).toBeNull();
     });
   });
+
+  describe('style prop', () => {
+    test('applies style properties to elements', () => {
+      const wrapper = renderActionCard({
+        header: 'Header',
+        children: 'Content',
+        style: {
+          root: {
+            background: {
+              default: '#ffffff',
+              hover: '#f5f5f5',
+              active: '#eeeeee',
+              disabled: '#fafafa',
+            },
+          },
+          header: {
+            paddingBlock: '10px',
+            paddingInline: '20px',
+          },
+          content: {
+            paddingBlock: '30px',
+            paddingInline: '40px',
+          },
+        },
+      });
+      expect(wrapper.getElement()).toBeTruthy();
+      expect(wrapper.findHeader()).not.toBeNull();
+      expect(wrapper.findContent()).not.toBeNull();
+    });
+  });
 });
