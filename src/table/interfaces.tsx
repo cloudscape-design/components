@@ -252,8 +252,32 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
    *
    * Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+   *
+   * Each entry is one of the following:
+   * - `ColumnDisplay` - Represents a single column.
+   *   - `type` ('column') - (Optional) Identifies the entry as a column. Defaults to `'column'` when omitted.
+   *   - `id` (string) - The column identifier. Must match a column `id` from `columnDefinitions`.
+   *   - `visible` (boolean) - Whether the column is visible.
+   * - `GroupDisplay` - Represents a column group.
+   *   - `type` ('group') - Identifies the entry as a group.
+   *   - `id` (string) - The group identifier. Must match a group `id` from `groupDefinitions`.
+   *   - `visible` (boolean) - Whether the group is visible.
+   *   - `children` (ReadonlyArray<ColumnDisplayProperties>) - The columns or nested groups within this group.
    */
   columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
+
+  /**
+   * Defines the column groups. Each group has an `id` and `header` used to label the group header cell.
+   *
+   * When using grouped columns, you must also provide the `columnDisplay` property with `{ type: 'group', id, children }` entries
+   * to assign columns to their respective groups and define the display hierarchy.
+   *
+   * Each group definition contains the following:
+   * - `id` (string) - A unique identifier for the group.
+   * - `header` (ReactNode) - The content displayed in the group header cell.
+   * - `ariaLabel` ((LabelData) => string) - (Optional) A function that provides an `aria-label` for the group header.
+   */
+  groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition<T>>;
 
   /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
@@ -513,6 +537,13 @@ export namespace TableProps {
     selectedItemsCount?: number;
   }
 
+  // eslint-disable-next-line
+  export interface GroupDefinition<T> {
+    id: string;
+    header: React.ReactNode;
+    ariaLabel?: (data: LabelData) => string;
+  }
+
   export interface StickyColumns {
     first?: number;
     last?: number;
@@ -602,10 +633,20 @@ export namespace TableProps {
     newValue: ValueType
   ) => Promise<void> | void;
 
-  export interface ColumnDisplayProperties {
+  export interface ColumnDisplay {
+    type?: 'column';
     id: string;
     visible: boolean;
   }
+
+  export interface GroupDisplay {
+    type: 'group';
+    id: string;
+    visible: boolean;
+    children: ReadonlyArray<ColumnDisplayProperties>;
+  }
+
+  export type ColumnDisplayProperties = ColumnDisplay | GroupDisplay;
 
   export interface ExpandableRows<T> {
     getItemChildren: (item: T) => readonly T[];

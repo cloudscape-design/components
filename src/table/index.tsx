@@ -32,7 +32,7 @@ const Table = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const hasHiddenColumns =
       (props.visibleColumns && props.visibleColumns.length < props.columnDefinitions.length) ||
-      props.columnDisplay?.some(col => !col.visible);
+      props.columnDisplay?.some(col => col.type !== 'group' && !col.visible);
     const hasStickyColumns = !!props.stickyColumns?.first || !!props.stickyColumns?.last;
     const baseComponentProps = useBaseComponent(
       'Table',

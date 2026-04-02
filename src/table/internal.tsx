@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -49,6 +49,7 @@ import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
 import { TableBodySelectionCell } from './selection/selection-cell';
 import { useGroupSelection } from './selection/use-group-selection';
 import { useStickyColumns } from './sticky-columns';
+import { GroupHierarchyInfo } from './sticky-columns/interfaces';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
 import {
@@ -61,7 +62,13 @@ import {
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { useColumnGrouping } from './use-column-grouping';
+import {
+  ColumnWidthDefinition,
+  ColumnWidthsProvider,
+  DEFAULT_COLUMN_WIDTH,
+  useColumnWidths,
+} from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
@@ -74,6 +81,64 @@ import styles from './styles.css.js';
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
+
+/**
+ * Renders a <colgroup> with <col> elements for each leaf column.
+ * With table-layout:fixed, <col> widths control actual column widths,
+ * which makes colspan headers automatically span the correct width.
+ * Must be rendered inside ColumnWidthsProvider.
+ */
+function TableColGroup({
+  visibleColumnDefinitions,
+  hasSelection,
+  selectionColumnWidth,
+}: {
+  visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
+  hasSelection: boolean;
+  selectionColumnWidth: number;
+}) {
+  const { setCol } = useColumnWidths();
+  return (
+    <colgroup>
+      {hasSelection && <col style={{ width: selectionColumnWidth }} />}
+      {visibleColumnDefinitions.map((column, colIndex) => {
+        const columnId = getColumnKey(column, colIndex);
+        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
+      })}
+    </colgroup>
+  );
+}
+
+function buildGroupHierarchy(hierarchicalStructure: {
+  rows: Array<{ columns: Array<{ isGroup: boolean; id: string; parentGroupIds: string[] }> }>;
+}): GroupHierarchyInfo[] {
+  if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+    return [];
+  }
+  const hierarchy: GroupHierarchyInfo[] = [];
+  const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+  for (let rowIndex = 0; rowIndex < hierarchicalStructure.rows.length - 1; rowIndex++) {
+    for (const col of hierarchicalStructure.rows[rowIndex].columns) {
+      if (col.isGroup) {
+        const childColumnIds: PropertyKey[] = [];
+        for (const leafCol of leafRow.columns) {
+          if (!leafCol.isGroup && leafCol.parentGroupIds.includes(col.id)) {
+            childColumnIds.push(leafCol.id);
+          }
+        }
+        if (childColumnIds.length > 0) {
+          hierarchy.push({
+            groupId: col.id,
+            childColumnIds,
+            firstChildColumnId: childColumnIds[0],
+            lastChildColumnId: childColumnIds[childColumnIds.length - 1],
+          });
+        }
+      }
+    }
+  }
+  return hierarchy;
+}
 
 type InternalTableProps<T> = SomeRequired<
   TableProps<T>,
@@ -107,6 +172,7 @@ const InternalTable = React.forwardRef(
       preferences,
       items,
       columnDefinitions,
+      groupDefinitions,
       trackBy,
       loading,
       loadingText,
@@ -300,6 +366,16 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
+    // Build visible column IDs set for grouping
+    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => col.id || `column-${idx}`));
+
+    const hierarchicalStructure = useColumnGrouping(
+      groupDefinitions,
+      columnDefinitions,
+      visibleColumnIds,
+      columnDisplay
+    );
+
     const selectionProps = {
       items: allItems,
       rootItems: items,
@@ -372,10 +448,16 @@ const InternalTable = React.forwardRef(
       visibleColumnIdsWithSelection.push(columnId);
     }
 
+    const groupHierarchy = useMemo(
+      () => (hierarchicalStructure ? buildGroupHierarchy(hierarchicalStructure) : undefined),
+      [hierarchicalStructure]
+    );
+
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
       stickyColumnsFirst: (stickyColumns?.first ?? 0) + (stickyColumns?.first && hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
+      groupHierarchy,
     });
 
     const hasStickyColumns = !!((stickyColumns?.first ?? 0) + (stickyColumns?.last ?? 0) > 0);
@@ -394,6 +476,8 @@ const InternalTable = React.forwardRef(
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
+      groupDefinitions,
+      hierarchicalStructure,
       variant: computedVariant,
       tableVariant: computedVariant,
       wrapLines,
@@ -452,6 +536,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const headerRowCount = hierarchicalStructure?.rows.length || 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -460,6 +545,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
+            hierarchicalStructure={hierarchicalStructure}
           >
             <InternalContainer
               {...baseProps}
@@ -566,10 +652,18 @@ const InternalTable = React.forwardRef(
                       tableRole,
                       totalItemsCount,
                       totalColumnsCount: totalColumnsCount,
+                      headerRowCount,
                       ariaLabel: ariaLabels?.tableLabel,
                       ariaLabelledby,
                     })}
                   >
+                    {resizableColumns && hierarchicalStructure && hierarchicalStructure.rows.length > 1 && (
+                      <TableColGroup
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        hasSelection={hasSelection}
+                        selectionColumnWidth={SELECTION_COLUMN_WIDTH}
+                      />
+                    )}
                     <Thead
                       ref={theadRef}
                       hidden={stickyHeader}
@@ -599,6 +693,7 @@ const InternalTable = React.forwardRef(
                             tableRole,
                             firstIndex,
                             rowIndex,
+                            headerRowCount,
                             level: row.type === 'loader' ? row.level : undefined,
                             ...rowExpandableProps,
                           });
