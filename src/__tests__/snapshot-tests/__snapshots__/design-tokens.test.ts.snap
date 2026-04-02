@@ -664,13 +664,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#545b64",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -3526,13 +3519,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
-          },
-        },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-container-top": {
@@ -6392,13 +6378,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -9254,13 +9233,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
-          },
-        },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
           },
         },
         "color-border-container-top": {
@@ -12120,13 +12092,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -14984,13 +14949,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -17846,13 +17804,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#eaeded",
-      },
-    },
-    "color-border-card-highlighted": {
-      "$description": "The border color of highlighted cards.",
-      "$value": {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
       },
     },
     "color-border-container-top": {
@@ -20717,13 +20668,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -23579,13 +23523,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
-          },
-        },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
           },
         },
         "color-border-container-top": {
@@ -26445,13 +26382,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#c6c6cd",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -29307,13 +29237,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
-          },
-        },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-container-top": {
@@ -32173,13 +32096,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -35035,13 +34951,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
-          },
-        },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
           },
         },
         "color-border-container-top": {
@@ -37901,13 +37810,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -40765,13 +40667,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
-        "color-border-card-highlighted": {
-          "$description": "The border color of highlighted cards.",
-          "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
-          },
-        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -43627,13 +43522,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#424650",
         "light": "#c6c6cd",
-      },
-    },
-    "color-border-card-highlighted": {
-      "$description": "The border color of highlighted cards.",
-      "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
       },
     },
     "color-border-container-top": {

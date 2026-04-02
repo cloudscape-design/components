@@ -394,11 +394,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorBorderCardHighlighted: {
-    description: 'The border color of highlighted cards.',
-    public: true,
-    themeable: true,
-  },
   colorBorderContainerTop: {
     description:
       'The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.',
