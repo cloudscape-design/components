@@ -139,11 +139,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  borderWidthCardHighlighted: {
-    description: 'The border width of a highlighted card.',
-    public: true,
-    themeable: true,
-  },
   borderWidthButton: {
     description: 'The border width of buttons.',
     public: true,
