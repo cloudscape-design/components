@@ -234,16 +234,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     cursor: default;
     overflow-y: hidden;
 
-    // Prevent focus styles when disabled
-    &:focus-within,
-    &:focus {
-      @include styles.form-disabled-element;
-      // Reset border added by form-disabled-element — the outer .root handles the border.
-      // Without this, focusing a disabled input adds a 1px border that shifts text.
-      border: 0;
-      box-shadow: none;
-    }
-
     &::placeholder {
       @include styles.form-placeholder-disabled;
       opacity: 1;
@@ -400,13 +390,4 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   white-space: pre-wrap;
   // Inherit color from parent (textarea) for disabled/readonly states
   color: inherit;
-
-  // Prevent focus styles on paragraphs when parent textarea is disabled
-  .textarea-disabled & {
-    &:focus-within,
-    &:focus {
-      background: inherit;
-      outline: none;
-    }
-  }
 }

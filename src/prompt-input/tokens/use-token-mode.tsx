@@ -267,6 +267,10 @@ function useTokenProcessor(config: ProcessorConfig) {
   const markCancelledTriggers = useStableCallback((cancelledIds: Set<string>) => {
     for (const id of cancelledIds) {
       state.cancelledTriggerIds.current.add(id);
+      // Prevent opening the menu if the active trigger was cancelled
+      if (state.caretInTrigger === id) {
+        state.setCaretInTrigger(null);
+      }
     }
   });
 
@@ -402,10 +406,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const activeMenu = useMemo(
     () =>
-      activeTriggerToken && shortcutsState.caretInTrigger
+      activeTriggerToken && shortcutsState.caretInTrigger && !disabled && !readOnly
         ? (menus?.find(m => m.trigger === activeTriggerToken.triggerChar) ?? null)
         : null,
-    [activeTriggerToken, shortcutsState.caretInTrigger, menus]
+    [activeTriggerToken, shortcutsState.caretInTrigger, menus, disabled, readOnly]
   );
 
   const menuIsOpen = !!activeMenu;
@@ -937,15 +941,15 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     });
   });
 
-  const handleEditableElementBlur = useStableCallback(() => {
-    if (onBlur) {
-      fireNonCancelableEvent(onBlur);
-    }
-  });
-
   const handleEditableElementFocus = useStableCallback(() => {
     if (onFocus) {
       fireNonCancelableEvent(onFocus);
+    }
+  });
+
+  const handleEditableElementBlur = useStableCallback(() => {
+    if (onBlur) {
+      fireNonCancelableEvent(onBlur);
     }
   });
 
@@ -1077,7 +1081,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     autoCorrect: disableBrowserAutocorrect ? 'off' : undefined,
     autoCapitalize: disableBrowserAutocorrect ? 'off' : undefined,
     spellCheck: spellcheck,
-    tabIndex: disabled ? -1 : 0,
+    // When disabled, omit tabIndex entirely so the div is not focusable at all.
+    tabIndex: disabled ? undefined : 0,
     onKeyDown: handleEditableElementKeyDown,
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     onBlur: handleEditableElementBlur,
