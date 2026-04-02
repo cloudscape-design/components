@@ -109,6 +109,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -227,6 +231,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -640,6 +651,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-border-container-top": {
@@ -2640,6 +2658,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -2651,6 +2676,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -2909,6 +2962,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -3027,6 +3084,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -3440,6 +3504,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
           },
         },
         "color-border-container-top": {
@@ -5440,6 +5511,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -5451,6 +5529,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -5709,6 +5815,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -5827,6 +5937,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -6240,6 +6357,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#d5dbdb",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
           },
         },
         "color-border-container-top": {
@@ -8240,6 +8364,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -8251,6 +8382,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -8509,6 +8668,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -8627,6 +8790,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -9042,6 +9212,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -11040,6 +11217,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -11051,6 +11235,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -11309,6 +11521,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -11427,6 +11643,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -11842,6 +12065,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d5dbdb",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -13840,6 +14070,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -13851,6 +14088,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -14109,6 +14374,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of buttons.",
           "$value": "1px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -14227,6 +14496,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#00a1c9",
             "light": "#00a1c9",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
           },
         },
         "color-background-cell-shaded": {
@@ -14637,6 +14913,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-button-primary-disabled": {
           "$description": "The border color of primary buttons in disabled state.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#414750",
             "light": "#414750",
@@ -16640,6 +16923,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "awsui-none-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+            "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -16651,6 +16941,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
+            "compact": "8px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
             "compact": "8px",
           },
         },
@@ -16909,6 +17227,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of buttons.",
       "$value": "1px",
     },
+    "border-width-card": {
+      "$description": "The border width of a card.",
+      "$value": "0px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "1px",
@@ -17027,6 +17349,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0a4a74",
+      },
+    },
+    "color-background-card": {
+      "$description": "The background color of a card.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
       },
     },
     "color-background-cell-shaded": {
@@ -17440,6 +17769,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#d5dbdb",
+      },
+    },
+    "color-border-card": {
+      "$description": "The border color of a card.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
       },
     },
     "color-border-container-top": {
@@ -19440,6 +19776,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "disabled": "awsui-none-35003c",
       },
     },
+    "shadow-card": {
+      "$description": "The shadow of a card.",
+      "$value": {
+        "dark": "0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)",
+        "light": "0 1px 1px 0 rgba(0, 28, 36, 0.3), 1px 1px 1px 0 rgba(0, 28, 36, 0.15), -1px 1px 1px 0 rgba(0, 28, 36, 0.15)",
+      },
+    },
     "shadow-container-active": {
       "$description": "Shadow for containers and cards in active state.",
       "$value": {
@@ -19451,6 +19794,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The vertical padding inside alert components.",
       "$value": {
         "comfortable": "12px",
+        "compact": "8px",
+      },
+    },
+    "space-card-horizontal-default": {
+      "$description": "The default horizontal padding inside a card.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-card-horizontal-embedded": {
+      "$description": "The horizontal padding inside embedded a card.",
+      "$value": {
+        "comfortable": "12px",
+        "compact": "10px",
+      },
+    },
+    "space-card-vertical-default": {
+      "$description": "The default vertical padding inside a card.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "16px",
+      },
+    },
+    "space-card-vertical-embedded": {
+      "$description": "The vertical padding inside embedded a card.",
+      "$value": {
+        "comfortable": "10px",
         "compact": "8px",
       },
     },
@@ -19714,6 +20085,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -19832,6 +20207,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#0f141a",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -20245,6 +20627,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#232b37",
             "light": "#ebebf0",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
           },
         },
         "color-border-container-top": {
@@ -22245,6 +22634,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -22257,6 +22653,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -22514,6 +22938,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -22632,6 +23060,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-cell-shaded": {
@@ -23045,6 +23480,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#232b37",
             "light": "#232b37",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
           },
         },
         "color-border-container-top": {
@@ -25045,6 +25487,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -25057,6 +25506,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -25314,6 +25791,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -25432,6 +25913,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -25847,6 +26335,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -27845,6 +28340,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -27857,6 +28359,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -28114,6 +28644,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -28232,6 +28766,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -28647,6 +29188,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -30645,6 +31193,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -30657,6 +31212,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -30914,6 +31497,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -31031,6 +31618,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of primary buttons in hover state.",
           "$value": {
             "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -31447,6 +32041,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -33445,6 +34046,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -33457,6 +34065,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -33714,6 +34350,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -33832,6 +34472,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
           },
         },
         "color-background-cell-shaded": {
@@ -34247,6 +34894,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -36245,6 +36899,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -36257,6 +36918,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -36514,6 +37203,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -36632,6 +37325,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-cell-shaded": {
@@ -37045,6 +37745,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#232b37",
             "light": "#232b37",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-container-top": {
@@ -39045,6 +39752,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -39057,6 +39771,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -39314,6 +40056,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of buttons.",
           "$value": "2px",
         },
+        "border-width-card": {
+          "$description": "The border width of a card.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -39432,6 +40178,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-background-card": {
+          "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-background-cell-shaded": {
@@ -39845,6 +40598,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#232b37",
             "light": "#232b37",
+          },
+        },
+        "color-border-card": {
+          "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
           },
         },
         "color-border-container-top": {
@@ -41845,6 +42605,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "awsui-status-icon-error-35003c",
           },
         },
+        "shadow-card": {
+          "$description": "The shadow of a card.",
+          "$value": {
+            "dark": "none",
+            "light": "none",
+          },
+        },
         "shadow-container-active": {
           "$description": "Shadow for containers and cards in active state.",
           "$value": {
@@ -41857,6 +42624,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -42114,6 +42909,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of buttons.",
       "$value": "2px",
     },
+    "border-width-card": {
+      "$description": "The border width of a card.",
+      "$value": "1px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "2px",
@@ -42232,6 +43031,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#75cfff",
         "light": "#002b66",
+      },
+    },
+    "color-background-card": {
+      "$description": "The background color of a card.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
       },
     },
     "color-background-cell-shaded": {
@@ -42645,6 +43451,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#232b37",
         "light": "#ebebf0",
+      },
+    },
+    "color-border-card": {
+      "$description": "The border color of a card.",
+      "$value": {
+        "dark": "#424650",
+        "light": "#c6c6cd",
       },
     },
     "color-border-container-top": {
@@ -44645,6 +45458,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "disabled": "awsui-status-icon-error-35003c",
       },
     },
+    "shadow-card": {
+      "$description": "The shadow of a card.",
+      "$value": {
+        "dark": "none",
+        "light": "none",
+      },
+    },
     "shadow-container-active": {
       "$description": "Shadow for containers and cards in active state.",
       "$value": {
@@ -44657,6 +45477,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "8px",
         "compact": "4px",
+      },
+    },
+    "space-card-horizontal-default": {
+      "$description": "The default horizontal padding inside a card.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-card-horizontal-embedded": {
+      "$description": "The horizontal padding inside embedded a card.",
+      "$value": {
+        "comfortable": "12px",
+        "compact": "10px",
+      },
+    },
+    "space-card-vertical-default": {
+      "$description": "The default vertical padding inside a card.",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "12px",
+      },
+    },
+    "space-card-vertical-embedded": {
+      "$description": "The vertical padding inside embedded a card.",
+      "$value": {
+        "comfortable": "10px",
+        "compact": "8px",
       },
     },
     "space-container-horizontal": {
