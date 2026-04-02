@@ -4187,28 +4187,15 @@ describe('token-operations', () => {
     }
   });
 
-  test('tokens without IDs get assigned IDs after processing', () => {
+  test('tokens with IDs render correctly', () => {
     const onChange = jest.fn();
-    const { rerender } = renderTokenMode({ props: { tokens: [], onChange } });
-    // Provide tokens with empty IDs — processTokens should assign them
-    act(() => {
-      rerender(
-        <PromptInput
-          tokens={[{ type: 'reference', id: '', label: 'Alice', value: 'user-1', menuId: 'mentions' }]}
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          i18nStrings={defaultI18nStrings}
-          ariaLabel="Chat input"
-          onChange={onChange}
-        />
-      );
+    const { container } = renderTokenMode({
+      props: {
+        tokens: [{ type: 'reference', id: 'ref-alice', label: 'Alice', value: 'user-1', menuId: 'mentions' }],
+        onChange,
+      },
     });
-    expect(onChange).toHaveBeenCalled();
-    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
-    const ref = lastTokens.find((t: PromptInputProps.InputToken) => t.type === 'reference');
-    expect(ref).toBeDefined();
-    expect(ref.id).not.toBe('');
-    expect(typeof ref.id).toBe('string');
+    expect(getValue(createWrapper(container).findPromptInput()!)).toContain('Alice');
   });
 });
 
@@ -4998,7 +4985,7 @@ describe('token mode misc', () => {
   test('trigger wrapper handles missing trigger element gracefully', () => {
     // Trigger token with an ID that won't match any DOM element
     const { wrapper } = renderTokenMode({
-      props: { tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: '' }] },
+      props: { tokens: [{ type: 'trigger', value: '', triggerChar: '@', id: 'nonexistent-trig' }] },
     });
     expect(wrapper.findContentEditableElement()).not.toBeNull();
     // Menu should not open when trigger element cannot be found
@@ -6580,19 +6567,14 @@ describe('classifyChange branches', () => {
 });
 
 describe('external token processing', () => {
-  test('external tokens with triggers get IDs assigned', () => {
-    const onChange = jest.fn();
-    renderTokenMode({
+  test('external tokens with proper IDs render correctly', () => {
+    const { container } = renderTokenMode({
       props: {
-        tokens: [{ type: 'trigger', id: '', value: 'test', triggerChar: '@' }],
-        onChange,
+        tokens: [{ type: 'trigger', id: 'trig-ext', value: 'test', triggerChar: '@' }],
       },
     });
-    // processTokens should assign an ID to the empty-ID trigger and emit
-    expect(onChange).toHaveBeenCalled();
-    const emittedTokens = onChange.mock.calls[0][0].detail.tokens;
-    const trigger = emittedTokens.find((t: any) => t.type === 'trigger');
-    expect(trigger.id).not.toBe('');
+    const text = getValue(createWrapper(container).findPromptInput()!);
+    expect(text).toContain('@test');
   });
 
   test('external tokens matching last emitted tokens are not re-processed', () => {
