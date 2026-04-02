@@ -328,27 +328,21 @@ describe('ActionCard Component', () => {
   });
 
   describe('style prop', () => {
-    test('applies style properties to elements', () => {
+    test('applies all style properties to elements', () => {
       const wrapper = renderActionCard({
         header: 'Header',
         children: 'Content',
         style: {
           root: {
-            background: {
-              default: '#ffffff',
-              hover: '#f5f5f5',
-              active: '#eeeeee',
-              disabled: '#fafafa',
-            },
+            background: { default: '#fff', hover: '#f5f5f5', active: '#eee', disabled: '#fafafa' },
+            borderColor: { default: '#e0e0e0', hover: '#bdbdbd', active: '#9e9e9e', disabled: '#eee' },
+            borderRadius: { default: '8px', hover: '8px', active: '8px', disabled: '8px' },
+            borderWidth: { default: '1px', hover: '2px', active: '2px', disabled: '1px' },
+            boxShadow: { default: 'none', hover: 'none', active: 'none', disabled: 'none' },
+            focusRing: { borderColor: '#0073bb', borderRadius: '10px', borderWidth: '2px' },
           },
-          header: {
-            paddingBlock: '10px',
-            paddingInline: '20px',
-          },
-          content: {
-            paddingBlock: '30px',
-            paddingInline: '40px',
-          },
+          header: { paddingBlock: '10px', paddingInline: '20px' },
+          content: { paddingBlock: '30px', paddingInline: '40px' },
         },
       });
       expect(wrapper.getElement()).toBeTruthy();

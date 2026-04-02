@@ -105,6 +105,18 @@ describe('getRootStyles', () => {
     const result = getRootStyles({ root: {} });
     expect(result).toEqual({});
   });
+
+  test('returns empty object for root when SYSTEM is not core', async () => {
+    jest.resetModules();
+    jest.doMock('../../internal/environment', () => ({
+      SYSTEM: 'visual-refresh',
+    }));
+
+    const { getRootStyles: getRootStylesNonCore } = await import('../style');
+
+    const result = getRootStylesNonCore(allStyles);
+    expect(result).toEqual({});
+  });
 });
 
 describe('getContentStyles', () => {
