@@ -12,12 +12,13 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
-import { DrawerProps } from './interfaces';
+import { NextDrawerProps } from './interfaces';
 import { useStickyFooter } from './use-sticky-footer';
+import { getPositionStyles } from './utils';
 
 import styles from './styles.css.js';
 
-type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
+type DrawerInternalProps = NextDrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,
@@ -28,18 +29,26 @@ export function DrawerImplementation({
   disableContentPaddings,
   __internalRootRef,
   headerActions,
+  position = 'static',
+  placement = 'end',
+  offset,
+  stickyOffset,
+  zIndex,
   ...restProps
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
+  const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });
   const containerProps = {
     ...baseProps,
+    style: positionStyles.style,
     className: clsx(
       baseProps.className,
       styles.drawer,
       isToolbar && styles['with-toolbar'],
-      !!footer && styles['with-footer']
+      !!footer && styles['with-footer'],
+      positionStyles.className
     ),
   };
   const footerRef = useRef<HTMLDivElement>(null);
