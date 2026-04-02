@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+// eslint-disable-next-line @cloudscape-design/build-tools/react-server-components-directive
 'use client';
 import React from 'react';
 
-import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { DrawerProps } from './interfaces';
+import { getExternalProps } from '../internal/utils/external-props';
+import { NextDrawerProps } from './interfaces';
 import { InternalDrawer } from './internal';
 
-export { DrawerProps };
+export { NextDrawerProps };
 
 const Drawer = function Drawer({
   header,
@@ -18,34 +19,44 @@ const Drawer = function Drawer({
   footer,
   disableContentPaddings = false,
   loading = false,
-  children,
-  i18nStrings,
+  position = 'static',
+  placement = 'end',
+  offset,
+  stickyOffset,
+  zIndex,
   ...props
-}: DrawerProps) {
+}: NextDrawerProps) {
   const baseComponentProps = useBaseComponent('Drawer', {
     props: {
       disableContentPaddings,
       loading,
+      placement,
+      position,
+      zIndex,
     },
     metadata: {
       hasHeader: !!header,
       hasHeaderActions: !!headerActions,
       hasFooter: !!footer,
+      hasOffset: !!offset,
+      hasStickyOffset: !!stickyOffset,
     },
   });
   return (
     <InternalDrawer
-      {...getBaseProps(props)}
+      {...getExternalProps(props)}
       {...baseComponentProps}
       header={header}
       headerActions={headerActions}
       footer={footer}
       disableContentPaddings={disableContentPaddings}
       loading={loading}
-      i18nStrings={i18nStrings}
-    >
-      {children}
-    </InternalDrawer>
+      placement={placement}
+      position={position}
+      offset={offset}
+      stickyOffset={stickyOffset}
+      zIndex={zIndex}
+    />
   );
 };
 
