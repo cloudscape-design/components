@@ -389,27 +389,25 @@ describe('processTokens', () => {
     expect(result.every(t => t.type === 'text')).toBe(true);
   });
 
-  test('assigns IDs to trigger tokens without IDs', () => {
-    const tokens: PromptInputProps.InputToken[] = [{ type: 'trigger', value: 'user', triggerChar: '@' } as any];
+  test('preserves consumer-provided IDs on trigger tokens', () => {
+    const tokens: PromptInputProps.InputToken[] = [trigger('user', '@', 'trig-1')];
     const { tokens: result } = processTokens(tokens, {}, { source: 'user-input' });
     const token = result[0];
     expect(isTriggerToken(token)).toBe(true);
     if (isTriggerToken(token)) {
-      expect(typeof token.id).toBe('string');
-      expect(token.id).not.toBe('');
+      expect(token.id).toBe('trig-1');
     }
   });
 
-  test('assigns IDs to reference tokens without IDs', () => {
+  test('preserves consumer-provided IDs on reference tokens', () => {
     const tokens: PromptInputProps.InputToken[] = [
-      { type: 'reference', id: '', label: 'Alice', value: 'user-1', menuId: 'mentions' } as any,
+      { type: 'reference', id: 'ref-alice', label: 'Alice', value: 'user-1', menuId: 'mentions' },
     ];
     const { tokens: result } = processTokens(tokens, {}, { source: 'user-input' });
     const token = result[0];
     expect(isReferenceToken(token)).toBe(true);
     if (isReferenceToken(token)) {
-      expect(typeof token.id).toBe('string');
-      expect(token.id).not.toBe('');
+      expect(token.id).toBe('ref-alice');
     }
   });
 
@@ -842,21 +840,20 @@ describe('extractTokensFromDOM - trigger token edge cases', () => {
     document.body.innerHTML = '';
   });
 
-  test('trigger element with no id generates one', () => {
+  test('trigger element uses its DOM id', () => {
     const el = document.createElement('div');
     document.body.appendChild(el);
     const p = document.createElement('p');
     const triggerSpan = document.createElement('span');
     triggerSpan.setAttribute('data-type', ElementType.Trigger);
-    // No id set
+    triggerSpan.id = 'trig-dom-1';
     triggerSpan.textContent = '@user';
     p.appendChild(triggerSpan);
     el.appendChild(p);
     const tokens = extractTokensFromDOM(el, [mentionsMenu]);
     const triggerToken = tokens.find(t => t.type === 'trigger') as PromptInputProps.TriggerToken;
     expect(triggerToken).toBeDefined();
-    expect(triggerToken.id).toBeDefined();
-    expect(triggerToken.id).not.toBe('');
+    expect(triggerToken.id).toBe('trig-dom-1');
   });
 
   test('reference element with HTMLElement child uses portal container for label', () => {

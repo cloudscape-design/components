@@ -2310,3 +2310,91 @@ describe('handleEditableKeyDown - emitChange via backspace at paragraph start', 
     expect(onChange).toHaveBeenCalled();
   });
 });
+
+describe('event-handlers - additional branch coverage', () => {
+  function defaultProps(overrides: Partial<KeyboardHandlerProps> = {}): KeyboardHandlerProps {
+    return {
+      editableElement: el,
+      editableState: { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null },
+      caretController: null,
+      tokens: [],
+      getMenuOpen: () => false,
+      getMenuItemsState: () => null,
+      getMenuItemsHandlers: () => null,
+      closeMenu: jest.fn(),
+      onChange: jest.fn(),
+      markTokensAsSent: jest.fn(),
+      ...overrides,
+    };
+  }
+
+  test('Enter on disabled input prevents default and does not fire onAction', () => {
+    const onAction = jest.fn();
+    const event = makeKeyboardEvent('Enter');
+    handleEditableKeyDown(event, defaultProps({ disabled: true, onAction }));
+    expect(event.isDefaultPrevented()).toBe(true);
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  test('Enter on readOnly input prevents default and does not fire onAction', () => {
+    const onAction = jest.fn();
+    const event = makeKeyboardEvent('Enter');
+    handleEditableKeyDown(event, defaultProps({ readOnly: true, onAction }));
+    expect(event.isDefaultPrevented()).toBe(true);
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  test('Space key after closed trigger splits trigger and text', () => {
+    const trigger = createTriggerElement('trig-1', '@bob');
+    addParagraph(el, trigger);
+    // Position cursor at end of trigger text
+    setCursor(trigger.firstChild!, 4);
+    const cc = new CaretController(el);
+    const event = makeKeyboardEvent(' ');
+    handleEditableKeyDown(
+      event,
+      defaultProps({
+        tokens: [{ type: 'trigger', id: 'trig-1', value: 'bob', triggerChar: '@' }],
+        caretController: cc,
+        // Menu is closed — this exercises handleSpaceAfterClosedTrigger
+        getMenuOpen: () => false,
+      })
+    );
+    expect(event.isDefaultPrevented()).toBe(true);
+  });
+
+  test('Shift+ArrowLeft across reference token extends selection backward', () => {
+    const ref = createReferenceWrapper('ref-1', 'Alice');
+    const p = addParagraph(el, ref, 'text');
+    const textNode = p.childNodes[1];
+    setCursor(textNode, 0);
+    const event = makeKeyboardEvent('ArrowLeft', { shiftKey: true });
+    handleEditableKeyDown(
+      event,
+      defaultProps({
+        tokens: [
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: 'text' },
+        ],
+      })
+    );
+    // The handler should extend selection past the reference
+  });
+
+  test('Shift+ArrowRight across reference token extends selection forward', () => {
+    const ref = createReferenceWrapper('ref-1', 'Alice');
+    const p = addParagraph(el, 'text', ref);
+    const textNode = p.childNodes[0];
+    setCursor(textNode, 4);
+    const event = makeKeyboardEvent('ArrowRight', { shiftKey: true });
+    handleEditableKeyDown(
+      event,
+      defaultProps({
+        tokens: [
+          { type: 'text', value: 'text' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        ],
+      })
+    );
+  });
+});

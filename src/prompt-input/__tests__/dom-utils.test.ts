@@ -8,6 +8,7 @@ import { ElementType } from '../core/constants';
 import {
   createParagraph,
   createTrailingBreak,
+  findAdjacentToken,
   findAllParagraphs,
   findElement,
   getTokenType,
@@ -15,6 +16,7 @@ import {
   insertAfter,
   isElementEffectivelyEmpty,
   isEmptyState,
+  normalizeCaretIntoTrigger,
   setEmptyState,
 } from '../core/dom-utils';
 
@@ -277,5 +279,230 @@ describe('setEmptyState', () => {
     expect(el.querySelectorAll('p')).toHaveLength(1);
     expect(el.querySelector('p')!.childNodes).toHaveLength(1);
     expect(el.querySelector('p')!.firstChild!.nodeName).toBe('BR');
+  });
+});
+
+describe('findAdjacentToken', () => {
+  test('returns null sibling when text node is not at boundary', () => {
+    const textNode = document.createTextNode('hello');
+    const result = findAdjacentToken(textNode, 2, 'backward');
+    expect(result.sibling).toBeNull();
+    expect(result.isReferenceToken).toBe(false);
+  });
+
+  test('returns previous sibling at backward boundary of text node', () => {
+    const p = document.createElement('p');
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    const text = document.createTextNode('hello');
+    p.appendChild(ref);
+    p.appendChild(text);
+
+    const result = findAdjacentToken(text, 0, 'backward');
+    expect(result.sibling).toBe(ref);
+    expect(result.isReferenceToken).toBe(true);
+  });
+
+  test('returns next sibling at forward boundary of text node', () => {
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(text);
+    p.appendChild(ref);
+
+    const result = findAdjacentToken(text, 5, 'forward');
+    expect(result.sibling).toBe(ref);
+    expect(result.isReferenceToken).toBe(true);
+  });
+
+  test('returns child node for element container backward', () => {
+    const p = document.createElement('p');
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    const text = document.createTextNode('hello');
+    p.appendChild(ref);
+    p.appendChild(text);
+
+    const result = findAdjacentToken(p, 1, 'backward');
+    expect(result.sibling).toBe(ref);
+    expect(result.isReferenceToken).toBe(true);
+  });
+
+  test('returns child node for element container forward', () => {
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    const ref = document.createElement('span');
+    ref.setAttribute('data-type', ElementType.Reference);
+    p.appendChild(text);
+    p.appendChild(ref);
+
+    const result = findAdjacentToken(p, 1, 'forward');
+    expect(result.sibling).toBe(ref);
+    expect(result.isReferenceToken).toBe(true);
+  });
+
+  test('returns non-reference sibling with isReferenceToken false', () => {
+    const p = document.createElement('p');
+    const span = document.createElement('span');
+    const text = document.createTextNode('hello');
+    p.appendChild(span);
+    p.appendChild(text);
+
+    const result = findAdjacentToken(text, 0, 'backward');
+    expect(result.sibling).toBe(span);
+    expect(result.isReferenceToken).toBe(false);
+  });
+});
+
+describe('normalizeCaretIntoTrigger', () => {
+  function createTrigger(id: string, text: string): HTMLElement {
+    const span = document.createElement('span');
+    span.setAttribute('data-type', ElementType.Trigger);
+    span.id = id;
+    span.textContent = text;
+    return span;
+  }
+
+  test('does nothing when selection has no ranges', () => {
+    const el = document.createElement('div');
+    // No selection set — should not throw
+    normalizeCaretIntoTrigger(el);
+  });
+
+  test('does nothing when range is not collapsed', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const text = document.createTextNode('hello');
+    p.appendChild(text);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(text, 0);
+    range.setEnd(text, 3);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+    // Range should remain unchanged
+    expect(sel.getRangeAt(0).collapsed).toBe(false);
+    document.body.removeChild(el);
+  });
+
+  test('nudges caret into trigger when at paragraph-level offset after trigger', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const trigger = createTrigger('trig-1', '@');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(p, 1); // After the trigger element
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+
+    const newRange = sel.getRangeAt(0);
+    expect(newRange.startContainer).toBe(trigger.childNodes[0]);
+    expect(newRange.startOffset).toBe(1); // After '@'
+    document.body.removeChild(el);
+  });
+
+  test('does not nudge into cancelled trigger', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const trigger = createTrigger('trig-1', '@');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(p, 1);
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el, new Set(['trig-1']));
+
+    const newRange = sel.getRangeAt(0);
+    // Should remain at paragraph level, not nudged into trigger
+    expect(newRange.startContainer).toBe(p);
+    document.body.removeChild(el);
+  });
+
+  test('nudges caret from empty text node after trigger', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const trigger = createTrigger('trig-1', '@');
+    const emptyText = document.createTextNode('');
+    p.appendChild(trigger);
+    p.appendChild(emptyText);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(emptyText, 0);
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+
+    const newRange = sel.getRangeAt(0);
+    expect(newRange.startContainer).toBe(trigger.childNodes[0]);
+    document.body.removeChild(el);
+  });
+
+  test('does not nudge from non-empty text node after trigger', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const trigger = createTrigger('trig-1', '@');
+    const text = document.createTextNode('hello');
+    p.appendChild(trigger);
+    p.appendChild(text);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(text, 0);
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+
+    const newRange = sel.getRangeAt(0);
+    // Should stay in the text node
+    expect(newRange.startContainer).toBe(text);
+    expect(newRange.startOffset).toBe(0);
+    document.body.removeChild(el);
+  });
+});
+
+describe('findElement with tokenId', () => {
+  test('finds element by tokenId', () => {
+    const container = document.createElement('div');
+    const el = document.createElement('span');
+    el.setAttribute('data-id', 'my-id');
+    el.setAttribute('data-type', ElementType.Reference);
+    container.appendChild(el);
+
+    const found = findElement(container, { tokenId: 'my-id', tokenType: ElementType.Reference });
+    expect(found).toBe(el);
+  });
+
+  test('returns null when no selector options provided', () => {
+    const container = document.createElement('div');
+    const found = findElement(container, {});
+    expect(found).toBeNull();
   });
 });

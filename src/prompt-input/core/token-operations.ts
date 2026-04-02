@@ -113,7 +113,7 @@ function extractTriggerTokens(
   menus: readonly PromptInputProps.MenuDefinition[] = []
 ): PromptInputProps.InputToken[] {
   const tokens: PromptInputProps.InputToken[] = [];
-  const id = node.id || generateTokenId();
+  const id = node.id;
   const fullText = node.textContent || '';
 
   // Find the earliest trigger character in the text content
@@ -369,17 +369,6 @@ export function processTokens(
   if (options.detectTriggers && config.menus) {
     result = detectTriggersInTokens(result, config.menus, onTriggerDetected, cancelledIds);
   }
-
-  // Ensure all tokens have IDs for DOM element tracking
-  result = result.map(token => {
-    if (isTriggerToken(token) && (!token.id || token.id === '')) {
-      return { ...token, id: generateTokenId() };
-    }
-    if (isReferenceToken(token) && (!token.id || token.id === '')) {
-      return { ...token, id: generateTokenId() };
-    }
-    return token;
-  });
 
   return { tokens: result, cancelledIds };
 }
