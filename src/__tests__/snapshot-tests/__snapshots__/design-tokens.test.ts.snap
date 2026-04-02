@@ -658,7 +658,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#545b64",
@@ -3515,7 +3515,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
@@ -6372,7 +6372,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
@@ -9229,7 +9229,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -12086,7 +12086,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
@@ -14943,7 +14943,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#414750",
             "light": "#414750",
@@ -17800,7 +17800,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       },
     },
     "color-border-card": {
-      "$description": "The border color of cards.",
+      "$description": "The border color of a card.",
       "$value": {
         "dark": "#414750",
         "light": "#eaeded",
@@ -20662,7 +20662,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -23519,7 +23519,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -26376,7 +26376,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
@@ -29233,7 +29233,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
@@ -32090,7 +32090,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -34947,7 +34947,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
@@ -37804,7 +37804,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#424650",
             "light": "#424650",
@@ -40661,7 +40661,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           },
         },
         "color-border-card": {
-          "$description": "The border color of cards.",
+          "$description": "The border color of a card.",
           "$value": {
             "dark": "#424650",
             "light": "#424650",
@@ -43518,7 +43518,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       },
     },
     "color-border-card": {
-      "$description": "The border color of cards.",
+      "$description": "The border color of a card.",
       "$value": {
         "dark": "#424650",
         "light": "#c6c6cd",

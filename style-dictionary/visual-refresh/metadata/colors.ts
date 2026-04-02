@@ -390,7 +390,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBorderCard: {
-    description: 'The border color of cards.',
+    description: 'The border color of a card.',
     public: true,
     themeable: true,
   },
