@@ -63,6 +63,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundCard: {
+    description: 'The background color of a card.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundContainerContent: {
     description:
       'The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.',
@@ -381,6 +386,16 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorItemSelected: {
     description:
       'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderCard: {
+    description: 'The border color of cards.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderCardHighlighted: {
+    description: 'The border color of highlighted cards.',
     public: true,
     themeable: true,
   },
