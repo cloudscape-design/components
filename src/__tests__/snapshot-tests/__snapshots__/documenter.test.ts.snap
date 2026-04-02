@@ -9722,12 +9722,17 @@ Refer to the [style](/components/container/?tabId=style) tab for more details.",
                   "optional": true,
                   "type": "string",
                 },
+                {
+                  "name": "color",
+                  "optional": true,
+                  "type": "string",
+                },
               ],
               "type": "object",
             },
             "name": "root",
             "optional": true,
-            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; color?: string | undefined; }",
           },
         ],
         "type": "object",
@@ -11584,6 +11589,242 @@ It should contain the only \`h2\` used in the drawer.",
     },
   ],
   "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for dropdown matches the snapshot: dropdown 1`] = `
+{
+  "dashCaseName": "dropdown",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user presses the Escape key while the dropdown is open.
+The dropdown does not close automatically - the \`open\` prop needs to be
+updated to actually close the dropdown.",
+      "name": "onEscape",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when any element inside the dropdown content gains focus.
+This includes nested interactive elements like buttons, links, or inputs.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusEnter",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when focus leaves the dropdown content entirely.",
+      "detailInlineType": {
+        "name": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "EventTarget & RelatedTarget",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "RelatedTarget",
+              ],
+            },
+            "name": "relatedTarget",
+            "optional": false,
+            "type": "EventTarget & RelatedTarget",
+          },
+          {
+            "inlineType": {
+              "name": "EventTarget & Target",
+              "type": "union",
+              "values": [
+                "EventTarget",
+                "Target",
+              ],
+            },
+            "name": "target",
+            "optional": false,
+            "type": "EventTarget & Target",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "Pick<React.FocusEvent<Element, Element>, "relatedTarget" | "target">",
+      "name": "onFocusLeave",
+    },
+    {
+      "cancelable": false,
+      "description": "Called when the user clicks outside the dropdown. The dropdown does not
+close automatically - the \`open\` prop needs to be updated to actually close
+the dropdown.",
+      "name": "onOutsideClick",
+    },
+  ],
+  "functions": [],
+  "name": "Dropdown",
+  "properties": [
+    {
+      "description": "Adds \`aria-describedby\` to the dropdown content element.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-label\` to the dropdown content element.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the dropdown content element.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`role\` to the dropdown content element.",
+      "name": "ariaRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+[React Portals](https://reactjs.org/docs/portals.html).
+
+Set this property if the dropdown would otherwise be constrained by a scrollable container,
+for example inside table and split view layouts.
+
+We recommend you use discretion, and don't enable this property unless necessary
+because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+      "name": "expandToViewport",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Maximum width for the dropdown in pixels. If no value is specified, the
+dropdown will expand to fit its content.",
+      "name": "maxWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Minimum width for the dropdown in pixels. If no value is specified, the
+dropdown will shrink to fit its content.",
+      "name": "minWidth",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Open state of the dropdown.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing CSS properties to customize the dropdown's visual appearance.",
+      "inlineType": {
+        "name": "DropdownProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "background",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "dropdown",
+            "optional": true,
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "DropdownProps.Style",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Main content of the dropdown.",
+      "isDefault": false,
+      "name": "content",
+    },
+    {
+      "description": "Optional footer content that stays fixed at the bottom while
+scrolling dropdown content.
+Typically used to display loading status or action buttons.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Optional header content that stays fixed at the top while
+scrolling dropdown content.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "The trigger element that opens/closes the dropdown.",
+      "isDefault": false,
+      "name": "trigger",
+    },
+  ],
+  "releaseStatus": "stable",
+  "systemTags": [
+    "core",
+  ],
 }
 `;
 
@@ -15750,6 +15991,274 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for item-card matches the snapshot: item-card 1`] = `
+{
+  "dashCaseName": "item-card",
+  "events": [],
+  "functions": [],
+  "name": "ItemCard",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the footer area.",
+      "name": "disableFooterPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the header area.",
+      "name": "disableHeaderPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native root element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "An object containing CSS properties to customize the item card's visual appearance.
+Refer to the [style](/components/item-card/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "ItemCardProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "content",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "divider",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderWidth?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "paddingBlock",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "paddingInline",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "root",
+                  "optional": true,
+                  "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "footer",
+            "optional": true,
+            "type": "{ root?: { paddingBlock?: string | undefined; paddingInline?: string | undefined; } | undefined; divider?: { borderColor?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "header",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "name": "background",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ItemCardProps.Style",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual variant of the item card, which controls the border radius and padding.
+
+- \`default\` - Uses container-level border radius and padding (larger).
+- \`embedded\` - Uses compact border radius and padding (smaller).",
+      "inlineType": {
+        "name": "ItemCardProps.Variant",
+        "type": "union",
+        "values": [
+          "default",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Actions to display in the item card header area, typically buttons or links.",
+      "isDefault": false,
+      "name": "actions",
+    },
+    {
+      "description": "Main content of the item card.",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "A description or subtitle displayed below the header.",
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "description": "Footer content displayed at the bottom of the item card.",
+      "isDefault": false,
+      "name": "footer",
+    },
+    {
+      "description": "Heading element of the item card. Use this to add a title or header text.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Icon content displayed next to the header.",
+      "isDefault": false,
+      "name": "icon",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for key-value-pairs matches the snapshot: key-value-pairs 1`] = `
 {
   "dashCaseName": "key-value-pairs",
@@ -16821,23 +17330,23 @@ exports[`Components definition for list matches the snapshot: list 1`] = `
 * \`content\` (React.ReactNode) - The content of the item.
 * \`secondaryContent\` (React.ReactNode) - (Optional) Secondary content, for example item description.
 * \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start.
-* \`action\` (React.ReactNode) - (Optional) Action button(s).
+* \`actions\` (React.ReactNode) - (Optional) Action button(s).
 * \`announcementLabel\` (string) - (Optional) An announcement label for the item, used when sorting.
    By default, the \`content\` is used: a custom label should be provided if \`content\` is not a string.",
       "inlineType": {
-        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "name": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "parameters": [
           {
             "name": "item",
             "type": "T",
           },
         ],
-        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+        "returnType": "{ id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
         "type": "function",
       },
       "name": "renderItem",
       "optional": false,
-      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; action?: React.ReactNode; announcementLabel?: string | undefined; }",
+      "type": "(item: T) => { id: string; content: React.ReactNode; secondaryContent?: React.ReactNode; icon?: React.ReactNode; actions?: React.ReactNode; announcementLabel?: string | undefined; }",
     },
     {
       "description": "Makes the list sortable by enabling drag and drop functionality.",
@@ -24325,7 +24834,6 @@ Links are rendered as \`<a>\` tags.
      The anchor also has the attributes \`target="_blank"\` and \`rel="noopener"\`.
      Additionally, the \`activeHref\` property won't be modified when a user chooses the link.
 - \`externalIconAriaLabel\` (string) - Adds an aria-label to the external icon.
-Note: Deprecated, use i18nStrings.externalIconAriaLabel instead.
 - \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
     our UX guidelines allow only to add a Badge and/or a "New" label.
 
@@ -26764,12 +27272,17 @@ Refer to the [style](/components/tabs/?tabId=style) tab for more details.",
                         "optional": true,
                         "type": "string",
                       },
+                      {
+                        "name": "color",
+                        "optional": true,
+                        "type": "string",
+                      },
                     ],
                     "type": "object",
                   },
                   "name": "root",
                   "optional": true,
-                  "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; }",
+                  "type": "{ background?: string | undefined; borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; boxShadow?: string | undefined; color?: string | undefined; }",
                 },
               ],
               "type": "object",
@@ -29861,6 +30374,173 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "boolean",
     },
     {
+      "description": "An object containing CSS properties to customize the token's visual appearance.
+Refer to the [style](/components/token/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "TokenProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "color",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "dismissButton",
+            "optional": true,
+            "type": "{ color?: { default?: string | undefined; disabled?: string | undefined; hover?: string | undefined; readOnly?: string | undefined; } | undefined; focusRing?: { borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; } | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "background",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                    "properties": [
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "readOnly",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; }",
+                },
+                {
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; disabled?: string | undefined; readOnly?: string | undefined; } | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; p...",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "TokenProps.Style",
+    },
+    {
       "description": "A list of tags giving further guidance about the token.",
       "name": "tags",
       "optional": true,
@@ -32818,7 +33498,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -33167,7 +33847,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -36924,7 +37604,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -37187,6 +37867,110 @@ wrapper.selectOptionByValue('option_1');
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the trigger element.",
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the dropdown content.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the dropdown footer.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the dropdown header.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -37615,6 +38399,25 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
+        {
           "description": "Returns the individual flashes of this flashbar.
 
 If the items are stacked, only the item at the top of the stack is returned.",
@@ -37981,6 +38784,95 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [],
       "name": "IconWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the action slot of the item card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the content slot of the item card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the description slot of the item card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the footer slot of the item card.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the header slot of the item card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the icon slot of the item card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
     },
     {
       "methods": [
@@ -38817,7 +39709,7 @@ wrapper.clickSelectAll();
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44112,7 +45004,7 @@ Supported options:
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -44332,7 +45224,7 @@ Options get highlighted when they match the value of the input field.",
           },
         },
       ],
-      "name": "DropdownContentWrapper",
+      "name": "OptionsDropdownContentWrapper",
     },
     {
       "methods": [
@@ -47034,7 +47926,7 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {
@@ -47161,6 +48053,94 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "DrawerWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the open dropdown wrapper, or null if the dropdown is closed.",
+          "name": "findOpenDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "DropdownContentWrapper",
+          },
+        },
+        {
+          "description": "Returns the trigger element.",
+          "name": "findTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns whether the dropdown is open.",
+          "name": "isOpen",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "DropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the dropdown content.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the dropdown footer.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the dropdown header.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DropdownContentWrapper",
     },
     {
       "methods": [
@@ -47464,6 +48444,25 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     {
       "methods": [
         {
+          "description": "Returns a flash item by its id.
+
+The id is matched against the \`id\` property of each item passed to the \`items\` property of the Flashbar component.",
+          "name": "findItemById",
+          "parameters": [
+            {
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "id",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "FlashWrapper",
+          },
+        },
+        {
           "description": "Returns the individual flashes of this flashbar.
 
 If the items are stacked, only the item at the top of the stack is returned.",
@@ -47735,6 +48734,65 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [],
       "name": "IconWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Finds the action slot of the item card.",
+          "name": "findActions",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the content slot of the item card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the description slot of the item card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the footer slot of the item card.",
+          "name": "findFooter",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the header slot of the item card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the icon slot of the item card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ItemCardWrapper",
     },
     {
       "methods": [
@@ -48364,7 +49422,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           ],
           "returnType": {
             "isNullable": false,
-            "name": "DropdownContentWrapper",
+            "name": "OptionsDropdownContentWrapper",
           },
         },
         {

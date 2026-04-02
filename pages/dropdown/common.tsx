@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import Button from '~components/button';
-import Dropdown from '~components/internal/components/dropdown';
+import Dropdown from '~components/dropdown';
 import Modal from '~components/modal';
 
 export function SampleDropdown({ id, children }: { id: string; children: React.ReactNode }) {

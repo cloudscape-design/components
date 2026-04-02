@@ -8,7 +8,8 @@ import DropdownWrapper from './dropdown';
 import OptionWrapper from './option';
 import OptionsListWrapper from './options-list';
 
-import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
@@ -31,10 +32,13 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findDropdown(options = { expandToViewport: false }): DropdownContentWrapper {
+  findDropdown(options = { expandToViewport: false }): OptionsDropdownContentWrapper {
     return options.expandToViewport
-      ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalDropdownContentWrapper)!
-      : new DropdownContentWrapper(this.getElement());
+      ? createWrapper().findComponent(
+          `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
+          PortalDropdownContentWrapper
+        )!
+      : new OptionsDropdownContentWrapper(this.getElement());
   }
 
   @usesDom
@@ -149,7 +153,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   }
 }
 
-export class DropdownContentWrapper extends ComponentWrapper {
+export class OptionsDropdownContentWrapper extends ComponentWrapper {
   findDisabledOptions(): Array<OptionWrapper> {
     return this.findAllByClassName(selectableStyles.disabled).map(
       (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
@@ -253,8 +257,11 @@ export class DropdownContentWrapper extends ComponentWrapper {
   }
 }
 
-export class PortalDropdownContentWrapper extends DropdownContentWrapper {
+export class PortalDropdownContentWrapper extends OptionsDropdownContentWrapper {
   findOpenDropdown(): ElementWrapper | null {
-    return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, DropdownWrapper);
+    return createWrapper().findComponent(
+      `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
+      DropdownWrapper
+    );
   }
 }

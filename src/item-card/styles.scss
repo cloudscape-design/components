@@ -1,0 +1,166 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use './motion';
+
+// Variant configuration maps — adjust values here for easy customization
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-card-embedded,
+  'default': awsui.$border-radius-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-card-vertical-embedded,
+  'default': awsui.$space-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-card-horizontal-embedded,
+  'default': awsui.$space-card-horizontal-default,
+);
+
+$action-padding-vertical: styles.$control-padding-vertical;
+$action-padding-horizontal: awsui.$space-xxs;
+
+@mixin apply-border-radius($variant: 'default') {
+  $radius: map.get($variant-border-radius, $variant);
+  border-start-start-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
+  border-start-end-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
+  border-end-start-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
+  border-end-end-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
+}
+
+.header {
+  &-inner {
+    @include styles.font-heading-s;
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
+  }
+}
+
+.body {
+  flex: 1;
+}
+
+.footer {
+  &:first-child {
+    margin-block-start: auto;
+  }
+}
+
+.root {
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  background-color: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-card);
+  min-inline-size: 0;
+  box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-card);
+
+  &:before {
+    @include styles.base-pseudo-element;
+    box-shadow: none;
+    border-color: transparent;
+    border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+    border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+  }
+
+  &::after {
+    @include styles.base-pseudo-element;
+  }
+
+  &:not(.refresh)::before {
+    border-block-start: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-container-top-width)
+      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-container-top);
+  }
+
+  &.highlighted {
+    background-color: awsui.$color-background-item-selected;
+
+    &:before {
+      border-block: solid awsui.$border-width-card-highlighted awsui.$color-border-card-highlighted;
+      border-inline: solid awsui.$border-width-card-highlighted awsui.$color-border-card-highlighted;
+    }
+  }
+
+  &.variant-embedded,
+  &.variant-default {
+    > .inner-card {
+      display: flex;
+      flex-direction: column;
+      block-size: 100%;
+      inline-size: 100%;
+
+      > .header + .body,
+      > .header + .footer,
+      > .body + .footer {
+        &:not(.no-padding) {
+          padding-block-start: awsui.$space-xxs;
+        }
+      }
+
+      > .header,
+      > .body {
+        &:not(.no-padding):has(+ .body, + .footer) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+
+  // Generate variant styles from the configuration maps
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:before,
+      &::after,
+      > .inner-card {
+        @include apply-border-radius($variant);
+      }
+
+      $padding-block: map.get($variant-padding-block, $variant);
+      $padding-inline: map.get($variant-padding-inline, $variant);
+
+      > .inner-card > .header,
+      > .inner-card > .body,
+      > .inner-card > .footer {
+        &:not(.no-padding) {
+          padding-block: $padding-block;
+          padding-inline-start: $padding-inline;
+          &:not(.with-actions) {
+            padding-inline-end: $padding-inline;
+          }
+          &.with-actions {
+            padding-inline-end: calc($padding-inline - $action-padding-horizontal);
+          }
+        }
+      }
+
+      > .inner-card > .header:not(.no-padding).with-actions {
+        padding-block: calc($padding-block - $action-padding-vertical);
+        &:has(+ .body, + .footer) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+}
+
+.full-height {
+  block-size: 100%;
+}
+
+.description {
+  color: awsui.$color-text-heading-secondary;
+  @include styles.font-body-s;
+}

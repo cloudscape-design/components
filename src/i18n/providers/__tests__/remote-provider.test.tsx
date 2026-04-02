@@ -4,6 +4,8 @@
 import React, { useContext } from 'react';
 import { render } from '@testing-library/react';
 
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { I18nProvider } from '../../../../lib/components/i18n';
 import { FormatFunction, InternalI18nContext } from '../../../../lib/components/i18n/context';
 import RemoteI18nProvider from '../../../../lib/components/i18n/providers/remote-provider';
@@ -30,6 +32,9 @@ function TestConsumer() {
 }
 
 describe('RemoteI18nProvider', () => {
+  beforeEach(() => {
+    setGlobalFlag('appLayoutWidget', true);
+  });
   it('loads the formatter and provides the context to the children', async () => {
     document.documentElement.lang = 'es';
 
@@ -100,6 +105,18 @@ describe('RemoteI18nProvider', () => {
     );
 
     expect(getByTestId('locale')).toHaveTextContent('en');
+    expect(loadFormatter).not.toHaveBeenCalled();
+  });
+  it('does not load formatter if applayout widget is not active', () => {
+    setGlobalFlag('appLayoutWidget', false);
+    const loadFormatter = jest.fn().mockRejectedValue(new Error('Network error'));
+
+    render(
+      <RemoteI18nProvider loadFormatter={loadFormatter}>
+        <TestConsumer />
+      </RemoteI18nProvider>
+    );
+
     expect(loadFormatter).not.toHaveBeenCalled();
   });
 });

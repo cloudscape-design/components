@@ -121,9 +121,17 @@ export function useMouseHover<T>({
   };
 
   const onSVGMouseOut = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    if (isHandlersDisabled || isMouseOverPopover(event)) {
+    if (isHandlersDisabled) {
       return;
     }
+
+    // If the mouse is moving into the popover or its container (transition wrapper),
+    // let onPopoverLeave handle cleanup.
+    const popoverContainer = popoverRef.current?.parentElement;
+    if (event.relatedTarget && popoverContainer && nodeContains(popoverContainer, event.relatedTarget)) {
+      return;
+    }
+
     if (
       !nodeContains(plotRef.current!.svg, event.relatedTarget) ||
       (event.relatedTarget && (event.relatedTarget as Element).classList.contains(styles.series))
@@ -133,11 +141,12 @@ export function useMouseHover<T>({
     }
   };
 
-  const onPopoverLeave = (event: React.MouseEvent) => {
-    if (!isHandlersDisabled && nodeContains(plotRef.current!.svg, event.relatedTarget)) {
-      highlightX(null);
-      clearHighlightedSeries();
+  const onPopoverLeave = () => {
+    if (isHandlersDisabled) {
+      return;
     }
+    highlightX(null);
+    clearHighlightedSeries();
   };
 
   return { onSVGMouseMove, onSVGMouseOut, onPopoverLeave };

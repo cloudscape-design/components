@@ -251,6 +251,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
+  "dropdown": [
+    "awsui_dropdown-content_9duf6",
+    "awsui_dropdown_9duf6",
+    "awsui_footer_1hezk",
+    "awsui_header_1hezk",
+    "awsui_root_9duf6",
+    "awsui_trigger_1hezk",
+  ],
   "error-boundary": [
     "awsui_action_11u4a",
     "awsui_description_11u4a",
@@ -423,6 +431,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_toggle_gfwv3",
     "awsui_value_10ipo",
     "awsui_wrapper_1wepg",
+  ],
+  "item-card": [
+    "awsui_body_14an4",
+    "awsui_description_14an4",
+    "awsui_footer_14an4",
+    "awsui_header_14an4",
+    "awsui_icon_14an4",
+    "awsui_root_n1fwt",
   ],
   "key-value-pairs": [
     "awsui_detail_1y9fy",

@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import ButtonTrigger from '../internal/components/button-trigger';
-import Dropdown from '../internal/components/dropdown';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -308,6 +308,7 @@ const DateRangePicker = React.forwardRef(
     );
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+    const referrerId = useUniqueId();
 
     return (
       <div
@@ -328,6 +329,7 @@ const DateRangePicker = React.forwardRef(
           trigger={trigger}
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
+          triggerId={referrerId}
           content={
             /* Reset form field context to prevent a wrapper form field from labelling all inputs inside the dropdown. */
             <ResetContextsForModal>
@@ -359,6 +361,7 @@ const DateRangePicker = React.forwardRef(
                   customRelativeRangeUnits={customRelativeRangeUnits}
                   renderRelativeRangeContent={renderRelativeRangeContent}
                   granularity={granularity}
+                  referrerId={referrerId}
                 />
               )}
             </ResetContextsForModal>

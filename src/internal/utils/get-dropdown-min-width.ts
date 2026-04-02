@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { DropdownWidthConstraint } from '../../dropdown/interfaces';
 import { getBreakpointValue } from '../breakpoints';
-import { DropdownWidthConstraint } from '../components/dropdown/interfaces';
 
 /**
  * AWSUI-19898

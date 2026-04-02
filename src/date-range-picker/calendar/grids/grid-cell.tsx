@@ -12,10 +12,11 @@ import testutilStyles from '../../test-classes/styles.css.js';
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
+  referrerId?: string;
 }
 
 export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
-  const { disabledReason, ...rest } = props;
+  const { disabledReason, referrerId, ...rest } = props;
   const isDisabledWithReason = !!disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
   const ref = useRef<HTMLTableCellElement>(null);
@@ -73,6 +74,7 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
               getTrack={() => ref.current}
               content={disabledReason!}
               onEscape={() => setShowTooltip(false)}
+              referrerId={referrerId}
             />
           )}
         </>
