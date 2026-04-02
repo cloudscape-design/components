@@ -11542,16 +11542,18 @@ exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the drawer content has padding. If \`true\`, removes the default padding from the content area.",
       "name": "disableContentPaddings",
       "optional": true,
       "type": "boolean",
     },
     {
-      "description": "An object containing all the necessary localized strings required by the component.",
+      "description": "An object containing all the necessary localized strings required by the component.
+- \`loadingText\` - The text that's displayed when the drawer is in a loading state.",
       "i18nTag": true,
       "inlineType": {
-        "name": "I18nStrings",
+        "name": "DrawerProps.I18nStrings",
         "properties": [
           {
             "name": "loadingText",
@@ -11563,7 +11565,7 @@ exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "I18nStrings",
+      "type": "DrawerProps.I18nStrings",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -11575,7 +11577,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Renders the drawer in a loading state. We recommend that you also set a \`loadingText\`.",
+      "defaultValue": "false",
+      "description": "Renders the drawer in a loading state. We recommend that you also set a \`i18nStrings.loadingText\`.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
