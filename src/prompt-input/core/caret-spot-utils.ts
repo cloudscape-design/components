@@ -25,7 +25,7 @@ function extractFromSpot(spot: HTMLElement, trackCaret: boolean): Text | null {
     }
   }
 
-  const textNode = spot.ownerDocument.createTextNode(extraText);
+  const textNode = (spot.ownerDocument ?? document).createTextNode(extraText);
   const wrapper = spot.parentElement!;
   const isBefore = spot.getAttribute('data-type') === ElementType.CaretSpotBefore;
 

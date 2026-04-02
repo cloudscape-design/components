@@ -5,140 +5,47 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import { CaretController } from '../core/caret-controller';
 import { normalizeCaretIntoTrigger } from '../core/dom-utils';
-import { getPromptText, processTokens } from '../core/token-operations';
 import { isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
-
-/** Tracks the state of a trigger element — its DOM node, dismissal, and cancellation status. */
-export interface TriggerState {
-  element: HTMLElement | null;
-  dismissed: boolean;
-  dismissedValue: string | null;
-  cancelled: boolean;
-}
 
 export interface ShortcutsState {
   /** The ID of the trigger the caret is currently in, or null if not in any trigger. */
   caretInTrigger: string | null;
   setCaretInTrigger: (triggerId: string | null) => void;
-  triggerStates: React.MutableRefObject<Map<string, TriggerState>>;
-  lastSentTokens: React.MutableRefObject<readonly PromptInputProps.InputToken[] | undefined>;
-  isExternalUpdate: (tokens: readonly PromptInputProps.InputToken[] | undefined) => boolean;
+  /** DOM elements for trigger spans, keyed by trigger ID. Used for dropdown positioning and render reuse. */
+  triggerElementsRef: React.MutableRefObject<Map<string, HTMLElement>>;
+  /** Trigger IDs cancelled by onTriggerDetected — prevents menu opening and re-detection. */
+  cancelledTriggerIds: React.MutableRefObject<Set<string>>;
+  /** Set to the trigger ID that was just closed. checkMenuState skips reopening
+   *  this specific trigger on the next call, then clears the value. */
+  menuJustClosed: React.MutableRefObject<string | null>;
+  /** Tracks the last token array emitted by the component. Used to distinguish
+   *  user-initiated changes from external (parent) updates. */
+  lastEmittedTokensRef: React.MutableRefObject<readonly PromptInputProps.InputToken[] | undefined>;
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
 }
 
 export function useShortcutsState(): ShortcutsState {
   const [caretInTrigger, setCaretInTrigger] = useState<string | null>(null);
-  const triggerStates = useRef<Map<string, TriggerState>>(new Map());
-  const lastSentTokens = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
-
-  const isExternalUpdate = useStableCallback((tokens: readonly PromptInputProps.InputToken[] | undefined): boolean => {
-    return lastSentTokens.current !== tokens;
-  });
+  const triggerElementsRef = useRef<Map<string, HTMLElement>>(new Map());
+  const cancelledTriggerIds = useRef<Set<string>>(new Set());
+  const menuJustClosed = useRef<string | null>(null);
+  const lastEmittedTokensRef = useRef<readonly PromptInputProps.InputToken[] | undefined>(undefined);
 
   const markTokensAsSent = useStableCallback((tokens: readonly PromptInputProps.InputToken[]) => {
-    lastSentTokens.current = tokens;
+    lastEmittedTokensRef.current = tokens;
   });
 
   return {
     caretInTrigger,
     setCaretInTrigger,
-    triggerStates,
-    lastSentTokens,
-    isExternalUpdate,
+    triggerElementsRef,
+    cancelledTriggerIds,
+    menuJustClosed,
+    lastEmittedTokensRef,
     markTokensAsSent,
-  };
-}
-
-interface ProcessorConfig {
-  tokens?: readonly PromptInputProps.InputToken[];
-  menus?: readonly PromptInputProps.MenuDefinition[];
-  tokensToText?: (tokens: readonly PromptInputProps.InputToken[]) => string;
-  onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
-  onTriggerDetected?: (detail: PromptInputProps.TriggerDetectedDetail) => boolean;
-  state: ShortcutsState;
-}
-
-export function useTokenProcessor(config: ProcessorConfig) {
-  const { tokens, menus, tokensToText, onChange, onTriggerDetected, state } = config;
-  const previousTokensRef = useRef(tokens);
-
-  const emitTokenChange = useStableCallback((newTokens: PromptInputProps.InputToken[]) => {
-    const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
-    state.markTokensAsSent(newTokens);
-    onChange({ value, tokens: newTokens });
-  });
-
-  const markCancelledTriggers = useStableCallback((cancelledIds: Set<string>) => {
-    for (const id of cancelledIds) {
-      const existing = state.triggerStates.current.get(id);
-      if (existing) {
-        existing.cancelled = true;
-      } else {
-        // Pre-populate — element will be filled in when renderTokens runs
-        state.triggerStates.current.set(id, {
-          element: null,
-          dismissed: false,
-          dismissedValue: null,
-          cancelled: true,
-        });
-      }
-    }
-  });
-
-  const processUserInput = useStableCallback((inputTokens: PromptInputProps.InputToken[]) => {
-    const { tokens: processed, cancelledIds } = processTokens(
-      inputTokens,
-      { menus, tokensToText },
-      {
-        source: 'user-input',
-        detectTriggers: true,
-      },
-      onTriggerDetected
-    );
-
-    markCancelledTriggers(cancelledIds);
-    emitTokenChange(processed);
-  });
-
-  useEffect(() => {
-    if (previousTokensRef.current === tokens) {
-      return;
-    }
-
-    previousTokensRef.current = tokens;
-
-    if (!state.isExternalUpdate(tokens)) {
-      return;
-    }
-
-    if (!tokens || !menus) {
-      return;
-    }
-
-    const { tokens: processed, cancelledIds } = processTokens(
-      tokens,
-      { menus, tokensToText },
-      {
-        source: 'external',
-        detectTriggers: true,
-      }
-    );
-
-    markCancelledTriggers(cancelledIds);
-
-    const hasChanges = processed.length !== tokens.length || processed.some((t, i) => t !== tokens[i]);
-
-    if (hasChanges) {
-      emitTokenChange(processed);
-    }
-  }, [tokens, menus, tokensToText, state, emitTokenChange, markCancelledTriggers]);
-
-  return {
-    processUserInput,
   };
 }
 
@@ -150,6 +57,14 @@ interface EffectsConfig {
   caretController: React.RefObject<CaretController | null>;
 }
 
+/**
+ * Manages trigger menu state by listening for selection changes within the
+ * editable element. Determines which trigger (if any) the caret is inside
+ * and updates `caretInTrigger` accordingly.
+ *
+ * Supports menu suppression (via Escape) which is cleared on the next user
+ * interaction that changes the selection.
+ */
 export function useShortcutsEffects(config: EffectsConfig) {
   const { activeTriggerToken, editableElementRef, state, tokens, caretController } = config;
 
@@ -167,75 +82,45 @@ export function useShortcutsEffects(config: EffectsConfig) {
         return;
       }
 
-      const cancelledIds = new Set<string>();
-      state.triggerStates.current.forEach((ts, id) => {
-        if (ts.cancelled) {
-          cancelledIds.add(id);
-        }
-      });
-      normalizeCaretIntoTrigger(editableElementRef.current, cancelledIds);
+      normalizeCaretIntoTrigger(editableElementRef.current, state.cancelledTriggerIds.current);
 
       const activeTrigger = ctrl.findActiveTrigger();
-      let activeTriggerIdForMenu: string | null = null;
+      const newTriggerId =
+        activeTrigger && !state.cancelledTriggerIds.current.has(activeTrigger.id) ? activeTrigger.id : null;
 
-      if (activeTrigger) {
-        const triggerState = state.triggerStates.current.get(activeTrigger.id);
-
-        // Skip cancelled triggers entirely
-        if (triggerState?.cancelled) {
-          activeTriggerIdForMenu = null;
-        } else {
-          activeTriggerIdForMenu = activeTrigger.id;
-
-          // Check dismissed state — reopen if filter text changed since dismissal
-          if (triggerState?.dismissed) {
-            const currentValue = activeTrigger.textContent?.slice(1) ?? '';
-            if (currentValue !== triggerState.dismissedValue) {
-              triggerState.dismissed = false;
-              triggerState.dismissedValue = null;
-            } else {
-              activeTriggerIdForMenu = null;
-            }
-          }
+      // Skip reopening the trigger that was just closed via Escape.
+      // Clears after one check so subsequent actions can reopen it.
+      if (state.menuJustClosed.current) {
+        const closedId = state.menuJustClosed.current;
+        state.menuJustClosed.current = null;
+        if (newTriggerId === closedId) {
+          return;
         }
-
-        // Clear dismissed state on all other triggers — navigating away resets dismissal
-        state.triggerStates.current.forEach((ts, id) => {
-          if (id !== activeTrigger.id && ts.dismissed) {
-            ts.dismissed = false;
-            ts.dismissedValue = null;
-          }
-        });
-      } else {
-        // Caret is not in any trigger — clear all dismissed states
-        state.triggerStates.current.forEach(ts => {
-          if (ts.dismissed) {
-            ts.dismissed = false;
-            ts.dismissedValue = null;
-          }
-        });
       }
 
-      if (activeTriggerIdForMenu !== state.caretInTrigger) {
-        state.setCaretInTrigger(activeTriggerIdForMenu);
+      if (newTriggerId !== state.caretInTrigger) {
+        state.setCaretInTrigger(newTriggerId);
       }
     };
 
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        return;
+      }
+      checkMenuState();
+    };
+
+    const ownerDoc = editableElementRef.current.ownerDocument ?? document;
+    const element = editableElementRef.current;
+
     checkMenuState();
 
-    const ownerDoc = editableElementRef.current.ownerDocument;
     ownerDoc.addEventListener('selectionchange', checkMenuState);
-
-    const scrollableParent = getFirstScrollableParent(editableElementRef.current);
-    if (scrollableParent) {
-      scrollableParent.addEventListener('scroll', checkMenuState);
-    }
+    element.addEventListener('keyup', onKeyUp);
 
     return () => {
       ownerDoc.removeEventListener('selectionchange', checkMenuState);
-      if (scrollableParent) {
-        scrollableParent.removeEventListener('scroll', checkMenuState);
-      }
+      element.removeEventListener('keyup', onKeyUp);
     };
   }, [tokens, state, editableElementRef, caretController, activeTriggerToken]);
 }

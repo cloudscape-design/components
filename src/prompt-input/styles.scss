@@ -238,6 +238,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     &:focus-within,
     &:focus {
       @include styles.form-disabled-element;
+      // Reset border added by form-disabled-element — the outer .root handles the border.
+      // Without this, focusing a disabled input adds a 1px border that shifts text.
+      border: 0;
       box-shadow: none;
     }
 

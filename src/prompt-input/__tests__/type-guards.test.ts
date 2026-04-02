@@ -89,7 +89,12 @@ describe('DOM type guards', () => {
 describe('Token type guards', () => {
   const textToken: PromptInputProps.TextToken = { type: 'text', value: 'hello' };
   const breakToken: PromptInputProps.TextToken = { type: 'break', value: '\n' };
-  const triggerToken: PromptInputProps.TriggerToken = { type: 'trigger', value: 'filter', triggerChar: '@' };
+  const triggerToken: PromptInputProps.TriggerToken = {
+    type: 'trigger',
+    value: 'filter',
+    triggerChar: '@',
+    id: 'trig-1',
+  };
   const referenceToken: PromptInputProps.ReferenceToken = {
     type: 'reference',
     id: 'ref-1',

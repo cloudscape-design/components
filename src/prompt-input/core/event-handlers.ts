@@ -237,7 +237,7 @@ export function splitParagraphAtCaret(
     return;
   }
 
-  const afterRange = editableElement.ownerDocument.createRange();
+  const afterRange = (editableElement.ownerDocument ?? document).createRange();
   afterRange.setStart(range.startContainer, range.startOffset);
   afterRange.setEndAfter(currentP.lastChild || currentP);
 
@@ -461,7 +461,7 @@ function normalizeCaretOutOfReference(
   const newOffset = direction === 'backward' ? wrapperIndex : wrapperIndex + 1;
 
   event.preventDefault();
-  const newRange = paragraph.ownerDocument.createRange();
+  const newRange = (paragraph.ownerDocument ?? document).createRange();
   newRange.setStart(paragraph, newOffset);
   newRange.collapse(true);
   selection.removeAllRanges();
@@ -719,7 +719,7 @@ export function handleSpaceAfterClosedTrigger(
     caretController.capture();
   }
 
-  const spaceNode = triggerElement.ownerDocument.createTextNode(' ');
+  const spaceNode = (triggerElement.ownerDocument ?? document).createTextNode(' ');
   insertAfter(spaceNode, triggerElement);
 
   editableElement.dispatchEvent(new Event('input', { bubbles: true }));

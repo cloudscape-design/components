@@ -115,7 +115,7 @@ export function normalizeCollapsedCaret(selection: Selection | null): void {
     return;
   }
 
-  const newRange = container.ownerDocument!.createRange();
+  const newRange = (container.ownerDocument ?? document).createRange();
   newRange.setStart(paragraph, newOffset);
   newRange.collapse(true);
   selection.removeAllRanges();
@@ -206,7 +206,7 @@ export function normalizeSelection(selection: Selection | null, skipCaretSpots: 
     selection.collapse(anchorContainer, anchorOffset);
     selection.extend(focusContainer, focusOffset);
   } else {
-    const updatedRange = range.startContainer.ownerDocument!.createRange();
+    const updatedRange = (range.startContainer.ownerDocument ?? document).createRange();
     updatedRange.setStart(newStartContainer, newStartOffset);
     updatedRange.setEnd(newEndContainer, newEndOffset);
     selection.removeAllRanges();
