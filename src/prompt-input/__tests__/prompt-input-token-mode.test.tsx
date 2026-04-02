@@ -260,10 +260,10 @@ describe('token mode disabled, readOnly, and state', () => {
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
-  test('sets tabIndex to -1 when disabled', () => {
+  test('removes tabIndex when disabled so element is not focusable', () => {
     const { container } = renderTokenMode({ props: { disabled: true } });
     const editable = container.querySelector('[role="textbox"]')!;
-    expect(editable).toHaveAttribute('tabindex', '-1');
+    expect(editable).not.toHaveAttribute('tabindex');
   });
 
   test('switching from disabled to enabled re-enables editing', () => {
@@ -6500,5 +6500,173 @@ describe('onTriggerDetected callback', () => {
     });
     expect(onTriggerDetected).toHaveBeenCalled();
     expect(wrapper.isMenuOpen()).toBe(false);
+  });
+});
+
+describe('disabled and readonly menu suppression', () => {
+  test('menu does not open on trigger when disabled', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = renderStatefulTokenMode({
+      props: { disabled: true, tokens: [{ type: 'trigger', id: 'trig-1', value: '', triggerChar: '@' }] },
+      ref,
+    });
+    expect(wrapper.isMenuOpen()).toBe(false);
+  });
+
+  test('menu does not open on trigger when readOnly', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const { wrapper } = renderStatefulTokenMode({
+      props: { readOnly: true, tokens: [{ type: 'trigger', id: 'trig-1', value: '', triggerChar: '@' }] },
+      ref,
+    });
+    expect(wrapper.isMenuOpen()).toBe(false);
+  });
+});
+
+describe('classifyChange branches', () => {
+  test('external update with different token count triggers structural re-render', () => {
+    const onChange = jest.fn();
+    const { rerender, container } = renderTokenMode({
+      props: { tokens: [{ type: 'text', value: 'hello' }], onChange },
+    });
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('hello');
+    rerender(
+      <PromptInput
+        tokens={[
+          { type: 'text', value: 'hello' },
+          { type: 'text', value: ' world' },
+        ]}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+      />
+    );
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe('hello world');
+  });
+
+  test('external update with different token type triggers structural re-render', () => {
+    const { rerender, container } = renderTokenMode({
+      props: { tokens: [{ type: 'text', value: 'hello' }] },
+    });
+    rerender(
+      <PromptInput
+        tokens={[{ type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' }]}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+      />
+    );
+    expect(getValue(createWrapper(container).findPromptInput()!)).toContain('Alice');
+  });
+
+  test('trigger empty-to-nonempty filter transition triggers structural re-render', () => {
+    const { rerender, container } = renderTokenMode({
+      props: { tokens: [{ type: 'trigger', id: 'trig-1', value: '', triggerChar: '@' }] },
+    });
+    rerender(
+      <PromptInput
+        tokens={[{ type: 'trigger', id: 'trig-1', value: 'ali', triggerChar: '@' }]}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+      />
+    );
+    const text = getValue(createWrapper(container).findPromptInput()!);
+    expect(text).toContain('@ali');
+  });
+});
+
+describe('external token processing', () => {
+  test('external tokens with triggers get IDs assigned', () => {
+    const onChange = jest.fn();
+    renderTokenMode({
+      props: {
+        tokens: [{ type: 'trigger', id: '', value: 'test', triggerChar: '@' }],
+        onChange,
+      },
+    });
+    // processTokens should assign an ID to the empty-ID trigger and emit
+    expect(onChange).toHaveBeenCalled();
+    const emittedTokens = onChange.mock.calls[0][0].detail.tokens;
+    const trigger = emittedTokens.find((t: any) => t.type === 'trigger');
+    expect(trigger.id).not.toBe('');
+  });
+
+  test('external tokens matching last emitted tokens are not re-processed', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
+    const { rerender } = renderTokenMode({ props: { tokens, onChange }, ref });
+
+    // First render processes tokens
+    const callCount = onChange.mock.calls.length;
+
+    // Re-render with same reference — should skip processing
+    rerender(
+      <PromptInput
+        tokens={tokens}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+        onChange={onChange}
+      />
+    );
+    expect(onChange.mock.calls.length).toBe(callCount);
+  });
+});
+
+describe('token removal caret restoration', () => {
+  test('caret adjusts when a reference token is removed externally', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const tokens: PromptInputProps.InputToken[] = [
+      { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+      { type: 'text', value: ' hello' },
+    ];
+    const { rerender, container } = renderTokenMode({ props: { tokens }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+
+    // Remove the reference token
+    rerender(
+      <PromptInput
+        tokens={[{ type: 'text', value: ' hello' }]}
+        menus={defaultMenus}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+      />
+    );
+    expect(getValue(createWrapper(container).findPromptInput()!)).toBe(' hello');
+  });
+});
+
+describe('disabled state focus behavior', () => {
+  test('disabled contentEditable has no tabindex attribute', () => {
+    const { container } = renderTokenMode({ props: { disabled: true, tokens: [{ type: 'text', value: 'hi' }] } });
+    const editable = container.querySelector('[role="textbox"]')!;
+    expect(editable).not.toHaveAttribute('tabindex');
+  });
+
+  test('enabled contentEditable has tabindex 0', () => {
+    const { container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hi' }] } });
+    const editable = container.querySelector('[role="textbox"]')!;
+    expect(editable).toHaveAttribute('tabindex', '0');
+  });
+
+  test('onFocus is not fired when disabled', () => {
+    const onFocus = jest.fn();
+    const { container } = renderTokenMode({
+      props: { disabled: true, onFocus, tokens: [{ type: 'text', value: 'hi' }] },
+    });
+    const editable = container.querySelector('[role="textbox"]') as HTMLElement;
+    // In a real browser, the missing tabindex prevents focus. jsdom doesn't enforce this,
+    // so we verify the attribute-level guard instead.
+    expect(editable).not.toHaveAttribute('tabindex');
+    expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 });

@@ -112,7 +112,7 @@ function createReferenceWithCaretSpots(
   const wrapper = ownerDoc.createElement('span');
   wrapper.className = styles['reference-wrapper'];
   wrapper.setAttribute('data-type', token.pinned ? ElementType.Pinned : ElementType.Reference);
-  const instanceId = token.id || generateTokenId();
+  const instanceId = token.id.length > 0 ? token.id : generateTokenId();
   wrapper.id = instanceId;
 
   const caretSpotBefore = createCaretSpot(ElementType.CaretSpotBefore, ownerDoc);
@@ -196,7 +196,7 @@ export function renderTokensToDOM(
         }
       } else if (isTriggerToken(token)) {
         let span: HTMLElement;
-        const triggerId = token.id || generateTokenId();
+        const triggerId = token.id.length > 0 ? token.id : generateTokenId();
         const isNewTrigger = !reusableTriggers.has(triggerId);
         const hasFilterText = token.value.length > 0;
         const isCancelled = cancelledTriggerIds?.has(triggerId) ?? false;

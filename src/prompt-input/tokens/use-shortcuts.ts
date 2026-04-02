@@ -85,7 +85,9 @@ export function useShortcutsEffects(config: EffectsConfig) {
       normalizeCaretIntoTrigger(editableElementRef.current, state.cancelledTriggerIds.current);
 
       const activeTrigger = ctrl.findActiveTrigger();
-      const newTriggerId =
+      // The caret can land inside a cancelled trigger's DOM element (e.g. via
+      // arrow keys). Without this guard, setCaretInTrigger would reopen the menu.
+      const activeTriggerId =
         activeTrigger && !state.cancelledTriggerIds.current.has(activeTrigger.id) ? activeTrigger.id : null;
 
       // Skip reopening the trigger that was just closed via Escape.
@@ -93,13 +95,13 @@ export function useShortcutsEffects(config: EffectsConfig) {
       if (state.menuJustClosed.current) {
         const closedId = state.menuJustClosed.current;
         state.menuJustClosed.current = null;
-        if (newTriggerId === closedId) {
+        if (activeTriggerId === closedId) {
           return;
         }
       }
 
-      if (newTriggerId !== state.caretInTrigger) {
-        state.setCaretInTrigger(newTriggerId);
+      if (activeTriggerId !== state.caretInTrigger) {
+        state.setCaretInTrigger(activeTriggerId);
       }
     };
 
