@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "Fermer la fenêtre contextuelle"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Soumettre une invite",
+    "i18nStrings.menuErrorIconAriaLabel": "Erreur",
+    "i18nStrings.menuRecoveryText": "Essayer de nouveau",
+    "i18nStrings.menuLoadingText": "Chargement des éléments",
+    "i18nStrings.menuFinishedText": "Fin de résultats",
+    "i18nStrings.menuErrorText": "Erreur lors de la récupération des éléments",
+    "i18nStrings.selectedMenuItemAriaLabel": "Sélectionné(e)",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} insérée",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} épinglée",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} supprimée"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Toutes les propriétés",
     "i18nStrings.applyActionText": "Appliquer",

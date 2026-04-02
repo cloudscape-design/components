@@ -1,22 +1,33 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode, useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import * as tokens from '../internal/generated/styles/tokens';
+import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
-import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import InternalLiveRegion from '../live-region/internal';
+import TextareaMode from './components/textarea-mode';
+import TokenMode from './components/token-mode';
+import { CaretController } from './core/caret-controller';
+import { DEFAULT_MAX_ROWS } from './core/constants';
+import { getPromptText } from './core/token-operations';
+import { supportsTokenMode } from './core/token-renderer';
+import { isPinnedReferenceToken } from './core/type-guards';
 import { PromptInputProps } from './interfaces';
 import { getPromptInputStyles } from './styles';
+import { useTokenMode } from './tokens/use-token-mode';
+import { insertTextIntoContentEditable } from './utils/insert-text-content-editable';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
@@ -28,15 +39,15 @@ interface InternalPromptInputProps
 const InternalPromptInput = React.forwardRef(
   (
     {
-      value,
+      value: valueProp,
       actionButtonAriaLabel,
       actionButtonIconName,
       actionButtonIconUrl,
       actionButtonIconSvg,
       actionButtonIconAlt,
       ariaLabel,
-      autoComplete,
       autoFocus,
+      autoComplete,
       disableActionButton,
       disableBrowserAutocorrect,
       disabled,
@@ -59,41 +70,226 @@ const InternalPromptInput = React.forwardRef(
       disableSecondaryContentPaddings,
       nativeTextareaAttributes,
       style,
+      tokens,
+      tokensToText,
+      menus,
+      maxMenuHeight,
+      onMenuItemSelect,
+      onMenuFilter,
+      onMenuLoadItems,
+      onTriggerDetected,
+      i18nStrings,
       __internalRootRef,
       ...rest
     }: InternalPromptInputProps,
-    ref: Ref<PromptInputProps.Ref>
+    ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
-
     const baseProps = getBaseProps(rest);
 
+    const i18n = useInternalI18n('prompt-input');
+
+    const effectiveI18nStrings: PromptInputProps.I18nStrings = {
+      actionButtonAriaLabel: i18n(
+        'i18nStrings.actionButtonAriaLabel',
+        i18nStrings?.actionButtonAriaLabel ?? actionButtonAriaLabel
+      ),
+      menuErrorIconAriaLabel: i18n('i18nStrings.menuErrorIconAriaLabel', i18nStrings?.menuErrorIconAriaLabel),
+      menuRecoveryText: i18n('i18nStrings.menuRecoveryText', i18nStrings?.menuRecoveryText),
+      menuLoadingText: i18n('i18nStrings.menuLoadingText', i18nStrings?.menuLoadingText),
+      menuFinishedText: i18n('i18nStrings.menuFinishedText', i18nStrings?.menuFinishedText),
+      menuErrorText: i18n('i18nStrings.menuErrorText', i18nStrings?.menuErrorText),
+      tokenInsertedAriaLabel: i18n(
+        'i18nStrings.tokenInsertedAriaLabel',
+        i18nStrings?.tokenInsertedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
+      tokenPinnedAriaLabel: i18n(
+        'i18nStrings.tokenPinnedAriaLabel',
+        i18nStrings?.tokenPinnedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
+      tokenRemovedAriaLabel: i18n(
+        'i18nStrings.tokenRemovedAriaLabel',
+        i18nStrings?.tokenRemovedAriaLabel,
+        format => token => format({ token__label: token.label || token.value })
+      ),
+    };
+
+    const isTokenMode = !!tokens && supportsTokenMode;
+
+    if (isDevelopment) {
+      if ((menus || tokens) && !supportsTokenMode) {
+        warnOnce(
+          'PromptInput',
+          'Shortcuts features require React 18 or later. The `menus` and `tokens` props will be ignored and shortcuts features will not function.'
+        );
+      }
+    }
+
+    const value = valueProp ?? '';
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const editableElementRef = useRef<HTMLDivElement>(null);
+    const caretControllerRef = useRef<CaretController | null>(null);
 
     const isRefresh = useVisualRefresh();
-    const isCompactMode = useDensityMode(textareaRef) === 'compact';
+    useDensityMode(textareaRef);
+    useDensityMode(editableElementRef);
 
-    const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
-    const LINE_HEIGHT = tokens.lineHeightBodyM;
-    const DEFAULT_MAX_ROWS = 3;
+    const PADDING = isRefresh ? designTokens.spaceXxs : designTokens.spaceXxxs;
+    const LINE_HEIGHT = designTokens.lineHeightBodyM;
+
+    const getActiveElement = useStableCallback(() => {
+      return isTokenMode ? editableElementRef.current : textareaRef.current;
+    });
+
+    /**
+     * Dynamically adjusts the input height based on content and row constraints.
+     */
+    const adjustInputHeight = useStableCallback(() => {
+      const element = getActiveElement();
+      if (!element) {
+        return;
+      }
+
+      const scrollTop = element.scrollTop;
+      element.style.height = 'auto';
+
+      const minRowsHeight = isTokenMode
+        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
+        : `calc(${LINE_HEIGHT} + ${designTokens.spaceScaledXxs} * 2)`;
+      const scrollHeight = `calc(${element.scrollHeight}px)`;
+
+      if (maxRows === -1) {
+        element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
+      } else {
+        const effectiveMaxRows = maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows;
+        const maxRowsHeight = `calc(${effectiveMaxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
+      }
+
+      if (isTokenMode) {
+        element.scrollTop = scrollTop;
+      }
+    });
+
+    useEffect(() => {
+      if (isTokenMode) {
+        requestAnimationFrame(() => adjustInputHeight());
+      } else {
+        adjustInputHeight();
+      }
+    }, [isTokenMode, tokens, adjustInputHeight, value]);
+
+    const plainTextValue = isTokenMode
+      ? tokensToText
+        ? tokensToText(tokens ?? [])
+        : getPromptText(tokens ?? [])
+      : value;
+
+    const tokenMode = useTokenMode({
+      editableElementRef,
+      caretControllerRef,
+      tokens,
+      tokensToText,
+      menus,
+      disabled,
+      readOnly,
+      autoFocus,
+      placeholder,
+      invalid,
+      warning,
+      ariaLabel,
+      ariaLabelledby,
+      ariaDescribedby,
+      ariaRequired: rest.ariaRequired,
+      disableBrowserAutocorrect,
+      spellcheck,
+      onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => {
+        fireNonCancelableEvent(onChange, detail);
+      },
+      onTriggerDetected: onTriggerDetected ? detail => fireCancelableEvent(onTriggerDetected, detail) : undefined,
+      onAction,
+      onBlur,
+      onFocus,
+      onKeyDown,
+      onKeyUp,
+      onMenuItemSelect,
+      onMenuFilter,
+      onMenuLoadItems,
+      i18nStrings: effectiveI18nStrings,
+      adjustInputHeight,
+    });
+
+    const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
+      if (disabled || readOnly) {
+        return;
+      }
+
+      if (!isTokenMode || !editableElementRef.current || !tokens || !caretControllerRef.current) {
+        return;
+      }
+
+      let adjustedCaretStart: number;
+      let adjustedCaretEnd: number | undefined;
+
+      if (caretStart === undefined) {
+        const currentPos = caretControllerRef.current.getPosition();
+        const pinnedCount = tokens.filter(isPinnedReferenceToken).length;
+
+        // If the caret is before or between pinned tokens, move it after them.
+        // Text inserted here would get pushed after pinned tokens by enforcePinnedTokenOrdering,
+        // but the caret wouldn't follow — so we preemptively position it correctly.
+        adjustedCaretStart = pinnedCount > 0 && currentPos < pinnedCount ? pinnedCount : currentPos;
+        adjustedCaretEnd = undefined;
+      } else {
+        const pinnedTokens = tokens.filter(isPinnedReferenceToken);
+        const pinnedOffset = pinnedTokens.length;
+
+        adjustedCaretStart = caretStart + pinnedOffset;
+        adjustedCaretEnd = caretEnd !== undefined ? caretEnd + pinnedOffset : undefined;
+      }
+
+      insertTextIntoContentEditable(
+        editableElementRef.current,
+        text,
+        adjustedCaretStart,
+        adjustedCaretEnd,
+        caretControllerRef.current
+      );
+    });
 
     useImperativeHandle(
       ref,
       () => ({
         focus(...args: Parameters<HTMLElement['focus']>) {
-          textareaRef.current?.focus(...args);
+          getActiveElement()?.focus(...args);
         },
         select() {
-          textareaRef.current?.select();
+          if (isTokenMode) {
+            if (editableElementRef.current && caretControllerRef.current) {
+              caretControllerRef.current.selectAll();
+            }
+          } else {
+            textareaRef.current?.select();
+          }
         },
         setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
-          textareaRef.current?.setSelectionRange(...args);
+          if (isTokenMode && caretControllerRef.current) {
+            const [start, end] = args;
+            const actualEnd = end ?? undefined;
+            caretControllerRef.current.setPosition(start ?? 0, actualEnd);
+          } else {
+            textareaRef.current?.setSelectionRange(...args);
+          }
         },
+        insertText: handleInsertText,
       }),
-      [textareaRef]
+      [getActiveElement, isTokenMode, handleInsertText]
     );
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       fireKeyboardEvent(onKeyDown, event);
 
       if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
@@ -101,52 +297,31 @@ const InternalPromptInput = React.forwardRef(
           event.currentTarget.form.requestSubmit();
         }
         event.preventDefault();
-        fireNonCancelableEvent(onAction, { value });
+        fireNonCancelableEvent(onAction, {
+          value: plainTextValue,
+        });
       }
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      fireNonCancelableEvent(onChange, { value: event.target.value });
-      adjustTextareaHeight();
+    const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (isTokenMode) {
+        tokenMode.markTokensAsSent(tokens ?? []);
+      }
+      const detail: PromptInputProps.ChangeDetail = {
+        value: event.target.value,
+      };
+      fireNonCancelableEvent(onChange, detail);
+      adjustInputHeight();
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl || customPrimaryAction;
+    const hasActionButton = !!(
+      actionButtonIconName ||
+      actionButtonIconSvg ||
+      actionButtonIconUrl ||
+      customPrimaryAction
+    );
 
-    const adjustTextareaHeight = useCallback(() => {
-      if (textareaRef.current) {
-        // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
-        textareaRef.current.style.height = 'auto';
-
-        const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
-
-        if (maxRows === -1) {
-          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-          textareaRef.current.style.height = `max(${scrollHeight}, ${minTextareaHeight})`;
-        } else {
-          const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-          textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
-        }
-      }
-    }, [maxRows, LINE_HEIGHT, PADDING]);
-
-    useEffect(() => {
-      const handleResize = () => {
-        adjustTextareaHeight();
-      };
-
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, [adjustTextareaHeight]);
-
-    useEffect(() => {
-      adjustTextareaHeight();
-    }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
-
-    const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
+    const textareaAttributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby,
@@ -159,37 +334,38 @@ const InternalPromptInput = React.forwardRef(
         [styles.warning]: warning,
       }),
       autoComplete: convertAutoComplete(autoComplete),
+      autoCorrect: disableBrowserAutocorrect ? 'off' : undefined,
+      autoCapitalize: disableBrowserAutocorrect ? 'off' : undefined,
       spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
       rows: minRows,
-      onKeyDown: handleKeyDown,
-      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
-      // We set a default value on the component in order to force it into the controlled mode.
       value: value || '',
-      onChange: handleChange,
+      onKeyDown: handleTextareaKeyDown,
+      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+      onChange: handleTextareaChange,
       onBlur: onBlur && (() => fireNonCancelableEvent(onBlur)),
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
-    if (disableBrowserAutocorrect) {
-      attributes.autoCorrect = 'off';
-      attributes.autoCapitalize = 'off';
-    }
-
-    const action = (
+    const actionButton = (
       <div className={clsx(styles['primary-action'], testutilStyles['primary-action'])}>
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
-            ariaLabel={actionButtonAriaLabel}
+            ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}
             iconName={actionButtonIconName}
             iconUrl={actionButtonIconUrl}
             iconSvg={actionButtonIconSvg}
             iconAlt={actionButtonIconAlt}
-            onClick={() => fireNonCancelableEvent(onAction, { value })}
+            onClick={() => {
+              fireNonCancelableEvent(onAction, {
+                value: plainTextValue,
+                ...(isTokenMode && { tokens: tokens ?? [] }),
+              });
+            }}
             variant="icon"
           />
         )}
@@ -210,6 +386,10 @@ const InternalPromptInput = React.forwardRef(
         role="region"
         style={getPromptInputStyles(style)}
       >
+        <InternalLiveRegion tagName="span" hidden={true} assertive={true} delay={0}>
+          {tokenMode.tokenOperationAnnouncement}
+        </InternalLiveRegion>
+
         {secondaryContent && (
           <div
             className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
@@ -221,17 +401,47 @@ const InternalPromptInput = React.forwardRef(
             {secondaryContent}
           </div>
         )}
+
         <div className={styles['textarea-wrapper']}>
-          <WithNativeAttributes
-            {...attributes}
-            tag="textarea"
-            componentName="PromptInput"
-            nativeAttributes={nativeTextareaAttributes}
-            ref={textareaRef}
-            id={controlId}
-          />
-          {hasActionButton && !secondaryActions && action}
+          {isTokenMode ? (
+            <TokenMode
+              editableElementRef={editableElementRef}
+              triggerWrapperRef={tokenMode.triggerWrapperRef}
+              controlId={controlId}
+              menuListId={tokenMode.menuListId}
+              menuFooterControlId={tokenMode.menuFooterControlId}
+              highlightedMenuOptionId={tokenMode.highlightedMenuOptionId}
+              name={name}
+              plainTextValue={plainTextValue}
+              menuIsOpen={tokenMode.menuIsOpen}
+              triggerWrapperReady={tokenMode.triggerWrapperReady}
+              shouldRenderMenuDropdown={tokenMode.shouldRenderMenuDropdown}
+              activeMenu={tokenMode.activeMenu}
+              activeTriggerToken={tokenMode.activeTriggerToken}
+              menuFilterText={tokenMode.menuFilterText}
+              menuItemsState={tokenMode.menuItemsState}
+              menuItemsHandlers={tokenMode.menuItemsHandlers}
+              menuDropdownStatus={tokenMode.menuDropdownStatus}
+              maxMenuHeight={maxMenuHeight}
+              handleInput={tokenMode.handleInput}
+              handleLoadMore={tokenMode.handleLoadMore}
+              editableElementAttributes={tokenMode.editableElementAttributes}
+              i18nStrings={effectiveI18nStrings}
+            />
+          ) : (
+            <TextareaMode
+              textareaRef={textareaRef}
+              controlId={controlId}
+              textareaAttributes={textareaAttributes}
+              nativeTextareaAttributes={nativeTextareaAttributes}
+            />
+          )}
+          {hasActionButton && !secondaryActions && actionButton}
         </div>
+
+        {/* Render reference tokens into their DOM containers via portals */}
+        {isTokenMode && tokenMode.portals}
+
         {secondaryActions && (
           <div
             className={clsx(styles['action-stripe'], {
@@ -249,8 +459,8 @@ const InternalPromptInput = React.forwardRef(
             >
               {secondaryActions}
             </div>
-            <div className={styles.buffer} onClick={() => textareaRef.current?.focus()} />
-            {hasActionButton && action}
+            <div className={styles.buffer} onClick={() => getActiveElement()?.focus()} />
+            {hasActionButton && actionButton}
           </div>
         )}
       </div>
