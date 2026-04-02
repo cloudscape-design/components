@@ -438,8 +438,9 @@ describe('jump to page', () => {
       ref.current?.setError(true);
       rerender(<Pagination ref={ref} currentPageIndex={1} pagesCount={10} jumpToPage={{}} />);
 
-      // Error popover should be visible
+      // Error popover should be visible with content
       expect(wrapper.findJumpToPagePopover()).not.toBeNull();
+      expect(wrapper.findJumpToPagePopover()!.findContent()).not.toBeNull();
     });
 
     test('should clear error when user types in input', () => {
@@ -521,7 +522,7 @@ describe('jump to page', () => {
   });
 
   describe('open-end error handling', () => {
-    test('should not show error popover content while loading in open-end mode', () => {
+    test('should not show error popover while loading in open-end mode', () => {
       const ref = React.createRef<PaginationProps.Ref>();
       const { wrapper, rerender } = renderPagination(
         <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
@@ -532,10 +533,8 @@ describe('jump to page', () => {
         <Pagination ref={ref} currentPageIndex={1} pagesCount={5} openEnd={true} jumpToPage={{ loading: true }} />
       );
 
-      // Popover wrapper exists but content should not be visible while loading
-      const popover = wrapper.findJumpToPagePopover();
-      expect(popover).not.toBeNull();
-      expect(popover!.findContent()).toBeNull();
+      // Popover should not be mounted while loading
+      expect(wrapper.findJumpToPagePopover()).toBeNull();
     });
 
     test('should show error popover after loading completes in open-end mode', () => {
