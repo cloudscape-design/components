@@ -11,17 +11,19 @@ import InternalFileInput from './internal';
 export { FileInputProps };
 
 const FileInput = React.forwardRef(
-  ({ multiple, variant, ...props }: FileInputProps, ref: React.Ref<FileInputProps.Ref>) => {
+  ({ multiple, variant, mode, ...props }: FileInputProps, ref: React.Ref<FileInputProps.Ref>) => {
     const baseComponentProps = useBaseComponent('FileInput', {
       props: {
         multiple,
         variant,
+        mode,
       },
     });
     return (
       <InternalFileInput
         multiple={multiple}
         variant={variant}
+        mode={mode}
         {...props}
         {...baseComponentProps}
         ref={ref}
