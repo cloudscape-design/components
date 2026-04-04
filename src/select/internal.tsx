@@ -71,6 +71,7 @@ const InternalSelect = React.forwardRef(
       __inFilteringToken,
       __internalRootRef,
       renderOption,
+      variant,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -172,6 +173,7 @@ const InternalSelect = React.forwardRef(
 
     const trigger = (
       <Trigger
+        variant={variant}
         renderOption={renderOption}
         ref={triggerRef}
         placeholder={placeholder}

@@ -48,6 +48,8 @@ const InternalAttributeEditor = React.forwardRef(
       __internalRootRef,
       hideAddButton,
       additionalActions,
+      variant,
+      direction = 'vertical',
       ...props
     }: InternalAttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>
@@ -143,8 +145,15 @@ const InternalAttributeEditor = React.forwardRef(
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(baseProps.className, styles.root)}
-        style={{ gridTemplateColumns: getGridTemplateColumns(gridLayoutForBreakpoint) }}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          variant && styles[`variant-${variant}`],
+          styles[`direction-${direction ?? 'vertical'}`]
+        )}
+        style={
+          direction === 'horizontal' ? {} : { gridTemplateColumns: getGridTemplateColumns(gridLayoutForBreakpoint) }
+        }
       >
         {isEmpty && <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>}
         {items.map((item, index) => (
@@ -162,6 +171,7 @@ const InternalAttributeEditor = React.forwardRef(
             customRowActions={customRowActions}
             onRemoveButtonClick={onRemoveButtonClick}
             removeButtonAriaLabel={removeButtonAriaLabel}
+            parentDirection={direction}
           />
         ))}
 
@@ -182,10 +192,10 @@ const InternalAttributeEditor = React.forwardRef(
                   formAction="none"
                   ref={addButtonRef}
                   ariaDescribedby={infoAriaDescribedBy}
-                  variant={addButtonVariant}
-                  iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
+                  variant={direction === 'horizontal' ? 'condensed-filter-standalone' : addButtonVariant}
+                  iconName={addButtonVariant === 'inline-link' || direction === 'horizontal' ? 'add-plus' : undefined}
                 >
-                  {addButtonText}
+                  {direction === 'horizontal' ? '' : addButtonText}
                 </InternalButton>
               )}
               {additionalActions}
