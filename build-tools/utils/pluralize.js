@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const pluralizationMap = {
+  ActionCard: 'ActionCards',
   Alert: 'Alerts',
   AnchorNavigation: 'AnchorNavigations',
   Annotation: 'Annotations',
