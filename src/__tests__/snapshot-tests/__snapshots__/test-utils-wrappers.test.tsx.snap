@@ -36,6 +36,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
@@ -128,6 +129,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
@@ -951,6 +953,25 @@ findAllDateRangePickers(selector?: string): Array<DateRangePickerWrapper>;
  * @returns {DateRangePickerWrapper | null}
  */
 findClosestDateRangePicker(): DateRangePickerWrapper | null;
+/**
+ * Returns the wrapper of the first Divider that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Divider.
+ * If no matching Divider is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DividerWrapper | null}
+ */
+findDivider(selector?: string): DividerWrapper | null;
+
+/**
+ * Returns an array of Divider wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Dividers inside the current wrapper.
+ * If no matching Divider is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DividerWrapper>}
+ */
+findAllDividers(selector?: string): Array<DividerWrapper>;
 /**
  * Returns the wrapper of the first Drawer that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Drawer.
@@ -3070,6 +3091,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
 };
+ElementWrapper.prototype.findDivider = function(selector) {
+  let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DividerWrapper && DividerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DividerWrapper.rootSelector}, .\${DividerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DividerWrapper);
+};
+
+ElementWrapper.prototype.findAllDividers = function(selector) {
+  return this.findAllComponents(DividerWrapper, selector);
+};
 ElementWrapper.prototype.findDrawer = function(selector) {
   let rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
   if("legacyRootSelector" in DrawerWrapper && DrawerWrapper.legacyRootSelector){
@@ -4386,6 +4420,7 @@ import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
 import DateRangePickerWrapper from './date-range-picker';
+import DividerWrapper from './divider';
 import DrawerWrapper from './drawer';
 import DropdownWrapper from './dropdown';
 import ErrorBoundaryWrapper from './error-boundary';
@@ -4478,6 +4513,7 @@ export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
 export { DateRangePickerWrapper };
+export { DividerWrapper };
 export { DrawerWrapper };
 export { DropdownWrapper };
 export { ErrorBoundaryWrapper };
@@ -5004,6 +5040,23 @@ findDateRangePicker(selector?: string): DateRangePickerWrapper;
  * @returns {MultiElementWrapper<DateRangePickerWrapper>}
  */
 findAllDateRangePickers(selector?: string): MultiElementWrapper<DateRangePickerWrapper>;
+/**
+ * Returns a wrapper that matches the Dividers with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Dividers.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DividerWrapper}
+ */
+findDivider(selector?: string): DividerWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Dividers with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Dividers.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<DividerWrapper>}
+ */
+findAllDividers(selector?: string): MultiElementWrapper<DividerWrapper>;
 /**
  * Returns a wrapper that matches the Drawers with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Drawers.
@@ -6429,6 +6482,19 @@ ElementWrapper.prototype.findDateRangePicker = function(selector) {
 
 ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
   return this.findAllComponents(DateRangePickerWrapper, selector);
+};
+ElementWrapper.prototype.findDivider = function(selector) {
+  let rootSelector = \`.\${DividerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DividerWrapper && DividerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DividerWrapper.rootSelector}, .\${DividerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DividerWrapper);
+};
+
+ElementWrapper.prototype.findAllDividers = function(selector) {
+  return this.findAllComponents(DividerWrapper, selector);
 };
 ElementWrapper.prototype.findDrawer = function(selector) {
   let rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
