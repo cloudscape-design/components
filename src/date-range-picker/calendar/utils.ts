@@ -6,16 +6,30 @@ import { parseDate } from '../../internal/utils/date-time';
 import { DateRangePickerProps } from '../interfaces';
 import { RangeCalendarI18nStrings } from './interfaces';
 
+function isVisibleMonth(dateLeft: number | Date, dateRight: number | Date, isSingleGrid: boolean) {
+  if (isSingleGrid) {
+    return isSameMonth(dateLeft, dateRight);
+  }
+  return isSameMonth(dateLeft, dateRight) || isSameMonth(dateLeft, addMonths(dateRight, 1));
+}
+function isVisibleYear(dateLeft: number | Date, dateRight: number | Date, isSingleGrid: boolean) {
+  if (isSingleGrid) {
+    return isSameYear(dateLeft, dateRight);
+  }
+  return isSameYear(dateLeft, dateRight) || isSameYear(dateLeft, addYears(dateRight, 1));
+}
+
 export function findDateToFocus(
   selected: Date | null,
   baseDate: Date,
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction
+  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction,
+  isSingleGrid: boolean
 ) {
-  if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
+  if (selected && isDateEnabled(selected) && isVisibleMonth(selected, baseDate, isSingleGrid)) {
     return selected;
   }
   const today = new Date();
-  if (isDateEnabled(today) && isSameMonth(today, baseDate)) {
+  if (isDateEnabled(today) && isVisibleMonth(today, baseDate, isSingleGrid)) {
     return today;
   }
   if (isDateEnabled(baseDate)) {
@@ -27,14 +41,15 @@ export function findDateToFocus(
 export function findMonthToFocus(
   selected: Date | null,
   baseDate: Date,
-  isMonthEnabled: DateRangePickerProps.IsDateEnabledFunction
+  isMonthEnabled: DateRangePickerProps.IsDateEnabledFunction,
+  isSingleGrid: boolean
 ) {
-  if (selected && isMonthEnabled(selected) && isSameYear(selected, baseDate)) {
+  if (selected && isMonthEnabled(selected) && isVisibleYear(selected, baseDate, isSingleGrid)) {
     return selected;
   }
 
   const today = new Date();
-  if (isMonthEnabled(today) && isSameYear(today, baseDate)) {
+  if (isMonthEnabled(today) && isVisibleYear(today, baseDate, isSingleGrid)) {
     return today;
   }
   if (isMonthEnabled(baseDate)) {
@@ -43,32 +58,74 @@ export function findMonthToFocus(
   return null;
 }
 
-export function findMonthToDisplay(value: DateRangePickerProps.PendingAbsoluteValue, isSingleGrid: boolean) {
-  if (value.start.date) {
+function calculateEffectiveStartPeriod(
+  startPeriod: DateRangePickerProps.StartPeriod,
+  value: DateRangePickerProps.PendingAbsoluteValue,
+  isSamePeriod: (date1: Date, date2: Date) => boolean
+): 'current' | 'previous' {
+  if (startPeriod === 'current') {
+    return 'current';
+  }
+
+  // 'auto' always resolves to 'current' when a date is selected
+  if ((value.start.date || value.end.date) && startPeriod === 'auto') {
+    return 'current';
+  }
+
+  // Override 'previous' to 'current' when the range spans multiple periods
+  // to ensure as much of the range is visible as possible
+  if (value.start.date && value.end.date) {
     const startDate = parseDate(value.start.date);
-    if (isSingleGrid) {
-      return startOfMonth(startDate);
+    const endDate = parseDate(value.end.date);
+    if (!isSamePeriod(startDate, endDate)) {
+      return 'current';
     }
-    return startOfMonth(addMonths(startDate, 1));
   }
-  if (value.end.date) {
-    return startOfMonth(parseDate(value.end.date));
-  }
-  return startOfMonth(Date.now());
+
+  return 'previous';
 }
 
-export function findYearToDisplay(value: DateRangePickerProps.PendingAbsoluteValue, isSingleGrid: boolean) {
-  if (value.start.date) {
-    const startDate = parseDate(value.start.date);
-    if (isSingleGrid) {
-      return startOfYear(startDate);
-    }
-    return startOfYear(addYears(startDate, 1));
+function calculateDisplayOffset(isSingleGrid: boolean, startPeriod: DateRangePickerProps.StartPeriod): number {
+  if (isSingleGrid) {
+    return 0;
   }
-  if (value.end.date) {
-    return startOfYear(parseDate(value.end.date));
-  }
-  return startOfYear(Date.now());
+
+  return startPeriod === 'current' ? 0 : -1;
+}
+
+/**
+ * Generic function to find which period (month or year) to display in the calendar.
+ */
+function findPeriodToDisplay(
+  value: DateRangePickerProps.PendingAbsoluteValue,
+  isSingleGrid: boolean,
+  startPeriod: DateRangePickerProps.StartPeriod,
+  addPeriods: (date: Date | number, amount: number) => Date,
+  startOfPeriod: (date: Date) => Date,
+  isSamePeriod: (date1: Date, date2: Date) => boolean
+): Date {
+  const effectiveStartPeriod = calculateEffectiveStartPeriod(startPeriod, value, isSamePeriod);
+  const offset = calculateDisplayOffset(isSingleGrid, effectiveStartPeriod);
+  const date =
+    (value.start.date && parseDate(value.start.date)) || (value.end.date && parseDate(value.end.date)) || Date.now();
+
+  return startOfPeriod(addPeriods(date, offset));
+}
+
+export function findMonthToDisplay(
+  value: DateRangePickerProps.PendingAbsoluteValue,
+  isSingleGrid: boolean,
+  startPeriod: DateRangePickerProps.StartPeriod
+) {
+  return findPeriodToDisplay(value, isSingleGrid, startPeriod, addMonths, startOfMonth, isSameMonth);
+}
+
+export function findYearToDisplay(
+  value: DateRangePickerProps.PendingAbsoluteValue,
+  isSingleGrid: boolean,
+  startPeriod: DateRangePickerProps.StartPeriod
+) {
+  return findPeriodToDisplay(value, isSingleGrid, startPeriod, addYears, startOfYear, isSameYear);
 }
 
 export const generateI18NFallbackKey = (isMonthPicker: boolean, isDateOnly: boolean) => {
