@@ -324,7 +324,7 @@ test('all style api properties', () => {
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe('blue');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe('1px');
   expect(getComputedStyle(control).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe('2px');
-  expect(getComputedStyle(label).getPropertyValue('color')).toBe('orange');
+  expect(getComputedStyle(label).getPropertyValue('color')).toBe('rgb(255, 165, 0)');
 });
 
 describe('native attributes', () => {
