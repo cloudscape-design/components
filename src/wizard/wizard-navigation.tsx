@@ -53,6 +53,7 @@ export default function Navigation({
     <nav
       className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
+      aria-hidden={hidden ? true : undefined}
     >
       {isVisualRefresh ? (
         <WizardStepList
