@@ -36,11 +36,11 @@ export default function CalendarHeader({
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
   const renderLabel = isMonthPicker ? renderYear : renderMonthAndYear;
-  const prevPageHeaderLabel = renderLabel(
+  const firstPageHeaderLabel = renderLabel(locale, baseDate);
+  const secondPageHeaderLabel = renderLabel(
     locale,
-    add(baseDate, granularity === 'month' ? { years: -1 } : { months: -1 })
+    add(baseDate, granularity === 'month' ? { years: 1 } : { months: 1 })
   );
-  const currentPageHeaderLabel = renderLabel(locale, baseDate);
   const pageUnit = isMonthPicker ? 'year' : 'month';
 
   return (
@@ -56,11 +56,11 @@ export default function CalendarHeader({
         <h2 className={styles['calendar-header-pages-wrapper']}>
           {!isSingleGrid && (
             <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-prev${pageUnit}`}>
-              {prevPageHeaderLabel}
+              {firstPageHeaderLabel}
             </span>
           )}
           <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-current${pageUnit}`}>
-            {currentPageHeaderLabel}
+            {secondPageHeaderLabel}
           </span>
         </h2>
         <NextPageButton
@@ -72,7 +72,7 @@ export default function CalendarHeader({
         />
       </div>
       <InternalLiveRegion hidden={true}>
-        {isSingleGrid ? currentPageHeaderLabel : `${prevPageHeaderLabel}, ${currentPageHeaderLabel}`}
+        {isSingleGrid ? secondPageHeaderLabel : `${firstPageHeaderLabel}, ${secondPageHeaderLabel}`}
       </InternalLiveRegion>
     </>
   );
