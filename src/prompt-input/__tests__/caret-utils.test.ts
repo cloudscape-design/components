@@ -3,7 +3,6 @@
 
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
-import './jsdom-polyfills';
 import {
   findContainingReference,
   isNonTypeablePosition,

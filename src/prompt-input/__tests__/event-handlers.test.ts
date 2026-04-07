@@ -3,7 +3,6 @@
 
 jest.mock('../styles.css.js', () => ({ paragraph: 'paragraph', 'trigger-token': 'trigger-token' }), { virtual: true });
 
-import './jsdom-polyfills';
 import { KeyCode, KeyCodeA, KeyCodeDelete } from '../../internal/keycode';
 import { CaretController } from '../core/caret-controller';
 import {

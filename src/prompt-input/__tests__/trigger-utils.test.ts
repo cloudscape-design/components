@@ -3,7 +3,6 @@
 
 jest.mock('../styles.css.js', () => ({ 'trigger-token': 'trigger-token' }), { virtual: true });
 
-import './jsdom-polyfills';
 import { CaretController } from '../core/caret-controller';
 import { ElementType } from '../core/constants';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';

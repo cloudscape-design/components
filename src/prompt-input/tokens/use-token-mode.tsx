@@ -698,6 +698,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       renderTokens(orderedTokens, editableElementRef.current);
       lastRenderedTokensRef.current = orderedTokens;
       cc.setPosition(triggerTransition);
+      cc.scrollIntoView();
       adjustInputHeight();
       return;
     }
@@ -775,6 +776,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       } else {
         cc.restore();
       }
+      cc.scrollIntoView();
     }
 
     adjustInputHeight();

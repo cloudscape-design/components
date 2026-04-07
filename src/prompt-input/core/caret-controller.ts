@@ -196,10 +196,25 @@ export class CaretController {
 
     const endLocation = end !== undefined && end !== start ? (this.findDOMLocation(end) ?? undefined) : undefined;
 
-    const range = this.applyRange(ownerDocument, selection, startLocation, endLocation);
+    this.applyRange(ownerDocument, selection, startLocation, endLocation);
 
     this.state = { start, end, isValid: true };
 
+    ownerDocument.dispatchEvent(new Event('selectionchange'));
+  }
+
+  /** Scrolls the caret into view if it's outside the visible area of the element. */
+  scrollIntoView(): void {
+    const selection = getOwnerSelection(this.element);
+    if (!selection?.rangeCount) {
+      return;
+    }
+    const range = selection.getRangeAt(0);
+    if (typeof range.getBoundingClientRect !== 'function') {
+      return;
+    }
+
+    const ownerDocument = this.ownerDoc;
     const rangeRect = range.getBoundingClientRect();
     const elementRect = this.element.getBoundingClientRect();
 
@@ -210,23 +225,23 @@ export class CaretController {
       rangeRect.right > elementRect.right;
 
     if (isOutOfView) {
-      // Insert a temporary span to scroll to, then remove it and restore the range.
-      // Note: insertNode splits the text node at the range start. The split nodes are
-      // not merged here — they'll be reconciled on the next renderTokensToDOM call.
       const tempSpan = ownerDocument.createElement('span');
       range.insertNode(tempSpan);
       tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       tempSpan.remove();
 
-      // Re-resolve locations: insertNode splits text nodes, invalidating the original offsets.
-      const freshStart = this.findDOMLocation(start);
-      const freshEnd = end !== undefined && end !== start ? (this.findDOMLocation(end) ?? undefined) : undefined;
-      if (freshStart) {
-        this.applyRange(ownerDocument, selection, freshStart, freshEnd);
+      // Re-resolve: insertNode splits text nodes, invalidating original offsets.
+      if (this.state.isValid) {
+        const freshStart = this.findDOMLocation(this.state.start);
+        const freshEnd =
+          this.state.end !== undefined && this.state.end !== this.state.start
+            ? (this.findDOMLocation(this.state.end) ?? undefined)
+            : undefined;
+        if (freshStart) {
+          this.applyRange(ownerDocument, selection, freshStart, freshEnd);
+        }
       }
     }
-
-    ownerDocument.dispatchEvent(new Event('selectionchange'));
   }
 
   /** Captures the current caret/selection state for later restoration. */

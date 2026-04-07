@@ -1325,7 +1325,7 @@ describe('CaretController - defensive guards', () => {
     expect(window.getSelection()?.toString()).toBe('');
   });
 
-  test('setPosition scrolls into view when caret is out of bounds', () => {
+  test('scrollIntoView scrolls when caret is out of bounds', () => {
     addParagraph(el, 'hello world');
     el.focus();
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
@@ -1335,10 +1335,11 @@ describe('CaretController - defensive guards', () => {
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
     controller.setPosition(5);
+    controller.scrollIntoView();
     expect(scrollSpy).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
   });
 
-  test('setPosition scroll with range selection when out of view', () => {
+  test('scrollIntoView scrolls with range selection when out of view', () => {
     addParagraph(el, 'hello world test');
     el.focus();
     const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
@@ -1348,6 +1349,7 @@ describe('CaretController - defensive guards', () => {
     const scrollSpy = jest.fn();
     HTMLElement.prototype.scrollIntoView = scrollSpy;
     controller.setPosition(2, 8);
+    controller.scrollIntoView();
     expect(scrollSpy).toHaveBeenCalled();
   });
 
