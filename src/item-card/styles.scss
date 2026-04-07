@@ -27,7 +27,7 @@ $variant-padding-inline: (
   'default': awsui.$space-item-card-horizontal-default,
 );
 
-$action-padding-vertical: styles.$control-padding-vertical;
+$action-padding-vertical: awsui.$space-scaled-xxs;
 $action-padding-horizontal: awsui.$space-xxs;
 
 @mixin apply-border-radius($variant: 'default') {

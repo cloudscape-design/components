@@ -961,6 +961,7 @@ export type SpacingTokenName =
   | 'spaceButtonFocusOutlineGutter'
   | 'spaceButtonHorizontal'
   | 'spaceButtonVertical'
+  | 'spaceControlVertical'
   | 'spaceButtonIconFocusOutlineGutterVertical'
   | 'spaceButtonIconOnlyHorizontal'
   | 'spaceButtonInlineIconFocusOutlineGutter'
