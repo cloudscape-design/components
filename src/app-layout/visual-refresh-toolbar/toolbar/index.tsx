@@ -192,7 +192,7 @@ export function AppLayoutToolbarImplementation({
                 ref={aiDrawerFocusRef}
                 selected={!drawerExpandedMode && !!activeAiDrawerId}
                 disabled={anyPanelOpenInMobile}
-                variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'circle'}
+                variant={aiDrawer?.trigger?.customIcon ? 'custom' : 'default'}
                 testId={`awsui-app-layout-trigger-${aiDrawer?.id}`}
                 isForPreviousActiveDrawer={true}
               />
