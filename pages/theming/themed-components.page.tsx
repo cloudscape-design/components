@@ -211,10 +211,21 @@ function Inputs() {
           options={multiSelectOptions}
           placeholder="Multiselect"
           selectedOptions={selectedItems}
+          deselectAriaLabel={option => `Remove ${option.label}`}
           onChange={({ detail }) => setSelectedItems(detail.selectedOptions)}
         />
-        <Multiselect disabled={true} placeholder="Disabled multi-select" selectedOptions={selectedItems} />
-        <Multiselect readOnly={true} placeholder="Read-only multi-select" selectedOptions={selectedItems} />
+        <Multiselect
+          disabled={true}
+          placeholder="Disabled multi-select"
+          selectedOptions={selectedItems}
+          deselectAriaLabel={option => `Remove ${option.label}`}
+        />
+        <Multiselect
+          readOnly={true}
+          placeholder="Read-only multi-select"
+          selectedOptions={selectedItems}
+          deselectAriaLabel={option => `Remove ${option.label}`}
+        />
       </SpaceBetween>
       <SpaceBetween size="s" direction="horizontal">
         <Autosuggest
