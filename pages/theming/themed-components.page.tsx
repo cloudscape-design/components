@@ -8,6 +8,7 @@ import {
   Button,
   ButtonGroup,
   Calendar,
+  Container,
   ContentLayout,
   DatePicker,
   ExpandableSection,
@@ -18,24 +19,18 @@ import {
   SegmentedControl,
   Select,
   SelectProps,
+  SideNavigation,
   SpaceBetween,
-  SplitPanel,
   StatusIndicator,
-  Toggle,
   ToggleButton,
 } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
 import { MultiselectProps } from '~components/multiselect';
-import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import { applyTheme, Theme } from '~components/theming';
 
-import { Breadcrumbs, Containers, Navigation, Tools } from '../app-layout/utils/content-blocks';
+import { Breadcrumbs, Tools } from '../app-layout/utils/content-blocks';
 import { drawerItems, drawerLabels } from '../app-layout/utils/drawers';
 import labels from '../app-layout/utils/labels';
-import { splitPaneli18nStrings } from '../app-layout/utils/strings';
 import * as toolsContent from '../app-layout/utils/tools-content';
-
-import appLayoutStyles from '../app-layout/styles.scss';
 
 function Buttons() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
@@ -303,59 +298,33 @@ const generateDropdownOptions = (count = 25): SelectProps.Options | MultiselectP
 
 function AppLayoutToolbarWithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [hasDrawers, setHasDrawers] = useState(true);
-  const appLayoutRef = React.useRef<AppLayoutProps.Ref>(null);
-
-  function openDrawer(id: string) {
-    setActiveDrawerId(id);
-    appLayoutRef.current?.focusActiveDrawer();
-  }
 
   return (
     <AppLayoutToolbar
-      ref={appLayoutRef}
       ariaLabels={{ ...labels, ...drawerLabels }}
       breadcrumbs={<Breadcrumbs />}
-      navigation={<Navigation />}
+      navigation={
+        <SideNavigation
+          header={{
+            href: '#',
+            text: 'Service name',
+          }}
+          items={[0, 1, 2].map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
+        />
+      }
       tools={<Tools>{toolsContent.long}</Tools>}
       content={
         <ContentLayout
           header={
-            <SpaceBetween size="m">
-              <Header variant="h1" description="AppLayoutToolbar with multiple custom drawers.">
-                Toolbar with Drawers
-              </Header>
-              <SpaceBetween size="xs">
-                <Toggle
-                  checked={hasDrawers}
-                  onChange={({ detail }) => setHasDrawers(detail.checked)}
-                  data-id="toggle-drawers"
-                >
-                  Has Drawers
-                </Toggle>
-              </SpaceBetween>
-              <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
-                Open drawer
-              </Button>
-              <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
-                Open second drawer
-              </Button>
-            </SpaceBetween>
+            <Header variant="h1" description="AppLayoutToolbar with multiple custom drawers.">
+              Toolbar with Drawers
+            </Header>
           }
         >
-          <Containers />
+          <Container header={<Header variant="h2">Demo container</Header>}>Content placeholder</Container>
         </ContentLayout>
       }
-      splitPanel={
-        <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
-          <SpaceBetween size="l">
-            <div className={appLayoutStyles.contentPlaceholder} />
-            <div className={appLayoutStyles.contentPlaceholder} />
-            <div className={appLayoutStyles.contentPlaceholder} />
-          </SpaceBetween>
-        </SplitPanel>
-      }
-      drawers={hasDrawers ? drawerItems : undefined}
+      drawers={drawerItems}
       onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
       activeDrawerId={activeDrawerId}
     />
@@ -388,6 +357,9 @@ export default function ThemedComponentsPage() {
           spaceButtonVertical: '4px',
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
+          sizeVerticalInput: '30px',
+          borderWidthToken: '1px',
+          spaceControlVertical: '3px',
         },
       };
 
@@ -399,11 +371,6 @@ export default function ThemedComponentsPage() {
     }
     return reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
-
-  const [query, setQuery] = React.useState<PropertyFilterProps.Query>({
-    tokens: [],
-    operation: 'and',
-  });
 
   return (
     <div style={{ padding: 15 }}>
@@ -427,126 +394,6 @@ export default function ThemedComponentsPage() {
             <Buttons />
             <Inputs />
           </Grid>
-          <PropertyFilter
-            query={query}
-            onChange={({ detail }) => setQuery(detail)}
-            countText="5 matches"
-            enableTokenGroups={true}
-            expandToViewport={true}
-            filteringAriaLabel="Find distributions"
-            filteringOptions={[
-              {
-                propertyKey: 'instanceid',
-                value: 'i-2dc5ce28a0328391',
-              },
-              {
-                propertyKey: 'instanceid',
-                value: 'i-d0312e022392efa0',
-              },
-              {
-                propertyKey: 'instanceid',
-                value: 'i-070eef935c1301e6',
-              },
-              {
-                propertyKey: 'instanceid',
-                value: 'i-3b44795b1fea36ac',
-              },
-              { propertyKey: 'state', value: 'Stopped' },
-              { propertyKey: 'state', value: 'Stopping' },
-              { propertyKey: 'state', value: 'Pending' },
-              { propertyKey: 'state', value: 'Running' },
-              {
-                propertyKey: 'instancetype',
-                value: 't3.small',
-              },
-              {
-                propertyKey: 'instancetype',
-                value: 't2.small',
-              },
-              { propertyKey: 'instancetype', value: 't3.nano' },
-              {
-                propertyKey: 'instancetype',
-                value: 't2.medium',
-              },
-              {
-                propertyKey: 'instancetype',
-                value: 't3.medium',
-              },
-              {
-                propertyKey: 'instancetype',
-                value: 't2.large',
-              },
-              { propertyKey: 'instancetype', value: 't2.nano' },
-              {
-                propertyKey: 'instancetype',
-                value: 't2.micro',
-              },
-              {
-                propertyKey: 'instancetype',
-                value: 't3.large',
-              },
-              {
-                propertyKey: 'instancetype',
-                value: 't3.micro',
-              },
-              { propertyKey: 'averagelatency', value: '17' },
-              { propertyKey: 'averagelatency', value: '53' },
-              { propertyKey: 'averagelatency', value: '73' },
-              { propertyKey: 'averagelatency', value: '74' },
-              { propertyKey: 'averagelatency', value: '107' },
-              { propertyKey: 'averagelatency', value: '236' },
-              { propertyKey: 'averagelatency', value: '242' },
-              { propertyKey: 'averagelatency', value: '375' },
-              { propertyKey: 'averagelatency', value: '402' },
-              { propertyKey: 'averagelatency', value: '636' },
-              { propertyKey: 'averagelatency', value: '639' },
-              { propertyKey: 'averagelatency', value: '743' },
-              { propertyKey: 'averagelatency', value: '835' },
-              { propertyKey: 'averagelatency', value: '981' },
-              { propertyKey: 'averagelatency', value: '995' },
-            ]}
-            filteringPlaceholder="Find distributions"
-            filteringProperties={[
-              {
-                key: 'instanceid',
-                operators: ['=', '!=', ':', '!:', '^', '!^'],
-                propertyLabel: 'Instance ID',
-                groupValuesLabel: 'Instance ID values',
-              },
-              {
-                key: 'state',
-                operators: [
-                  { operator: '=', tokenType: 'enum' },
-                  { operator: '!=', tokenType: 'enum' },
-                  ':',
-                  '!:',
-                  '^',
-                  '!^',
-                ],
-                propertyLabel: 'State',
-                groupValuesLabel: 'State values',
-              },
-              {
-                key: 'instancetype',
-                operators: [
-                  { operator: '=', tokenType: 'enum' },
-                  { operator: '!=', tokenType: 'enum' },
-                  ':',
-                  '!:',
-                  '^',
-                  '!^',
-                ],
-                propertyLabel: 'Instance type',
-                groupValuesLabel: 'Instance type values',
-              },
-              {
-                key: 'averagelatency',
-                operators: ['=', '!=', '>', '<', '<=', '>='],
-                propertyLabel: 'Average latency',
-                groupValuesLabel: 'Average latency values',
-              },
-            ]}
-          />
         </SpaceBetween>
 
         <SpaceBetween size="xs">
