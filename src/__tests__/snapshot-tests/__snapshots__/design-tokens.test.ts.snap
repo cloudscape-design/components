@@ -20145,6 +20145,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "12px",
         "compact": "8px",
+      },
+    },
     "space-button-horizontal": {
       "$description": "The horizontal padding inside buttons.",
       "$value": {
@@ -46280,6 +46282,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "8px",
         "compact": "4px",
+      },
+    },
     "space-button-horizontal": {
       "$description": "The horizontal padding inside buttons.",
       "$value": {
