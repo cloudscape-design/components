@@ -2053,6 +2053,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -2747,6 +2768,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -4955,6 +5004,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -5649,6 +5719,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -7857,6 +7955,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -8551,6 +8670,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -10759,6 +10906,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -11453,6 +11621,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -13661,6 +13857,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -14355,6 +14572,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -16563,6 +16808,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -17257,6 +17523,34 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -19465,6 +19759,27 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#879596",
       },
     },
+    "color-text-button-inline-icon-default": {
+      "$description": "The default color of inline button icons.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-button-inline-icon-disabled": {
+      "$description": "The color of inline button icons in disabled state.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#aab7b8",
+      },
+    },
+    "color-text-button-inline-icon-hover": {
+      "$description": "The color of inline button icons in hover state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
     "color-text-button-link-active": {
       "$description": "The text color of link buttons in active state.",
       "$value": {
@@ -20161,18 +20476,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "2px",
       },
     },
-    "space-button-horizontal": {
-      "$description": "The horizontal padding inside buttons.",
+    "space-card-horizontal-default": {
+      "$description": "The default horizontal padding inside a card.",
       "$value": {
         "comfortable": "20px",
         "compact": "20px",
       },
     },
-    "space-button-vertical": {
-      "$description": "The vertical padding inside buttons.",
+    "space-card-horizontal-embedded": {
+      "$description": "The horizontal padding inside embedded a card.",
       "$value": {
-        "comfortable": "4px",
-        "compact": "2px",
+        "comfortable": "12px",
+        "compact": "10px",
+      },
+    },
+    "space-card-vertical-default": {
+      "$description": "The default vertical padding inside a card.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "16px",
+      },
+    },
+    "space-card-vertical-embedded": {
+      "$description": "The vertical padding inside embedded a card.",
+      "$value": {
+        "comfortable": "10px",
+        "compact": "8px",
       },
     },
     "space-container-horizontal": {
@@ -22386,6 +22715,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -23080,6 +23430,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -25288,6 +25666,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -25982,6 +26381,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -28190,6 +28617,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -28884,6 +29332,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -31092,6 +31568,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -31786,6 +32283,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -33994,6 +34519,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -34688,6 +35234,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -36896,6 +37470,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -37590,6 +38185,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -39798,6 +40421,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -40492,6 +41136,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -42700,6 +43372,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-button-link-active": {
           "$description": "The text color of link buttons in active state.",
           "$value": {
@@ -43394,6 +44087,34 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-card-horizontal-default": {
+          "$description": "The default horizontal padding inside a card.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-card-horizontal-embedded": {
+          "$description": "The horizontal padding inside embedded a card.",
+          "$value": {
+            "comfortable": "12px",
+            "compact": "10px",
+          },
+        },
+        "space-card-vertical-default": {
+          "$description": "The default vertical padding inside a card.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "12px",
+          },
+        },
+        "space-card-vertical-embedded": {
+          "$description": "The vertical padding inside embedded a card.",
+          "$value": {
+            "comfortable": "10px",
+            "compact": "8px",
           },
         },
         "space-container-horizontal": {
@@ -45602,6 +46323,27 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#8c8c94",
       },
     },
+    "color-text-button-inline-icon-default": {
+      "$description": "The default color of inline button icons.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-button-inline-icon-disabled": {
+      "$description": "The color of inline button icons in disabled state.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
+      },
+    },
+    "color-text-button-inline-icon-hover": {
+      "$description": "The color of inline button icons in hover state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
     "color-text-button-link-active": {
       "$description": "The text color of link buttons in active state.",
       "$value": {
@@ -46298,18 +47040,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "compact": "2px",
       },
     },
-    "space-button-horizontal": {
-      "$description": "The horizontal padding inside buttons.",
+    "space-card-horizontal-default": {
+      "$description": "The default horizontal padding inside a card.",
       "$value": {
         "comfortable": "20px",
-        "compact": "16px",
+        "compact": "20px",
       },
     },
-    "space-button-vertical": {
-      "$description": "The vertical padding inside buttons.",
+    "space-card-horizontal-embedded": {
+      "$description": "The horizontal padding inside embedded a card.",
       "$value": {
-        "comfortable": "4px",
-        "compact": "2px",
+        "comfortable": "12px",
+        "compact": "10px",
+      },
+    },
+    "space-card-vertical-default": {
+      "$description": "The default vertical padding inside a card.",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "12px",
+      },
+    },
+    "space-card-vertical-embedded": {
+      "$description": "The vertical padding inside embedded a card.",
+      "$value": {
+        "comfortable": "10px",
+        "compact": "8px",
       },
     },
     "space-container-horizontal": {
