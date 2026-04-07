@@ -13,7 +13,6 @@ import {
   InputProps,
   KeyValuePairs,
   Link,
-  SegmentedControl,
   Select,
   SelectProps,
   SpaceBetween,
@@ -73,10 +72,6 @@ export default function ThemedStrokeWidthPage() {
           borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
           borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
           borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
-          spaceButtonHorizontal: '12px',
-          spaceButtonVertical: '4px',
-          borderRadiusButton: '8px',
-          borderWidthButton: '1px',
         },
       };
 
@@ -88,8 +83,6 @@ export default function ThemedStrokeWidthPage() {
     }
     return reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
-
-  const [selectedId, setSelectedId] = React.useState('seg-1');
 
   return (
     <div style={{ padding: 15 }}>
@@ -232,22 +225,6 @@ export default function ThemedStrokeWidthPage() {
                 Button
               </Button>
             </div>
-            <div>
-              <Button variant="primary">Button</Button>
-              <Button variant="link">Button</Button>
-              <Button variant="normal">Button</Button>
-            </div>
-
-            <SegmentedControl
-              selectedId={selectedId}
-              onChange={({ detail }) => setSelectedId(detail.selectedId)}
-              label="Default segmented control"
-              options={[
-                { text: 'Segment 1', id: 'seg-1' },
-                { text: 'Segment 2', id: 'seg-2' },
-                { text: 'Segment 3', id: 'seg-3' },
-              ]}
-            />
 
             <div>
               <Link external={true} href="https://example.com/" variant="primary">
