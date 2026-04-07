@@ -5,9 +5,10 @@ on:
     types:
       - opened
 
+permissions:
+  contents: write
+
 jobs:
   cleanup:
     uses: cloudscape-design/actions/.github/workflows/dependabot-lockfile-cleanup.yml@main
     secrets: inherit
-    permissions:
-      contents: write
