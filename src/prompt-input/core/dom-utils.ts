@@ -256,9 +256,7 @@ export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelle
  * needed, then removes the span.
  */
 export function scrollCaretIntoView(element: HTMLElement): void {
-  // Skip when the element has no layout (e.g. jsdom)
-  const elementRect = element.getBoundingClientRect();
-  if (elementRect.width === 0 && elementRect.height === 0) {
+  if (element.scrollHeight <= element.clientHeight) {
     return;
   }
 
@@ -275,6 +273,7 @@ export function scrollCaretIntoView(element: HTMLElement): void {
   range.insertNode(tempSpan);
 
   const spanRect = tempSpan.getBoundingClientRect();
+  const elementRect = element.getBoundingClientRect();
 
   const isOutOfView =
     spanRect.top < elementRect.top ||

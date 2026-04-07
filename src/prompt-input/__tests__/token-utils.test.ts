@@ -593,3 +593,36 @@ describe('removeTokenRange', () => {
     expect(result).toEqual([]);
   });
 });
+
+describe('removeTokenRange edge cases', () => {
+  test('preserves tokens completely outside the range on both sides', () => {
+    const tokens: PromptInputProps.InputToken[] = [
+      text('aaa'),
+      { type: 'break', value: '\n' },
+      text('bbb'),
+      { type: 'break', value: '\n' },
+      text('ccc'),
+    ];
+    // Remove only "bbb" (positions 4-7)
+    const result = removeTokenRange(tokens, 4, 7);
+    expect(result).toEqual([text('aaa'), { type: 'break', value: '\n' }, { type: 'break', value: '\n' }, text('ccc')]);
+  });
+
+  test('handles range that starts mid-text and ends at a break', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello'), { type: 'break', value: '\n' }, text('world')];
+    // Remove "lo\n" (positions 3-6)
+    const result = removeTokenRange(tokens, 3, 6);
+    expect(result).toEqual([text('hel'), text('world')]);
+  });
+
+  test('handles range spanning multiple atomic tokens', () => {
+    const tokens: PromptInputProps.InputToken[] = [
+      ref('r1', 'A', 'a', 'm'),
+      ref('r2', 'B', 'b', 'm'),
+      ref('r3', 'C', 'c', 'm'),
+    ];
+    // Remove first two references (positions 0-2)
+    const result = removeTokenRange(tokens, 0, 2);
+    expect(result).toEqual([ref('r3', 'C', 'c', 'm')]);
+  });
+});

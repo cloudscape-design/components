@@ -7241,3 +7241,108 @@ describe('paste partial selection replacement', () => {
     expect(onChange.mock.calls.length).toBe(callsBefore);
   });
 });
+
+describe('insertText multiline edge cases', () => {
+  test('insertText with only newlines creates empty paragraphs', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('\n\n');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(2);
+  });
+
+  test('insertText with text ending in newline creates trailing empty line', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('hello\n');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(1);
+    const texts = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(texts[0].value).toBe('hello');
+  });
+
+  test('paste over partial selection with multiline content produces correct tokens', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'abcdef' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.setSelectionRange(2, 4);
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      fireEvent.paste(el, {
+        clipboardData: {
+          getData: (type: string) => (type === 'text/plain' ? 'X\nY' : ''),
+          types: ['text/plain'],
+          items: [],
+          files: [],
+        },
+      });
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const allText = lastTokens
+      .filter((t: PromptInputProps.InputToken) => t.type === 'text')
+      .map((t: PromptInputProps.TextToken) => t.value)
+      .join('');
+    expect(allText).toContain('ab');
+    expect(allText).toContain('X');
+    expect(allText).toContain('Y');
+    expect(allText).toContain('ef');
+    expect(allText).not.toContain('cd');
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(1);
+  });
+
+  test('delete key with non-collapsed selection removes content via state', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.setSelectionRange(3, 7);
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', keyCode: 46, bubbles: true }));
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    expect(lastTokens.find((t: any) => t.type === 'reference')).toBeUndefined();
+    const textValues = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('hel');
+  });
+});
