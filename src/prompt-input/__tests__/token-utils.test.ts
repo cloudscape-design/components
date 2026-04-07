@@ -12,6 +12,7 @@ import {
   getCaretPositionAfterPinnedReorder,
   getCaretPositionAfterTokenRemoval,
   mergeConsecutiveTextTokens,
+  removeTokenRange,
   validateTrigger,
 } from '../core/token-utils';
 import { PromptInputProps } from '../interfaces';
@@ -510,5 +511,85 @@ describe('getCaretPositionAfterTokenRemoval - trigger token handling', () => {
     expect(getCaretPositionAfterTokenRemoval(12, prev, next)).toBe(12);
     // savedPosition 16 exceeds totalLength (15), clamps to end
     expect(getCaretPositionAfterTokenRemoval(16, prev, next)).toBe(15);
+  });
+});
+
+describe('removeTokenRange', () => {
+  test('returns copy when start >= end', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello')];
+    expect(removeTokenRange(tokens, 3, 3)).toEqual([text('hello')]);
+    expect(removeTokenRange(tokens, 5, 2)).toEqual([text('hello')]);
+  });
+
+  test('removes entire text token when fully within range', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('aaa'), text('bbb'), text('ccc')];
+    // Remove "bbb" (positions 3-6)
+    const result = removeTokenRange(tokens, 3, 6);
+    expect(result).toEqual([text('aaa'), text('ccc')]);
+  });
+
+  test('trims text token at start of range', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello world')];
+    // Remove "world" (positions 6-11)
+    const result = removeTokenRange(tokens, 6, 11);
+    expect(result).toEqual([text('hello ')]);
+  });
+
+  test('trims text token at end of range', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello world')];
+    // Remove "hello " (positions 0-6)
+    const result = removeTokenRange(tokens, 0, 6);
+    expect(result).toEqual([text('world')]);
+  });
+
+  test('trims text token from both sides', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hello world')];
+    // Remove "lo wo" (positions 3-8)
+    const result = removeTokenRange(tokens, 3, 8);
+    expect(result).toEqual([text('helrld')]);
+  });
+
+  test('removes reference token when overlapping', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('hi '), ref('r1', 'Alice', 'alice', 'mentions'), text(' bye')];
+    // Range spans the reference (positions 3-4)
+    const result = removeTokenRange(tokens, 3, 4);
+    expect(result.find(t => t.type === 'reference')).toBeUndefined();
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(text('hi '));
+    expect(result[1]).toEqual(text(' bye'));
+  });
+
+  test('removes break token when overlapping', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('aaa'), { type: 'break', value: '\n' }, text('bbb')];
+    // Range spans the break (position 3-4)
+    const result = removeTokenRange(tokens, 3, 4);
+    expect(result.find(t => t.type === 'break')).toBeUndefined();
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(text('aaa'));
+    expect(result[1]).toEqual(text('bbb'));
+  });
+
+  test('removes trigger token when overlapping', () => {
+    const tokens: PromptInputProps.InputToken[] = [
+      text('hi '),
+      { type: 'trigger', value: 'bob', triggerChar: '@', id: 'trig-1' },
+    ];
+    // Range spans into the trigger (positions 3-7, trigger is @bob = 4 chars)
+    const result = removeTokenRange(tokens, 3, 7);
+    expect(result.find(t => t.type === 'trigger')).toBeUndefined();
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual(text('hi '));
+  });
+
+  test('removes everything when range covers all tokens', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('aaa'), { type: 'break', value: '\n' }, text('bbb')];
+    const result = removeTokenRange(tokens, 0, 7);
+    expect(result).toEqual([]);
+  });
+
+  test('removes text token entirely when trimmed to empty', () => {
+    const tokens: PromptInputProps.InputToken[] = [text('abc')];
+    const result = removeTokenRange(tokens, 0, 3);
+    expect(result).toEqual([]);
   });
 });

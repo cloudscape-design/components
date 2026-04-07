@@ -6510,6 +6510,41 @@ describe('disabled and readonly menu suppression', () => {
   });
 });
 
+describe('non-collapsed selection deletion via keyboard', () => {
+  test('backspace with selection spanning text and reference removes selected content', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'hello ' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+          { type: 'text', value: ' world' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.setSelectionRange(3, 13);
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', keyCode: 8, bubbles: true }));
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    // Reference should be removed since the selection spans it
+    expect(lastTokens.find((t: any) => t.type === 'reference')).toBeUndefined();
+    // Only text before the selection start should remain
+    const textValues = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('hel');
+  });
+});
+
 describe('classifyChange branches', () => {
   test('external update with different token count triggers structural re-render', () => {
     const onChange = jest.fn();
