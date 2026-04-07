@@ -6,6 +6,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../../../i18n/context';
 import FeaturePrompt, { FeaturePromptProps } from '../../../internal/do-not-use/feature-prompt';
+import { metrics } from '../../../internal/metrics';
 import { persistFeatureNotifications, retrieveFeatureNotifications } from '../../../internal/persistence';
 import {
   Feature,
@@ -117,6 +118,16 @@ export function useFeatureNotifications() {
   function featureNotificationsMessageHandler(event: WidgetMessage) {
     if (event.type === 'registerFeatureNotifications') {
       const { payload } = event;
+      metrics.logComponentUsed('feature-notifications', {
+        props: {
+          suppressFeaturePrompt: payload.suppressFeaturePrompt,
+          featuresLength: payload.features.length,
+          hasMountItem: !!payload.mountItem,
+          featuresPageLink: payload.featuresPageLink,
+          hasFilterFeatures: !!payload.filterFeatures,
+          hasPersistenceConfig: !!payload.persistenceConfig,
+        },
+      });
       const features = getFeaturesToDisplay(payload);
       if (features.length === 0) {
         return;
