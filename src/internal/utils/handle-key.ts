@@ -72,10 +72,20 @@ export default function handleKey(
       }
       break;
     case KeyCode.backspace:
-      onBackspace?.();
+      // TODO: Remove onDefault fallback once all callers handle backspace explicitly
+      if (onBackspace) {
+        onBackspace();
+      } else {
+        onDefault?.();
+      }
       break;
     case KeyCodeDelete:
-      onDelete?.();
+      // TODO: Remove onDefault fallback once all callers handle delete explicitly
+      if (onDelete) {
+        onDelete();
+      } else {
+        onDefault?.();
+      }
       break;
     case KeyCode.down:
       onBlockEnd?.();
@@ -126,7 +136,12 @@ export default function handleKey(
       }
       break;
     case KeyCode.tab:
-      onTab?.();
+      // TODO: Remove onDefault fallback once all callers handle tab explicitly
+      if (onTab) {
+        onTab();
+      } else {
+        onDefault?.();
+      }
       break;
     case KeyCode.up:
       onBlockStart?.();
