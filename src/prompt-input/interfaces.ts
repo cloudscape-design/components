@@ -42,23 +42,31 @@ export interface PromptInputProps
   /**
    * Specifies the content of the prompt input.
    *
-   * When `tokens` is defined (token mode):
-   * - This property is optional and defaults to empty string
-   * - The actual content is managed via the `tokens` array
-   *
-   * When `tokens` is not defined (text mode):
+   * When `tokens` is not defined:
    * - This property is required
    * - Represents the current text content of the textarea
+   *
+   * When `tokens` is defined:
+   * - This property is optional and defaults to empty string
+   * - The actual content is managed via the `tokens` array
    */
   value?: string;
 
   /**
    * Specifies the content of the prompt input when using token mode.
    *
-   * All tokens use the same unified structure with a `value` property:
-   * - Text tokens: `value` contains the text content
-   * - Reference tokens: `value` contains the reference value, `label` for display (e.g., '@john')
-   * - Trigger tokens: `value` contains the filter text, `triggerChar` for the trigger character
+   * Available types and their properties:
+   * - Text tokens:
+   *   - `value` contains the text content.
+   * - Reference tokens:
+   *   - `id` as the unique identifier, this is auto-generated however when setting `tokens` it is required to provide an ID.
+   *   - `value` contains the reference value.
+   *   - `label` for display (e.g., 'file.txt').
+   *   - `pinned` to render at the start of the input.
+   * - Trigger tokens:
+   *   - `id` as the unique identifier, this is auto-generated however when setting `tokens` it is required to provide an ID.
+   *   - `value` contains the filter text.
+   *   - `triggerChar` for the trigger character.
    *
    * When `menus` is defined, you should use `tokens` to control the content instead of `value`.
    *
@@ -84,7 +92,7 @@ export interface PromptInputProps
    * Called whenever a user changes the input value (by typing or pasting).
    * The event `detail` contains the current value as a string and an array of tokens.
    *
-   * When `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default tokens-to-text conversion.
+   * When `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from a default simple implementation.
    */
   onChange?: NonCancelableEventHandler<PromptInputProps.ChangeDetail>;
 
@@ -92,7 +100,7 @@ export interface PromptInputProps
    * Called whenever a user clicks the action button or presses the "Enter" key.
    * The event `detail` contains the current value as a string and an array of tokens.
    *
-   * When `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from the default tokens-to-text conversion.
+   * When `tokens` is defined, the `value` is derived from `tokensToText(tokens)` if provided, otherwise from a default simple implementation.
    */
   onAction?: NonCancelableEventHandler<PromptInputProps.ActionDetail>;
 
@@ -263,7 +271,7 @@ export interface PromptInputProps
    * - `position` - The position in the text where the trigger was detected.
    *
    * Use this to implement custom validation logic for triggers, such as preventing
-   * triggers that don't meet certain conditions (e.g., only allow at start when certain tokens are present).
+   * triggers that don't meet certain conditions (for example, limiting the amount of references in a prompt).
    *
    * Requires React 18.
    */
