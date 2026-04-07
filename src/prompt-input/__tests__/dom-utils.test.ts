@@ -506,3 +506,65 @@ describe('findElement with tokenId', () => {
     expect(found).toBeNull();
   });
 });
+
+describe('normalizeCaretIntoTrigger - trigger offset 0 nudge', () => {
+  function createTrigger(id: string, text: string): HTMLElement {
+    const span = document.createElement('span');
+    span.setAttribute('data-type', ElementType.Trigger);
+    span.id = id;
+    span.textContent = text;
+    return span;
+  }
+
+  test('nudges caret from offset 0 inside trigger text to paragraph level before trigger', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const textBefore = document.createTextNode('hello ');
+    const trigger = createTrigger('trig-1', '@bob');
+    p.appendChild(textBefore);
+    p.appendChild(trigger);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    // Place caret at offset 0 inside the trigger's text node
+    const triggerText = trigger.childNodes[0];
+    const range = document.createRange();
+    range.setStart(triggerText, 0);
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+
+    const newRange = sel.getRangeAt(0);
+    // Should be at paragraph level, before the trigger element
+    expect(newRange.startContainer).toBe(p);
+    expect(newRange.startOffset).toBe(1); // After textBefore, before trigger
+    document.body.removeChild(el);
+  });
+
+  test('does not nudge when trigger is the first child (idx === 0)', () => {
+    const el = document.createElement('div');
+    const p = document.createElement('p');
+    const trigger = createTrigger('trig-1', '@bob');
+    p.appendChild(trigger);
+    el.appendChild(p);
+    document.body.appendChild(el);
+
+    const triggerText = trigger.childNodes[0];
+    const range = document.createRange();
+    range.setStart(triggerText, 0);
+    range.collapse(true);
+    const sel = window.getSelection()!;
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    normalizeCaretIntoTrigger(el);
+
+    // idx is 0, so no nudge — caret stays in trigger text
+    const newRange = sel.getRangeAt(0);
+    expect(newRange.startContainer).toBe(triggerText);
+    document.body.removeChild(el);
+  });
+});

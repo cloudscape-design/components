@@ -7137,3 +7137,109 @@ describe('paste multiline over full selection', () => {
     expect(range.startOffset).toBe(3);
   });
 });
+
+describe('paste partial selection replacement', () => {
+  function pasteText(element: HTMLElement, text: string) {
+    fireEvent.paste(element, {
+      clipboardData: {
+        getData: (type: string) => (type === 'text/plain' ? text : ''),
+        types: ['text/plain'],
+        items: [],
+        files: [],
+      },
+    });
+  }
+
+  test('paste replaces partial text selection within a single line', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'hello world' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.setSelectionRange(6, 11);
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'universe');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('hello');
+    expect(lastValue).toContain('universe');
+    expect(lastValue).not.toContain('world');
+  });
+
+  test('paste multiline over partial selection in multiline content', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'aaa' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'bbb' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'ccc' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Select middle line "bbb" (positions 4-7)
+    act(() => {
+      ref.current!.setSelectionRange(4, 7);
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'xxx\nyyy');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const texts = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    // "aaa" should remain, "bbb" replaced by "xxx\nyyy", "ccc" should remain
+    expect(texts.join(' ')).toContain('aaa');
+    expect(texts.join(' ')).toContain('ccc');
+    expect(texts.join(' ')).not.toContain('bbb');
+  });
+
+  test('paste is no-op when readOnly', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'original' }], onChange, readOnly: true },
+      ref,
+    });
+    const callsBefore = onChange.mock.calls.length;
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'injected');
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+
+  test('paste empty string is no-op', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'original' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    const callsBefore = onChange.mock.calls.length;
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, '');
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+});

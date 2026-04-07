@@ -72,7 +72,7 @@ export default function TokenRendererPage() {
 
   const extractFromDOM = () => {
     if (editorRef.current) {
-      const result = extractTokensFromDOM(editorRef.current, menus);
+      const result = extractTokensFromDOM(editorRef.current, menus, portalContainersRef.current);
       setExtracted(result);
     }
   };
