@@ -203,47 +203,6 @@ export class CaretController {
     ownerDocument.dispatchEvent(new Event('selectionchange'));
   }
 
-  /** Scrolls the caret into view if it's outside the visible area of the element. */
-  scrollIntoView(): void {
-    const selection = getOwnerSelection(this.element);
-    if (!selection?.rangeCount) {
-      return;
-    }
-    const range = selection.getRangeAt(0);
-    if (typeof range.getBoundingClientRect !== 'function') {
-      return;
-    }
-
-    const ownerDocument = this.ownerDoc;
-    const rangeRect = range.getBoundingClientRect();
-    const elementRect = this.element.getBoundingClientRect();
-
-    const isOutOfView =
-      rangeRect.top < elementRect.top ||
-      rangeRect.bottom > elementRect.bottom ||
-      rangeRect.left < elementRect.left ||
-      rangeRect.right > elementRect.right;
-
-    if (isOutOfView) {
-      const tempSpan = ownerDocument.createElement('span');
-      range.insertNode(tempSpan);
-      tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      tempSpan.remove();
-
-      // Re-resolve: insertNode splits text nodes, invalidating original offsets.
-      if (this.state.isValid) {
-        const freshStart = this.findDOMLocation(this.state.start);
-        const freshEnd =
-          this.state.end !== undefined && this.state.end !== this.state.start
-            ? (this.findDOMLocation(this.state.end) ?? undefined)
-            : undefined;
-        if (freshStart) {
-          this.applyRange(ownerDocument, selection, freshStart, freshEnd);
-        }
-      }
-    }
-  }
-
   /** Captures the current caret/selection state for later restoration. */
   capture(): void {
     const selection = getOwnerSelection(this.element);

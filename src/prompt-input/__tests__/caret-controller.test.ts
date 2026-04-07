@@ -3,7 +3,6 @@
 
 jest.mock('../styles.css.js', () => ({}), { virtual: true });
 
-import './jsdom-polyfills';
 import {
   calculateTokenPosition,
   calculateTotalTokenLength,
@@ -1325,34 +1324,6 @@ describe('CaretController - defensive guards', () => {
     expect(window.getSelection()?.toString()).toBe('');
   });
 
-  test('scrollIntoView scrolls when caret is out of bounds', () => {
-    addParagraph(el, 'hello world');
-    el.focus();
-    const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
-    const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-    jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
-    const scrollSpy = jest.fn();
-    HTMLElement.prototype.scrollIntoView = scrollSpy;
-    controller.setPosition(5);
-    controller.scrollIntoView();
-    expect(scrollSpy).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
-  });
-
-  test('scrollIntoView scrolls with range selection when out of view', () => {
-    addParagraph(el, 'hello world test');
-    el.focus();
-    const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
-    const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-    jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
-    const scrollSpy = jest.fn();
-    HTMLElement.prototype.scrollIntoView = scrollSpy;
-    controller.setPosition(2, 8);
-    controller.scrollIntoView();
-    expect(scrollSpy).toHaveBeenCalled();
-  });
-
   test('restore does nothing when element is not the active element', () => {
     addParagraph(el, 'hello');
     el.focus();
@@ -1512,34 +1483,6 @@ describe('CaretController - remaining uncovered branches', () => {
     document.body.innerHTML = '';
     jest.restoreAllMocks();
     delete (HTMLElement.prototype as any).scrollIntoView;
-  });
-
-  test('setPosition scroll re-selection with end that cannot be found', () => {
-    addParagraph(el, 'hi');
-    el.focus();
-    const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
-    const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-    jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
-    HTMLElement.prototype.scrollIntoView = jest.fn();
-    // Start at 0 (valid), end at 999 (beyond content)
-    controller.setPosition(0, 999);
-    const sel = window.getSelection()!;
-    expect(sel.rangeCount).toBe(1);
-  });
-
-  test('setPosition scroll re-selection with collapsed range', () => {
-    addParagraph(el, 'hello');
-    el.focus();
-    const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
-    const mockRangeRect = { top: 150, bottom: 160, left: 0, right: 10 };
-    jest.spyOn(el, 'getBoundingClientRect').mockReturnValue(mockElementRect as DOMRect);
-    jest.spyOn(Range.prototype, 'getBoundingClientRect').mockReturnValue(mockRangeRect as DOMRect);
-    HTMLElement.prototype.scrollIntoView = jest.fn();
-    // Collapsed range (no end)
-    controller.setPosition(3);
-    const sel = window.getSelection()!;
-    expect(sel.rangeCount).toBe(1);
   });
 
   test('calculatePositionFromRange returns 0 when no paragraphs', () => {

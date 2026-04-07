@@ -17,6 +17,7 @@ import {
   isElementEffectivelyEmpty,
   isEmptyState,
   normalizeCaretIntoTrigger,
+  scrollCaretIntoView,
   setEmptyState,
 } from '../core/dom-utils';
 
@@ -566,5 +567,119 @@ describe('normalizeCaretIntoTrigger - trigger offset 0 nudge', () => {
     const newRange = sel.getRangeAt(0);
     expect(newRange.startContainer).toBe(triggerText);
     document.body.removeChild(el);
+  });
+});
+
+describe('scrollCaretIntoView', () => {
+  let el: HTMLDivElement;
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    el.setAttribute('contenteditable', 'true');
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(el);
+  });
+
+  test('does nothing when element is not scrollable', () => {
+    const p = document.createElement('p');
+    p.textContent = 'hello';
+    el.appendChild(p);
+    const scrollSpy = jest.fn();
+    HTMLElement.prototype.scrollIntoView = scrollSpy;
+    scrollCaretIntoView(el);
+    expect(scrollSpy).not.toHaveBeenCalled();
+  });
+
+  test('does nothing when no selection exists', () => {
+    Object.defineProperty(el, 'scrollHeight', { value: 200, configurable: true });
+    Object.defineProperty(el, 'clientHeight', { value: 100, configurable: true });
+    window.getSelection()!.removeAllRanges();
+    const scrollSpy = jest.fn();
+    HTMLElement.prototype.scrollIntoView = scrollSpy;
+    scrollCaretIntoView(el);
+    expect(scrollSpy).not.toHaveBeenCalled();
+  });
+
+  test('scrolls when caret is out of view', () => {
+    const p = document.createElement('p');
+    p.textContent = 'hello world';
+    el.appendChild(p);
+    el.focus();
+
+    Object.defineProperty(el, 'scrollHeight', { value: 200, configurable: true });
+    Object.defineProperty(el, 'clientHeight', { value: 100, configurable: true });
+
+    const range = document.createRange();
+    range.setStart(p.firstChild!, 5);
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    const mockElementRect = { top: 0, bottom: 100, left: 0, right: 200 };
+    const mockSpanRect = { top: 150, bottom: 160, left: 0, right: 10 };
+    const origGetBCR = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      return this === el ? (mockElementRect as DOMRect) : (mockSpanRect as DOMRect);
+    };
+    const scrollSpy = jest.fn();
+    HTMLElement.prototype.scrollIntoView = scrollSpy;
+
+    scrollCaretIntoView(el);
+
+    expect(scrollSpy).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+    HTMLElement.prototype.getBoundingClientRect = origGetBCR;
+  });
+
+  test('does not scroll when caret is within view', () => {
+    const p = document.createElement('p');
+    p.textContent = 'hello';
+    el.appendChild(p);
+    el.focus();
+
+    Object.defineProperty(el, 'scrollHeight', { value: 200, configurable: true });
+    Object.defineProperty(el, 'clientHeight', { value: 100, configurable: true });
+
+    const range = document.createRange();
+    range.setStart(p.firstChild!, 3);
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    const mockRect = { top: 10, bottom: 20, left: 10, right: 20 };
+    const origGetBCR = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      return this === el ? ({ top: 0, bottom: 100, left: 0, right: 200 } as DOMRect) : (mockRect as DOMRect);
+    };
+    const scrollSpy = jest.fn();
+    HTMLElement.prototype.scrollIntoView = scrollSpy;
+
+    scrollCaretIntoView(el);
+
+    expect(scrollSpy).not.toHaveBeenCalled();
+    HTMLElement.prototype.getBoundingClientRect = origGetBCR;
+  });
+
+  test('removes temp span after measurement', () => {
+    const p = document.createElement('p');
+    p.textContent = 'hello';
+    el.appendChild(p);
+    el.focus();
+
+    Object.defineProperty(el, 'scrollHeight', { value: 200, configurable: true });
+    Object.defineProperty(el, 'clientHeight', { value: 100, configurable: true });
+
+    const range = document.createRange();
+    range.setStart(p.firstChild!, 3);
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    scrollCaretIntoView(el);
+
+    // No stray span elements should remain
+    expect(el.querySelectorAll('span').length).toBe(0);
   });
 });

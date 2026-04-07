@@ -5,7 +5,13 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { isHTMLElement } from '../../internal/utils/dom';
 import { CaretController, getOwnerSelection } from '../core/caret-controller';
-import { createParagraph, createTrailingBreak, findAllParagraphs, isElementEffectivelyEmpty } from '../core/dom-utils';
+import {
+  createParagraph,
+  createTrailingBreak,
+  findAllParagraphs,
+  isElementEffectivelyEmpty,
+  scrollCaretIntoView,
+} from '../core/dom-utils';
 
 /**
  * Inserts text into a contentEditable element at a specific position.
@@ -151,4 +157,5 @@ export function insertTextIntoContentEditable(
   // the render effect synchronously during dispatchEvent, before we
   // get a chance to set the captured position.
   caretController.setPosition(finalPosition);
+  scrollCaretIntoView(element);
 }

@@ -249,3 +249,42 @@ export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelle
     }
   }
 }
+
+/**
+ * Scrolls the caret into view within a scrollable contentEditable element.
+ * Inserts a temporary span at the selection to measure position, scrolls if
+ * needed, then removes the span.
+ */
+export function scrollCaretIntoView(element: HTMLElement): void {
+  // Skip when the element has no layout (e.g. jsdom)
+  const elementRect = element.getBoundingClientRect();
+  if (elementRect.width === 0 && elementRect.height === 0) {
+    return;
+  }
+
+  const selection = getOwnerSelection(element);
+  if (!selection?.rangeCount) {
+    return;
+  }
+
+  const ownerDoc = element.ownerDocument ?? document;
+  const range = selection.getRangeAt(0);
+
+  // Insert a temporary span at the caret to measure its position.
+  const tempSpan = ownerDoc.createElement('span');
+  range.insertNode(tempSpan);
+
+  const spanRect = tempSpan.getBoundingClientRect();
+
+  const isOutOfView =
+    spanRect.top < elementRect.top ||
+    spanRect.bottom > elementRect.bottom ||
+    spanRect.left < elementRect.left ||
+    spanRect.right > elementRect.right;
+
+  if (isOutOfView) {
+    tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  tempSpan.remove();
+}

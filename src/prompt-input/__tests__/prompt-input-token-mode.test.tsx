@@ -17,8 +17,6 @@ jest.mock('../../../lib/components/internal/utils/react-version', () => ({
   getReactMajorVersion: () => 18,
 }));
 
-import './jsdom-polyfills';
-
 const mentionOptions = [
   { value: 'user-1', label: 'Alice' },
   { value: 'user-2', label: 'Bob' },
