@@ -215,6 +215,22 @@ export function normalizeCaretIntoTrigger(editableElement: HTMLElement, cancelle
         triggerElement = prevSibling;
       }
     }
+
+    // Caret at offset 0 inside a trigger's own text node means the cursor is
+    // right before the trigger symbol. Nudge it to the end of whatever precedes
+    // this trigger — either the previous trigger or a text node boundary.
+    const parent = range.startContainer.parentElement;
+    if (!triggerElement && parent && getTokenType(parent) === ElementType.Trigger) {
+      const paragraph = parent.parentElement;
+      if (paragraph) {
+        const idx = Array.from(paragraph.childNodes).indexOf(parent);
+        if (idx > 0) {
+          range.setStart(paragraph, idx);
+          range.collapse(true);
+        }
+      }
+      return;
+    }
   } else if (range.startContainer === editableElement || isHTMLElement(range.startContainer)) {
     const container = range.startContainer as HTMLElement;
     const childNodes = Array.from(container.childNodes);

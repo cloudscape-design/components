@@ -19,13 +19,12 @@ import {
   insertAfter,
   isCaretSpotType,
   isElementEffectivelyEmpty,
-  isEmptyState,
   isReferenceElementType,
-  setEmptyState,
   stripZeroWidthCharacters,
 } from './dom-utils';
 import { MenuItemsHandlers, MenuItemsState } from './menu-state';
 import { getPromptText } from './token-operations';
+import { removeTokenRange } from './token-utils';
 import { handleDeleteAfterTrigger, handleSpaceInOpenMenu } from './trigger-utils';
 import { isBreakTextToken, isBRElement, isTextNode } from './type-guards';
 
@@ -64,6 +63,14 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
     props.onChange(detail);
   };
 
+  const emitTokenDeletion = (newTokens: PromptInputProps.InputToken[], caretPos: number) => {
+    const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
+    emitChange({ value, tokens: newTokens });
+    if (caretController) {
+      caretController.setCapturedPosition(caretPos);
+    }
+  };
+
   // Forward to consumer's onKeyDown
   fireKeyboardEvent(props.onKeyDown, event);
 
@@ -91,7 +98,9 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
           editableState,
           props.announceTokenOperation,
           props.i18nStrings,
-          caretController
+          caretController,
+          tokens,
+          emitTokenDeletion
         )
       ) {
         return;
@@ -115,7 +124,9 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
           editableState,
           props.announceTokenOperation,
           props.i18nStrings,
-          caretController
+          caretController,
+          tokens,
+          emitTokenDeletion
         )
       ) {
         return;
@@ -243,6 +254,13 @@ export function splitParagraphAtCaret(
 
   const afterContent = afterRange.extractContents();
 
+  // Strip trailing breaks from extracted content — they belong only in empty paragraphs
+  for (const child of Array.from(afterContent.childNodes)) {
+    if (child.nodeName === 'BR') {
+      child.remove();
+    }
+  }
+
   const newP = createParagraph();
   newP.appendChild(afterContent);
 
@@ -318,7 +336,9 @@ export function handleReferenceTokenDeletion(
   state: EditableState,
   announceTokenOperation: ((message: string) => void) | undefined,
   i18nStrings: PromptInputProps.I18nStrings | undefined,
-  caretController: CaretController | null
+  caretController: CaretController | null,
+  tokens?: readonly PromptInputProps.InputToken[],
+  emitChange?: (newTokens: PromptInputProps.InputToken[], caretPosition: number) => void
 ): boolean {
   const selection = getOwnerSelection(editableElement);
   if (!selection?.rangeCount) {
@@ -330,57 +350,28 @@ export function handleReferenceTokenDeletion(
   if (!range.collapsed) {
     event.preventDefault();
 
-    // Capture the caret position at the start of the selection before deleting.
-    let caretPosAfterDelete: number | null = null;
-    if (caretController) {
-      caretPosAfterDelete = caretController.getPosition();
+    if (!caretController || !tokens || !emitChange) {
+      return false;
     }
 
-    // Identify the paragraphs that the selection starts and ends in before deleting.
-    const startP = findUpUntil(
-      isHTMLElement(range.startContainer) ? range.startContainer : range.startContainer.parentElement!,
-      node => node.nodeName === 'P'
-    );
-    const endP = findUpUntil(
-      isHTMLElement(range.endContainer) ? range.endContainer : range.endContainer.parentElement!,
-      node => node.nodeName === 'P'
-    );
+    // Map the DOM selection to logical token positions and remove the range
+    // from state. The render effect will update the DOM on the next cycle.
+    const startPos = caretController.getPosition();
 
-    range.deleteContents();
+    // Get end position by temporarily collapsing the range to its end
+    const tempRange = range.cloneRange();
+    tempRange.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(tempRange);
+    const endPos = caretController.getPosition();
+    selection.removeAllRanges();
+    selection.addRange(range);
 
-    // If the selection spanned multiple paragraphs, merge the end paragraph's
-    // remaining content into the start paragraph and remove the empty shells.
-    if (startP && endP && startP !== endP) {
-      // Move surviving children from endP into startP
-      while (endP.firstChild) {
-        if (isBRElement(endP.firstChild)) {
-          endP.removeChild(endP.firstChild);
-        } else {
-          startP.appendChild(endP.firstChild);
-        }
-      }
+    const rangeStart = Math.min(startPos, endPos);
+    const rangeEnd = Math.max(startPos, endPos);
 
-      // Remove endP and any now-empty paragraphs between start and end
-      const paragraphs = findAllParagraphs(editableElement);
-      const startIdx = paragraphs.indexOf(startP as HTMLParagraphElement);
-      for (let i = paragraphs.length - 1; i > startIdx; i--) {
-        if (isElementEffectivelyEmpty(paragraphs[i]) || paragraphs[i] === endP) {
-          paragraphs[i].remove();
-        }
-      }
-    }
-
-    // Handle the case where everything was deleted
-    if (isEmptyState(editableElement) || findAllParagraphs(editableElement).length === 0) {
-      setEmptyState(editableElement);
-    }
-
-    editableElement.dispatchEvent(new Event('input', { bubbles: true }));
-
-    // Restore caret to where the selection started
-    if (caretController && caretPosAfterDelete !== null) {
-      caretController.setPosition(caretPosAfterDelete);
-    }
+    const newTokens = removeTokenRange(tokens, rangeStart, rangeEnd);
+    emitChange(newTokens, rangeStart);
 
     return true;
   }

@@ -2059,7 +2059,7 @@ describe('handleReferenceTokenDeletion - non-collapsed selection cleanup', () =>
     expect(event.isDefaultPrevented()).toBe(true);
   });
 
-  test('merges remaining content from end paragraph into start paragraph', () => {
+  test('non-collapsed selection emits state change via emitChange', () => {
     const firstP = addParagraph(el, 'Line A');
     addParagraph(el, 'Line B');
     const lastP = addParagraph(el, 'Line C');
@@ -2067,12 +2067,23 @@ describe('handleReferenceTokenDeletion - non-collapsed selection cleanup', () =>
     setSelection(firstP.firstChild!, 3, lastP.firstChild!, 3);
     const event = makeKeyboardEvent('Backspace');
     const state = { skipNextZeroWidthUpdate: false, menuSelectionTokenId: null };
-    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, null);
+    const cc = new CaretController(el);
+    const emitChange = jest.fn();
+    const tokens: PromptInputProps.InputToken[] = [
+      { type: 'text', value: 'Line A' },
+      { type: 'break', value: '\n' },
+      { type: 'text', value: 'Line B' },
+      { type: 'break', value: '\n' },
+      { type: 'text', value: 'Line C' },
+    ];
+    handleReferenceTokenDeletion(event, true, el, state, undefined, undefined, cc, tokens, emitChange);
     expect(event.isDefaultPrevented()).toBe(true);
-    // Should merge: "Lin" + "e C" = "Line C" in one paragraph
-    const paragraphs = el.querySelectorAll('p');
-    expect(paragraphs).toHaveLength(1);
-    expect(paragraphs[0].textContent).toBe('Line C');
+    expect(emitChange).toHaveBeenCalled();
+    const [newTokens, caretPos] = emitChange.mock.calls[0];
+    // "Lin" + "e C" → remaining text after removing positions 3..17
+    expect(caretPos).toBe(3);
+    const textValues = newTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('Line C');
   });
 
   test('preserves paragraphs outside the selection range', () => {

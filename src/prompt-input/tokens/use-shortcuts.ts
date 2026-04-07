@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { CaretController } from '../core/caret-controller';
+import { CaretController, getOwnerSelection } from '../core/caret-controller';
 import { normalizeCaretIntoTrigger } from '../core/dom-utils';
 import { isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
@@ -79,6 +79,12 @@ export function useShortcutsEffects(config: EffectsConfig) {
     const checkMenuState = () => {
       const ctrl = caretController.current;
       if (!editableElementRef.current || !ctrl) {
+        return;
+      }
+
+      // Only react to selection changes within this input
+      const sel = getOwnerSelection(editableElementRef.current);
+      if (!sel?.rangeCount || !editableElementRef.current.contains(sel.getRangeAt(0).startContainer)) {
         return;
       }
 

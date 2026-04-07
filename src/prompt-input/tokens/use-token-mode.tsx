@@ -15,6 +15,7 @@ import { calculateTokenPosition, CaretController, getOwnerSelection } from '../c
 import { extractTextFromCaretSpots } from '../core/caret-spot-utils';
 import {
   findContainingReference,
+  getMouseDown,
   isNonTypeablePosition,
   normalizeCollapsedCaret,
   normalizeSelection,
@@ -42,6 +43,7 @@ import {
 import { detectTriggerTransition } from '../core/trigger-utils';
 import { isReferenceToken, isTextNode, isTextToken, isTriggerToken } from '../core/type-guards';
 import { PromptInputProps } from '../interfaces';
+import { insertTextIntoContentEditable } from '../utils/insert-text-content-editable';
 import { ShortcutsState, useShortcutsEffects, useShortcutsState } from './use-shortcuts';
 
 import styles from '../styles.css.js';
@@ -792,7 +794,14 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   useEffect(() => {
     const handleSelectionChange = () => {
       const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
-      normalizeCollapsedCaret(sel);
+      if (!sel?.rangeCount || !editableElementRef.current?.contains(sel.getRangeAt(0).startContainer)) {
+        return;
+      }
+      // Skip caret normalization during mousedown — the user may be starting a
+      // drag selection from a caret-spot position adjacent to a reference.
+      if (!getMouseDown()) {
+        normalizeCollapsedCaret(sel);
+      }
       normalizeSelection(sel);
     };
     const handleMouseDown = () => {
@@ -801,6 +810,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const handleMouseUp = () => {
       setMouseDown(false);
       const sel = editableElementRef.current ? getOwnerSelection(editableElementRef.current) : null;
+      if (!sel?.rangeCount || !editableElementRef.current?.contains(sel.getRangeAt(0).startContainer)) {
+        return;
+      }
       normalizeCollapsedCaret(sel);
       normalizeSelection(sel);
 
@@ -817,23 +829,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
           const startBad = isNonTypeablePosition(range.startContainer);
           const endBad = isNonTypeablePosition(range.endContainer);
 
-          if (startBad && endBad) {
-            sel.collapseToEnd();
-          } else if (startBad) {
+          if (startBad) {
             const ref = findContainingReference(range.startContainer);
             if (ref?.parentNode) {
               const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
-              range.setStart(ref.parentNode, index + 1);
-            } else {
-              sel.collapseToEnd();
+              range.setStart(ref.parentNode, index);
             }
-          } else if (endBad) {
+          }
+          if (endBad) {
             const ref = findContainingReference(range.endContainer);
             if (ref?.parentNode) {
               const index = Array.from(ref.parentNode.childNodes).indexOf(ref as ChildNode);
-              range.setEnd(ref.parentNode, index);
-            } else {
-              sel.collapseToStart();
+              range.setEnd(ref.parentNode, index + 1);
             }
           }
         }
@@ -844,14 +851,17 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     };
 
     const ownerDoc = editableElementRef.current?.ownerDocument ?? document;
+    const element = editableElementRef.current;
+    // selectionchange only fires on document — containment is checked inside the handler.
     ownerDoc.addEventListener('selectionchange', handleSelectionChange);
-    ownerDoc.addEventListener('mousedown', handleMouseDown);
-    ownerDoc.addEventListener('mouseup', handleMouseUp);
+    // mousedown/mouseup scoped to the element to avoid reacting to clicks elsewhere.
+    element?.addEventListener('mousedown', handleMouseDown);
+    element?.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       ownerDoc.removeEventListener('selectionchange', handleSelectionChange);
-      ownerDoc.removeEventListener('mousedown', handleMouseDown);
-      ownerDoc.removeEventListener('mouseup', handleMouseUp);
+      element?.removeEventListener('mousedown', handleMouseDown);
+      element?.removeEventListener('mouseup', handleMouseUp);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only needs to run on mount
   }, []);
@@ -1096,6 +1106,20 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       if (editableElementRef.current) {
         handleClipboardEvent(event, editableElementRef.current, true);
       }
+    },
+    onPaste: (event: React.ClipboardEvent) => {
+      event.preventDefault();
+      if (disabled || readOnly) {
+        return;
+      }
+      const text = event.clipboardData.getData('text/plain');
+      if (!text || !editableElementRef.current || !caretControllerRef.current) {
+        return;
+      }
+      const cc = caretControllerRef.current;
+      // Pass undefined for caretStart/caretEnd — let insertText calculate
+      // the position after the selection is deleted by replaceSelection.
+      insertTextIntoContentEditable(editableElementRef.current, text, undefined, undefined, cc, true);
     },
   };
 

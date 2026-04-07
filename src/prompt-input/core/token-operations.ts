@@ -201,11 +201,25 @@ function extractReferenceToken(
 
   const instanceId = node.id || '';
 
-  // Portal containers are the source of truth for reference token properties.
+  // Skip orphaned reference wrappers — deleteContents can remove internal
+  // elements while leaving the wrapper shell. A reference is orphaned if
+  // it has no portal container (source of truth for label/value).
   const portalContainer = portalContainers?.get(instanceId);
-  const value = portalContainer?.value ?? '';
-  const label = portalContainer?.label ?? '';
-  const menuId = portalContainer?.menuId ?? '';
+  if (!portalContainer) {
+    // Salvage any text from remaining caret-spots
+    const cursorSpotAfter = findElement(node, { tokenType: ElementType.CaretSpotAfter });
+    if (cursorSpotAfter) {
+      const afterText = stripZeroWidthCharacters(cursorSpotAfter.textContent || '');
+      if (afterText) {
+        tokens.push({ type: 'text', value: afterText });
+      }
+    }
+    return tokens;
+  }
+
+  const value = portalContainer.value ?? '';
+  const label = portalContainer.label ?? '';
+  const menuId = portalContainer.menuId ?? '';
 
   const token: PromptInputProps.ReferenceToken = {
     type: 'reference',

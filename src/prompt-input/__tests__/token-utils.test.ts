@@ -409,25 +409,24 @@ describe('getCaretPositionAfterTokenRemoval', () => {
     id,
   });
 
-  test('deleting trigger before reference: caret at divergence point (before reference)', () => {
+  test('deleting trigger before reference: uses saved position when valid', () => {
     // "text @<reference>" → "text <reference>"
-    // Divergence at position 5 (after "text ") — that's where the trigger was
     const prev = [text('text '), trigger('@'), ref('r1', 'Alice', 'alice', 'mentions')];
     const next = [text('text '), ref('r1', 'Alice', 'alice', 'mentions')];
 
-    // savedPosition doesn't matter — result is always the divergence point
-    expect(getCaretPositionAfterTokenRemoval(6, prev, next)).toBe(5);
+    // totalLength = 6, savedPosition within range → use savedPosition
+    expect(getCaretPositionAfterTokenRemoval(6, prev, next)).toBe(6);
     expect(getCaretPositionAfterTokenRemoval(5, prev, next)).toBe(5);
-    expect(getCaretPositionAfterTokenRemoval(0, prev, next)).toBe(5);
+    expect(getCaretPositionAfterTokenRemoval(0, prev, next)).toBe(0);
   });
 
-  test('deleting trigger after reference: caret at divergence point (after reference)', () => {
+  test('deleting trigger after reference: uses saved position when valid', () => {
     // "<reference>@ some text" → "<reference> some text"
-    // Divergence at position 1 (after reference) — that's where the trigger was
     const prev = [ref('r1', 'Alice', 'alice', 'mentions'), trigger('@'), text(' some text')];
     const next = [ref('r1', 'Alice', 'alice', 'mentions'), text(' some text')];
 
-    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+    // totalLength = 11, savedPosition within range → use savedPosition
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(2);
     expect(getCaretPositionAfterTokenRemoval(1, prev, next)).toBe(1);
   });
 
@@ -447,8 +446,10 @@ describe('getCaretPositionAfterTokenRemoval', () => {
     // [ref-A, ref-B, ref-C] → [ref-A, ref-C] (middle deleted)
     const prev = [ref('r1', 'A', 'a', 'm'), ref('r2', 'B', 'b', 'm'), ref('r3', 'C', 'c', 'm')];
     const next = [ref('r1', 'A', 'a', 'm'), ref('r3', 'C', 'c', 'm')];
-    // Divergence at index 1 (ref-B vs ref-C), diffPosition = 1 (one REFERENCE before)
-    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(1);
+    // savedPosition 2 is within new totalLength (2), so use savedPosition
+    expect(getCaretPositionAfterTokenRemoval(2, prev, next)).toBe(2);
+    // savedPosition 3 exceeds totalLength (2), clamps to end
+    expect(getCaretPositionAfterTokenRemoval(3, prev, next)).toBe(2);
   });
 
   test('returns end position when last reference is removed from consecutive refs', () => {
@@ -496,13 +497,18 @@ describe('getCaretPositionAfterTokenRemoval - trigger token handling', () => {
   test('diverges at trigger id mismatch', () => {
     const prev = [trig('@', 'bob', 't1'), text(' hello'), text(' extra')];
     const next = [trig('@', 'bob', 't2'), text(' hello')];
-    expect(getCaretPositionAfterTokenRemoval(5, prev, next)).toBe(0);
+    // totalLength = 10, savedPosition 5 is within range → use savedPosition
+    expect(getCaretPositionAfterTokenRemoval(5, prev, next)).toBe(5);
+    // savedPosition 15 exceeds totalLength (10), clamps to end
+    expect(getCaretPositionAfterTokenRemoval(15, prev, next)).toBe(10);
   });
 
   test('accumulates trigger length when scanning past matching triggers', () => {
     const prev = [trig('@', 'bob', 't1'), text(' hello'), text(' world')];
     const next = [trig('@', 'bob', 't1'), text(' helloworld')];
-    // trigger "@bob" = 4, text " hello" = 6 → divergence at 10
-    expect(getCaretPositionAfterTokenRemoval(12, prev, next)).toBe(10);
+    // totalLength = 15 (@bob=4 + " helloworld"=11), savedPosition 12 is within range
+    expect(getCaretPositionAfterTokenRemoval(12, prev, next)).toBe(12);
+    // savedPosition 16 exceeds totalLength (15), clamps to end
+    expect(getCaretPositionAfterTokenRemoval(16, prev, next)).toBe(15);
   });
 });

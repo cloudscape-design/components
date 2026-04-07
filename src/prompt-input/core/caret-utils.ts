@@ -15,6 +15,11 @@ export function setMouseDown(value: boolean): void {
   isMouseDown = value;
 }
 
+/** Returns whether the mouse is currently pressed. */
+export function getMouseDown(): boolean {
+  return isMouseDown;
+}
+
 /**
  * Checks whether a node is inside a reference element's internals or directly
  * on the contentEditable div (not inside a paragraph). These are non-typeable

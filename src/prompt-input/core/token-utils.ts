@@ -270,10 +270,72 @@ export function getCaretPositionAfterTokenRemoval(
     }
   }
 
-  // Tokens were removed — place caret at the divergence point
+  // Tokens were removed — use the saved position if it's plausible
+  // (within the old token range, meaning capture() read a valid DOM state),
+  // otherwise fall back to the divergence point.
   if (lengthDelta > 0) {
+    if (savedPosition <= prevTotalLength && savedPosition <= totalLength) {
+      return savedPosition;
+    }
     return Math.min(diffPosition, totalLength);
   }
 
   return null;
+}
+
+/**
+ * Removes a logical range [start, end) from the token array.
+ * Tokens fully within the range are removed. Text tokens partially within
+ * the range are trimmed. Reference and trigger tokens are removed if any
+ * part of them falls within the range (they're atomic).
+ */
+export function removeTokenRange(
+  tokens: readonly PromptInputProps.InputToken[],
+  start: number,
+  end: number
+): PromptInputProps.InputToken[] {
+  if (start >= end) {
+    return [...tokens];
+  }
+
+  const result: PromptInputProps.InputToken[] = [];
+  let pos = 0;
+
+  for (const token of tokens) {
+    let tokenLength: number;
+    if (isTextToken(token)) {
+      tokenLength = token.value.length;
+    } else if (isBreakTextToken(token)) {
+      tokenLength = TOKEN_LENGTHS.LINE_BREAK;
+    } else if (isTriggerToken(token)) {
+      tokenLength = TOKEN_LENGTHS.trigger(token.value);
+    } else {
+      tokenLength = TOKEN_LENGTHS.REFERENCE;
+    }
+
+    const tokenStart = pos;
+    const tokenEnd = pos + tokenLength;
+    pos = tokenEnd;
+
+    // Fully outside the range — keep as-is
+    if (tokenEnd <= start || tokenStart >= end) {
+      result.push(token);
+      continue;
+    }
+
+    // Text token — trim the overlapping portion
+    if (isTextToken(token)) {
+      const keepBefore = token.value.substring(0, Math.max(0, start - tokenStart));
+      const keepAfter = token.value.substring(Math.min(token.value.length, end - tokenStart));
+      const remaining = keepBefore + keepAfter;
+      if (remaining.length > 0) {
+        result.push({ type: 'text', value: remaining });
+      }
+      continue;
+    }
+
+    // Atomic tokens (reference, trigger, break) — remove entirely if any overlap
+  }
+
+  return result;
 }

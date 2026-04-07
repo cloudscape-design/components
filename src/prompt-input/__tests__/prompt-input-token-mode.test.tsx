@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper, { PromptInputWrapper } from '../../../lib/components/test-utils/dom';
@@ -5697,10 +5697,10 @@ describe('selection and mouse events', () => {
     sel.removeAllRanges();
     sel.addRange(range);
     act(() => {
-      document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     });
     act(() => {
-      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
     expect(rafCallback).not.toBeNull();
     act(() => {
@@ -5743,10 +5743,10 @@ describe('selection and mouse events', () => {
     sel.removeAllRanges();
     sel.addRange(range);
     act(() => {
-      document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     });
     act(() => {
-      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
     expect(rafCallback).not.toBeNull();
     act(() => {
@@ -5788,10 +5788,10 @@ describe('selection and mouse events', () => {
     sel.removeAllRanges();
     sel.addRange(range);
     act(() => {
-      document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     });
     act(() => {
-      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
     expect(rafCallback).not.toBeNull();
     act(() => {
@@ -6650,5 +6650,455 @@ describe('disabled state focus behavior', () => {
     // so we verify the attribute-level guard instead.
     expect(editable).not.toHaveAttribute('tabindex');
     expect(editable).toHaveAttribute('contenteditable', 'false');
+  });
+});
+
+describe('insertText and paste scenarios', () => {
+  test('single line into empty input', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('hello world');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textToken = lastTokens.find((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(textToken).toBeDefined();
+    expect(textToken.value).toContain('hello world');
+  });
+
+  test('multiline into empty input creates break tokens', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('line1\nline2\nline3');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(2);
+    const texts = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(texts.length).toBe(3);
+  });
+
+  test('single line appended at end of existing text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'existing ' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('appended');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const allText = lastTokens
+      .filter((t: PromptInputProps.InputToken) => t.type === 'text')
+      .map((t: PromptInputProps.TextToken) => t.value)
+      .join('');
+    expect(allText).toContain('existing ');
+    expect(allText).toContain('appended');
+  });
+
+  test('multiline appended at end of existing text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'start ' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('mid\nend');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(1);
+  });
+
+  test('single line inserted in middle of text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'helloworld' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' ', 5, 6);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const allText = lastTokens
+      .filter((t: PromptInputProps.InputToken) => t.type === 'text')
+      .map((t: PromptInputProps.TextToken) => t.value)
+      .join('');
+    expect(allText).toContain('hello');
+    expect(allText).toContain('world');
+  });
+
+  test('multiline inserted in middle of text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'startend' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('\nmiddle\n', 5, 13);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(2);
+  });
+
+  test('single line replacing all content via select + insertText at start', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'old content' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    // insertText at position 0 with caretEnd at text length positions cursor at end
+    act(() => {
+      ref.current!.insertText('new content', 0, 11);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const allText = lastTokens
+      .filter((t: PromptInputProps.InputToken) => t.type === 'text')
+      .map((t: PromptInputProps.TextToken) => t.value)
+      .join('');
+    expect(allText).toContain('new content');
+  });
+
+  test('multiline replacing all content via select + insertText at start', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [{ type: 'text', value: 'old content' }], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('new\ncontent', 0, 11);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test('multiline 3-line insert produces correct break count', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('xxx\nyyy\nzzz');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(2);
+    const texts = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(texts.length).toBe(3);
+  });
+
+  test('insertText with HTML-like content inserts as plain text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('<b>bold</b> text');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('<b>bold</b> text');
+  });
+  test('insertText does not replace existing selection', () => {
+    const onChange = jest.fn();
+    const ref = React.createRef<PromptInputProps.Ref>();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'hello world' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' beautiful', 5);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('hello');
+    expect(lastValue).toContain('world');
+    expect(lastValue).toContain('beautiful');
+  });
+
+  test('multiline with empty line in the middle creates trailing break for empty paragraph', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('aaa\n\nccc');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(2);
+    const texts = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'text');
+    expect(texts.map((t: PromptInputProps.TextToken) => t.value)).toEqual(['aaa', 'ccc']);
+  });
+
+  test('multiline ending with newline creates trailing empty paragraph', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('aaa\nbbb\n');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    // "aaa\nbbb\n" = 2 breaks (aaa, bbb, empty)
+    expect(breaks.length).toBe(2);
+  });
+
+  test('multiline into middle of existing text splits paragraph correctly', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'helloworld' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('AAA\nBBB', 5, 12);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: PromptInputProps.InputToken) => t.type === 'break');
+    expect(breaks.length).toBe(1);
+    const allText = lastTokens
+      .filter((t: PromptInputProps.InputToken) => t.type === 'text')
+      .map((t: PromptInputProps.TextToken) => t.value)
+      .join('');
+    expect(allText).toContain('hello');
+    expect(allText).toContain('AAA');
+    expect(allText).toContain('BBB');
+    expect(allText).toContain('world');
+  });
+
+  test('insertText is no-op when disabled', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'original' }], onChange, disabled: true },
+      ref,
+    });
+    const callsBefore = onChange.mock.calls.length;
+    act(() => {
+      ref.current!.insertText('injected');
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+
+  test('insertText is no-op when readOnly', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'original' }], onChange, readOnly: true },
+      ref,
+    });
+    const callsBefore = onChange.mock.calls.length;
+    act(() => {
+      ref.current!.insertText('injected');
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+});
+
+describe('paste via fireEvent', () => {
+  function pasteText(element: HTMLElement, text: string) {
+    const clipboardData = {
+      getData: (type: string) => (type === 'text/plain' ? text : ''),
+      types: ['text/plain'],
+      items: [],
+      files: [],
+    };
+    fireEvent.paste(element, { clipboardData });
+  }
+
+  test('single-line paste into empty input produces text token', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'hello world');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const text = lastTokens
+      .filter((t: any) => t.type === 'text')
+      .map((t: any) => t.value)
+      .join('');
+    expect(text).toContain('hello world');
+  });
+
+  test('multiline paste produces break tokens', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'line1\nline2\nline3');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const breaks = lastTokens.filter((t: any) => t.type === 'break');
+    const texts = lastTokens.filter((t: any) => t.type === 'text');
+    expect(breaks.length).toBe(2);
+    expect(texts.length).toBe(3);
+  });
+
+  test('paste replaces selected text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'hello world' }], onChange },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Select "world" (positions 6-11)
+    act(() => {
+      ref.current!.setSelectionRange(6, 11);
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'universe');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('hello');
+    expect(lastValue).toContain('universe');
+    expect(lastValue).not.toContain('world');
+  });
+
+  test('paste with HTML clipboard data inserts only plain text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, '<b>bold</b> text');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastValue = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.value;
+    expect(lastValue).toContain('<b>bold</b> text');
+  });
+
+  test('paste is no-op when disabled', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: { tokens: [{ type: 'text', value: 'original' }], onChange, disabled: true },
+      ref,
+    });
+    const callsBefore = onChange.mock.calls.length;
+    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    act(() => {
+      pasteText(el, 'injected');
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+});
+
+describe('paste multiline over full selection', () => {
+  test('cursor lands at end of last line when pasting 3 lines over 3 selected lines', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'aaa' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'bbb' },
+          { type: 'break', value: '\n' },
+          { type: 'text', value: 'ccc' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Select all content
+    act(() => {
+      ref.current!.select();
+    });
+
+    // Paste 3 lines via fireEvent
+    const el = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      fireEvent.paste(el, {
+        clipboardData: {
+          getData: (type: string) => (type === 'text/plain' ? 'xxx\nyyy\nzzz' : ''),
+          types: ['text/plain'],
+          items: [],
+          files: [],
+        },
+      });
+    });
+
+    // Verify tokens are correct
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const texts = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    const breaks = lastTokens.filter((t: any) => t.type === 'break');
+    expect(texts).toEqual(['xxx', 'yyy', 'zzz']);
+    expect(breaks.length).toBe(2);
+
+    // Verify cursor is at end of last line (position 11 = 3+1+3+1+3)
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBeGreaterThan(0);
+    const range = sel.getRangeAt(0);
+    expect(range.collapsed).toBe(true);
+    // Cursor should be in the last paragraph's text node at offset 3
+    expect(range.startContainer.textContent).toBe('zzz');
+    expect(range.startOffset).toBe(3);
   });
 });
