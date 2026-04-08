@@ -3,21 +3,32 @@
 import React, { useLayoutEffect, useState } from 'react';
 
 import {
+  AppLayoutToolbar,
   Autosuggest,
   Button,
   ButtonGroup,
+  Container,
+  ContentLayout,
   DatePicker,
   Grid,
+  Header,
   Input,
   Multiselect,
   SegmentedControl,
   Select,
   SelectProps,
+  SideNavigation,
   SpaceBetween,
+  StatusIndicator,
   ToggleButton,
 } from '~components';
 import { MultiselectProps } from '~components/multiselect';
 import { applyTheme, Theme } from '~components/theming';
+
+import { Breadcrumbs, Tools } from '../app-layout/utils/content-blocks';
+import { drawerItems, drawerLabels } from '../app-layout/utils/drawers';
+import labels from '../app-layout/utils/labels';
+import * as toolsContent from '../app-layout/utils/tools-content';
 
 function Buttons() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
@@ -282,6 +293,41 @@ const generateDropdownOptions = (count = 25): SelectProps.Options | MultiselectP
   });
 };
 
+function AppLayoutToolbarWithDrawers() {
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+
+  return (
+    <AppLayoutToolbar
+      ariaLabels={{ ...labels, ...drawerLabels }}
+      breadcrumbs={<Breadcrumbs />}
+      navigation={
+        <SideNavigation
+          header={{
+            href: '#',
+            text: 'Service name',
+          }}
+          items={[0, 1, 2].map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
+        />
+      }
+      tools={<Tools>{toolsContent.long}</Tools>}
+      content={
+        <ContentLayout
+          header={
+            <Header variant="h1" description="AppLayoutToolbar with multiple custom drawers.">
+              Toolbar with Drawers
+            </Header>
+          }
+        >
+          <Container header={<Header variant="h2">Demo container</Header>}>Content placeholder</Container>
+        </ContentLayout>
+      }
+      drawers={drawerItems}
+      onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
+      activeDrawerId={activeDrawerId}
+    />
+  );
+}
+
 export default function ThemedComponentsPage() {
   const [themed, setThemed] = useState<boolean>(false);
   const [strokeSmall] = useState<string>('2');
@@ -346,6 +392,15 @@ export default function ThemedComponentsPage() {
             <Inputs />
           </Grid>
         </SpaceBetween>
+
+        <SpaceBetween size="xs">
+          <StatusIndicator type="error">Error</StatusIndicator>
+          <StatusIndicator type="success">Success</StatusIndicator>
+          <StatusIndicator type="warning">Warning</StatusIndicator>
+          <StatusIndicator type="info">Info</StatusIndicator>
+        </SpaceBetween>
+
+        <AppLayoutToolbarWithDrawers />
       </SpaceBetween>
     </div>
   );
