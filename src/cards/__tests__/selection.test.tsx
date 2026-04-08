@@ -7,6 +7,8 @@ import range from 'lodash/range';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/cards/styles.css.js';
+
 interface Item {
   description: string;
 }
@@ -88,6 +90,79 @@ describe('Cards selection', () => {
     it('should display radios', () => {
       wrapper = renderCards(<Cards<Item> {...props} selectionType={'single'} />).wrapper;
       expect(getCard(0)?.findSelectionArea()?.find('input[type="radio"]')).toBeTruthy();
+    });
+
+    describe('aria-describedby for section content', () => {
+      const cardDefinitionWithSections: CardsProps.CardDefinition<Item> = {
+        header: item => item.description,
+        sections: [
+          { id: 'desc', header: 'Description', content: item => `Description: ${item.description}` },
+          { id: 'extra', header: 'Extra', content: item => `Extra: ${item.description}` },
+        ],
+      };
+
+      it('adds aria-describedby to radio input pointing to section content elements', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        const card = getCard(0);
+        const input = card.findSelectionArea()?.find('input')?.getElement();
+        const ariaDescribedby = input?.getAttribute('aria-describedby');
+        expect(ariaDescribedby).toBeTruthy();
+
+        // Each id in aria-describedby should correspond to a section-content element
+        const ids = ariaDescribedby!.split(' ');
+        expect(ids).toHaveLength(2);
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          expect(el).not.toBeNull();
+          expect(el).toHaveClass(styles['section-content']);
+        });
+      });
+
+      it('each card has its own unique section content IDs', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        const card0Input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        const card1Input = getCard(1).findSelectionArea()?.find('input')?.getElement();
+
+        const ids0 = card0Input?.getAttribute('aria-describedby')?.split(' ') ?? [];
+        const ids1 = card1Input?.getAttribute('aria-describedby')?.split(' ') ?? [];
+
+        // IDs must not overlap between cards
+        const allIds = [...ids0, ...ids1];
+        expect(new Set(allIds).size).toBe(allIds.length);
+      });
+
+      it('does not add aria-describedby when there are no sections with content', () => {
+        const noContentDefinition: CardsProps.CardDefinition<Item> = {
+          header: item => item.description,
+          sections: [{ id: 'hdr', header: 'Only header' }],
+        };
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={noContentDefinition} />
+        ).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        expect(input?.getAttribute('aria-describedby')).toBeFalsy();
+      });
+
+      it('does not add aria-describedby when there are no sections at all', () => {
+        wrapper = renderCards(<Cards<Item> {...props} selectionType={'single'} />).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        expect(input?.getAttribute('aria-describedby')).toBeFalsy();
+      });
+
+      it('does not set id on section-content divs when there is no selectionType', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={undefined} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        // Section content elements should have no id attribute
+        const contentDivs = wrapper.getElement().querySelectorAll(`.${styles['section-content']}`);
+        contentDivs.forEach(div => {
+          expect(div.getAttribute('id')).toBeNull();
+        });
+      });
     });
 
     it('should deselect previous card on selection', () => {

@@ -33,6 +33,7 @@ export function SelectionControl({
   onFocusDown,
   name,
   ariaLabel,
+  ariaDescribedby,
   focusedComponent,
   rowIndex,
   itemKey,
@@ -90,9 +91,17 @@ export function SelectionControl({
       controlId={controlId}
       data-focus-id="selection-control"
       indeterminate={indeterminate}
+      ariaDescribedby={ariaDescribedby}
     />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} onSelect={onChange} />
+    <RadioButton
+      {...sharedProps}
+      controlId={controlId}
+      name={name}
+      value={''}
+      onSelect={onChange}
+      nativeInputAttributes={ariaDescribedby ? { 'aria-describedby': ariaDescribedby } : undefined}
+    />
   );
 
   return (

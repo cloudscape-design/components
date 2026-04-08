@@ -305,6 +305,7 @@ const CardsList = <T,>({
         const selectionProps = getItemSelectionProps ? getItemSelectionProps(item) : null;
         const selected = isItemSelected(item);
         const disabled = selectionProps && selectionProps.disabled;
+        const cardId = `card-${key}`;
         const selectionAnalyticsMetadata:
           | GeneratedAnalyticsMetadataCardsSelect
           | GeneratedAnalyticsMetadataCardsDeselect = {
@@ -318,6 +319,14 @@ const CardsList = <T,>({
             item: `${key}`,
           },
         };
+
+        const sectionContentIds = selectionProps
+          ? visibleSectionsDefinition
+              .map(({ content }, sectionIndex) => (content ? `${cardId}-section-${sectionIndex}` : null))
+              .filter((id): id is string => id !== null)
+          : [];
+        const ariaDescribedby = sectionContentIds.length > 0 ? sectionContentIds.join(' ') : undefined;
+
         return (
           <li
             className={clsx(styles.card, {
@@ -357,7 +366,12 @@ const CardsList = <T,>({
                         ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
                         : {})}
                     >
-                      <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
+                      <SelectionControl
+                        onFocusDown={moveFocusDown}
+                        onFocusUp={moveFocusUp}
+                        {...selectionProps}
+                        ariaDescribedby={ariaDescribedby}
+                      />
                     </div>
                   )}
                 </div>
@@ -376,10 +390,19 @@ const CardsList = <T,>({
               }
             >
               {visibleSectionsDefinition.length > 0 &&
-                visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-                  <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+                visibleSectionsDefinition.map(({ width = 100, header, content, id }, sectionIndex) => (
+                  <div key={id || sectionIndex} className={styles.section} style={{ width: `${width}%` }}>
                     {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                    {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+                    {content ? (
+                      <div
+                        id={selectionProps ? `${cardId}-section-${sectionIndex}` : undefined}
+                        className={styles['section-content']}
+                      >
+                        {content(item)}
+                      </div>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 ))}
             </InternalItemCard>
