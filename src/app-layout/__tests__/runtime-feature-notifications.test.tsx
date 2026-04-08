@@ -5,6 +5,7 @@ import { act, fireEvent, render, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { metrics } from '../../../lib/components/internal/metrics';
 import {
   persistFeatureNotifications,
   retrieveFeatureNotifications,
@@ -564,5 +565,25 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
     expect(wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)).toBeTruthy();
     expect(wrapper.findToolsToggle()).toBeTruthy();
+  });
+
+  test('usage metrics', () => {
+    const sendPanoramaMetricSpy = jest.spyOn(metrics, 'logComponentUsed').mockImplementation(() => {});
+
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
+    renderComponent(<AppLayout />);
+
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('feature-notifications', {
+      props: {
+        featuresPageLink: '/features-page',
+        suppressFeaturePrompt: undefined,
+      },
+      metadata: {
+        featuresLength: 3,
+        hasMountItem: true,
+        hasFilterFeatures: false,
+        hasPersistenceConfig: true,
+      },
+    });
   });
 });
