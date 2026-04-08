@@ -975,10 +975,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     const ownerWindow = (editableElementRef.current?.ownerDocument ?? document).defaultView ?? window;
     const handleResize = () => adjustInputHeight();
     ownerWindow.addEventListener('resize', handleResize);
-    const containers = portalContainersRef.current;
     return () => {
       ownerWindow.removeEventListener('resize', handleResize);
-      containers.clear();
     };
   }, [adjustInputHeight, editableElementRef]);
 
