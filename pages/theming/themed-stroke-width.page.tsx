@@ -6,7 +6,6 @@ import {
   Alert,
   Box,
   Button,
-  ButtonDropdown,
   Flashbar,
   FormField,
   IconProvider,
@@ -56,18 +55,6 @@ function TabsExample() {
       label: 'Second tab',
       content: 'Second tab content area',
       dismissible: true,
-      action: (
-        <ButtonDropdown
-          variant="icon"
-          ariaLabel="Query actions for first tab"
-          items={[
-            { id: 'save', text: 'Save' },
-            { id: 'saveAs', text: 'Save as' },
-            { id: 'rename', text: 'Rename' },
-          ]}
-          expandToViewport={true}
-        />
-      ),
     },
     { id: 'third', label: 'Third tab', content: 'Third tab content area' },
     { id: 'fourth', label: 'Fourth tab', disabled: true, content: 'Fourth tab content area' },
