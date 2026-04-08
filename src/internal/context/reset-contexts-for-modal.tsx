@@ -9,6 +9,7 @@ import { CollectionLabelContext } from './collection-label-context';
 import { FormFieldContext } from './form-field-context';
 import { InfoLinkLabelContext } from './info-link-label-context';
 import { defaultValue as linkDefaultValue, LinkDefaultVariantContext } from './link-default-variant-context';
+import { defaultValue as tokenInlineDefaultValue, TokenInlineContext } from './token-inline-context';
 
 /*
  Use this context-resetter when creating a new modal-type context where typically the contents
@@ -20,7 +21,9 @@ const ResetContextsForModal = ({ children }: { children: React.ReactNode }) => (
       <FormFieldContext.Provider value={{}}>
         <InfoLinkLabelContext.Provider value="">
           <LinkDefaultVariantContext.Provider value={linkDefaultValue}>
-            <SingleTabStopNavigationReset>{children}</SingleTabStopNavigationReset>
+            <TokenInlineContext.Provider value={tokenInlineDefaultValue}>
+              <SingleTabStopNavigationReset>{children}</SingleTabStopNavigationReset>
+            </TokenInlineContext.Provider>
           </LinkDefaultVariantContext.Provider>
         </InfoLinkLabelContext.Provider>
       </FormFieldContext.Provider>
