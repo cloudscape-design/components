@@ -16,7 +16,7 @@ $cell-vertical-padding-w-border: calc(
 $cell-horizontal-padding: awsui.$space-scaled-l;
 $cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
 $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
-$selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
+$selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});

@@ -88,8 +88,8 @@ $action-padding-horizontal: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
 
     &:before {
-      border-block: solid awsui.$border-width-item-card-highlighted awsui.$color-border-item-card-highlighted;
-      border-inline: solid awsui.$border-width-item-card-highlighted awsui.$color-border-item-card-highlighted;
+      border-block: solid awsui.$border-width-card-highlighted awsui.$color-border-item-card-highlighted;
+      border-inline: solid awsui.$border-width-card-highlighted awsui.$color-border-item-card-highlighted;
     }
   }
 
