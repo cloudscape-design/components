@@ -615,21 +615,9 @@ describe('built-in error boundaries', () => {
 });
 
 describe('default behaviors', () => {
-  let originalLocation: PropertyDescriptor | undefined;
-
-  beforeEach(() => {
-    originalLocation = Object.getOwnPropertyDescriptor(window, 'location');
-  });
-
-  afterEach(() => {
-    if (originalLocation) {
-      Object.defineProperty(window, 'location', originalLocation);
-    }
-  });
-
   test('window reload is called when the refresh action is clicked', () => {
     const mockReload = jest.fn();
-    Object.defineProperty(window, 'location', { configurable: true, value: { reload: mockReload } });
+    Object.defineProperty(window.location, 'reload', { configurable: true, writable: true, value: mockReload });
 
     renderWithErrorBoundary(<b>{{}}</b>);
     findRefreshAction()!.click();
@@ -637,12 +625,10 @@ describe('default behaviors', () => {
   });
 
   test('hides default refresh in cross-origin iframes', () => {
-    Object.defineProperty(window, 'location', {
+    Object.defineProperty(window.location, 'href', {
       configurable: true,
-      value: {
-        get href() {
-          throw new Error();
-        },
+      get() {
+        throw new Error();
       },
     });
 
