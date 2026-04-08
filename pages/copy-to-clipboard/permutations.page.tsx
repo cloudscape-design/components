@@ -32,6 +32,7 @@ const permutations = createPermutations<CopyToClipboardProps>([
     ],
     disabled: [false, true],
     variant: ['inline'],
+    copyButtonText: ['Copy to clipboard'],
     textToCopy: ['Lorem ipsum dolor sit amet.'],
     copySuccessText: ['Text copied successfully'],
     copyErrorText: ['Copy failed.'],
