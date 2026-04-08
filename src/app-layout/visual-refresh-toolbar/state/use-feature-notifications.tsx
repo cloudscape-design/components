@@ -120,10 +120,12 @@ export function useFeatureNotifications() {
       const { payload } = event;
       metrics.logComponentUsed('feature-notifications', {
         props: {
-          suppressFeaturePrompt: !!payload.suppressFeaturePrompt,
+          featuresPageLink: payload.featuresPageLink,
+          suppressFeaturePrompt: payload.suppressFeaturePrompt,
+        },
+        metadata: {
           featuresLength: payload.features.length,
           hasMountItem: !!payload.mountItem,
-          featuresPageLink: payload.featuresPageLink,
           hasFilterFeatures: !!payload.filterFeatures,
           hasPersistenceConfig: !!payload.persistenceConfig,
         },

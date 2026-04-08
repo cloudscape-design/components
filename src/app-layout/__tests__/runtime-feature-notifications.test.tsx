@@ -575,12 +575,14 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
 
     expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('feature-notifications', {
       props: {
-        featuresLength: 3,
         featuresPageLink: '/features-page',
-        hasFilterFeatures: false,
+        suppressFeaturePrompt: undefined,
+      },
+      metadata: {
+        featuresLength: 3,
         hasMountItem: true,
+        hasFilterFeatures: false,
         hasPersistenceConfig: true,
-        suppressFeaturePrompt: false,
       },
     });
   });
