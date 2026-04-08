@@ -7346,3 +7346,56 @@ describe('insertText multiline edge cases', () => {
     expect(textValues.join('')).toBe('hel');
   });
 });
+
+describe('caret position after deleting text before reference', () => {
+  test('cursor stays before reference after deleting the only character before it', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'text', value: 'x' },
+          { type: 'reference', id: 'ref-1', label: 'Alice', value: 'user-1', menuId: 'mentions' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Position cursor after "x" (position 1, right before the reference)
+    act(() => {
+      ref.current!.setSelectionRange(1, 1);
+    });
+
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    // Fire backspace keydown — this triggers handleReferenceTokenDeletion
+    // which won't handle it (collapsed, not adjacent to reference).
+    // Then simulate what the browser does: remove the character and fire input.
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', keyCode: 8, bubbles: true }));
+      const p = el.querySelector('p')!;
+      const textNode = p.firstChild;
+      if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+        textNode.textContent = '';
+      }
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const refTokens = lastTokens.filter((t: any) => t.type === 'reference');
+    expect(refTokens.length).toBe(1);
+
+    // Verify cursor is not after the reference
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBeGreaterThan(0);
+    const range = sel.getRangeAt(0);
+    expect(range.collapsed).toBe(true);
+    const refEl = el.querySelector('[data-type="reference"]');
+    const afterSpot = refEl?.querySelector('[data-type="cursor-spot-after"]');
+    expect(afterSpot?.contains(range.startContainer)).toBe(false);
+  });
+});

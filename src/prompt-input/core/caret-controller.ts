@@ -460,6 +460,8 @@ export class CaretController {
               if (beforeContent && isTextNode(container)) {
                 return count + offset;
               }
+              // No real content — caret is logically before the reference
+              return count;
             } else if (caretInAfter) {
               // Caret is in the after-spot: position is after the reference (count it first)
               count += TOKEN_LENGTHS.REFERENCE;
@@ -469,6 +471,8 @@ export class CaretController {
                 const contentOffset = Math.max(0, offset - 1);
                 return count + contentOffset;
               }
+              // No real content — caret is logically after the reference
+              return count;
             } else {
               return count + TOKEN_LENGTHS.REFERENCE;
             }

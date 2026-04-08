@@ -911,8 +911,8 @@ describe('CaretController - countUpToCursor edge cases', () => {
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
     const pos = controller.getPosition();
-    // Element-level offset 0 inside cursor-spot-before resolves to position 1
-    expect(pos).toBe(1);
+    // Caret in before-spot with no real content = logically before the reference
+    expect(pos).toBe(0);
   });
 });
 
@@ -1258,9 +1258,8 @@ describe('CaretController - countUpToCursor reference with caret in after-spot w
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
     const pos = controller.getPosition();
-    // Reference = 1, cursor at offset 1 in after-spot (after zero-width char)
-    // countUpToCursor counts reference + after-spot content offset
-    expect(pos).toBe(2);
+    // Caret in after-spot with no real content = logically after the reference
+    expect(pos).toBe(1);
   });
 
   test('getPosition with cursor in caret-spot-before at element level', () => {
@@ -1283,8 +1282,8 @@ describe('CaretController - countUpToCursor reference with caret in after-spot w
     window.getSelection()?.removeAllRanges();
     window.getSelection()?.addRange(range);
     const pos = controller.getPosition();
-    // Cursor at element level of caret-spot-before falls through to getNodeLength(wrapper) = REFERENCE = 1
-    expect(pos).toBe(1);
+    // Caret in before-spot with no real content = logically before the reference
+    expect(pos).toBe(0);
   });
 });
 
@@ -1839,5 +1838,97 @@ describe('Shift+Home/End selection with references', () => {
     expect(sel.getRangeAt(0).startOffset).toBe(0);
     expect(sel.getRangeAt(0).endContainer).toBe(afterText);
     expect(sel.getRangeAt(0).endOffset).toBe(3);
+  });
+});
+
+describe('getPosition with caret in reference caret-spots', () => {
+  let el: HTMLDivElement;
+  let controller: CaretController;
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    el.setAttribute('contenteditable', 'true');
+    document.body.appendChild(el);
+    controller = new CaretController(el);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(el);
+  });
+
+  function createReferenceWithSpots(id: string): HTMLElement {
+    const wrapper = document.createElement('span');
+    wrapper.setAttribute('data-type', 'reference');
+    wrapper.id = id;
+    const before = document.createElement('span');
+    before.setAttribute('data-type', 'cursor-spot-before');
+    before.textContent = '\u200B';
+    const container = document.createElement('span');
+    container.setAttribute('contenteditable', 'false');
+    container.textContent = 'Alice';
+    const after = document.createElement('span');
+    after.setAttribute('data-type', 'cursor-spot-after');
+    after.textContent = '\u200B';
+    wrapper.appendChild(before);
+    wrapper.appendChild(container);
+    wrapper.appendChild(after);
+    return wrapper;
+  }
+
+  test('caret in before-spot with no real content returns position before reference', () => {
+    const p = document.createElement('p');
+    const ref = createReferenceWithSpots('ref-1');
+    p.appendChild(ref);
+    el.appendChild(p);
+    el.focus();
+
+    // Place caret inside the before-spot's zero-width text node
+    const beforeSpot = ref.querySelector('[data-type="cursor-spot-before"]')!;
+    const range = document.createRange();
+    range.setStart(beforeSpot.firstChild!, 1); // After the zero-width char
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    // Position should be 0 (before the reference), not 1 (after it)
+    expect(controller.getPosition()).toBe(0);
+  });
+
+  test('caret in after-spot with no real content returns position after reference', () => {
+    const p = document.createElement('p');
+    const ref = createReferenceWithSpots('ref-1');
+    p.appendChild(ref);
+    el.appendChild(p);
+    el.focus();
+
+    // Place caret inside the after-spot's zero-width text node
+    const afterSpot = ref.querySelector('[data-type="cursor-spot-after"]')!;
+    const range = document.createRange();
+    range.setStart(afterSpot.firstChild!, 1);
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    // Position should be 1 (after the reference)
+    expect(controller.getPosition()).toBe(1);
+  });
+
+  test('caret in before-spot with text before reference returns correct offset', () => {
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode('hello '));
+    const ref = createReferenceWithSpots('ref-1');
+    p.appendChild(ref);
+    el.appendChild(p);
+    el.focus();
+
+    const beforeSpot = ref.querySelector('[data-type="cursor-spot-before"]')!;
+    const range = document.createRange();
+    range.setStart(beforeSpot.firstChild!, 1);
+    range.collapse(true);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+
+    // "hello " = 6 chars, caret in before-spot = position 6 (before reference)
+    expect(controller.getPosition()).toBe(6);
   });
 });
