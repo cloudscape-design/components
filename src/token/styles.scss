@@ -109,10 +109,9 @@
 
 .token-box-readonly,
 .token-box-disabled {
-  pointer-events: none;
-
   > .dismiss-button {
     cursor: initial;
+    pointer-events: none;
   }
 }
 
@@ -126,6 +125,7 @@
 }
 
 .token-box-disabled {
+  pointer-events: none;
   border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
   background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
   color: awsui.$color-text-disabled;
