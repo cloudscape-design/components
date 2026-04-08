@@ -630,6 +630,13 @@ describe('scrollCaretIntoView', () => {
     scrollCaretIntoView(el);
 
     expect(scrollSpy).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+    // Text node should be merged back (not split) and caret should be valid
+    expect(p.childNodes.length).toBe(1);
+    expect(p.firstChild!.textContent).toBe('hello world');
+    const sel = window.getSelection()!;
+    expect(sel.rangeCount).toBe(1);
+    expect(sel.getRangeAt(0).startContainer).toBe(p.firstChild);
+    expect(sel.getRangeAt(0).startOffset).toBe(5);
     HTMLElement.prototype.getBoundingClientRect = origGetBCR;
   });
 

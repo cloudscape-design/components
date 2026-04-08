@@ -268,7 +268,6 @@ export function scrollCaretIntoView(element: HTMLElement): void {
   const ownerDoc = element.ownerDocument ?? document;
   const range = selection.getRangeAt(0);
 
-  // Insert a temporary span at the caret to measure its position.
   const tempSpan = ownerDoc.createElement('span');
   range.insertNode(tempSpan);
 
@@ -285,5 +284,19 @@ export function scrollCaretIntoView(element: HTMLElement): void {
     tempSpan.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
+  // Remove the span and merge the split text nodes back together.
+  // insertNode splits a text node into [before, span, after]. After removing
+  // the span, merge "after" into "before" to restore the original text node.
+  const prev = tempSpan.previousSibling;
+  const next = tempSpan.nextSibling;
   tempSpan.remove();
+
+  if (prev && next && prev.nodeType === Node.TEXT_NODE && next.nodeType === Node.TEXT_NODE) {
+    const mergeOffset = prev.textContent?.length ?? 0;
+    prev.textContent = (prev.textContent ?? '') + (next.textContent ?? '');
+    next.remove();
+    // Place the caret at the merge point
+    range.setStart(prev, mergeOffset);
+    range.collapse(true);
+  }
 }
