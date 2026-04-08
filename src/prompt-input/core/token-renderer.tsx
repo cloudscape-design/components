@@ -56,7 +56,7 @@ export interface PortalContainer {
   /** Value for the token */
   value: string;
   /** Menu ID the token was selected from */
-  menuId: string;
+  menuId?: string;
 }
 
 interface ParagraphGroup {

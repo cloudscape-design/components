@@ -21432,6 +21432,7 @@ Available types and their properties:
   - \`id\` as the unique identifier, this is auto-generated however when setting \`tokens\` it is required to provide an ID.
   - \`value\` contains the reference value.
   - \`label\` for display (e.g., 'file.txt').
+  - \`menuId\` for the associated menu (optional).
   - \`pinned\` to render at the start of the input.
 - Trigger tokens:
   - \`id\` as the unique identifier, this is auto-generated however when setting \`tokens\` it is required to provide an ID.

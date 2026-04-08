@@ -217,9 +217,7 @@ function extractReferenceToken(
     return tokens;
   }
 
-  const value = portalContainer.value ?? '';
-  const label = portalContainer.label ?? '';
-  const menuId = portalContainer.menuId ?? '';
+  const { value, label, menuId } = portalContainer;
 
   const token: PromptInputProps.ReferenceToken = {
     type: 'reference',
@@ -232,9 +230,7 @@ function extractReferenceToken(
     token.pinned = true;
   }
 
-  if (label) {
-    tokens.push(token);
-  }
+  tokens.push(token);
 
   // Text from cursor-spot-after
   const cursorSpotAfter = findElement(node, { tokenType: ElementType.CaretSpotAfter });

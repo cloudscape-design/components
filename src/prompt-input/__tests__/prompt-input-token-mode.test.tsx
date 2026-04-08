@@ -7399,3 +7399,154 @@ describe('caret position after deleting text before reference', () => {
     expect(afterSpot?.contains(range.startContainer)).toBe(false);
   });
 });
+
+describe('preloaded references without matching menus', () => {
+  test('references without matching menu persist after typing', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'reference', id: 'custom-1', label: 'Custom Doc', value: 'doc-123', menuId: 'documents' },
+          { type: 'text', value: ' hello' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Insert text at the end to trigger a state update
+    act(() => {
+      ref.current!.insertText('!');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const refs = lastTokens.filter((t: any) => t.type === 'reference');
+    expect(refs).toHaveLength(1);
+    expect(refs[0].label).toBe('Custom Doc');
+    expect(refs[0].value).toBe('doc-123');
+    expect(refs[0].menuId).toBe('documents');
+  });
+
+  test('multiple references from different unregistered menus persist', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'reference', id: 'file-1', label: 'readme.md', value: 'file-readme', menuId: 'files' },
+          { type: 'text', value: ' and ' },
+          { type: 'reference', id: 'link-1', label: 'Example', value: 'https://example.com', menuId: 'links' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' test');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const refs = lastTokens.filter((t: any) => t.type === 'reference');
+    expect(refs).toHaveLength(2);
+    expect(refs[0].label).toBe('readme.md');
+    expect(refs[1].label).toBe('Example');
+  });
+
+  test('pinned reference without matching menu persists after state update', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'reference', id: 'mode-1', label: 'Custom Mode', value: 'custom', menuId: 'modes', pinned: true },
+          { type: 'text', value: 'hello' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText(' world');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const pinned = lastTokens.filter((t: any) => t.type === 'reference' && t.pinned);
+    expect(pinned).toHaveLength(1);
+    expect(pinned[0].label).toBe('Custom Mode');
+    expect(pinned[0].menuId).toBe('modes');
+  });
+
+  test('reference with no menus defined at all persists', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { rerender, container } = render(
+      <PromptInput
+        tokens={[
+          { type: 'text', value: 'See ' },
+          { type: 'reference', id: 'ref-1', label: 'Attachment', value: 'att-1', menuId: '' },
+        ]}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+        onChange={onChange}
+        ref={ref}
+      />
+    );
+    const wrapper = createWrapper(container).findPromptInput()!;
+    expect(getValue(wrapper)).toContain('Attachment');
+
+    // Trigger a re-render with the same tokens
+    rerender(
+      <PromptInput
+        tokens={[
+          { type: 'text', value: 'See ' },
+          { type: 'reference', id: 'ref-1', label: 'Attachment', value: 'att-1', menuId: '' },
+        ]}
+        actionButtonIconName="send"
+        i18nStrings={defaultI18nStrings}
+        ariaLabel="Chat input"
+        onChange={onChange}
+        ref={ref}
+      />
+    );
+    expect(getValue(wrapper)).toContain('Attachment');
+  });
+
+  test('reference with menuId omitted persists after typing', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    renderStatefulTokenMode({
+      props: {
+        tokens: [
+          { type: 'reference', id: 'ext-1', label: 'External Doc', value: 'doc-ext' },
+          { type: 'text', value: ' notes' },
+        ],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.insertText('!');
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const refs = lastTokens.filter((t: any) => t.type === 'reference');
+    expect(refs).toHaveLength(1);
+    expect(refs[0].label).toBe('External Doc');
+    expect(refs[0].value).toBe('doc-ext');
+    // menuId remains undefined when omitted by the consumer
+    expect(refs[0].menuId).toBeUndefined();
+  });
+});

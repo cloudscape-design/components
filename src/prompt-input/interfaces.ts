@@ -62,6 +62,7 @@ export interface PromptInputProps
    *   - `id` as the unique identifier, this is auto-generated however when setting `tokens` it is required to provide an ID.
    *   - `value` contains the reference value.
    *   - `label` for display (e.g., 'file.txt').
+   *   - `menuId` for the associated menu (optional).
    *   - `pinned` to render at the start of the input.
    * - Trigger tokens:
    *   - `id` as the unique identifier, this is auto-generated however when setting `tokens` it is required to provide an ID.
@@ -360,7 +361,12 @@ export namespace PromptInputProps {
     id: string;
     label: string;
     value: string;
-    menuId: string;
+    /**
+     * The ID of the menu this reference was selected from.
+     * Optional — references can exist without being bound to a menu
+     * (e.g., preloaded references from external sources).
+     */
+    menuId?: string;
     /**
      * When true, prevents user entered text from being placed before this token.
      * Typically set for reference tokens from useAtStart menus.
