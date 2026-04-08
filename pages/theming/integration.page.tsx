@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Button, Container, Header, Link, Multiselect, SpaceBetween, Table } from '~components';
-import { applyTheme, generateThemeStylesheet, Theme } from '~components/theming';
+import { applyTheme, generateThemeStylesheet, generateFullThemeStylesheet, Theme } from '~components/theming';
 import * as Tokens from '~design-tokens';
 
 import AppContext from '../app/app-context';
@@ -71,6 +71,7 @@ export default function () {
   const [themed, setThemed] = useState<boolean>(false);
   const [secondaryTheme, setSecondaryTheme] = useState<boolean>(urlParams.visualRefresh);
   const [themeMethod, setThemeMethod] = useState<'applyTheme' | 'generateThemeStylesheet'>('applyTheme');
+  const fullThemeStylesheet = generateFullThemeStylesheet({ baseThemeId: secondaryTheme ? 'visual-refresh' : undefined });
 
   useEffect(() => {
     let reset: () => void = () => {};
@@ -197,6 +198,15 @@ export default function () {
           </Container>
         </SpaceBetween>
       </ScreenshotArea>
+      <h2>generateFullThemeStylesheet output</h2>
+      <p>Full resolved CSS for the {secondaryTheme ? 'visual-refresh' : 'default'} theme ({fullThemeStylesheet.length} chars)</p>
+      <textarea
+        data-testid="full-theme-stylesheet"
+        readOnly={true}
+        rows={20}
+        style={{ width: '100%', fontFamily: 'monospace', fontSize: 11 }}
+        value={fullThemeStylesheet}
+      />
     </div>
   );
 }
