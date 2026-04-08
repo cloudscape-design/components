@@ -49,12 +49,19 @@ const createStrokeHandler = (setter: (value: string) => void) => {
 
 function TabsExample() {
   const tabs: TabsProps.Tab[] = [
-    { id: 'first', label: 'First tab', content: 'First tab content area', dismissible: true },
+    {
+      id: 'first',
+      label: 'First tab',
+      content: 'First tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss first tab',
+    },
     {
       id: 'second',
       label: 'Second tab',
       content: 'Second tab content area',
       dismissible: true,
+      dismissLabel: 'Dismiss second tab',
     },
     { id: 'third', label: 'Third tab', content: 'Third tab content area' },
     { id: 'fourth', label: 'Fourth tab', disabled: true, content: 'Fourth tab content area' },
