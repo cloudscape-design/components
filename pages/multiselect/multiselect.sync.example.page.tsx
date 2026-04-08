@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import Box from '~components/box';
+import Checkbox from '~components/checkbox';
 import { NonCancelableCustomEvent } from '~components/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import { SelectProps } from '~components/select';
@@ -37,10 +38,16 @@ export default function MultiselectPage() {
     selectableOptions[15],
   ]);
   const [selectedOptions2, setSelectedOptions2] = React.useState<MultiselectProps.Options>([]);
+  const [readOnly, setReadOnly] = React.useState(false);
 
   return (
     <article>
       <Box padding="l">
+        <Box padding="s">
+          <Checkbox checked={readOnly} onChange={({ detail }) => setReadOnly(detail.checked)}>
+            Read-only
+          </Checkbox>
+        </Box>
         <Box padding="s">
           <Box variant="h1">Multiselect with filteringType = none</Box>
           <Box margin={{ bottom: 'xxs' }} color="text-label">
@@ -59,6 +66,7 @@ export default function MultiselectPage() {
             noMatch={<b>No match</b>}
             loadingText="Fetching equipment"
             selectedAriaLabel="Selected"
+            readOnly={readOnly}
             onBlur={onBlur}
             onFocus={onFocus}
             onLoadItems={onLoadItems}
@@ -91,6 +99,7 @@ export default function MultiselectPage() {
             noMatch={<b>No match</b>}
             loadingText="Fetching equipment"
             selectedAriaLabel="Selected"
+            readOnly={readOnly}
             onBlur={onBlur}
             onFocus={onFocus}
             onLoadItems={onLoadItems}

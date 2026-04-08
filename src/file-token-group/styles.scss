@@ -138,9 +138,9 @@
   &.read-only {
     border-color: awsui.$color-border-input-disabled;
     background-color: awsui.$color-background-container-content;
-    pointer-events: none;
 
     > .dismiss-button {
+      pointer-events: none;
       color: awsui.$color-text-button-inline-icon-disabled;
 
       &:hover {
