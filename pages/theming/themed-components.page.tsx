@@ -6,9 +6,7 @@ import {
   Autosuggest,
   Button,
   ButtonGroup,
-  Calendar,
   DatePicker,
-  ExpandableSection,
   Grid,
   Input,
   Multiselect,
@@ -264,18 +262,6 @@ function Inputs() {
             setDateValue(detail.value);
           }}
         />
-      </SpaceBetween>
-      <SpaceBetween size="xl" direction="horizontal">
-        <Calendar
-          onChange={({ detail }) => setDateValue(detail.value)}
-          value={dateValue}
-          isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-        />
-        <SpaceBetween size="s">
-          <ExpandableSection variant="footer" headerText="Expandable section">
-            Expanded
-          </ExpandableSection>
-        </SpaceBetween>
       </SpaceBetween>
     </Grid>
   );
