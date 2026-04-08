@@ -122,7 +122,7 @@ export default function InternalCopyToClipboard({
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
           <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'])}>
-            {textToDisplay ?? textToCopy}
+            {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
         </span>
       ) : (
