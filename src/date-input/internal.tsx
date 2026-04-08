@@ -75,7 +75,9 @@ const InternalDateInput = React.forwardRef(
       return usesLongLocalizedValue && normalizedValue
         ? formatDateLocalized({ date: normalizedValue, ...formatProps })
         : isIso
-          ? formatDateIso({ date: isoValue, ...formatProps })
+          ? normalizedValue === isoValue
+            ? formatDateIso({ date: normalizedValue, ...formatProps })
+            : isoValue
           : isoToDisplay(isoValue);
     }, [value, isIso, granularity, locale, usesLongLocalizedValue]);
 
