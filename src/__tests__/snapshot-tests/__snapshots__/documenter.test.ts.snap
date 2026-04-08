@@ -10055,7 +10055,7 @@ Defaults to \`button\`.",
   ],
   "regions": [
     {
-      "description": "The text content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
+      "description": "The content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
       "isDefault": false,
       "name": "textToDisplay",
     },

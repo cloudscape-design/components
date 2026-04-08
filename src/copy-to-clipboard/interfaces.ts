@@ -32,7 +32,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
-   * The text content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
    */
   textToDisplay?: React.ReactNode;
 
