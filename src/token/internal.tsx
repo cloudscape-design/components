@@ -177,20 +177,6 @@ function InternalToken({
             }}
           />
         )}
-        {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
-          <Tooltip
-            data-testid="token-tooltip"
-            getTrack={() => labelContainerRef.current}
-            content={
-              <LiveRegion>
-                <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
-              </LiveRegion>
-            }
-            onEscape={() => {
-              setShowTooltip(false);
-            }}
-          />
-        )}
       </SpanOrDivTag>
     </TokenInlineContext.Provider>
   );
