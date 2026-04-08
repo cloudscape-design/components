@@ -63,10 +63,17 @@ const permutations = createPermutations<TokenProps>([
       <Link key="link" variant="primary" href="#test">
         link
       </Link>,
+    ],
+    ariaLabel: ['link token'],
+    variant: ['inline'],
+  },
+  {
+    label: [
       <Popover key="popover" content="Test" triggerType="text-inline">
         popover
       </Popover>,
     ],
+    ariaLabel: ['popover token'],
     variant: ['inline'],
   },
 ]);
