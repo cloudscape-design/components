@@ -136,75 +136,47 @@ function InternalToken({
       >
         <SpanOrDivTag
           className={clsx(
-            styles.root,
-            legacyTestingStyles.token,
-            testUtilStyles.root,
-            !isInline ? styles['token-normal'] : styles['token-inline'],
-            analyticsSelectors.token,
-            baseProps.className
+            !isInline ? styles['token-box'] : styles['token-box-inline'],
+            disabled && styles['token-box-disabled'],
+            readOnly && styles['token-box-readonly'],
+            !isInline && !onDismiss && styles['token-box-without-dismiss'],
+            disableInnerPadding && styles['disable-padding']
           )}
           style={tokenRootStyleProps}
-          aria-label={ariaLabel}
-          aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
-          aria-disabled={!!disabled}
-          role={role ?? 'group'}
-          onFocus={() => {
-            setShowTooltip(true);
-          }}
-          onBlur={() => {
-            setShowTooltip(false);
-          }}
-          onMouseEnter={() => {
-            setShowTooltip(true);
-          }}
-          onMouseLeave={() => {
-            setShowTooltip(false);
-          }}
-          tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
         >
-          <div
-            className={clsx(
-              !isInline ? styles['token-box'] : styles['token-box-inline'],
-              disabled && styles['token-box-disabled'],
-              readOnly && styles['token-box-readonly'],
-              !isInline && !onDismiss && styles['token-box-without-dismiss'],
-              disableInnerPadding && styles['disable-padding']
-            )}
-          >
-            <Option
-              className={clsx(isInline && styles['token-option-inline'])}
-              triggerVariant={isInline}
-              option={buildOptionDefinition()}
-              disableTitleTooltip={!!tooltipContent}
-              labelContainerRef={labelContainerRef}
-              labelRef={labelRef}
-              labelId={ariaLabelledbyId}
-            />
-            {onDismiss && (
-              <DismissButton
-                disabled={disabled}
-                dismissLabel={dismissLabel}
-                onDismiss={onDismiss}
-                readOnly={readOnly}
-                inline={isInline}
-              />
-            )}
-          </div>
-          {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
-            <Tooltip
-              data-testid="token-tooltip"
-              getTrack={() => labelContainerRef.current}
-              content={
-                <LiveRegion>
-                  <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
-                </LiveRegion>
-              }
-              onEscape={() => {
-                setShowTooltip(false);
-              }}
+          <Option
+            className={clsx(isInline && styles['token-option-inline'])}
+            triggerVariant={isInline}
+            option={buildOptionDefinition()}
+            disableTitleTooltip={!!tooltipContent}
+            labelContainerRef={labelContainerRef}
+            labelRef={labelRef}
+            labelId={ariaLabelledbyId}
+          />
+          {onDismiss && (
+            <DismissButton
+              disabled={disabled}
+              dismissLabel={dismissLabel}
+              onDismiss={onDismiss}
+              readOnly={readOnly}
+              inline={isInline}
             />
           )}
         </SpanOrDivTag>
+        {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
+          <Tooltip
+            data-testid="token-tooltip"
+            getTrack={() => labelContainerRef.current}
+            content={
+              <LiveRegion>
+                <span data-testid="tooltip-live-region-content">{tooltipContent}</span>
+              </LiveRegion>
+            }
+            onEscape={() => {
+              setShowTooltip(false);
+            }}
+          />
+        )}
         {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
           <Tooltip
             data-testid="token-tooltip"
