@@ -8,7 +8,6 @@ import {
   Button,
   ButtonGroup,
   Container,
-  ContentLayout,
   DatePicker,
   Grid,
   Header,
@@ -310,17 +309,7 @@ function AppLayoutToolbarWithDrawers() {
         />
       }
       tools={<Tools>{toolsContent.long}</Tools>}
-      content={
-        <ContentLayout
-          header={
-            <Header variant="h1" description="AppLayoutToolbar with multiple custom drawers.">
-              Toolbar with Drawers
-            </Header>
-          }
-        >
-          <Container header={<Header variant="h2">Demo container</Header>}>Content placeholder</Container>
-        </ContentLayout>
-      }
+      content={<Container header={<Header variant="h2">Demo container</Header>}>Content placeholder</Container>}
       drawers={drawerItems}
       onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
       activeDrawerId={activeDrawerId}
