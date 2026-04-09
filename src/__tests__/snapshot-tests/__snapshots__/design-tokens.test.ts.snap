@@ -2805,18 +2805,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -5756,18 +5756,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -8707,18 +8707,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "2px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -11658,18 +11658,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -14609,18 +14609,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -17560,18 +17560,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -20511,18 +20511,18 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "20px",
       },
     },
-    "space-control-vertical": {
-      "$description": "The vertical padding inside control components.",
-      "$value": {
-        "comfortable": "4px",
-        "compact": "2px",
-      },
-    },
     "space-field-horizontal": {
       "$description": "The horizontal padding inside field components.",
       "$value": {
         "comfortable": "8px",
         "compact": "8px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
@@ -23467,18 +23467,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -26418,18 +26418,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -29369,18 +29369,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -32320,18 +32320,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "2px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -35271,18 +35271,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -38222,18 +38222,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -41173,18 +41173,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -44124,18 +44124,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "20px",
           },
         },
-        "space-control-vertical": {
-          "$description": "The vertical padding inside control components.",
-          "$value": {
-            "comfortable": "4px",
-            "compact": "2px",
-          },
-        },
         "space-field-horizontal": {
           "$description": "The horizontal padding inside field components.",
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -47075,18 +47075,18 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "compact": "20px",
       },
     },
-    "space-control-vertical": {
-      "$description": "The vertical padding inside control components.",
-      "$value": {
-        "comfortable": "4px",
-        "compact": "2px",
-      },
-    },
     "space-field-horizontal": {
       "$description": "The horizontal padding inside field components.",
       "$value": {
         "comfortable": "12px",
         "compact": "12px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
