@@ -192,6 +192,8 @@ export interface SelectProps extends BaseSelectProps {
    * @awsuiSystem core
    */
   renderOption?: SelectProps.SelectOptionItemRenderer;
+
+  variant?: 'group-start' | 'group-middle' | 'group-end';
 }
 
 export namespace SelectProps {
