@@ -3,12 +3,13 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { fireCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { isDevelopment } from '../internal/is-development';
 import { type ActionCardProps } from './interfaces';
 import { getContentStyles, getHeaderStyles, getRootStyles } from './style';
 
@@ -52,6 +53,15 @@ const InternalActionCard = React.forwardRef(
       },
     }));
 
+    if (isDevelopment) {
+      if (!header && !ariaLabel) {
+        warnOnce(
+          'ActionCard',
+          'An accessible name is required. Provide either a `header` or an `ariaLabel` prop so the action card has a meaningful label for screen reader users.'
+        );
+      }
+    }
+
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       nativeButtonAttributes?.onClick?.(event);
@@ -64,9 +74,7 @@ const InternalActionCard = React.forwardRef(
       fireCancelableEvent(onClick, {}, event);
     };
 
-    /*
-     * We are adding a root click so we can have test-utils .click on the wrapper itself.
-     */
+    // We are adding a root click so we can have test-utils .click on the wrapper itself.
     const handleRootClick = () => {
       buttonRef.current?.click();
     };
@@ -91,7 +99,6 @@ const InternalActionCard = React.forwardRef(
       type: 'button',
       className: clsx(styles.button, nativeButtonAttributes?.className),
       onClick: handleButtonClick,
-      'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedby || (description && (ariaLabel || header) ? descriptionId : undefined),
       'aria-disabled': disabled || undefined,
     };
@@ -169,6 +176,7 @@ const InternalActionCard = React.forwardRef(
           styles.root,
           styles[`variant-${variant}`],
           disabled && styles.disabled,
+          disabled && testStyles.disabled,
           !!icon && styles['has-icon'],
           !!icon && styles['icon-align-end'],
           !!icon && styles[`icon-vertical-align-${iconVerticalAlignment}`],

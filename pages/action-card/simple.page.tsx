@@ -33,6 +33,7 @@ export default function ActionCardSimplePage() {
             <ActionCard
               icon={<Icon name="angle-right" />}
               iconVerticalAlignment="center"
+              ariaLabel="Test Action card"
               onClick={() => setClickedCard('Basic')}
             >
               Test
