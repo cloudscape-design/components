@@ -65,7 +65,10 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
 
   const emitTokenDeletion = (newTokens: PromptInputProps.InputToken[], caretPos: number) => {
     const value = tokensToText ? tokensToText(newTokens) : getPromptText(newTokens);
-    emitChange({ value, tokens: newTokens });
+    // Don't mark as sent — selection deletions use preventDefault so the DOM
+    // is NOT updated by the browser. The render effect must see these as an
+    // external change and re-render the DOM to match the new token state.
+    props.onChange({ value, tokens: newTokens });
     if (caretController) {
       caretController.setCapturedPosition(caretPos);
     }

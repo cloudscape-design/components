@@ -7550,3 +7550,66 @@ describe('preloaded references without matching menus', () => {
     expect(refs[0].menuId).toBeUndefined();
   });
 });
+
+describe('selection deletion DOM sync', () => {
+  test('deleting a selected text range updates the rendered DOM to match state', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'Hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Select "world" (positions 6-11)
+    act(() => {
+      ref.current!.setSelectionRange(6, 11);
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    // Press Delete to remove the selection
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', keyCode: 46, bubbles: true }));
+    });
+    // State should be updated
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textValues = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('Hello ');
+    // DOM must also reflect the deletion — this is the actual bug
+    expect(getValue(wrapper)).toBe('Hello ');
+  });
+
+  test('backspace with selected text range updates the rendered DOM to match state', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'Hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    // Select "world" (positions 6-11)
+    act(() => {
+      ref.current!.setSelectionRange(6, 11);
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    // Press Backspace to remove the selection
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', keyCode: 8, bubbles: true }));
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textValues = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('Hello ');
+    // DOM must also reflect the deletion
+    expect(getValue(wrapper)).toBe('Hello ');
+  });
+});
