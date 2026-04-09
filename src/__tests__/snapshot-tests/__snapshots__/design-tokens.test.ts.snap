@@ -170,6 +170,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-button-link-hover": {
           "$description": "The background color of link buttons in hover state.",
           "$value": {
@@ -616,6 +630,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -2032,6 +2053,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -2688,11 +2758,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -2735,6 +2826,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -3046,6 +3144,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-button-link-hover": {
           "$description": "The background color of link buttons in hover state.",
           "$value": {
@@ -3492,6 +3604,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -4908,6 +5027,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -5564,11 +5732,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -5611,6 +5800,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -5922,6 +6118,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-button-link-hover": {
           "$description": "The background color of link buttons in hover state.",
           "$value": {
@@ -6368,6 +6578,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#99cbe4",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -7784,6 +8001,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -8440,11 +8706,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -8487,6 +8774,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -8796,6 +9090,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#eaeded",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -9246,6 +9554,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#99cbe4",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -10660,6 +10975,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -11316,11 +11680,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -11363,6 +11748,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -11672,6 +12064,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#eaeded",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -12122,6 +12528,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#99cbe4",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -13536,6 +13949,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#879596",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#aab7b8",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -14192,11 +14654,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -14239,6 +14722,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -14548,6 +15038,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -14996,6 +15500,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0073bb",
             "light": "#0073bb",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -16410,6 +16921,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#d5dbdb",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-button-normal-active": {
@@ -17068,11 +17628,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "12px",
             "compact": "8px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -17115,6 +17696,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -17424,6 +18012,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#16191f",
         "light": "#eaeded",
+      },
+    },
+    "color-background-button-link-default": {
+      "$description": "The background color of link buttons in default state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-button-link-disabled": {
+      "$description": "The background color of link buttons in disabled state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-button-link-hover": {
@@ -17872,6 +18474,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#0073bb",
         "light": "#99cbe4",
+      },
+    },
+    "color-border-button-link-disabled": {
+      "$description": "The border color of link buttons in disabled state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-button-normal-active": {
@@ -19288,6 +19897,55 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#879596",
       },
     },
+    "color-text-button-inline-icon-default": {
+      "$description": "The default color of inline button icons.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-button-inline-icon-disabled": {
+      "$description": "The color of inline button icons in disabled state.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#aab7b8",
+      },
+    },
+    "color-text-button-inline-icon-hover": {
+      "$description": "The color of inline button icons in hover state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
+    "color-text-button-link-active": {
+      "$description": "The text color of link buttons in active state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
+    "color-text-button-link-default": {
+      "$description": "The default text color of link buttons.",
+      "$value": {
+        "dark": "#d5dbdb",
+        "light": "#545b64",
+      },
+    },
+    "color-text-button-link-disabled": {
+      "$description": "The text color of link buttons in disabled state.",
+      "$value": {
+        "dark": "#687078",
+        "light": "#aab7b8",
+      },
+    },
+    "color-text-button-link-hover": {
+      "$description": "The text color of link buttons in hover state.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#16191f",
+      },
+    },
     "color-text-button-normal-active": {
       "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
       "$value": {
@@ -19944,11 +20602,32 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "size-vertical-input": {
+      "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "28px",
+      },
+    },
     "space-alert-vertical": {
       "$description": "The vertical padding inside alert components.",
       "$value": {
         "comfortable": "12px",
         "compact": "8px",
+      },
+    },
+    "space-button-horizontal": {
+      "$description": "The horizontal padding inside buttons.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-button-vertical": {
+      "$description": "The vertical padding inside buttons.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-card-horizontal-default": {
@@ -19991,6 +20670,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "8px",
         "compact": "8px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
@@ -20305,6 +20991,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#d1f1ff",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -20753,6 +21453,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#d1f1ff",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -22169,6 +22876,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#0f141a",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -22825,11 +23581,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -22872,6 +23649,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -23181,6 +23965,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -23629,6 +24427,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -25043,6 +25848,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-button-normal-active": {
@@ -25701,11 +26555,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -25748,6 +26623,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -26057,6 +26939,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#d1f1ff",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -26507,6 +27403,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -27921,6 +28824,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -28577,11 +29529,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -28624,6 +29597,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -28933,6 +29913,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#d1f1ff",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -29383,6 +30377,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -30797,6 +31798,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#002b66",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -31453,11 +32503,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "4px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -31500,6 +32571,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -31809,6 +32887,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#d1f1ff",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -32259,6 +33351,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -33673,6 +34772,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#ffffff",
+            "light": "#ffffff",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -34329,11 +35477,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -34376,6 +35545,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -34685,6 +35861,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#d1f1ff",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -35135,6 +36325,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#d1f1ff",
           },
         },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-button-normal-active": {
           "$description": "The border color of normal buttons in active state.",
           "$value": {
@@ -36549,6 +37746,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -37205,11 +38451,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -37252,6 +38519,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -37561,6 +38835,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -38009,6 +39297,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -39423,6 +40718,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#8c8c94",
             "light": "#8c8c94",
+          },
+        },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-button-normal-active": {
@@ -40081,11 +41425,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -40128,6 +41493,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -40437,6 +41809,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#333843",
             "light": "#333843",
+          },
+        },
+        "color-background-button-link-default": {
+          "$description": "The background color of link buttons in default state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-button-link-disabled": {
+          "$description": "The background color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-button-link-hover": {
@@ -40885,6 +42271,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#006ce0",
             "light": "#006ce0",
+          },
+        },
+        "color-border-button-link-disabled": {
+          "$description": "The border color of link buttons in disabled state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-normal-active": {
@@ -42301,6 +43694,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#8c8c94",
           },
         },
+        "color-text-button-inline-icon-default": {
+          "$description": "The default color of inline button icons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-inline-icon-disabled": {
+          "$description": "The color of inline button icons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-inline-icon-hover": {
+          "$description": "The color of inline button icons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-button-link-active": {
+          "$description": "The text color of link buttons in active state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
+        "color-text-button-link-default": {
+          "$description": "The default text color of link buttons.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
+          },
+        },
+        "color-text-button-link-disabled": {
+          "$description": "The text color of link buttons in disabled state.",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
+        "color-text-button-link-hover": {
+          "$description": "The text color of link buttons in hover state.",
+          "$value": {
+            "dark": "#75cfff",
+            "light": "#75cfff",
+          },
+        },
         "color-text-button-normal-active": {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": {
@@ -42957,11 +44399,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
             "comfortable": "8px",
             "compact": "4px",
+          },
+        },
+        "space-button-horizontal": {
+          "$description": "The horizontal padding inside buttons.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "16px",
+          },
+        },
+        "space-button-vertical": {
+          "$description": "The vertical padding inside buttons.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-card-horizontal-default": {
@@ -43004,6 +44467,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -43313,6 +44783,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#333843",
         "light": "#d1f1ff",
+      },
+    },
+    "color-background-button-link-default": {
+      "$description": "The background color of link buttons in default state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-button-link-disabled": {
+      "$description": "The background color of link buttons in disabled state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-button-link-hover": {
@@ -43761,6 +45245,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#006ce0",
         "light": "#d1f1ff",
+      },
+    },
+    "color-border-button-link-disabled": {
+      "$description": "The border color of link buttons in disabled state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-button-normal-active": {
@@ -45177,6 +46668,55 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#8c8c94",
       },
     },
+    "color-text-button-inline-icon-default": {
+      "$description": "The default color of inline button icons.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-button-inline-icon-disabled": {
+      "$description": "The color of inline button icons in disabled state.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
+      },
+    },
+    "color-text-button-inline-icon-hover": {
+      "$description": "The color of inline button icons in hover state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
+    "color-text-button-link-active": {
+      "$description": "The text color of link buttons in active state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
+    "color-text-button-link-default": {
+      "$description": "The default text color of link buttons.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
+      },
+    },
+    "color-text-button-link-disabled": {
+      "$description": "The text color of link buttons in disabled state.",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
+      },
+    },
+    "color-text-button-link-hover": {
+      "$description": "The text color of link buttons in hover state.",
+      "$value": {
+        "dark": "#75cfff",
+        "light": "#002b66",
+      },
+    },
     "color-text-button-normal-active": {
       "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
       "$value": {
@@ -45833,11 +47373,32 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },
+    "size-vertical-input": {
+      "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "28px",
+      },
+    },
     "space-alert-vertical": {
       "$description": "The vertical padding inside alert components.",
       "$value": {
         "comfortable": "8px",
         "compact": "4px",
+      },
+    },
+    "space-button-horizontal": {
+      "$description": "The horizontal padding inside buttons.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "16px",
+      },
+    },
+    "space-button-vertical": {
+      "$description": "The vertical padding inside buttons.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-card-horizontal-default": {
@@ -45880,6 +47441,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "12px",
         "compact": "12px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
