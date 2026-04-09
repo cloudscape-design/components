@@ -98,7 +98,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   display: flex;
   align-items: center;
   padding-inline: $label-horizontal-spacing;
-  padding-block: awsui.$space-scaled-2x-xxs;
+  padding-block: awsui.$space-tabs-vertical;
   text-align: start;
   position: relative;
 
@@ -198,9 +198,9 @@ $label-horizontal-spacing: awsui.$space-xs;
   border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
   border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
 
-  font-size: awsui.$font-tabs-size;
-  line-height: awsui.$font-tabs-line-height;
-  font-weight: awsui.$font-wayfinding-link-active-weight;
+  font-size: awsui.$font-size-tabs;
+  line-height: awsui.$line-height-tabs;
+  font-weight: awsui.$font-weight-tabs;
   color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
   background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
 
@@ -272,7 +272,7 @@ $label-horizontal-spacing: awsui.$space-xs;
     color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
     border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
     background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
-    font-weight: awsui.$font-tabs-disabled-weight;
+    font-weight: awsui.$font-weight-tabs-disabled;
   }
 }
 
