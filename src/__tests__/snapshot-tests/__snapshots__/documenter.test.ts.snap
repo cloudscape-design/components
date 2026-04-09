@@ -1,5 +1,406 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Components definition for action-card matches the snapshot: action-card 1`] = `
+{
+  "dashCaseName": "action-card",
+  "events": [
+    {
+      "cancelable": true,
+      "description": "Called when the user clicks on the action card.",
+      "name": "onClick",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Sets focus on the action card.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "ActionCard",
+  "properties": [
+    {
+      "description": "Adds an aria-describedby reference for the action card.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an aria-label to the action card.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the content area.",
+      "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Determines whether the action card is disabled.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Removes the default padding from the header area.",
+      "name": "disableHeaderPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Specifies the vertical alignment of the icon.",
+      "inlineType": {
+        "name": "ActionCardProps.IconVerticalAlignment",
+        "type": "union",
+        "values": [
+          "center",
+          "top",
+        ],
+      },
+      "name": "iconVerticalAlignment",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native button element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeButtonAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "description": "An object containing CSS properties to customize the action card's visual appearance.
+Refer to the [style](/components/action-card/?tabId=style) tab for more details.",
+      "inlineType": {
+        "name": "ActionCardProps.Style",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "content",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+              "properties": [
+                {
+                  "name": "paddingBlock",
+                  "optional": true,
+                  "type": "string",
+                },
+                {
+                  "name": "paddingInline",
+                  "optional": true,
+                  "type": "string",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "header",
+            "optional": true,
+            "type": "{ paddingBlock?: string | undefined; paddingInline?: string | undefined; }",
+          },
+          {
+            "inlineType": {
+              "name": "object",
+              "properties": [
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "background",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderColor",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderRadius",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "borderWidth",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "active",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "default",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "disabled",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "hover",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "boxShadow",
+                  "optional": true,
+                  "type": "{ default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; }",
+                },
+                {
+                  "inlineType": {
+                    "name": "object",
+                    "properties": [
+                      {
+                        "name": "borderColor",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderRadius",
+                        "optional": true,
+                        "type": "string",
+                      },
+                      {
+                        "name": "borderWidth",
+                        "optional": true,
+                        "type": "string",
+                      },
+                    ],
+                    "type": "object",
+                  },
+                  "name": "focusRing",
+                  "optional": true,
+                  "type": "{ borderColor?: string | undefined; borderRadius?: string | undefined; borderWidth?: string | undefined; }",
+                },
+              ],
+              "type": "object",
+            },
+            "name": "root",
+            "optional": true,
+            "type": "{ background?: { default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; } | undefined; borderColor?: { default?: string | undefined; hover?: string | undefined; active?: string | undefined; disabled?: string | undefined; } | undefined; borderRadius?: { ....",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "style",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "ActionCardProps.Style",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual variant of the card, which controls the border radius and padding.
+
+- \`default\` - Uses container-level border radius and padding (larger).
+- \`embedded\` - Uses compact border radius and padding (smaller).",
+      "inlineType": {
+        "name": "ActionCardProps.Variant",
+        "type": "union",
+        "values": [
+          "default",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The main content of the action card.",
+      "isDefault": true,
+      "name": "children",
+    },
+    {
+      "description": "The description content displayed below the header.",
+      "isDefault": false,
+      "name": "description",
+    },
+    {
+      "description": "The header content displayed at the top of the action card.",
+      "isDefault": false,
+      "name": "header",
+    },
+    {
+      "description": "Displays an icon next to the content. You can use the \`iconVerticalAlignment\` property to control vertical alignment.",
+      "isDefault": false,
+      "name": "icon",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for alert matches the snapshot: alert 1`] = `
 {
   "dashCaseName": "alert",
@@ -17138,9 +17539,9 @@ The default is \`secondary\`, except inside the following components where it de
         "name": "LinkProps.Variant",
         "type": "union",
         "values": [
+          "secondary",
           "info",
           "primary",
-          "secondary",
           "awsui-value-large",
         ],
       },
@@ -32462,6 +32863,76 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the icon slot of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns whether the action card is disabled.",
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the action button.
 
 The action button is only rendered when the \`buttonText\` property is set.",
@@ -44517,6 +44988,47 @@ Supported options:
 exports[`Test-utils selectors definitions match the snapshot 1`] = `
 {
   "classes": [
+    {
+      "methods": [
+        {
+          "description": "Returns the content element of the action card.",
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the description element of the action card.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the header element of the action card.",
+          "name": "findHeader",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the icon slot of the action card.",
+          "name": "findIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ActionCardWrapper",
+    },
     {
       "methods": [
         {

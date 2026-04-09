@@ -199,6 +199,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusActionCardDefault: {
+    description: 'The border radius of default action cards.',
+    public: true,
+    themeable: true,
+  },
+  borderRadiusActionCardEmbedded: {
+    description: 'The border radius of embedded action cards.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

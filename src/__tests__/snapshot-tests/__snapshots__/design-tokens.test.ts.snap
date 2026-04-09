@@ -5,6 +5,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
   "contexts": {
     "alert": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -2965,6 +2973,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "app-layout-tools-drawer-trigger": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -5925,6 +5941,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "compact-table": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -8885,6 +8909,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "flashbar": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -11845,6 +11877,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "flashbar-warning": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -14805,6 +14845,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "top-navigation": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "0px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "2px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "2px",
@@ -17765,6 +17813,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
   },
   "tokens": {
+    "border-radius-action-card-default": {
+      "$description": "The border radius of default action cards.",
+      "$value": "0px",
+    },
+    "border-radius-action-card-embedded": {
+      "$description": "The border radius of embedded action cards.",
+      "$value": "2px",
+    },
     "border-radius-alert": {
       "$description": "The border radius of alerts.",
       "$value": "2px",
@@ -20730,6 +20786,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
   "contexts": {
     "alert": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -23690,6 +23754,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "alert-header": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -26650,6 +26722,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "app-layout-toolbar": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -29610,6 +29690,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "compact-table": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -32570,6 +32658,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "flashbar": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -35530,6 +35626,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "flashbar-warning": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -38490,6 +38594,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "header": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -41450,6 +41562,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "top-navigation": {
       "tokens": {
+        "border-radius-action-card-default": {
+          "$description": "The border radius of default action cards.",
+          "$value": "16px",
+        },
+        "border-radius-action-card-embedded": {
+          "$description": "The border radius of embedded action cards.",
+          "$value": "8px",
+        },
         "border-radius-alert": {
           "$description": "The border radius of alerts.",
           "$value": "12px",
@@ -44410,6 +44530,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
   },
   "tokens": {
+    "border-radius-action-card-default": {
+      "$description": "The border radius of default action cards.",
+      "$value": "16px",
+    },
+    "border-radius-action-card-embedded": {
+      "$description": "The border radius of embedded action cards.",
+      "$value": "8px",
+    },
     "border-radius-alert": {
       "$description": "The border radius of alerts.",
       "$value": "12px",

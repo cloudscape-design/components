@@ -1,0 +1,420 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './motion';
+
+// Variant configuration maps
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-action-card-embedded,
+  'default': awsui.$border-radius-action-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-action-card-vertical-embedded,
+  'default': awsui.$space-action-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-action-card-horizontal-embedded,
+  'default': awsui.$space-action-card-horizontal-default,
+);
+
+@mixin apply-border-radius($variant: 'default', $state: 'default') {
+  $radius: map.get($variant-border-radius, $variant);
+  @if $state == 'default' {
+    border-start-start-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
+    border-start-end-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
+    border-end-start-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
+    border-end-end-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
+  } @else if $state == 'hover' {
+    border-start-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusHover},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-start-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusHover},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusHover},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusHover},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+  } @else if $state == 'active' {
+    border-start-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusActive},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-start-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusActive},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusActive},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusActive},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+  } @else if $state == 'disabled' {
+    border-start-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusDisabled},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-start-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusDisabled},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-start-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusDisabled},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+    border-end-end-radius: var(
+      #{custom-props.$styleActionCardBorderRadiusDisabled},
+      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
+    );
+  }
+}
+
+.header {
+  &-inner {
+    @include styles.font-heading-s;
+    &.disabled {
+      color: awsui.$color-text-action-card-disabled;
+    }
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
+  }
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  > .header {
+    flex: 1;
+    min-inline-size: 0;
+  }
+}
+
+.body {
+  flex: 1;
+}
+
+.description {
+  @include styles.font-body-s;
+  color: awsui.$color-text-body-secondary;
+  &.has-header {
+    padding-block-start: awsui.$space-action-card-description-padding-top;
+  }
+  &.disabled {
+    color: awsui.$color-text-action-card-disabled;
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  color: awsui.$color-icon-action-card-default;
+}
+
+.button {
+  all: unset;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+}
+
+.standalone-button {
+  all: unset;
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.root {
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  inline-size: 100%;
+  min-inline-size: 0;
+  text-align: start;
+  display: flex;
+  background: var(#{custom-props.$styleActionCardBackgroundDefault}, awsui.$color-background-action-card-default);
+  box-shadow: var(#{custom-props.$styleActionCardBoxShadowDefault}, none);
+  color: inherit;
+  padding-inline: 0;
+  padding-block: 0;
+  border-block: none;
+  border-inline: none;
+
+  &:after {
+    @include styles.base-pseudo-element;
+
+    box-shadow: none;
+    border-block: solid var(#{custom-props.$styleActionCardBorderWidthDefault}, awsui.$border-width-action-card-default)
+      var(#{custom-props.$styleActionCardBorderColorDefault}, awsui.$color-border-action-card-default);
+    border-inline: solid
+      var(#{custom-props.$styleActionCardBorderWidthDefault}, awsui.$border-width-action-card-default)
+      var(#{custom-props.$styleActionCardBorderColorDefault}, awsui.$color-border-action-card-default);
+  }
+
+  &.variant-default,
+  &.variant-embedded {
+    > .inner-card {
+      display: flex;
+      flex-direction: column;
+      block-size: 100%;
+      inline-size: 100%;
+      min-inline-size: 0;
+
+      > .header + .body {
+        &:not(.no-padding) {
+          padding-block-start: awsui.$space-xxs;
+        }
+      }
+
+      > .header {
+        &:not(.no-padding):has(+ .body) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+
+      > .header-row + .body {
+        &:not(.no-padding) {
+          padding-block-start: awsui.$space-xxs;
+        }
+      }
+
+      > .header-row:has(+ .body) {
+        > .header:not(.no-padding) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+
+  &.icon-vertical-align-center > .icon {
+    align-self: center;
+  }
+
+  &.disabled {
+    cursor: default;
+    color: awsui.$color-text-action-card-disabled;
+    background-color: var(
+      #{custom-props.$styleActionCardBackgroundDisabled},
+      awsui.$color-background-action-card-disabled
+    );
+    box-shadow: var(#{custom-props.$styleActionCardBoxShadowDisabled}, none);
+
+    > .standalone-button {
+      cursor: default;
+    }
+
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    .button {
+      cursor: default;
+    }
+
+    @each $variant in ('embedded', 'default') {
+      &.variant-#{$variant} {
+        &,
+        &:after {
+          @include apply-border-radius($variant, 'disabled');
+        }
+      }
+    }
+
+    > .icon {
+      color: awsui.$color-icon-action-card-disabled;
+    }
+
+    &:after {
+      border-color: var(#{custom-props.$styleActionCardBorderColorDisabled}, awsui.$color-border-action-card-disabled);
+      border-block-width: var(
+        #{custom-props.$styleActionCardBorderWidthDisabled},
+        awsui.$border-width-action-card-disabled
+      );
+      border-inline-width: var(
+        #{custom-props.$styleActionCardBorderWidthDisabled},
+        awsui.$border-width-action-card-disabled
+      );
+    }
+  }
+
+  &:not(.disabled):has(button:hover) {
+    background-color: var(#{custom-props.$styleActionCardBackgroundHover}, awsui.$color-background-action-card-hover);
+    box-shadow: var(#{custom-props.$styleActionCardBoxShadowHover}, none);
+
+    > .icon {
+      color: awsui.$color-icon-action-card-hover;
+    }
+
+    @each $variant in ('embedded', 'default') {
+      &.variant-#{$variant} {
+        &,
+        &:after {
+          @include apply-border-radius($variant, 'hover');
+        }
+      }
+    }
+
+    &:after {
+      border-color: var(#{custom-props.$styleActionCardBorderColorHover}, awsui.$color-border-action-card-hover);
+      border-block-width: var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover);
+      border-inline-width: var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover);
+    }
+  }
+
+  &:not(.disabled):has(button:active) {
+    background-color: var(#{custom-props.$styleActionCardBackgroundActive}, awsui.$color-background-action-card-active);
+    box-shadow: var(#{custom-props.$styleActionCardBoxShadowActive}, none);
+
+    > .icon {
+      color: awsui.$color-icon-action-card-active;
+    }
+
+    @each $variant in ('embedded', 'default') {
+      &.variant-#{$variant} {
+        &,
+        &:after {
+          @include apply-border-radius($variant, 'active');
+        }
+      }
+    }
+
+    &:after {
+      border-color: var(#{custom-props.$styleActionCardBorderColorActive}, awsui.$color-border-action-card-active);
+      border-block-width: var(
+        #{custom-props.$styleActionCardBorderWidthActive},
+        awsui.$border-width-action-card-active
+      );
+      border-inline-width: var(
+        #{custom-props.$styleActionCardBorderWidthActive},
+        awsui.$border-width-action-card-active
+      );
+    }
+  }
+
+  &.disabled > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-disabled;
+  }
+
+  &:not(.disabled):has(button:hover) > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-hover;
+  }
+
+  &:not(.disabled):has(button:active) > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-active;
+  }
+
+  &:has(.button:focus-visible),
+  &:has(.standalone-button:focus-visible) {
+    @include styles.focus-highlight(
+      2px,
+      var(#{custom-props.$styleActionCardFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      0 0 0 var(#{custom-props.$styleActionCardFocusRingBorderWidth}, 2px)
+        var(#{custom-props.$styleActionCardFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
+
+    @each $variant in ('embedded', 'default') {
+      &.variant-#{$variant}::before {
+        $focus-radius: var(
+          #{custom-props.$styleActionCardFocusRingBorderRadius},
+          awsui.$border-radius-control-default-focus-ring
+        );
+        border-start-start-radius: $focus-radius;
+        border-start-end-radius: $focus-radius;
+        border-end-start-radius: $focus-radius;
+        border-end-end-radius: $focus-radius;
+      }
+    }
+  }
+
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:after {
+        @include apply-border-radius($variant);
+      }
+
+      > .standalone-button {
+        @include apply-border-radius($variant);
+      }
+
+      // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+      .button::after {
+        @include apply-border-radius($variant);
+      }
+
+      $padding-block: map.get($variant-padding-block, $variant);
+      $padding-inline: map.get($variant-padding-inline, $variant);
+
+      > .inner-card > .header,
+      > .inner-card > .body {
+        &:not(.no-padding) {
+          padding-block: $padding-block;
+          padding-inline: $padding-inline;
+        }
+      }
+
+      > .inner-card > .header-row > .header {
+        &:not(.no-padding) {
+          padding-block: $padding-block;
+          padding-inline: $padding-inline;
+        }
+      }
+
+      > .icon {
+        padding-block: $padding-block;
+      }
+
+      > .inner-card > .header-row > .icon {
+        padding-block-start: $padding-block;
+      }
+
+      &.icon-align-end {
+        > .icon {
+          padding-inline-end: $padding-inline;
+        }
+
+        > .inner-card > .header-row > .icon {
+          padding-inline-end: $padding-inline;
+        }
+
+        > .inner-card > .header,
+        > .inner-card > .body {
+          &:not(.no-padding) {
+            padding-inline-end: awsui.$space-xs;
+          }
+        }
+
+        > .inner-card > .header-row > .header {
+          &:not(.no-padding) {
+            padding-inline-end: awsui.$space-xs;
+          }
+        }
+      }
+    }
+  }
+}

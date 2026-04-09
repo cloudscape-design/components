@@ -153,6 +153,19 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDragPlaceholderActive: { light: '{colorNeutral300}', dark: '{colorNeutral600}' },
   colorDragPlaceholderHover: { light: '{colorPrimary200}', dark: '{colorPrimary600}' },
   colorBackgroundDropdownItemHover: { light: '{colorNeutral200}', dark: '{colorNeutral700}' },
+  colorBackgroundActionCardDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundActionCardHover: { light: '{colorPrimary50}', dark: '{colorNeutral800}' },
+  colorBackgroundActionCardActive: { light: '{colorPrimary100}', dark: '{colorNeutral700}' },
+  colorBorderActionCardDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorBorderActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorBorderActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorBorderActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
+  colorBackgroundActionCardDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
+  colorTextActionCardDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral500}' },
+  colorIconActionCardDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
+  colorIconActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorIconActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
