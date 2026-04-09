@@ -118,92 +118,39 @@ export function ColumnWidthsProvider({
     }
   };
 
-  // Helper: Get all child column IDs for a group (only direct children)
-  const getDirectChildColumnIds = (groupId: string): string[] => {
-    if (!hierarchicalStructure) {
-      return [];
+  // Precompute group → rightmost leaf mapping to avoid hierarchy traversal on every resize.
+  const groupRightmostLeafRef = useRef(new Map<string, string>());
+  const groupLeafIdsRef = useRef(new Map<string, string[]>());
+
+  useEffect(() => {
+    if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+      groupRightmostLeafRef.current.clear();
+      groupLeafIdsRef.current.clear();
+      return;
     }
+    const leafMap = new Map<string, string>();
+    const leafIdsMap = new Map<string, string[]>();
+    const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
 
-    const childIds: string[] = [];
-
-    // Find the group in the hierarchy
     for (const row of hierarchicalStructure.rows) {
       for (const col of row.columns) {
-        if (col.id === groupId && col.isGroup) {
-          // Look in the next row for direct children
-          const rowIndex = hierarchicalStructure.rows.indexOf(row);
-          if (rowIndex < hierarchicalStructure.rows.length - 1) {
-            const nextRow = hierarchicalStructure.rows[rowIndex + 1];
-            nextRow.columns.forEach(childCol => {
-              // Check if this column has the group as immediate parent
-              if (childCol.parentGroupIds && childCol.parentGroupIds[childCol.parentGroupIds.length - 1] === groupId) {
-                childIds.push(childCol.id);
-              }
-            });
+        if (col.isGroup) {
+          const leafIds: string[] = [];
+          for (const leafCol of leafRow.columns) {
+            if (!leafCol.isGroup && leafCol.parentGroupIds.includes(col.id)) {
+              leafIds.push(leafCol.id);
+            }
           }
-          break;
+          leafIdsMap.set(col.id, leafIds);
+          if (leafIds.length > 0) {
+            leafMap.set(col.id, leafIds[leafIds.length - 1]);
+          }
         }
       }
     }
-
-    return childIds;
-  };
-
-  // Helper: Find the rightmost leaf descendant of a group
-  const findRightmostLeaf = (groupId: string, widths: Map<PropertyKey, number>): string | null => {
-    if (!hierarchicalStructure) {
-      return null;
-    }
-
-    // Get direct children
-    const childIds = getDirectChildColumnIds(groupId);
-    if (childIds.length === 0) {
-      return null;
-    }
-
-    // Start from the rightmost child
-    for (let i = childIds.length - 1; i >= 0; i--) {
-      const childId = childIds[i];
-
-      // Check if this child is a leaf (not a group)
-      const isLeaf = !hierarchicalStructure.rows.some(row =>
-        row.columns.some(col => col.id === childId && col.isGroup)
-      );
-
-      if (isLeaf) {
-        return childId;
-      } else {
-        // It's a group, recurse into it
-        const leaf = findRightmostLeaf(childId, widths);
-        if (leaf) {
-          return leaf;
-        }
-      }
-    }
-
-    return null;
-  };
-
-  // Helper: Calculate group width as sum of direct children
-  const calculateGroupWidth = (groupId: string, widths: Map<PropertyKey, number>): number => {
-    const childIds = getDirectChildColumnIds(groupId);
-    let totalWidth = 0;
-
-    childIds.forEach(childId => {
-      // If child is a group, calculate its width recursively
-      const isGroup = hierarchicalStructure?.rows.some(row =>
-        row.columns.some(col => col.id === childId && col.isGroup)
-      );
-
-      if (isGroup) {
-        totalWidth += calculateGroupWidth(childId, widths);
-      } else {
-        totalWidth += widths.get(childId) || DEFAULT_COLUMN_WIDTH;
-      }
-    });
-
-    return totalWidth;
-  };
+    groupRightmostLeafRef.current = leafMap;
+    groupLeafIdsRef.current = leafIdsMap;
+  }, [hierarchicalStructure]);
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
     const column = visibleColumns.find(column => column.id === columnId);
@@ -333,22 +280,22 @@ export function ColumnWidthsProvider({
       return;
     }
 
-    // Calculate current group width
-    const currentGroupWidth = calculateGroupWidth(String(groupId), columnWidths);
-    const delta = newGroupWidth - currentGroupWidth;
-
-    // Find the rightmost leaf descendant
-    const rightmostLeaf = findRightmostLeaf(String(groupId), columnWidths);
+    // Use precomputed rightmost leaf (avoids hierarchy traversal on every drag)
+    const rightmostLeaf = groupRightmostLeafRef.current.get(String(groupId));
     if (!rightmostLeaf) {
       return;
     }
 
-    // Apply the delta to the rightmost leaf column
-    const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
-    const newLeafWidth = currentLeafWidth + delta;
+    // Calculate current group width from precomputed leaf IDs
+    const leafIds = groupLeafIdsRef.current.get(String(groupId)) ?? [];
+    let currentGroupWidth = 0;
+    for (const id of leafIds) {
+      currentGroupWidth += columnWidths.get(id) || DEFAULT_COLUMN_WIDTH;
+    }
 
-    // Use updateColumn to handle the leaf resize (which will propagate to parents automatically)
-    updateColumn(rightmostLeaf, newLeafWidth);
+    const delta = newGroupWidth - currentGroupWidth;
+    const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
+    updateColumn(rightmostLeaf, currentLeafWidth + delta);
   }
 
   return (

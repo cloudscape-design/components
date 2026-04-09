@@ -222,7 +222,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     }
   }
 
-  > .header-cell-content-group-inner {
+  > .header-cell-content-group-inner-wrapper {
     block-size: 100%;
 
     > .header-cell-content {
@@ -236,7 +236,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 // stylelint-disable-next-line no-descending-specificity
-.header-cell-content-group-inner {
+.header-cell-content-group-inner-wrapper {
   position: sticky;
   inset-inline-start: 0;
   overflow: hidden;

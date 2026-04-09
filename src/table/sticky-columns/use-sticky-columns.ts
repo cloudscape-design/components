@@ -238,6 +238,7 @@ export function useStickyGroupHeaderStyles({
   groupId,
   getClassName,
 }: UseStickyGroupHeaderStylesProps): StickyGroupHeaderStyles {
+  const setCell = stickyColumns.refs.cell;
   const unsubscribeRef = useRef<null | (() => void)>(null);
   const innerElementRef = useRef<null | HTMLElement>(null);
 
@@ -246,6 +247,10 @@ export function useStickyGroupHeaderStyles({
       if (unsubscribeRef.current) {
         unsubscribeRef.current();
       }
+
+      // Register the group <th> in the store's cells map so generateGroupHeaderStyles
+      // can read its bounding rect for dynamic maxWidth and clipPath computation.
+      setCell(groupId, thElement);
 
       const selector = (state: StickyColumnsState) => state.groupHeaderState.get(groupId) ?? null;
 
@@ -278,8 +283,9 @@ export function useStickyGroupHeaderStyles({
         const innerEl = innerElementRef.current;
         if (innerEl) {
           innerEl.style.maxWidth = state?.maxWidth !== undefined && state?.maxWidth !== '' ? `${state.maxWidth}px` : '';
-          innerEl.style.insetInlineStart = state?.innerInsetInlineStart ?? '';
-          innerEl.style.insetInlineEnd = state?.innerInsetInlineEnd ?? '';
+          // Right-align the inner wrapper for sticky-last groups so content
+          // stays visible as the group shrinks from the left.
+          innerEl.style.marginInlineStart = state?.innerInsetInlineEnd === '0' ? 'auto' : '';
         }
       };
 
@@ -290,7 +296,7 @@ export function useStickyGroupHeaderStyles({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [groupId, stickyColumns.store]
+    [groupId, setCell, stickyColumns.store]
   );
 
   const innerRefCallback = useCallback((node: null | HTMLElement) => {
@@ -451,32 +457,66 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       if (isStickyFirst) {
         offset.insetInlineStart = stickyLeft;
       }
-      if (isStickyLast) {
-        offset.insetInlineEnd = lastChildState!.offset.insetInlineEnd;
-      }
+      // Note: sticky-last offset is computed inside the maxWidth branch below
+      // because it depends on the visible children calculation.
 
-      // Dynamic maxWidth using live bounding rects — ported from computeVisibleWidth
+      // Dynamic maxWidth and offset using live bounding rects.
+      // The goal: maxWidth = total visible width of children under this group.
+      // For sticky-last: as non-sticky children scroll behind sticky ones, maxWidth shrinks.
+      // For sticky-first: as non-sticky children scroll past the sticky boundary, maxWidth shrinks.
       let maxWidth: number;
+      let stickyChildrenWidth = 0;
+
       if (hasStickyLastChildren) {
-        // For sticky-last: visible portion from the right, clamped to visible part of <th>
-        const visibleFromRight = Math.max(
-          0,
-          Math.min(thRect.right, wrapperRect.right) - Math.max(thRect.left, wrapperRect.left)
-        );
-        // Floor: must always cover stuck children
-        let leftmostStuckLastLeft = Infinity;
+        // Single pass: cache child rects, compute sticky widths and non-sticky visible widths.
+        let leftmostStickyChildLeft = Infinity;
+        let nonStickyVisibleWidth = 0;
+
+        for (const id of group.childColumnIds) {
+          const childEl = props.cells.get(id);
+          if (!childEl) {
+            continue;
+          }
+          const childRect = childEl.getBoundingClientRect();
+          const cs = cellState.get(id);
+
+          if (cs?.offset.insetInlineEnd !== undefined) {
+            // Sticky child — always fully visible
+            stickyChildrenWidth += childRect.width;
+            leftmostStickyChildLeft = Math.min(leftmostStickyChildLeft, childRect.left);
+          } else {
+            // Non-sticky child — visible portion clamped by leftmost sticky sibling
+            // (deferred: we'll clamp after we know leftmostStickyChildLeft)
+            // Store raw rect for now
+          }
+        }
+
+        // Second pass only for non-sticky children (need leftmostStickyChildLeft from first pass)
         for (const id of group.childColumnIds) {
           const cs = cellState.get(id);
           if (cs?.offset.insetInlineEnd !== undefined) {
-            const childEl = props.cells.get(id);
-            if (childEl) {
-              leftmostStuckLastLeft = Math.min(leftmostStuckLastLeft, childEl.getBoundingClientRect().left);
-            }
+            continue;
           }
+          const childEl = props.cells.get(id);
+          if (!childEl) {
+            continue;
+          }
+          const childRect = childEl.getBoundingClientRect();
+          const visibleLeft = Math.max(childRect.left, wrapperRect.left);
+          const rightBoundary =
+            leftmostStickyChildLeft !== Infinity ? Math.min(childRect.right, leftmostStickyChildLeft) : childRect.right;
+          nonStickyVisibleWidth += Math.max(0, rightBoundary - visibleLeft);
         }
-        const stuckChildrenWidth =
-          leftmostStuckLastLeft !== Infinity ? Math.max(0, thRect.right - leftmostStuckLastLeft) : 0;
-        maxWidth = Math.max(stuckChildrenWidth, visibleFromRight);
+
+        maxWidth = stickyChildrenWidth + nonStickyVisibleWidth;
+
+        // Compute the correct inset-inline-end for the <th>.
+        // The group <th> natural width = all children. But we only want it to extend
+        // leftward by maxWidth from the right edge. So inset-inline-end should position
+        // the <th>'s right edge at the wrapper's right edge (or the last sticky child's right edge).
+        // The last child's insetInlineEnd gives us the base offset from the wrapper's right edge.
+        const baseInsetEnd = lastChildState!.offset.insetInlineEnd ?? 0;
+        offset.insetInlineEnd = baseInsetEnd;
       } else {
         // For sticky-first: compute floor from stuck children and ceiling from visible area
         const paddingStart = parseFloat(getComputedStyle(thEl).paddingInlineStart) || 0;
@@ -488,7 +528,9 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
           if (cs?.offset.insetInlineStart !== undefined) {
             const childEl = props.cells.get(id);
             if (childEl) {
-              floor = Math.max(floor, childEl.getBoundingClientRect().right - screenLeft);
+              const childRect = childEl.getBoundingClientRect();
+              floor = Math.max(floor, childRect.right - screenLeft);
+              stickyChildrenWidth += childRect.width;
             }
           }
         }
@@ -505,7 +547,7 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
 
       // Determine isStuck for clip-path (position is always sticky when group has sticky children)
       const isStuckFirst = isStickyFirst && stickyLeft > 0 && this.isStuckToTheInlineStart;
-      const isStuckLast = hasStickyLastChildren;
+      const isStuckLast = hasStickyLastChildren && this.isStuckToTheInlineEnd;
 
       // Clip-path to prevent the <th> from covering adjacent columns
       let clipPath = '';
@@ -517,7 +559,8 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
         clipPath = trimRight > 0 ? `inset(0 ${trimRight}px 0 -24px)` : '';
       } else if (isStuckLast) {
         const visibleLeft = thRect.right - maxWidth;
-        const trimLeft = Math.max(0, visibleLeft - thRect.left);
+        // Subtract 1px so the clip doesn't eat into the left neighbor's divider
+        const trimLeft = Math.max(0, visibleLeft - thRect.left + 1);
         clipPath = trimLeft > 0 ? `inset(0 -24px 0 ${trimLeft}px)` : '';
       }
 
@@ -533,6 +576,12 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const innerInsetInlineStart = hasStickyLastChildren ? 'auto' : stickyLeft > 0 ? `${stickyLeft}px` : '';
       const innerInsetInlineEnd = hasStickyLastChildren ? '0' : '';
 
+      const isStuck = isStuckFirst || isStuckLast;
+      // isClamped: the group's visible area has shrunk to only its sticky children.
+      // This is when the shadow should appear — the group is the visual boundary.
+      const effectiveMaxWidth = maxWidth >= thEl.offsetWidth ? thEl.offsetWidth : maxWidth;
+      const isClamped = isStuck && stickyChildrenWidth > 0 && effectiveMaxWidth <= stickyChildrenWidth + 1; // +1 for rounding
+
       groupHeaderState.set(group.groupId, {
         offset,
         position: 'sticky',
@@ -543,6 +592,8 @@ class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
         innerInsetInlineEnd,
         lastInsetInlineStart,
         lastInsetInlineEnd,
+        isStuck,
+        isClamped,
       });
     }
 

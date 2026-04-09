@@ -45,6 +45,8 @@ export interface StickyColumnsGroupHeaderState {
   innerInsetInlineEnd: string;
   lastInsetInlineStart: boolean;
   lastInsetInlineEnd: boolean;
+  isStuck: boolean;
+  isClamped: boolean;
 }
 
 // Group hierarchy info maps a group header to its leaf column children.

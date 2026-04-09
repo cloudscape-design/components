@@ -145,6 +145,7 @@ type InternalTableProps<T> = SomeRequired<
   'items' | 'selectedItems' | 'variant' | 'firstIndex' | 'cellVerticalAlign'
 > &
   InternalBaseComponentProps & {
+    // TODO: Future me, here's where props can be tested internally... :)
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
 
