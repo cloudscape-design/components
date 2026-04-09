@@ -319,20 +319,6 @@ function AppLayoutToolbarWithDrawers() {
 
 export default function ThemedComponentsPage() {
   const [themed, setThemed] = useState<boolean>(false);
-  const [strokeSmall] = useState<string>('2');
-  const [strokeNormal] = useState<string>('2');
-  const [strokeMedium] = useState<string>('2');
-  const [strokeBig] = useState<string>('3');
-  const [strokeLarge] = useState<string>('4');
-
-  // Reload page once after initial load to fix theme application
-  useLayoutEffect(() => {
-    const hasReloaded = sessionStorage.getItem('themed-stroke-width-reloaded');
-    if (!hasReloaded) {
-      sessionStorage.setItem('themed-stroke-width-reloaded', 'true');
-      window.location.reload();
-    }
-  }, []);
 
   useLayoutEffect(() => {
     let reset: () => void = () => {};
@@ -345,7 +331,7 @@ export default function ThemedComponentsPage() {
           borderWidthButton: '1px',
           sizeVerticalInput: '30px',
           borderWidthToken: '1px',
-          spaceControlVertical: '3px',
+          spaceFieldVertical: '4px',
         },
       };
 
@@ -356,11 +342,11 @@ export default function ThemedComponentsPage() {
       reset = result.reset;
     }
     return reset;
-  }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
+  }, [themed]);
 
   return (
     <div style={{ padding: 15 }}>
-      <h1>Themed icon stroke width</h1>
+      <h1>Themed components</h1>
 
       <SpaceBetween size="xl">
         <SpaceBetween size="l" direction="vertical">
