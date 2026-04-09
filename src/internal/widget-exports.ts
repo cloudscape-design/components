@@ -30,4 +30,4 @@ export { SideNavigationImplementation as SideNavigation } from '../side-navigati
 export { HelpPanelImplementation as HelpPanel } from '../help-panel/implementation';
 
 // Widgetized non-component exports
-export { I18nFormatter } from '../i18n/utils/i18n-formatter';
+// export { I18nFormatter } from '../i18n/utils/i18n-formatter';
