@@ -804,9 +804,9 @@ export type TypographyTokenName =
   | 'fontSizeHeadingXs'
   | 'fontSmoothingMozOsx'
   | 'fontSmoothingWebkit'
-  | 'fontTabsDisabledWeight'
-  | 'fontTabsLineHeight'
-  | 'fontTabsSize'
+  | 'fontSizeTabs'
+  | 'fontWeightTabs'
+  | 'fontWeightTabsDisabled'
   | 'fontWayfindingLinkActiveWeight'
   | 'fontWeightButton'
   | 'fontWeightAlertHeader'
@@ -831,7 +831,8 @@ export type TypographyTokenName =
   | 'lineHeightHeadingL'
   | 'lineHeightHeadingM'
   | 'lineHeightHeadingS'
-  | 'lineHeightHeadingXs';
+  | 'lineHeightHeadingXs'
+  | 'lineHeightTabs';
 export type BordersTokenName =
   | 'borderActiveWidth'
   | 'borderCodeEditorStatusDividerWidth'
@@ -1005,6 +1006,7 @@ export type SpacingTokenName =
   | 'spaceTableHeaderFocusOutlineGutter'
   | 'spaceTabsContentTop'
   | 'spaceTabsFocusOutlineGutter'
+  | 'spaceTabsVertical'
   | 'spaceTableContentBottom'
   | 'spaceTableEmbeddedHeaderTop'
   | 'spaceTableFooterHorizontal'

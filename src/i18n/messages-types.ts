@@ -345,6 +345,24 @@ export interface I18nFormatArgTypes {
   popover: {
     dismissAriaLabel: never;
   };
+  'prompt-input': {
+    'i18nStrings.actionButtonAriaLabel': never;
+    'i18nStrings.menuErrorIconAriaLabel': never;
+    'i18nStrings.menuRecoveryText': never;
+    'i18nStrings.menuLoadingText': never;
+    'i18nStrings.menuFinishedText': never;
+    'i18nStrings.menuErrorText': never;
+    'i18nStrings.selectedMenuItemAriaLabel': never;
+    'i18nStrings.tokenInsertedAriaLabel': {
+      token__label: string;
+    };
+    'i18nStrings.tokenPinnedAriaLabel': {
+      token__label: string;
+    };
+    'i18nStrings.tokenRemovedAriaLabel': {
+      token__label: string;
+    };
+  };
   'property-filter': {
     'i18nStrings.allPropertiesLabel': never;
     'i18nStrings.applyActionText': never;

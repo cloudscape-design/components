@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "إغلاق النافذة المنبثقة"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "إرسال الأمر",
+    "i18nStrings.menuErrorIconAriaLabel": "خطأ",
+    "i18nStrings.menuRecoveryText": "إعادة المحاولة",
+    "i18nStrings.menuLoadingText": "جار تحميل العناصر",
+    "i18nStrings.menuFinishedText": "نهاية النتائج",
+    "i18nStrings.menuErrorText": "حدث خطأ أثناء جلب العناصر",
+    "i18nStrings.selectedMenuItemAriaLabel": "مُحدَّد",
+    "i18nStrings.tokenInsertedAriaLabel": "تم إدراج {token__label}",
+    "i18nStrings.tokenPinnedAriaLabel": "تم تثبيت {token__label}",
+    "i18nStrings.tokenRemovedAriaLabel": "تمت إزالة {token__label}"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "جميع الخصائص",
     "i18nStrings.applyActionText": "استخدام",

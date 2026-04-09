@@ -114,6 +114,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontSizeTabs: {
+    description: 'The default font size for tabs.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightTabs: {
+    description: 'The default font weight for tabs.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightTabsDisabled: {
+    description: 'The default font weight for disabled tabs.',
+    themeable: true,
+    public: true,
+  },
   letterSpacingBodyS: {
     description: 'The default letter spacing for small body text.',
   },
@@ -184,6 +199,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   lineHeightHeadingXs: {
     description: 'The default line height for h5s.',
+    themeable: true,
+    public: true,
+  },
+  lineHeightTabs: {
+    description: 'The default line height for tabs.',
     themeable: true,
     public: true,
   },

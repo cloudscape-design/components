@@ -2479,6 +2479,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -2509,6 +2513,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -2566,6 +2578,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -2844,6 +2860,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -5332,6 +5355,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -5362,6 +5389,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -5419,6 +5454,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -5697,6 +5736,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -8185,6 +8231,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -8215,6 +8265,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -8272,6 +8330,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -8548,6 +8610,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "space-static-xxxs": {
           "$description": "The static XXXS spacing unit.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
@@ -11038,6 +11107,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -11068,6 +11141,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -11125,6 +11206,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -11403,6 +11488,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -13891,6 +13983,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -13921,6 +14017,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -13978,6 +14082,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -14256,6 +14364,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -16744,6 +16859,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "14px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -16774,6 +16893,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "400",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
         "letter-spacing-display-l": {
@@ -16831,6 +16958,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "20px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "22px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -17109,6 +17240,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -19597,6 +19735,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font size for h5s.",
       "$value": "16px",
     },
+    "font-size-tabs": {
+      "$description": "The default font size for tabs.",
+      "$value": "14px",
+    },
     "font-weight-alert-header": {
       "$description": "The default font weight for alert header text.",
       "$value": "700",
@@ -19627,6 +19769,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
+      "$value": "400",
+    },
+    "font-weight-tabs": {
+      "$description": "The default font weight for tabs.",
+      "$value": "700",
+    },
+    "font-weight-tabs-disabled": {
+      "$description": "The default font weight for disabled tabs.",
       "$value": "400",
     },
     "letter-spacing-display-l": {
@@ -19684,6 +19834,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "line-height-heading-xs": {
       "$description": "The default line height for h5s.",
       "$value": "20px",
+    },
+    "line-height-tabs": {
+      "$description": "The default line height for tabs.",
+      "$value": "22px",
     },
     "motion-duration-avatar-gen-ai-gradient": {
       "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -19962,6 +20116,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The static XXXS spacing unit.",
       "$value": {
         "comfortable": "2px",
+        "compact": "2px",
+      },
+    },
+    "space-tabs-vertical": {
+      "$description": "The vertical padding inside tabs.",
+      "$value": {
+        "comfortable": "4px",
         "compact": "2px",
       },
     },
@@ -22455,6 +22616,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -22485,6 +22650,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -22542,6 +22715,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -22820,6 +22997,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -25308,6 +25492,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -25338,6 +25526,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -25395,6 +25591,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -25673,6 +25873,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -28161,6 +28368,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -28191,6 +28402,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -28248,6 +28467,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -28526,6 +28749,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -31014,6 +31244,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -31044,6 +31278,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -31101,6 +31343,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -31377,6 +31623,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "space-static-xxxs": {
           "$description": "The static XXXS spacing unit.",
+          "$value": {
+            "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
@@ -33867,6 +34120,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -33897,6 +34154,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -33954,6 +34219,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -34232,6 +34501,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -36720,6 +36996,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -36750,6 +37030,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -36807,6 +37095,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -37085,6 +37377,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -39573,6 +39872,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -39603,6 +39906,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -39660,6 +39971,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -39938,6 +40253,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -42426,6 +42748,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-size-tabs": {
+          "$description": "The default font size for tabs.",
+          "$value": "16px",
+        },
         "font-weight-alert-header": {
           "$description": "The default font weight for alert header text.",
           "$value": "700",
@@ -42456,6 +42782,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
+          "$value": "700",
+        },
+        "font-weight-tabs": {
+          "$description": "The default font weight for tabs.",
+          "$value": "700",
+        },
+        "font-weight-tabs-disabled": {
+          "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
         "letter-spacing-display-l": {
@@ -42513,6 +42847,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "line-height-heading-xs": {
           "$description": "The default line height for h5s.",
           "$value": "18px",
+        },
+        "line-height-tabs": {
+          "$description": "The default line height for tabs.",
+          "$value": "20px",
         },
         "motion-duration-avatar-gen-ai-gradient": {
           "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -42791,6 +43129,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The static XXXS spacing unit.",
           "$value": {
             "comfortable": "2px",
+            "compact": "2px",
+          },
+        },
+        "space-tabs-vertical": {
+          "$description": "The vertical padding inside tabs.",
+          "$value": {
+            "comfortable": "4px",
             "compact": "2px",
           },
         },
@@ -45279,6 +45624,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font size for h5s.",
       "$value": "14px",
     },
+    "font-size-tabs": {
+      "$description": "The default font size for tabs.",
+      "$value": "16px",
+    },
     "font-weight-alert-header": {
       "$description": "The default font weight for alert header text.",
       "$value": "700",
@@ -45309,6 +45658,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
+      "$value": "700",
+    },
+    "font-weight-tabs": {
+      "$description": "The default font weight for tabs.",
+      "$value": "700",
+    },
+    "font-weight-tabs-disabled": {
+      "$description": "The default font weight for disabled tabs.",
       "$value": "700",
     },
     "letter-spacing-display-l": {
@@ -45366,6 +45723,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "line-height-heading-xs": {
       "$description": "The default line height for h5s.",
       "$value": "18px",
+    },
+    "line-height-tabs": {
+      "$description": "The default line height for tabs.",
+      "$value": "20px",
     },
     "motion-duration-avatar-gen-ai-gradient": {
       "$description": "The duration for gradient motion of gen-ai avatars.",
@@ -45644,6 +46005,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The static XXXS spacing unit.",
       "$value": {
         "comfortable": "2px",
+        "compact": "2px",
+      },
+    },
+    "space-tabs-vertical": {
+      "$description": "The vertical padding inside tabs.",
+      "$value": {
+        "comfortable": "4px",
         "compact": "2px",
       },
     },

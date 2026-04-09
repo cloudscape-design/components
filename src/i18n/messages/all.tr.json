@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "Açılır pencereyi kapat"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "İstemi gönder",
+    "i18nStrings.menuErrorIconAriaLabel": "Hata",
+    "i18nStrings.menuRecoveryText": "Yeniden dene",
+    "i18nStrings.menuLoadingText": "Öğeler yükleniyor",
+    "i18nStrings.menuFinishedText": "Sonuçların sonu",
+    "i18nStrings.menuErrorText": "Öğeler getirilirken bir hata oluştu",
+    "i18nStrings.selectedMenuItemAriaLabel": "Seçildi",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} eklendi",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} sabitlendi",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} kaldırıldı"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Tüm özellikler",
     "i18nStrings.applyActionText": "Uygula",

@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "ポップオーバーを閉じる"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "プロンプトの送信",
+    "i18nStrings.menuErrorIconAriaLabel": "エラー",
+    "i18nStrings.menuRecoveryText": "再試行",
+    "i18nStrings.menuLoadingText": "項目をロード中",
+    "i18nStrings.menuFinishedText": "結果の最後",
+    "i18nStrings.menuErrorText": "項目の取得中にエラーが発生しました",
+    "i18nStrings.selectedMenuItemAriaLabel": "選択済み",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} が挿入されました",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} がピン留めされました",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} が削除されました"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "すべてのプロパティ",
     "i18nStrings.applyActionText": "適用",

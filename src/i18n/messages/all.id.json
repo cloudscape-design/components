@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "Tutup popover"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Kirim prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Kesalahan",
+    "i18nStrings.menuRecoveryText": "Coba lagi",
+    "i18nStrings.menuLoadingText": "Memuat item",
+    "i18nStrings.menuFinishedText": "Akhir dari hasil",
+    "i18nStrings.menuErrorText": "Terjadi kesalahan saat mengambil item",
+    "i18nStrings.selectedMenuItemAriaLabel": "Dipilih",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} disisipkan",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} disematkan",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} dihapus"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Semua properti",
     "i18nStrings.applyActionText": "Terapkan",
