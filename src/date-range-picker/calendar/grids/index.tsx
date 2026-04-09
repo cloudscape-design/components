@@ -190,24 +190,24 @@ export const Grids = ({
   return (
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
+        <Grid
+          {...sharedGridProps}
+          padDates={'before'}
+          className={testutilStyles['first-grid']}
+          baseDate={baseDate}
+          ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
+          referrerId={referrerId}
+        />
         {!isSingleGrid && (
           <Grid
             {...sharedGridProps}
-            padDates={'before'}
-            className={testutilStyles['first-grid']}
-            baseDate={baseDate}
-            ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
+            padDates={'after'}
+            className={testutilStyles['second-grid']}
+            baseDate={addPages(baseDate, 1)}
+            ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
             referrerId={referrerId}
           />
         )}
-        <Grid
-          {...sharedGridProps}
-          padDates={'after'}
-          className={testutilStyles['second-grid']}
-          baseDate={addPages(baseDate, 1)}
-          ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
-          referrerId={referrerId}
-        />
       </InternalSpaceBetween>
     </div>
   );
