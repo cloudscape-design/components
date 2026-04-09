@@ -2867,7 +2867,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -5743,7 +5743,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -8618,8 +8618,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
-            "comfortable": "2px",
-            "compact": "2px",
+            "comfortable": "4px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -11495,7 +11495,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -14371,7 +14371,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -17247,7 +17247,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -20123,7 +20123,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The vertical padding inside tabs.",
       "$value": {
         "comfortable": "4px",
-        "compact": "2px",
+        "compact": "0px",
       },
     },
     "space-tree-view-indentation": {
@@ -23004,7 +23004,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -25880,7 +25880,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -28756,7 +28756,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -31631,8 +31631,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
-            "comfortable": "2px",
-            "compact": "2px",
+            "comfortable": "4px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -34508,7 +34508,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -37384,7 +37384,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -40260,7 +40260,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -43136,7 +43136,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The vertical padding inside tabs.",
           "$value": {
             "comfortable": "4px",
-            "compact": "2px",
+            "compact": "0px",
           },
         },
         "space-tree-view-indentation": {
@@ -46012,7 +46012,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The vertical padding inside tabs.",
       "$value": {
         "comfortable": "4px",
-        "compact": "2px",
+        "compact": "0px",
       },
     },
     "space-tree-view-indentation": {
