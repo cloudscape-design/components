@@ -39,7 +39,9 @@ export function isGroupHeaderStatesEqual(
       s1.innerInsetInlineStart === s2.innerInsetInlineStart &&
       s1.innerInsetInlineEnd === s2.innerInsetInlineEnd &&
       s1.lastInsetInlineStart === s2.lastInsetInlineStart &&
-      s1.lastInsetInlineEnd === s2.lastInsetInlineEnd
+      s1.lastInsetInlineEnd === s2.lastInsetInlineEnd &&
+      s1.isStuck === s2.isStuck &&
+      s1.isClamped === s2.isClamped
     );
   }
   return s1 === s2;

@@ -26,7 +26,7 @@ export default function Page() {
   const [useWrapperPaddings, setUseWrapperPaddings] = useState(false);
   const stickyColumns = useStickyColumns({
     visibleColumns: columnDefinitions.map(column => column.key),
-    stickyColumnsFirst: 1,
+    stickyColumnsFirst: 2,
     stickyColumnsLast: 1,
   });
   return (

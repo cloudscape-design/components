@@ -34,7 +34,6 @@ export interface TableGroupHeaderCellProps {
   childColumnMinWidths: Map<PropertyKey, number>;
   focusedComponent?: null | string;
   tabIndex: number;
-  stuck?: boolean;
   sticky?: boolean;
   hidden?: boolean;
   stripedRows?: boolean;
@@ -47,7 +46,6 @@ export interface TableGroupHeaderCellProps {
   tableVariant?: TableProps.Variant;
   isLastChildOfGroup?: boolean;
   columnGroupId?: string;
-  isLastInRow?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -62,7 +60,6 @@ export function TableGroupHeaderCell({
   updateGroupWidth,
   focusedComponent,
   tabIndex,
-  stuck,
   sticky,
   hidden,
   stripedRows,
@@ -77,13 +74,12 @@ export function TableGroupHeaderCell({
   columnGroupId,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
-
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
   const getStickyClassName = (state: StickyColumnsGroupHeaderState | null) => ({
-    [styles['sticky-cell-last-inline-start']]: !!state?.lastInsetInlineStart,
-    [styles['sticky-cell-last-inline-end']]: !!state?.lastInsetInlineEnd,
+    [styles['sticky-cell-last-inline-start']]: !!state?.isClamped && !!state?.lastInsetInlineStart,
+    [styles['sticky-cell-last-inline-end']]: !!state?.isClamped && !!state?.lastInsetInlineEnd,
   });
 
   const { ref: stickyRef, innerRef: stickyInnerRef } = useStickyGroupHeaderStyles({
@@ -99,7 +95,6 @@ export function TableGroupHeaderCell({
       resizableStyle={resizableStyle}
       cellRef={cellRefCombined}
       focusedComponent={focusedComponent}
-      stuck={stuck}
       sticky={sticky}
       resizable={resizableColumns}
       hidden={hidden}
@@ -116,7 +111,7 @@ export function TableGroupHeaderCell({
       isLastChildOfGroup={isLastChildOfGroup}
       columnGroupId={columnGroupId}
     >
-      <div ref={stickyInnerRef} className={styles['header-cell-content-group-inner']}>
+      <div ref={stickyInnerRef} className={styles['header-cell-content-group-inner-wrapper']}>
         <div
           ref={clickableHeaderRef}
           data-focus-id={`group-header-${groupId}`}
