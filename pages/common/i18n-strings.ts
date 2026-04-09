@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CollectionPreferencesProps } from '~components/collection-preferences/interfaces';
+import { type CollectionPreferencesProps } from '~components/collection-preferences/interfaces';
 
 export const contentDisplayPreferenceI18nStrings: Partial<CollectionPreferencesProps.ContentDisplayPreference> = {
   liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,

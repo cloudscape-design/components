@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
-import { SortableAreaProps } from '~components/internal/components/sortable-area/interfaces';
+import { type SortableAreaProps } from '~components/internal/components/sortable-area/interfaces';
 
 import { Instance } from '../table/generate-data';
 import { stateToStatusIndicator } from '../table/shared-configs';

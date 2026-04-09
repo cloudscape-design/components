@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { ButtonDropdown, ButtonDropdownProps } from '~components';
+import { ButtonDropdown, type ButtonDropdownProps } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 

@@ -13,7 +13,7 @@ import {
   Select,
   Toggle,
 } from '~components';
-import { ContentLayoutProps } from '~components/content-layout';
+import { type ContentLayoutProps } from '~components/content-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Notifications } from '../app-layout/utils/content-blocks';

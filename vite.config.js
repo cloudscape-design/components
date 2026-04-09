@@ -1,15 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import path from 'path';
+import { defineConfig } from 'vite';
 
-const path = require('path');
-const baseConfig = require('./webpack.config.base.cjs');
-const themes = require('../build-tools/utils/themes');
-const workspace = require('../build-tools/utils/workspace');
+import themes from './build-tools/utils/themes';
+import workspace from './build-tools/utils/workspace';
+import baseConfig from './vite.config.base';
+const process = globalThis.process;
 
-module.exports = () => {
+export default defineConfig(() => {
   const react18 = process.env.REACT_VERSION === '18';
   const theme = process.env.THEME || 'default';
   const themeDefinition = themes.find(t => t.name === theme);
+
   return baseConfig({
     componentsPath: path.resolve(themeDefinition.outputPath),
     designTokensPath: path.resolve(
@@ -19,6 +22,6 @@ module.exports = () => {
     ),
     globalStylesPath: themeDefinition.globalStylesPath,
     outputPath: `pages/lib/static-${theme}`,
-    react18,
+    react18: react18,
   });
-};
+});

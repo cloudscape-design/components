@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { AppLayout, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween, Toggle } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
+import { type AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';

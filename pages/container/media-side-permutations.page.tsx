@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import { ContainerProps } from '~components/container';
+import { type ContainerProps } from '~components/container';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

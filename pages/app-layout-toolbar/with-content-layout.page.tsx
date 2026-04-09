@@ -13,7 +13,7 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
-import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
+import { type AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';

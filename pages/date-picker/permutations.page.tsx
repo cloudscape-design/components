@@ -4,7 +4,7 @@
 import React from 'react';
 import MockDate from 'mockdate';
 
-import { Box, DatePicker, DatePickerProps, SpaceBetween } from '~components';
+import { Box, DatePicker, type DatePickerProps, SpaceBetween } from '~components';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';

@@ -8,16 +8,26 @@ const { parseArgs } = require('node:util');
 
 module.exports = task('test:a11y', async () => {
   const options = {
-    shard: {
-      type: 'string',
-    },
+    shard: { type: 'string' },
+    mode: { type: 'string' },
   };
-  const shard = parseArgs({ options, strict: false }).values.shard;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
-    env: {
-      NODE_ENV: 'development',
-    },
-  });
+  const { shard, mode } = parseArgs({ options, strict: false }).values;
+
+  const serverMode = mode ?? (process.env.CI ? 'preview' : 'dev');
+  let server;
+
+  if (serverMode === 'preview') {
+    console.log('Starting Vite preview server...');
+    server = execa('vite', ['preview', '--config', 'vite.config.integ.js', '--port', '8080']);
+  } else {
+    console.log('Starting Vite dev server...');
+    server = execa('vite', ['--config', 'vite.config.integ.js'], {
+      env: {
+        NODE_ENV: 'development',
+      },
+    });
+  }
+
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__a11y__/**/*.test.ts');
@@ -30,5 +40,5 @@ module.exports = task('test:a11y', async () => {
     env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
   });
 
-  devServer.cancel();
+  server.cancel();
 });

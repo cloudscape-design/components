@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { range } from 'lodash';
 
-import { Box, Button, Flashbar, FlashbarProps, Header, SpaceBetween, Toggle } from '~components';
+import { Box, Button, Flashbar, type FlashbarProps, Header, SpaceBetween, Toggle } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import { generateItem, i18nStrings } from './common';

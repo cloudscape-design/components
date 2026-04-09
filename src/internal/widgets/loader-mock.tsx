@@ -14,33 +14,33 @@ const isAppLayoutDelayedWidget = () => {
   return !!getCustomFlag('appLayoutDelayedWidget');
 };
 
-const enableDelayedComponents = isAppLayoutDelayedWidget();
-
 let loadPromise: Promise<void>;
 
 export function createLoadableComponent<ComponentType extends FunctionComponent<any>>(
   Component: ComponentType
 ): ComponentType | undefined {
-  if (!enableDelayedComponents) {
-    return;
-  }
   return ((props: PropsType<ComponentType>) => {
-    const [mounted, setMounted] = useState(false);
+    const [mounted, setMounted] = useState(() => {
+      return !isAppLayoutDelayedWidget();
+    });
 
     useEffect(() => {
+      if (mounted) {
+        return;
+      }
       if (!loadPromise) {
         loadPromise = new Promise(resolve => setTimeout(() => resolve(), 1000));
       }
-      let mounted = true;
+      let isMounted = true;
       loadPromise.then(() => {
-        if (mounted) {
+        if (isMounted) {
           setMounted(true);
         }
       });
       return () => {
-        mounted = false;
+        isMounted = false;
       };
-    }, []);
+    }, [mounted]);
 
     if (mounted) {
       return <Component {...props} />;

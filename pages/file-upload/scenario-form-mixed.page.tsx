@@ -2,7 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
-import { Alert, Box, Button, Checkbox, FileUpload, FileUploadProps, Form, FormField, Header, Input } from '~components';
+import {
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  FileUpload,
+  type FileUploadProps,
+  Form,
+  FormField,
+  Header,
+  Input,
+} from '~components';
 import SpaceBetween from '~components/space-between';
 
 import { PageNotifications, useContractFilesForm } from './page-helpers';

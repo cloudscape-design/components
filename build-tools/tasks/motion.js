@@ -9,14 +9,30 @@ const { parseArgs } = require('node:util');
 module.exports = task('test:motion', async () => {
   const options = {
     reactVersion: { type: 'string' },
+    mode: { type: 'string' },
   };
-  const { reactVersion = '16' } = parseArgs({ options, strict: false }).values;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
-    env: {
-      NODE_ENV: 'development',
-      REACT_VERSION: reactVersion,
-    },
-  });
+  const { reactVersion = '16', mode } = parseArgs({ options, strict: false }).values;
+
+  const serverMode = mode ?? (process.env.CI ? 'preview' : 'dev');
+  let server;
+
+  if (serverMode === 'preview') {
+    console.log('Starting Vite preview server...');
+    server = execa('vite', ['preview', '--config', 'vite.config.integ.js', '--port', '8080'], {
+      env: {
+        REACT_VERSION: reactVersion,
+      },
+    });
+  } else {
+    console.log('Starting Vite dev server...');
+    server = execa('vite', ['--config', 'vite.config.integ.js'], {
+      env: {
+        NODE_ENV: 'development',
+        REACT_VERSION: reactVersion,
+      },
+    });
+  }
+
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__motion__/**/*.test.ts');
@@ -25,5 +41,5 @@ module.exports = task('test:motion', async () => {
     env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
   });
 
-  devServer.cancel();
+  server.cancel();
 });

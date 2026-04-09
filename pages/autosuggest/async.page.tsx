@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { range } from 'lodash';
 
 import Autosuggest from '~components/autosuggest';
-import { AutosuggestProps } from '~components/autosuggest/interfaces';
+import { type AutosuggestProps } from '~components/autosuggest/interfaces';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { useOptionsLoader } from '../common/options-loader';
