@@ -61,7 +61,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceSegmentedControlFocusOutlineGutter: '6px',
   spaceTabsContentTop: '{spaceScaledS}',
   spaceTabsFocusOutlineGutter: '-8px',
-  spaceTabsVertical: '{spaceScaledXxs}',
+  spaceTabsVertical: '{spaceScaled2xXxs}',
   spaceTableContentBottom: '{spaceXxs}',
   spaceTableEmbeddedHeaderTop: '0px',
   spaceTableFooterHorizontal: '{spaceTableHeaderHorizontal}',
