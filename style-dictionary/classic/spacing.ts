@@ -60,6 +60,12 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
   spaceTableHorizontal: '0px',
+  spaceActionCardHorizontalDefault: '{spaceCardHorizontalDefault}',
+  spaceActionCardHorizontalEmbedded: '{spaceCardHorizontalEmbedded}',
+  spaceActionCardVerticalDefault: '{spaceCardVerticalDefault}',
+  spaceActionCardVerticalEmbedded: '{spaceCardVerticalEmbedded}',
+  spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
+  spaceActionCardContentPaddingTop: '{spaceScaledS}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(

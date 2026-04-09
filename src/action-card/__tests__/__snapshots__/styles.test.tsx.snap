@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getRootStyles returns all CSS custom properties when all root styles are provided 1`] = `
+{
+  "--awsui-style-action-card-background-active-8rcw2s": "#eeeeee",
+  "--awsui-style-action-card-background-default-8rcw2s": "#ffffff",
+  "--awsui-style-action-card-background-disabled-8rcw2s": "#fafafa",
+  "--awsui-style-action-card-background-hover-8rcw2s": "#f5f5f5",
+  "--awsui-style-action-card-border-color-active-8rcw2s": "#9e9e9e",
+  "--awsui-style-action-card-border-color-default-8rcw2s": "#e0e0e0",
+  "--awsui-style-action-card-border-color-disabled-8rcw2s": "#eeeeee",
+  "--awsui-style-action-card-border-color-hover-8rcw2s": "#bdbdbd",
+  "--awsui-style-action-card-border-radius-active-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-default-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-disabled-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-hover-8rcw2s": "8px",
+  "--awsui-style-action-card-border-width-active-8rcw2s": "2px",
+  "--awsui-style-action-card-border-width-default-8rcw2s": "1px",
+  "--awsui-style-action-card-border-width-disabled-8rcw2s": "1px",
+  "--awsui-style-action-card-border-width-hover-8rcw2s": "2px",
+  "--awsui-style-action-card-box-shadow-active-8rcw2s": "0 1px 2px rgba(0,0,0,0.2)",
+  "--awsui-style-action-card-box-shadow-default-8rcw2s": "0 1px 3px rgba(0,0,0,0.1)",
+  "--awsui-style-action-card-box-shadow-disabled-8rcw2s": "none",
+  "--awsui-style-action-card-box-shadow-hover-8rcw2s": "0 2px 6px rgba(0,0,0,0.15)",
+  "--awsui-style-action-card-focus-ring-border-color-8rcw2s": "#0073bb",
+  "--awsui-style-action-card-focus-ring-border-radius-8rcw2s": "10px",
+  "--awsui-style-action-card-focus-ring-border-width-8rcw2s": "2px",
+}
+`;
+
+exports[`getRootStyles returns only background properties when only background is set 1`] = `
+{
+  "--awsui-style-action-card-background-active-8rcw2s": "#eeeeee",
+  "--awsui-style-action-card-background-default-8rcw2s": "#ffffff",
+  "--awsui-style-action-card-background-disabled-8rcw2s": "#fafafa",
+  "--awsui-style-action-card-background-hover-8rcw2s": "#f5f5f5",
+}
+`;
+
+exports[`getRootStyles returns only borderColor properties when only borderColor is set 1`] = `
+{
+  "--awsui-style-action-card-border-color-active-8rcw2s": "#9e9e9e",
+  "--awsui-style-action-card-border-color-default-8rcw2s": "#e0e0e0",
+  "--awsui-style-action-card-border-color-disabled-8rcw2s": "#eeeeee",
+  "--awsui-style-action-card-border-color-hover-8rcw2s": "#bdbdbd",
+}
+`;
+
+exports[`getRootStyles returns only borderRadius properties when only borderRadius is set 1`] = `
+{
+  "--awsui-style-action-card-border-radius-active-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-default-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-disabled-8rcw2s": "8px",
+  "--awsui-style-action-card-border-radius-hover-8rcw2s": "8px",
+}
+`;
+
+exports[`getRootStyles returns only borderWidth properties when only borderWidth is set 1`] = `
+{
+  "--awsui-style-action-card-border-width-active-8rcw2s": "2px",
+  "--awsui-style-action-card-border-width-default-8rcw2s": "1px",
+  "--awsui-style-action-card-border-width-disabled-8rcw2s": "1px",
+  "--awsui-style-action-card-border-width-hover-8rcw2s": "2px",
+}
+`;
+
+exports[`getRootStyles returns only boxShadow properties when only boxShadow is set 1`] = `
+{
+  "--awsui-style-action-card-box-shadow-active-8rcw2s": "0 1px 2px rgba(0,0,0,0.2)",
+  "--awsui-style-action-card-box-shadow-default-8rcw2s": "0 1px 3px rgba(0,0,0,0.1)",
+  "--awsui-style-action-card-box-shadow-disabled-8rcw2s": "none",
+  "--awsui-style-action-card-box-shadow-hover-8rcw2s": "0 2px 6px rgba(0,0,0,0.15)",
+}
+`;
+
+exports[`getRootStyles returns only focusRing properties when only focusRing is set 1`] = `
+{
+  "--awsui-style-action-card-focus-ring-border-color-8rcw2s": "#0073bb",
+  "--awsui-style-action-card-focus-ring-border-radius-8rcw2s": "10px",
+  "--awsui-style-action-card-focus-ring-border-width-8rcw2s": "2px",
+}
+`;
