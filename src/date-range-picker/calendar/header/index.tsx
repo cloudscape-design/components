@@ -54,14 +54,14 @@ export default function CalendarHeader({
           onChangePage={onChangePage}
         />
         <h2 className={styles['calendar-header-pages-wrapper']}>
+          <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-prev${pageUnit}`}>
+            {firstPageHeaderLabel}
+          </span>
           {!isSingleGrid && (
-            <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-prev${pageUnit}`}>
-              {firstPageHeaderLabel}
+            <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-current${pageUnit}`}>
+              {secondPageHeaderLabel}
             </span>
           )}
-          <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-current${pageUnit}`}>
-            {secondPageHeaderLabel}
-          </span>
         </h2>
         <NextPageButton
           ariaLabel={i18n(
