@@ -40,7 +40,6 @@ export default class ActionCardWrapper extends ComponentWrapper<HTMLDivElement> 
    */
   @usesDom
   isDisabled(): boolean {
-    const button = this.element.querySelector('button');
-    return button?.getAttribute('aria-disabled') === 'true';
+    return this.element.classList.contains(testStyles.disabled);
   }
 }

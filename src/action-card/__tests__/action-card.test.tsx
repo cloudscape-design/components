@@ -157,21 +157,26 @@ describe('ActionCard Component', () => {
   });
 
   describe('ariaLabel', () => {
-    test('adds aria-label to the inner button when provided', () => {
+    test('adds aria-label to the root group div when provided', () => {
       const wrapper = renderActionCard({ ariaLabel: 'Card label' });
-      const button = wrapper.getElement().querySelector('button')!;
-      expect(button).toHaveAttribute('aria-label', 'Card label');
+      expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Card label');
     });
 
-    test('does not add aria-label to root div', () => {
+    test('does not duplicate aria-label on the header button', () => {
+      const wrapper = renderActionCard({ ariaLabel: 'Card label', header: 'Header text' });
+      const button = wrapper.getElement().querySelector('button')!;
+      // Button is labeled by its text content; aria-label should not be duplicated here
+      expect(button).not.toHaveAttribute('aria-label');
+    });
+
+    test('adds aria-label to standalone button (no header) when provided', () => {
       const wrapper = renderActionCard({ ariaLabel: 'Card label' });
-      // aria-label is on the button, not the root div
       const button = wrapper.getElement().querySelector('button')!;
       expect(button).toHaveAttribute('aria-label', 'Card label');
     });
 
     test('does not add aria-label when not provided', () => {
-      const wrapper = renderActionCard();
+      const wrapper = renderActionCard({ header: 'Header text' });
       const button = wrapper.getElement().querySelector('button')!;
       expect(button).not.toHaveAttribute('aria-label');
     });
