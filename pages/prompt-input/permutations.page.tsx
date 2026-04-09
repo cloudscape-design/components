@@ -115,6 +115,127 @@ const permutations = createPermutations<PromptInputProps>([
       />,
     ],
   },
+  // Token mode: Basic text and references
+  {
+    tokens: [
+      [{ type: 'text', value: 'Simple text' }],
+      [
+        { type: 'text', value: 'Text with ' },
+        { type: 'reference', id: 'ref-1', label: 'Reference', value: 'ref1', menuId: 'mentions' },
+      ],
+      [
+        { type: 'reference', id: 'ref-1', label: 'Ref1', value: 'ref1', menuId: 'mentions' },
+        { type: 'text', value: ' ' },
+        { type: 'reference', id: 'ref-2', label: 'Ref2', value: 'ref2', menuId: 'mentions' },
+      ],
+    ],
+  },
+  // Token mode: Multiline content
+  {
+    tokens: [
+      [
+        { type: 'text', value: 'Line 1' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'Line 2' },
+      ],
+      [
+        { type: 'text', value: 'A' },
+        { type: 'break', value: '\n' },
+        { type: 'reference', id: 'ref-1', label: 'Ref', value: 'ref1', menuId: 'mentions' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'B' },
+      ],
+    ],
+  },
+  // Token mode: Triggers (menus required for trigger rendering)
+  {
+    tokens: [
+      [{ type: 'trigger', triggerChar: '@', value: '', id: 'trig-1' }],
+      [{ type: 'trigger', triggerChar: '@', value: 'user', id: 'trig-1' }],
+      [
+        { type: 'text', value: 'Text ' },
+        { type: 'trigger', triggerChar: '@', value: 'User', id: 'trig-1' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+  },
+  // Token mode: Pinned references
+  {
+    tokens: [
+      [
+        { type: 'reference', id: 'pin-1', label: 'Pinned', value: 'pin1', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Content' },
+      ],
+      [
+        { type: 'reference', id: 'pin-1', label: 'Pin1', value: 'pin1', menuId: 'mentions', pinned: true },
+        { type: 'reference', id: 'pin-2', label: 'Pin2', value: 'pin2', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Text' },
+      ],
+    ],
+  },
+  // Token mode: Complex mixed (menus required for trigger)
+  {
+    tokens: [
+      [
+        { type: 'reference', id: 'pin-1', label: 'P1', value: 'p1', menuId: 'mentions', pinned: true },
+        { type: 'text', value: 'Start ' },
+        { type: 'trigger', triggerChar: '@', value: 'trig', id: 'trig-1' },
+        { type: 'text', value: ' ' },
+        { type: 'reference', id: 'ref-1', label: 'Ref', value: 'ref1', menuId: 'mentions' },
+        { type: 'break', value: '\n' },
+        { type: 'text', value: 'Line 2' },
+      ],
+    ],
+    menus: [
+      [
+        {
+          id: 'mentions',
+          trigger: '@',
+          options: [
+            { value: 'user1', label: 'User 1' },
+            { value: 'user2', label: 'User 2' },
+          ],
+        },
+      ],
+    ],
+  },
+  // Token mode: State variations
+  {
+    tokens: [
+      [
+        { type: 'reference', id: 'pin-1', label: 'Dev Mode', value: 'dev', menuId: 'mode', pinned: true },
+        { type: 'text', value: 'Tell me about ' },
+        { type: 'reference', id: 'ref-1', label: 'Alice Smith', value: 'user-1', menuId: 'mentions' },
+      ],
+    ],
+    disabled: [false, true],
+    readOnly: [false, true],
+    invalid: [false, true],
+  },
+  // Token mode: Warning state
+  {
+    tokens: [
+      [
+        { type: 'reference', id: 'pin-1', label: 'Dev Mode', value: 'dev', menuId: 'mode', pinned: true },
+        { type: 'text', value: 'Tell me about ' },
+        { type: 'reference', id: 'ref-1', label: 'Alice Smith', value: 'user-1', menuId: 'mentions' },
+      ],
+    ],
+    disabled: [false, true],
+    readOnly: [false, true],
+    warning: [true],
+  },
 ]);
 
 export default function PromptInputPermutations() {

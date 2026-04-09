@@ -17,6 +17,8 @@ import {
   SelectProps,
   SpaceBetween,
   StatusIndicator,
+  Tabs,
+  TabsProps,
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
@@ -43,6 +45,34 @@ const createStrokeHandler = (setter: (value: string) => void) => {
     }
   };
 };
+
+function TabsExample() {
+  const tabs: TabsProps.Tab[] = [
+    {
+      id: 'first',
+      label: 'First tab',
+      content: 'First tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss first tab',
+    },
+    {
+      id: 'second',
+      label: 'Second tab',
+      content: 'Second tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss second tab',
+    },
+    { id: 'third', label: 'Third tab', content: 'Third tab content area' },
+    { id: 'fourth', label: 'Fourth tab', disabled: true, content: 'Fourth tab content area' },
+  ];
+
+  return (
+    <SpaceBetween size="l">
+      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} variant="container" />
+    </SpaceBetween>
+  );
+}
 
 export default function ThemedStrokeWidthPage() {
   const [themed, setThemed] = useState<boolean>(false);
@@ -260,6 +290,10 @@ export default function ThemedStrokeWidthPage() {
               <StatusIndicator type="warning">Warning</StatusIndicator>
               <StatusIndicator type="info">Info</StatusIndicator>
             </SpaceBetween>
+
+            <div>
+              <TabsExample />
+            </div>
             <IconProvider
               icons={{
                 'status-positive': (

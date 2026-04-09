@@ -1,16 +1,64 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 import { act, setNativeValue } from '@cloudscape-design/test-utils-core/utils-dom';
 
+import OptionWrapper from '../internal/option';
+
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.js';
+
+export class PromptInputMenuWrapper extends ComponentWrapper {
+  findOptions(): Array<OptionWrapper> {
+    return this.findAll(`.${selectableStyles['selectable-item']}[data-test-index]`).map(
+      (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
+    );
+  }
+
+  /**
+   * Returns an option from the menu.
+   *
+   * @param optionIndex 1-based index of the option to select.
+   */
+  findOption(optionIndex: number): OptionWrapper | null {
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']}[data-test-index="${optionIndex}"]`,
+      OptionWrapper
+    );
+  }
+
+  /**
+   * Returns an option from the menu by its value
+   *
+   * @param value The 'value' of the option.
+   */
+  findOptionByValue(value: string): OptionWrapper | null {
+    const toReplace = escapeSelector(value);
+    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
+  }
+}
 
 export default class PromptInputWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
 
+  /**
+   * Finds the native textarea element.
+   *
+   * Note: When `menus` or `tokens` is defined, the component uses a contentEditable element instead of a textarea.
+   * In this case, use findContentEditableElement() instead.
+   */
   findNativeTextarea(): ElementWrapper<HTMLTextAreaElement> {
     return this.findByClassName<HTMLTextAreaElement>(testutilStyles.textarea)!;
+  }
+
+  /**
+   * Finds the contentEditable element used when `menus` or `tokens` is defined.
+   */
+  findContentEditableElement(): ElementWrapper<HTMLDivElement> | null {
+    return this.find('[contenteditable="true"]');
   }
 
   /**
@@ -36,25 +84,91 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   /**
-   * Gets the value of the component.
-   *
-   * Returns the current value of the textarea.
+   * Finds the menu dropdown when `menus` or `tokens` is defined.
    */
-  @usesDom getTextareaValue(): string {
-    return this.findNativeTextarea().getElement().value;
+  findOpenMenu(): PromptInputMenuWrapper | null {
+    return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PromptInputMenuWrapper);
   }
 
   /**
-   * Sets the value of the component and calls the onChange handler.
+   * Gets the value of the component.
+   *
+   * Returns the current value of the textarea.
+   *
+   * When `menus` or `tokens` is defined, the component uses a contentEditable element.
+   * Use findContentEditableElement().getElement().textContent instead.
+   */
+  @usesDom getTextareaValue(): string {
+    const textarea = this.findNativeTextarea();
+    return textarea ? textarea.getElement().value : '';
+  }
+
+  /**
+   * Sets the value of the textarea and calls the onChange handler.
+   *
+   * When `menus` or `tokens` is defined, the component uses a contentEditable element
+   * and this method will have no effect.
    *
    * @param value value to set the textarea to.
    */
   @usesDom setTextareaValue(value: string): void {
-    const element = this.findNativeTextarea().getElement();
+    const textarea = this.findNativeTextarea();
+    if (textarea) {
+      const element = textarea.getElement();
+      act(() => {
+        const event = new Event('change', { bubbles: true, cancelable: false });
+        setNativeValue(element, value);
+        element.dispatchEvent(event);
+      });
+    }
+  }
+
+  /**
+   * Checks if the menu is currently open.
+   */
+  @usesDom
+  isMenuOpen(): boolean {
+    const menu = this.findOpenMenu();
+    return menu !== null;
+  }
+
+  /**
+   * Selects an option from the menu by simulating mouse events.
+   *
+   * @param value value of option to select
+   */
+  @usesDom
+  selectMenuOptionByValue(value: string): void {
     act(() => {
-      const event = new Event('change', { bubbles: true, cancelable: false });
-      setNativeValue(element, value);
-      element.dispatchEvent(event);
+      const menu = this.findOpenMenu();
+      if (!menu) {
+        throw new Error('Menu not found');
+      }
+      const option = menu.findOptionByValue(value);
+      if (!option) {
+        throw new Error(`Option with value "${value}" not found in menu`);
+      }
+      option.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
+    });
+  }
+
+  /**
+   * Selects an option from the menu by simulating mouse events.
+   *
+   * @param optionIndex 1-based index of the option to select
+   */
+  @usesDom
+  selectMenuOption(optionIndex: number): void {
+    act(() => {
+      const menu = this.findOpenMenu();
+      if (!menu) {
+        throw new Error('Menu not found');
+      }
+      const option = menu.findOption(optionIndex);
+      if (!option) {
+        throw new Error(`Option at index ${optionIndex} not found in menu`);
+      }
+      option.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
   }
 }
