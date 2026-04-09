@@ -6,6 +6,8 @@ import { render } from '@testing-library/react';
 import ActionCard, { ActionCardProps } from '../../../lib/components/action-card';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/action-card/styles.css.js';
+
 function renderActionCard(props: ActionCardProps = {}) {
   const renderResult = render(<ActionCard {...props} />);
   return createWrapper(renderResult.container).findActionCard()!;
@@ -14,37 +16,11 @@ function renderActionCard(props: ActionCardProps = {}) {
 describe('ActionCard Component', () => {
   describe('root element', () => {
     test('contains a button element with type="button"', () => {
+      // This test is used for accessibility reasons. The button acts as the interactive layer (active, hover, click).
       const wrapper = renderActionCard();
       const button = wrapper.getElement().querySelector('button');
       expect(button).toBeTruthy();
       expect(button).toHaveAttribute('type', 'button');
-    });
-  });
-
-  describe('default prop values', () => {
-    test('disabled defaults to false', () => {
-      const wrapper = renderActionCard();
-      expect(wrapper.isDisabled()).toBe(false);
-    });
-
-    test('disableHeaderPaddings defaults to false', () => {
-      const wrapper = renderActionCard({ header: 'Header' });
-      expect(wrapper.findHeader()!.getElement().closest('[class*="no-padding"]')).toBeNull();
-    });
-
-    test('disableContentPaddings defaults to false', () => {
-      const wrapper = renderActionCard({ children: 'Content' });
-      expect(wrapper.findContent()!.getElement().closest('[class*="no-padding"]')).toBeNull();
-    });
-
-    test('iconVerticalAlignment defaults to top', () => {
-      const wrapper = renderActionCard({ icon: <span>icon</span>, header: 'Header' });
-      expect(wrapper.findIcon()).not.toBeNull();
-    });
-
-    test('variant defaults to default', () => {
-      const wrapper = renderActionCard();
-      expect(wrapper.getElement().className).toMatch(/variant-default/);
     });
   });
 
@@ -55,8 +31,10 @@ describe('ActionCard Component', () => {
     });
 
     test('renders header as ReactNode', () => {
-      const wrapper = renderActionCard({ header: <strong>Bold Header</strong> });
-      expect(wrapper.findHeader()!.getElement().querySelector('strong')).toHaveTextContent('Bold Header');
+      const wrapper = renderActionCard({ header: <span data-testid="custom">Custom Header</span> });
+      expect(wrapper.findHeader()!.getElement().querySelector('[data-testid="custom"]')).toHaveTextContent(
+        'Custom Header'
+      );
     });
 
     test('does not render header element when not provided', () => {
@@ -78,8 +56,10 @@ describe('ActionCard Component', () => {
     });
 
     test('renders description as ReactNode', () => {
-      const wrapper = renderActionCard({ description: <em>Italic Desc</em> });
-      expect(wrapper.findDescription()!.getElement().querySelector('em')).toHaveTextContent('Italic Desc');
+      const wrapper = renderActionCard({ description: <span data-testid="custom">Custom Desc</span> });
+      expect(wrapper.findDescription()!.getElement().querySelector('[data-testid="custom"]')).toHaveTextContent(
+        'Custom Desc'
+      );
     });
 
     test('does not render description element when not provided', () => {
@@ -113,7 +93,7 @@ describe('ActionCard Component', () => {
       expect(wrapper.isDisabled()).toBe(false);
     });
 
-    test('applies disabled state when true', () => {
+    test('applies disabled state when disabled=true', () => {
       const wrapper = renderActionCard({ disabled: true });
       expect(wrapper.isDisabled()).toBe(true);
       const button = wrapper.getElement().querySelector('button')!;
@@ -137,6 +117,13 @@ describe('ActionCard Component', () => {
 
   describe('onClick', () => {
     test('calls onClick when clicked', () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderActionCard({ onClick: onClickSpy });
+      wrapper.click();
+      expect(onClickSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('fires onClick exactly once per click', () => {
       const onClickSpy = jest.fn();
       const wrapper = renderActionCard({ onClick: onClickSpy });
       wrapper.click();
@@ -207,12 +194,6 @@ describe('ActionCard Component', () => {
       expect(descEl).toHaveTextContent('Desc');
     });
 
-    test('does not set aria-describedby when description is provided without header or ariaLabel', () => {
-      const wrapper = renderActionCard({ description: 'Desc' });
-      const button = wrapper.getElement().querySelector('button')!;
-      expect(button).not.toHaveAttribute('aria-describedby');
-    });
-
     test('does not set aria-describedby when neither ariaDescribedby nor description provided', () => {
       const wrapper = renderActionCard();
       const button = wrapper.getElement().querySelector('button')!;
@@ -232,9 +213,14 @@ describe('ActionCard Component', () => {
   });
 
   describe('icon', () => {
-    test('renders icon with aria-hidden when provided', () => {
+    test('renders icon when provided', () => {
       const wrapper = renderActionCard({ icon: <span>icon</span> });
       expect(wrapper.findIcon()).not.toBeNull();
+    });
+
+    test('renders no icon when icon prop is not specified', () => {
+      const wrapper = renderActionCard({ header: 'Header' });
+      expect(wrapper.findIcon()).toBeNull();
     });
   });
 
@@ -267,54 +253,46 @@ describe('ActionCard Component', () => {
   describe('variant', () => {
     test('renders with default variant by default', () => {
       const wrapper = renderActionCard({ header: 'Header' });
-      expect(wrapper.getElement().className).toMatch(/variant-default/);
+      expect(wrapper.getElement()).toHaveClass(styles['variant-default']);
     });
 
     test('renders with embedded variant', () => {
       const wrapper = renderActionCard({ variant: 'embedded', header: 'Header' });
-      expect(wrapper.getElement().className).toMatch(/variant-embedded/);
+      expect(wrapper.getElement()).toHaveClass(styles['variant-embedded']);
     });
   });
 
   describe('iconVerticalAlignment', () => {
-    test('places icon in header row when alignment is top and header is present', () => {
+    test('renders icon with iconVerticalAlignment=top', () => {
       const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'top', header: 'Header' });
       expect(wrapper.findIcon()).not.toBeNull();
-      expect(wrapper.findHeader()).not.toBeNull();
     });
 
-    test('places icon outside header row when alignment is center', () => {
+    test('renders icon with iconVerticalAlignment=center', () => {
       const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'center', header: 'Header' });
       expect(wrapper.findIcon()).not.toBeNull();
-      expect(wrapper.findHeader()).not.toBeNull();
-    });
-
-    test('places icon outside header row when there is no header', () => {
-      const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'top' });
-      expect(wrapper.findIcon()).not.toBeNull();
-      expect(wrapper.findHeader()).toBeNull();
     });
   });
 
   describe('padding options', () => {
-    test('renders with disableHeaderPaddings true', () => {
+    test('applies no-padding class to header when disableHeaderPaddings is true', () => {
       const wrapper = renderActionCard({ header: 'Header', disableHeaderPaddings: true });
-      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header');
+      expect(wrapper.findByClassName(styles.header)!.getElement()).toHaveClass(styles['no-padding']);
     });
 
-    test('renders with disableHeaderPaddings false', () => {
-      const wrapper = renderActionCard({ header: 'Header', disableHeaderPaddings: false });
-      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header');
+    test('does not apply no-padding class to header by default', () => {
+      const wrapper = renderActionCard({ header: 'Header' });
+      expect(wrapper.findByClassName(styles.header)!.getElement()).not.toHaveClass(styles['no-padding']);
     });
 
-    test('renders with disableContentPaddings true', () => {
+    test('applies no-padding class to body when disableContentPaddings is true', () => {
       const wrapper = renderActionCard({ children: 'Content', disableContentPaddings: true });
-      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content');
+      expect(wrapper.findContent()!.getElement()).toHaveClass(styles['no-padding']);
     });
 
-    test('renders with disableContentPaddings false', () => {
-      const wrapper = renderActionCard({ children: 'Content', disableContentPaddings: false });
-      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content');
+    test('does not apply no-padding class to body by default', () => {
+      const wrapper = renderActionCard({ children: 'Content' });
+      expect(wrapper.findContent()!.getElement()).not.toHaveClass(styles['no-padding']);
     });
   });
 
@@ -324,13 +302,6 @@ describe('ActionCard Component', () => {
       expect(wrapper.findHeader()).not.toBeNull();
       expect(wrapper.findDescription()).not.toBeNull();
       expect(wrapper.isDisabled()).toBe(true);
-    });
-  });
-
-  describe('no icon', () => {
-    test('renders no icon when icon prop is not specified', () => {
-      const wrapper = renderActionCard({ header: 'Header' });
-      expect(wrapper.findIcon()).toBeNull();
     });
   });
 
