@@ -53,6 +53,7 @@ export default function DateRangePickerCalendar({
   customAbsoluteRangeControl,
   granularity = 'day',
   referrerId,
+  multiGridStartPeriod,
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
   const isMonthPicker = granularity === 'month';
@@ -67,24 +68,24 @@ export default function DateRangePickerCalendar({
   const addPage = isMonthPicker ? addYears : addMonths;
   const startOfPage = isMonthPicker ? startOfYear : startOfMonth;
   const findItemToFocus = isMonthPicker ? findMonthToFocus : findDateToFocus;
-  const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid));
+  const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid, multiGridStartPeriod));
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
     if (value.start.date) {
       const startDate = parseDate(value.start.date);
       if (isSamePage(startDate, currentPage)) {
         return startDate;
       }
-      if (!isSingleGrid && isSamePage(startDate, addPage(currentPage, -1))) {
+      if (!isSingleGrid && isSamePage(startDate, addPage(currentPage, 1))) {
         return startDate;
       }
     }
-    return findItemToFocus(parseDate(value.start.date), currentPage, isDateEnabled);
+    return findItemToFocus(parseDate(value.start.date), currentPage, isDateEnabled, isSingleGrid);
   });
 
   const updateCurrentPage = (startDate: string) => {
     if ((isMonthPicker && startDate.length >= 4) || startDate.length >= 8) {
       const newCurrentPage = startOfPage(parseDate(startDate));
-      setCurrentPage(isSingleGrid ? newCurrentPage : addPage(newCurrentPage, 1));
+      setCurrentPage(newCurrentPage);
     }
   };
 

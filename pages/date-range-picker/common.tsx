@@ -27,6 +27,7 @@ interface DateRangePickerPageSettings {
   disabledDates?: DisabledDate;
   showDisabledReason?: boolean;
   hasValue?: boolean;
+  absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
 }
 
 const defaultSettings: Required<DateRangePickerPageSettings> = {
@@ -45,6 +46,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   disabledDates: 'none',
   showDisabledReason: true,
   hasValue: true,
+  absoluteMultiGridStartPeriod: 'current',
 };
 
 export function useDateRangePickerSettings(
@@ -89,6 +91,7 @@ export function useDateRangePickerSettings(
   const disabledDates = urlParams.disabledDates ?? def('disabledDates');
   const showDisabledReason = parseBoolean(def('showDisabledReason'), urlParams.showDisabledReason);
   const hasValue = parseBoolean(def('hasValue'), urlParams.hasValue);
+  const absoluteMultiGridStartPeriod = urlParams.absoluteMultiGridStartPeriod ?? def('absoluteMultiGridStartPeriod');
   const settings: Required<DateRangePickerPageSettings> = {
     dateOnly,
     monthOnly,
@@ -105,6 +108,7 @@ export function useDateRangePickerSettings(
     disabledDates,
     showDisabledReason,
     hasValue,
+    absoluteMultiGridStartPeriod,
   };
   const setSettings = (settings: DateRangePickerPageSettings) => setUrlParams(settings);
 
@@ -211,6 +215,7 @@ export function useDateRangePickerSettings(
     isValidRange: isValid(monthOnly ? 'month' : 'day'),
     placeholder,
     i18nStrings,
+    absoluteMultiGridStartPeriod,
     locale: 'en-GB',
   };
 
@@ -256,6 +261,7 @@ export function Settings({
     disabledDates,
     showDisabledReason,
     hasValue,
+    absoluteMultiGridStartPeriod,
   },
   setSettings,
 }: {
@@ -274,6 +280,7 @@ export function Settings({
   const dateFormatOptions = [{ value: 'iso' }, { value: 'slashed' }, { value: 'long-localized' }];
   const inputDateFormat = [{ value: 'iso' }, { value: 'slashed' }];
   const timeFormatOptions = [{ value: 'hh:mm:ss' }, { value: 'hh:mm' }, { value: 'hh' }];
+  const absoluteMultiGridStartPeriodOptions = [{ value: 'current' }, { value: 'previous' }, { value: 'auto' }];
   return (
     <SpaceBetween size="m" direction="horizontal">
       <FormField label="Range selector mode">
@@ -329,6 +336,20 @@ export function Settings({
           type="number"
           value={`${timeOffset}`}
           onChange={({ detail }) => setSettings({ timeOffset: parseInt(detail.value) })}
+        />
+      </FormField>
+
+      <FormField label="Start period">
+        <Select
+          options={absoluteMultiGridStartPeriodOptions}
+          selectedOption={
+            absoluteMultiGridStartPeriodOptions.find(o => o.value === absoluteMultiGridStartPeriod) ?? null
+          }
+          onChange={({ detail }) =>
+            setSettings({
+              absoluteMultiGridStartPeriod: detail.selectedOption.value as DateRangePickerProps.StartPeriod,
+            })
+          }
         />
       </FormField>
 
