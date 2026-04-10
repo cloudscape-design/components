@@ -65,7 +65,9 @@ const permutations = createPermutations<ActionCardProps>([
     header: [shortHeader],
     description: [shortDescription],
     children: [shortContent],
-    disabled: [false, true],
+    icon: [icon],
+    iconVerticalAlignment: ['top', 'center'],
+    disabled: [true],
     onClick: [onClick],
   },
   // Long content wrapping
