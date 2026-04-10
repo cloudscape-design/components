@@ -61,7 +61,7 @@ $action-padding-horizontal: awsui.$space-xxs;
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
-  background-color: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card);
+  background: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card);
   min-inline-size: 0;
   box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-item-card);
 
@@ -85,7 +85,7 @@ $action-padding-horizontal: awsui.$space-xxs;
   }
 
   &.highlighted {
-    background-color: awsui.$color-background-item-selected;
+    background: awsui.$color-background-item-selected;
 
     &:before {
       border-block: solid awsui.$border-width-item-card-highlighted awsui.$color-border-item-card-highlighted;
