@@ -44,6 +44,7 @@ const InternalActionCard = React.forwardRef(
     const buttonRef = useRef<HTMLButtonElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     const headerId = useUniqueId('action-card-header-');
+    const standaloneButtonId = useUniqueId('action-card-button-');
     const descriptionId = useUniqueId('action-card-description-');
     const bodyId = useUniqueId('action-card-body-');
 
@@ -139,6 +140,7 @@ const InternalActionCard = React.forwardRef(
       <button
         {...buttonProps}
         ref={buttonRef}
+        id={standaloneButtonId}
         className={clsx(styles['standalone-button'], nativeButtonAttributes?.className)}
         aria-label={ariaLabel || undefined}
         aria-labelledby={!ariaLabel ? (description ? descriptionId : children ? bodyId : undefined) : undefined}
@@ -172,6 +174,7 @@ const InternalActionCard = React.forwardRef(
         {...baseProps}
         ref={mergedRootRef}
         role="group"
+        aria-labelledby={header ? headerId : standaloneButtonId}
         className={clsx(
           styles.root,
           styles[`variant-${variant}`],
@@ -184,7 +187,6 @@ const InternalActionCard = React.forwardRef(
         )}
         style={rootStyleProps}
         onClick={handleRootClick}
-        aria-label={ariaLabel}
         aria-disabled={disabled || undefined}
       >
         {standaloneButton}
