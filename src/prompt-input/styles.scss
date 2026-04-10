@@ -229,9 +229,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   &:disabled,
   &.textarea-disabled {
     color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled);
-    @include styles.form-disabled-element;
-    // Reset border added by form-disabled-element — the outer .root handles the border
-    border: 0;
     cursor: default;
     overflow-y: hidden;
 
