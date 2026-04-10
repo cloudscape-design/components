@@ -154,6 +154,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceButtonHorizontal: {
+    description: 'The horizontal padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceButtonVertical: {
+    description: 'The vertical padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
 
-import createWrapper from '../';
 import ButtonWrapper from '../button';
 import InputWrapper from '../input';
 import ModalWrapper from '../modal';
