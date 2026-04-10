@@ -4,90 +4,13 @@
 */
 
 @use 'sass:map';
-@use 'sass:math';
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './mixins' as mixins;
 @use './motion';
-
-// Variant configuration maps
-$variant-border-radius: (
-  'embedded': awsui.$border-radius-action-card-embedded,
-  'default': awsui.$border-radius-action-card-default,
-);
-
-$variant-padding-block: (
-  'embedded': awsui.$space-action-card-vertical-embedded,
-  'default': awsui.$space-action-card-vertical-default,
-);
-
-$variant-padding-inline: (
-  'embedded': awsui.$space-action-card-horizontal-embedded,
-  'default': awsui.$space-action-card-horizontal-default,
-);
-
-@mixin apply-border-radius($variant: 'default', $state: 'default') {
-  $radius: map.get($variant-border-radius, $variant);
-  @if $state == 'default' {
-    border-start-start-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
-    border-start-end-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
-    border-end-start-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
-    border-end-end-radius: var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius);
-  } @else if $state == 'hover' {
-    border-start-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusHover},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-start-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusHover},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusHover},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusHover},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-  } @else if $state == 'active' {
-    border-start-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusActive},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-start-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusActive},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusActive},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusActive},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-  } @else if $state == 'disabled' {
-    border-start-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusDisabled},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-start-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusDisabled},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-start-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusDisabled},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-    border-end-end-radius: var(
-      #{custom-props.$styleActionCardBorderRadiusDisabled},
-      var(#{custom-props.$styleActionCardBorderRadiusDefault}, $radius)
-    );
-  }
-}
 
 .header {
   &-inner {
@@ -148,10 +71,10 @@ $variant-padding-inline: (
   }
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant}::after {
-      @include apply-border-radius($variant);
+      @include mixins.apply-border-radius($variant);
     }
     &.variant-#{$variant}.disabled::after {
-      @include apply-border-radius($variant, 'disabled');
+      @include mixins.apply-border-radius($variant, 'disabled');
     }
   }
 }
@@ -167,9 +90,9 @@ $variant-padding-inline: (
   }
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant} {
-      @include apply-border-radius($variant);
+      @include mixins.apply-border-radius($variant);
       &.disabled {
-        @include apply-border-radius($variant, 'disabled');
+        @include mixins.apply-border-radius($variant, 'disabled');
       }
     }
   }
@@ -211,28 +134,19 @@ $variant-padding-inline: (
       inline-size: 100%;
       min-inline-size: 0;
 
-      > .header + .body {
-        &:not(.no-padding) {
-          padding-block-start: awsui.$space-xxs;
-        }
-      }
-
-      > .header {
-        &:not(.no-padding):has(+ .body) {
-          padding-block-end: awsui.$space-xxs;
-        }
-      }
-
+      > .header + .body,
       > .header-row + .body {
         &:not(.no-padding) {
           padding-block-start: awsui.$space-xxs;
         }
       }
 
-      > .header-row:has(+ .body) {
-        > .header:not(.no-padding) {
-          padding-block-end: awsui.$space-xxs;
-        }
+      > .header:not(.no-padding):has(+ .body) {
+        padding-block-end: awsui.$space-xxs;
+      }
+
+      > .header-row:has(+ .body) > .header:not(.no-padding) {
+        padding-block-end: awsui.$space-xxs;
       }
     }
   }
@@ -250,14 +164,7 @@ $variant-padding-inline: (
     );
     box-shadow: var(#{custom-props.$styleActionCardBoxShadowDisabled}, none);
 
-    @each $variant in ('embedded', 'default') {
-      &.variant-#{$variant} {
-        &,
-        &:after {
-          @include apply-border-radius($variant, 'disabled');
-        }
-      }
-    }
+    @include mixins.variant-border-radius-all('disabled');
 
     > .icon {
       color: awsui.$color-icon-action-card-disabled;
@@ -280,17 +187,10 @@ $variant-padding-inline: (
     background-color: var(#{custom-props.$styleActionCardBackgroundHover}, awsui.$color-background-action-card-hover);
     box-shadow: var(#{custom-props.$styleActionCardBoxShadowHover}, none);
 
+    @include mixins.variant-border-radius-all('hover');
+
     > .icon {
       color: awsui.$color-icon-action-card-hover;
-    }
-
-    @each $variant in ('embedded', 'default') {
-      &.variant-#{$variant} {
-        &,
-        &:after {
-          @include apply-border-radius($variant, 'hover');
-        }
-      }
     }
 
     &:after {
@@ -304,17 +204,10 @@ $variant-padding-inline: (
     background-color: var(#{custom-props.$styleActionCardBackgroundActive}, awsui.$color-background-action-card-active);
     box-shadow: var(#{custom-props.$styleActionCardBoxShadowActive}, none);
 
+    @include mixins.variant-border-radius-all('active');
+
     > .icon {
       color: awsui.$color-icon-action-card-active;
-    }
-
-    @each $variant in ('embedded', 'default') {
-      &.variant-#{$variant} {
-        &,
-        &:after {
-          @include apply-border-radius($variant, 'active');
-        }
-      }
     }
 
     &:after {
@@ -333,11 +226,9 @@ $variant-padding-inline: (
   &.disabled > .inner-card > .header-row > .icon {
     color: awsui.$color-icon-action-card-disabled;
   }
-
   &:not(.disabled):has(button:hover) > .inner-card > .header-row > .icon {
     color: awsui.$color-icon-action-card-hover;
   }
-
   &:not(.disabled):has(button:active) > .inner-card > .header-row > .icon {
     color: awsui.$color-icon-action-card-active;
   }
@@ -357,10 +248,7 @@ $variant-padding-inline: (
           #{custom-props.$styleActionCardFocusRingBorderRadius},
           awsui.$border-radius-control-default-focus-ring
         );
-        border-start-start-radius: $focus-radius;
-        border-start-end-radius: $focus-radius;
-        border-end-start-radius: $focus-radius;
-        border-end-end-radius: $focus-radius;
+        @include mixins.all-corners-radius($focus-radius);
       }
     }
   }
@@ -369,20 +257,14 @@ $variant-padding-inline: (
     &.variant-#{$variant} {
       &,
       &:after {
-        @include apply-border-radius($variant);
+        @include mixins.apply-border-radius($variant);
       }
 
-      $padding-block: map.get($variant-padding-block, $variant);
-      $padding-inline: map.get($variant-padding-inline, $variant);
+      $padding-block: map.get(mixins.$variant-padding-block, $variant);
+      $padding-inline: map.get(mixins.$variant-padding-inline, $variant);
 
       > .inner-card > .header,
-      > .inner-card > .body {
-        &:not(.no-padding) {
-          padding-block: $padding-block;
-          padding-inline: $padding-inline;
-        }
-      }
-
+      > .inner-card > .body,
       > .inner-card > .header-row > .header {
         &:not(.no-padding) {
           padding-block: $padding-block;
@@ -399,21 +281,13 @@ $variant-padding-inline: (
       }
 
       &.icon-align-end {
-        > .icon {
-          padding-inline-end: $padding-inline;
-        }
-
+        > .icon,
         > .inner-card > .header-row > .icon {
           padding-inline-end: $padding-inline;
         }
 
         > .inner-card > .header,
-        > .inner-card > .body {
-          &:not(.no-padding) {
-            padding-inline-end: awsui.$space-xs;
-          }
-        }
-
+        > .inner-card > .body,
         > .inner-card > .header-row > .header {
           &:not(.no-padding) {
             padding-inline-end: awsui.$space-xs;
