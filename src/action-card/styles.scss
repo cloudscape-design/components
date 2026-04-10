@@ -129,6 +129,7 @@ $variant-padding-inline: (
   flex-shrink: 0;
   display: flex;
   color: awsui.$color-icon-action-card-default;
+  pointer-events: none;
 }
 
 .button {
@@ -136,11 +137,22 @@ $variant-padding-inline: (
   cursor: pointer;
   color: inherit;
   font: inherit;
+  &.disabled {
+    cursor: default;
+  }
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
+  }
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant}::after {
+      @include apply-border-radius($variant);
+    }
+    &.variant-#{$variant}.disabled::after {
+      @include apply-border-radius($variant, 'disabled');
+    }
   }
 }
 
@@ -150,6 +162,17 @@ $variant-padding-inline: (
   inset: 0;
   cursor: pointer;
   opacity: 0;
+  &.disabled {
+    cursor: default;
+  }
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      @include apply-border-radius($variant);
+      &.disabled {
+        @include apply-border-radius($variant, 'disabled');
+      }
+    }
+  }
 }
 
 .root {
@@ -226,15 +249,6 @@ $variant-padding-inline: (
       awsui.$color-background-action-card-disabled
     );
     box-shadow: var(#{custom-props.$styleActionCardBoxShadowDisabled}, none);
-
-    > .standalone-button {
-      cursor: default;
-    }
-
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
-    .button {
-      cursor: default;
-    }
 
     @each $variant in ('embedded', 'default') {
       &.variant-#{$variant} {
@@ -355,15 +369,6 @@ $variant-padding-inline: (
     &.variant-#{$variant} {
       &,
       &:after {
-        @include apply-border-radius($variant);
-      }
-
-      > .standalone-button {
-        @include apply-border-radius($variant);
-      }
-
-      // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
-      .button::after {
         @include apply-border-radius($variant);
       }
 

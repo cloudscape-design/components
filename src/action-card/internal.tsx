@@ -98,7 +98,12 @@ const InternalActionCard = React.forwardRef(
     const buttonProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {
       ...nativeButtonAttributes,
       type: 'button',
-      className: clsx(styles.button, nativeButtonAttributes?.className),
+      className: clsx(
+        styles.button,
+        disabled && styles.disabled,
+        variant && styles[`variant-${variant}`],
+        nativeButtonAttributes?.className
+      ),
       onClick: handleButtonClick,
       'aria-describedby': ariaDescribedby || (description && (ariaLabel || header) ? descriptionId : undefined),
       'aria-disabled': disabled || undefined,
@@ -141,7 +146,12 @@ const InternalActionCard = React.forwardRef(
         {...buttonProps}
         ref={buttonRef}
         id={standaloneButtonId}
-        className={clsx(styles['standalone-button'], nativeButtonAttributes?.className)}
+        className={clsx(
+          styles['standalone-button'],
+          disabled && styles.disabled,
+          variant && styles[`variant-${variant}`],
+          nativeButtonAttributes?.className
+        )}
         aria-label={ariaLabel || undefined}
         aria-labelledby={!ariaLabel ? (description ? descriptionId : children ? bodyId : undefined) : undefined}
       />
