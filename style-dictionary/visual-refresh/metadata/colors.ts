@@ -28,8 +28,18 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundButtonLinkDefault: {
+    description: 'The background color of link buttons in default state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonLinkHover: {
     description: 'The background color of link buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkDisabled: {
+    description: 'The background color of link buttons in disabled state.',
     themeable: true,
     public: true,
   },
@@ -347,6 +357,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBorderButtonLinkDisabled: {
+    description: 'The border color of link buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
   colorBorderToggleButtonNormalPressed: {
     description: 'The border color of normal toggle buttons in pressed state.',
@@ -560,6 +575,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonInlineIconDefault: {
+    description: 'The default color of inline button icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconDisabled: {
+    description: 'The color of inline button icons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconHover: {
+    description: 'The color of inline button icons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorTextButtonNormalActive: {
     description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
     themeable: true,
@@ -599,6 +629,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The active text color of link buttons.',
     themeable: true,
     public: false,
+  },
+  colorTextButtonLinkActive: {
+    description: 'The text color of link buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkDefault: {
+    description: 'The default text color of link buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkHover: {
+    description: 'The text color of link buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkDisabled: {
+    description: 'The text color of link buttons in disabled state.',
+    themeable: true,
+    public: true,
   },
   colorTextButtonPrimaryDefault: {
     description: 'The default text color of primary buttons.',
