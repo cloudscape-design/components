@@ -32863,6 +32863,15 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
+          "description": "Clicks the action card by forwarding the click to the internal button element.",
+          "name": "click",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "void",
+          },
+        },
+        {
           "description": "Returns the content element of the action card.",
           "name": "findContent",
           "parameters": [],
