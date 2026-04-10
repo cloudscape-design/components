@@ -4,9 +4,9 @@ import React from 'react';
 
 import ActionCard, { ActionCardProps } from '~components/action-card';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 import {
   icon,
   longContent,
@@ -92,18 +92,15 @@ const permutations = createPermutations<ActionCardProps>([
 
 export default function ActionCardPermutations() {
   return (
-    <>
-      <h1>Action card permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => (
-            <div style={{ maxInlineSize: '400px' }}>
-              <ActionCard {...permutation} />
-            </div>
-          )}
-        />
-      </ScreenshotArea>
-    </>
+    <PermutationsPage title="Action card permutations" i18n={{}}>
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <div style={{ maxInlineSize: '400px' }}>
+            <ActionCard {...permutation} />
+          </div>
+        )}
+      />
+    </PermutationsPage>
   );
 }

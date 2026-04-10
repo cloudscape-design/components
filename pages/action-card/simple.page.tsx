@@ -34,7 +34,7 @@ export default function ActionCardSimplePage() {
               icon={<Icon name="angle-right" />}
               iconVerticalAlignment="center"
               ariaLabel="Test Action card"
-              onClick={() => setClickedCard('Basic')}
+              onClick={() => setClickedCard('Basic 1')}
             >
               Test
             </ActionCard>
@@ -43,14 +43,14 @@ export default function ActionCardSimplePage() {
               description="A description of the template/icebreaker"
               icon={<Icon name="arrow-right" />}
               iconVerticalAlignment="top"
-              onClick={() => setClickedCard('Basic')}
+              onClick={() => setClickedCard('Basic 2')}
             ></ActionCard>
             <ActionCard
               header={<b>Account alias (111112222233333)</b>}
               description="Dev/john.doe@amazon.com"
               icon={<Icon name="angle-right" />}
               iconVerticalAlignment="top"
-              onClick={() => setClickedCard('Basic')}
+              onClick={() => setClickedCard('Basic 3')}
             >
               Logged in 1 minute ago
             </ActionCard>
