@@ -4,15 +4,12 @@ import React from 'react';
 
 import { ActionCard, Icon, SpaceBetween } from '~components';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 export default function ActionCardStyleCustomPage() {
   return (
-    <ScreenshotArea>
-      <h1>Custom Action Card styles</h1>
-
+    <SimplePage title="Custom Action Card styles" screenshotArea={{}}>
       <SpaceBetween size="m" direction="horizontal">
-        {/* Root: background, border, shadow */}
         <ActionCard
           header="Custom border and shadow"
           description="Green border, red shadow"
@@ -39,7 +36,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* Custom focus ring */}
         <ActionCard
           header="Custom focus ring"
           description="Orange focus ring with large radius"
@@ -54,7 +50,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* Header and content padding */}
         <ActionCard
           header="Custom padding"
           description="Large header and content padding"
@@ -67,7 +62,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* Zero padding */}
         <ActionCard
           header="Zero padding"
           description="No padding on header or content"
@@ -80,7 +74,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* Embedded variant with custom styles */}
         <ActionCard
           variant="embedded"
           header="Embedded variant"
@@ -96,7 +89,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* Disabled state colors */}
         <ActionCard
           header="Disabled state"
           description="Custom disabled colors"
@@ -113,7 +105,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
 
-        {/* With icon */}
         <ActionCard
           header="With icon"
           icon={<Icon name="arrow-right" />}
@@ -132,6 +123,6 @@ export default function ActionCardStyleCustomPage() {
           Content area
         </ActionCard>
       </SpaceBetween>
-    </ScreenshotArea>
+    </SimplePage>
   );
 }
