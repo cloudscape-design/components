@@ -18,7 +18,12 @@ export default function ActionCardStyleCustomPage() {
           description="Green border, red shadow"
           style={{
             root: {
-              background: { default: '#fcfcfc', hover: '#f0fff0', active: '#e0ffe0', disabled: '#fafafa' },
+              background: {
+                default: 'light-dark(#fcfcfc, #1a1a1a)',
+                hover: 'light-dark(#f0fff0, #1a2e1a)',
+                active: 'light-dark(#e0ffe0, #0f1f0f)',
+                disabled: 'light-dark(#fafafa, #2a2a2a)',
+              },
               borderColor: { default: 'green', hover: 'darkgreen', active: 'green', disabled: '#ccc' },
               borderRadius: { default: '8px', hover: '8px', active: '8px', disabled: '8px' },
               borderWidth: { default: '2px', hover: '3px', active: '3px', disabled: '1px' },
@@ -98,10 +103,10 @@ export default function ActionCardStyleCustomPage() {
           disabled={true}
           style={{
             root: {
-              background: { default: '#fff', disabled: '#fff5f5' },
+              background: { default: 'light-dark(#fff, #1a1a1a)', disabled: 'light-dark(#fff5f5, #2a1a1a)' },
               borderColor: { default: 'green', disabled: '#fbb' },
               borderWidth: { default: '2px', disabled: '2px' },
-              boxShadow: { disabled: '0px 2px 4px #ffd0d0' },
+              boxShadow: { disabled: 'light-dark(0px 2px 4px #ffd0d0, 0px 2px 4px #3a0000)' },
             },
           }}
         >
