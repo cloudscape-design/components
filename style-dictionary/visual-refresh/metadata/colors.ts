@@ -841,6 +841,28 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkSecondaryDefault: {
+    description:
+      'The default color for secondary links. For example: links with lower visual emphasis or supplementary content.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkSecondaryHover: {
+    description:
+      'The hover color for secondary links. For example: links with lower visual emphasis or supplementary content.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkInfoDefault: {
+    description: 'The default color for info links.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkInfoHover: {
+    description: 'The hover color for info links.',
+    public: true,
+    themeable: true,
+  },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',
     public: true,
