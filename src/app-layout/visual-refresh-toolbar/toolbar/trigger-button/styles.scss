@@ -22,28 +22,16 @@
     box-sizing: border-box;
   }
 
-  &-with-badge {
-    clip-path: path(
-      'M29.2862 10.4145C28.7243 10.5998 28.1238 10.7 27.4999 10.7C24.3519 10.7 21.7999 8.14803 21.7999 5C21.7999 3.92883 22.0954 2.92667 22.6093 2.07057C20.3785 0.754846 17.7774 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30C23.2843 30 30 23.2843 30 15C30 13.4007 29.7497 11.8599 29.2862 10.4145Z'
-    );
-
-    @include styles.with-direction('rtl') {
-      clip-path: path(
-        'M2.21384 10.4145C2.77569 10.5998 3.37617 10.7 4.00007 10.7C7.1481 10.7 9.70007 8.14803 9.70007 5C9.70007 3.92883 9.4046 2.92667 8.89071 2.07057C11.1215 0.754846 13.7226 0 16.5 0C24.7843 0 31.5 6.71573 31.5 15C31.5 23.2843 24.7843 30 16.5 30C8.21573 30 1.5 23.2843 1.5 15C1.5 13.4007 1.75029 11.8599 2.21384 10.4145Z'
-      );
-    }
-  }
-
   &:focus {
     // custom outline attached on the wrapping element
     outline: none;
   }
 
-  &.circle {
-    border-start-start-radius: 50%;
-    border-start-end-radius: 50%;
-    border-end-start-radius: 50%;
-    border-end-end-radius: 50%;
+  &.default {
+    border-start-start-radius: awsui.$border-radius-button;
+    border-start-end-radius: awsui.$border-radius-button;
+    border-end-start-radius: awsui.$border-radius-button;
+    border-end-end-radius: awsui.$border-radius-button;
     block-size: 30px;
     inline-size: 30px;
 
@@ -87,6 +75,7 @@
   border-end-start-radius: 8px;
   border-end-end-radius: 8px;
   background-color: awsui.$color-background-badge-icon;
-  inset-block-start: 1px;
+  inset-block-start: -1px;
   inset-inline-end: -1px;
+  outline: solid 2px awsui.$color-background-layout-panel-content;
 }
