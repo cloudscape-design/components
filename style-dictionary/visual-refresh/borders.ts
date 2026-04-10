@@ -67,8 +67,8 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthIconLarge: '4px',
   borderRadiusActionCardDefault: '{borderRadiusCardDefault}',
   borderRadiusActionCardEmbedded: '{borderRadiusCardEmbedded}',
-  borderWidthActionCardDefault: '1px',
-  borderWidthActionCardHover: '1px',
-  borderWidthActionCardActive: '1px',
-  borderWidthActionCardDisabled: '1px',
+  borderWidthActionCardDefault: '{borderWidthCard}',
+  borderWidthActionCardHover: '{borderWidthCard}',
+  borderWidthActionCardActive: '{borderWidthCard}',
+  borderWidthActionCardDisabled: '{borderWidthCard}',
 };
