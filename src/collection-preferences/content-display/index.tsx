@@ -22,6 +22,7 @@ import {
   buildOptionTree,
   flattenOptionTree,
   getFilteredOptions,
+  getFilteredTree,
   getSortedOptions,
   OptionTreeNode,
   OptionWithVisibility,
@@ -45,6 +46,7 @@ interface HierarchicalContentDisplayProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   i18nStrings: React.ComponentProps<typeof InternalList>['i18nStrings'];
+  sortDisabled?: boolean;
   depth?: number;
 }
 
@@ -55,11 +57,13 @@ function HierarchicalContentDisplay({
   ariaLabelledby,
   ariaDescribedby,
   i18nStrings,
+  sortDisabled = false,
   depth = 0,
 }: HierarchicalContentDisplayProps) {
   return (
     <InternalList
       items={tree}
+      sortDisabled={sortDisabled}
       renderItem={node => ({
         id: node.id,
         announcementLabel: node.label,
@@ -67,9 +71,11 @@ function HierarchicalContentDisplay({
           <div data-item-type="group">
             <InternalSpaceBetween size="xxs">
               {/* Group header — no toggle */}
-              <InternalBox fontWeight="bold" display="inline">
-                {node.label}
-              </InternalBox>
+              <div className={styles['content-display-group-header']}>
+                <InternalBox fontWeight="bold" display="inline">
+                  {node.label}
+                </InternalBox>
+              </div>
               {/* Recursively render children (sub-groups or leaf columns) */}
               {node.children.length > 0 && (
                 <InternalBox padding={{ left: 'l' }}>
@@ -81,6 +87,7 @@ function HierarchicalContentDisplay({
                     }
                     i18nStrings={i18nStrings}
                     depth={depth + 1}
+                    sortDisabled={sortDisabled}
                   />
                 </InternalBox>
               )}
@@ -130,11 +137,12 @@ export default function ContentDisplayPreference({
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const [sortedOptions, sortedAndFilteredOptions, optionTree] = useMemo(() => {
+  const [sortedOptions, sortedAndFilteredOptions, optionTree, filteredTree] = useMemo(() => {
     const sorted = getSortedOptions({ options, contentDisplay: value });
     const filtered = getFilteredOptions(sorted, columnFilteringText);
     const tree = groups && groups.length > 0 ? buildOptionTree(sorted, groups, value) : null;
-    return [sorted, filtered, tree];
+    const fTree = tree ? getFilteredTree(tree, columnFilteringText) : null;
+    return [sorted, filtered, tree, fTree];
   }, [columnFilteringText, groups, options, value]);
 
   const onToggle = (option: OptionWithVisibility) => {
@@ -192,7 +200,7 @@ export default function ContentDisplayPreference({
       )}
 
       {/* No match */}
-      {sortedAndFilteredOptions.length === 0 && (
+      {((filteredTree && filteredTree.length === 0) || (!filteredTree && sortedAndFilteredOptions.length === 0)) && (
         <div className={getClassName('no-match')}>
           <InternalSpaceBetween size="s" alignItems="center">
             <InternalBox margin={{ top: 'm' }}>
@@ -211,14 +219,15 @@ export default function ContentDisplayPreference({
         </div>
       )}
 
-      {/* Grouped hierarchical view */}
-      {optionTree && columnFilteringText.trim().length === 0 ? (
+      {/* Grouped hierarchical view — shown when groups exist, even during filtering */}
+      {optionTree && filteredTree ? (
         <HierarchicalContentDisplay
-          tree={optionTree}
+          tree={columnFilteringText.trim().length > 0 ? filteredTree : optionTree}
           onToggle={onToggle}
           onTreeChange={newTree => onChange(flattenOptionTree(newTree))}
           ariaDescribedby={descriptionId}
           ariaLabelledby={titleId}
+          sortDisabled={columnFilteringText.trim().length > 0}
           i18nStrings={{
             liveAnnouncementDndStarted: i18n(
               'contentDisplayPreference.liveAnnouncementDndStarted',
