@@ -144,26 +144,34 @@ describe('ActionCard Component', () => {
   });
 
   describe('ariaLabel', () => {
-    test('adds aria-label to the root group div when provided', () => {
-      const wrapper = renderActionCard({ ariaLabel: 'Card label' });
-      expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Card label');
+    test('root always has role=group', () => {
+      const withHeader = renderActionCard({ header: 'Header' });
+      expect(withHeader.getElement()).toHaveAttribute('role', 'group');
+
+      const withoutHeader = renderActionCard({ ariaLabel: 'Card label' });
+      expect(withoutHeader.getElement()).toHaveAttribute('role', 'group');
     });
 
-    test('does not duplicate aria-label on the header button', () => {
-      const wrapper = renderActionCard({ ariaLabel: 'Card label', header: 'Header text' });
+    test('root is labelledby the header button', () => {
+      const wrapper = renderActionCard({ header: 'Header text' });
       const button = wrapper.getElement().querySelector('button')!;
-      // Button is labeled by its text content; aria-label should not be duplicated here
-      expect(button).not.toHaveAttribute('aria-label');
+      expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', button.id);
     });
 
-    test('adds aria-label to standalone button (no header) when provided', () => {
+    test('root is labelledby the standalone button when no header', () => {
+      const wrapper = renderActionCard({ ariaLabel: 'Card label' });
+      const button = wrapper.getElement().querySelector('button')!;
+      expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', button.id);
+    });
+
+    test('standalone button carries aria-label when no header', () => {
       const wrapper = renderActionCard({ ariaLabel: 'Card label' });
       const button = wrapper.getElement().querySelector('button')!;
       expect(button).toHaveAttribute('aria-label', 'Card label');
     });
 
-    test('does not add aria-label when not provided', () => {
-      const wrapper = renderActionCard({ header: 'Header text' });
+    test('header button does not get aria-label', () => {
+      const wrapper = renderActionCard({ ariaLabel: 'Card label', header: 'Header text' });
       const button = wrapper.getElement().querySelector('button')!;
       expect(button).not.toHaveAttribute('aria-label');
     });
