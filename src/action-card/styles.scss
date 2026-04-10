@@ -55,14 +55,18 @@
   pointer-events: none;
 }
 
-.button {
+.button,
+.standalone-button {
   all: unset;
   cursor: pointer;
-  color: inherit;
-  font: inherit;
   &.disabled {
     cursor: default;
   }
+}
+
+.button {
+  color: inherit;
+  font: inherit;
   &::after {
     content: '';
     position: absolute;
@@ -70,24 +74,21 @@
     z-index: 1;
   }
   @each $variant in ('embedded', 'default') {
-    &.variant-#{$variant}::after {
-      @include mixins.apply-border-radius($variant);
-    }
-    &.variant-#{$variant}.disabled::after {
-      @include mixins.apply-border-radius($variant, 'disabled');
+    &.variant-#{$variant} {
+      &::after {
+        @include mixins.apply-border-radius($variant);
+      }
+      &.disabled::after {
+        @include mixins.apply-border-radius($variant, 'disabled');
+      }
     }
   }
 }
 
 .standalone-button {
-  all: unset;
   position: absolute;
   inset: 0;
-  cursor: pointer;
   opacity: 0;
-  &.disabled {
-    cursor: default;
-  }
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant} {
       @include mixins.apply-border-radius($variant);
@@ -155,6 +156,26 @@
     align-self: center;
   }
 
+  &.disabled > .icon {
+    color: awsui.$color-icon-action-card-disabled;
+  }
+  &:not(.disabled):has(button:hover) > .icon {
+    color: awsui.$color-icon-action-card-hover;
+  }
+  &:not(.disabled):has(button:active) > .icon {
+    color: awsui.$color-icon-action-card-active;
+  }
+
+  &.disabled > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-disabled;
+  }
+  &:not(.disabled):has(button:hover) > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-hover;
+  }
+  &:not(.disabled):has(button:active) > .inner-card > .header-row > .icon {
+    color: awsui.$color-icon-action-card-active;
+  }
+
   &.disabled {
     cursor: default;
     color: awsui.$color-text-action-card-disabled;
@@ -165,10 +186,6 @@
     box-shadow: var(#{custom-props.$styleActionCardBoxShadowDisabled}, none);
 
     @include mixins.variant-border-radius-all('disabled');
-
-    > .icon {
-      color: awsui.$color-icon-action-card-disabled;
-    }
 
     &:after {
       border-color: var(#{custom-props.$styleActionCardBorderColorDisabled}, awsui.$color-border-action-card-disabled);
@@ -189,10 +206,6 @@
 
     @include mixins.variant-border-radius-all('hover');
 
-    > .icon {
-      color: awsui.$color-icon-action-card-hover;
-    }
-
     &:after {
       border-color: var(#{custom-props.$styleActionCardBorderColorHover}, awsui.$color-border-action-card-hover);
       border-block-width: var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover);
@@ -206,10 +219,6 @@
 
     @include mixins.variant-border-radius-all('active');
 
-    > .icon {
-      color: awsui.$color-icon-action-card-active;
-    }
-
     &:after {
       border-color: var(#{custom-props.$styleActionCardBorderColorActive}, awsui.$color-border-action-card-active);
       border-block-width: var(
@@ -221,16 +230,6 @@
         awsui.$border-width-action-card-active
       );
     }
-  }
-
-  &.disabled > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-disabled;
-  }
-  &:not(.disabled):has(button:hover) > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-hover;
-  }
-  &:not(.disabled):has(button:active) > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-active;
   }
 
   &:has(.button:focus-visible),
@@ -272,12 +271,13 @@
         }
       }
 
-      > .icon {
-        padding-block: $padding-block;
-      }
-
+      > .icon,
       > .inner-card > .header-row > .icon {
         padding-block-start: $padding-block;
+      }
+
+      > .icon {
+        padding-block-end: $padding-block;
       }
 
       &.icon-align-end {
