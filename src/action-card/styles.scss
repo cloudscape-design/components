@@ -9,6 +9,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './constants' as constants;
 @use './mixins' as mixins;
 @use './motion';
 
@@ -16,7 +17,7 @@
   &-inner {
     @include styles.font-heading-s;
     &.disabled {
-      color: awsui.$color-text-action-card-disabled;
+      color: map.get(constants.$states, 'disabled', 'text-color');
     }
   }
   &:not(:has(+ .body)) {
@@ -44,19 +45,19 @@
     padding-block-start: awsui.$space-action-card-description-padding-top;
   }
   &.disabled {
-    color: awsui.$color-text-action-card-disabled;
+    color: map.get(constants.$states, 'disabled', 'text-color');
   }
 }
 
 .icon {
   flex-shrink: 0;
   display: flex;
-  color: awsui.$color-icon-action-card-default;
+  color: map.get(constants.$states, 'default', 'icon-color');
   pointer-events: none;
 }
 
-.button,
-.standalone-button {
+.header-button,
+.overlay-button {
   all: unset;
   cursor: pointer;
   &.disabled {
@@ -64,7 +65,7 @@
   }
 }
 
-.button {
+.header-button {
   color: inherit;
   font: inherit;
   &::after {
@@ -85,7 +86,7 @@
   }
 }
 
-.standalone-button {
+.overlay-button {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -107,9 +108,10 @@
   min-inline-size: 0;
   text-align: start;
   display: flex;
-  background: var(#{custom-props.$styleActionCardBackgroundDefault}, awsui.$color-background-action-card-default);
-  box-shadow: var(#{custom-props.$styleActionCardBoxShadowDefault}, none);
-  color: inherit;
+  $default-state: map.get(constants.$states, 'default');
+  background: map.get($default-state, 'background');
+  box-shadow: map.get($default-state, 'box-shadow');
+  color: map.get($default-state, 'text-color');
   padding-inline: 0;
   padding-block: 0;
   border-block: none;
@@ -119,11 +121,8 @@
     @include styles.base-pseudo-element;
 
     box-shadow: none;
-    border-block: solid var(#{custom-props.$styleActionCardBorderWidthDefault}, awsui.$border-width-action-card-default)
-      var(#{custom-props.$styleActionCardBorderColorDefault}, awsui.$color-border-action-card-default);
-    border-inline: solid
-      var(#{custom-props.$styleActionCardBorderWidthDefault}, awsui.$border-width-action-card-default)
-      var(#{custom-props.$styleActionCardBorderColorDefault}, awsui.$color-border-action-card-default);
+    border-block: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
+    border-inline: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
   }
 
   &.variant-default,
@@ -156,84 +155,21 @@
     align-self: center;
   }
 
-  &.disabled > .icon {
-    color: awsui.$color-icon-action-card-disabled;
-  }
-  &:not(.disabled):has(button:hover) > .icon {
-    color: awsui.$color-icon-action-card-hover;
-  }
-  &:not(.disabled):has(button:active) > .icon {
-    color: awsui.$color-icon-action-card-active;
-  }
-
-  &.disabled > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-disabled;
-  }
-  &:not(.disabled):has(button:hover) > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-hover;
-  }
-  &:not(.disabled):has(button:active) > .inner-card > .header-row > .icon {
-    color: awsui.$color-icon-action-card-active;
-  }
-
   &.disabled {
     cursor: default;
-    color: awsui.$color-text-action-card-disabled;
-    background-color: var(
-      #{custom-props.$styleActionCardBackgroundDisabled},
-      awsui.$color-background-action-card-disabled
-    );
-    box-shadow: var(#{custom-props.$styleActionCardBoxShadowDisabled}, none);
-
-    @include mixins.variant-border-radius-all('disabled');
-
-    &:after {
-      border-color: var(#{custom-props.$styleActionCardBorderColorDisabled}, awsui.$color-border-action-card-disabled);
-      border-block-width: var(
-        #{custom-props.$styleActionCardBorderWidthDisabled},
-        awsui.$border-width-action-card-disabled
-      );
-      border-inline-width: var(
-        #{custom-props.$styleActionCardBorderWidthDisabled},
-        awsui.$border-width-action-card-disabled
-      );
-    }
+    @include mixins.adjust-for-state('disabled');
   }
 
   &:not(.disabled):has(button:hover) {
-    background-color: var(#{custom-props.$styleActionCardBackgroundHover}, awsui.$color-background-action-card-hover);
-    box-shadow: var(#{custom-props.$styleActionCardBoxShadowHover}, none);
-
-    @include mixins.variant-border-radius-all('hover');
-
-    &:after {
-      border-color: var(#{custom-props.$styleActionCardBorderColorHover}, awsui.$color-border-action-card-hover);
-      border-block-width: var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover);
-      border-inline-width: var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover);
-    }
+    @include mixins.adjust-for-state('hover');
   }
 
   &:not(.disabled):has(button:active) {
-    background-color: var(#{custom-props.$styleActionCardBackgroundActive}, awsui.$color-background-action-card-active);
-    box-shadow: var(#{custom-props.$styleActionCardBoxShadowActive}, none);
-
-    @include mixins.variant-border-radius-all('active');
-
-    &:after {
-      border-color: var(#{custom-props.$styleActionCardBorderColorActive}, awsui.$color-border-action-card-active);
-      border-block-width: var(
-        #{custom-props.$styleActionCardBorderWidthActive},
-        awsui.$border-width-action-card-active
-      );
-      border-inline-width: var(
-        #{custom-props.$styleActionCardBorderWidthActive},
-        awsui.$border-width-action-card-active
-      );
-    }
+    @include mixins.adjust-for-state('active');
   }
 
-  &:has(.button:focus-visible),
-  &:has(.standalone-button:focus-visible) {
+  &:has(.header-button:focus-visible),
+  &:has(.overlay-button:focus-visible) {
     @include styles.focus-highlight(
       2px,
       var(#{custom-props.$styleActionCardFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),

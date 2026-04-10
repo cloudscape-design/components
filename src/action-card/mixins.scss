@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use './constants' as constants;
 
 $variant-border-radius: (
   'embedded': awsui.$border-radius-action-card-embedded,
@@ -57,5 +58,28 @@ $state-border-radius-props: (
         @include apply-border-radius($variant, $state);
       }
     }
+  }
+}
+
+@mixin adjust-for-state($state) {
+  $s: map.get(constants.$states, $state);
+
+  background-color: map.get($s, 'background');
+  box-shadow: map.get($s, 'box-shadow');
+  color: map.get($s, 'text-color');
+
+  @if $state != 'default' {
+    @include variant-border-radius-all($state);
+  }
+
+  &:after {
+    border-color: map.get($s, 'border-color');
+    border-block-width: map.get($s, 'border-width');
+    border-inline-width: map.get($s, 'border-width');
+  }
+
+  > .icon,
+  > .inner-card > .header-row > .icon {
+    color: map.get($s, 'icon-color');
   }
 }
