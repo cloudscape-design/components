@@ -1,0 +1,61 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-action-card-embedded,
+  'default': awsui.$border-radius-action-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-action-card-vertical-embedded,
+  'default': awsui.$space-action-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-action-card-horizontal-embedded,
+  'default': awsui.$space-action-card-horizontal-default,
+);
+
+$state-border-radius-props: (
+  'default': custom-props.$styleActionCardBorderRadiusDefault,
+  'hover': custom-props.$styleActionCardBorderRadiusHover,
+  'active': custom-props.$styleActionCardBorderRadiusActive,
+  'disabled': custom-props.$styleActionCardBorderRadiusDisabled,
+);
+
+@mixin all-corners-radius($value) {
+  border-start-start-radius: $value;
+  border-start-end-radius: $value;
+  border-end-start-radius: $value;
+  border-end-end-radius: $value;
+}
+
+@mixin apply-border-radius($variant: 'default', $state: 'default') {
+  $token: map.get($variant-border-radius, $variant);
+  $default-prop: map.get($state-border-radius-props, 'default');
+  $default-value: var(#{$default-prop}, $token);
+
+  @if $state == 'default' {
+    @include all-corners-radius($default-value);
+  } @else {
+    $state-prop: map.get($state-border-radius-props, $state);
+    @include all-corners-radius(var(#{$state-prop}, $default-value));
+  }
+}
+
+@mixin variant-border-radius-all($state: 'default') {
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:after {
+        @include apply-border-radius($variant, $state);
+      }
+    }
+  }
+}
