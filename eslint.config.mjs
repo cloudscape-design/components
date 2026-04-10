@@ -210,6 +210,21 @@ export default tsEslint.config(
     },
   },
   {
+    files: ['src/test-utils/dom/**/*.ts'],
+    rules: {
+      '@cloudscape-design/components/ban-files': [
+        'error',
+        [
+          {
+            pattern: './src/test-utils/dom/index.ts',
+            message:
+              "Do not import from the augmented ElementWrapper barrel '{{ path }}'. Use @cloudscape-design/test-utils-core/dom instead.",
+          },
+        ],
+      ],
+    },
+  },
+  {
     files: ['**/__integ__/**', '**/__motion__/**', '**/__a11y__/**'],
     rules: {
       // useBrowser is not a hook
