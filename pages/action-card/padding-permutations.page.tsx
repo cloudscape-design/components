@@ -54,14 +54,7 @@ const permutations = createPermutations<ActionCardProps>([
 export default function ActionCardPaddingPermutations() {
   return (
     <PermutationsPage title="Action card padding permutations" i18n={{}}>
-      <PermutationsView
-        permutations={permutations}
-        render={permutation => (
-          <div style={{ maxInlineSize: '400px' }}>
-            <ActionCard {...permutation} />
-          </div>
-        )}
-      />
+      <PermutationsView permutations={permutations} render={permutation => <ActionCard {...permutation} />} />
     </PermutationsPage>
   );
 }

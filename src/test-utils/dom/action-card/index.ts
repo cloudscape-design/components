@@ -42,4 +42,15 @@ export default class ActionCardWrapper extends ComponentWrapper<HTMLDivElement> 
   isDisabled(): boolean {
     return this.element.classList.contains(testStyles.disabled);
   }
+
+  /**
+   * Clicks the action card by forwarding the click to the internal button element.
+   */
+  @usesDom
+  click(): void {
+    const button = this.element.querySelector('button');
+    if (button) {
+      new ElementWrapper(button).click();
+    }
+  }
 }

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -8,8 +8,8 @@ import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/componen
 import { getBaseProps } from '../internal/base-component';
 import InternalStructuredItem from '../internal/components/structured-item';
 import { fireCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { isDevelopment } from '../internal/is-development';
 import { type ActionCardProps } from './interfaces';
 import { getContentStyles, getHeaderStyles, getRootStyles } from './style';
 
@@ -48,36 +48,25 @@ const InternalActionCard = React.forwardRef(
     const descriptionId = useUniqueId('action-card-description-');
     const bodyId = useUniqueId('action-card-body-');
 
-    useImperativeHandle(ref, () => ({
-      focus: () => {
-        buttonRef.current?.focus();
-      },
-    }));
+    useForwardFocus(ref, buttonRef);
 
-    if (isDevelopment) {
-      if (!header && !ariaLabel) {
-        warnOnce(
-          'ActionCard',
-          'An accessible name is required. Provide either a `header` or an `ariaLabel` prop so the action card has a meaningful label for screen reader users.'
-        );
-      }
+    if (!header && !ariaLabel) {
+      warnOnce(
+        'ActionCard',
+        'An accessible name is required. Provide either a `header` or an `ariaLabel` prop so the action card has a meaningful label for screen reader users.'
+      );
     }
 
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
+      if (disabled) {
+        return event.preventDefault();
+      }
       nativeButtonAttributes?.onClick?.(event);
       if (event.defaultPrevented) {
         return;
       }
-      if (disabled) {
-        return event.preventDefault();
-      }
       fireCancelableEvent(onClick, {}, event);
-    };
-
-    // We are adding a root click so we can have test-utils .click on the wrapper itself.
-    const handleRootClick = () => {
-      buttonRef.current?.click();
     };
 
     const rootStyleProps = getRootStyles(style);
@@ -196,7 +185,6 @@ const InternalActionCard = React.forwardRef(
           baseProps.className
         )}
         style={rootStyleProps}
-        onClick={handleRootClick}
         aria-disabled={disabled || undefined}
       >
         {standaloneButton}
