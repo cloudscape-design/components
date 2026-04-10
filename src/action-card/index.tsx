@@ -31,6 +31,12 @@ const ActionCard = React.forwardRef(
         iconVerticalAlignment,
         variant,
       },
+      metadata: {
+        hasHeader: Boolean(props.header),
+        hasDescription: Boolean(props.description),
+        hasContent: Boolean(props.children),
+        hasIcon: Boolean(props.icon),
+      },
     });
 
     const externalProps = getExternalProps(props);

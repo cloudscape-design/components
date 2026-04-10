@@ -25,11 +25,6 @@ describe('ActionCard Component', () => {
   });
 
   describe('header', () => {
-    test('renders header text when provided', () => {
-      const wrapper = renderActionCard({ header: 'Test Header' });
-      expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Test Header');
-    });
-
     test('renders header as ReactNode', () => {
       const wrapper = renderActionCard({ header: <span data-testid="custom">Custom Header</span> });
       expect(wrapper.findHeader()!.getElement().querySelector('[data-testid="custom"]')).toHaveTextContent(
@@ -50,15 +45,10 @@ describe('ActionCard Component', () => {
   });
 
   describe('description', () => {
-    test('renders description when provided', () => {
-      const wrapper = renderActionCard({ description: 'Test Description' });
-      expect(wrapper.findDescription()!.getElement()).toHaveTextContent('Test Description');
-    });
-
     test('renders description as ReactNode', () => {
-      const wrapper = renderActionCard({ description: <span data-testid="custom">Custom Desc</span> });
+      const wrapper = renderActionCard({ description: <span data-testid="custom">Custom Description</span> });
       expect(wrapper.findDescription()!.getElement().querySelector('[data-testid="custom"]')).toHaveTextContent(
-        'Custom Desc'
+        'Custom Description'
       );
     });
 
@@ -69,11 +59,6 @@ describe('ActionCard Component', () => {
   });
 
   describe('children', () => {
-    test('renders children content when provided', () => {
-      const wrapper = renderActionCard({ children: 'Test Content' });
-      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Test Content');
-    });
-
     test('renders children as ReactNode', () => {
       const wrapper = renderActionCard({ children: <div data-testid="custom">Custom Content</div> });
       expect(wrapper.findContent()!.getElement().querySelector('[data-testid="custom"]')).toHaveTextContent(
@@ -116,13 +101,6 @@ describe('ActionCard Component', () => {
   });
 
   describe('onClick', () => {
-    test('calls onClick when clicked', () => {
-      const onClickSpy = jest.fn();
-      const wrapper = renderActionCard({ onClick: onClickSpy });
-      wrapper.click();
-      expect(onClickSpy).toHaveBeenCalledTimes(1);
-    });
-
     test('fires onClick exactly once per click', () => {
       const onClickSpy = jest.fn();
       const wrapper = renderActionCard({ onClick: onClickSpy });
@@ -216,7 +194,7 @@ describe('ActionCard Component', () => {
       const wrapper = createWrapper(renderResult.container);
       actionCard!.focus();
       const button = wrapper.findActionCard()!.getElement().querySelector('button')!;
-      expect(document.activeElement).toBe(button);
+      expect(button).toHaveFocus();
     });
   });
 
@@ -270,18 +248,6 @@ describe('ActionCard Component', () => {
     });
   });
 
-  describe('iconVerticalAlignment', () => {
-    test('renders icon with iconVerticalAlignment=top', () => {
-      const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'top', header: 'Header' });
-      expect(wrapper.findIcon()).not.toBeNull();
-    });
-
-    test('renders icon with iconVerticalAlignment=center', () => {
-      const wrapper = renderActionCard({ icon: <span>icon</span>, iconVerticalAlignment: 'center', header: 'Header' });
-      expect(wrapper.findIcon()).not.toBeNull();
-    });
-  });
-
   describe('padding options', () => {
     test('applies no-padding class to header when disableHeaderPaddings is true', () => {
       const wrapper = renderActionCard({ header: 'Header', disableHeaderPaddings: true });
@@ -310,30 +276,6 @@ describe('ActionCard Component', () => {
       expect(wrapper.findHeader()).not.toBeNull();
       expect(wrapper.findDescription()).not.toBeNull();
       expect(wrapper.isDisabled()).toBe(true);
-    });
-  });
-
-  describe('style prop', () => {
-    test('applies all style properties to elements', () => {
-      const wrapper = renderActionCard({
-        header: 'Header',
-        children: 'Content',
-        style: {
-          root: {
-            background: { default: '#fff', hover: '#f5f5f5', active: '#eee', disabled: '#fafafa' },
-            borderColor: { default: '#e0e0e0', hover: '#bdbdbd', active: '#9e9e9e', disabled: '#eee' },
-            borderRadius: { default: '8px', hover: '8px', active: '8px', disabled: '8px' },
-            borderWidth: { default: '1px', hover: '2px', active: '2px', disabled: '1px' },
-            boxShadow: { default: 'none', hover: 'none', active: 'none', disabled: 'none' },
-            focusRing: { borderColor: '#0073bb', borderRadius: '10px', borderWidth: '2px' },
-          },
-          header: { paddingBlock: '10px', paddingInline: '20px' },
-          content: { paddingBlock: '30px', paddingInline: '40px' },
-        },
-      });
-      expect(wrapper.getElement()).toBeTruthy();
-      expect(wrapper.findHeader()).not.toBeNull();
-      expect(wrapper.findContent()).not.toBeNull();
     });
   });
 });

@@ -18,7 +18,6 @@ import {
   shortHeader,
 } from './common';
 
-/* Content slot combinations: header, description, children, icon */
 const permutations = createPermutations<ActionCardProps>([
   // All content slots filled
   {

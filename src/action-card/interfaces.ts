@@ -39,19 +39,16 @@ export interface ActionCardProps extends BaseComponentProps {
 
   /**
    * Determines whether the action card is disabled.
-   * @default false
    */
   disabled?: boolean;
 
   /**
    * Removes the default padding from the header area.
-   * @default false
    */
   disableHeaderPaddings?: boolean;
 
   /**
    * Removes the default padding from the content area.
-   * @default false
    */
   disableContentPaddings?: boolean;
 
@@ -62,7 +59,6 @@ export interface ActionCardProps extends BaseComponentProps {
 
   /**
    * Specifies the vertical alignment of the icon.
-   * @default 'top'
    */
   iconVerticalAlignment?: ActionCardProps.IconVerticalAlignment;
 
@@ -71,8 +67,6 @@ export interface ActionCardProps extends BaseComponentProps {
    *
    * - `default` - Uses container-level border radius and padding (larger).
    * - `embedded` - Uses compact border radius and padding (smaller).
-   *
-   * @default 'default'
    */
   variant?: ActionCardProps.Variant;
 

@@ -9,7 +9,6 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import { icon, longContent, longDescription, onClick, shortContent, shortDescription, shortHeader } from './common';
 
-/* Visual variant permutations: default vs embedded */
 const permutations = createPermutations<ActionCardProps>([
   // Variants with all slots
   {
