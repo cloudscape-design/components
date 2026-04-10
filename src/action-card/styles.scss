@@ -77,10 +77,10 @@
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant} {
       &::after {
-        @include mixins.apply-border-radius($variant);
+        @include mixins.state-border-radius($variant);
       }
       &.disabled::after {
-        @include mixins.apply-border-radius($variant, 'disabled');
+        @include mixins.state-border-radius($variant, 'disabled');
       }
     }
   }
@@ -92,9 +92,9 @@
   opacity: 0;
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant} {
-      @include mixins.apply-border-radius($variant);
+      @include mixins.state-border-radius($variant);
       &.disabled {
-        @include mixins.apply-border-radius($variant, 'disabled');
+        @include mixins.state-border-radius($variant, 'disabled');
       }
     }
   }
@@ -157,15 +157,15 @@
 
   &.disabled {
     cursor: default;
-    @include mixins.adjust-for-state('disabled');
+    @include mixins.apply-state-styles('disabled');
   }
 
   &:not(.disabled):has(button:hover) {
-    @include mixins.adjust-for-state('hover');
+    @include mixins.apply-state-styles('hover');
   }
 
   &:not(.disabled):has(button:active) {
-    @include mixins.adjust-for-state('active');
+    @include mixins.apply-state-styles('active');
   }
 
   &:has(.header-button:focus-visible),
@@ -183,7 +183,7 @@
           #{custom-props.$styleActionCardFocusRingBorderRadius},
           awsui.$border-radius-control-default-focus-ring
         );
-        @include mixins.all-corners-radius($focus-radius);
+        @include mixins.border-radius-all($focus-radius);
       }
     }
   }
@@ -192,7 +192,7 @@
     &.variant-#{$variant} {
       &,
       &:after {
-        @include mixins.apply-border-radius($variant);
+        @include mixins.state-border-radius($variant);
       }
 
       $padding-block: map.get(mixins.$variant-padding-block, $variant);
