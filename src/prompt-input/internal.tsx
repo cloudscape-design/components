@@ -134,8 +134,9 @@ const InternalPromptInput = React.forwardRef(
     const caretControllerRef = useRef<CaretController | null>(null);
 
     const isRefresh = useVisualRefresh();
-    useDensityMode(textareaRef);
-    useDensityMode(editableElementRef);
+    const textareaDensityMode = useDensityMode(textareaRef);
+    const editableDensityMode = useDensityMode(editableElementRef);
+    const isCompactMode = (isTokenMode ? editableDensityMode : textareaDensityMode) === 'compact';
 
     const PADDING = isRefresh ? designTokens.spaceXxs : designTokens.spaceXxxs;
     const LINE_HEIGHT = designTokens.lineHeightBodyM;
@@ -154,18 +155,16 @@ const InternalPromptInput = React.forwardRef(
       }
 
       const scrollTop = element.scrollTop;
+      // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
       element.style.height = 'auto';
 
-      const minRowsHeight = isTokenMode
-        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
-        : `calc(${LINE_HEIGHT} + ${designTokens.spaceScaledXxs} * 2)`;
+      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceScaledXxs} * 2)`;
       const scrollHeight = `calc(${element.scrollHeight}px)`;
 
       if (maxRows === -1) {
         element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
       } else {
-        const effectiveMaxRows = maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows;
-        const maxRowsHeight = `calc(${effectiveMaxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
         element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
       }
 
@@ -180,7 +179,7 @@ const InternalPromptInput = React.forwardRef(
       } else {
         adjustInputHeight();
       }
-    }, [isTokenMode, tokens, adjustInputHeight, value]);
+    }, [isTokenMode, tokens, adjustInputHeight, value, isCompactMode]);
 
     const plainTextValue = isTokenMode
       ? tokensToText

@@ -168,6 +168,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   padding-inline: styles.$control-padding-horizontal;
 
   color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
+  max-inline-size: 100%;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
