@@ -9,7 +9,6 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import { longHeader, onClick, reactNodeContent, shortContent, shortDescription } from './common';
 
-/* Disable-padding permutations for header and content */
 const permutations = createPermutations<ActionCardProps>([
   // All padding toggle combinations with all slots present
   {
