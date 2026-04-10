@@ -62,7 +62,7 @@ export default tsEslint.config(
       'react/prop-types': 'off',
       'react/jsx-boolean-value': ['error', 'always'],
       '@cloudscape-design/build-tools/react-server-components-directive': 'error',
-      '@cloudscape-design/components/ban-files': [
+      '@cloudscape-design/build-tools/ban-files': [
         'error',
         [
           {
@@ -212,7 +212,7 @@ export default tsEslint.config(
   {
     files: ['src/test-utils/dom/**/*.ts'],
     rules: {
-      '@cloudscape-design/components/ban-files': [
+      '@cloudscape-design/build-tools/ban-files': [
         'error',
         [
           {
