@@ -165,3 +165,31 @@ export function getFilteredOptions(options: ReadonlyArray<OptionWithVisibility>,
 
   return options.filter(option => option.label.toLowerCase().trim().includes(filterText));
 }
+
+/**
+ * Filters an OptionTreeNode[] tree, keeping:
+ * - Leaf nodes whose label matches the filter text
+ * - Group nodes that have at least one matching descendant
+ * Groups with no matching descendants are removed entirely.
+ */
+export function getFilteredTree(tree: OptionTreeNode[], filterText: string): OptionTreeNode[] {
+  filterText = filterText.trim().toLowerCase();
+  if (!filterText) {
+    return tree;
+  }
+
+  const result: OptionTreeNode[] = [];
+  for (const node of tree) {
+    if (node.isGroup) {
+      const filteredChildren = getFilteredTree(node.children, filterText);
+      if (filteredChildren.length > 0) {
+        result.push({ ...node, children: filteredChildren });
+      }
+    } else {
+      if (node.label.toLowerCase().trim().includes(filterText)) {
+        result.push(node);
+      }
+    }
+  }
+  return result;
+}
