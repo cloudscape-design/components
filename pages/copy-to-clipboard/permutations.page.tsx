@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { CopyToClipboard, CopyToClipboardProps } from '~components';
+import { CopyToClipboard, CopyToClipboardProps, Popover } from '~components';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -20,6 +20,22 @@ const permutations = createPermutations<CopyToClipboardProps>([
     textToDisplay: ['Lorem ipsum dolor sit amet consectetur adipiscing elit'],
     copyErrorText: ['Copy failed.'],
     copyButtonText: ['Copy to clipboard'],
+  },
+  {
+    textToDisplay: [
+      <Popover key={1} content="Popover" triggerType="text">
+        Inline block popover
+      </Popover>,
+      <Popover key={2} content="Popover" triggerType="text-inline">
+        Inline text popover
+      </Popover>,
+    ],
+    disabled: [false, true],
+    variant: ['inline'],
+    copyButtonText: ['Copy to clipboard'],
+    textToCopy: ['Lorem ipsum dolor sit amet.'],
+    copySuccessText: ['Text copied successfully'],
+    copyErrorText: ['Copy failed.'],
   },
 ]);
 

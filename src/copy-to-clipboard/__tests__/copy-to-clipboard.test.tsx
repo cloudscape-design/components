@@ -77,6 +77,37 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
   });
 
+  test('renders JSX in textToDisplay when variant="inline"', () => {
+    const { container } = render(
+      <CopyToClipboard
+        {...defaultProps}
+        variant="inline"
+        textToDisplay={
+          <>
+            styled <strong>content</strong>
+          </>
+        }
+      />
+    );
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+    const displayedEl = wrapper.findDisplayedText()!.getElement();
+    expect(displayedEl.innerHTML).toBe('styled <strong>content</strong>');
+  });
+
+  test('renders textToCopy for variant="inline" when textToDisplay is explicitly undefined', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={undefined} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders null for variant="inline" when textToDisplay is explicitly null', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" textToDisplay={null} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findDisplayedText()!.getElement().textContent).toBe('');
+  });
+
   test('renders an inline button with custom text to display and separate text to copy', () => {
     const mockedWriteText = jest.fn().mockResolvedValue(act(() => new Promise(() => {}))); // The act here is just to prevent console warnings when tests run
 
