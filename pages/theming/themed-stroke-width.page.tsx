@@ -6,7 +6,6 @@ import {
   Alert,
   Box,
   Button,
-  Cards,
   Flashbar,
   FormField,
   IconProvider,
@@ -20,8 +19,6 @@ import {
   StatusIndicator,
   Tabs,
   TabsProps,
-  Table,
-  Tiles,
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
@@ -111,8 +108,6 @@ export default function ThemedStrokeWidthPage() {
           fontWeightTabs: '700',
           fontWeightTabsDisabled: '700',
           spaceTabsVertical: { comfortable: '2px', compact: '0px' },
-          // borderWidthItemSelected: '1px',
-          // borderWidthCardHighlighted: '1px',
         },
       };
 
@@ -124,20 +119,6 @@ export default function ThemedStrokeWidthPage() {
     }
     return reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
-
-  const [selectedId, setSelectedId] = React.useState('seg-1');
-  const [selectedTile, setSelectedTile] = React.useState<string | null>('tile-1');
-
-  interface ItemType {
-    name: string;
-    type: string;
-    size: string;
-    status: string;
-    statusType: 'success' | 'error' | 'warning';
-  }
-  const [selectedItems, setSelectedItems] = React.useState<ItemType[]>([
-    { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' },
-  ]);
 
   return (
     <div style={{ padding: 15 }}>
@@ -280,76 +261,6 @@ export default function ThemedStrokeWidthPage() {
                 Button
               </Button>
             </div>
-
-            <Table
-              selectionType="multi"
-              selectedItems={selectedItems}
-              onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-              trackBy="name"
-              ariaLabels={{
-                selectionGroupLabel: 'Items selection',
-                allItemsSelectionLabel: () => 'select all',
-                itemSelectionLabel: (_selection, item) => item.name,
-              }}
-              columnDefinitions={[
-                { id: 'name', header: 'Name', cell: item => item.name },
-                { id: 'type', header: 'Type', cell: item => item.type },
-                { id: 'size', header: 'Size', cell: item => item.size },
-                {
-                  id: 'status',
-                  header: 'Status',
-                  cell: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
-                },
-              ]}
-              items={[
-                { name: 'Item 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
-                { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
-                { name: 'Item 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
-              ]}
-              header={<Box variant="h3">Table</Box>}
-              sortingDisabled={true}
-            />
-
-            <Cards
-              selectionType="multi"
-              selectedItems={selectedItems}
-              onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-              trackBy="name"
-              ariaLabels={{
-                selectionGroupLabel: 'Items selection',
-                itemSelectionLabel: (_selection, item) => item.name,
-              }}
-              cardDefinition={{
-                header: item => item.name,
-                sections: [
-                  { id: 'type', header: 'Type', content: item => item.type },
-                  { id: 'size', header: 'Size', content: item => item.size },
-                  {
-                    id: 'status',
-                    header: 'Status',
-                    content: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
-                  },
-                ],
-              }}
-              items={[
-                { name: 'Card 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
-                { name: 'Card 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
-                { name: 'Card 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
-              ]}
-              header={<Box variant="h3">Cards</Box>}
-              cardsPerRow={[{ cards: 3 }]}
-            />
-
-            <Tiles
-              value={selectedTile}
-              onChange={({ detail }) => setSelectedTile(detail.value)}
-              items={[
-                { value: 'tile-1', label: 'Option A', description: 'Description for option A' },
-                { value: 'tile-2', label: 'Option B', description: 'Description for option B' },
-                { value: 'tile-3', label: 'Option C', description: 'Description for option C' },
-              ]}
-              columns={3}
-            />
 
             <div>
               <Link external={true} href="https://example.com/" variant="primary">

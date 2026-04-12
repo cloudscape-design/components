@@ -140,7 +140,7 @@ filter search icon.
   &.selection-control-header {
     padding-block: awsui.$space-scaled-xs;
     padding-inline: awsui.$space-scaled-l;
-    border-inline-start: awsui.$border-item-width solid transparent;
+    border-inline-start: awsui.$border-width-item-selected solid transparent;
   }
 }
 
