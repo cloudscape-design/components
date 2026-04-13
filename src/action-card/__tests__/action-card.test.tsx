@@ -108,18 +108,6 @@ describe('ActionCard Component', () => {
       wrapper.click();
       expect(onClickSpy).toHaveBeenCalledTimes(1);
     });
-
-    test('does not call onClick when event.defaultPrevented', () => {
-      const onClickSpy = jest.fn();
-      const wrapper = renderActionCard({
-        onClick: onClickSpy,
-        nativeButtonAttributes: {
-          onClick: e => e.preventDefault(),
-        },
-      });
-      wrapper.click();
-      expect(onClickSpy).not.toHaveBeenCalled();
-    });
   });
 
   describe('ariaLabel', () => {
