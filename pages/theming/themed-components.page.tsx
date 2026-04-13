@@ -7,6 +7,7 @@ import {
   Autosuggest,
   Box,
   Button,
+  ButtonDropdown,
   ButtonGroup,
   Cards,
   Container,
@@ -47,6 +48,24 @@ function Buttons() {
       <SpaceBetween direction="horizontal" size="m" alignItems="center">
         <Button variant="primary">Primary button</Button>
         <Button variant="normal">Secondary button</Button>
+        <ButtonDropdown
+          items={[
+            { text: 'Delete', id: 'rm', disabled: false },
+            { text: 'Move', id: 'mv', disabled: false },
+          ]}
+        >
+          Short
+        </ButtonDropdown>
+        <ButtonDropdown
+          items={[
+            {
+              text: 'Launch instance from template',
+              id: 'launch-instance-from-template',
+            },
+          ]}
+          mainAction={{ text: 'Launch instance' }}
+          variant="primary"
+        />
         <Button iconName="refresh" ariaLabel="Icon in normal button" />
         <Button variant="link">Tertiary button</Button>
       </SpaceBetween>
@@ -189,6 +208,14 @@ function Inputs() {
   const multiSelectOptions = generateDropdownOptions() as MultiselectProps.Options;
   const [inputValue, setInputValue] = useState('Sample text');
   const [selectedOption, setSelectedOption] = useState<SelectProps.Option>(selectOptions[1] as SelectProps.Option);
+  const [selectedOptionVariant, setSelectedOptionVariant] = useState<SelectProps.Option | null>({
+    label: 'Option 1',
+    value: '1',
+    iconName: 'settings',
+    description: 'sub value',
+    tags: ['CPU-v2', '2Gb RAM'],
+    labelTag: '128Gb',
+  });
   const [selectedItems, setSelectedItems] = useState([
     multiSelectOptions[1],
     multiSelectOptions[3],
@@ -216,6 +243,55 @@ function Inputs() {
           selectedOption={selectedOption}
           readOnly={true}
           placeholder="Read-only select"
+        />
+      </SpaceBetween>
+      <SpaceBetween size="s" direction="horizontal">
+        <Select
+          selectedOption={selectedOptionVariant}
+          onChange={({ detail }) => setSelectedOptionVariant(detail.selectedOption)}
+          options={[
+            {
+              label: 'Option 1',
+              value: '1',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+            {
+              label: 'Option 2',
+              value: '2',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+          ]}
+          triggerVariant="option"
+        />
+        <Select
+          invalid={true}
+          selectedOption={selectedOptionVariant}
+          onChange={({ detail }) => setSelectedOptionVariant(detail.selectedOption)}
+          options={[
+            {
+              label: 'Option 1',
+              value: '1',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+            {
+              label: 'Option 2',
+              value: '2',
+              iconName: 'settings',
+              description: 'sub value',
+              tags: ['CPU-v2', '2Gb RAM'],
+              labelTag: '128Gb',
+            },
+          ]}
+          triggerVariant="option"
         />
       </SpaceBetween>
       <SpaceBetween size="s" direction="horizontal">
@@ -422,9 +498,11 @@ export default function ThemedComponentsPage() {
           spaceButtonVertical: '4px',
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
+          //sizeVerticalInput: '30px',
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
+          spaceFieldVertical: '4px',
         },
       };
 
