@@ -44,13 +44,14 @@ export default class ActionCardWrapper extends ComponentWrapper<HTMLDivElement> 
   }
 
   /**
-   * Clicks the action card by forwarding the click to the internal button element.
+   * Performs a click by triggering a mouse event on the internal button.
+   * Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.
    */
   @usesDom
   click(): void {
-    const button = this.element.querySelector('button');
+    const button = this.findByClassName(testStyles.button);
     if (button) {
-      new ElementWrapper(button).click();
+      button.click();
     }
   }
 }
