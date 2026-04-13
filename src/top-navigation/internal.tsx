@@ -31,14 +31,13 @@ export default function InternalTopNavigation({
 }: InternalTopNavigationProps) {
   checkSafeUrl('TopNavigation', identity.href);
   const baseProps = getBaseProps(restProps);
-  const { mainRef, virtualRef, breakpoint, responsiveState, isSearchExpanded, onSearchUtilityClick } = useTopNavigation(
-    { identity, search, utilities }
-  );
+  const { mainRef, virtualRef, responsiveState, isSearchExpanded, onSearchUtilityClick } = useTopNavigation({
+    identity,
+    search,
+    utilities,
+  });
   const [overflowMenuOpen, setOverflowMenuOpen] = useState(false);
   const overflowMenuTriggerRef = useRef<HTMLButtonElement>(null);
-  const isNarrowViewport = breakpoint === 'default';
-  const isMediumViewport = breakpoint === 'xxs';
-  const isLargeViewport = breakpoint === 's';
   const i18n = useInternalI18n('top-navigation');
 
   const onIdentityClick = (event: React.MouseEvent) => {
@@ -82,8 +81,6 @@ export default function InternalTopNavigation({
         className={clsx(styles['top-navigation'], {
           [styles.virtual]: isVirtual,
           [styles.hidden]: isVirtual,
-          [styles.narrow]: isNarrowViewport,
-          [styles.medium]: isMediumViewport,
         })}
       >
         <div className={styles['padding-box']}>
@@ -91,14 +88,7 @@ export default function InternalTopNavigation({
             <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
               <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
                 {identity.logo && (
-                  <img
-                    role="img"
-                    src={identity.logo?.src}
-                    alt={identity.logo?.alt}
-                    className={clsx(styles.logo, {
-                      [styles.narrow]: isNarrowViewport,
-                    })}
-                  />
+                  <img role="img" src={identity.logo?.src} alt={identity.logo?.alt} className={styles.logo} />
                 )}
                 {showTitle && <span className={styles.title}>{identity.title}</span>}
               </a>
@@ -119,11 +109,7 @@ export default function InternalTopNavigation({
                 className={clsx(
                   styles['utility-wrapper'],
                   styles['utility-type-button'],
-                  styles['utility-type-button-link'],
-                  {
-                    [styles.narrow]: isNarrowViewport,
-                    [styles.medium]: isMediumViewport,
-                  }
+                  styles['utility-type-button-link']
                 )}
                 data-utility-special="search"
               >
@@ -147,63 +133,40 @@ export default function InternalTopNavigation({
                   (_utility, i) =>
                     isVirtual || !responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) === -1
                 )
-                .map((utility, i) => {
-                  const hideText = !!responsiveState.hideUtilityText;
-                  const isLast = (isVirtual || !showMenuTrigger) && i === utilities.length - 1;
-                  const offsetRight = isLast && isLargeViewport ? 'xxl' : isLast ? 'l' : undefined;
-
-                  return (
-                    <div
-                      key={i}
-                      className={clsx(
-                        styles['utility-wrapper'],
-                        styles[`utility-type-${utility.type}`],
-                        utility.type === 'button' && styles[`utility-type-button-${utility.variant ?? 'link'}`],
-                        {
-                          [styles.narrow]: isNarrowViewport,
-                          [styles.medium]: isMediumViewport,
-                        }
-                      )}
-                      data-utility-index={i}
-                      data-utility-hide={`${hideText}`}
-                    >
-                      <Utility hideText={hideText} definition={utility} offsetRight={offsetRight} />
-                    </div>
-                  );
-                })}
-
-            {isVirtual &&
-              utilities.map((utility, i) => {
-                const hideText = !responsiveState.hideUtilityText;
-                const isLast = !showMenuTrigger && i === utilities.length - 1;
-                const offsetRight = isLast && isLargeViewport ? 'xxl' : isLast ? 'l' : undefined;
-
-                return (
+                .map((utility, i) => (
                   <div
                     key={i}
                     className={clsx(
                       styles['utility-wrapper'],
                       styles[`utility-type-${utility.type}`],
-                      utility.type === 'button' && styles[`utility-type-button-${utility.variant ?? 'link'}`],
-                      {
-                        [styles.narrow]: isNarrowViewport,
-                        [styles.medium]: isMediumViewport,
-                      }
+                      utility.type === 'button' && styles[`utility-type-button-${utility.variant ?? 'link'}`]
                     )}
                     data-utility-index={i}
-                    data-utility-hide={`${hideText}`}
+                    data-utility-hide={`${!!responsiveState.hideUtilityText}`}
                   >
-                    <Utility hideText={hideText} definition={utility} offsetRight={offsetRight} />
+                    <Utility hideText={!!responsiveState.hideUtilityText} definition={utility} />
                   </div>
-                );
-              })}
+                ))}
+
+            {isVirtual &&
+              utilities.map((utility, i) => (
+                <div
+                  key={i}
+                  className={clsx(
+                    styles['utility-wrapper'],
+                    styles[`utility-type-${utility.type}`],
+                    utility.type === 'button' && styles[`utility-type-button-${utility.variant ?? 'link'}`]
+                  )}
+                  data-utility-index={i}
+                  data-utility-hide={`${!responsiveState.hideUtilityText}`}
+                >
+                  <Utility hideText={!responsiveState.hideUtilityText} definition={utility} />
+                </div>
+              ))}
 
             {showMenuTrigger && (
               <div
-                className={clsx(styles['utility-wrapper'], styles['utility-type-menu-dropdown'], {
-                  [styles.narrow]: isNarrowViewport,
-                  [styles.medium]: isMediumViewport,
-                })}
+                className={clsx(styles['utility-wrapper'], styles['utility-type-menu-dropdown'])}
                 data-utility-special="menu-trigger"
               >
                 <ButtonTrigger
