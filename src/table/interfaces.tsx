@@ -62,6 +62,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   loadingText?: string;
 
   /**
+   * Renders the specified number of skeleton rows instead of actual data.
+   * This provides a loading state alternative to the `loading` property by showing skeleton placeholders in table rows.
+   * When set, this takes precedence over the `loading` property.
+   */
+  skeletonRows?: number;
+
+  /**
    * Specifies a property that uniquely identifies an individual item.
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
