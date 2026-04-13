@@ -23,7 +23,7 @@
   }
   &.parent {
     font-weight: bold;
-    &:not(.disabled):not(.highlighted) {
+    &:not(.highlighted) {
       color: awsui.$color-text-dropdown-group-label;
     }
   }
