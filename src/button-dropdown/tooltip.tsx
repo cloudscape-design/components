@@ -59,16 +59,28 @@ export default function Tooltip({ children, content, position = 'right', classNa
 }
 
 function useTooltipOpen(timeout: number) {
-  const timeoutRef = useRef<number>();
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+  // The delayed effect is aborted in case the component unmounts. We cannot use the conventional clearTimeout()
+  // as it causes cleanup of a legitimate state update when used with React 18+ strict mode.
+  const timeoutRef = useRef<number>();
+  const timeoutAbortRef = useRef(false);
+  useEffect(() => {
+    timeoutAbortRef.current = false;
+    return () => {
+      timeoutAbortRef.current = true;
+    };
+  }, []);
 
   const close = () => {
     clearTimeout(timeoutRef.current);
     setIsOpen(false);
   };
-  const open = () => setIsOpen(true);
+  const open = () => {
+    if (!timeoutAbortRef.current) {
+      setIsOpen(true);
+    }
+  };
   const openDelayed = () => {
     timeoutRef.current = setTimeout(open, timeout);
   };

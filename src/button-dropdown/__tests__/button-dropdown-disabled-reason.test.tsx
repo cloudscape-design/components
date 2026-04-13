@@ -167,7 +167,7 @@ describe('Button Dropdown - Disabled Reason', () => {
     });
   });
 
-  it('does not try to show a tooltip after unmount', () => {
+  it('does not attempt a state update after the component is unmounted', () => {
     const consoleError = jest.spyOn(console, 'error');
     const { wrapper, unmount } = renderOpenButtonDropdown(props);
     const menuItem = getMenuItemForId(wrapper, items[3].id!);
@@ -176,7 +176,7 @@ describe('Button Dropdown - Disabled Reason', () => {
     unmount();
     act(() => jest.advanceTimersByTime(1000));
 
-    // Expect no "Can't perform a React state update on an unmounted component" warning.
+    // Expect no "Can't perform a React state update on an unmounted component" error.
     expect(consoleError).not.toHaveBeenCalled();
     consoleError.mockRestore();
   });
