@@ -1,0 +1,148 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: awsui.$space-s;
+}
+
+.sticky {
+  position: sticky;
+  z-index: 1000;
+
+  &.placement-block-start {
+    inset-block-start: 0;
+  }
+
+  &.placement-block-end {
+    inset-block-end: 0;
+  }
+
+  &.placement-inline-start {
+    inset-inline-start: 0;
+  }
+
+  &.placement-inline-end {
+    inset-inline-end: 0;
+  }
+}
+
+// Variant backgrounds
+.variant-primary {
+  background: awsui.$color-background-container-content;
+}
+
+.variant-secondary {
+  background: awsui.$color-background-layout-panel-content;
+}
+
+// Slot layout (must precede placement rules for specificity ordering)
+.start {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-s;
+  flex-shrink: 0;
+  // Stretch to full bar height so dropdowns anchor correctly.
+  block-size: 100%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: awsui.$space-s;
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-s;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  // Stretch to full bar height so dropdowns anchor correctly.
+  block-size: 100%;
+}
+
+// Horizontal placements
+.placement-block-start,
+.placement-block-end {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+  padding-inline: awsui.$space-xxl;
+
+  &.variant-secondary {
+    block-size: awsui.$space-xxxl;
+  }
+
+  // Responsive height reduction matching top-navigation breakpoints
+  &.breakpoint-medium {
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    padding-inline: awsui.$space-l;
+
+    &.variant-secondary {
+      block-size: awsui.$space-xxxl;
+    }
+  }
+
+  &.breakpoint-narrow {
+    block-size: awsui.$space-xxxl;
+    padding-inline: awsui.$space-l;
+
+    &.variant-secondary {
+      block-size: awsui.$space-xxxl;
+    }
+  }
+}
+
+.placement-block-start {
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.placement-block-end {
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+// Vertical placements
+.placement-inline-start,
+.placement-inline-end {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  inline-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+  padding-block: awsui.$space-xxl;
+  block-size: 100%;
+
+  &.variant-secondary {
+    inline-size: awsui.$space-xxxl;
+  }
+
+  > .start,
+  > .end {
+    flex-direction: column;
+    block-size: auto;
+    inline-size: 100%;
+  }
+  > .end {
+    margin-inline-start: unset;
+    margin-block-start: auto;
+  }
+}
+
+.placement-inline-start {
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.placement-inline-end {
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
