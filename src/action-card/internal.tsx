@@ -58,13 +58,8 @@ const InternalActionCard = React.forwardRef(
     }
 
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
       if (disabled) {
         return event.preventDefault();
-      }
-      nativeButtonAttributes?.onClick?.(event);
-      if (event.defaultPrevented) {
-        return;
       }
       fireCancelableEvent(onClick, {}, event);
     };
@@ -84,6 +79,12 @@ const InternalActionCard = React.forwardRef(
 
     const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
 
+    // Link the description element as the button's accessible description
+    // when the button already has a name (via header text or ariaLabel).
+    if (!ariaDescribedby && description && (ariaLabel || header)) {
+      ariaDescribedby = descriptionId;
+    }
+
     const buttonProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {
       ...nativeButtonAttributes,
       type: 'button',
@@ -95,7 +96,7 @@ const InternalActionCard = React.forwardRef(
         nativeButtonAttributes?.className
       ),
       onClick: handleButtonClick,
-      'aria-describedby': ariaDescribedby || (description && (ariaLabel || header) ? descriptionId : undefined),
+      'aria-describedby': ariaDescribedby,
       'aria-disabled': disabled || undefined,
     };
 
@@ -131,6 +132,18 @@ const InternalActionCard = React.forwardRef(
       </div>
     ) : null;
 
+    // When there's no header, a standalone overlay button is rendered.
+    // If ariaLabel is provided, it's used directly. Otherwise, derive the button's
+    // accessible name from the first available content: description or children.
+    let standaloneButtonLabelledBy: string | undefined;
+    if (!ariaLabel) {
+      if (description) {
+        standaloneButtonLabelledBy = descriptionId;
+      } else if (children) {
+        standaloneButtonLabelledBy = bodyId;
+      }
+    }
+
     const standaloneButton = !header ? (
       <button
         {...buttonProps}
@@ -144,7 +157,7 @@ const InternalActionCard = React.forwardRef(
           nativeButtonAttributes?.className
         )}
         aria-label={ariaLabel || undefined}
-        aria-labelledby={!ariaLabel ? (description ? descriptionId : children ? bodyId : undefined) : undefined}
+        aria-labelledby={standaloneButtonLabelledBy}
       />
     ) : null;
 
