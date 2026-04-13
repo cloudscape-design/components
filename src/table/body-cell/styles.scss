@@ -10,8 +10,6 @@
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
 // between selected border widths and normal row divider widths (visual refresh).
-// Uses border-width-item-selected (not border-item-width) so theming the selected border
-// width doesn't cause a visual jump when rows are selected/deselected.
 $cell-vertical-padding-w-border: calc(
   #{$cell-vertical-padding} + (#{awsui.$border-width-item-selected} - #{awsui.$border-divider-list-width})
 );
