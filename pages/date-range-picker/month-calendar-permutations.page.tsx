@@ -36,6 +36,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   })),
   // Disabled dates
   {
@@ -45,6 +46,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Date-only
   {
@@ -54,6 +56,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Custom control
   {
@@ -62,6 +65,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [() => 'Custom control'],
     timeInputFormat: ['hh:mm:ss'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Date input formats
   {
@@ -71,6 +75,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     timeInputFormat: ['hh:mm:ss'] as const,
     dateInputFormat: ['iso', 'slashed'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
   // Time input formats
   {
@@ -79,6 +84,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     customAbsoluteRangeControl: [undefined],
     timeInputFormat: ['hh:mm', 'hh'] as const,
     absoluteFormat: ['long-localized'] as const,
+    multiGridStartPeriod: ['current'] as const,
   },
 ]);
 

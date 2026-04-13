@@ -52,8 +52,9 @@ interface DateRangePickerDropdownProps
         | 'i18nStrings'
         | 'customRelativeRangeUnits'
         | 'dateDisabledReason'
+        | 'absoluteMultiGridStartPeriod'
       >,
-      'absoluteFormat' | 'timeInputFormat'
+      'absoluteFormat' | 'timeInputFormat' | 'absoluteMultiGridStartPeriod'
     >,
     Pick<CalendarProps, 'granularity'> {
   onClear: () => void;
@@ -93,6 +94,7 @@ export function DateRangePickerDropdown({
   renderRelativeRangeContent,
   granularity = 'day',
   referrerId,
+  absoluteMultiGridStartPeriod,
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
@@ -219,6 +221,7 @@ export function DateRangePickerDropdown({
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
                       granularity={granularity}
                       referrerId={referrerId}
+                      multiGridStartPeriod={absoluteMultiGridStartPeriod}
                     />
                   )}
 

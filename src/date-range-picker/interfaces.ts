@@ -213,6 +213,15 @@ export interface DateRangePickerProps
    * Adds `aria-label` to the trigger and dropdown.
    */
   ariaLabel?: string;
+
+  /**
+   * Specifies whether to start with the previous or current period (month or year)
+   * when multiple calendar grids are displayed in absolute mode.
+   *
+   * Defaults to 'auto', which starts with previous if no date is selected,
+   * or current if a selection is present.
+   */
+  absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
 }
 
 export namespace DateRangePickerProps {
@@ -609,6 +618,8 @@ export namespace DateRangePickerProps {
   export type DateInputFormat = EditableDateFormat | undefined;
 
   export type TimeInputFormat = TimeInputProps.Format;
+
+  export type StartPeriod = 'previous' | 'current' | 'auto';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

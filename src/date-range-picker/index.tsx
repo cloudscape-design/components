@@ -117,6 +117,7 @@ const DateRangePicker = React.forwardRef(
       customRelativeRangeUnits,
       renderRelativeRangeContent,
       granularity = 'day',
+      absoluteMultiGridStartPeriod = 'auto',
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -362,6 +363,7 @@ const DateRangePicker = React.forwardRef(
                   renderRelativeRangeContent={renderRelativeRangeContent}
                   granularity={granularity}
                   referrerId={referrerId}
+                  absoluteMultiGridStartPeriod={absoluteMultiGridStartPeriod}
                 />
               )}
             </ResetContextsForModal>

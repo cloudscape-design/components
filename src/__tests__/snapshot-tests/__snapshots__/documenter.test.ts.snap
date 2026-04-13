@@ -10819,6 +10819,26 @@ It can take the following values:
       "type": "string",
     },
     {
+      "defaultValue": "'auto'",
+      "description": "Specifies whether to start with the previous or current period (month or year)
+when multiple calendar grids are displayed in absolute mode.
+
+Defaults to 'auto', which starts with previous if no date is selected,
+or current if a selection is present.",
+      "inlineType": {
+        "name": "DateRangePickerProps.StartPeriod",
+        "type": "union",
+        "values": [
+          "auto",
+          "current",
+          "previous",
+        ],
+      },
+      "name": "absoluteMultiGridStartPeriod",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 

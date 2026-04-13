@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { addMonths, addYears, isAfter, isBefore, isSameMonth, isSameYear, max, min } from 'date-fns';
+import { addMonths, addYears, isAfter, isSameMonth, isSameYear, max, min } from 'date-fns';
 
 import { CalendarProps } from '../../../calendar/interfaces';
 import {
@@ -36,9 +36,9 @@ function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularit
     return isSame(date, baseDate);
   }
 
-  const previous = add(baseDate, -1);
+  const next = add(baseDate, 1);
 
-  return isSame(date, previous) || isSame(date, baseDate);
+  return isSame(date, baseDate) || isSame(date, next);
 }
 
 export const Grids = ({
@@ -90,12 +90,12 @@ export const Grids = ({
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid, granularity)) {
-      const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
+      const direction = isAfter(focusedDate, baseDate) ? 0 : -1;
 
       const newPage = !isSingleGrid && direction === -1 ? addPages(baseDate, -1) : baseDate;
       const nearestBaseDate = getBase(newPage, isDateFocusable);
 
-      const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateFocusable);
+      const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateFocusable, isSingleGrid);
 
       onFocusedDateChange(newFocusedDate);
     }
@@ -132,8 +132,8 @@ export const Grids = ({
     const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid, granularity);
 
     if (!updatedDateIsVisible) {
-      const newPageIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
-      onPageChange(newPageIsOnLeftSide ? addPages(updatedFocusDate, 1) : updatedFocusDate);
+      const newPageIsOnRightSide = !isSingleGrid && isAfter(updatedFocusDate, baseDate);
+      onPageChange(newPageIsOnRightSide ? addPages(updatedFocusDate, -1) : updatedFocusDate);
     }
     onFocusedDateChange(updatedFocusDate);
   };
@@ -190,24 +190,24 @@ export const Grids = ({
   return (
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
+        <Grid
+          {...sharedGridProps}
+          padDates={'before'}
+          className={testutilStyles['first-grid']}
+          baseDate={baseDate}
+          ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
+          referrerId={referrerId}
+        />
         {!isSingleGrid && (
           <Grid
             {...sharedGridProps}
-            padDates={'before'}
-            className={testutilStyles['first-grid']}
-            baseDate={addPages(baseDate, -1)}
-            ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
+            padDates={'after'}
+            className={testutilStyles['second-grid']}
+            baseDate={addPages(baseDate, 1)}
+            ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
             referrerId={referrerId}
           />
         )}
-        <Grid
-          {...sharedGridProps}
-          padDates={'after'}
-          className={testutilStyles['second-grid']}
-          baseDate={baseDate}
-          ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
-          referrerId={referrerId}
-        />
       </InternalSpaceBetween>
     </div>
   );

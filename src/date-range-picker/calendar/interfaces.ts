@@ -56,6 +56,7 @@ export interface DateRangePickerCalendarProps
   setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
   i18nStrings?: RangeCalendarI18nStrings;
   referrerId?: string;
+  multiGridStartPeriod: DateRangePickerProps.StartPeriod;
 }
 
 export interface RangeInputsProps
