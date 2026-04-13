@@ -38,9 +38,9 @@ describe('Prompt input', () => {
   test(
     'Height should update based on maxRows property',
     setupTest({}, async page => {
-      await expect(page.getPromptInputHeight()).resolves.toEqual(30);
+      await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
-      await expect(page.getPromptInputHeight()).resolves.toEqual(94);
+      await expect(page.getPromptInputHeight()).resolves.toEqual(96);
 
       const clientHeight = await page.getElementProperty(
         getPromptInputWrapper().findNativeTextarea().toSelector(),
@@ -58,7 +58,7 @@ describe('Prompt input', () => {
   test(
     'Height should update infinitely based on maxRows property being set to -1',
     setupTest({ hasInfiniteMaxRows: true }, async page => {
-      await expect(page.getPromptInputHeight()).resolves.toEqual(30);
+      await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
 
       const clientHeight = await page.getElementProperty(
@@ -87,7 +87,7 @@ describe('Prompt input', () => {
     'Should has one row height in Split Panel',
     setupTest({}, async page => {
       await page.click(createWrapper().findAppLayout().findSplitPanelOpenButton().toSelector());
-      await expect(page.getPromptInputHeight('Prompt-input-in-split-panel')).resolves.toEqual(30);
+      await expect(page.getPromptInputHeight('Prompt-input-in-split-panel')).resolves.toEqual(32);
     })
   );
 });
