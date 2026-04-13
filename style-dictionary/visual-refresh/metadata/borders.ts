@@ -144,8 +144,8 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  borderWidthCardHighlighted: {
-    description: 'The border width of a highlighted card.',
+  borderWidthCardSelected: {
+    description: 'The border width of a selected card.',
     public: true,
     themeable: true,
   },

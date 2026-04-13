@@ -893,7 +893,7 @@ export type BordersTokenName =
   | 'borderWidthAlertInlineStart'
   | 'borderWidthAlertInlineEnd'
   | 'borderWidthCard'
-  | 'borderWidthCardHighlighted'
+  | 'borderWidthCardSelected'
   | 'borderWidthItemCard'
   | 'borderWidthItemCardHighlighted'
   | 'borderWidthItemSelected'

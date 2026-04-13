@@ -424,7 +424,7 @@ export default function ThemedComponentsPage() {
           borderWidthButton: '1px',
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
-          borderWidthCardHighlighted: '1px',
+          borderWidthCardSelected: '1px',
         },
       };
 
