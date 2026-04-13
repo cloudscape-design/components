@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "Close popover"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Submit prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Error",
+    "i18nStrings.menuRecoveryText": "Retry",
+    "i18nStrings.menuLoadingText": "Loading items",
+    "i18nStrings.menuFinishedText": "End of results",
+    "i18nStrings.menuErrorText": "Error fetching items",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selected",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserted",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} pinned",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} removed"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "All properties",
     "i18nStrings.applyActionText": "Apply",
@@ -484,4 +496,3 @@
     "i18nStrings.submitButtonLoadingAnnouncement": "Submitting form"
   }
 }
-

@@ -144,10 +144,25 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
+  spaceTabsVertical: {
+    description: 'The vertical padding inside tabs.',
+    public: true,
+    themeable: true,
+  },
   spaceTreeViewIndentation: {
     description: 'The indentation of tree view items.',
     public: true,
     themeable: false,
+  },
+  spaceButtonHorizontal: {
+    description: 'The horizontal padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceButtonVertical: {
+    description: 'The vertical padding inside buttons.',
+    public: true,
+    themeable: true,
   },
 };
 

@@ -169,18 +169,18 @@ export default function PromptInputPage() {
             <button onClick={() => ref.current?.select()}>Select all text</button>
 
             <ColumnLayout columns={2}>
-              <FormField
-                errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
-                warningText={hasWarning && 'This input has a warning'}
-                constraintText={
-                  <>
-                    This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-                  </>
-                }
-                label={<span>User prompt</span>}
-                i18nStrings={{ errorIconAriaLabel: 'Error' }}
-              >
-                <ScreenshotArea disableAnimations={true}>
+              <ScreenshotArea disableAnimations={true}>
+                <FormField
+                  errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
+                  warningText={hasWarning && 'This input has a warning'}
+                  constraintText={
+                    <>
+                      This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+                    </>
+                  }
+                  label={<span>User prompt</span>}
+                  i18nStrings={{ errorIconAriaLabel: 'Error' }}
+                >
                   <PromptInput
                     data-testid="prompt-input"
                     ariaLabel="Chat input"
@@ -268,8 +268,8 @@ export default function PromptInputPage() {
                       ) : undefined
                     }
                   />
-                </ScreenshotArea>
-              </FormField>
+                </FormField>
+              </ScreenshotArea>
               <div />
             </ColumnLayout>
           </SpaceBetween>

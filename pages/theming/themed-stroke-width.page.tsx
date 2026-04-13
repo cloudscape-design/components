@@ -13,11 +13,12 @@ import {
   InputProps,
   KeyValuePairs,
   Link,
-  SegmentedControl,
   Select,
   SelectProps,
   SpaceBetween,
   StatusIndicator,
+  Tabs,
+  TabsProps,
 } from '~components';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
@@ -44,6 +45,34 @@ const createStrokeHandler = (setter: (value: string) => void) => {
     }
   };
 };
+
+function TabsExample() {
+  const tabs: TabsProps.Tab[] = [
+    {
+      id: 'first',
+      label: 'First tab',
+      content: 'First tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss first tab',
+    },
+    {
+      id: 'second',
+      label: 'Second tab',
+      content: 'Second tab content area',
+      dismissible: true,
+      dismissLabel: 'Dismiss second tab',
+    },
+    { id: 'third', label: 'Third tab', content: 'Third tab content area' },
+    { id: 'fourth', label: 'Fourth tab', disabled: true, content: 'Fourth tab content area' },
+  ];
+
+  return (
+    <SpaceBetween size="l">
+      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} variant="container" />
+    </SpaceBetween>
+  );
+}
 
 export default function ThemedStrokeWidthPage() {
   const [themed, setThemed] = useState<boolean>(false);
@@ -73,7 +102,6 @@ export default function ThemedStrokeWidthPage() {
           borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
           borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
           borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
-          borderRadiusButton: '8px',
         },
       };
 
@@ -85,8 +113,6 @@ export default function ThemedStrokeWidthPage() {
     }
     return reset;
   }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
-
-  const [selectedId, setSelectedId] = React.useState('seg-1');
 
   return (
     <div style={{ padding: 15 }}>
@@ -222,18 +248,13 @@ export default function ThemedStrokeWidthPage() {
               <Button iconName="call" variant="primary">
                 Button
               </Button>
+              <Button iconName="call" variant="link">
+                Button
+              </Button>
+              <Button iconName="call" variant="normal">
+                Button
+              </Button>
             </div>
-
-            <SegmentedControl
-              selectedId={selectedId}
-              onChange={({ detail }) => setSelectedId(detail.selectedId)}
-              label="Default segmented control"
-              options={[
-                { text: 'Segment 1', id: 'seg-1' },
-                { text: 'Segment 2', id: 'seg-2' },
-                { text: 'Segment 3', id: 'seg-3' },
-              ]}
-            />
 
             <div>
               <Link external={true} href="https://example.com/" variant="primary">
@@ -269,6 +290,10 @@ export default function ThemedStrokeWidthPage() {
               <StatusIndicator type="warning">Warning</StatusIndicator>
               <StatusIndicator type="info">Info</StatusIndicator>
             </SpaceBetween>
+
+            <div>
+              <TabsExample />
+            </div>
             <IconProvider
               icons={{
                 'status-positive': (

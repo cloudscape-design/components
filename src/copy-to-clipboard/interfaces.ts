@@ -32,9 +32,9 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   textToCopy: string;
 
   /**
-   * The text content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
    */
-  textToDisplay?: string;
+  textToDisplay?: React.ReactNode;
 
   /**
    * The message shown when the text is copied successfully.
@@ -59,6 +59,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Renders the copy to clipboard button as disabled and prevents clicks.
    */
   disabled?: boolean;
+
   /**
    * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
    * If provided, the copy to clipboard button becomes focusable.

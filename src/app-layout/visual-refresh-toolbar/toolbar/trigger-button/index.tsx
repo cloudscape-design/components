@@ -66,7 +66,7 @@ export interface TriggerButtonProps {
    */
   isForSplitPanel?: boolean;
   tabIndex?: number | undefined;
-  variant?: 'circle' | 'custom';
+  variant?: 'default' | 'custom';
 }
 
 function TriggerButton(
@@ -89,7 +89,7 @@ function TriggerButton(
     isMobile = false,
     isForPreviousActiveDrawer = false,
     isForSplitPanel = false,
-    variant = 'circle',
+    variant = 'default',
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
@@ -232,7 +232,6 @@ function TriggerButton(
           styles[variant],
           {
             [styles.selected]: selected,
-            [styles['trigger-with-badge']]: badge,
             [testutilStyles['drawers-trigger-with-badge']]: badge,
           },
           className

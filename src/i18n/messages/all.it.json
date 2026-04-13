@@ -271,6 +271,18 @@
   "popover": {
     "dismissAriaLabel": "Chiudi popover"
   },
+  "prompt-input": {
+    "i18nStrings.actionButtonAriaLabel": "Invia prompt",
+    "i18nStrings.menuErrorIconAriaLabel": "Errore",
+    "i18nStrings.menuRecoveryText": "Riprova",
+    "i18nStrings.menuLoadingText": "Caricamento degli elementi in corso",
+    "i18nStrings.menuFinishedText": "Fine dei risultati",
+    "i18nStrings.menuErrorText": "Errore durante il recupero degli elementi",
+    "i18nStrings.selectedMenuItemAriaLabel": "Selezionato",
+    "i18nStrings.tokenInsertedAriaLabel": "{token__label} inserito",
+    "i18nStrings.tokenPinnedAriaLabel": "{token__label} fissato",
+    "i18nStrings.tokenRemovedAriaLabel": "{token__label} rimosso"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Tutte le proprietà",
     "i18nStrings.applyActionText": "Applica",
