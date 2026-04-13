@@ -9,7 +9,6 @@ import OptionWrapper from './option';
 import OptionsListWrapper from './options-list';
 
 import dropdownStyles from '../../../dropdown/styles.selectors.js';
-import legacyDropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
 import selectableStyles from '../../../internal/components/selectable-item/styles.selectors.js';
@@ -34,10 +33,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    */
   findDropdown(options = { expandToViewport: false }): OptionsDropdownContentWrapper {
     return options.expandToViewport
-      ? createWrapper().findComponent(
-          `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
-          PortalDropdownContentWrapper
-        )!
+      ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalDropdownContentWrapper)!
       : new OptionsDropdownContentWrapper(this.getElement());
   }
 
@@ -259,9 +255,6 @@ export class OptionsDropdownContentWrapper extends ComponentWrapper {
 
 export class PortalDropdownContentWrapper extends OptionsDropdownContentWrapper {
   findOpenDropdown(): ElementWrapper | null {
-    return createWrapper().findComponent(
-      `:is(.${dropdownStyles.dropdown}, .${legacyDropdownStyles.dropdown})[data-open=true]`,
-      DropdownWrapper
-    );
+    return createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, DropdownWrapper);
   }
 }
