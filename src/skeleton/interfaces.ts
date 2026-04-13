@@ -8,6 +8,13 @@ import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface SkeletonProps extends BaseComponentProps {
   /**
+   * Specifies the variant of the skeleton.
+   * * `default` - The default skeleton appearance with 3em height.
+   * * `text` - A text-sized skeleton with height matching line-height-body-m design token.
+   */
+  variant?: 'default' | 'text';
+
+  /**
    * Specifies the height of the skeleton. Accepts any valid CSS value (e.g. `"100px"`, `"3em"`).
    */
   height?: string;

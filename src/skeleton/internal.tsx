@@ -14,6 +14,7 @@ import styles from './styles.css.js';
 interface InternalSkeletonProps extends SkeletonProps, InternalBaseComponentProps {}
 
 export default function InternalSkeleton({
+  variant = 'default',
   height,
   width,
   style,
@@ -35,7 +36,7 @@ export default function InternalSkeleton({
       tag="div"
       componentName="Skeleton"
       nativeAttributes={nativeAttributes}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, styles[`variant-${variant}`])}
       ref={__internalRootRef}
       style={inlineStyle}
       aria-hidden="true"
