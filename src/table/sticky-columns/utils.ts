@@ -3,13 +3,7 @@
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import {
-  CellOffsets,
-  StickyColumnsCellState,
-  StickyColumnsGroupHeaderState,
-  StickyColumnsProps,
-  StickyColumnsWrapperState,
-} from './interfaces';
+import { CellOffsets, StickyColumnsCellState, StickyColumnsProps, StickyColumnsWrapperState } from './interfaces';
 
 export function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | StickyColumnsCellState): boolean {
   if (s1 && s2) {
@@ -19,29 +13,6 @@ export function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | 
       s1.lastInsetInlineEnd === s2.lastInsetInlineEnd &&
       s1.offset.insetInlineStart === s2.offset.insetInlineStart &&
       s1.offset.insetInlineEnd === s2.offset.insetInlineEnd
-    );
-  }
-  return s1 === s2;
-}
-
-export function isGroupHeaderStatesEqual(
-  s1: null | StickyColumnsGroupHeaderState,
-  s2: null | StickyColumnsGroupHeaderState
-): boolean {
-  if (s1 && s2) {
-    return (
-      s1.offset.insetInlineStart === s2.offset.insetInlineStart &&
-      s1.offset.insetInlineEnd === s2.offset.insetInlineEnd &&
-      s1.position === s2.position &&
-      s1.zIndex === s2.zIndex &&
-      s1.maxWidth === s2.maxWidth &&
-      s1.clipPath === s2.clipPath &&
-      s1.innerInsetInlineStart === s2.innerInsetInlineStart &&
-      s1.innerInsetInlineEnd === s2.innerInsetInlineEnd &&
-      s1.lastInsetInlineStart === s2.lastInsetInlineStart &&
-      s1.lastInsetInlineEnd === s2.lastInsetInlineEnd &&
-      s1.isStuck === s2.isStuck &&
-      s1.isClamped === s2.isClamped
     );
   }
   return s1 === s2;
