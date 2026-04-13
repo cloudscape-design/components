@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEventHandler, useRef, useState } from 'react';
+import React, { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 
 import { Portal, useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
 
@@ -59,16 +59,18 @@ export default function Tooltip({ children, content, position = 'right', classNa
 }
 
 function useTooltipOpen(timeout: number) {
-  const handle = useRef<number>();
+  const timeoutRef = useRef<number>();
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+
   const close = () => {
-    clearTimeout(handle.current);
+    clearTimeout(timeoutRef.current);
     setIsOpen(false);
   };
   const open = () => setIsOpen(true);
   const openDelayed = () => {
-    handle.current = setTimeout(open, timeout);
+    timeoutRef.current = setTimeout(open, timeout);
   };
   const onKeyDown: KeyboardEventHandler = e => {
     if (isOpen && isEscape(e.key)) {

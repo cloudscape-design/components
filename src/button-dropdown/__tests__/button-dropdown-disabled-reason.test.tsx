@@ -12,8 +12,7 @@ const renderOpenButtonDropdown = (props: ButtonDropdownProps) => {
   const renderResult = render(<ButtonDropdown {...props} />);
   const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
   wrapper.openDropdown();
-
-  return wrapper;
+  return { ...renderResult, wrapper };
 };
 
 const items: ButtonDropdownProps['items'] = [
@@ -69,27 +68,27 @@ describe('Button Dropdown - Disabled Reason', () => {
   });
 
   it('has no tooltip open by default', () => {
-    const wrapper = renderOpenButtonDropdown(props);
+    const { wrapper } = renderOpenButtonDropdown(props);
     expect(wrapper.findDisabledReason()).toBe(null);
   });
 
   it('has no aria-describedby by default', () => {
     const item = items[0];
-    const wrapper = renderOpenButtonDropdown(props);
+    const { wrapper } = renderOpenButtonDropdown(props);
     const menuItem = getMenuItemForId(wrapper, item.id!);
     expect(menuItem.getElement()).not.toHaveAttribute('aria-describedby');
   });
 
   it('has no aria-describedby without disabledReason', () => {
     const item = items[1];
-    const wrapper = renderOpenButtonDropdown(props);
+    const { wrapper } = renderOpenButtonDropdown(props);
     const menuItem = getMenuItemForId(wrapper, item.id!);
     expect(menuItem.getElement()).not.toHaveAttribute('aria-describedby');
   });
 
   it('has no tooltip without disabledReason', () => {
     const item = items[1];
-    const wrapper = renderOpenButtonDropdown(props);
+    const { wrapper } = renderOpenButtonDropdown(props);
     const menuItem = getMenuItemForId(wrapper, item.id!);
     act(() => {
       menuItem.focus();
@@ -99,7 +98,7 @@ describe('Button Dropdown - Disabled Reason', () => {
 
   it('has no tooltip without disabled flag', () => {
     const item = items[2];
-    const wrapper = renderOpenButtonDropdown(props);
+    const { wrapper } = renderOpenButtonDropdown(props);
     const menuItem = getMenuItemForId(wrapper, item.id!);
     act(() => {
       menuItem.focus();
@@ -121,13 +120,13 @@ describe('Button Dropdown - Disabled Reason', () => {
     });
 
     it('has hidden element with disabledReason', () => {
-      const wrapper = renderOpenButtonDropdown(props);
+      const { wrapper } = renderOpenButtonDropdown(props);
       const span = getItemById(wrapper, item.id!).find('span[hidden]')!;
       expect(span.getElement()).toContainHTML(item.disabledReason!);
     });
 
     it('open tooltip on focus', () => {
-      const wrapper = renderOpenButtonDropdown(props);
+      const { wrapper } = renderOpenButtonDropdown(props);
       const menuItem = getMenuItemForId(wrapper, item.id!);
       act(() => {
         menuItem.focus();
@@ -137,7 +136,7 @@ describe('Button Dropdown - Disabled Reason', () => {
     });
 
     it('closes tooltip on blur', () => {
-      const wrapper = renderOpenButtonDropdown(props);
+      const { wrapper } = renderOpenButtonDropdown(props);
       const menuItem = getMenuItemForId(wrapper, item.id!);
       act(() => {
         menuItem.focus();
@@ -153,7 +152,7 @@ describe('Button Dropdown - Disabled Reason', () => {
     });
 
     it('closes tooltip on Escape', () => {
-      const wrapper = renderOpenButtonDropdown(props);
+      const { wrapper } = renderOpenButtonDropdown(props);
       const menuItem = getMenuItemForId(wrapper, item.id!);
       act(() => {
         menuItem.focus();
@@ -166,6 +165,20 @@ describe('Button Dropdown - Disabled Reason', () => {
       });
       expect(wrapper.findDisabledReason()).toBe(null);
     });
+  });
+
+  it('does not try to show a tooltip after unmount', () => {
+    const consoleError = jest.spyOn(console, 'error');
+    const { wrapper, unmount } = renderOpenButtonDropdown(props);
+    const menuItem = getMenuItemForId(wrapper, items[3].id!);
+
+    act(() => menuItem.focus());
+    unmount();
+    act(() => jest.advanceTimersByTime(1000));
+
+    // Expect no "Can't perform a React state update on an unmounted component" warning.
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 });
 
