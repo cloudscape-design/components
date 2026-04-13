@@ -235,14 +235,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 }
 
-// stylelint-disable-next-line no-descending-specificity
-.header-cell-content-group-inner-wrapper {
-  position: sticky;
-  inset-inline-start: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
 .header-cell-sortable:not(.header-cell-disabled) {
   & > .header-cell-content {
     cursor: pointer;
@@ -337,8 +329,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
 .header-cell-group:last-child {
   padding-block: 0;
   padding-inline: 0;
-  // padding-inline-start: 0;
-  // padding-inline-end: 0;
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
   --awsui-resizer-margin-block-start: auto;

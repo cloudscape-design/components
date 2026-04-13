@@ -120,7 +120,6 @@ test('generates non-empty sticky cell state', () => {
       ],
     ]),
     wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
-    groupHeaderState: new Map(),
   });
 });
 
@@ -136,7 +135,6 @@ test('generates empty cell state if wrapper is not scrollable', () => {
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
     wrapperState: { scrollPaddingInlineStart: 100, scrollPaddingInlineEnd: 0 },
-    groupHeaderState: new Map(),
   });
 });
 
@@ -152,7 +150,6 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
   expect(result.current.store.get()).toEqual({
     cellState: new Map(),
     wrapperState: { scrollPaddingInlineStart: 200, scrollPaddingInlineEnd: 0 },
-    groupHeaderState: new Map(),
   });
 });
 
@@ -246,7 +243,6 @@ test('cell subscriptions are cleaned up on ref change', () => {
       get: () => ({
         cellState: new Map(),
         wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 },
-        groupHeaderState: new Map(),
       }),
       subscribe,
       unsubscribe: () => {},

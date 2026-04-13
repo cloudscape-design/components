@@ -5,13 +5,11 @@ export interface StickyColumnsProps {
   visibleColumns: readonly PropertyKey[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
-  groupHierarchy?: GroupHierarchyInfo[];
 }
 
 export interface StickyColumnsState {
   cellState: Map<PropertyKey, StickyColumnsCellState>;
   wrapperState: StickyColumnsWrapperState;
-  groupHeaderState: Map<string, StickyColumnsGroupHeaderState>;
 }
 
 // Cell state is used to apply respective styles and offsets to sticky cells.
@@ -32,27 +30,4 @@ export interface CellOffsets {
   offsets: Map<PropertyKey, { first: number; last: number }>;
   stickyWidthInlineStart: number;
   stickyWidthInlineEnd: number;
-}
-
-// Group header state is used to apply sticky positioning to grouped column headers.
-export interface StickyColumnsGroupHeaderState {
-  offset: { insetInlineStart?: number; insetInlineEnd?: number };
-  position: 'sticky' | '';
-  zIndex: number | '';
-  maxWidth: number | '';
-  clipPath: string;
-  innerInsetInlineStart: string;
-  innerInsetInlineEnd: string;
-  lastInsetInlineStart: boolean;
-  lastInsetInlineEnd: boolean;
-  isStuck: boolean;
-  isClamped: boolean;
-}
-
-// Group hierarchy info maps a group header to its leaf column children.
-export interface GroupHierarchyInfo {
-  groupId: string;
-  childColumnIds: PropertyKey[];
-  firstChildColumnId: PropertyKey;
-  lastChildColumnId: PropertyKey;
 }

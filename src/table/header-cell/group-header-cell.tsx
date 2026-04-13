@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -11,8 +10,6 @@ import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel } from '../sticky-columns';
-import { StickyColumnsGroupHeaderState } from '../sticky-columns/interfaces';
-import { useStickyGroupHeaderStyles } from '../sticky-columns/use-sticky-columns';
 import { TableRole } from '../table-role';
 import { TableThElement } from './th-element';
 
@@ -24,13 +21,13 @@ export interface TableGroupHeaderCellProps {
   rowspan: number;
   colIndex: number;
   groupId: string;
-  firstChildColumnId?: PropertyKey;
-  lastChildColumnId?: PropertyKey;
   resizableColumns?: boolean;
   resizableStyle?: ColumnWidthStyle;
   onResizeFinish: () => void;
   updateGroupWidth: (groupId: PropertyKey, newWidth: number) => void;
   childColumnIds: PropertyKey[];
+  firstChildColumnId?: PropertyKey;
+  lastChildColumnId?: PropertyKey;
   childColumnMinWidths: Map<PropertyKey, number>;
   focusedComponent?: null | string;
   tabIndex: number;
@@ -46,6 +43,8 @@ export interface TableGroupHeaderCellProps {
   tableVariant?: TableProps.Variant;
   isLastChildOfGroup?: boolean;
   columnGroupId?: string;
+  /** When set, the <th> uses this column ID for sticky positioning instead of groupId. */
+  stickyColumnId?: PropertyKey;
 }
 
 export function TableGroupHeaderCell({
@@ -72,35 +71,23 @@ export function TableGroupHeaderCell({
   tableVariant,
   isLastChildOfGroup,
   columnGroupId,
+  stickyColumnId,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
-  const getStickyClassName = (state: StickyColumnsGroupHeaderState | null) => ({
-    [styles['sticky-cell-last-inline-start']]: !!state?.isClamped && !!state?.lastInsetInlineStart,
-    [styles['sticky-cell-last-inline-end']]: !!state?.isClamped && !!state?.lastInsetInlineEnd,
-  });
-
-  const { ref: stickyRef, innerRef: stickyInnerRef } = useStickyGroupHeaderStyles({
-    stickyColumns: stickyState,
-    groupId,
-    getClassName: getStickyClassName,
-  });
-
-  const cellRefCombined = useMergeRefs(cellRef, stickyRef);
-
   return (
     <TableThElement
       resizableStyle={resizableStyle}
-      cellRef={cellRefCombined}
+      cellRef={cellRef}
       focusedComponent={focusedComponent}
       sticky={sticky}
       resizable={resizableColumns}
       hidden={hidden}
       stripedRows={stripedRows}
       colIndex={colIndex}
-      columnId={groupId}
+      columnId={stickyColumnId ?? groupId}
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
@@ -111,37 +98,35 @@ export function TableGroupHeaderCell({
       isLastChildOfGroup={isLastChildOfGroup}
       columnGroupId={columnGroupId}
     >
-      <div ref={stickyInnerRef} className={styles['header-cell-content-group-inner-wrapper']}>
-        <div
-          ref={clickableHeaderRef}
-          data-focus-id={`group-header-${groupId}`}
-          className={clsx(styles['header-cell-content'], {
-            [styles['header-cell-fake-focus']]: focusedComponent === `group-header-${groupId}`,
-          })}
-          aria-label={group.ariaLabel?.({ sorted: false, descending: false, disabled: true })}
-          tabIndex={clickableHeaderTabIndex}
-        >
-          <div className={styles['header-cell-text']} id={headerId}>
-            {group.header}
-          </div>
+      <div
+        ref={clickableHeaderRef}
+        data-focus-id={`group-header-${groupId}`}
+        className={clsx(styles['header-cell-content'], {
+          [styles['header-cell-fake-focus']]: focusedComponent === `group-header-${groupId}`,
+        })}
+        aria-label={group.ariaLabel?.({ sorted: false, descending: false, disabled: true })}
+        tabIndex={clickableHeaderTabIndex}
+      >
+        <div className={styles['header-cell-text']} id={headerId}>
+          {group.header}
         </div>
-        {resizableColumns ? (
-          <Resizer
-            tabIndex={tabIndex}
-            focusId={`resize-group-${groupId}`}
-            showFocusRing={focusedComponent === `resize-group-${groupId}`}
-            onWidthUpdate={newWidth => updateGroupWidth(groupId, newWidth)}
-            onWidthUpdateCommit={onResizeFinish}
-            ariaLabelledby={headerId}
-            minWidth={undefined}
-            roleDescription={resizerRoleDescription}
-            tooltipText={resizerTooltipText}
-            isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
-          />
-        ) : (
-          <Divider className={clsx(styles['resize-divider'])} />
-        )}
       </div>
+      {resizableColumns ? (
+        <Resizer
+          tabIndex={tabIndex}
+          focusId={`resize-group-${groupId}`}
+          showFocusRing={focusedComponent === `resize-group-${groupId}`}
+          onWidthUpdate={newWidth => updateGroupWidth(groupId, newWidth)}
+          onWidthUpdateCommit={onResizeFinish}
+          ariaLabelledby={headerId}
+          minWidth={undefined}
+          roleDescription={resizerRoleDescription}
+          tooltipText={resizerTooltipText}
+          isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
+        />
+      ) : (
+        <Divider className={clsx(styles['resize-divider'])} />
+      )}
     </TableThElement>
   );
 }
