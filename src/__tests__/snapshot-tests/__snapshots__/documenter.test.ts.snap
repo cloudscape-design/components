@@ -32883,7 +32883,8 @@ exports[`Test-utils dom definitions match the snapshot 1`] = `
     {
       "methods": [
         {
-          "description": "Clicks the action card by forwarding the click to the internal button element.",
+          "description": "Performs a click by triggering a mouse event on the internal button.
+Note that programmatic events ignore disabled attribute and will trigger listeners even if the element is disabled.",
           "name": "click",
           "parameters": [],
           "returnType": {

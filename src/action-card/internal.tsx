@@ -89,6 +89,7 @@ const InternalActionCard = React.forwardRef(
       type: 'button',
       className: clsx(
         styles['header-button'],
+        testStyles.button,
         disabled && styles.disabled,
         variant && styles[`variant-${variant}`],
         nativeButtonAttributes?.className
@@ -137,6 +138,7 @@ const InternalActionCard = React.forwardRef(
         id={standaloneButtonId}
         className={clsx(
           styles['overlay-button'],
+          testStyles.button,
           disabled && styles.disabled,
           variant && styles[`variant-${variant}`],
           nativeButtonAttributes?.className
