@@ -10,6 +10,7 @@ import InternalStructuredItem from '../internal/components/structured-item';
 import { fireCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { type ActionCardProps } from './interfaces';
 import { getContentStyles, getHeaderStyles, getRootStyles } from './style';
 
@@ -85,15 +86,13 @@ const InternalActionCard = React.forwardRef(
       ariaDescribedby = descriptionId;
     }
 
-    const buttonProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {
-      ...nativeButtonAttributes,
-      type: 'button',
+    const buttonProps = {
+      type: 'button' as const,
       className: clsx(
         styles['header-button'],
         testStyles.button,
         disabled && styles.disabled,
-        variant && styles[`variant-${variant}`],
-        nativeButtonAttributes?.className
+        variant && styles[`variant-${variant}`]
       ),
       onClick: handleButtonClick,
       'aria-describedby': ariaDescribedby,
@@ -106,9 +105,16 @@ const InternalActionCard = React.forwardRef(
           content={
             header && (
               <div className={clsx(styles['header-inner'], testStyles.header, disabled && styles.disabled)}>
-                <button {...buttonProps} ref={buttonRef} id={headerId}>
+                <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
+                  {...buttonProps}
+                  tag="button"
+                  componentName="ActionCard"
+                  nativeAttributes={nativeButtonAttributes}
+                  ref={buttonRef}
+                  id={headerId}
+                >
                   {header}
-                </button>
+                </WithNativeAttributes>
               </div>
             )
           }
@@ -145,16 +151,18 @@ const InternalActionCard = React.forwardRef(
     }
 
     const standaloneButton = !header ? (
-      <button
+      <WithNativeAttributes<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>
         {...buttonProps}
+        tag="button"
+        componentName="ActionCard"
+        nativeAttributes={nativeButtonAttributes}
         ref={buttonRef}
         id={standaloneButtonId}
         className={clsx(
           styles['overlay-button'],
           testStyles.button,
           disabled && styles.disabled,
-          variant && styles[`variant-${variant}`],
-          nativeButtonAttributes?.className
+          variant && styles[`variant-${variant}`]
         )}
         aria-label={ariaLabel || undefined}
         aria-labelledby={standaloneButtonLabelledBy}
