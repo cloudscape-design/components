@@ -125,6 +125,10 @@ $neg-divider-w: calc(-1 * #{$divider-w});
     }
   }
 
+  &.parent > .selectable-item-content {
+    color: awsui.$color-text-dropdown-group-label;
+  }
+
   &.disabled > .selectable-item-content {
     color: awsui.$color-text-dropdown-item-disabled;
   }
@@ -174,11 +178,6 @@ $neg-divider-w: calc(-1 * #{$divider-w});
   }
 
   &.parent {
-    &:not(.disabled) {
-      > .selectable-item-content {
-        color: awsui.$color-text-dropdown-group-label;
-      }
-    }
     &:not(.interactiveGroups) {
       @include divider-shadow(awsui.$color-border-dropdown-group, awsui.$color-border-dropdown-item-default);
       @include content-pad(0, 0);
