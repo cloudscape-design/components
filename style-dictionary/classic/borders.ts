@@ -36,6 +36,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderTableStickyWidth: '0px',
   borderLinkFocusRingOutline: '5px auto Highlight',
   borderLinkFocusRingShadowSpread: '0px',
+  borderWidthItemSelected: '{borderItemWidth}',
   borderWidthAlert: '1px',
   borderWidthButton: '1px',
   borderWidthCard: '0px',
