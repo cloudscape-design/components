@@ -254,19 +254,12 @@ const Thead = React.forwardRef(
             ref={rowIndex === 0 ? outerRef : undefined}
             aria-rowindex={rowIndex + 1}
             {...getTableHeaderRowRoleProps({ tableRole, rowIndex })}
-            onFocus={
-              rowIndex === 0
-                ? event => {
-                    const focusControlElement = findUpUntil(
-                      event.target,
-                      element => !!element.getAttribute('data-focus-id')
-                    );
-                    const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
-                    onFocusedComponentChange?.(focusId);
-                  }
-                : undefined
-            }
-            onBlur={rowIndex === 0 ? () => onFocusedComponentChange?.(null) : undefined}
+            onFocus={event => {
+              const focusControlElement = findUpUntil(event.target, element => !!element.getAttribute('data-focus-id'));
+              const focusId = focusControlElement?.getAttribute('data-focus-id') ?? null;
+              onFocusedComponentChange?.(focusId);
+            }}
+            onBlur={() => onFocusedComponentChange?.(null)}
           >
             {/* Selection column — render once in the first row with rowSpan covering all header rows */}
             {selectionType && rowIndex === 0 ? (
