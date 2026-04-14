@@ -5,8 +5,10 @@ import React, { useLayoutEffect, useState } from 'react';
 import {
   AppLayoutToolbar,
   Autosuggest,
+  Box,
   Button,
   ButtonGroup,
+  Cards,
   Container,
   DatePicker,
   Grid,
@@ -19,6 +21,8 @@ import {
   SideNavigation,
   SpaceBetween,
   StatusIndicator,
+  Table,
+  Tiles,
   ToggleButton,
 } from '~components';
 import { MultiselectProps } from '~components/multiselect';
@@ -292,6 +296,95 @@ const generateDropdownOptions = (count = 25): SelectProps.Options | MultiselectP
   });
 };
 
+interface ItemType {
+  name: string;
+  type: string;
+  size: string;
+  status: string;
+  statusType: 'success' | 'error' | 'warning';
+}
+
+function TableCardsAndTiles() {
+  const [selectedItems, setSelectedItems] = useState<ItemType[]>([
+    { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' },
+  ]);
+  const [selectedTile, setSelectedTile] = useState<string | null>('tile-1');
+
+  return (
+    <SpaceBetween size="l">
+      <Table
+        selectionType="multi"
+        selectedItems={selectedItems}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+        trackBy="name"
+        ariaLabels={{
+          selectionGroupLabel: 'Items selection',
+          allItemsSelectionLabel: () => 'select all',
+          itemSelectionLabel: (_selection, item) => item.name,
+        }}
+        columnDefinitions={[
+          { id: 'name', header: 'Name', cell: item => item.name },
+          { id: 'type', header: 'Type', cell: item => item.type },
+          { id: 'size', header: 'Size', cell: item => item.size },
+          {
+            id: 'status',
+            header: 'Status',
+            cell: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
+          },
+        ]}
+        items={[
+          { name: 'Item 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
+          { name: 'Item 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
+          { name: 'Item 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
+        ]}
+        header={<Box variant="h3">Table</Box>}
+        sortingDisabled={true}
+      />
+
+      <Cards
+        selectionType="multi"
+        selectedItems={selectedItems}
+        onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+        trackBy="name"
+        ariaLabels={{
+          selectionGroupLabel: 'Items selection',
+          itemSelectionLabel: (_selection, item) => item.name,
+        }}
+        cardDefinition={{
+          header: item => item.name,
+          sections: [
+            { id: 'type', header: 'Type', content: item => item.type },
+            { id: 'size', header: 'Size', content: item => item.size },
+            {
+              id: 'status',
+              header: 'Status',
+              content: item => <StatusIndicator type={item.statusType}>{item.status}</StatusIndicator>,
+            },
+          ],
+        }}
+        items={[
+          { name: 'Card 1', type: 'Type A', size: '10 KB', status: 'Active', statusType: 'success' as const },
+          { name: 'Card 2', type: 'Type B', size: '25 KB', status: 'Inactive', statusType: 'error' as const },
+          { name: 'Card 3', type: 'Type A', size: '15 KB', status: 'Pending', statusType: 'warning' as const },
+        ]}
+        header={<Box variant="h3">Cards</Box>}
+        cardsPerRow={[{ cards: 3 }]}
+      />
+
+      <Tiles
+        value={selectedTile}
+        onChange={({ detail }) => setSelectedTile(detail.value)}
+        items={[
+          { value: 'tile-1', label: 'Option A', description: 'Description for option A' },
+          { value: 'tile-2', label: 'Option B', description: 'Description for option B' },
+          { value: 'tile-3', label: 'Option C', description: 'Description for option C' },
+        ]}
+        columns={3}
+      />
+    </SpaceBetween>
+  );
+}
+
 function AppLayoutToolbarWithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
 
@@ -330,6 +423,8 @@ export default function ThemedComponentsPage() {
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
           borderWidthToken: '1px',
+          borderWidthItemSelected: '1px',
+          borderWidthCardSelected: '1px',
         },
       };
 
@@ -372,6 +467,8 @@ export default function ThemedComponentsPage() {
           <StatusIndicator type="warning">Warning</StatusIndicator>
           <StatusIndicator type="info">Info</StatusIndicator>
         </SpaceBetween>
+
+        <TableCardsAndTiles />
 
         <AppLayoutToolbarWithDrawers />
       </SpaceBetween>

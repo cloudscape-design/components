@@ -12,6 +12,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
+  borderWidthItemSelected: {
+    description: 'The border width of selected items, like table rows.',
+    public: true,
+    themeable: true,
+  },
   borderRadiusAlert: {
     description: 'The border radius of alerts.',
     public: true,
@@ -136,6 +141,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderWidthCard: {
     description: 'The border width of a card.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthCardSelected: {
+    description: 'The border width of a selected card.',
     public: true,
     themeable: true,
   },

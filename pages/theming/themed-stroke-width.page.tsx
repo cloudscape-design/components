@@ -102,6 +102,12 @@ export default function ThemedStrokeWidthPage() {
           borderWidthIconMedium: strokeMedium ? `${strokeMedium}px` : '1px',
           borderWidthIconBig: strokeBig ? `${strokeBig}px` : '1.5px',
           borderWidthIconLarge: strokeLarge ? `${strokeLarge}px` : '2px',
+          borderRadiusButton: '8px',
+          fontSizeTabs: '14px',
+          lineHeightTabs: '16px',
+          fontWeightTabs: '700',
+          fontWeightTabsDisabled: '700',
+          spaceTabsVertical: { comfortable: '2px', compact: '0px' },
         },
       };
 
