@@ -235,18 +235,19 @@ settings icon in the pagination slot.
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
 
-  &:nth-child(2):not(:first-child) {
-    @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
-  }
+  // &:nth-child(2):not(:first-child) {
+  //   @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+  // }
 
   &:first-child > .header-cell-content {
-    @include cell-offset(0px);
+    // TODO: Causes group misalignment, look into this
+    // @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &:nth-child(2):not(:first-child) > .header-cell-content {
-    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
-  }
+  // &:nth-child(2):not(:first-child) > .header-cell-content {
+  //   @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  // }
 
   &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group),
   &:nth-child(2):not(:first-child):not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
@@ -278,8 +279,6 @@ $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
 
 .header-cell-group,
 .header-cell-group:last-child {
-  padding-block: 0;
-  padding-inline: 0;
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
   --awsui-resizer-margin-block-start: auto;
