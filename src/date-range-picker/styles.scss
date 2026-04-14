@@ -133,6 +133,10 @@ $calendar-header-color: awsui.$color-text-body-default;
   white-space: nowrap;
 }
 
+.custom-trigger-content {
+  margin-inline-start: awsui.$space-xxs;
+}
+
 .dropdown {
   // There needs to be an outer container because we set a fixed width on the
   // actual dropdown and calendar grid, so the scrollbar would mess up the

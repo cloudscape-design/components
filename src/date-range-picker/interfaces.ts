@@ -222,6 +222,12 @@ export interface DateRangePickerProps
    * or current if a selection is present.
    */
   absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
+
+  /**
+   * Specifies custom content to render inside the trigger button, after the formatted date range text.
+   * Use this to display additional context such as a timezone indicator.
+   */
+  customTriggerContent?: React.ReactNode;
 }
 
 export namespace DateRangePickerProps {

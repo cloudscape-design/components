@@ -118,6 +118,7 @@ const DateRangePicker = React.forwardRef(
       renderRelativeRangeContent,
       granularity = 'day',
       absoluteMultiGridStartPeriod = 'auto',
+      customTriggerContent,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -304,6 +305,7 @@ const DateRangePicker = React.forwardRef(
             <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
           </span>
           <span id={triggerContentId}>{formattedDate}</span>
+          {customTriggerContent && <span className={styles['custom-trigger-content']}>{customTriggerContent}</span>}
         </span>
       </ButtonTrigger>
     );
