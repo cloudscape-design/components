@@ -146,7 +146,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -3142,7 +3142,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -6138,7 +6138,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -9134,7 +9134,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -12130,7 +12130,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -15126,7 +15126,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -18122,7 +18122,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": "2px",
     },
     "border-width-item-selected": {
-      "$description": "The border width of selected items like table",
+      "$description": "The border width of selected items, like table rows.",
       "$value": "2px",
     },
     "border-width-popover": {
@@ -21123,7 +21123,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -24119,7 +24119,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -27115,7 +27115,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -30111,7 +30111,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -33107,7 +33107,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -36103,7 +36103,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -39099,7 +39099,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -42095,7 +42095,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-item-selected": {
-          "$description": "The border width of selected items like table",
+          "$description": "The border width of selected items, like table rows.",
           "$value": "2px",
         },
         "border-width-popover": {
@@ -45091,7 +45091,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": "2px",
     },
     "border-width-item-selected": {
-      "$description": "The border width of selected items like table",
+      "$description": "The border width of selected items, like table rows.",
       "$value": "2px",
     },
     "border-width-popover": {
