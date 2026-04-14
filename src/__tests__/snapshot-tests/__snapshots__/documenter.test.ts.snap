@@ -11597,6 +11597,24 @@ When provided, all default relative range functionality is replaced.",
       "type": "DateRangePickerProps.RelativeRangeControl",
     },
     {
+      "description": "Specifies custom content to fully override the trigger content.
+When provided, the default view of the trigger is replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RenderTriggerContent",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ disabled: boolean; readOnly: boolean; triggerContentId: string; formattedDate: JSX.Element; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderTriggerContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RenderTriggerContent",
+    },
+    {
       "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
@@ -11673,14 +11691,7 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": [
-    {
-      "description": "Specifies custom content to render inside the trigger button, after the formatted date range text.
-Use this to display additional context such as a timezone indicator.",
-      "isDefault": false,
-      "name": "customTriggerContent",
-    },
-  ],
+  "regions": [],
   "releaseStatus": "stable",
 }
 `;

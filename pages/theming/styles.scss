@@ -2,6 +2,8 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable selector-max-type */
+@use '~design-tokens' as awsui;
 
 .mosaik {
   display: flex;
@@ -17,4 +19,17 @@
   margin-block: 2px;
   margin-inline: 2px;
   text-align: center;
+}
+
+.trigger-flexbox {
+  display: flex;
+}
+
+.icon-wrapper {
+  color: awsui.$color-text-interactive-default;
+  margin-inline-end: 8px;
+}
+
+.timezone {
+  margin-inline-start: 8px;
 }

@@ -118,7 +118,7 @@ const DateRangePicker = React.forwardRef(
       renderRelativeRangeContent,
       granularity = 'day',
       absoluteMultiGridStartPeriod = 'auto',
-      customTriggerContent,
+      renderTriggerContent,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -300,13 +300,21 @@ const DateRangePicker = React.forwardRef(
         readOnly={readOnly}
         ariaHasPopup="dialog"
       >
-        <span className={styles['trigger-flexbox']}>
-          <span className={styles['icon-wrapper']}>
-            <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
+        {renderTriggerContent ? (
+          renderTriggerContent({
+            disabled,
+            readOnly,
+            triggerContentId,
+            formattedDate,
+          })
+        ) : (
+          <span className={styles['trigger-flexbox']}>
+            <span className={styles['icon-wrapper']}>
+              <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
+            </span>
+            <span id={triggerContentId}>{formattedDate}</span>
           </span>
-          <span id={triggerContentId}>{formattedDate}</span>
-          {customTriggerContent && <span className={styles['custom-trigger-content']}>{customTriggerContent}</span>}
-        </span>
+        )}
       </ButtonTrigger>
     );
 

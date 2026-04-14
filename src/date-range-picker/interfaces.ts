@@ -224,10 +224,10 @@ export interface DateRangePickerProps
   absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
 
   /**
-   * Specifies custom content to render inside the trigger button, after the formatted date range text.
-   * Use this to display additional context such as a timezone indicator.
+   * Specifies custom content to fully override the trigger content.
+   * When provided, the default view of the trigger is replaced.
    */
-  customTriggerContent?: React.ReactNode;
+  renderTriggerContent?: DateRangePickerProps.RenderTriggerContent;
 }
 
 export namespace DateRangePickerProps {
@@ -317,6 +317,13 @@ export namespace DateRangePickerProps {
     selectedRange: RelativeValue | null,
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
+
+  export type RenderTriggerContent = (props: {
+    disabled: boolean;
+    readOnly: boolean;
+    triggerContentId: string;
+    formattedDate: JSX.Element;
+  }) => React.ReactNode;
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 

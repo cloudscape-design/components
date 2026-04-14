@@ -7,12 +7,17 @@ import {
   DateRangePicker,
   DateRangePickerProps,
   FormField,
+  Icon,
   Input,
   Select,
   SelectProps,
   SpaceBetween,
 } from '~components';
 import { applyTheme, Theme } from '~components/theming';
+
+import { SimplePage } from '../app/templates';
+
+import styles from './styles.scss';
 
 const relativeOptions: Array<{
   label: string;
@@ -186,8 +191,6 @@ const theme: Theme = {
   },
 };
 
-import { SimplePage } from '../app/templates';
-
 function DateRangePickerPage() {
   const [value, setValue] = useState<DateRangePickerProps.Value | null>({
     amount: 1,
@@ -350,7 +353,17 @@ function DateRangePickerPage() {
           timeOffset={timeOffset}
           renderRelativeRangeContent={renderRelativeRangeContent}
           rangeSelectorMode="default"
-          customTriggerContent={<Badge color="severity-low">{timezoneLabel}</Badge>}
+          renderTriggerContent={props => (
+            <span className={styles['trigger-flexbox']}>
+              <span className={styles['icon-wrapper']}>
+                <Icon name="calendar" variant={props.disabled || props.readOnly ? 'disabled' : 'normal'} />
+              </span>
+              <span id={props.triggerContentId}>{props.formattedDate}</span>
+              <div className={styles.timezone}>
+                <Badge>{timezoneLabel}</Badge>
+              </div>
+            </span>
+          )}
         />
       </FormField>
     </SimplePage>
