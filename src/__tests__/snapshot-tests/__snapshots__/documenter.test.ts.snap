@@ -11673,7 +11673,14 @@ with the input using \`ariaDescribedby\`.",
       "type": "boolean",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Specifies custom content to render inside the trigger button, after the formatted date range text.
+Use this to display additional context such as a timezone indicator.",
+      "isDefault": false,
+      "name": "customTriggerContent",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
