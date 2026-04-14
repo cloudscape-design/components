@@ -192,7 +192,7 @@ export const Grids = ({
       <InternalSpaceBetween size="xs" direction="horizontal">
         <Grid
           {...sharedGridProps}
-          padDates={'before'}
+          padDates={isSingleGrid ? 'after' : 'before'}
           className={testutilStyles['first-grid']}
           baseDate={baseDate}
           ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}

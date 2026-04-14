@@ -1447,6 +1447,24 @@ describe('Date range picker', () => {
           expect(wrapper.findDropdown()!.findByClassName(testutilStyles['second-grid'])).toBeNull();
         });
 
+        testIf(granularity === 'day')('renders next month crossover days in mobile mode', () => {
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity,
+            value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
+          });
+
+          wrapper.findTrigger().click();
+
+          expect(
+            wrapper
+              .findDropdown()!
+              .findAllByClassName(testutilStyles['calendar-week'])[4]
+              .getElement()
+              .querySelector('td:nth-child(6)')?.textContent
+          ).toBe('3April 3, 2020');
+        });
+
         test('header shows only one period in mobile mode', () => {
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
