@@ -147,7 +147,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -3143,7 +3143,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -6139,7 +6139,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -9135,7 +9135,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -12131,7 +12131,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -15127,7 +15127,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -18123,7 +18123,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",
