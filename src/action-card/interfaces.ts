@@ -71,13 +71,6 @@ export interface ActionCardProps extends BaseComponentProps {
   variant?: ActionCardProps.Variant;
 
   /**
-   * An object containing CSS properties to customize the action card's visual appearance.
-   * Refer to the [style](/components/action-card/?tabId=style) tab for more details.
-   * @awsuiSystem core
-   */
-  style?: ActionCardProps.Style;
-
-  /**
    * Attributes to add to the native button element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -102,53 +95,5 @@ export namespace ActionCardProps {
      * Sets focus on the action card.
      */
     focus(): void;
-  }
-
-  export interface Style {
-    root?: {
-      background?: {
-        default?: string;
-        hover?: string;
-        active?: string;
-        disabled?: string;
-      };
-      borderColor?: {
-        default?: string;
-        hover?: string;
-        active?: string;
-        disabled?: string;
-      };
-      borderRadius?: {
-        default?: string;
-        hover?: string;
-        active?: string;
-        disabled?: string;
-      };
-      borderWidth?: {
-        default?: string;
-        hover?: string;
-        active?: string;
-        disabled?: string;
-      };
-      boxShadow?: {
-        default?: string;
-        hover?: string;
-        active?: string;
-        disabled?: string;
-      };
-      focusRing?: {
-        borderColor?: string;
-        borderRadius?: string;
-        borderWidth?: string;
-      };
-    };
-    content?: {
-      paddingBlock?: string;
-      paddingInline?: string;
-    };
-    header?: {
-      paddingBlock?: string;
-      paddingInline?: string;
-    };
   }
 }

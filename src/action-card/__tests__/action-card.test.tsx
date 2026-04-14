@@ -5,7 +5,6 @@ import { render } from '@testing-library/react';
 
 import ActionCard, { ActionCardProps } from '../../../lib/components/action-card';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import customCssProps from '../../internal/generated/custom-css-properties';
 
 import styles from '../../../lib/components/action-card/styles.css.js';
 
@@ -265,73 +264,6 @@ describe('ActionCard Component', () => {
       expect(wrapper.findHeader()).not.toBeNull();
       expect(wrapper.findDescription()).not.toBeNull();
       expect(wrapper.isDisabled()).toBe(true);
-    });
-  });
-  describe('style prop', () => {
-    test('applies all style properties to elements', () => {
-      const wrapper = renderActionCard({
-        header: 'Header',
-        children: 'Content',
-        style: {
-          root: {
-            background: { default: '#fff', hover: '#f5f5f5', active: '#eee', disabled: '#fafafa' },
-            borderColor: { default: '#e0e0e0', hover: '#bdbdbd', active: '#9e9e9e', disabled: '#eee' },
-            borderRadius: { default: '8px', hover: '8px', active: '8px', disabled: '8px' },
-            borderWidth: { default: '1px', hover: '2px', active: '2px', disabled: '1px' },
-            boxShadow: { default: 'none', hover: 'none', active: 'none', disabled: 'none' },
-            focusRing: { borderColor: '#0073bb', borderRadius: '10px', borderWidth: '2px' },
-          },
-          header: { paddingBlock: '10px', paddingInline: '20px' },
-          content: { paddingBlock: '30px', paddingInline: '40px' },
-        },
-      });
-
-      const rootStyle = getComputedStyle(wrapper.getElement());
-
-      // Root background custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBackgroundDefault)).toBe('#fff');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBackgroundHover)).toBe('#f5f5f5');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBackgroundActive)).toBe('#eee');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBackgroundDisabled)).toBe('#fafafa');
-
-      // Root borderColor custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderColorDefault)).toBe('#e0e0e0');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderColorHover)).toBe('#bdbdbd');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderColorActive)).toBe('#9e9e9e');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderColorDisabled)).toBe('#eee');
-
-      // Root borderRadius custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderRadiusDefault)).toBe('8px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderRadiusHover)).toBe('8px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderRadiusActive)).toBe('8px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderRadiusDisabled)).toBe('8px');
-
-      // Root borderWidth custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderWidthDefault)).toBe('1px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderWidthHover)).toBe('2px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderWidthActive)).toBe('2px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBorderWidthDisabled)).toBe('1px');
-
-      // Root boxShadow custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBoxShadowDefault)).toBe('none');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBoxShadowHover)).toBe('none');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBoxShadowActive)).toBe('none');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardBoxShadowDisabled)).toBe('none');
-
-      // Root focusRing custom properties
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardFocusRingBorderColor)).toBe('#0073bb');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardFocusRingBorderRadius)).toBe('10px');
-      expect(rootStyle.getPropertyValue(customCssProps.styleActionCardFocusRingBorderWidth)).toBe('2px');
-
-      // Header padding styles
-      const headerWrapper = wrapper.findByClassName(styles.header)!;
-      expect(getComputedStyle(headerWrapper.getElement()).getPropertyValue('padding-block')).toBe('10px');
-      expect(getComputedStyle(headerWrapper.getElement()).getPropertyValue('padding-inline')).toBe('20px');
-
-      // Content padding styles
-      const body = wrapper.findContent()!;
-      expect(getComputedStyle(body.getElement()).getPropertyValue('padding-block')).toBe('30px');
-      expect(getComputedStyle(body.getElement()).getPropertyValue('padding-inline')).toBe('40px');
     });
   });
 });

@@ -12,7 +12,6 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { type ActionCardProps } from './interfaces';
-import { getContentStyles, getHeaderStyles, getRootStyles } from './style';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
@@ -34,7 +33,6 @@ const InternalActionCard = React.forwardRef(
       icon,
       iconVerticalAlignment,
       variant,
-      style,
       nativeButtonAttributes,
       __internalRootRef,
       ...rest
@@ -64,10 +62,6 @@ const InternalActionCard = React.forwardRef(
       }
       fireCancelableEvent(onClick, {}, event);
     };
-
-    const rootStyleProps = getRootStyles(style);
-    const headerStyleProps = getHeaderStyles(style);
-    const contentStyleProps = getContentStyles(style);
 
     const headerRowEmpty = !header && !description;
 
@@ -100,7 +94,7 @@ const InternalActionCard = React.forwardRef(
     };
 
     const headerSection = !headerRowEmpty ? (
-      <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])} style={headerStyleProps}>
+      <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
         <InternalStructuredItem
           content={
             header && (
@@ -183,7 +177,6 @@ const InternalActionCard = React.forwardRef(
           <div
             className={clsx(styles.body, testStyles.body, disableContentPaddings && styles['no-padding'])}
             id={bodyId}
-            style={contentStyleProps}
           >
             {children}
           </div>
@@ -207,7 +200,6 @@ const InternalActionCard = React.forwardRef(
           !!icon && styles[`icon-vertical-align-${iconVerticalAlignment}`],
           baseProps.className
         )}
-        style={rootStyleProps}
         aria-disabled={disabled || undefined}
       >
         {standaloneButton}
