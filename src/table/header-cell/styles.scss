@@ -53,7 +53,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 .header-cell {
   position: relative;
   text-align: start;
-  // box-sizing: border-box;
+  box-sizing: border-box;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
@@ -76,44 +76,13 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     background: awsui.$color-background-layout-main;
   }
 
-  // &-group {
-  //   position: sticky;
-  //   inset-inline-start: 0;
-  //   z-index: 1;
-  // }
-
-  &:has(.header-cell-hidden-content) {
-    border-block-end-color: transparent;
-  }
-
-  &:has(.header-cell-hidden-content:focus) {
-    // @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
-  }
-
-  &:not(:last-child):has(.header-cell-hidden-content) {
-    > .resize-divider {
-      position: absolute;
-      outline: none;
-      pointer-events: none;
-      inset-inline-end: 0;
-      inset-block-end: 0;
-      inset-block-start: 0;
-      margin-block: auto;
-      margin-inline: auto;
-      border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-default;
-      box-sizing: border-box;
-    }
-  }
-
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }
-
   &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
   &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
     background: none;
   }
-
   &:last-child,
   &.header-cell-sortable {
     padding-inline-end: awsui.$space-xs;
@@ -123,26 +92,20 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
-
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
-
     &.table-variant-full-page {
       background: awsui.$color-background-layout-main;
     }
-
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
-
     &-last-inline-start {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
-
-      // stylelint-disable-next-line no-descending-specificity
       & > .resize-divider {
         display: none;
       }
@@ -204,7 +167,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 }
 
 .header-cell-spans-rows {
-  block-size: 1px;
+  block-size: 100%;
   vertical-align: bottom;
 
   > .header-cell-content {
@@ -219,18 +182,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
       inset-block-start: auto;
       inset-block-end: awsui.$space-scaled-xxs;
       transform: none;
-    }
-  }
-
-  > .header-cell-content-group-inner-wrapper {
-    block-size: 100%;
-
-    > .header-cell-content {
-      block-size: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
     }
   }
 }
@@ -289,7 +240,7 @@ settings icon in the pagination slot.
   }
 
   &:first-child > .header-cell-content {
-    // @include cell-offset(0px);
+    @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
