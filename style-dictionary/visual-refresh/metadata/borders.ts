@@ -13,7 +13,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
   borderWidthItemSelected: {
-    description: 'The border width of selected items like table',
+    description: 'The border width of selected items, like table rows.',
     public: true,
     themeable: true,
   },
