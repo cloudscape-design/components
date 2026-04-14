@@ -4,41 +4,39 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 // State configuration for the action card root element.
-// Each state maps to background, box-shadow, border-color, border-width, text-color, and icon-color
-// using custom CSS properties with design-token fallbacks.
+// Each state maps to background, box-shadow, border-color, border-width, text-color, and icon-color.
 $states: (
   'default': (
-    'background': var(#{custom-props.$styleActionCardBackgroundDefault}, awsui.$color-background-action-card-default),
-    'box-shadow': var(#{custom-props.$styleActionCardBoxShadowDefault}, none),
-    'border-color': var(#{custom-props.$styleActionCardBorderColorDefault}, awsui.$color-border-action-card-default),
-    'border-width': var(#{custom-props.$styleActionCardBorderWidthDefault}, awsui.$border-width-action-card-default),
+    'background': awsui.$color-background-action-card-default,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-default,
+    'border-width': awsui.$border-width-action-card-default,
     'text-color': inherit,
     'icon-color': awsui.$color-icon-action-card-default,
   ),
   'hover': (
-    'background': var(#{custom-props.$styleActionCardBackgroundHover}, awsui.$color-background-action-card-hover),
-    'box-shadow': var(#{custom-props.$styleActionCardBoxShadowHover}, none),
-    'border-color': var(#{custom-props.$styleActionCardBorderColorHover}, awsui.$color-border-action-card-hover),
-    'border-width': var(#{custom-props.$styleActionCardBorderWidthHover}, awsui.$border-width-action-card-hover),
+    'background': awsui.$color-background-action-card-hover,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-hover,
+    'border-width': awsui.$border-width-action-card-hover,
     'text-color': inherit,
     'icon-color': awsui.$color-icon-action-card-hover,
   ),
   'active': (
-    'background': var(#{custom-props.$styleActionCardBackgroundActive}, awsui.$color-background-action-card-active),
-    'box-shadow': var(#{custom-props.$styleActionCardBoxShadowActive}, none),
-    'border-color': var(#{custom-props.$styleActionCardBorderColorActive}, awsui.$color-border-action-card-active),
-    'border-width': var(#{custom-props.$styleActionCardBorderWidthActive}, awsui.$border-width-action-card-active),
+    'background': awsui.$color-background-action-card-active,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-active,
+    'border-width': awsui.$border-width-action-card-active,
     'text-color': inherit,
     'icon-color': awsui.$color-icon-action-card-active,
   ),
   'disabled': (
-    'background': var(#{custom-props.$styleActionCardBackgroundDisabled}, awsui.$color-background-action-card-disabled),
-    'box-shadow': var(#{custom-props.$styleActionCardBoxShadowDisabled}, none),
-    'border-color': var(#{custom-props.$styleActionCardBorderColorDisabled}, awsui.$color-border-action-card-disabled),
-    'border-width': var(#{custom-props.$styleActionCardBorderWidthDisabled}, awsui.$border-width-action-card-disabled),
+    'background': awsui.$color-background-action-card-disabled,
+    'box-shadow': none,
+    'border-color': awsui.$color-border-action-card-disabled,
+    'border-width': awsui.$border-width-action-card-disabled,
     'text-color': awsui.$color-text-action-card-disabled,
     'icon-color': awsui.$color-icon-action-card-disabled,
   ),

@@ -5,7 +5,6 @@
 
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './constants' as constants;
 
 $variant-border-radius: (
@@ -23,13 +22,6 @@ $variant-padding-inline: (
   'default': awsui.$space-action-card-horizontal-default,
 );
 
-$state-border-radius-props: (
-  'default': custom-props.$styleActionCardBorderRadiusDefault,
-  'hover': custom-props.$styleActionCardBorderRadiusHover,
-  'active': custom-props.$styleActionCardBorderRadiusActive,
-  'disabled': custom-props.$styleActionCardBorderRadiusDisabled,
-);
-
 @mixin border-radius-all($value) {
   border-start-start-radius: $value;
   border-start-end-radius: $value;
@@ -39,15 +31,7 @@ $state-border-radius-props: (
 
 @mixin state-border-radius($variant: 'default', $state: 'default') {
   $token: map.get($variant-border-radius, $variant);
-  $default-prop: map.get($state-border-radius-props, 'default');
-  $default-value: var(#{$default-prop}, $token);
-
-  @if $state == 'default' {
-    @include border-radius-all($default-value);
-  } @else {
-    $state-prop: map.get($state-border-radius-props, $state);
-    @include border-radius-all(var(#{$state-prop}, $default-value));
-  }
+  @include border-radius-all($token);
 }
 
 @mixin state-border-radius-all-variants($state: 'default') {

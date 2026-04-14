@@ -7,7 +7,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use './mixins' as mixins;
@@ -172,18 +171,13 @@
   &:has(.overlay-button:focus-visible) {
     @include styles.focus-highlight(
       2px,
-      var(#{custom-props.$styleActionCardFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      0 0 0 var(#{custom-props.$styleActionCardFocusRingBorderWidth}, 2px)
-        var(#{custom-props.$styleActionCardFocusRingBorderColor}, awsui.$color-border-item-focused)
+      awsui.$border-radius-control-default-focus-ring,
+      0 0 0 2px awsui.$color-border-item-focused
     );
 
     @each $variant in ('embedded', 'default') {
       &.variant-#{$variant}::before {
-        $focus-radius: var(
-          #{custom-props.$styleActionCardFocusRingBorderRadius},
-          awsui.$border-radius-control-default-focus-ring
-        );
-        @include mixins.border-radius-all($focus-radius);
+        @include mixins.border-radius-all(awsui.$border-radius-control-default-focus-ring);
       }
     }
   }
