@@ -266,10 +266,9 @@ function Divider({ variant = 'default', isPresentational = false }: DividerProps
 
 interface LinkProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Link;
-  expanded?: boolean;
 }
 
-function Link({ definition, expanded, activeHref, fireFollow, position }: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
@@ -302,7 +301,6 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
         className={clsx(styles.link, { [styles['link-active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
-        aria-expanded={expanded}
         aria-current={definition.href === activeHref ? 'page' : undefined}
         onClick={onClick}
         {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
@@ -482,7 +480,6 @@ function ExpandableLinkGroup({
       headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text }}
-          expanded={userExpanded ?? expanded}
           fireFollow={onHeaderFollow}
           fireChange={fireChange}
           activeHref={activeHref}
