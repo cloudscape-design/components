@@ -586,6 +586,25 @@ describe('Date range picker', () => {
   });
 });
 
+describe('renderTriggerContent', () => {
+  test('renders custom trigger content when provided', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      renderTriggerContent: () => <span>Custom trigger</span>,
+    });
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Custom trigger');
+  });
+
+  test('preserves accessibility attributes with custom trigger content', () => {
+    const { wrapper } = renderDateRangePicker({
+      ...defaultProps,
+      ariaLabel: 'Custom label',
+      renderTriggerContent: () => <span>Custom trigger</span>,
+    });
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Custom label Custom trigger');
+  });
+});
+
 describe('disabled reason behavior', () => {
   const findDate = (wrapper: DateRangePickerWrapper) => wrapper.findDropdown()!.findDateAt('left', 1, 1);
 
