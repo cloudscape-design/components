@@ -2,9 +2,4349 @@
 
 exports[`Generate test utils ElementWrapper dom ElementWrapper matches the snapshot 1`] = `
 "
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { appendSelector } from '@cloudscape-design/test-utils-core/utils';
+
 export { ElementWrapper };
+
+import AlertWrapper from './alert';
+import AnchorNavigationWrapper from './anchor-navigation';
+import AnnotationWrapper from './annotation';
+import AppLayoutWrapper from './app-layout';
+import AppLayoutToolbarWrapper from './app-layout-toolbar';
+import AreaChartWrapper from './area-chart';
+import AttributeEditorWrapper from './attribute-editor';
+import AutosuggestWrapper from './autosuggest';
+import BadgeWrapper from './badge';
+import BarChartWrapper from './bar-chart';
+import BoxWrapper from './box';
+import BreadcrumbGroupWrapper from './breadcrumb-group';
+import ButtonWrapper from './button';
+import ButtonDropdownWrapper from './button-dropdown';
+import ButtonGroupWrapper from './button-group';
+import CalendarWrapper from './calendar';
+import CardsWrapper from './cards';
+import CheckboxWrapper from './checkbox';
+import CodeEditorWrapper from './code-editor';
+import CollectionPreferencesWrapper from './collection-preferences';
+import ColumnLayoutWrapper from './column-layout';
+import ContainerWrapper from './container';
+import ContentLayoutWrapper from './content-layout';
+import CopyToClipboardWrapper from './copy-to-clipboard';
+import DateInputWrapper from './date-input';
+import DatePickerWrapper from './date-picker';
+import DateRangePickerWrapper from './date-range-picker';
+import DrawerWrapper from './drawer';
+import DropdownWrapper from './dropdown';
+import ErrorBoundaryWrapper from './error-boundary';
+import ExpandableSectionWrapper from './expandable-section';
+import FileDropzoneWrapper from './file-dropzone';
+import FileInputWrapper from './file-input';
+import FileTokenGroupWrapper from './file-token-group';
+import FileUploadWrapper from './file-upload';
+import FlashbarWrapper from './flashbar';
+import FormWrapper from './form';
+import FormFieldWrapper from './form-field';
+import GridWrapper from './grid';
+import HeaderWrapper from './header';
+import HelpPanelWrapper from './help-panel';
+import HotspotWrapper from './hotspot';
+import IconWrapper from './icon';
+import InputWrapper from './input';
+import ItemCardWrapper from './item-card';
+import KeyValuePairsWrapper from './key-value-pairs';
+import LineChartWrapper from './line-chart';
+import LinkWrapper from './link';
+import ListWrapper from './list';
+import LiveRegionWrapper from './live-region';
+import MixedLineBarChartWrapper from './mixed-line-bar-chart';
+import ModalWrapper from './modal';
+import MultiselectWrapper from './multiselect';
+import NavigableGroupWrapper from './navigable-group';
+import PaginationWrapper from './pagination';
+import PanelLayoutWrapper from './panel-layout';
+import PieChartWrapper from './pie-chart';
+import PopoverWrapper from './popover';
+import ProgressBarWrapper from './progress-bar';
+import PromptInputWrapper from './prompt-input';
+import PropertyFilterWrapper from './property-filter';
+import RadioButtonWrapper from './radio-button';
+import RadioGroupWrapper from './radio-group';
+import S3ResourceSelectorWrapper from './s3-resource-selector';
+import SegmentedControlWrapper from './segmented-control';
+import SelectWrapper from './select';
+import SideNavigationWrapper from './side-navigation';
+import SliderWrapper from './slider';
+import SpaceBetweenWrapper from './space-between';
+import SpinnerWrapper from './spinner';
+import SplitPanelWrapper from './split-panel';
+import StatusIndicatorWrapper from './status-indicator';
+import StepsWrapper from './steps';
+import TableWrapper from './table';
+import TabsWrapper from './tabs';
+import TagEditorWrapper from './tag-editor';
+import TextContentWrapper from './text-content';
+import TextFilterWrapper from './text-filter';
+import TextareaWrapper from './textarea';
+import TilesWrapper from './tiles';
+import TimeInputWrapper from './time-input';
+import ToggleWrapper from './toggle';
+import ToggleButtonWrapper from './toggle-button';
+import TokenWrapper from './token';
+import TokenGroupWrapper from './token-group';
+import TooltipWrapper from './tooltip';
+import TopNavigationWrapper from './top-navigation';
+import TreeViewWrapper from './tree-view';
+import TutorialPanelWrapper from './tutorial-panel';
+import WizardWrapper from './wizard';
+
+
+export { AlertWrapper };
+export { AnchorNavigationWrapper };
+export { AnnotationWrapper };
+export { AppLayoutWrapper };
+export { AppLayoutToolbarWrapper };
+export { AreaChartWrapper };
+export { AttributeEditorWrapper };
+export { AutosuggestWrapper };
+export { BadgeWrapper };
+export { BarChartWrapper };
+export { BoxWrapper };
+export { BreadcrumbGroupWrapper };
+export { ButtonWrapper };
+export { ButtonDropdownWrapper };
+export { ButtonGroupWrapper };
+export { CalendarWrapper };
+export { CardsWrapper };
+export { CheckboxWrapper };
+export { CodeEditorWrapper };
+export { CollectionPreferencesWrapper };
+export { ColumnLayoutWrapper };
+export { ContainerWrapper };
+export { ContentLayoutWrapper };
+export { CopyToClipboardWrapper };
+export { DateInputWrapper };
+export { DatePickerWrapper };
+export { DateRangePickerWrapper };
+export { DrawerWrapper };
+export { DropdownWrapper };
+export { ErrorBoundaryWrapper };
+export { ExpandableSectionWrapper };
+export { FileDropzoneWrapper };
+export { FileInputWrapper };
+export { FileTokenGroupWrapper };
+export { FileUploadWrapper };
+export { FlashbarWrapper };
+export { FormWrapper };
+export { FormFieldWrapper };
+export { GridWrapper };
+export { HeaderWrapper };
+export { HelpPanelWrapper };
+export { HotspotWrapper };
+export { IconWrapper };
+export { InputWrapper };
+export { ItemCardWrapper };
+export { KeyValuePairsWrapper };
+export { LineChartWrapper };
+export { LinkWrapper };
+export { ListWrapper };
+export { LiveRegionWrapper };
+export { MixedLineBarChartWrapper };
+export { ModalWrapper };
+export { MultiselectWrapper };
+export { NavigableGroupWrapper };
+export { PaginationWrapper };
+export { PanelLayoutWrapper };
+export { PieChartWrapper };
+export { PopoverWrapper };
+export { ProgressBarWrapper };
+export { PromptInputWrapper };
+export { PropertyFilterWrapper };
+export { RadioButtonWrapper };
+export { RadioGroupWrapper };
+export { S3ResourceSelectorWrapper };
+export { SegmentedControlWrapper };
+export { SelectWrapper };
+export { SideNavigationWrapper };
+export { SliderWrapper };
+export { SpaceBetweenWrapper };
+export { SpinnerWrapper };
+export { SplitPanelWrapper };
+export { StatusIndicatorWrapper };
+export { StepsWrapper };
+export { TableWrapper };
+export { TabsWrapper };
+export { TagEditorWrapper };
+export { TextContentWrapper };
+export { TextFilterWrapper };
+export { TextareaWrapper };
+export { TilesWrapper };
+export { TimeInputWrapper };
+export { ToggleWrapper };
+export { ToggleButtonWrapper };
+export { TokenWrapper };
+export { TokenGroupWrapper };
+export { TooltipWrapper };
+export { TopNavigationWrapper };
+export { TreeViewWrapper };
+export { TutorialPanelWrapper };
+export { WizardWrapper };
+
+declare module '@cloudscape-design/test-utils-core/dist/dom' {
+   interface ElementWrapper {
+    
+/**
+ * Returns the wrapper of the first Alert that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Alert.
+ * If no matching Alert is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AlertWrapper | null}
+ */
+findAlert(selector?: string): AlertWrapper | null;
+
+/**
+ * Returns an array of Alert wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Alerts inside the current wrapper.
+ * If no matching Alert is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AlertWrapper>}
+ */
+findAllAlerts(selector?: string): Array<AlertWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Alert for the current element,
+ * or the element itself if it is an instance of Alert.
+ * If no Alert is found, returns \`null\`.
+ *
+ * @returns {AlertWrapper | null}
+ */
+findClosestAlert(): AlertWrapper | null;
+/**
+ * Returns the wrapper of the first AnchorNavigation that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first AnchorNavigation.
+ * If no matching AnchorNavigation is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AnchorNavigationWrapper | null}
+ */
+findAnchorNavigation(selector?: string): AnchorNavigationWrapper | null;
+
+/**
+ * Returns an array of AnchorNavigation wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the AnchorNavigations inside the current wrapper.
+ * If no matching AnchorNavigation is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AnchorNavigationWrapper>}
+ */
+findAllAnchorNavigations(selector?: string): Array<AnchorNavigationWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent AnchorNavigation for the current element,
+ * or the element itself if it is an instance of AnchorNavigation.
+ * If no AnchorNavigation is found, returns \`null\`.
+ *
+ * @returns {AnchorNavigationWrapper | null}
+ */
+findClosestAnchorNavigation(): AnchorNavigationWrapper | null;
+/**
+ * Returns the wrapper of the first Annotation that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Annotation.
+ * If no matching Annotation is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AnnotationWrapper | null}
+ */
+findAnnotation(selector?: string): AnnotationWrapper | null;
+
+/**
+ * Returns an array of Annotation wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Annotations inside the current wrapper.
+ * If no matching Annotation is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AnnotationWrapper>}
+ */
+findAllAnnotations(selector?: string): Array<AnnotationWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Annotation for the current element,
+ * or the element itself if it is an instance of Annotation.
+ * If no Annotation is found, returns \`null\`.
+ *
+ * @returns {AnnotationWrapper | null}
+ */
+findClosestAnnotation(): AnnotationWrapper | null;
+/**
+ * Returns the wrapper of the first AppLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first AppLayout.
+ * If no matching AppLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AppLayoutWrapper | null}
+ */
+findAppLayout(selector?: string): AppLayoutWrapper | null;
+
+/**
+ * Returns an array of AppLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the AppLayouts inside the current wrapper.
+ * If no matching AppLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AppLayoutWrapper>}
+ */
+findAllAppLayouts(selector?: string): Array<AppLayoutWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent AppLayout for the current element,
+ * or the element itself if it is an instance of AppLayout.
+ * If no AppLayout is found, returns \`null\`.
+ *
+ * @returns {AppLayoutWrapper | null}
+ */
+findClosestAppLayout(): AppLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first AppLayoutToolbar that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first AppLayoutToolbar.
+ * If no matching AppLayoutToolbar is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AppLayoutToolbarWrapper | null}
+ */
+findAppLayoutToolbar(selector?: string): AppLayoutToolbarWrapper | null;
+
+/**
+ * Returns an array of AppLayoutToolbar wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the AppLayoutToolbars inside the current wrapper.
+ * If no matching AppLayoutToolbar is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AppLayoutToolbarWrapper>}
+ */
+findAllAppLayoutToolbars(selector?: string): Array<AppLayoutToolbarWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent AppLayoutToolbar for the current element,
+ * or the element itself if it is an instance of AppLayoutToolbar.
+ * If no AppLayoutToolbar is found, returns \`null\`.
+ *
+ * @returns {AppLayoutToolbarWrapper | null}
+ */
+findClosestAppLayoutToolbar(): AppLayoutToolbarWrapper | null;
+/**
+ * Returns the wrapper of the first AreaChart that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first AreaChart.
+ * If no matching AreaChart is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AreaChartWrapper | null}
+ */
+findAreaChart(selector?: string): AreaChartWrapper | null;
+
+/**
+ * Returns an array of AreaChart wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the AreaCharts inside the current wrapper.
+ * If no matching AreaChart is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AreaChartWrapper>}
+ */
+findAllAreaCharts(selector?: string): Array<AreaChartWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent AreaChart for the current element,
+ * or the element itself if it is an instance of AreaChart.
+ * If no AreaChart is found, returns \`null\`.
+ *
+ * @returns {AreaChartWrapper | null}
+ */
+findClosestAreaChart(): AreaChartWrapper | null;
+/**
+ * Returns the wrapper of the first AttributeEditor that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first AttributeEditor.
+ * If no matching AttributeEditor is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AttributeEditorWrapper | null}
+ */
+findAttributeEditor(selector?: string): AttributeEditorWrapper | null;
+
+/**
+ * Returns an array of AttributeEditor wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the AttributeEditors inside the current wrapper.
+ * If no matching AttributeEditor is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AttributeEditorWrapper>}
+ */
+findAllAttributeEditors(selector?: string): Array<AttributeEditorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent AttributeEditor for the current element,
+ * or the element itself if it is an instance of AttributeEditor.
+ * If no AttributeEditor is found, returns \`null\`.
+ *
+ * @returns {AttributeEditorWrapper | null}
+ */
+findClosestAttributeEditor(): AttributeEditorWrapper | null;
+/**
+ * Returns the wrapper of the first Autosuggest that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Autosuggest.
+ * If no matching Autosuggest is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {AutosuggestWrapper | null}
+ */
+findAutosuggest(selector?: string): AutosuggestWrapper | null;
+
+/**
+ * Returns an array of Autosuggest wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Autosuggests inside the current wrapper.
+ * If no matching Autosuggest is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<AutosuggestWrapper>}
+ */
+findAllAutosuggests(selector?: string): Array<AutosuggestWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Autosuggest for the current element,
+ * or the element itself if it is an instance of Autosuggest.
+ * If no Autosuggest is found, returns \`null\`.
+ *
+ * @returns {AutosuggestWrapper | null}
+ */
+findClosestAutosuggest(): AutosuggestWrapper | null;
+/**
+ * Returns the wrapper of the first Badge that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Badge.
+ * If no matching Badge is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BadgeWrapper | null}
+ */
+findBadge(selector?: string): BadgeWrapper | null;
+
+/**
+ * Returns an array of Badge wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Badges inside the current wrapper.
+ * If no matching Badge is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<BadgeWrapper>}
+ */
+findAllBadges(selector?: string): Array<BadgeWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Badge for the current element,
+ * or the element itself if it is an instance of Badge.
+ * If no Badge is found, returns \`null\`.
+ *
+ * @returns {BadgeWrapper | null}
+ */
+findClosestBadge(): BadgeWrapper | null;
+/**
+ * Returns the wrapper of the first BarChart that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first BarChart.
+ * If no matching BarChart is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BarChartWrapper | null}
+ */
+findBarChart(selector?: string): BarChartWrapper | null;
+
+/**
+ * Returns an array of BarChart wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the BarCharts inside the current wrapper.
+ * If no matching BarChart is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<BarChartWrapper>}
+ */
+findAllBarCharts(selector?: string): Array<BarChartWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent BarChart for the current element,
+ * or the element itself if it is an instance of BarChart.
+ * If no BarChart is found, returns \`null\`.
+ *
+ * @returns {BarChartWrapper | null}
+ */
+findClosestBarChart(): BarChartWrapper | null;
+/**
+ * Returns the wrapper of the first Box that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Box.
+ * If no matching Box is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BoxWrapper | null}
+ */
+findBox(selector?: string): BoxWrapper | null;
+
+/**
+ * Returns an array of Box wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Boxes inside the current wrapper.
+ * If no matching Box is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<BoxWrapper>}
+ */
+findAllBoxes(selector?: string): Array<BoxWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Box for the current element,
+ * or the element itself if it is an instance of Box.
+ * If no Box is found, returns \`null\`.
+ *
+ * @returns {BoxWrapper | null}
+ */
+findClosestBox(): BoxWrapper | null;
+/**
+ * Returns the wrapper of the first BreadcrumbGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first BreadcrumbGroup.
+ * If no matching BreadcrumbGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {BreadcrumbGroupWrapper | null}
+ */
+findBreadcrumbGroup(selector?: string): BreadcrumbGroupWrapper | null;
+
+/**
+ * Returns an array of BreadcrumbGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the BreadcrumbGroups inside the current wrapper.
+ * If no matching BreadcrumbGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<BreadcrumbGroupWrapper>}
+ */
+findAllBreadcrumbGroups(selector?: string): Array<BreadcrumbGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent BreadcrumbGroup for the current element,
+ * or the element itself if it is an instance of BreadcrumbGroup.
+ * If no BreadcrumbGroup is found, returns \`null\`.
+ *
+ * @returns {BreadcrumbGroupWrapper | null}
+ */
+findClosestBreadcrumbGroup(): BreadcrumbGroupWrapper | null;
+/**
+ * Returns the wrapper of the first Button that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Button.
+ * If no matching Button is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ButtonWrapper | null}
+ */
+findButton(selector?: string): ButtonWrapper | null;
+
+/**
+ * Returns an array of Button wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Buttons inside the current wrapper.
+ * If no matching Button is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ButtonWrapper>}
+ */
+findAllButtons(selector?: string): Array<ButtonWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Button for the current element,
+ * or the element itself if it is an instance of Button.
+ * If no Button is found, returns \`null\`.
+ *
+ * @returns {ButtonWrapper | null}
+ */
+findClosestButton(): ButtonWrapper | null;
+/**
+ * Returns the wrapper of the first ButtonDropdown that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ButtonDropdown.
+ * If no matching ButtonDropdown is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ButtonDropdownWrapper | null}
+ */
+findButtonDropdown(selector?: string): ButtonDropdownWrapper | null;
+
+/**
+ * Returns an array of ButtonDropdown wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ButtonDropdowns inside the current wrapper.
+ * If no matching ButtonDropdown is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ButtonDropdownWrapper>}
+ */
+findAllButtonDropdowns(selector?: string): Array<ButtonDropdownWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ButtonDropdown for the current element,
+ * or the element itself if it is an instance of ButtonDropdown.
+ * If no ButtonDropdown is found, returns \`null\`.
+ *
+ * @returns {ButtonDropdownWrapper | null}
+ */
+findClosestButtonDropdown(): ButtonDropdownWrapper | null;
+/**
+ * Returns the wrapper of the first ButtonGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ButtonGroup.
+ * If no matching ButtonGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ButtonGroupWrapper | null}
+ */
+findButtonGroup(selector?: string): ButtonGroupWrapper | null;
+
+/**
+ * Returns an array of ButtonGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ButtonGroups inside the current wrapper.
+ * If no matching ButtonGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ButtonGroupWrapper>}
+ */
+findAllButtonGroups(selector?: string): Array<ButtonGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ButtonGroup for the current element,
+ * or the element itself if it is an instance of ButtonGroup.
+ * If no ButtonGroup is found, returns \`null\`.
+ *
+ * @returns {ButtonGroupWrapper | null}
+ */
+findClosestButtonGroup(): ButtonGroupWrapper | null;
+/**
+ * Returns the wrapper of the first Calendar that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Calendar.
+ * If no matching Calendar is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CalendarWrapper | null}
+ */
+findCalendar(selector?: string): CalendarWrapper | null;
+
+/**
+ * Returns an array of Calendar wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Calendars inside the current wrapper.
+ * If no matching Calendar is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CalendarWrapper>}
+ */
+findAllCalendars(selector?: string): Array<CalendarWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Calendar for the current element,
+ * or the element itself if it is an instance of Calendar.
+ * If no Calendar is found, returns \`null\`.
+ *
+ * @returns {CalendarWrapper | null}
+ */
+findClosestCalendar(): CalendarWrapper | null;
+/**
+ * Returns the wrapper of the first Cards that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Cards.
+ * If no matching Cards is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CardsWrapper | null}
+ */
+findCards(selector?: string): CardsWrapper | null;
+
+/**
+ * Returns an array of Cards wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Cards inside the current wrapper.
+ * If no matching Cards is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CardsWrapper>}
+ */
+findAllCards(selector?: string): Array<CardsWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Cards for the current element,
+ * or the element itself if it is an instance of Cards.
+ * If no Cards is found, returns \`null\`.
+ *
+ * @returns {CardsWrapper | null}
+ */
+findClosestCards(): CardsWrapper | null;
+/**
+ * Returns the wrapper of the first Checkbox that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Checkbox.
+ * If no matching Checkbox is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CheckboxWrapper | null}
+ */
+findCheckbox(selector?: string): CheckboxWrapper | null;
+
+/**
+ * Returns an array of Checkbox wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Checkboxes inside the current wrapper.
+ * If no matching Checkbox is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CheckboxWrapper>}
+ */
+findAllCheckboxes(selector?: string): Array<CheckboxWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Checkbox for the current element,
+ * or the element itself if it is an instance of Checkbox.
+ * If no Checkbox is found, returns \`null\`.
+ *
+ * @returns {CheckboxWrapper | null}
+ */
+findClosestCheckbox(): CheckboxWrapper | null;
+/**
+ * Returns the wrapper of the first CodeEditor that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first CodeEditor.
+ * If no matching CodeEditor is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CodeEditorWrapper | null}
+ */
+findCodeEditor(selector?: string): CodeEditorWrapper | null;
+
+/**
+ * Returns an array of CodeEditor wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the CodeEditors inside the current wrapper.
+ * If no matching CodeEditor is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CodeEditorWrapper>}
+ */
+findAllCodeEditors(selector?: string): Array<CodeEditorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent CodeEditor for the current element,
+ * or the element itself if it is an instance of CodeEditor.
+ * If no CodeEditor is found, returns \`null\`.
+ *
+ * @returns {CodeEditorWrapper | null}
+ */
+findClosestCodeEditor(): CodeEditorWrapper | null;
+/**
+ * Returns the wrapper of the first CollectionPreferences that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first CollectionPreferences.
+ * If no matching CollectionPreferences is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CollectionPreferencesWrapper | null}
+ */
+findCollectionPreferences(selector?: string): CollectionPreferencesWrapper | null;
+
+/**
+ * Returns an array of CollectionPreferences wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the CollectionPreferences inside the current wrapper.
+ * If no matching CollectionPreferences is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CollectionPreferencesWrapper>}
+ */
+findAllCollectionPreferences(selector?: string): Array<CollectionPreferencesWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent CollectionPreferences for the current element,
+ * or the element itself if it is an instance of CollectionPreferences.
+ * If no CollectionPreferences is found, returns \`null\`.
+ *
+ * @returns {CollectionPreferencesWrapper | null}
+ */
+findClosestCollectionPreferences(): CollectionPreferencesWrapper | null;
+/**
+ * Returns the wrapper of the first ColumnLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ColumnLayout.
+ * If no matching ColumnLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ColumnLayoutWrapper | null}
+ */
+findColumnLayout(selector?: string): ColumnLayoutWrapper | null;
+
+/**
+ * Returns an array of ColumnLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ColumnLayouts inside the current wrapper.
+ * If no matching ColumnLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ColumnLayoutWrapper>}
+ */
+findAllColumnLayouts(selector?: string): Array<ColumnLayoutWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ColumnLayout for the current element,
+ * or the element itself if it is an instance of ColumnLayout.
+ * If no ColumnLayout is found, returns \`null\`.
+ *
+ * @returns {ColumnLayoutWrapper | null}
+ */
+findClosestColumnLayout(): ColumnLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first Container that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Container.
+ * If no matching Container is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ContainerWrapper | null}
+ */
+findContainer(selector?: string): ContainerWrapper | null;
+
+/**
+ * Returns an array of Container wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Containers inside the current wrapper.
+ * If no matching Container is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ContainerWrapper>}
+ */
+findAllContainers(selector?: string): Array<ContainerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Container for the current element,
+ * or the element itself if it is an instance of Container.
+ * If no Container is found, returns \`null\`.
+ *
+ * @returns {ContainerWrapper | null}
+ */
+findClosestContainer(): ContainerWrapper | null;
+/**
+ * Returns the wrapper of the first ContentLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ContentLayout.
+ * If no matching ContentLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ContentLayoutWrapper | null}
+ */
+findContentLayout(selector?: string): ContentLayoutWrapper | null;
+
+/**
+ * Returns an array of ContentLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ContentLayouts inside the current wrapper.
+ * If no matching ContentLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ContentLayoutWrapper>}
+ */
+findAllContentLayouts(selector?: string): Array<ContentLayoutWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ContentLayout for the current element,
+ * or the element itself if it is an instance of ContentLayout.
+ * If no ContentLayout is found, returns \`null\`.
+ *
+ * @returns {ContentLayoutWrapper | null}
+ */
+findClosestContentLayout(): ContentLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first CopyToClipboard that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first CopyToClipboard.
+ * If no matching CopyToClipboard is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {CopyToClipboardWrapper | null}
+ */
+findCopyToClipboard(selector?: string): CopyToClipboardWrapper | null;
+
+/**
+ * Returns an array of CopyToClipboard wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the CopyToClipboards inside the current wrapper.
+ * If no matching CopyToClipboard is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<CopyToClipboardWrapper>}
+ */
+findAllCopyToClipboards(selector?: string): Array<CopyToClipboardWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent CopyToClipboard for the current element,
+ * or the element itself if it is an instance of CopyToClipboard.
+ * If no CopyToClipboard is found, returns \`null\`.
+ *
+ * @returns {CopyToClipboardWrapper | null}
+ */
+findClosestCopyToClipboard(): CopyToClipboardWrapper | null;
+/**
+ * Returns the wrapper of the first DateInput that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first DateInput.
+ * If no matching DateInput is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DateInputWrapper | null}
+ */
+findDateInput(selector?: string): DateInputWrapper | null;
+
+/**
+ * Returns an array of DateInput wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the DateInputs inside the current wrapper.
+ * If no matching DateInput is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DateInputWrapper>}
+ */
+findAllDateInputs(selector?: string): Array<DateInputWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent DateInput for the current element,
+ * or the element itself if it is an instance of DateInput.
+ * If no DateInput is found, returns \`null\`.
+ *
+ * @returns {DateInputWrapper | null}
+ */
+findClosestDateInput(): DateInputWrapper | null;
+/**
+ * Returns the wrapper of the first DatePicker that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first DatePicker.
+ * If no matching DatePicker is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DatePickerWrapper | null}
+ */
+findDatePicker(selector?: string): DatePickerWrapper | null;
+
+/**
+ * Returns an array of DatePicker wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the DatePickers inside the current wrapper.
+ * If no matching DatePicker is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DatePickerWrapper>}
+ */
+findAllDatePickers(selector?: string): Array<DatePickerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent DatePicker for the current element,
+ * or the element itself if it is an instance of DatePicker.
+ * If no DatePicker is found, returns \`null\`.
+ *
+ * @returns {DatePickerWrapper | null}
+ */
+findClosestDatePicker(): DatePickerWrapper | null;
+/**
+ * Returns the wrapper of the first DateRangePicker that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first DateRangePicker.
+ * If no matching DateRangePicker is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DateRangePickerWrapper | null}
+ */
+findDateRangePicker(selector?: string): DateRangePickerWrapper | null;
+
+/**
+ * Returns an array of DateRangePicker wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the DateRangePickers inside the current wrapper.
+ * If no matching DateRangePicker is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DateRangePickerWrapper>}
+ */
+findAllDateRangePickers(selector?: string): Array<DateRangePickerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent DateRangePicker for the current element,
+ * or the element itself if it is an instance of DateRangePicker.
+ * If no DateRangePicker is found, returns \`null\`.
+ *
+ * @returns {DateRangePickerWrapper | null}
+ */
+findClosestDateRangePicker(): DateRangePickerWrapper | null;
+/**
+ * Returns the wrapper of the first Drawer that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Drawer.
+ * If no matching Drawer is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DrawerWrapper | null}
+ */
+findDrawer(selector?: string): DrawerWrapper | null;
+
+/**
+ * Returns an array of Drawer wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Drawers inside the current wrapper.
+ * If no matching Drawer is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DrawerWrapper>}
+ */
+findAllDrawers(selector?: string): Array<DrawerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Drawer for the current element,
+ * or the element itself if it is an instance of Drawer.
+ * If no Drawer is found, returns \`null\`.
+ *
+ * @returns {DrawerWrapper | null}
+ */
+findClosestDrawer(): DrawerWrapper | null;
+/**
+ * Returns the wrapper of the first Dropdown that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Dropdown.
+ * If no matching Dropdown is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {DropdownWrapper | null}
+ */
+findDropdown(selector?: string): DropdownWrapper | null;
+
+/**
+ * Returns an array of Dropdown wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Dropdowns inside the current wrapper.
+ * If no matching Dropdown is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<DropdownWrapper>}
+ */
+findAllDropdowns(selector?: string): Array<DropdownWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Dropdown for the current element,
+ * or the element itself if it is an instance of Dropdown.
+ * If no Dropdown is found, returns \`null\`.
+ *
+ * @returns {DropdownWrapper | null}
+ */
+findClosestDropdown(): DropdownWrapper | null;
+/**
+ * Returns the wrapper of the first ErrorBoundary that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ErrorBoundary.
+ * If no matching ErrorBoundary is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ErrorBoundaryWrapper | null}
+ */
+findErrorBoundary(selector?: string): ErrorBoundaryWrapper | null;
+
+/**
+ * Returns an array of ErrorBoundary wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ErrorBoundaries inside the current wrapper.
+ * If no matching ErrorBoundary is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ErrorBoundaryWrapper>}
+ */
+findAllErrorBoundaries(selector?: string): Array<ErrorBoundaryWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ErrorBoundary for the current element,
+ * or the element itself if it is an instance of ErrorBoundary.
+ * If no ErrorBoundary is found, returns \`null\`.
+ *
+ * @returns {ErrorBoundaryWrapper | null}
+ */
+findClosestErrorBoundary(): ErrorBoundaryWrapper | null;
+/**
+ * Returns the wrapper of the first ExpandableSection that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ExpandableSection.
+ * If no matching ExpandableSection is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ExpandableSectionWrapper | null}
+ */
+findExpandableSection(selector?: string): ExpandableSectionWrapper | null;
+
+/**
+ * Returns an array of ExpandableSection wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ExpandableSections inside the current wrapper.
+ * If no matching ExpandableSection is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ExpandableSectionWrapper>}
+ */
+findAllExpandableSections(selector?: string): Array<ExpandableSectionWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ExpandableSection for the current element,
+ * or the element itself if it is an instance of ExpandableSection.
+ * If no ExpandableSection is found, returns \`null\`.
+ *
+ * @returns {ExpandableSectionWrapper | null}
+ */
+findClosestExpandableSection(): ExpandableSectionWrapper | null;
+/**
+ * Returns the wrapper of the first FileDropzone that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first FileDropzone.
+ * If no matching FileDropzone is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FileDropzoneWrapper | null}
+ */
+findFileDropzone(selector?: string): FileDropzoneWrapper | null;
+
+/**
+ * Returns an array of FileDropzone wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the FileDropzones inside the current wrapper.
+ * If no matching FileDropzone is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FileDropzoneWrapper>}
+ */
+findAllFileDropzones(selector?: string): Array<FileDropzoneWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent FileDropzone for the current element,
+ * or the element itself if it is an instance of FileDropzone.
+ * If no FileDropzone is found, returns \`null\`.
+ *
+ * @returns {FileDropzoneWrapper | null}
+ */
+findClosestFileDropzone(): FileDropzoneWrapper | null;
+/**
+ * Returns the wrapper of the first FileInput that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first FileInput.
+ * If no matching FileInput is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FileInputWrapper | null}
+ */
+findFileInput(selector?: string): FileInputWrapper | null;
+
+/**
+ * Returns an array of FileInput wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the FileInputs inside the current wrapper.
+ * If no matching FileInput is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FileInputWrapper>}
+ */
+findAllFileInputs(selector?: string): Array<FileInputWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent FileInput for the current element,
+ * or the element itself if it is an instance of FileInput.
+ * If no FileInput is found, returns \`null\`.
+ *
+ * @returns {FileInputWrapper | null}
+ */
+findClosestFileInput(): FileInputWrapper | null;
+/**
+ * Returns the wrapper of the first FileTokenGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first FileTokenGroup.
+ * If no matching FileTokenGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FileTokenGroupWrapper | null}
+ */
+findFileTokenGroup(selector?: string): FileTokenGroupWrapper | null;
+
+/**
+ * Returns an array of FileTokenGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the FileTokenGroups inside the current wrapper.
+ * If no matching FileTokenGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FileTokenGroupWrapper>}
+ */
+findAllFileTokenGroups(selector?: string): Array<FileTokenGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent FileTokenGroup for the current element,
+ * or the element itself if it is an instance of FileTokenGroup.
+ * If no FileTokenGroup is found, returns \`null\`.
+ *
+ * @returns {FileTokenGroupWrapper | null}
+ */
+findClosestFileTokenGroup(): FileTokenGroupWrapper | null;
+/**
+ * Returns the wrapper of the first FileUpload that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first FileUpload.
+ * If no matching FileUpload is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FileUploadWrapper | null}
+ */
+findFileUpload(selector?: string): FileUploadWrapper | null;
+
+/**
+ * Returns an array of FileUpload wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the FileUploads inside the current wrapper.
+ * If no matching FileUpload is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FileUploadWrapper>}
+ */
+findAllFileUploads(selector?: string): Array<FileUploadWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent FileUpload for the current element,
+ * or the element itself if it is an instance of FileUpload.
+ * If no FileUpload is found, returns \`null\`.
+ *
+ * @returns {FileUploadWrapper | null}
+ */
+findClosestFileUpload(): FileUploadWrapper | null;
+/**
+ * Returns the wrapper of the first Flashbar that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Flashbar.
+ * If no matching Flashbar is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FlashbarWrapper | null}
+ */
+findFlashbar(selector?: string): FlashbarWrapper | null;
+
+/**
+ * Returns an array of Flashbar wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Flashbars inside the current wrapper.
+ * If no matching Flashbar is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FlashbarWrapper>}
+ */
+findAllFlashbars(selector?: string): Array<FlashbarWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Flashbar for the current element,
+ * or the element itself if it is an instance of Flashbar.
+ * If no Flashbar is found, returns \`null\`.
+ *
+ * @returns {FlashbarWrapper | null}
+ */
+findClosestFlashbar(): FlashbarWrapper | null;
+/**
+ * Returns the wrapper of the first Form that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Form.
+ * If no matching Form is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FormWrapper | null}
+ */
+findForm(selector?: string): FormWrapper | null;
+
+/**
+ * Returns an array of Form wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Forms inside the current wrapper.
+ * If no matching Form is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FormWrapper>}
+ */
+findAllForms(selector?: string): Array<FormWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Form for the current element,
+ * or the element itself if it is an instance of Form.
+ * If no Form is found, returns \`null\`.
+ *
+ * @returns {FormWrapper | null}
+ */
+findClosestForm(): FormWrapper | null;
+/**
+ * Returns the wrapper of the first FormField that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first FormField.
+ * If no matching FormField is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {FormFieldWrapper | null}
+ */
+findFormField(selector?: string): FormFieldWrapper | null;
+
+/**
+ * Returns an array of FormField wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the FormFields inside the current wrapper.
+ * If no matching FormField is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<FormFieldWrapper>}
+ */
+findAllFormFields(selector?: string): Array<FormFieldWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent FormField for the current element,
+ * or the element itself if it is an instance of FormField.
+ * If no FormField is found, returns \`null\`.
+ *
+ * @returns {FormFieldWrapper | null}
+ */
+findClosestFormField(): FormFieldWrapper | null;
+/**
+ * Returns the wrapper of the first Grid that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Grid.
+ * If no matching Grid is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {GridWrapper | null}
+ */
+findGrid(selector?: string): GridWrapper | null;
+
+/**
+ * Returns an array of Grid wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Grids inside the current wrapper.
+ * If no matching Grid is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<GridWrapper>}
+ */
+findAllGrids(selector?: string): Array<GridWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Grid for the current element,
+ * or the element itself if it is an instance of Grid.
+ * If no Grid is found, returns \`null\`.
+ *
+ * @returns {GridWrapper | null}
+ */
+findClosestGrid(): GridWrapper | null;
+/**
+ * Returns the wrapper of the first Header that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Header.
+ * If no matching Header is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {HeaderWrapper | null}
+ */
+findHeader(selector?: string): HeaderWrapper | null;
+
+/**
+ * Returns an array of Header wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Headers inside the current wrapper.
+ * If no matching Header is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<HeaderWrapper>}
+ */
+findAllHeaders(selector?: string): Array<HeaderWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Header for the current element,
+ * or the element itself if it is an instance of Header.
+ * If no Header is found, returns \`null\`.
+ *
+ * @returns {HeaderWrapper | null}
+ */
+findClosestHeader(): HeaderWrapper | null;
+/**
+ * Returns the wrapper of the first HelpPanel that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first HelpPanel.
+ * If no matching HelpPanel is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {HelpPanelWrapper | null}
+ */
+findHelpPanel(selector?: string): HelpPanelWrapper | null;
+
+/**
+ * Returns an array of HelpPanel wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the HelpPanels inside the current wrapper.
+ * If no matching HelpPanel is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<HelpPanelWrapper>}
+ */
+findAllHelpPanels(selector?: string): Array<HelpPanelWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent HelpPanel for the current element,
+ * or the element itself if it is an instance of HelpPanel.
+ * If no HelpPanel is found, returns \`null\`.
+ *
+ * @returns {HelpPanelWrapper | null}
+ */
+findClosestHelpPanel(): HelpPanelWrapper | null;
+/**
+ * Returns the wrapper of the first Hotspot that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Hotspot.
+ * If no matching Hotspot is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {HotspotWrapper | null}
+ */
+findHotspot(selector?: string): HotspotWrapper | null;
+
+/**
+ * Returns an array of Hotspot wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Hotspots inside the current wrapper.
+ * If no matching Hotspot is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<HotspotWrapper>}
+ */
+findAllHotspots(selector?: string): Array<HotspotWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Hotspot for the current element,
+ * or the element itself if it is an instance of Hotspot.
+ * If no Hotspot is found, returns \`null\`.
+ *
+ * @returns {HotspotWrapper | null}
+ */
+findClosestHotspot(): HotspotWrapper | null;
+/**
+ * Returns the wrapper of the first Icon that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Icon.
+ * If no matching Icon is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {IconWrapper | null}
+ */
+findIcon(selector?: string): IconWrapper | null;
+
+/**
+ * Returns an array of Icon wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Icons inside the current wrapper.
+ * If no matching Icon is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<IconWrapper>}
+ */
+findAllIcons(selector?: string): Array<IconWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Icon for the current element,
+ * or the element itself if it is an instance of Icon.
+ * If no Icon is found, returns \`null\`.
+ *
+ * @returns {IconWrapper | null}
+ */
+findClosestIcon(): IconWrapper | null;
+/**
+ * Returns the wrapper of the first Input that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Input.
+ * If no matching Input is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {InputWrapper | null}
+ */
+findInput(selector?: string): InputWrapper | null;
+
+/**
+ * Returns an array of Input wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Inputs inside the current wrapper.
+ * If no matching Input is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<InputWrapper>}
+ */
+findAllInputs(selector?: string): Array<InputWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Input for the current element,
+ * or the element itself if it is an instance of Input.
+ * If no Input is found, returns \`null\`.
+ *
+ * @returns {InputWrapper | null}
+ */
+findClosestInput(): InputWrapper | null;
+/**
+ * Returns the wrapper of the first ItemCard that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ItemCard.
+ * If no matching ItemCard is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ItemCardWrapper | null}
+ */
+findItemCard(selector?: string): ItemCardWrapper | null;
+
+/**
+ * Returns an array of ItemCard wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ItemCards inside the current wrapper.
+ * If no matching ItemCard is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ItemCardWrapper>}
+ */
+findAllItemCards(selector?: string): Array<ItemCardWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ItemCard for the current element,
+ * or the element itself if it is an instance of ItemCard.
+ * If no ItemCard is found, returns \`null\`.
+ *
+ * @returns {ItemCardWrapper | null}
+ */
+findClosestItemCard(): ItemCardWrapper | null;
+/**
+ * Returns the wrapper of the first KeyValuePairs that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first KeyValuePairs.
+ * If no matching KeyValuePairs is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {KeyValuePairsWrapper | null}
+ */
+findKeyValuePairs(selector?: string): KeyValuePairsWrapper | null;
+
+/**
+ * Returns an array of KeyValuePairs wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the KeyValuePairs inside the current wrapper.
+ * If no matching KeyValuePairs is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<KeyValuePairsWrapper>}
+ */
+findAllKeyValuePairs(selector?: string): Array<KeyValuePairsWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent KeyValuePairs for the current element,
+ * or the element itself if it is an instance of KeyValuePairs.
+ * If no KeyValuePairs is found, returns \`null\`.
+ *
+ * @returns {KeyValuePairsWrapper | null}
+ */
+findClosestKeyValuePairs(): KeyValuePairsWrapper | null;
+/**
+ * Returns the wrapper of the first LineChart that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first LineChart.
+ * If no matching LineChart is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {LineChartWrapper | null}
+ */
+findLineChart(selector?: string): LineChartWrapper | null;
+
+/**
+ * Returns an array of LineChart wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the LineCharts inside the current wrapper.
+ * If no matching LineChart is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<LineChartWrapper>}
+ */
+findAllLineCharts(selector?: string): Array<LineChartWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent LineChart for the current element,
+ * or the element itself if it is an instance of LineChart.
+ * If no LineChart is found, returns \`null\`.
+ *
+ * @returns {LineChartWrapper | null}
+ */
+findClosestLineChart(): LineChartWrapper | null;
+/**
+ * Returns the wrapper of the first Link that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Link.
+ * If no matching Link is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {LinkWrapper | null}
+ */
+findLink(selector?: string): LinkWrapper | null;
+
+/**
+ * Returns an array of Link wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Links inside the current wrapper.
+ * If no matching Link is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<LinkWrapper>}
+ */
+findAllLinks(selector?: string): Array<LinkWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Link for the current element,
+ * or the element itself if it is an instance of Link.
+ * If no Link is found, returns \`null\`.
+ *
+ * @returns {LinkWrapper | null}
+ */
+findClosestLink(): LinkWrapper | null;
+/**
+ * Returns the wrapper of the first List that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first List.
+ * If no matching List is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ListWrapper | null}
+ */
+findList(selector?: string): ListWrapper | null;
+
+/**
+ * Returns an array of List wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Lists inside the current wrapper.
+ * If no matching List is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ListWrapper>}
+ */
+findAllLists(selector?: string): Array<ListWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent List for the current element,
+ * or the element itself if it is an instance of List.
+ * If no List is found, returns \`null\`.
+ *
+ * @returns {ListWrapper | null}
+ */
+findClosestList(): ListWrapper | null;
+/**
+ * Returns the wrapper of the first LiveRegion that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first LiveRegion.
+ * If no matching LiveRegion is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {LiveRegionWrapper | null}
+ */
+findLiveRegion(selector?: string): LiveRegionWrapper | null;
+
+/**
+ * Returns an array of LiveRegion wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the LiveRegions inside the current wrapper.
+ * If no matching LiveRegion is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<LiveRegionWrapper>}
+ */
+findAllLiveRegions(selector?: string): Array<LiveRegionWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent LiveRegion for the current element,
+ * or the element itself if it is an instance of LiveRegion.
+ * If no LiveRegion is found, returns \`null\`.
+ *
+ * @returns {LiveRegionWrapper | null}
+ */
+findClosestLiveRegion(): LiveRegionWrapper | null;
+/**
+ * Returns the wrapper of the first MixedLineBarChart that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first MixedLineBarChart.
+ * If no matching MixedLineBarChart is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MixedLineBarChartWrapper | null}
+ */
+findMixedLineBarChart(selector?: string): MixedLineBarChartWrapper | null;
+
+/**
+ * Returns an array of MixedLineBarChart wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the MixedLineBarCharts inside the current wrapper.
+ * If no matching MixedLineBarChart is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<MixedLineBarChartWrapper>}
+ */
+findAllMixedLineBarCharts(selector?: string): Array<MixedLineBarChartWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent MixedLineBarChart for the current element,
+ * or the element itself if it is an instance of MixedLineBarChart.
+ * If no MixedLineBarChart is found, returns \`null\`.
+ *
+ * @returns {MixedLineBarChartWrapper | null}
+ */
+findClosestMixedLineBarChart(): MixedLineBarChartWrapper | null;
+/**
+ * Returns the wrapper of the first Modal that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Modal.
+ * If no matching Modal is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ModalWrapper | null}
+ */
+findModal(selector?: string): ModalWrapper | null;
+
+/**
+ * Returns an array of Modal wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Modals inside the current wrapper.
+ * If no matching Modal is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ModalWrapper>}
+ */
+findAllModals(selector?: string): Array<ModalWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Modal for the current element,
+ * or the element itself if it is an instance of Modal.
+ * If no Modal is found, returns \`null\`.
+ *
+ * @returns {ModalWrapper | null}
+ */
+findClosestModal(): ModalWrapper | null;
+/**
+ * Returns the wrapper of the first Multiselect that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Multiselect.
+ * If no matching Multiselect is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiselectWrapper | null}
+ */
+findMultiselect(selector?: string): MultiselectWrapper | null;
+
+/**
+ * Returns an array of Multiselect wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Multiselects inside the current wrapper.
+ * If no matching Multiselect is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<MultiselectWrapper>}
+ */
+findAllMultiselects(selector?: string): Array<MultiselectWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Multiselect for the current element,
+ * or the element itself if it is an instance of Multiselect.
+ * If no Multiselect is found, returns \`null\`.
+ *
+ * @returns {MultiselectWrapper | null}
+ */
+findClosestMultiselect(): MultiselectWrapper | null;
+/**
+ * Returns the wrapper of the first NavigableGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first NavigableGroup.
+ * If no matching NavigableGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {NavigableGroupWrapper | null}
+ */
+findNavigableGroup(selector?: string): NavigableGroupWrapper | null;
+
+/**
+ * Returns an array of NavigableGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the NavigableGroups inside the current wrapper.
+ * If no matching NavigableGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<NavigableGroupWrapper>}
+ */
+findAllNavigableGroups(selector?: string): Array<NavigableGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent NavigableGroup for the current element,
+ * or the element itself if it is an instance of NavigableGroup.
+ * If no NavigableGroup is found, returns \`null\`.
+ *
+ * @returns {NavigableGroupWrapper | null}
+ */
+findClosestNavigableGroup(): NavigableGroupWrapper | null;
+/**
+ * Returns the wrapper of the first Pagination that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Pagination.
+ * If no matching Pagination is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PaginationWrapper | null}
+ */
+findPagination(selector?: string): PaginationWrapper | null;
+
+/**
+ * Returns an array of Pagination wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Paginations inside the current wrapper.
+ * If no matching Pagination is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PaginationWrapper>}
+ */
+findAllPaginations(selector?: string): Array<PaginationWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Pagination for the current element,
+ * or the element itself if it is an instance of Pagination.
+ * If no Pagination is found, returns \`null\`.
+ *
+ * @returns {PaginationWrapper | null}
+ */
+findClosestPagination(): PaginationWrapper | null;
+/**
+ * Returns the wrapper of the first PanelLayout that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PanelLayout.
+ * If no matching PanelLayout is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PanelLayoutWrapper | null}
+ */
+findPanelLayout(selector?: string): PanelLayoutWrapper | null;
+
+/**
+ * Returns an array of PanelLayout wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PanelLayouts inside the current wrapper.
+ * If no matching PanelLayout is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PanelLayoutWrapper>}
+ */
+findAllPanelLayouts(selector?: string): Array<PanelLayoutWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent PanelLayout for the current element,
+ * or the element itself if it is an instance of PanelLayout.
+ * If no PanelLayout is found, returns \`null\`.
+ *
+ * @returns {PanelLayoutWrapper | null}
+ */
+findClosestPanelLayout(): PanelLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first PieChart that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PieChart.
+ * If no matching PieChart is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PieChartWrapper | null}
+ */
+findPieChart(selector?: string): PieChartWrapper | null;
+
+/**
+ * Returns an array of PieChart wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PieCharts inside the current wrapper.
+ * If no matching PieChart is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PieChartWrapper>}
+ */
+findAllPieCharts(selector?: string): Array<PieChartWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent PieChart for the current element,
+ * or the element itself if it is an instance of PieChart.
+ * If no PieChart is found, returns \`null\`.
+ *
+ * @returns {PieChartWrapper | null}
+ */
+findClosestPieChart(): PieChartWrapper | null;
+/**
+ * Returns the wrapper of the first Popover that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Popover.
+ * If no matching Popover is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PopoverWrapper | null}
+ */
+findPopover(selector?: string): PopoverWrapper | null;
+
+/**
+ * Returns an array of Popover wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Popovers inside the current wrapper.
+ * If no matching Popover is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PopoverWrapper>}
+ */
+findAllPopovers(selector?: string): Array<PopoverWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Popover for the current element,
+ * or the element itself if it is an instance of Popover.
+ * If no Popover is found, returns \`null\`.
+ *
+ * @returns {PopoverWrapper | null}
+ */
+findClosestPopover(): PopoverWrapper | null;
+/**
+ * Returns the wrapper of the first ProgressBar that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ProgressBar.
+ * If no matching ProgressBar is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ProgressBarWrapper | null}
+ */
+findProgressBar(selector?: string): ProgressBarWrapper | null;
+
+/**
+ * Returns an array of ProgressBar wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ProgressBars inside the current wrapper.
+ * If no matching ProgressBar is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ProgressBarWrapper>}
+ */
+findAllProgressBars(selector?: string): Array<ProgressBarWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ProgressBar for the current element,
+ * or the element itself if it is an instance of ProgressBar.
+ * If no ProgressBar is found, returns \`null\`.
+ *
+ * @returns {ProgressBarWrapper | null}
+ */
+findClosestProgressBar(): ProgressBarWrapper | null;
+/**
+ * Returns the wrapper of the first PromptInput that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PromptInput.
+ * If no matching PromptInput is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PromptInputWrapper | null}
+ */
+findPromptInput(selector?: string): PromptInputWrapper | null;
+
+/**
+ * Returns an array of PromptInput wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PromptInputs inside the current wrapper.
+ * If no matching PromptInput is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PromptInputWrapper>}
+ */
+findAllPromptInputs(selector?: string): Array<PromptInputWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent PromptInput for the current element,
+ * or the element itself if it is an instance of PromptInput.
+ * If no PromptInput is found, returns \`null\`.
+ *
+ * @returns {PromptInputWrapper | null}
+ */
+findClosestPromptInput(): PromptInputWrapper | null;
+/**
+ * Returns the wrapper of the first PropertyFilter that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first PropertyFilter.
+ * If no matching PropertyFilter is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {PropertyFilterWrapper | null}
+ */
+findPropertyFilter(selector?: string): PropertyFilterWrapper | null;
+
+/**
+ * Returns an array of PropertyFilter wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the PropertyFilters inside the current wrapper.
+ * If no matching PropertyFilter is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<PropertyFilterWrapper>}
+ */
+findAllPropertyFilters(selector?: string): Array<PropertyFilterWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent PropertyFilter for the current element,
+ * or the element itself if it is an instance of PropertyFilter.
+ * If no PropertyFilter is found, returns \`null\`.
+ *
+ * @returns {PropertyFilterWrapper | null}
+ */
+findClosestPropertyFilter(): PropertyFilterWrapper | null;
+/**
+ * Returns the wrapper of the first RadioButton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first RadioButton.
+ * If no matching RadioButton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioButtonWrapper | null}
+ */
+findRadioButton(selector?: string): RadioButtonWrapper | null;
+
+/**
+ * Returns an array of RadioButton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the RadioButtons inside the current wrapper.
+ * If no matching RadioButton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<RadioButtonWrapper>}
+ */
+findAllRadioButtons(selector?: string): Array<RadioButtonWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent RadioButton for the current element,
+ * or the element itself if it is an instance of RadioButton.
+ * If no RadioButton is found, returns \`null\`.
+ *
+ * @returns {RadioButtonWrapper | null}
+ */
+findClosestRadioButton(): RadioButtonWrapper | null;
+/**
+ * Returns the wrapper of the first RadioGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first RadioGroup.
+ * If no matching RadioGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {RadioGroupWrapper | null}
+ */
+findRadioGroup(selector?: string): RadioGroupWrapper | null;
+
+/**
+ * Returns an array of RadioGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the RadioGroups inside the current wrapper.
+ * If no matching RadioGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<RadioGroupWrapper>}
+ */
+findAllRadioGroups(selector?: string): Array<RadioGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent RadioGroup for the current element,
+ * or the element itself if it is an instance of RadioGroup.
+ * If no RadioGroup is found, returns \`null\`.
+ *
+ * @returns {RadioGroupWrapper | null}
+ */
+findClosestRadioGroup(): RadioGroupWrapper | null;
+/**
+ * Returns the wrapper of the first S3ResourceSelector that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first S3ResourceSelector.
+ * If no matching S3ResourceSelector is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {S3ResourceSelectorWrapper | null}
+ */
+findS3ResourceSelector(selector?: string): S3ResourceSelectorWrapper | null;
+
+/**
+ * Returns an array of S3ResourceSelector wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the S3ResourceSelectors inside the current wrapper.
+ * If no matching S3ResourceSelector is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<S3ResourceSelectorWrapper>}
+ */
+findAllS3ResourceSelectors(selector?: string): Array<S3ResourceSelectorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent S3ResourceSelector for the current element,
+ * or the element itself if it is an instance of S3ResourceSelector.
+ * If no S3ResourceSelector is found, returns \`null\`.
+ *
+ * @returns {S3ResourceSelectorWrapper | null}
+ */
+findClosestS3ResourceSelector(): S3ResourceSelectorWrapper | null;
+/**
+ * Returns the wrapper of the first SegmentedControl that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first SegmentedControl.
+ * If no matching SegmentedControl is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SegmentedControlWrapper | null}
+ */
+findSegmentedControl(selector?: string): SegmentedControlWrapper | null;
+
+/**
+ * Returns an array of SegmentedControl wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the SegmentedControls inside the current wrapper.
+ * If no matching SegmentedControl is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SegmentedControlWrapper>}
+ */
+findAllSegmentedControls(selector?: string): Array<SegmentedControlWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent SegmentedControl for the current element,
+ * or the element itself if it is an instance of SegmentedControl.
+ * If no SegmentedControl is found, returns \`null\`.
+ *
+ * @returns {SegmentedControlWrapper | null}
+ */
+findClosestSegmentedControl(): SegmentedControlWrapper | null;
+/**
+ * Returns the wrapper of the first Select that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Select.
+ * If no matching Select is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SelectWrapper | null}
+ */
+findSelect(selector?: string): SelectWrapper | null;
+
+/**
+ * Returns an array of Select wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Selects inside the current wrapper.
+ * If no matching Select is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SelectWrapper>}
+ */
+findAllSelects(selector?: string): Array<SelectWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Select for the current element,
+ * or the element itself if it is an instance of Select.
+ * If no Select is found, returns \`null\`.
+ *
+ * @returns {SelectWrapper | null}
+ */
+findClosestSelect(): SelectWrapper | null;
+/**
+ * Returns the wrapper of the first SideNavigation that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first SideNavigation.
+ * If no matching SideNavigation is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SideNavigationWrapper | null}
+ */
+findSideNavigation(selector?: string): SideNavigationWrapper | null;
+
+/**
+ * Returns an array of SideNavigation wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the SideNavigations inside the current wrapper.
+ * If no matching SideNavigation is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SideNavigationWrapper>}
+ */
+findAllSideNavigations(selector?: string): Array<SideNavigationWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent SideNavigation for the current element,
+ * or the element itself if it is an instance of SideNavigation.
+ * If no SideNavigation is found, returns \`null\`.
+ *
+ * @returns {SideNavigationWrapper | null}
+ */
+findClosestSideNavigation(): SideNavigationWrapper | null;
+/**
+ * Returns the wrapper of the first Slider that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Slider.
+ * If no matching Slider is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SliderWrapper | null}
+ */
+findSlider(selector?: string): SliderWrapper | null;
+
+/**
+ * Returns an array of Slider wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Sliders inside the current wrapper.
+ * If no matching Slider is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SliderWrapper>}
+ */
+findAllSliders(selector?: string): Array<SliderWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Slider for the current element,
+ * or the element itself if it is an instance of Slider.
+ * If no Slider is found, returns \`null\`.
+ *
+ * @returns {SliderWrapper | null}
+ */
+findClosestSlider(): SliderWrapper | null;
+/**
+ * Returns the wrapper of the first SpaceBetween that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first SpaceBetween.
+ * If no matching SpaceBetween is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SpaceBetweenWrapper | null}
+ */
+findSpaceBetween(selector?: string): SpaceBetweenWrapper | null;
+
+/**
+ * Returns an array of SpaceBetween wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the SpaceBetweens inside the current wrapper.
+ * If no matching SpaceBetween is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SpaceBetweenWrapper>}
+ */
+findAllSpaceBetweens(selector?: string): Array<SpaceBetweenWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent SpaceBetween for the current element,
+ * or the element itself if it is an instance of SpaceBetween.
+ * If no SpaceBetween is found, returns \`null\`.
+ *
+ * @returns {SpaceBetweenWrapper | null}
+ */
+findClosestSpaceBetween(): SpaceBetweenWrapper | null;
+/**
+ * Returns the wrapper of the first Spinner that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Spinner.
+ * If no matching Spinner is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SpinnerWrapper | null}
+ */
+findSpinner(selector?: string): SpinnerWrapper | null;
+
+/**
+ * Returns an array of Spinner wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Spinners inside the current wrapper.
+ * If no matching Spinner is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SpinnerWrapper>}
+ */
+findAllSpinners(selector?: string): Array<SpinnerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Spinner for the current element,
+ * or the element itself if it is an instance of Spinner.
+ * If no Spinner is found, returns \`null\`.
+ *
+ * @returns {SpinnerWrapper | null}
+ */
+findClosestSpinner(): SpinnerWrapper | null;
+/**
+ * Returns the wrapper of the first SplitPanel that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first SplitPanel.
+ * If no matching SplitPanel is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SplitPanelWrapper | null}
+ */
+findSplitPanel(selector?: string): SplitPanelWrapper | null;
+
+/**
+ * Returns an array of SplitPanel wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the SplitPanels inside the current wrapper.
+ * If no matching SplitPanel is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SplitPanelWrapper>}
+ */
+findAllSplitPanels(selector?: string): Array<SplitPanelWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent SplitPanel for the current element,
+ * or the element itself if it is an instance of SplitPanel.
+ * If no SplitPanel is found, returns \`null\`.
+ *
+ * @returns {SplitPanelWrapper | null}
+ */
+findClosestSplitPanel(): SplitPanelWrapper | null;
+/**
+ * Returns the wrapper of the first StatusIndicator that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first StatusIndicator.
+ * If no matching StatusIndicator is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {StatusIndicatorWrapper | null}
+ */
+findStatusIndicator(selector?: string): StatusIndicatorWrapper | null;
+
+/**
+ * Returns an array of StatusIndicator wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the StatusIndicators inside the current wrapper.
+ * If no matching StatusIndicator is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<StatusIndicatorWrapper>}
+ */
+findAllStatusIndicators(selector?: string): Array<StatusIndicatorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent StatusIndicator for the current element,
+ * or the element itself if it is an instance of StatusIndicator.
+ * If no StatusIndicator is found, returns \`null\`.
+ *
+ * @returns {StatusIndicatorWrapper | null}
+ */
+findClosestStatusIndicator(): StatusIndicatorWrapper | null;
+/**
+ * Returns the wrapper of the first Steps that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Steps.
+ * If no matching Steps is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {StepsWrapper | null}
+ */
+findSteps(selector?: string): StepsWrapper | null;
+
+/**
+ * Returns an array of Steps wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Steps inside the current wrapper.
+ * If no matching Steps is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<StepsWrapper>}
+ */
+findAllSteps(selector?: string): Array<StepsWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Steps for the current element,
+ * or the element itself if it is an instance of Steps.
+ * If no Steps is found, returns \`null\`.
+ *
+ * @returns {StepsWrapper | null}
+ */
+findClosestSteps(): StepsWrapper | null;
+/**
+ * Returns the wrapper of the first Table that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Table.
+ * If no matching Table is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TableWrapper | null}
+ */
+findTable(selector?: string): TableWrapper | null;
+
+/**
+ * Returns an array of Table wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tables inside the current wrapper.
+ * If no matching Table is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TableWrapper>}
+ */
+findAllTables(selector?: string): Array<TableWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Table for the current element,
+ * or the element itself if it is an instance of Table.
+ * If no Table is found, returns \`null\`.
+ *
+ * @returns {TableWrapper | null}
+ */
+findClosestTable(): TableWrapper | null;
+/**
+ * Returns the wrapper of the first Tabs that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Tabs.
+ * If no matching Tabs is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TabsWrapper | null}
+ */
+findTabs(selector?: string): TabsWrapper | null;
+
+/**
+ * Returns an array of Tabs wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tabs inside the current wrapper.
+ * If no matching Tabs is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TabsWrapper>}
+ */
+findAllTabs(selector?: string): Array<TabsWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Tabs for the current element,
+ * or the element itself if it is an instance of Tabs.
+ * If no Tabs is found, returns \`null\`.
+ *
+ * @returns {TabsWrapper | null}
+ */
+findClosestTabs(): TabsWrapper | null;
+/**
+ * Returns the wrapper of the first TagEditor that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TagEditor.
+ * If no matching TagEditor is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TagEditorWrapper | null}
+ */
+findTagEditor(selector?: string): TagEditorWrapper | null;
+
+/**
+ * Returns an array of TagEditor wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TagEditors inside the current wrapper.
+ * If no matching TagEditor is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TagEditorWrapper>}
+ */
+findAllTagEditors(selector?: string): Array<TagEditorWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TagEditor for the current element,
+ * or the element itself if it is an instance of TagEditor.
+ * If no TagEditor is found, returns \`null\`.
+ *
+ * @returns {TagEditorWrapper | null}
+ */
+findClosestTagEditor(): TagEditorWrapper | null;
+/**
+ * Returns the wrapper of the first TextContent that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TextContent.
+ * If no matching TextContent is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TextContentWrapper | null}
+ */
+findTextContent(selector?: string): TextContentWrapper | null;
+
+/**
+ * Returns an array of TextContent wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TextContents inside the current wrapper.
+ * If no matching TextContent is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TextContentWrapper>}
+ */
+findAllTextContents(selector?: string): Array<TextContentWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TextContent for the current element,
+ * or the element itself if it is an instance of TextContent.
+ * If no TextContent is found, returns \`null\`.
+ *
+ * @returns {TextContentWrapper | null}
+ */
+findClosestTextContent(): TextContentWrapper | null;
+/**
+ * Returns the wrapper of the first TextFilter that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TextFilter.
+ * If no matching TextFilter is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TextFilterWrapper | null}
+ */
+findTextFilter(selector?: string): TextFilterWrapper | null;
+
+/**
+ * Returns an array of TextFilter wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TextFilters inside the current wrapper.
+ * If no matching TextFilter is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TextFilterWrapper>}
+ */
+findAllTextFilters(selector?: string): Array<TextFilterWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TextFilter for the current element,
+ * or the element itself if it is an instance of TextFilter.
+ * If no TextFilter is found, returns \`null\`.
+ *
+ * @returns {TextFilterWrapper | null}
+ */
+findClosestTextFilter(): TextFilterWrapper | null;
+/**
+ * Returns the wrapper of the first Textarea that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Textarea.
+ * If no matching Textarea is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TextareaWrapper | null}
+ */
+findTextarea(selector?: string): TextareaWrapper | null;
+
+/**
+ * Returns an array of Textarea wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Textareas inside the current wrapper.
+ * If no matching Textarea is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TextareaWrapper>}
+ */
+findAllTextareas(selector?: string): Array<TextareaWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Textarea for the current element,
+ * or the element itself if it is an instance of Textarea.
+ * If no Textarea is found, returns \`null\`.
+ *
+ * @returns {TextareaWrapper | null}
+ */
+findClosestTextarea(): TextareaWrapper | null;
+/**
+ * Returns the wrapper of the first Tiles that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Tiles.
+ * If no matching Tiles is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TilesWrapper | null}
+ */
+findTiles(selector?: string): TilesWrapper | null;
+
+/**
+ * Returns an array of Tiles wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tiles inside the current wrapper.
+ * If no matching Tiles is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TilesWrapper>}
+ */
+findAllTiles(selector?: string): Array<TilesWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Tiles for the current element,
+ * or the element itself if it is an instance of Tiles.
+ * If no Tiles is found, returns \`null\`.
+ *
+ * @returns {TilesWrapper | null}
+ */
+findClosestTiles(): TilesWrapper | null;
+/**
+ * Returns the wrapper of the first TimeInput that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TimeInput.
+ * If no matching TimeInput is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TimeInputWrapper | null}
+ */
+findTimeInput(selector?: string): TimeInputWrapper | null;
+
+/**
+ * Returns an array of TimeInput wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TimeInputs inside the current wrapper.
+ * If no matching TimeInput is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TimeInputWrapper>}
+ */
+findAllTimeInputs(selector?: string): Array<TimeInputWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TimeInput for the current element,
+ * or the element itself if it is an instance of TimeInput.
+ * If no TimeInput is found, returns \`null\`.
+ *
+ * @returns {TimeInputWrapper | null}
+ */
+findClosestTimeInput(): TimeInputWrapper | null;
+/**
+ * Returns the wrapper of the first Toggle that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Toggle.
+ * If no matching Toggle is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ToggleWrapper | null}
+ */
+findToggle(selector?: string): ToggleWrapper | null;
+
+/**
+ * Returns an array of Toggle wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Toggles inside the current wrapper.
+ * If no matching Toggle is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ToggleWrapper>}
+ */
+findAllToggles(selector?: string): Array<ToggleWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Toggle for the current element,
+ * or the element itself if it is an instance of Toggle.
+ * If no Toggle is found, returns \`null\`.
+ *
+ * @returns {ToggleWrapper | null}
+ */
+findClosestToggle(): ToggleWrapper | null;
+/**
+ * Returns the wrapper of the first ToggleButton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ToggleButton.
+ * If no matching ToggleButton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ToggleButtonWrapper | null}
+ */
+findToggleButton(selector?: string): ToggleButtonWrapper | null;
+
+/**
+ * Returns an array of ToggleButton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ToggleButtons inside the current wrapper.
+ * If no matching ToggleButton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ToggleButtonWrapper>}
+ */
+findAllToggleButtons(selector?: string): Array<ToggleButtonWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ToggleButton for the current element,
+ * or the element itself if it is an instance of ToggleButton.
+ * If no ToggleButton is found, returns \`null\`.
+ *
+ * @returns {ToggleButtonWrapper | null}
+ */
+findClosestToggleButton(): ToggleButtonWrapper | null;
+/**
+ * Returns the wrapper of the first Token that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Token.
+ * If no matching Token is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TokenWrapper | null}
+ */
+findToken(selector?: string): TokenWrapper | null;
+
+/**
+ * Returns an array of Token wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tokens inside the current wrapper.
+ * If no matching Token is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TokenWrapper>}
+ */
+findAllTokens(selector?: string): Array<TokenWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Token for the current element,
+ * or the element itself if it is an instance of Token.
+ * If no Token is found, returns \`null\`.
+ *
+ * @returns {TokenWrapper | null}
+ */
+findClosestToken(): TokenWrapper | null;
+/**
+ * Returns the wrapper of the first TokenGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TokenGroup.
+ * If no matching TokenGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TokenGroupWrapper | null}
+ */
+findTokenGroup(selector?: string): TokenGroupWrapper | null;
+
+/**
+ * Returns an array of TokenGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TokenGroups inside the current wrapper.
+ * If no matching TokenGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TokenGroupWrapper>}
+ */
+findAllTokenGroups(selector?: string): Array<TokenGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TokenGroup for the current element,
+ * or the element itself if it is an instance of TokenGroup.
+ * If no TokenGroup is found, returns \`null\`.
+ *
+ * @returns {TokenGroupWrapper | null}
+ */
+findClosestTokenGroup(): TokenGroupWrapper | null;
+/**
+ * Returns the wrapper of the first Tooltip that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Tooltip.
+ * If no matching Tooltip is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TooltipWrapper | null}
+ */
+findTooltip(selector?: string): TooltipWrapper | null;
+
+/**
+ * Returns an array of Tooltip wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Tooltips inside the current wrapper.
+ * If no matching Tooltip is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TooltipWrapper>}
+ */
+findAllTooltips(selector?: string): Array<TooltipWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Tooltip for the current element,
+ * or the element itself if it is an instance of Tooltip.
+ * If no Tooltip is found, returns \`null\`.
+ *
+ * @returns {TooltipWrapper | null}
+ */
+findClosestTooltip(): TooltipWrapper | null;
+/**
+ * Returns the wrapper of the first TopNavigation that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TopNavigation.
+ * If no matching TopNavigation is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TopNavigationWrapper | null}
+ */
+findTopNavigation(selector?: string): TopNavigationWrapper | null;
+
+/**
+ * Returns an array of TopNavigation wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TopNavigations inside the current wrapper.
+ * If no matching TopNavigation is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TopNavigationWrapper>}
+ */
+findAllTopNavigations(selector?: string): Array<TopNavigationWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TopNavigation for the current element,
+ * or the element itself if it is an instance of TopNavigation.
+ * If no TopNavigation is found, returns \`null\`.
+ *
+ * @returns {TopNavigationWrapper | null}
+ */
+findClosestTopNavigation(): TopNavigationWrapper | null;
+/**
+ * Returns the wrapper of the first TreeView that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TreeView.
+ * If no matching TreeView is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TreeViewWrapper | null}
+ */
+findTreeView(selector?: string): TreeViewWrapper | null;
+
+/**
+ * Returns an array of TreeView wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TreeViews inside the current wrapper.
+ * If no matching TreeView is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TreeViewWrapper>}
+ */
+findAllTreeViews(selector?: string): Array<TreeViewWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TreeView for the current element,
+ * or the element itself if it is an instance of TreeView.
+ * If no TreeView is found, returns \`null\`.
+ *
+ * @returns {TreeViewWrapper | null}
+ */
+findClosestTreeView(): TreeViewWrapper | null;
+/**
+ * Returns the wrapper of the first TutorialPanel that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TutorialPanel.
+ * If no matching TutorialPanel is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TutorialPanelWrapper | null}
+ */
+findTutorialPanel(selector?: string): TutorialPanelWrapper | null;
+
+/**
+ * Returns an array of TutorialPanel wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TutorialPanels inside the current wrapper.
+ * If no matching TutorialPanel is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TutorialPanelWrapper>}
+ */
+findAllTutorialPanels(selector?: string): Array<TutorialPanelWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TutorialPanel for the current element,
+ * or the element itself if it is an instance of TutorialPanel.
+ * If no TutorialPanel is found, returns \`null\`.
+ *
+ * @returns {TutorialPanelWrapper | null}
+ */
+findClosestTutorialPanel(): TutorialPanelWrapper | null;
+/**
+ * Returns the wrapper of the first Wizard that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Wizard.
+ * If no matching Wizard is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {WizardWrapper | null}
+ */
+findWizard(selector?: string): WizardWrapper | null;
+
+/**
+ * Returns an array of Wizard wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Wizards inside the current wrapper.
+ * If no matching Wizard is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<WizardWrapper>}
+ */
+findAllWizards(selector?: string): Array<WizardWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Wizard for the current element,
+ * or the element itself if it is an instance of Wizard.
+ * If no Wizard is found, returns \`null\`.
+ *
+ * @returns {WizardWrapper | null}
+ */
+findClosestWizard(): WizardWrapper | null;
+   }
+}
+
+
+ElementWrapper.prototype.findAlert = function(selector) {
+  let rootSelector = \`.\${AlertWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AlertWrapper && AlertWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AlertWrapper.rootSelector}, .\${AlertWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AlertWrapper);
+};
+
+ElementWrapper.prototype.findAllAlerts = function(selector) {
+  return this.findAllComponents(AlertWrapper, selector);
+};
+ElementWrapper.prototype.findAnchorNavigation = function(selector) {
+  let rootSelector = \`.\${AnchorNavigationWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AnchorNavigationWrapper && AnchorNavigationWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AnchorNavigationWrapper.rootSelector}, .\${AnchorNavigationWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnchorNavigationWrapper);
+};
+
+ElementWrapper.prototype.findAllAnchorNavigations = function(selector) {
+  return this.findAllComponents(AnchorNavigationWrapper, selector);
+};
+ElementWrapper.prototype.findAnnotation = function(selector) {
+  let rootSelector = \`.\${AnnotationWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AnnotationWrapper && AnnotationWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AnnotationWrapper.rootSelector}, .\${AnnotationWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnnotationWrapper);
+};
+
+ElementWrapper.prototype.findAllAnnotations = function(selector) {
+  return this.findAllComponents(AnnotationWrapper, selector);
+};
+ElementWrapper.prototype.findAppLayout = function(selector) {
+  let rootSelector = \`.\${AppLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AppLayoutWrapper && AppLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AppLayoutWrapper.rootSelector}, .\${AppLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllAppLayouts = function(selector) {
+  return this.findAllComponents(AppLayoutWrapper, selector);
+};
+ElementWrapper.prototype.findAppLayoutToolbar = function(selector) {
+  let rootSelector = \`.\${AppLayoutToolbarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AppLayoutToolbarWrapper && AppLayoutToolbarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AppLayoutToolbarWrapper.rootSelector}, .\${AppLayoutToolbarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutToolbarWrapper);
+};
+
+ElementWrapper.prototype.findAllAppLayoutToolbars = function(selector) {
+  return this.findAllComponents(AppLayoutToolbarWrapper, selector);
+};
+ElementWrapper.prototype.findAreaChart = function(selector) {
+  let rootSelector = \`.\${AreaChartWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AreaChartWrapper && AreaChartWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AreaChartWrapper.rootSelector}, .\${AreaChartWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AreaChartWrapper);
+};
+
+ElementWrapper.prototype.findAllAreaCharts = function(selector) {
+  return this.findAllComponents(AreaChartWrapper, selector);
+};
+ElementWrapper.prototype.findAttributeEditor = function(selector) {
+  let rootSelector = \`.\${AttributeEditorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AttributeEditorWrapper && AttributeEditorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AttributeEditorWrapper.rootSelector}, .\${AttributeEditorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AttributeEditorWrapper);
+};
+
+ElementWrapper.prototype.findAllAttributeEditors = function(selector) {
+  return this.findAllComponents(AttributeEditorWrapper, selector);
+};
+ElementWrapper.prototype.findAutosuggest = function(selector) {
+  let rootSelector = \`.\${AutosuggestWrapper.rootSelector}\`;
+  if("legacyRootSelector" in AutosuggestWrapper && AutosuggestWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${AutosuggestWrapper.rootSelector}, .\${AutosuggestWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AutosuggestWrapper);
+};
+
+ElementWrapper.prototype.findAllAutosuggests = function(selector) {
+  return this.findAllComponents(AutosuggestWrapper, selector);
+};
+ElementWrapper.prototype.findBadge = function(selector) {
+  let rootSelector = \`.\${BadgeWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BadgeWrapper && BadgeWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BadgeWrapper.rootSelector}, .\${BadgeWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BadgeWrapper);
+};
+
+ElementWrapper.prototype.findAllBadges = function(selector) {
+  return this.findAllComponents(BadgeWrapper, selector);
+};
+ElementWrapper.prototype.findBarChart = function(selector) {
+  let rootSelector = \`.\${BarChartWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BarChartWrapper && BarChartWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BarChartWrapper.rootSelector}, .\${BarChartWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BarChartWrapper);
+};
+
+ElementWrapper.prototype.findAllBarCharts = function(selector) {
+  return this.findAllComponents(BarChartWrapper, selector);
+};
+ElementWrapper.prototype.findBox = function(selector) {
+  let rootSelector = \`.\${BoxWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BoxWrapper && BoxWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BoxWrapper.rootSelector}, .\${BoxWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BoxWrapper);
+};
+
+ElementWrapper.prototype.findAllBoxes = function(selector) {
+  return this.findAllComponents(BoxWrapper, selector);
+};
+ElementWrapper.prototype.findBreadcrumbGroup = function(selector) {
+  let rootSelector = \`.\${BreadcrumbGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in BreadcrumbGroupWrapper && BreadcrumbGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${BreadcrumbGroupWrapper.rootSelector}, .\${BreadcrumbGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BreadcrumbGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllBreadcrumbGroups = function(selector) {
+  return this.findAllComponents(BreadcrumbGroupWrapper, selector);
+};
+ElementWrapper.prototype.findButton = function(selector) {
+  let rootSelector = \`.\${ButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ButtonWrapper && ButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ButtonWrapper.rootSelector}, .\${ButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllButtons = function(selector) {
+  return this.findAllComponents(ButtonWrapper, selector);
+};
+ElementWrapper.prototype.findButtonDropdown = function(selector) {
+  let rootSelector = \`.\${ButtonDropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ButtonDropdownWrapper && ButtonDropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ButtonDropdownWrapper.rootSelector}, .\${ButtonDropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonDropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllButtonDropdowns = function(selector) {
+  return this.findAllComponents(ButtonDropdownWrapper, selector);
+};
+ElementWrapper.prototype.findButtonGroup = function(selector) {
+  let rootSelector = \`.\${ButtonGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ButtonGroupWrapper && ButtonGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ButtonGroupWrapper.rootSelector}, .\${ButtonGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllButtonGroups = function(selector) {
+  return this.findAllComponents(ButtonGroupWrapper, selector);
+};
+ElementWrapper.prototype.findCalendar = function(selector) {
+  let rootSelector = \`.\${CalendarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CalendarWrapper && CalendarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CalendarWrapper.rootSelector}, .\${CalendarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CalendarWrapper);
+};
+
+ElementWrapper.prototype.findAllCalendars = function(selector) {
+  return this.findAllComponents(CalendarWrapper, selector);
+};
+ElementWrapper.prototype.findCards = function(selector) {
+  let rootSelector = \`.\${CardsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CardsWrapper && CardsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CardsWrapper.rootSelector}, .\${CardsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CardsWrapper);
+};
+
+ElementWrapper.prototype.findAllCards = function(selector) {
+  return this.findAllComponents(CardsWrapper, selector);
+};
+ElementWrapper.prototype.findCheckbox = function(selector) {
+  let rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CheckboxWrapper && CheckboxWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CheckboxWrapper.rootSelector}, .\${CheckboxWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CheckboxWrapper);
+};
+
+ElementWrapper.prototype.findAllCheckboxes = function(selector) {
+  return this.findAllComponents(CheckboxWrapper, selector);
+};
+ElementWrapper.prototype.findCodeEditor = function(selector) {
+  let rootSelector = \`.\${CodeEditorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CodeEditorWrapper && CodeEditorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CodeEditorWrapper.rootSelector}, .\${CodeEditorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CodeEditorWrapper);
+};
+
+ElementWrapper.prototype.findAllCodeEditors = function(selector) {
+  return this.findAllComponents(CodeEditorWrapper, selector);
+};
+ElementWrapper.prototype.findCollectionPreferences = function(selector) {
+  let rootSelector = \`.\${CollectionPreferencesWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CollectionPreferencesWrapper && CollectionPreferencesWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CollectionPreferencesWrapper.rootSelector}, .\${CollectionPreferencesWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CollectionPreferencesWrapper);
+};
+
+ElementWrapper.prototype.findAllCollectionPreferences = function(selector) {
+  return this.findAllComponents(CollectionPreferencesWrapper, selector);
+};
+ElementWrapper.prototype.findColumnLayout = function(selector) {
+  let rootSelector = \`.\${ColumnLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ColumnLayoutWrapper && ColumnLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ColumnLayoutWrapper.rootSelector}, .\${ColumnLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ColumnLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllColumnLayouts = function(selector) {
+  return this.findAllComponents(ColumnLayoutWrapper, selector);
+};
+ElementWrapper.prototype.findContainer = function(selector) {
+  let rootSelector = \`.\${ContainerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ContainerWrapper && ContainerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ContainerWrapper.rootSelector}, .\${ContainerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContainerWrapper);
+};
+
+ElementWrapper.prototype.findAllContainers = function(selector) {
+  return this.findAllComponents(ContainerWrapper, selector);
+};
+ElementWrapper.prototype.findContentLayout = function(selector) {
+  let rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ContentLayoutWrapper && ContentLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ContentLayoutWrapper.rootSelector}, .\${ContentLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllContentLayouts = function(selector) {
+  return this.findAllComponents(ContentLayoutWrapper, selector);
+};
+ElementWrapper.prototype.findCopyToClipboard = function(selector) {
+  let rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in CopyToClipboardWrapper && CopyToClipboardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${CopyToClipboardWrapper.rootSelector}, .\${CopyToClipboardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CopyToClipboardWrapper);
+};
+
+ElementWrapper.prototype.findAllCopyToClipboards = function(selector) {
+  return this.findAllComponents(CopyToClipboardWrapper, selector);
+};
+ElementWrapper.prototype.findDateInput = function(selector) {
+  let rootSelector = \`.\${DateInputWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DateInputWrapper && DateInputWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DateInputWrapper.rootSelector}, .\${DateInputWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateInputWrapper);
+};
+
+ElementWrapper.prototype.findAllDateInputs = function(selector) {
+  return this.findAllComponents(DateInputWrapper, selector);
+};
+ElementWrapper.prototype.findDatePicker = function(selector) {
+  let rootSelector = \`.\${DatePickerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DatePickerWrapper && DatePickerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DatePickerWrapper.rootSelector}, .\${DatePickerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DatePickerWrapper);
+};
+
+ElementWrapper.prototype.findAllDatePickers = function(selector) {
+  return this.findAllComponents(DatePickerWrapper, selector);
+};
+ElementWrapper.prototype.findDateRangePicker = function(selector) {
+  let rootSelector = \`.\${DateRangePickerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DateRangePickerWrapper && DateRangePickerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DateRangePickerWrapper.rootSelector}, .\${DateRangePickerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerWrapper);
+};
+
+ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
+  return this.findAllComponents(DateRangePickerWrapper, selector);
+};
+ElementWrapper.prototype.findDrawer = function(selector) {
+  let rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DrawerWrapper && DrawerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DrawerWrapper.rootSelector}, .\${DrawerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DrawerWrapper);
+};
+
+ElementWrapper.prototype.findAllDrawers = function(selector) {
+  return this.findAllComponents(DrawerWrapper, selector);
+};
+ElementWrapper.prototype.findDropdown = function(selector) {
+  let rootSelector = \`.\${DropdownWrapper.rootSelector}\`;
+  if("legacyRootSelector" in DropdownWrapper && DropdownWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${DropdownWrapper.rootSelector}, .\${DropdownWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DropdownWrapper);
+};
+
+ElementWrapper.prototype.findAllDropdowns = function(selector) {
+  return this.findAllComponents(DropdownWrapper, selector);
+};
+ElementWrapper.prototype.findErrorBoundary = function(selector) {
+  let rootSelector = \`.\${ErrorBoundaryWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ErrorBoundaryWrapper && ErrorBoundaryWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ErrorBoundaryWrapper.rootSelector}, .\${ErrorBoundaryWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ErrorBoundaryWrapper);
+};
+
+ElementWrapper.prototype.findAllErrorBoundaries = function(selector) {
+  return this.findAllComponents(ErrorBoundaryWrapper, selector);
+};
+ElementWrapper.prototype.findExpandableSection = function(selector) {
+  let rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ExpandableSectionWrapper && ExpandableSectionWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ExpandableSectionWrapper.rootSelector}, .\${ExpandableSectionWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
+};
+
+ElementWrapper.prototype.findAllExpandableSections = function(selector) {
+  return this.findAllComponents(ExpandableSectionWrapper, selector);
+};
+ElementWrapper.prototype.findFileDropzone = function(selector) {
+  let rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FileDropzoneWrapper && FileDropzoneWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FileDropzoneWrapper.rootSelector}, .\${FileDropzoneWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
+};
+
+ElementWrapper.prototype.findAllFileDropzones = function(selector) {
+  return this.findAllComponents(FileDropzoneWrapper, selector);
+};
+ElementWrapper.prototype.findFileInput = function(selector) {
+  let rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FileInputWrapper && FileInputWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FileInputWrapper.rootSelector}, .\${FileInputWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+};
+
+ElementWrapper.prototype.findAllFileInputs = function(selector) {
+  return this.findAllComponents(FileInputWrapper, selector);
+};
+ElementWrapper.prototype.findFileTokenGroup = function(selector) {
+  let rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FileTokenGroupWrapper && FileTokenGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FileTokenGroupWrapper.rootSelector}, .\${FileTokenGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllFileTokenGroups = function(selector) {
+  return this.findAllComponents(FileTokenGroupWrapper, selector);
+};
+ElementWrapper.prototype.findFileUpload = function(selector) {
+  let rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FileUploadWrapper && FileUploadWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FileUploadWrapper.rootSelector}, .\${FileUploadWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileUploadWrapper);
+};
+
+ElementWrapper.prototype.findAllFileUploads = function(selector) {
+  return this.findAllComponents(FileUploadWrapper, selector);
+};
+ElementWrapper.prototype.findFlashbar = function(selector) {
+  let rootSelector = \`.\${FlashbarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FlashbarWrapper && FlashbarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FlashbarWrapper.rootSelector}, .\${FlashbarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FlashbarWrapper);
+};
+
+ElementWrapper.prototype.findAllFlashbars = function(selector) {
+  return this.findAllComponents(FlashbarWrapper, selector);
+};
+ElementWrapper.prototype.findForm = function(selector) {
+  let rootSelector = \`.\${FormWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FormWrapper && FormWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FormWrapper.rootSelector}, .\${FormWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormWrapper);
+};
+
+ElementWrapper.prototype.findAllForms = function(selector) {
+  return this.findAllComponents(FormWrapper, selector);
+};
+ElementWrapper.prototype.findFormField = function(selector) {
+  let rootSelector = \`.\${FormFieldWrapper.rootSelector}\`;
+  if("legacyRootSelector" in FormFieldWrapper && FormFieldWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${FormFieldWrapper.rootSelector}, .\${FormFieldWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormFieldWrapper);
+};
+
+ElementWrapper.prototype.findAllFormFields = function(selector) {
+  return this.findAllComponents(FormFieldWrapper, selector);
+};
+ElementWrapper.prototype.findGrid = function(selector) {
+  let rootSelector = \`.\${GridWrapper.rootSelector}\`;
+  if("legacyRootSelector" in GridWrapper && GridWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${GridWrapper.rootSelector}, .\${GridWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, GridWrapper);
+};
+
+ElementWrapper.prototype.findAllGrids = function(selector) {
+  return this.findAllComponents(GridWrapper, selector);
+};
+ElementWrapper.prototype.findHeader = function(selector) {
+  let rootSelector = \`.\${HeaderWrapper.rootSelector}\`;
+  if("legacyRootSelector" in HeaderWrapper && HeaderWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${HeaderWrapper.rootSelector}, .\${HeaderWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HeaderWrapper);
+};
+
+ElementWrapper.prototype.findAllHeaders = function(selector) {
+  return this.findAllComponents(HeaderWrapper, selector);
+};
+ElementWrapper.prototype.findHelpPanel = function(selector) {
+  let rootSelector = \`.\${HelpPanelWrapper.rootSelector}\`;
+  if("legacyRootSelector" in HelpPanelWrapper && HelpPanelWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${HelpPanelWrapper.rootSelector}, .\${HelpPanelWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HelpPanelWrapper);
+};
+
+ElementWrapper.prototype.findAllHelpPanels = function(selector) {
+  return this.findAllComponents(HelpPanelWrapper, selector);
+};
+ElementWrapper.prototype.findHotspot = function(selector) {
+  let rootSelector = \`.\${HotspotWrapper.rootSelector}\`;
+  if("legacyRootSelector" in HotspotWrapper && HotspotWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${HotspotWrapper.rootSelector}, .\${HotspotWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HotspotWrapper);
+};
+
+ElementWrapper.prototype.findAllHotspots = function(selector) {
+  return this.findAllComponents(HotspotWrapper, selector);
+};
+ElementWrapper.prototype.findIcon = function(selector) {
+  let rootSelector = \`.\${IconWrapper.rootSelector}\`;
+  if("legacyRootSelector" in IconWrapper && IconWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${IconWrapper.rootSelector}, .\${IconWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, IconWrapper);
+};
+
+ElementWrapper.prototype.findAllIcons = function(selector) {
+  return this.findAllComponents(IconWrapper, selector);
+};
+ElementWrapper.prototype.findInput = function(selector) {
+  let rootSelector = \`.\${InputWrapper.rootSelector}\`;
+  if("legacyRootSelector" in InputWrapper && InputWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${InputWrapper.rootSelector}, .\${InputWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, InputWrapper);
+};
+
+ElementWrapper.prototype.findAllInputs = function(selector) {
+  return this.findAllComponents(InputWrapper, selector);
+};
+ElementWrapper.prototype.findItemCard = function(selector) {
+  let rootSelector = \`.\${ItemCardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ItemCardWrapper && ItemCardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ItemCardWrapper.rootSelector}, .\${ItemCardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ItemCardWrapper);
+};
+
+ElementWrapper.prototype.findAllItemCards = function(selector) {
+  return this.findAllComponents(ItemCardWrapper, selector);
+};
+ElementWrapper.prototype.findKeyValuePairs = function(selector) {
+  let rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in KeyValuePairsWrapper && KeyValuePairsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${KeyValuePairsWrapper.rootSelector}, .\${KeyValuePairsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, KeyValuePairsWrapper);
+};
+
+ElementWrapper.prototype.findAllKeyValuePairs = function(selector) {
+  return this.findAllComponents(KeyValuePairsWrapper, selector);
+};
+ElementWrapper.prototype.findLineChart = function(selector) {
+  let rootSelector = \`.\${LineChartWrapper.rootSelector}\`;
+  if("legacyRootSelector" in LineChartWrapper && LineChartWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${LineChartWrapper.rootSelector}, .\${LineChartWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LineChartWrapper);
+};
+
+ElementWrapper.prototype.findAllLineCharts = function(selector) {
+  return this.findAllComponents(LineChartWrapper, selector);
+};
+ElementWrapper.prototype.findLink = function(selector) {
+  let rootSelector = \`.\${LinkWrapper.rootSelector}\`;
+  if("legacyRootSelector" in LinkWrapper && LinkWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${LinkWrapper.rootSelector}, .\${LinkWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LinkWrapper);
+};
+
+ElementWrapper.prototype.findAllLinks = function(selector) {
+  return this.findAllComponents(LinkWrapper, selector);
+};
+ElementWrapper.prototype.findList = function(selector) {
+  let rootSelector = \`.\${ListWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ListWrapper && ListWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ListWrapper.rootSelector}, .\${ListWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ListWrapper);
+};
+
+ElementWrapper.prototype.findAllLists = function(selector) {
+  return this.findAllComponents(ListWrapper, selector);
+};
+ElementWrapper.prototype.findLiveRegion = function(selector) {
+  let rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
+  if("legacyRootSelector" in LiveRegionWrapper && LiveRegionWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${LiveRegionWrapper.rootSelector}, .\${LiveRegionWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LiveRegionWrapper);
+};
+
+ElementWrapper.prototype.findAllLiveRegions = function(selector) {
+  return this.findAllComponents(LiveRegionWrapper, selector);
+};
+ElementWrapper.prototype.findMixedLineBarChart = function(selector) {
+  let rootSelector = \`.\${MixedLineBarChartWrapper.rootSelector}\`;
+  if("legacyRootSelector" in MixedLineBarChartWrapper && MixedLineBarChartWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${MixedLineBarChartWrapper.rootSelector}, .\${MixedLineBarChartWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MixedLineBarChartWrapper);
+};
+
+ElementWrapper.prototype.findAllMixedLineBarCharts = function(selector) {
+  return this.findAllComponents(MixedLineBarChartWrapper, selector);
+};
+ElementWrapper.prototype.findModal = function(selector) {
+  let rootSelector = \`.\${ModalWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ModalWrapper && ModalWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ModalWrapper.rootSelector}, .\${ModalWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ModalWrapper);
+};
+
+ElementWrapper.prototype.findAllModals = function(selector) {
+  return this.findAllComponents(ModalWrapper, selector);
+};
+ElementWrapper.prototype.findMultiselect = function(selector) {
+  let rootSelector = \`.\${MultiselectWrapper.rootSelector}\`;
+  if("legacyRootSelector" in MultiselectWrapper && MultiselectWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${MultiselectWrapper.rootSelector}, .\${MultiselectWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MultiselectWrapper);
+};
+
+ElementWrapper.prototype.findAllMultiselects = function(selector) {
+  return this.findAllComponents(MultiselectWrapper, selector);
+};
+ElementWrapper.prototype.findNavigableGroup = function(selector) {
+  let rootSelector = \`.\${NavigableGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in NavigableGroupWrapper && NavigableGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${NavigableGroupWrapper.rootSelector}, .\${NavigableGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, NavigableGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
+  return this.findAllComponents(NavigableGroupWrapper, selector);
+};
+ElementWrapper.prototype.findPagination = function(selector) {
+  let rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PaginationWrapper && PaginationWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PaginationWrapper.rootSelector}, .\${PaginationWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PaginationWrapper);
+};
+
+ElementWrapper.prototype.findAllPaginations = function(selector) {
+  return this.findAllComponents(PaginationWrapper, selector);
+};
+ElementWrapper.prototype.findPanelLayout = function(selector) {
+  let rootSelector = \`.\${PanelLayoutWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PanelLayoutWrapper && PanelLayoutWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PanelLayoutWrapper.rootSelector}, .\${PanelLayoutWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PanelLayoutWrapper);
+};
+
+ElementWrapper.prototype.findAllPanelLayouts = function(selector) {
+  return this.findAllComponents(PanelLayoutWrapper, selector);
+};
+ElementWrapper.prototype.findPieChart = function(selector) {
+  let rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PieChartWrapper && PieChartWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PieChartWrapper.rootSelector}, .\${PieChartWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PieChartWrapper);
+};
+
+ElementWrapper.prototype.findAllPieCharts = function(selector) {
+  return this.findAllComponents(PieChartWrapper, selector);
+};
+ElementWrapper.prototype.findPopover = function(selector) {
+  let rootSelector = \`.\${PopoverWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PopoverWrapper && PopoverWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PopoverWrapper.rootSelector}, .\${PopoverWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PopoverWrapper);
+};
+
+ElementWrapper.prototype.findAllPopovers = function(selector) {
+  return this.findAllComponents(PopoverWrapper, selector);
+};
+ElementWrapper.prototype.findProgressBar = function(selector) {
+  let rootSelector = \`.\${ProgressBarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ProgressBarWrapper && ProgressBarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ProgressBarWrapper.rootSelector}, .\${ProgressBarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ProgressBarWrapper);
+};
+
+ElementWrapper.prototype.findAllProgressBars = function(selector) {
+  return this.findAllComponents(ProgressBarWrapper, selector);
+};
+ElementWrapper.prototype.findPromptInput = function(selector) {
+  let rootSelector = \`.\${PromptInputWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PromptInputWrapper && PromptInputWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PromptInputWrapper.rootSelector}, .\${PromptInputWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PromptInputWrapper);
+};
+
+ElementWrapper.prototype.findAllPromptInputs = function(selector) {
+  return this.findAllComponents(PromptInputWrapper, selector);
+};
+ElementWrapper.prototype.findPropertyFilter = function(selector) {
+  let rootSelector = \`.\${PropertyFilterWrapper.rootSelector}\`;
+  if("legacyRootSelector" in PropertyFilterWrapper && PropertyFilterWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${PropertyFilterWrapper.rootSelector}, .\${PropertyFilterWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PropertyFilterWrapper);
+};
+
+ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
+  return this.findAllComponents(PropertyFilterWrapper, selector);
+};
+ElementWrapper.prototype.findRadioButton = function(selector) {
+  let rootSelector = \`.\${RadioButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioButtonWrapper && RadioButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioButtonWrapper.rootSelector}, .\${RadioButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioButtons = function(selector) {
+  return this.findAllComponents(RadioButtonWrapper, selector);
+};
+ElementWrapper.prototype.findRadioGroup = function(selector) {
+  let rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in RadioGroupWrapper && RadioGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${RadioGroupWrapper.rootSelector}, .\${RadioGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllRadioGroups = function(selector) {
+  return this.findAllComponents(RadioGroupWrapper, selector);
+};
+ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
+  let rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in S3ResourceSelectorWrapper && S3ResourceSelectorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${S3ResourceSelectorWrapper.rootSelector}, .\${S3ResourceSelectorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, S3ResourceSelectorWrapper);
+};
+
+ElementWrapper.prototype.findAllS3ResourceSelectors = function(selector) {
+  return this.findAllComponents(S3ResourceSelectorWrapper, selector);
+};
+ElementWrapper.prototype.findSegmentedControl = function(selector) {
+  let rootSelector = \`.\${SegmentedControlWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SegmentedControlWrapper && SegmentedControlWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SegmentedControlWrapper.rootSelector}, .\${SegmentedControlWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SegmentedControlWrapper);
+};
+
+ElementWrapper.prototype.findAllSegmentedControls = function(selector) {
+  return this.findAllComponents(SegmentedControlWrapper, selector);
+};
+ElementWrapper.prototype.findSelect = function(selector) {
+  let rootSelector = \`.\${SelectWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SelectWrapper && SelectWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SelectWrapper.rootSelector}, .\${SelectWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SelectWrapper);
+};
+
+ElementWrapper.prototype.findAllSelects = function(selector) {
+  return this.findAllComponents(SelectWrapper, selector);
+};
+ElementWrapper.prototype.findSideNavigation = function(selector) {
+  let rootSelector = \`.\${SideNavigationWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SideNavigationWrapper && SideNavigationWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SideNavigationWrapper.rootSelector}, .\${SideNavigationWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SideNavigationWrapper);
+};
+
+ElementWrapper.prototype.findAllSideNavigations = function(selector) {
+  return this.findAllComponents(SideNavigationWrapper, selector);
+};
+ElementWrapper.prototype.findSlider = function(selector) {
+  let rootSelector = \`.\${SliderWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SliderWrapper && SliderWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SliderWrapper.rootSelector}, .\${SliderWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SliderWrapper);
+};
+
+ElementWrapper.prototype.findAllSliders = function(selector) {
+  return this.findAllComponents(SliderWrapper, selector);
+};
+ElementWrapper.prototype.findSpaceBetween = function(selector) {
+  let rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SpaceBetweenWrapper && SpaceBetweenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SpaceBetweenWrapper.rootSelector}, .\${SpaceBetweenWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpaceBetweenWrapper);
+};
+
+ElementWrapper.prototype.findAllSpaceBetweens = function(selector) {
+  return this.findAllComponents(SpaceBetweenWrapper, selector);
+};
+ElementWrapper.prototype.findSpinner = function(selector) {
+  let rootSelector = \`.\${SpinnerWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SpinnerWrapper && SpinnerWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SpinnerWrapper.rootSelector}, .\${SpinnerWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpinnerWrapper);
+};
+
+ElementWrapper.prototype.findAllSpinners = function(selector) {
+  return this.findAllComponents(SpinnerWrapper, selector);
+};
+ElementWrapper.prototype.findSplitPanel = function(selector) {
+  let rootSelector = \`.\${SplitPanelWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SplitPanelWrapper && SplitPanelWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SplitPanelWrapper.rootSelector}, .\${SplitPanelWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitPanelWrapper);
+};
+
+ElementWrapper.prototype.findAllSplitPanels = function(selector) {
+  return this.findAllComponents(SplitPanelWrapper, selector);
+};
+ElementWrapper.prototype.findStatusIndicator = function(selector) {
+  let rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in StatusIndicatorWrapper && StatusIndicatorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${StatusIndicatorWrapper.rootSelector}, .\${StatusIndicatorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StatusIndicatorWrapper);
+};
+
+ElementWrapper.prototype.findAllStatusIndicators = function(selector) {
+  return this.findAllComponents(StatusIndicatorWrapper, selector);
+};
+ElementWrapper.prototype.findSteps = function(selector) {
+  let rootSelector = \`.\${StepsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in StepsWrapper && StepsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${StepsWrapper.rootSelector}, .\${StepsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StepsWrapper);
+};
+
+ElementWrapper.prototype.findAllSteps = function(selector) {
+  return this.findAllComponents(StepsWrapper, selector);
+};
+ElementWrapper.prototype.findTable = function(selector) {
+  let rootSelector = \`.\${TableWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TableWrapper && TableWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TableWrapper.rootSelector}, .\${TableWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableWrapper);
+};
+
+ElementWrapper.prototype.findAllTables = function(selector) {
+  return this.findAllComponents(TableWrapper, selector);
+};
+ElementWrapper.prototype.findTabs = function(selector) {
+  let rootSelector = \`.\${TabsWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TabsWrapper && TabsWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TabsWrapper.rootSelector}, .\${TabsWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TabsWrapper);
+};
+
+ElementWrapper.prototype.findAllTabs = function(selector) {
+  return this.findAllComponents(TabsWrapper, selector);
+};
+ElementWrapper.prototype.findTagEditor = function(selector) {
+  let rootSelector = \`.\${TagEditorWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TagEditorWrapper && TagEditorWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TagEditorWrapper.rootSelector}, .\${TagEditorWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TagEditorWrapper);
+};
+
+ElementWrapper.prototype.findAllTagEditors = function(selector) {
+  return this.findAllComponents(TagEditorWrapper, selector);
+};
+ElementWrapper.prototype.findTextContent = function(selector) {
+  let rootSelector = \`.\${TextContentWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TextContentWrapper && TextContentWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TextContentWrapper.rootSelector}, .\${TextContentWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextContentWrapper);
+};
+
+ElementWrapper.prototype.findAllTextContents = function(selector) {
+  return this.findAllComponents(TextContentWrapper, selector);
+};
+ElementWrapper.prototype.findTextFilter = function(selector) {
+  let rootSelector = \`.\${TextFilterWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TextFilterWrapper && TextFilterWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TextFilterWrapper.rootSelector}, .\${TextFilterWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextFilterWrapper);
+};
+
+ElementWrapper.prototype.findAllTextFilters = function(selector) {
+  return this.findAllComponents(TextFilterWrapper, selector);
+};
+ElementWrapper.prototype.findTextarea = function(selector) {
+  let rootSelector = \`.\${TextareaWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TextareaWrapper && TextareaWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TextareaWrapper.rootSelector}, .\${TextareaWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextareaWrapper);
+};
+
+ElementWrapper.prototype.findAllTextareas = function(selector) {
+  return this.findAllComponents(TextareaWrapper, selector);
+};
+ElementWrapper.prototype.findTiles = function(selector) {
+  let rootSelector = \`.\${TilesWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TilesWrapper && TilesWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TilesWrapper.rootSelector}, .\${TilesWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TilesWrapper);
+};
+
+ElementWrapper.prototype.findAllTiles = function(selector) {
+  return this.findAllComponents(TilesWrapper, selector);
+};
+ElementWrapper.prototype.findTimeInput = function(selector) {
+  let rootSelector = \`.\${TimeInputWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TimeInputWrapper && TimeInputWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TimeInputWrapper.rootSelector}, .\${TimeInputWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TimeInputWrapper);
+};
+
+ElementWrapper.prototype.findAllTimeInputs = function(selector) {
+  return this.findAllComponents(TimeInputWrapper, selector);
+};
+ElementWrapper.prototype.findToggle = function(selector) {
+  let rootSelector = \`.\${ToggleWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ToggleWrapper && ToggleWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ToggleWrapper.rootSelector}, .\${ToggleWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleWrapper);
+};
+
+ElementWrapper.prototype.findAllToggles = function(selector) {
+  return this.findAllComponents(ToggleWrapper, selector);
+};
+ElementWrapper.prototype.findToggleButton = function(selector) {
+  let rootSelector = \`.\${ToggleButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ToggleButtonWrapper && ToggleButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ToggleButtonWrapper.rootSelector}, .\${ToggleButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllToggleButtons = function(selector) {
+  return this.findAllComponents(ToggleButtonWrapper, selector);
+};
+ElementWrapper.prototype.findToken = function(selector) {
+  let rootSelector = \`.\${TokenWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenWrapper && TokenWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenWrapper.rootSelector}, .\${TokenWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenWrapper);
+};
+
+ElementWrapper.prototype.findAllTokens = function(selector) {
+  return this.findAllComponents(TokenWrapper, selector);
+};
+ElementWrapper.prototype.findTokenGroup = function(selector) {
+  let rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TokenGroupWrapper && TokenGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TokenGroupWrapper.rootSelector}, .\${TokenGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllTokenGroups = function(selector) {
+  return this.findAllComponents(TokenGroupWrapper, selector);
+};
+ElementWrapper.prototype.findTooltip = function(selector) {
+  let rootSelector = \`.\${TooltipWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TooltipWrapper && TooltipWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TooltipWrapper.rootSelector}, .\${TooltipWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TooltipWrapper);
+};
+
+ElementWrapper.prototype.findAllTooltips = function(selector) {
+  return this.findAllComponents(TooltipWrapper, selector);
+};
+ElementWrapper.prototype.findTopNavigation = function(selector) {
+  let rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TopNavigationWrapper && TopNavigationWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TopNavigationWrapper.rootSelector}, .\${TopNavigationWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TopNavigationWrapper);
+};
+
+ElementWrapper.prototype.findAllTopNavigations = function(selector) {
+  return this.findAllComponents(TopNavigationWrapper, selector);
+};
+ElementWrapper.prototype.findTreeView = function(selector) {
+  let rootSelector = \`.\${TreeViewWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TreeViewWrapper && TreeViewWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TreeViewWrapper.rootSelector}, .\${TreeViewWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TreeViewWrapper);
+};
+
+ElementWrapper.prototype.findAllTreeViews = function(selector) {
+  return this.findAllComponents(TreeViewWrapper, selector);
+};
+ElementWrapper.prototype.findTutorialPanel = function(selector) {
+  let rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TutorialPanelWrapper && TutorialPanelWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TutorialPanelWrapper.rootSelector}, .\${TutorialPanelWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TutorialPanelWrapper);
+};
+
+ElementWrapper.prototype.findAllTutorialPanels = function(selector) {
+  return this.findAllComponents(TutorialPanelWrapper, selector);
+};
+ElementWrapper.prototype.findWizard = function(selector) {
+  let rootSelector = \`.\${WizardWrapper.rootSelector}\`;
+  if("legacyRootSelector" in WizardWrapper && WizardWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${WizardWrapper.rootSelector}, .\${WizardWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, WizardWrapper);
+};
+
+ElementWrapper.prototype.findAllWizards = function(selector) {
+  return this.findAllComponents(WizardWrapper, selector);
+};
+
+ElementWrapper.prototype.findClosestAlert = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AlertWrapper);
+};
+ElementWrapper.prototype.findClosestAnchorNavigation = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AnchorNavigationWrapper);
+};
+ElementWrapper.prototype.findClosestAnnotation = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AnnotationWrapper);
+};
+ElementWrapper.prototype.findClosestAppLayout = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AppLayoutWrapper);
+};
+ElementWrapper.prototype.findClosestAppLayoutToolbar = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AppLayoutToolbarWrapper);
+};
+ElementWrapper.prototype.findClosestAreaChart = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AreaChartWrapper);
+};
+ElementWrapper.prototype.findClosestAttributeEditor = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AttributeEditorWrapper);
+};
+ElementWrapper.prototype.findClosestAutosuggest = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(AutosuggestWrapper);
+};
+ElementWrapper.prototype.findClosestBadge = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(BadgeWrapper);
+};
+ElementWrapper.prototype.findClosestBarChart = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(BarChartWrapper);
+};
+ElementWrapper.prototype.findClosestBox = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(BoxWrapper);
+};
+ElementWrapper.prototype.findClosestBreadcrumbGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(BreadcrumbGroupWrapper);
+};
+ElementWrapper.prototype.findClosestButton = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ButtonWrapper);
+};
+ElementWrapper.prototype.findClosestButtonDropdown = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ButtonDropdownWrapper);
+};
+ElementWrapper.prototype.findClosestButtonGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ButtonGroupWrapper);
+};
+ElementWrapper.prototype.findClosestCalendar = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CalendarWrapper);
+};
+ElementWrapper.prototype.findClosestCards = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CardsWrapper);
+};
+ElementWrapper.prototype.findClosestCheckbox = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CheckboxWrapper);
+};
+ElementWrapper.prototype.findClosestCodeEditor = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CodeEditorWrapper);
+};
+ElementWrapper.prototype.findClosestCollectionPreferences = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CollectionPreferencesWrapper);
+};
+ElementWrapper.prototype.findClosestColumnLayout = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ColumnLayoutWrapper);
+};
+ElementWrapper.prototype.findClosestContainer = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ContainerWrapper);
+};
+ElementWrapper.prototype.findClosestContentLayout = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ContentLayoutWrapper);
+};
+ElementWrapper.prototype.findClosestCopyToClipboard = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(CopyToClipboardWrapper);
+};
+ElementWrapper.prototype.findClosestDateInput = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DateInputWrapper);
+};
+ElementWrapper.prototype.findClosestDatePicker = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DatePickerWrapper);
+};
+ElementWrapper.prototype.findClosestDateRangePicker = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DateRangePickerWrapper);
+};
+ElementWrapper.prototype.findClosestDrawer = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DrawerWrapper);
+};
+ElementWrapper.prototype.findClosestDropdown = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DropdownWrapper);
+};
+ElementWrapper.prototype.findClosestErrorBoundary = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ErrorBoundaryWrapper);
+};
+ElementWrapper.prototype.findClosestExpandableSection = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ExpandableSectionWrapper);
+};
+ElementWrapper.prototype.findClosestFileDropzone = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FileDropzoneWrapper);
+};
+ElementWrapper.prototype.findClosestFileInput = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FileInputWrapper);
+};
+ElementWrapper.prototype.findClosestFileTokenGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FileTokenGroupWrapper);
+};
+ElementWrapper.prototype.findClosestFileUpload = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FileUploadWrapper);
+};
+ElementWrapper.prototype.findClosestFlashbar = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FlashbarWrapper);
+};
+ElementWrapper.prototype.findClosestForm = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FormWrapper);
+};
+ElementWrapper.prototype.findClosestFormField = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(FormFieldWrapper);
+};
+ElementWrapper.prototype.findClosestGrid = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(GridWrapper);
+};
+ElementWrapper.prototype.findClosestHeader = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(HeaderWrapper);
+};
+ElementWrapper.prototype.findClosestHelpPanel = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(HelpPanelWrapper);
+};
+ElementWrapper.prototype.findClosestHotspot = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(HotspotWrapper);
+};
+ElementWrapper.prototype.findClosestIcon = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(IconWrapper);
+};
+ElementWrapper.prototype.findClosestInput = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(InputWrapper);
+};
+ElementWrapper.prototype.findClosestItemCard = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ItemCardWrapper);
+};
+ElementWrapper.prototype.findClosestKeyValuePairs = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(KeyValuePairsWrapper);
+};
+ElementWrapper.prototype.findClosestLineChart = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(LineChartWrapper);
+};
+ElementWrapper.prototype.findClosestLink = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(LinkWrapper);
+};
+ElementWrapper.prototype.findClosestList = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ListWrapper);
+};
+ElementWrapper.prototype.findClosestLiveRegion = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(LiveRegionWrapper);
+};
+ElementWrapper.prototype.findClosestMixedLineBarChart = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(MixedLineBarChartWrapper);
+};
+ElementWrapper.prototype.findClosestModal = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ModalWrapper);
+};
+ElementWrapper.prototype.findClosestMultiselect = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(MultiselectWrapper);
+};
+ElementWrapper.prototype.findClosestNavigableGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(NavigableGroupWrapper);
+};
+ElementWrapper.prototype.findClosestPagination = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PaginationWrapper);
+};
+ElementWrapper.prototype.findClosestPanelLayout = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PanelLayoutWrapper);
+};
+ElementWrapper.prototype.findClosestPieChart = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PieChartWrapper);
+};
+ElementWrapper.prototype.findClosestPopover = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PopoverWrapper);
+};
+ElementWrapper.prototype.findClosestProgressBar = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ProgressBarWrapper);
+};
+ElementWrapper.prototype.findClosestPromptInput = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PromptInputWrapper);
+};
+ElementWrapper.prototype.findClosestPropertyFilter = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(PropertyFilterWrapper);
+};
+ElementWrapper.prototype.findClosestRadioButton = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(RadioButtonWrapper);
+};
+ElementWrapper.prototype.findClosestRadioGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(RadioGroupWrapper);
+};
+ElementWrapper.prototype.findClosestS3ResourceSelector = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(S3ResourceSelectorWrapper);
+};
+ElementWrapper.prototype.findClosestSegmentedControl = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SegmentedControlWrapper);
+};
+ElementWrapper.prototype.findClosestSelect = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SelectWrapper);
+};
+ElementWrapper.prototype.findClosestSideNavigation = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SideNavigationWrapper);
+};
+ElementWrapper.prototype.findClosestSlider = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SliderWrapper);
+};
+ElementWrapper.prototype.findClosestSpaceBetween = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SpaceBetweenWrapper);
+};
+ElementWrapper.prototype.findClosestSpinner = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SpinnerWrapper);
+};
+ElementWrapper.prototype.findClosestSplitPanel = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SplitPanelWrapper);
+};
+ElementWrapper.prototype.findClosestStatusIndicator = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(StatusIndicatorWrapper);
+};
+ElementWrapper.prototype.findClosestSteps = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(StepsWrapper);
+};
+ElementWrapper.prototype.findClosestTable = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TableWrapper);
+};
+ElementWrapper.prototype.findClosestTabs = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TabsWrapper);
+};
+ElementWrapper.prototype.findClosestTagEditor = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TagEditorWrapper);
+};
+ElementWrapper.prototype.findClosestTextContent = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TextContentWrapper);
+};
+ElementWrapper.prototype.findClosestTextFilter = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TextFilterWrapper);
+};
+ElementWrapper.prototype.findClosestTextarea = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TextareaWrapper);
+};
+ElementWrapper.prototype.findClosestTiles = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TilesWrapper);
+};
+ElementWrapper.prototype.findClosestTimeInput = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TimeInputWrapper);
+};
+ElementWrapper.prototype.findClosestToggle = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ToggleWrapper);
+};
+ElementWrapper.prototype.findClosestToggleButton = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ToggleButtonWrapper);
+};
+ElementWrapper.prototype.findClosestToken = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TokenWrapper);
+};
+ElementWrapper.prototype.findClosestTokenGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TokenGroupWrapper);
+};
+ElementWrapper.prototype.findClosestTooltip = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TooltipWrapper);
+};
+ElementWrapper.prototype.findClosestTopNavigation = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TopNavigationWrapper);
+};
+ElementWrapper.prototype.findClosestTreeView = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TreeViewWrapper);
+};
+ElementWrapper.prototype.findClosestTutorialPanel = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TutorialPanelWrapper);
+};
+ElementWrapper.prototype.findClosestWizard = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(WizardWrapper);
+};
+
 export default function wrapper(root: Element = document.body) {
+  if (document && document.body && !document.body.contains(root)) {
+    console.warn('[AwsUi] [test-utils] provided element is not part of the document body, interactions may work incorrectly')
+  };
   return new ElementWrapper(root);
 }
 "
