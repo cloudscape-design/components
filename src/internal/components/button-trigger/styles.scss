@@ -31,7 +31,6 @@ $padding-block-inner-filtering-token: 0px;
   border-end-end-radius: styles.$control-border-radius;
   border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
   border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
-  min-block-size: awsui.$size-vertical-input;
 
   &.in-filtering-token-root,
   &.in-filtering-token-nested {
