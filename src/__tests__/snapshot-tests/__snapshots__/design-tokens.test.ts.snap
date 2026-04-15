@@ -2857,6 +2857,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "8px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -5851,6 +5858,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -8849,6 +8863,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "8px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -11843,6 +11864,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -14841,6 +14869,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "8px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -17837,6 +17872,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "8px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -20831,6 +20873,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "8px",
         "compact": "8px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "5px",
+        "compact": "3px",
       },
     },
     "space-scaled-l": {
@@ -23834,6 +23883,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "12px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -26828,6 +26884,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -29826,6 +29889,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "12px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -32820,6 +32890,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -35818,6 +35895,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "12px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -38812,6 +38896,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -41810,6 +41901,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "12px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -44806,6 +44904,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "12px",
           },
         },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -47800,6 +47905,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "12px",
         "compact": "12px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "5px",
+        "compact": "3px",
       },
     },
     "space-scaled-l": {
