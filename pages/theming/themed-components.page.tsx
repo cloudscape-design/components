@@ -498,7 +498,6 @@ export default function ThemedComponentsPage() {
           spaceButtonVertical: '4px',
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
-          //sizeVerticalInput: '30px',
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
