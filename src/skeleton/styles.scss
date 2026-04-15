@@ -52,6 +52,53 @@
   }
 }
 
-.variant-text {
+.display-block {
+  display: block
+}
+.display-inline-block {
+  display: inline-block;
+  vertical-align: middle;
+}
+.display-inline {
+  display: inline
+}
+
+.variant-text-body-s {
+  block-size: awsui.$line-height-body-s;
+  line-height: awsui.$line-height-body-s;
+}
+
+.variant-text-body-m {
   block-size: awsui.$line-height-body-m;
+  line-height: awsui.$line-height-body-m;
+}
+
+.variant-text-heading-xs {
+  block-size: awsui.$line-height-heading-xs;
+  line-height: awsui.$line-height-heading-xs;
+}
+
+.variant-text-heading-s {
+  block-size: awsui.$line-height-heading-s;
+  line-height: awsui.$line-height-heading-s;
+}
+
+.variant-text-heading-m {
+  block-size: awsui.$line-height-heading-m;
+  line-height: awsui.$line-height-heading-m;
+}
+
+.variant-text-heading-l {
+  block-size: awsui.$line-height-heading-l;
+  line-height: awsui.$line-height-heading-l;
+}
+
+.variant-text-heading-xl {
+  block-size: awsui.$line-height-heading-xl;
+  line-height: awsui.$line-height-heading-xl;
+}
+
+.variant-text-display-l {
+  block-size: awsui.$line-height-display-l;
+  line-height: awsui.$line-height-display-l;
 }
