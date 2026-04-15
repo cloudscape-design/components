@@ -115,7 +115,25 @@ describe('Cards selection', () => {
         expect(ids).toHaveLength(1);
         const el = document.getElementById(ids[0]);
         expect(el).not.toBeNull();
-        expect(el).toHaveClass(styles['section-content']);
+        expect(el).toHaveClass(styles.section);
+      });
+
+      it('uses the first section with content even when preceded by a header-only section', () => {
+        const headerFirstDefinition: CardsProps.CardDefinition<Item> = {
+          header: (item: Item) => item.description,
+          sections: [
+            { id: 'hdr', header: 'Header only' },
+            { id: 'desc', header: 'Description', content: (item: Item) => `Description: ${item.description}` },
+          ],
+        };
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={headerFirstDefinition} />
+        ).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        const ids = input?.getAttribute('aria-describedby')?.split(' ') ?? [];
+        expect(ids).toHaveLength(1);
+        const el = document.getElementById(ids[0]);
+        expect(el).toHaveClass(styles.section);
       });
 
       it('each card has its own unique section content ID', () => {
@@ -148,13 +166,13 @@ describe('Cards selection', () => {
         expect(input?.getAttribute('aria-describedby')).toBeFalsy();
       });
 
-      it('does not set id on section-content divs when there is no selectionType', () => {
+      it('does not set id on section divs when there is no selectionType', () => {
         wrapper = renderCards(
           <Cards<Item> {...props} selectionType={undefined} cardDefinition={cardDefinitionWithSections} />
         ).wrapper;
-        // Section content elements should have no id attribute
-        const contentDivs = wrapper.getElement().querySelectorAll(`.${styles['section-content']}`);
-        contentDivs.forEach(div => {
+        // Section outer divs should have no id attribute when not selectable
+        const sectionDivs = wrapper.getElement().querySelectorAll(`.${styles.section}`);
+        sectionDivs.forEach(div => {
           expect(div.getAttribute('id')).toBeNull();
         });
       });

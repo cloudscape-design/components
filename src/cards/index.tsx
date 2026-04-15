@@ -373,18 +373,18 @@ const CardItem = <T,>({
       >
         {visibleSectionsDefinition.length > 0 &&
           visibleSectionsDefinition.map(({ width = 100, header, content, id }, sectionIndex) => (
-            <div key={id || sectionIndex} className={styles.section} style={{ width: `${width}%` }}>
+            <div
+              key={id || sectionIndex}
+              id={
+                selectionProps && sectionIndex === firstContentSectionIndex
+                  ? `${cardId}-section-${sectionIndex}`
+                  : undefined
+              }
+              className={styles.section}
+              style={{ width: `${width}%` }}
+            >
               {header ? <div className={styles['section-header']}>{header}</div> : ''}
-              {content ? (
-                <div
-                  id={selectionProps ? `${cardId}-section-${sectionIndex}` : undefined}
-                  className={styles['section-content']}
-                >
-                  {content(item)}
-                </div>
-              ) : (
-                ''
-              )}
+              {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
             </div>
           ))}
       </InternalItemCard>
