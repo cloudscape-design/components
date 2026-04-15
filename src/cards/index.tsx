@@ -307,12 +307,10 @@ const CardItem = <T,>({
     },
   };
 
-  const sectionContentIds = selectionProps
-    ? visibleSectionsDefinition
-        .map(({ content }, sectionIndex) => (content ? `${cardId}-section-${sectionIndex}` : null))
-        .filter((id): id is string => id !== null)
-    : [];
-  const ariaDescribedby = sectionContentIds.length > 0 ? sectionContentIds.join(' ') : undefined;
+  const firstContentSectionIndex = selectionProps
+    ? visibleSectionsDefinition.findIndex(({ content }) => !!content)
+    : -1;
+  const ariaDescribedby = firstContentSectionIndex >= 0 ? `${cardId}-section-${firstContentSectionIndex}` : undefined;
 
   return (
     <li

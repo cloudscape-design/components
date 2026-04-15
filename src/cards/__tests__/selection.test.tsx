@@ -101,7 +101,7 @@ describe('Cards selection', () => {
         ],
       };
 
-      it('adds aria-describedby to radio input pointing to section content elements', () => {
+      it('adds aria-describedby to radio input pointing to the first section content element', () => {
         wrapper = renderCards(
           <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
         ).wrapper;
@@ -110,29 +110,24 @@ describe('Cards selection', () => {
         const ariaDescribedby = input?.getAttribute('aria-describedby');
         expect(ariaDescribedby).toBeTruthy();
 
-        // Each id in aria-describedby should correspond to a section-content element
+        // aria-describedby should reference exactly one element — the first section with content
         const ids = ariaDescribedby!.split(' ');
-        expect(ids).toHaveLength(2);
-        ids.forEach(id => {
-          const el = document.getElementById(id);
-          expect(el).not.toBeNull();
-          expect(el).toHaveClass(styles['section-content']);
-        });
+        expect(ids).toHaveLength(1);
+        const el = document.getElementById(ids[0]);
+        expect(el).not.toBeNull();
+        expect(el).toHaveClass(styles['section-content']);
       });
 
-      it('each card has its own unique section content IDs', () => {
+      it('each card has its own unique section content ID', () => {
         wrapper = renderCards(
           <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
         ).wrapper;
-        const card0Input = getCard(0).findSelectionArea()?.find('input')?.getElement();
-        const card1Input = getCard(1).findSelectionArea()?.find('input')?.getElement();
+        const card0Id = getCard(0).findSelectionArea()?.find('input')?.getElement().getAttribute('aria-describedby');
+        const card1Id = getCard(1).findSelectionArea()?.find('input')?.getElement().getAttribute('aria-describedby');
 
-        const ids0 = card0Input?.getAttribute('aria-describedby')?.split(' ') ?? [];
-        const ids1 = card1Input?.getAttribute('aria-describedby')?.split(' ') ?? [];
-
-        // IDs must not overlap between cards
-        const allIds = [...ids0, ...ids1];
-        expect(new Set(allIds).size).toBe(allIds.length);
+        expect(card0Id).toBeTruthy();
+        expect(card1Id).toBeTruthy();
+        expect(card0Id).not.toEqual(card1Id);
       });
 
       it('does not add aria-describedby when there are no sections with content', () => {
