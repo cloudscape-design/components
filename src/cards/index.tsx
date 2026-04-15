@@ -291,7 +291,7 @@ const CardItem = <T,>({
   moveFocusUp,
   onFocus,
 }: CardItemProps<T>) => {
-  const cardId = useUniqueId('card-');
+  const cardId = useUniqueId('card:');
   const selected = isItemSelected(item);
   const disabled = selectionProps && selectionProps.disabled;
 
