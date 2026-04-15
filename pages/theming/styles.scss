@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '~design-tokens' as awsui;
 
 .mosaik {
   display: flex;
@@ -17,4 +18,79 @@
   margin-block: 2px;
   margin-inline: 2px;
   text-align: center;
+}
+
+.trigger-flexbox {
+  display: flex;
+}
+
+.icon-wrapper {
+  color: awsui.$color-text-interactive-default;
+  margin-inline-end: 8px;
+}
+
+.timezone {
+  margin-inline-start: 8px;
+}
+
+.option-list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.option-item {
+  padding-block: 10px;
+  padding-inline: 12px;
+  cursor: pointer;
+  color: awsui.$color-text-body-default;
+  font-size: 14px;
+  line-height: 22px;
+  border-block: 2px solid transparent;
+  border-inline: 2px solid transparent;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+
+  &:hover {
+    background-color: awsui.$color-background-dropdown-item-hover;
+  }
+
+  &-selected {
+    border-color: awsui.$color-border-item-selected;
+    background-color: awsui.$color-background-item-selected;
+    font-weight: bold;
+  }
+}
+
+.option-custom {
+  margin-block-start: 4px;
+  padding-block: 10px;
+  padding-inline: 12px;
+  cursor: pointer;
+  color: awsui.$color-text-body-default;
+  font-size: 14px;
+  line-height: 22px;
+  border-block: 2px solid transparent;
+  border-inline: 2px solid transparent;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+
+  &:hover {
+    background-color: awsui.$color-background-dropdown-item-hover;
+  }
+
+  &-selected {
+    border-color: awsui.$color-border-item-selected;
+    background-color: awsui.$color-background-item-selected;
+    font-weight: bold;
+  }
 }
