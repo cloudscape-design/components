@@ -11,14 +11,14 @@ $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
 // between selected border widths and normal row divider widths (visual refresh).
 $cell-vertical-padding-w-border: calc(
-  #{$cell-vertical-padding} + (#{awsui.$border-width-item-selected} - #{awsui.$border-divider-list-width})
+  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
 $cell-horizontal-padding: awsui.$space-scaled-l;
-$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-width-item-selected});
-$cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-width-item-selected});
+$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
+$cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
 $selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
-$selected-border-placeholder: awsui.$border-width-item-selected solid awsui.$color-border-item-placeholder;
-$border-placeholder: awsui.$border-width-item-selected solid transparent;
+$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
+$border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 // Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
 $edit-button-padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
@@ -320,12 +320,11 @@ $cell-negative-space-vertical: 2px;
     @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
   }
   &-selected.body-cell-prev-selected {
-    border-block-start: awsui.$border-width-item-selected solid awsui.$color-border-item-placeholder;
-    @include cell-padding-block-start($cell-vertical-padding);
+    border-block-start: $selected-border-placeholder;
+    @include cell-padding-block-start($cell-vertical-padding-w-border);
   }
   &-selected.body-cell-next-selected {
-    border-block-end: 0;
-    @include cell-padding-block-end($cell-vertical-padding-w-border);
+    border-block-end-width: awsui.$border-divider-list-width;
   }
   // Remove border radii for consecutive selected rows (visual refresh)
   &-selected.body-cell-next-selected:first-child {
