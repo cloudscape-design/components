@@ -62,11 +62,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
   loadingText?: string;
 
   /**
-   * Renders the specified number of skeleton rows instead of actual data.
-   * This provides a loading state alternative to the `loading` property by showing skeleton placeholders in table rows.
-   * When set, this takes precedence over the `loading` property.
+   * Renders a skeleton layout instead of loading text when `loading` is set to true.
+   * Set the `rows` property to a number that matches the most likely final number of rows rendered, to reduce layout shift.
    */
-  skeletonRows?: number;
+  skeleton?: TableProps.SkeletonConfig;
 
   /**
    * Specifies a property that uniquely identifies an individual item.
@@ -661,6 +660,10 @@ export namespace TableProps {
 
   export interface RenderLoaderEmptyDetail<T> {
     item: T;
+  }
+
+  export interface SkeletonConfig {
+    rows: number;
   }
 }
 

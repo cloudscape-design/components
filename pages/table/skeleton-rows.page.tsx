@@ -140,8 +140,8 @@ export default function TableSkeletonRowsPage() {
         <Table
           columnDefinitions={columnDefinitions}
           items={items}
-          skeletonRows={loadingState === 'skeleton' ? skeletonRows : undefined}
-          loading={loadingState === 'loading'}
+          skeleton={loadingState === 'skeleton' ? {rows: skeletonRows} : undefined}
+          loading={loadingState !== 'data'}
           loadingText="Loading items..."
           empty="No items to display"
           selectionType={selectionMode === 'none' ? undefined : selectionMode}

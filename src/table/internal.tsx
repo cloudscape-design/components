@@ -111,7 +111,7 @@ const InternalTable = React.forwardRef(
       trackBy,
       loading,
       loadingText,
-      skeletonRows,
+      skeleton,
       selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
@@ -579,10 +579,10 @@ const InternalTable = React.forwardRef(
                       {...theadProps}
                     />
                     <tbody>
-                      {skeletonRows && skeletonRows > 0 ? (
-                        Array.from({ length: skeletonRows }, (_, rowIndex) => {
+                      {loading && skeleton ? (
+                        Array.from({ length: skeleton.rows }, (_, rowIndex) => {
                           const isFirstRow = rowIndex === 0;
-                          const isLastRow = rowIndex === skeletonRows - 1;
+                          const isLastRow = rowIndex === skeleton.rows - 1;
                           const sharedCellProps = {
                             isFirstRow,
                             isLastRow,
@@ -630,7 +630,7 @@ const InternalTable = React.forwardRef(
                                       maxWidth: column.maxWidth,
                                     }}
                                     ariaLabels={ariaLabels}
-                                    column={{ ...column, cell: () => <InternalSkeleton variant="text" /> }}
+                                    column={{ ...column, cell: () => <InternalSkeleton variant="text-body-m" /> }}
                                     item={{} as T}
                                     wrapLines={wrapLines}
                                     isEditable={false}
