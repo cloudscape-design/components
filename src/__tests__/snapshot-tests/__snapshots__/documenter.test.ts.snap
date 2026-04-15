@@ -11598,13 +11598,13 @@ When provided, all default relative range functionality is replaced.",
     },
     {
       "description": "Specifies custom content to fully override the trigger content.
-When provided, the default view of the trigger is replaced.",
+When provided, the default content of the trigger is replaced.",
       "inlineType": {
         "name": "DateRangePickerProps.RenderTriggerContent",
         "parameters": [
           {
             "name": "props",
-            "type": "{ disabled: boolean; readOnly: boolean; triggerContentId: string; formattedDate: JSX.Element; }",
+            "type": "{ formattedDate: JSX.Element; }",
           },
         ],
         "returnType": "React.ReactNode",

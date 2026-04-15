@@ -301,12 +301,11 @@ const DateRangePicker = React.forwardRef(
         ariaHasPopup="dialog"
       >
         {renderTriggerContent ? (
-          renderTriggerContent({
-            disabled,
-            readOnly,
-            triggerContentId,
-            formattedDate,
-          })
+          <div id={triggerContentId}>
+            {renderTriggerContent({
+              formattedDate,
+            })}
+          </div>
         ) : (
           <span className={styles['trigger-flexbox']}>
             <span className={styles['icon-wrapper']}>

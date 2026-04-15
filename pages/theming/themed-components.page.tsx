@@ -356,11 +356,13 @@ function DateRangePickerPage() {
           renderTriggerContent={props => (
             <span className={styles['trigger-flexbox']}>
               <span className={styles['icon-wrapper']}>
-                <Icon name="calendar" variant={props.disabled || props.readOnly ? 'disabled' : 'normal'} />
+                <Icon name="calendar" variant="normal" />
               </span>
-              <span id={props.triggerContentId}>{props.formattedDate}</span>
-              <div className={styles.timezone}>
-                <Badge>{timezoneLabel}</Badge>
+              <div style={{ display: 'flex' }}>
+                <span>{props.formattedDate}</span>
+                <div className={styles.timezone}>
+                  <Badge>{timezoneLabel}</Badge>
+                </div>
               </div>
             </span>
           )}

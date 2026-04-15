@@ -225,7 +225,7 @@ export interface DateRangePickerProps
 
   /**
    * Specifies custom content to fully override the trigger content.
-   * When provided, the default view of the trigger is replaced.
+   * When provided, the default content of the trigger is replaced.
    */
   renderTriggerContent?: DateRangePickerProps.RenderTriggerContent;
 }
@@ -318,12 +318,7 @@ export namespace DateRangePickerProps {
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
 
-  export type RenderTriggerContent = (props: {
-    disabled: boolean;
-    readOnly: boolean;
-    triggerContentId: string;
-    formattedDate: JSX.Element;
-  }) => React.ReactNode;
+  export type RenderTriggerContent = (props: { formattedDate: JSX.Element }) => React.ReactNode;
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 
