@@ -83,6 +83,14 @@ export function SelectionControl({
     nativeInput?.focus();
   };
 
+  const nativeInputAttributes: Record<string, string> = {};
+  if (ariaLabel) {
+    nativeInputAttributes['aria-label'] = ariaLabel;
+  }
+  if (ariaDescribedby) {
+    nativeInputAttributes['aria-describedby'] = ariaDescribedby;
+  }
+
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
@@ -91,6 +99,7 @@ export function SelectionControl({
       controlId={controlId}
       data-focus-id="selection-control"
       indeterminate={indeterminate}
+      ariaLabel={ariaLabel}
       ariaDescribedby={ariaDescribedby}
     />
   ) : (
@@ -100,7 +109,7 @@ export function SelectionControl({
       name={name}
       value={''}
       onSelect={onChange}
-      nativeInputAttributes={ariaDescribedby ? { 'aria-describedby': ariaDescribedby } : undefined}
+      nativeInputAttributes={Object.keys(nativeInputAttributes).length > 0 ? nativeInputAttributes : undefined}
     />
   );
 
