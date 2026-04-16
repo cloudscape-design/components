@@ -1,0 +1,67 @@
+@layer application, awsui-components;
+
+@layer application {
+  /* Custom purple checkbox */
+  .my-purple.awsui-style-checkbox-root {
+    --var-awsui-style-checkbox-fill: #ede9fe;
+    --var-awsui-style-checkbox-stroke: #7c3aed;
+  }
+
+  .my-purple.awsui-style-checkbox-root[data-checked] {
+    --var-awsui-style-checkbox-fill: #7c3aed;
+    --var-awsui-style-checkbox-stroke: #5b21b6;
+    --var-awsui-style-checkbox-checkmark: #fde047;
+  }
+
+  .my-purple.awsui-style-checkbox-root .awsui-style-checkbox-label {
+    color: #5b21b6;
+  }
+
+  /* Custom red checkbox */
+  .my-red.awsui-style-checkbox-root {
+    --var-awsui-style-checkbox-fill: #fee2e2;
+    --var-awsui-style-checkbox-stroke: #dc2626;
+  }
+
+  .my-red.awsui-style-checkbox-root[data-checked] {
+    --var-awsui-style-checkbox-fill: #dc2626;
+    --var-awsui-style-checkbox-stroke: #991b1b;
+    --var-awsui-style-checkbox-checkmark: #fef9c3;
+  }
+
+  .my-red.awsui-style-checkbox-root .awsui-style-checkbox-label {
+    color: #991b1b;
+  }
+
+  /* Custom green checkbox */
+  .my-green.awsui-style-checkbox-root {
+    --var-awsui-style-checkbox-fill: #dcfce7;
+    --var-awsui-style-checkbox-stroke: #16a34a;
+  }
+
+  .my-green.awsui-style-checkbox-root[data-checked] {
+    --var-awsui-style-checkbox-fill: #16a34a;
+    --var-awsui-style-checkbox-stroke: #166534;
+    --var-awsui-style-checkbox-checkmark: #f0fdf4;
+  }
+
+  .my-green.awsui-style-checkbox-root .awsui-style-checkbox-label {
+    color: #166534;
+  }
+
+  /* Disabled state */
+  .awsui-style-checkbox-root[data-disabled] {
+    --var-awsui-style-checkbox-fill: #f3f4f6;
+    --var-awsui-style-checkbox-stroke: #d1d5db;
+  }
+
+  .awsui-style-checkbox-root[data-disabled] .awsui-style-checkbox-label {
+    color: #9ca3af;
+  }
+
+  /* Indeterminate state */
+  .my-purple.awsui-style-checkbox-root[data-indeterminate] {
+    --var-awsui-style-checkbox-fill: #a78bfa;
+    --var-awsui-style-checkbox-stroke: #6d28d9;
+  }
+}

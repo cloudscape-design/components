@@ -14,8 +14,8 @@
   inset-inline-start: 0;
 
   > .styled-box {
-    fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
+    fill: var(--var-awsui-style-checkbox-fill, awsui.$color-background-control-default);
+    stroke: var(--var-awsui-style-checkbox-stroke, awsui.$color-border-control-default);
     stroke-width: awsui.$border-width-field;
     @include styles.with-motion {
       transition:
@@ -24,25 +24,25 @@
     }
     &-checked,
     &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
+      fill: var(--var-awsui-style-checkbox-fill, awsui.$color-background-control-checked);
+      stroke: var(--var-awsui-style-checkbox-stroke, awsui.$color-border-control-checked);
     }
     &-disabled,
     &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
+      fill: var(--var-awsui-style-checkbox-fill, awsui.$color-background-control-disabled);
+      stroke: var(--var-awsui-style-checkbox-stroke, awsui.$color-border-control-disabled);
     }
   }
 
   > .styled-line {
-    stroke: awsui.$color-foreground-control-default;
+    stroke: var(--var-awsui-style-checkbox-checkmark, awsui.$color-foreground-control-default);
     stroke-width: 2;
     fill: none;
     &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+      stroke: var(--var-awsui-style-checkbox-checkmark, awsui.$color-foreground-control-disabled);
     }
     &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+      stroke: var(--var-awsui-style-checkbox-checkmark, awsui.$color-foreground-control-read-only);
     }
   }
 }

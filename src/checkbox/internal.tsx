@@ -23,36 +23,36 @@ import { getAbstractSwitchStyles, getCheckboxIconStyles } from './style';
 
 import styles from './styles.css.js';
 
-export const css_style_api = {
-  root: {
-    className: 'awsui-style-checkbox-root',
-    children: {
-      control: {
-        className: 'awsui-style-checkbox-control',
-        attributes: {
-          ':has(input:checked)': 'checked',
-          ':has(input:indeterminate)': 'indeterminate',
-          ':has(input:disabled)': 'disabled',
-        },
-        children: {
-          svg: {
-            className: 'awsui-style-checkbox-svg',
-            children: {
-              box: { className: 'awsui-style-checkbox-box', type: 'svg:rect' as const },
-              checkmark: { className: 'awsui-style-checkbox-checkmark', type: 'svg:polyline' as const },
-            },
-          },
-        },
-      },
-      label: { className: 'awsui-style-checkbox-label' },
-    },
-  },
+const classnames = {
+  root: 'awsui-style-checkbox-root',
+  label: 'awsui-style-checkbox-label',
 };
 
-// Flat lookup for internal use
-const cssStyleApiClasses = {
-  root: css_style_api.root.className,
-  control: css_style_api.root.children.control.className,
+export const checkbox_style_api = {
+  variables: {
+    '--awsui-style-focus-outline-color': {},
+    '--awsui-style-focus-outline-width': {},
+    '--awsui-style-focus-outline-offset': {},
+    '--awsui-style-focus-outline-border-radius': {},
+  },
+  selectors: {
+    [classnames.root]: {
+      type: 'HTMLDivElement',
+      attributes: {
+        'data-checked': {},
+        'data-disabled': {},
+        'data-indeterminate': {},
+      },
+      variables: {
+        '--var-awsui-style-checkbox-stroke': {},
+        '--var-awsui-style-checkbox-fill': {},
+        '--var-awsui-style-checkbox-checkmark': {},
+      },
+    },
+    [classnames.label]: {
+      type: 'HTMLSpanElement',
+    },
+  },
 };
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
@@ -118,15 +118,19 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className, cssStyleApiClasses.root)}
-        controlClassName={clsx(styles['checkbox-control'], cssStyleApiClasses.control)}
+        className={clsx(styles.root, baseProps.className, classnames.root)}
+        controlClassName={clsx(styles['checkbox-control'])}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
         readOnly={readOnly}
         label={children}
+        labelClassName={classnames.label}
         description={description}
         descriptionBottomPadding={true}
+        data-checked={checked || undefined}
+        data-disabled={disabled || undefined}
+        data-indeterminate={indeterminate || undefined}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
         ariaDescribedby={ariaDescribedby}
