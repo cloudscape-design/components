@@ -6,5 +6,6 @@ import button from './button';
 import checkbox from './checkbox';
 import icon from './icon';
 import input from './input';
+import table from './table';
 
-export { icon, checkbox, button, input };
+export { icon, checkbox, button, input, table };
