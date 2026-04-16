@@ -16,11 +16,20 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
+  background-color: awsui.$color-background-drawer;
+
+  &.position-absolute,
+  &.position-sticky,
+  &.position-fixed {
+    box-shadow: awsui.$shadow-panel;
+  }
 
   &.with-footer {
     display: flex;
     flex-direction: column;
-    min-block-size: 100%;
+    &.position-static {
+      min-block-size: 100%;
+    }
 
     > .content {
       flex: 1;

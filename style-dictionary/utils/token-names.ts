@@ -543,6 +543,7 @@ export type ColorsTokenName =
   | 'colorBackgroundInputDisabled'
   | 'colorBackgroundItemSelected'
   | 'colorBackgroundLayoutMain'
+  | 'colorBackgroundDrawer'
   | 'colorBackgroundLayoutMobilePanel'
   | 'colorBackgroundLayoutPanelContent'
   | 'colorBackgroundLayoutPanelHover'
