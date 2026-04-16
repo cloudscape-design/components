@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { focusOutlineStyleDictionary } from './internal-focus-outline';
+import { focusOutlineVars } from './shared';
 import { StyleAPI } from './types';
 
 export const checkboxStyleDictionary = {
@@ -17,10 +17,7 @@ export const checkboxStyleDictionary = {
 
 const styleApi: StyleAPI = {
   variables: [
-    { name: focusOutlineStyleDictionary.vars.color, description: 'Focus outline color' },
-    { name: focusOutlineStyleDictionary.vars.width, description: 'Focus outline width' },
-    { name: focusOutlineStyleDictionary.vars.offset, description: 'Focus outline distance from the focused element' },
-    { name: focusOutlineStyleDictionary.vars.radius, description: 'Focus outline border radius' },
+    ...focusOutlineVars,
     { name: checkboxStyleDictionary.vars.fillColor, description: 'Color of the checkbox rect background' },
     { name: checkboxStyleDictionary.vars.markColor, description: 'Color of the checkbox mark' },
   ],

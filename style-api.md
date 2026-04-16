@@ -91,3 +91,5 @@ The root element of the input that includes a semantic input and optional icons 
 ### `.awsui-style-input-input`
 
 The semantic input element.
+
+**Applies to:** `<input>`

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { iconStyleDictionary } from './icon';
-import { focusOutlineStyleDictionary } from './internal-focus-outline';
+import { focusOutlineVars } from './shared';
 import { StyleAPI } from './types';
 
 export const buttonStyleDictionary = {
@@ -12,13 +12,7 @@ export const buttonStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [
-    { name: focusOutlineStyleDictionary.vars.color, description: 'Focus outline color' },
-    { name: focusOutlineStyleDictionary.vars.width, description: 'Focus outline width' },
-    { name: focusOutlineStyleDictionary.vars.offset, description: 'Focus outline distance from the focused element' },
-    { name: focusOutlineStyleDictionary.vars.radius, description: 'Focus outline border radius' },
-    { name: iconStyleDictionary.vars.color, description: 'Icon color' },
-  ],
+  variables: [...focusOutlineVars, { name: iconStyleDictionary.vars.color, description: 'Icon color' }],
   selectors: [
     {
       className: buttonStyleDictionary.classNames.root,
