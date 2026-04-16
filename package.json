@@ -25,6 +25,7 @@
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.cjs",
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",
     "start:react18:dev": "cross-env NODE_ENV=development REACT_VERSION=18 webpack serve --config pages/webpack.config.cjs",
+    "generate-style-api-docs": "node --experimental-loader ./scripts/esm-loader.mjs scripts/generate-style-api-docs.mjs lib/components/style-api/index.js style-api.md",
     "postinstall": "prepare-package-lock && node ./scripts/install-peer-dependency.js theming-core:dev-v3-schomax-css-style-api",
     "prepare": "husky"
   },

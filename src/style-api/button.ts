@@ -1,42 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-interface StyleAPI {
-  variables: readonly StyleAPIVariable[];
-  selectors: readonly StyleAPISelector[];
-}
-
-interface StyleAPIVariable {
-  name: string;
-  description?: string;
-}
-
-interface StyleAPISelector {
-  className: string;
-  tags?: string[];
-  description?: string;
-  attributes?: readonly StyleAPIAttribute[];
-}
-
-interface StyleAPIAttribute {
-  name: string;
-  description?: string;
-}
-
-export const focusOutlineStyleDictionary = {
-  vars: {
-    color: '--awsui-style-focus-outline-color',
-    width: '--awsui-style-focus-outline-width',
-    offset: '--awsui-style-focus-outline-offset',
-    radius: '--awsui-style-focus-outline-radius',
-  },
-};
-
-export const iconStyleDictionary = {
-  vars: {
-    color: '--awsui-style-icon-color',
-  },
-};
+import { iconStyleDictionary } from './icon';
+import { focusOutlineStyleDictionary } from './internal-focus-outline';
+import { StyleAPI } from './types';
 
 export const buttonStyleDictionary = {
   classNames: {

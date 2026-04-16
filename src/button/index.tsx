@@ -3,8 +3,6 @@
 'use client';
 import React from 'react';
 
-// Importing that so that it appears in the compiled output.
-import './experiment-button-style-api';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
