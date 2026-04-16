@@ -95,10 +95,7 @@
     &.variant-modal-dismiss,
     &.variant-flashbar-icon {
       @include styles.focus-highlight(
-        (
-          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-          'horizontal': awsui.$space-button-focus-outline-gutter,
-        ),
+        var(--awsui-style-focus-outline-offset, awsui.$space-button-focus-outline-gutter),
         $border-radius: var(
             --awsui-style-focus-outline-border-radius,
             var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)

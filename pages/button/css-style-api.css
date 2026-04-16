@@ -2,39 +2,84 @@
 
 @layer application {
   .awsui-style-button-button {
-    border-color: red;
-    background-color: blue;
-    color: white;
-    border-radius: 0px;
-    border-start-start-radius: 0px;
+    border-color: #6366f1;
+    background-color: #818cf8;
+    color: #fff;
+    border-radius: 6px;
+    border-start-start-radius: 6px;
+  }
+
+  .awsui-style-button-button:hover {
+    background-color: #6366f1;
+    border-color: #4f46e5;
+  }
+
+  .awsui-style-button-button:disabled {
+    background-color: #c7d2fe;
+    border-color: #a5b4fc;
+    color: #6366f1;
+    cursor: not-allowed;
+  }
+
+  .awsui-style-button-button:disabled:hover {
+    background-color: #fecaca;
+    border-color: #f87171;
+    color: #b91c1c;
+
   }
 
   .my-primary.awsui-style-button-button {
-    background-color: green;
-    border-color: darkgreen;
+    background-color: #4f46e5;
+    border-color: #3730a3;
+  }
+
+  .my-primary.awsui-style-button-button:hover {
+    background-color: #3730a3;
+    border-color: #312e81;
   }
 
   .my-primary.awsui-style-button-button .awsui-style-icon-svg {
-    color: yellow;
+    color: #e0e7ff;
   }
 
   .my-normal.awsui-style-button-button .awsui-style-icon-svg {
-    color: red;
+    color: #fde047;
+  }
+
+  .my-normal.awsui-style-button-button:hover .awsui-style-icon-svg {
+    color: #facc15;
   }
 
   .my-link.awsui-style-button-link .awsui-style-icon-svg {
-    color: purple;
+    color: #7c3aed;
   }
 
-  /* Custom focus ring on link buttons */
+  .my-link.awsui-style-button-link:hover .awsui-style-icon-svg {
+    color: #5b21b6;
+  }
+
   .my-link.awsui-style-button-link {
-    --awsui-style-focus-outline-color: purple;
+    --awsui-style-focus-outline-color: #dc2626;
     --awsui-style-focus-outline-width: 3px;
-    --awsui-style-focus-outline-offset: 4px;
-    --awsui-style-focus-outline-border-radius: 8px;
+    --awsui-style-focus-outline-border-radius: 0px;
+  }
+
+  .my-icon.awsui-style-button-button {
+    --awsui-style-focus-outline-color: #dc2626;
+    --awsui-style-focus-outline-width: 3px;
+    --awsui-style-focus-outline-offset: 6px;
+    --awsui-style-focus-outline-border-radius: 50px;
   }
 
   .my-icon.awsui-style-button-button .awsui-style-icon-svg {
-    color: orange;
+    color: #ea580c;
+  }
+
+  .my-icon.awsui-style-button-button:hover .awsui-style-icon-svg {
+    color: #c2410c;
+  }
+
+  .awsui-style-button-button:disabled .awsui-style-icon-svg {
+    color: #a5b4fc;
   }
 }
