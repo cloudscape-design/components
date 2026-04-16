@@ -7,6 +7,8 @@ import range from 'lodash/range';
 import Cards, { CardsProps } from '../../../lib/components/cards';
 import { CardsWrapper } from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/cards/styles.css.js';
+
 interface Item {
   description: string;
 }
@@ -88,6 +90,92 @@ describe('Cards selection', () => {
     it('should display radios', () => {
       wrapper = renderCards(<Cards<Item> {...props} selectionType={'single'} />).wrapper;
       expect(getCard(0)?.findSelectionArea()?.find('input[type="radio"]')).toBeTruthy();
+    });
+
+    describe('aria-describedby for section content', () => {
+      const cardDefinitionWithSections: CardsProps.CardDefinition<Item> = {
+        header: item => item.description,
+        sections: [
+          { id: 'desc', header: 'Description', content: item => `Description: ${item.description}` },
+          { id: 'extra', header: 'Extra', content: item => `Extra: ${item.description}` },
+        ],
+      };
+
+      it('adds aria-describedby to radio input pointing to the first section content element', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        const card = getCard(0);
+        const input = card.findSelectionArea()?.find('input')?.getElement();
+        const ariaDescribedby = input?.getAttribute('aria-describedby');
+        expect(ariaDescribedby).toBeTruthy();
+
+        // aria-describedby should reference exactly one element — the first section with content
+        const ids = ariaDescribedby!.split(' ');
+        expect(ids).toHaveLength(1);
+        const el = document.getElementById(ids[0]);
+        expect(el).not.toBeNull();
+        expect(el).toHaveClass(styles.section);
+      });
+
+      it('uses the first section with content even when preceded by a header-only section', () => {
+        const headerFirstDefinition: CardsProps.CardDefinition<Item> = {
+          header: (item: Item) => item.description,
+          sections: [
+            { id: 'hdr', header: 'Header only' },
+            { id: 'desc', header: 'Description', content: (item: Item) => `Description: ${item.description}` },
+          ],
+        };
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={headerFirstDefinition} />
+        ).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        const ids = input?.getAttribute('aria-describedby')?.split(' ') ?? [];
+        expect(ids).toHaveLength(1);
+        const el = document.getElementById(ids[0]);
+        expect(el).toHaveClass(styles.section);
+      });
+
+      it('each card has its own unique section content ID', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        const card0Id = getCard(0).findSelectionArea()?.find('input')?.getElement().getAttribute('aria-describedby');
+        const card1Id = getCard(1).findSelectionArea()?.find('input')?.getElement().getAttribute('aria-describedby');
+
+        expect(card0Id).toBeTruthy();
+        expect(card1Id).toBeTruthy();
+        expect(card0Id).not.toEqual(card1Id);
+      });
+
+      it('does not add aria-describedby when there are no sections with content', () => {
+        const noContentDefinition: CardsProps.CardDefinition<Item> = {
+          header: item => item.description,
+          sections: [{ id: 'hdr', header: 'Only header' }],
+        };
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={'single'} cardDefinition={noContentDefinition} />
+        ).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        expect(input?.getAttribute('aria-describedby')).toBeFalsy();
+      });
+
+      it('does not add aria-describedby when there are no sections at all', () => {
+        wrapper = renderCards(<Cards<Item> {...props} selectionType={'single'} />).wrapper;
+        const input = getCard(0).findSelectionArea()?.find('input')?.getElement();
+        expect(input?.getAttribute('aria-describedby')).toBeFalsy();
+      });
+
+      it('does not set id on section divs when there is no selectionType', () => {
+        wrapper = renderCards(
+          <Cards<Item> {...props} selectionType={undefined} cardDefinition={cardDefinitionWithSections} />
+        ).wrapper;
+        // Section outer divs should have no id attribute when not selectable
+        const sectionDivs = wrapper.getElement().querySelectorAll(`.${styles.section}`);
+        sectionDivs.forEach(div => {
+          expect(div.getAttribute('id')).toBeNull();
+        });
+      });
     });
 
     it('should deselect previous card on selection', () => {
