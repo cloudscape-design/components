@@ -114,7 +114,7 @@ describe('selection control labels', () => {
       `${selectedItemsCount} of ${itemsCount} ${item.name} selected`,
     itemLoaderSelectionLabel: (_, item) => (item ? `${item.name} loader` : 'Root loader'),
   };
-  const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.getElement();
+  const getRowSelector = (w: TableWrapper, i: number) => w.findRowSelectionArea(i)!.find('input')!.getElement();
 
   test('adds allItemsSelectionLabel to select-all checkbox', () => {
     const { wrapper, rerender } = renderTable({
@@ -124,7 +124,10 @@ describe('selection control labels', () => {
       ariaLabels,
     });
     expect(getSelectionA11yHeader(wrapper)).toBe(null);
-    expect(wrapper.findSelectAllTrigger()!.getElement()).toHaveAttribute('aria-label', '2(2) of 3 selected');
+    expect(wrapper.findSelectAllTrigger()!.find('input')!.getElement()).toHaveAttribute(
+      'aria-label',
+      '2(2) of 3 selected'
+    );
 
     rerender({
       expandableRows: createExpandableRows({
@@ -133,7 +136,10 @@ describe('selection control labels', () => {
         totalSelectedItemsCount: 8,
       }),
     });
-    expect(wrapper.findSelectAllTrigger()!.getElement()).toHaveAttribute('aria-label', '8(2) of 12 selected');
+    expect(wrapper.findSelectAllTrigger()!.find('input')!.getElement()).toHaveAttribute(
+      'aria-label',
+      '8(2) of 12 selected'
+    );
   });
 
   test('leaves the controls without labels, when ariaLabels is omitted', () => {
