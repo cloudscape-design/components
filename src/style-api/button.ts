@@ -8,7 +8,6 @@ import { StyleAPI } from './types';
 export const buttonStyleDictionary = {
   classNames: {
     root: 'awsui-style-button-root',
-    icon: 'awsui-style-button-icon',
   },
 };
 

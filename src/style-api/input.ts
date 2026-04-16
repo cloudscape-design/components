@@ -36,6 +36,7 @@ const styleApi: StyleAPI = {
     },
     {
       className: inputStyleDictionary.classNames.input,
+      tags: ['input'],
       description: 'The semantic input element.',
     },
   ],
