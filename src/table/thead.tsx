@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { TableHeaderCell } from './header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
@@ -45,6 +46,10 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
+  selectionControllerItems?: ButtonDropdownProps.Items;
+  onSelectionControllerItemClick?: (detail: ButtonDropdownProps.ItemClickDetails) => void;
+  selectionControllerAriaLabel?: string;
+  loading?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -77,6 +82,10 @@ const Thead = React.forwardRef(
       resizerTooltipText,
       isExpandable,
       setLastUserAction,
+      selectionControllerItems,
+      onSelectionControllerItemClick,
+      selectionControllerAriaLabel,
+      loading,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -112,9 +121,14 @@ const Thead = React.forwardRef(
               {...commonCellProps}
               focusedComponent={focusedComponent}
               columnId={selectionColumnId}
+              resizableStyle={getColumnStyles(sticky, selectionColumnId)}
               getSelectAllProps={getSelectAllProps}
               onFocusMove={onFocusMove}
               singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+              selectionControllerItems={selectionControllerItems}
+              onSelectionControllerItemClick={onSelectionControllerItemClick}
+              selectionControllerAriaLabel={selectionControllerAriaLabel}
+              loading={loading}
             />
           ) : null}
 

@@ -73,6 +73,7 @@ import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
+const SELECTION_COLUMN_WIDTH_WITH_CONTROLLER = 72;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<
@@ -147,6 +148,8 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       renderLoaderCounter,
       cellVerticalAlign,
+      selectionControllerItems,
+      onSelectionControllerItemClick,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -178,6 +181,12 @@ const InternalTable = React.forwardRef(
     const { allItems, isExpandable } = expandableRows;
     const { allRows } = useProgressiveLoadingProps({ getLoadingStatus, expandableRows });
     const selectionType = expandableRows.hasGroupSelection ? ('group' as const) : externalSelectionType;
+
+    const showSelectionController =
+      externalSelectionType === 'multi' &&
+      !expandableRows.hasGroupSelection &&
+      !!selectionControllerItems &&
+      selectionControllerItems.length > 0;
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
     const wrapperMeasureRefObject = useRef(null);
@@ -362,8 +371,15 @@ const InternalTable = React.forwardRef(
 
     const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
     const visibleColumnIdsWithSelection: PropertyKey[] = [];
+    const selectionColumnWidth = showSelectionController
+      ? SELECTION_COLUMN_WIDTH_WITH_CONTROLLER
+      : SELECTION_COLUMN_WIDTH;
     if (hasSelection) {
-      visibleColumnWidthsWithSelection.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
+      visibleColumnWidthsWithSelection.push({
+        id: selectionColumnId,
+        width: selectionColumnWidth,
+        minWidth: selectionColumnWidth,
+      });
       visibleColumnIdsWithSelection.push(selectionColumnId);
     }
     for (let columnIndex = 0; columnIndex < visibleColumnDefinitions.length; columnIndex++) {
@@ -422,6 +438,13 @@ const InternalTable = React.forwardRef(
       tableRole,
       isExpandable,
       setLastUserAction,
+      selectionControllerItems: showSelectionController ? selectionControllerItems : undefined,
+      onSelectionControllerItemClick: showSelectionController
+        ? (detail: import('../button-dropdown/interfaces').ButtonDropdownProps.ItemClickDetails) =>
+            fireNonCancelableEvent(onSelectionControllerItemClick, detail)
+        : undefined,
+      selectionControllerAriaLabel: ariaLabels?.selectionControllerLabel,
+      loading,
     };
 
     usePreventStickyClickScroll(wrapperRefObject);
@@ -641,6 +664,7 @@ const InternalTable = React.forwardRef(
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
+                                    resizableStyle={{ width: selectionColumnWidth, minWidth: selectionColumnWidth }}
                                     selectionControlProps={{
                                       ...selection.getItemSelectionProps(row.item),
                                       onFocusDown: moveFocusDown,
@@ -650,6 +674,7 @@ const InternalTable = React.forwardRef(
                                     }}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
+                                    hasSelectionController={showSelectionController}
                                   />
                                 )}
 
@@ -742,10 +767,12 @@ const InternalTable = React.forwardRef(
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
+                                    resizableStyle={{ width: selectionColumnWidth, minWidth: selectionColumnWidth }}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
                                     selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
                                     isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
+                                    hasSelectionController={showSelectionController}
                                   />
                                 ) : null}
                                 {visibleColumnDefinitions.map((column, colIndex) => (

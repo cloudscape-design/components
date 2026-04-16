@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
@@ -429,6 +430,30 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Renders loader counter that is appended to the loader content in all loader states.
    */
   renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
+
+  /**
+   * Specifies the items displayed in the selection controller dropdown menu.
+   * The selection controller renders as a small dropdown trigger adjacent to the
+   * select-all checkbox when `selectionType` is `"multi"`.
+   *
+   * Supports the same item types as ButtonDropdown: plain items, checkbox items,
+   * and grouped items. See ButtonDropdownProps.Items for the full type.
+   *
+   * The selection controller is not rendered when `selectionType` is `"single"`,
+   * when `expandableRows` with `groupSelection` is configured, or when this
+   * prop is undefined or an empty array.
+   */
+  selectionControllerItems?: ButtonDropdownProps.Items;
+
+  /**
+   * Fired when a user activates a selection controller item from the dropdown menu.
+   * The event detail contains the `id` of the activated item and, for checkbox items,
+   * the `checked` state.
+   *
+   * The table does not automatically modify `selectedItems`. Use this event
+   * to implement custom selection logic and update `selectedItems` accordingly.
+   */
+  onSelectionControllerItemClick?: NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
 }
 
 export namespace TableProps {
@@ -547,6 +572,7 @@ export namespace TableProps {
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
+    selectionControllerLabel?: string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
