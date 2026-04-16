@@ -33,14 +33,7 @@ export default function SelectionControllerDropdown({
       variant="inline-icon"
       expandToViewport={true}
       expandableGroups={false}
-      customTriggerBuilder={({
-        triggerRef,
-        testUtilsClass,
-        ariaExpanded,
-        onClick,
-        isOpen,
-        disabled: triggerDisabled,
-      }) => (
+      customTriggerBuilder={({ triggerRef, testUtilsClass, ariaExpanded, onClick, disabled: triggerDisabled }) => (
         <button
           ref={triggerRef as React.Ref<HTMLButtonElement>}
           className={clsx(styles['selection-controller-trigger'], testUtilsClass)}
@@ -52,7 +45,7 @@ export default function SelectionControllerDropdown({
           tabIndex={sticky ? -1 : undefined}
           type="button"
         >
-          <InternalIcon name={isOpen ? 'caret-up-filled' : 'caret-down-filled'} />
+          <InternalIcon name={'ellipsis'} />
         </button>
       )}
     />
