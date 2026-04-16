@@ -164,6 +164,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  spaceFieldVertical: {
+    description: 'The vertical padding inside control components.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
