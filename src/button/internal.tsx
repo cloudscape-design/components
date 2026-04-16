@@ -40,21 +40,33 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export const css_style_api = {
-  root: {
-    className: 'awsui-style-button-root',
-    attributes: {
-      'data-awsui-style-variant': ['primary', 'normal', 'link', 'icon', 'inline-icon', 'inline-icon-pointer-target', 'flashbar-icon', 'breadcrumb-group', 'menu-trigger', 'modal-dismiss'],
+export const button_style_api = {
+  desc: 'Button Style API. To target button icons, use the [Icon Style API](./...).',
+  variables: {
+    '--awsui-style-focus-outline-color': {},
+    '--awsui-style-focus-outline-width': {},
+    '--awsui-style-focus-outline-offset': {},
+    '--awsui-style-focus-outline-border-radius': {},
+  },
+  selectors: {
+    'awsui-style-button-button': {
+      desc: "Selects the button element when variant 'normal', 'primary', 'icon', 'inline-icon', 'inline-icon-pointer-target', 'flashbar-icon', 'breadcrumb-group', 'menu-trigger', or 'modal-dismiss' is active",
+      type: 'HTMLButtonElement',
+      attributes: {
+        'aria-disabled': {
+          desc: 'Can be used to style disabled buttons',
+        },
+      },
     },
-  },
-  anchor: {
-    className: 'awsui-style-button-anchor',
-  },
-  button: {
-    className: 'awsui-style-button-button',
-  },
-  icon: {
-    className: 'awsui-style-button-icon',
+    'awsui-style-button-link': {
+      desc: "Selects the button element when variant 'link' is active",
+      type: 'HTMLAnchorElement',
+      attributes: {
+        'aria-disabled': {
+          desc: 'Can be used to style disabled buttons',
+        },
+      },
+    },
   },
 };
 
@@ -240,8 +252,8 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: clsx(
         buttonClass,
-        css_style_api.root.className,
-        isAnchor ? css_style_api.anchor.className : css_style_api.button.className
+        'awsui-style-button-root',
+        isAnchor ? 'awsui-style-button-link' : 'awsui-style-button-button'
       ),
       'data-awsui-style-variant': variant,
       onClick: handleClick,
