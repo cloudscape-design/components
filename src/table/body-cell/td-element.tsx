@@ -19,6 +19,8 @@ import tableStyles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
+import { cssStyleApiClasses } from '../internal';
+
 export interface TableTdElementProps {
   wrapLines: boolean | undefined;
   isRowHeader?: boolean;
@@ -127,6 +129,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
           styles['body-cell'],
+          cssStyleApiClasses.bodyCell,
+          isSelection && cssStyleApiClasses.selectionCell,
           isFirstRow && styles['body-cell-first-row'],
           isLastRow && styles['body-cell-last-row'],
           isSelected && styles['body-cell-selected'],

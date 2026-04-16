@@ -8,6 +8,12 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import styles from './styles.css.js';
 
+export const css_style_api = {
+  svg: { className: 'awsui-style-checkbox-svg' },
+  box: { className: 'awsui-style-checkbox-box' },
+  checkmark: { className: 'awsui-style-checkbox-checkmark' },
+};
+
 interface CheckboxIconProps extends BaseComponentProps {
   checked?: boolean;
   indeterminate?: boolean;
@@ -65,9 +71,9 @@ const CheckboxIcon = ({
   const dimensions = dimensionsByTheme[theme];
 
   return (
-    <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
+    <svg className={clsx(styles.root, css_style_api.svg.className)} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
       <rect
-        className={clsx(styles['styled-box'], {
+        className={clsx(styles['styled-box'], css_style_api.box.className, {
           [styles['styled-box-checked']]: checked,
           [styles['styled-box-indeterminate']]: indeterminate,
           [styles['styled-box-disabled']]: disabled,
@@ -83,7 +89,7 @@ const CheckboxIcon = ({
       />
       {checked || indeterminate ? (
         <polyline
-          className={clsx(styles['styled-line'], {
+          className={clsx(styles['styled-line'], css_style_api.checkmark.className, {
             [styles['styled-line-disabled']]: disabled,
             [styles['styled-line-readonly']]: readOnly,
           })}

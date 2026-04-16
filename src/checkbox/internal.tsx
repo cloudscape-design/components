@@ -23,6 +23,38 @@ import { getAbstractSwitchStyles, getCheckboxIconStyles } from './style';
 
 import styles from './styles.css.js';
 
+export const css_style_api = {
+  root: {
+    className: 'awsui-style-checkbox-root',
+    children: {
+      control: {
+        className: 'awsui-style-checkbox-control',
+        attributes: {
+          ':has(input:checked)': 'checked',
+          ':has(input:indeterminate)': 'indeterminate',
+          ':has(input:disabled)': 'disabled',
+        },
+        children: {
+          svg: {
+            className: 'awsui-style-checkbox-svg',
+            children: {
+              box: { className: 'awsui-style-checkbox-box', type: 'svg:rect' as const },
+              checkmark: { className: 'awsui-style-checkbox-checkmark', type: 'svg:polyline' as const },
+            },
+          },
+        },
+      },
+      label: { className: 'awsui-style-checkbox-label' },
+    },
+  },
+};
+
+// Flat lookup for internal use
+const cssStyleApiClasses = {
+  root: css_style_api.root.className,
+  control: css_style_api.root.children.control.className,
+};
+
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
   showOutline?: boolean;
@@ -86,8 +118,8 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
-        controlClassName={styles['checkbox-control']}
+        className={clsx(styles.root, baseProps.className, cssStyleApiClasses.root)}
+        controlClassName={clsx(styles['checkbox-control'], cssStyleApiClasses.control)}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
