@@ -11597,6 +11597,24 @@ When provided, all default relative range functionality is replaced.",
       "type": "DateRangePickerProps.RelativeRangeControl",
     },
     {
+      "description": "Specifies custom content to fully override the trigger content.
+When provided, the default content of the trigger is replaced.",
+      "inlineType": {
+        "name": "DateRangePickerProps.RenderTriggerContent",
+        "parameters": [
+          {
+            "name": "props",
+            "type": "{ formattedDate: JSX.Element; }",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "renderTriggerContent",
+      "optional": true,
+      "type": "DateRangePickerProps.RenderTriggerContent",
+    },
+    {
       "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
