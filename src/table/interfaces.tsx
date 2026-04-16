@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
@@ -443,17 +442,19 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * when `expandableRows` with `groupSelection` is configured, or when this
    * prop is undefined or an empty array.
    */
-  selectionControllerItems?: ButtonDropdownProps.Items;
+  selectionControllerItems?: ReadonlyArray<
+    TableProps.SelectionControllerItem | TableProps.SelectionControllerItemGroup
+  >;
 
   /**
    * Fired when a user activates a selection controller item from the dropdown menu.
    * The event detail contains the `id` of the activated item and, for checkbox items,
-   * the `checked` state.
+   * the new `checked` state.
    *
    * The table does not automatically modify `selectedItems`. Use this event
    * to implement custom selection logic and update `selectedItems` accordingly.
    */
-  onSelectionControllerItemClick?: NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onSelectionControllerItemClick?: NonCancelableEventHandler<TableProps.SelectionControllerItemClickDetail>;
 }
 
 export namespace TableProps {
@@ -680,6 +681,45 @@ export namespace TableProps {
 
   export interface RenderLoaderEmptyDetail<T> {
     item: T;
+  }
+
+  export interface SelectionControllerItem {
+    /** Unique identifier for the selection action. */
+    id: string;
+    /** Display label for the selection action. */
+    text: string;
+    /** Set to `'checkbox'` to render the item as a toggleable checkbox. */
+    itemType?: 'checkbox';
+    /** Whether the checkbox item is checked. Only applicable when `itemType` is `'checkbox'`. */
+    checked?: boolean;
+    /** When true, the item is rendered in a disabled state and cannot be activated. */
+    disabled?: boolean;
+    /** Optional reason displayed when hovering over a disabled item. */
+    disabledReason?: string;
+    /** Optional secondary descriptive text displayed below the item text. */
+    secondaryText?: string;
+    /** Optional accessible label for the item. */
+    ariaLabel?: string;
+    /** Optional icon name displayed before the item text. */
+    iconName?: string;
+    /** Optional icon SVG displayed before the item text. */
+    iconSvg?: React.ReactNode;
+  }
+
+  export interface SelectionControllerItemGroup {
+    /** Optional display label for the group header. */
+    text?: string;
+    /** The items within this group. */
+    items: ReadonlyArray<SelectionControllerItem>;
+    /** When true, the group is rendered in a disabled state. */
+    disabled?: boolean;
+  }
+
+  export interface SelectionControllerItemClickDetail {
+    /** The `id` of the activated item. */
+    id: string;
+    /** For checkbox items, the new checked state after the click. */
+    checked?: boolean;
   }
 }
 

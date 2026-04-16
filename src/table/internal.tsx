@@ -440,7 +440,7 @@ const InternalTable = React.forwardRef(
       setLastUserAction,
       selectionControllerItems: showSelectionController ? selectionControllerItems : undefined,
       onSelectionControllerItemClick: showSelectionController
-        ? (detail: import('../button-dropdown/interfaces').ButtonDropdownProps.ItemClickDetails) =>
+        ? (detail: TableProps.SelectionControllerItemClickDetail) =>
             fireNonCancelableEvent(onSelectionControllerItemClick, detail)
         : undefined,
       selectionControllerAriaLabel: ariaLabels?.selectionControllerLabel,

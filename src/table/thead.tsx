@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { TableHeaderCell } from './header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
@@ -46,8 +45,10 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
-  selectionControllerItems?: ButtonDropdownProps.Items;
-  onSelectionControllerItemClick?: (detail: ButtonDropdownProps.ItemClickDetails) => void;
+  selectionControllerItems?: ReadonlyArray<
+    TableProps.SelectionControllerItem | TableProps.SelectionControllerItemGroup
+  >;
+  onSelectionControllerItemClick?: (detail: TableProps.SelectionControllerItemClickDetail) => void;
   selectionControllerAriaLabel?: string;
   loading?: boolean;
 }

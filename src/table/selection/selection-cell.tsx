@@ -4,10 +4,10 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
+import { TableProps } from '../interfaces';
 import { Divider } from '../resizer';
 import { ItemSelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
@@ -21,8 +21,10 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   singleSelectionHeaderAriaLabel?: string;
   getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
-  selectionControllerItems?: ButtonDropdownProps.Items;
-  onSelectionControllerItemClick?: (detail: ButtonDropdownProps.ItemClickDetails) => void;
+  selectionControllerItems?: ReadonlyArray<
+    TableProps.SelectionControllerItem | TableProps.SelectionControllerItemGroup
+  >;
+  onSelectionControllerItemClick?: (detail: TableProps.SelectionControllerItemClickDetail) => void;
   selectionControllerAriaLabel?: string;
   loading?: boolean;
 }
