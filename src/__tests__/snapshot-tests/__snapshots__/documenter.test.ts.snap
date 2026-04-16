@@ -26635,6 +26635,48 @@ The event \`detail\` contains the new state for \`selectedItems\`.",
     },
     {
       "cancelable": false,
+      "description": "Fired when a user activates a selection controller item from the dropdown menu.
+The event detail contains the \`id\` of the activated item and, for checkbox items,
+the \`checked\` state.
+
+The table does not automatically modify \`selectedItems\`. Use this event
+to implement custom selection logic and update \`selectedItems\` accordingly.",
+      "detailInlineType": {
+        "name": "ButtonDropdownProps.ItemClickDetails",
+        "properties": [
+          {
+            "name": "checked",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "external",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonDropdownProps.ItemClickDetails",
+      "name": "onSelectionControllerItemClick",
+    },
+    {
+      "cancelable": false,
       "description": "Called when either the column to sort by or the direction of sorting changes upon user interaction.
 The event detail contains the current sortingColumn and isDescending.",
       "detailInlineType": {
@@ -26909,6 +26951,11 @@ in tables with data grouping.
           },
           {
             "name": "resizerTooltipText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "selectionControllerLabel",
             "optional": true,
             "type": "string",
           },
@@ -27454,6 +27501,21 @@ the table items array is empty.",
       "name": "selectedItems",
       "optional": true,
       "type": "ReadonlyArray<T>",
+    },
+    {
+      "description": "Specifies the items displayed in the selection controller dropdown menu.
+The selection controller renders as a small dropdown trigger adjacent to the
+select-all checkbox when \`selectionType\` is \`"multi"\`.
+
+Supports the same item types as ButtonDropdown: plain items, checkbox items,
+and grouped items. See ButtonDropdownProps.Items for the full type.
+
+The selection controller is not rendered when \`selectionType\` is \`"single"\`,
+when \`expandableRows\` with \`groupSelection\` is configured, or when this
+prop is undefined or an empty array.",
+      "name": "selectionControllerItems",
+      "optional": true,
+      "type": "ButtonDropdownProps.Items",
     },
     {
       "description": "Specifies the selection type (\`'single' | 'multi'\`).",
