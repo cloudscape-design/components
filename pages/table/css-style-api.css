@@ -61,13 +61,12 @@
 
   /* ── Resize handle ── */
   .custom-table .awsui-style-table-table-resize-handle {
-    background: #f472b6;
-    border-radius: 2px;
-    opacity: 0.3;
     transition: opacity 150ms ease;
   }
-  .custom-table .awsui-style-table-table-cell:hover .awsui-style-table-table-resize-handle {
-    opacity: 1;
+
+  /* ── Resize divider line (span next to the handle) ── */
+  .custom-table .awsui-style-table-table-resize-handle + span {
+    border-inline-start-color: #f9a8d4;
   }
 
   /* ── Checkbox theming inside table selection cells ── */
