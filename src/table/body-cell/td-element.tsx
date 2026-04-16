@@ -19,7 +19,7 @@ import tableStyles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-import { cssStyleApiClasses } from '../internal';
+import { tableStyleDictionary } from '../../style-api/table';
 
 export interface TableTdElementProps {
   wrapLines: boolean | undefined;
@@ -129,8 +129,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
           styles['body-cell'],
-          cssStyleApiClasses.bodyCell,
-          isSelection && cssStyleApiClasses.selectionCell,
+          tableStyleDictionary.classNames.cell,
+          isSelection && tableStyleDictionary.classNames.selectionCell,
           isFirstRow && styles['body-cell-first-row'],
           isLastRow && styles['body-cell-last-row'],
           isSelected && styles['body-cell-selected'],
@@ -164,6 +164,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {level !== undefined && isExpandable && !isEditingActive && (
           <div className={styles['expandable-toggle-wrapper']}>
             <ExpandToggleButton
+              className={tableStyleDictionary.classNames.expandToggle}
               isExpanded={isExpanded}
               onExpandableItemToggle={onExpandableItemToggle}
               expandButtonLabel={expandButtonLabel}

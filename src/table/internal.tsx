@@ -67,56 +67,11 @@ import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 
+import { tableStyleDictionary } from '../style-api/table';
+
 import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';
 import styles from './styles.css.js';
-
-export const css_style_api = {
-  root: {
-    className: 'awsui-style-table-root',
-    attributes: {
-      'data-awsui-style-variant': ['container', 'embedded', 'stacked', 'full-page', 'borderless'],
-    },
-    children: {
-      wrapper: {
-        className: 'awsui-style-table-wrapper',
-        children: {
-          table: {
-            className: 'awsui-style-table-table',
-            children: {
-              headerCell: { className: 'awsui-style-table-header-cell' },
-              row: {
-                className: 'awsui-style-table-row',
-                attributes: {
-                  'data-awsui-style-selected': ['true', 'false'],
-                },
-                children: {
-                  selectionCell: { className: 'awsui-style-table-selection-cell' },
-                  bodyCell: { className: 'awsui-style-table-body-cell' },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
-
-// Flat lookup for internal use
-const api = css_style_api.root;
-const wrapper = api.children.wrapper;
-const table = wrapper.children.table;
-const row = table.children.row;
-export const cssStyleApiClasses = {
-  root: api.className,
-  wrapper: wrapper.className,
-  table: table.className,
-  headerCell: table.children.headerCell.className,
-  row: row.className,
-  selectionCell: row.children.selectionCell.className,
-  bodyCell: row.children.bodyCell.className,
-};
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
@@ -512,7 +467,7 @@ const InternalTable = React.forwardRef(
               {...baseProps}
               {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
-              className={clsx(baseProps.className, styles.root, cssStyleApiClasses.root)}
+              className={clsx(baseProps.className, styles.root, tableStyleDictionary.classNames.root)}
               data-awsui-style-variant={computedVariant}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
@@ -522,7 +477,7 @@ const InternalTable = React.forwardRef(
                     <div>
                       <div
                         ref={toolsHeaderWrapper}
-                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`], tableStyleDictionary.classNames.header)}
                       >
                         <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                           <ToolsHeader
@@ -561,7 +516,7 @@ const InternalTable = React.forwardRef(
               __disableStickyMobile={false}
               footer={
                 hasFooter ? (
-                  <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
+                  <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`], tableStyleDictionary.classNames.footer)}>
                     <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
                       {footer && <span>{footer}</span>}
                       {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
@@ -609,7 +564,7 @@ const InternalTable = React.forwardRef(
                       styles.table,
                       resizableColumns && styles['table-layout-fixed'],
                       contentDensity === 'compact' && getVisualContextClassname('compact-table'),
-                      cssStyleApiClasses.table
+                      tableStyleDictionary.classNames.table
                     )}
                     {...getTableRoleProps({
                       tableRole,
@@ -625,7 +580,7 @@ const InternalTable = React.forwardRef(
                       onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
                       {...theadProps}
                     />
-                    <tbody>
+                    <tbody className={tableStyleDictionary.classNames.tbody}>
                       {loading || allItems.length === 0 ? (
                         <tr>
                           <NoDataCell
@@ -670,7 +625,7 @@ const InternalTable = React.forwardRef(
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'], cssStyleApiClasses.row)}
+                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'], tableStyleDictionary.classNames.row)}
                                 data-awsui-style-selected={`${sharedCellProps.isSelected}`}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.

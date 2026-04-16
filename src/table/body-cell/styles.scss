@@ -16,7 +16,7 @@ $cell-vertical-padding-w-border: calc(
 $cell-horizontal-padding: awsui.$space-scaled-l;
 $cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
 $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
-$selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+$selected-border: awsui.$border-width-item-selected solid var(--awsui-style-table-row-selection-border-color, awsui.$color-border-item-selected);
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
@@ -225,7 +225,7 @@ $cell-negative-space-vertical: 2px;
     border-block-end-color: awsui.$color-border-cell-shaded;
   }
   &-selected {
-    background-color: awsui.$color-background-item-selected;
+    background-color: var(--awsui-style-table-row-selection-background-color, awsui.$color-background-item-selected);
     border-block-start: $selected-border;
     border-block-end: $selected-border;
     @include cell-padding-block-end($cell-vertical-padding);
@@ -268,7 +268,7 @@ $cell-negative-space-vertical: 2px;
       background: awsui.$color-background-cell-shaded;
     }
     &.body-cell-selected {
-      background-color: awsui.$color-background-item-selected;
+      background-color: var(--awsui-style-table-row-selection-background-color, awsui.$color-background-item-selected);
 
       // Create a background using box-shadow and clip path to hide underlying elements
       &:first-child {

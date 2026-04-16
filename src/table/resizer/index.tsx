@@ -14,6 +14,7 @@ import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { KeyCode } from '../../internal/keycode';
 import handleKey, { isEventLike } from '../../internal/utils/handle-key';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { tableStyleDictionary } from '../../style-api/table';
 import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
 import { getHeaderWidth, getResizerElements } from './resizer-lookup';
 
@@ -372,6 +373,7 @@ export function Resizer({
           ref={resizerToggleRef}
           className={clsx(
             styles.resizer,
+            tableStyleDictionary.classNames.resizeHandle,
             (resizerHasFocus || showFocusRing || isKeyboardDragging) && styles['has-focus']
           )}
           onPointerDown={event => {

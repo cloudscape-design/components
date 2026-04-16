@@ -2,43 +2,69 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Checkbox, SpaceBetween, Table } from '~components';
+import { Checkbox, Header, Pagination, SpaceBetween, Table, TextFilter } from '~components';
+import { TableProps } from '~components/table';
 
 import { SimplePage } from '../app/templates';
-import { ariaLabels, createSimpleItems, simpleColumns } from './shared-configs';
+import { ariaLabels, Item } from './shared-configs';
 import './css-style-api.css';
 
+interface DemoItem extends Item {
+  enabled: boolean;
+}
+
+const items: DemoItem[] = [
+  { number: 0, text: 'One', enabled: true },
+  { number: 1, text: 'Two', enabled: false },
+  { number: 2, text: 'Three', enabled: true },
+  { number: 3, text: 'Four', enabled: false },
+];
+
+const columnDefinitions: TableProps.ColumnDefinition<DemoItem>[] = [
+  { id: 'text', header: 'Text', cell: item => item.text },
+  {
+    id: 'enabled',
+    header: 'Enabled',
+    cell: item => <Checkbox checked={item.enabled} onChange={() => {}} />,
+  },
+  { id: 'number', header: 'Number', cell: item => item.number },
+];
+
 export default function Page() {
-  const [selectedItems, setSelectedItems] = useState([{ number: 1, text: 'One' }]);
-  const [standaloneChecked, setStandaloneChecked] = useState(true);
+  const [selectedItems, setSelectedItems] = useState([items[0], items[2]]);
+  const [filterText, setFilterText] = useState('');
+
+  const filteredItems = items.filter(
+    item => !filterText || item.text.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   return (
-    <SimplePage title="CSS Style API — Table & Checkbox">
+    <SimplePage title="CSS Style API — Table">
       <SpaceBetween size="l">
         <div>
-          <h3>Standalone checkboxes (circular via CSS override)</h3>
-          <SpaceBetween size="s" direction="horizontal">
-            <Checkbox checked={standaloneChecked} onChange={e => setStandaloneChecked(e.detail.checked)}>
-              Option A
-            </Checkbox>
-            <Checkbox checked={false} onChange={() => {}}>
-              Option B
-            </Checkbox>
-          </SpaceBetween>
+          <h2>Custom themed table</h2>
+          <p>
+            This demo uses only CSS custom properties and class selectors from the table style API to restyle the table.
+          </p>
         </div>
 
-        <div>
-          <h3>Table with selection (square checkboxes, scaled up via CSS override)</h3>
-          <Table
-            columnDefinitions={simpleColumns}
-            items={createSimpleItems(4)}
-            selectionType="multi"
-            selectedItems={selectedItems}
-            trackBy="text"
-            onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-            ariaLabels={ariaLabels}
-          />
-        </div>
+        <Table
+          className="custom-table"
+          columnDefinitions={columnDefinitions}
+          items={filteredItems}
+          selectionType="multi"
+          selectedItems={selectedItems}
+          trackBy="text"
+          onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+          ariaLabels={ariaLabels}
+          header={<Header counter={`(${filteredItems.length})`}>Styled items</Header>}
+          filter={
+            <TextFilter filteringText={filterText} onChange={({ detail }) => setFilterText(detail.filteringText)} />
+          }
+          pagination={<Pagination currentPageIndex={1} pagesCount={1} />}
+          footer="Showing all items"
+          resizableColumns={true}
+        />
       </SpaceBetween>
     </SimplePage>
   );

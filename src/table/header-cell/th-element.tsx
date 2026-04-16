@@ -18,7 +18,7 @@ import { SortingStatus } from './utils';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
-import { cssStyleApiClasses } from '../internal';
+import { tableStyleDictionary } from '../../style-api/table';
 
 export interface TableThElementProps {
   resizableStyle?: ColumnWidthStyle;
@@ -82,7 +82,7 @@ export function TableThElement({
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
-        cssStyleApiClasses.headerCell,
+        tableStyleDictionary.classNames.cell,
         sticky && styles['header-cell-sticky'],
         resizable && styles['header-cell-resizable'],
         stuck && styles['header-cell-stuck'],

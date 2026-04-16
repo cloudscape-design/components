@@ -15,6 +15,8 @@ import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { useColumnWidths } from './use-column-widths';
 import { getColumnKey } from './utils';
 
+import { tableStyleDictionary } from '../style-api/table';
+
 import styles from './styles.css.js';
 
 export interface TheadProps {
@@ -94,7 +96,7 @@ const Thead = React.forwardRef(
     };
 
     return (
-      <thead className={clsx(!hidden && styles['thead-active'])}>
+      <thead className={clsx(!hidden && styles['thead-active'], tableStyleDictionary.classNames.thead)}>
         <tr
           {...focusMarkers.all}
           ref={outerRef}
