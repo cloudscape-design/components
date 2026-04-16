@@ -2605,6 +2605,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -5607,6 +5611,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
           "$value": "700",
         },
         "font-weight-flashbar-header": {
@@ -8613,6 +8621,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -11615,6 +11627,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
           "$value": "700",
         },
         "font-weight-flashbar-header": {
@@ -14621,6 +14637,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -17625,6 +17645,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -20627,6 +20651,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
+      "$value": "700",
+    },
+    "font-weight-display-l-bold": {
+      "$description": "The default font weight for large display text.",
       "$value": "700",
     },
     "font-weight-flashbar-header": {
@@ -23638,6 +23666,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -26640,6 +26672,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
           "$value": "700",
         },
         "font-weight-flashbar-header": {
@@ -29646,6 +29682,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -32648,6 +32688,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
           "$value": "700",
         },
         "font-weight-flashbar-header": {
@@ -35654,6 +35698,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -38656,6 +38704,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
           "$value": "700",
         },
         "font-weight-flashbar-header": {
@@ -41662,6 +41714,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -44666,6 +44722,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
+        "font-weight-display-l-bold": {
+          "$description": "The default font weight for large display text.",
+          "$value": "700",
+        },
         "font-weight-flashbar-header": {
           "$description": "The default font weight for flashbar header text.",
           "$value": "700",
@@ -47668,6 +47728,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
+      "$value": "700",
+    },
+    "font-weight-display-l-bold": {
+      "$description": "The default font weight for large display text.",
       "$value": "700",
     },
     "font-weight-flashbar-header": {
