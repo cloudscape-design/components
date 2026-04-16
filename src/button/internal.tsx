@@ -261,7 +261,6 @@ export const InternalButton = React.forwardRef(
         classnames.root,
         isAnchor ? classnames.link : classnames.button
       ),
-      'data-awsui-style-variant': variant,
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
       ...getAnalyticsMetadataAttribute(analyticsMetadata),

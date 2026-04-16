@@ -9,28 +9,32 @@
     border-start-start-radius: 0px;
   }
 
-  .awsui-style-button-root[data-awsui-style-variant="primary"] {
+  .my-primary.awsui-style-button-button {
     background-color: green;
     border-color: darkgreen;
   }
 
-  /* Style icons in primary buttons */
-  .awsui-style-button-root[data-awsui-style-variant="primary"] .awsui-style-icon-root {
+  .my-primary.awsui-style-button-button .awsui-style-icon-svg {
     color: yellow;
   }
 
-  /* Style icons in normal buttons */
-  .awsui-style-button-root[data-awsui-style-variant="normal"] .awsui-style-icon-root {
+  .my-normal.awsui-style-button-button .awsui-style-icon-svg {
     color: red;
   }
 
-  /* Style icons in link buttons */
-  .awsui-style-button-root[data-awsui-style-variant="link"] .awsui-style-icon-root {
+  .my-link.awsui-style-button-link .awsui-style-icon-svg {
     color: purple;
   }
 
-  /* Style icons in icon-only buttons */
-  .awsui-style-button-root[data-awsui-style-variant="icon"] .awsui-style-icon-root {
+  /* Custom focus ring on link buttons */
+  .my-link.awsui-style-button-link {
+    --awsui-style-focus-outline-color: purple;
+    --awsui-style-focus-outline-width: 3px;
+    --awsui-style-focus-outline-offset: 4px;
+    --awsui-style-focus-outline-border-radius: 8px;
+  }
+
+  .my-icon.awsui-style-button-button .awsui-style-icon-svg {
     color: orange;
   }
 }

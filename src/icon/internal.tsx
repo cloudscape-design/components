@@ -16,12 +16,25 @@ import styles from './styles.css.js';
 
 const classnames = {
   root: 'awsui-style-icon-root',
+  svg: 'awsui-style-icon-svg',
 };
+
+function withSvgClass(node: React.ReactNode): React.ReactNode {
+  if (React.isValidElement(node) && node.type === 'svg') {
+    return React.cloneElement(node as React.ReactElement, {
+      className: clsx((node.props as { className?: string }).className, classnames.svg),
+    });
+  }
+  return node;
+}
 
 export const icon_style_api = {
   selectors: {
     [classnames.root]: {
       type: 'HTMLSpanElement',
+    },
+    [classnames.svg]: {
+      type: 'SVGSVGElement',
     },
   },
 };
@@ -125,7 +138,7 @@ const InternalIcon = ({
         aria-hidden={!hasAriaLabel}
         style={inlineStyles}
       >
-        {svg}
+        {withSvgClass(svg)}
       </WithNativeAttributes>
     );
   }
@@ -151,6 +164,7 @@ const InternalIcon = ({
     if (name === 'gen-ai' && iconSize === 'small') {
       return (
         <svg
+          className={classnames.svg}
           width="12"
           height="12"
           viewBox="0 0 16 16"
@@ -173,7 +187,7 @@ const InternalIcon = ({
           `You have specified \`name="${name}"\` but no icon with that name was found in the current IconProvider context. If this is a custom icon, ensure your app is wrapped in an \`IconProvider\` with the icon defined via \`defineIcons\`.`
         );
       }
-      return icon;
+      return withSvgClass(icon);
     }
   }
 
