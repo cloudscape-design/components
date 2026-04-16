@@ -1,30 +1,34 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import LiveRegion from '../live-region/internal';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
 import { InternalTooltipProps } from './interfaces';
 
+import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 type InternalTooltipComponentProps = InternalTooltipProps &
   InternalBaseComponentProps & {
-    // ID of the associated trigger. When the trigger and the tooltip are connected via referrer ID, the
-    // nodeBelongs(triggerNode, tooltipNode) returns true.
     referrerId?: string;
   };
 
 export default function InternalTooltip({
   content,
+  trigger,
+  triggerVariant = 'manual',
   getTrack,
   className,
   position = 'top',
@@ -34,51 +38,75 @@ export default function InternalTooltip({
   ...restProps
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
-  const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const [showTooltip, setShowTooltip] = useState(triggerVariant === 'manual');
+  const [isTruncated, setIsTruncated] = useState(false);
 
-  // Update the ref with the current tracked element
-  React.useEffect(() => {
-    const element = getTrack();
-    trackRef.current = element;
-  }, [getTrack]);
+  const resolvedGetTrack = useCallback(() => (getTrack ? getTrack() : triggerRef.current), [getTrack]);
+
+  // Truncation detection for triggerVariant="truncation"
+  useResizeObserver(triggerVariant === 'truncation' ? triggerRef : { current: null }, () => {
+    const el = triggerRef.current;
+    if (el) {
+      setIsTruncated(el.scrollWidth > el.clientWidth);
+    }
+  });
+
+  const isVisible =
+    triggerVariant === 'manual' || (triggerVariant === 'truncation' ? showTooltip && isTruncated : showTooltip);
 
   useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
     const controller = new AbortController();
     window.addEventListener(
       'keydown',
       (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
-          // Prevent any surrounding modals or dialogs from acting on this Esc.
           event.stopPropagation();
+          if (triggerVariant !== 'manual') {
+            setShowTooltip(false);
+          }
           fireNonCancelableEvent(onEscape);
         }
       },
-      {
-        // The tooltip is often activated on mouseover, which means the focus can
-        // be anywhere else on the page. Capture also means that this gets called
-        // before any wrapper modals or dialogs can detect it and act on it.
-        capture: true,
-        signal: controller.signal,
-      }
+      { capture: true, signal: controller.signal }
     );
-    return () => {
-      controller.abort();
-    };
-  }, [onEscape]);
+    return () => controller.abort();
+  }, [isVisible, onEscape, triggerVariant]);
 
-  return (
+  const triggerHandlers =
+    triggerVariant !== 'manual'
+      ? {
+          onMouseEnter: () => setShowTooltip(true),
+          onMouseLeave: () => setShowTooltip(false),
+          onFocus: () => setShowTooltip(true),
+          onBlur: () => setShowTooltip(false),
+        }
+      : {};
+
+  const triggerAriaProps: React.HTMLAttributes<HTMLSpanElement> = {};
+  if (triggerVariant === 'group') {
+    triggerAriaProps.role = 'group';
+  }
+
+  const tooltipContent =
+    triggerVariant === 'announcement' || triggerVariant === 'truncation' ? <LiveRegion>{content}</LiveRegion> : content;
+
+  const renderTooltipPopover = () => (
     <Portal>
       <div
         {...baseProps}
         className={clsx(testUtilStyles.root, baseProps.className)}
-        ref={__internalRootRef}
+        ref={trigger ? undefined : __internalRootRef}
         data-awsui-referrer-id={referrerId}
         role="tooltip"
       >
         <Transition in={true}>
           {() => (
             <PopoverContainer
-              getTrack={getTrack}
+              getTrack={resolvedGetTrack}
               size="medium"
               fixedWidth={false}
               position={position}
@@ -88,7 +116,7 @@ export default function InternalTooltip({
               className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
-                {content}
+                {tooltipContent}
               </PopoverBody>
             </PopoverContainer>
           )}
@@ -96,4 +124,38 @@ export default function InternalTooltip({
       </div>
     </Portal>
   );
+
+  // When trigger is provided, render the trigger wrapper with tooltip
+  if (trigger !== undefined) {
+    return (
+      <span
+        ref={node => {
+          (triggerRef as React.MutableRefObject<HTMLSpanElement | null>).current = node;
+          if (__internalRootRef) {
+            if (typeof __internalRootRef === 'function') {
+              __internalRootRef(node);
+            } else {
+              (__internalRootRef as React.MutableRefObject<HTMLElement | null>).current = node;
+            }
+          }
+        }}
+        className={clsx(styles.trigger, triggerVariant === 'truncation' && styles['trigger-truncation'])}
+        tabIndex={
+          triggerVariant === 'truncation' ? (isTruncated ? 0 : undefined) : triggerVariant !== 'manual' ? 0 : undefined
+        }
+        {...triggerHandlers}
+        {...triggerAriaProps}
+      >
+        {trigger}
+        {triggerVariant === 'group' && <ScreenreaderOnly>{content}</ScreenreaderOnly>}
+        {isVisible && renderTooltipPopover()}
+      </span>
+    );
+  }
+
+  // Original behavior: no trigger, just render the tooltip popover directly
+  if (!isVisible) {
+    return null;
+  }
+  return renderTooltipPopover();
 }

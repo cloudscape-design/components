@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.trigger {
+  display: inline-block;
+  max-inline-size: 100%;
+}
+
+.trigger-truncation {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
