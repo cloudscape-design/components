@@ -13,4 +13,24 @@
     background-color: green;
     border-color: darkgreen;
   }
+
+  /* Style icons in primary buttons */
+  .awsui-style-button-root[data-awsui-style-variant="primary"] .awsui-style-icon-root {
+    color: yellow;
+  }
+
+  /* Style icons in normal buttons */
+  .awsui-style-button-root[data-awsui-style-variant="normal"] .awsui-style-icon-root {
+    color: red;
+  }
+
+  /* Style icons in link buttons */
+  .awsui-style-button-root[data-awsui-style-variant="link"] .awsui-style-icon-root {
+    color: purple;
+  }
+
+  /* Style icons in icon-only buttons */
+  .awsui-style-button-root[data-awsui-style-variant="icon"] .awsui-style-icon-root {
+    color: orange;
+  }
 }

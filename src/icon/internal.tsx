@@ -14,6 +14,18 @@ import { IconProps } from './interfaces';
 
 import styles from './styles.css.js';
 
+const classnames = {
+  root: 'awsui-style-icon-root',
+};
+
+export const icon_style_api = {
+  selectors: {
+    [classnames.root]: {
+      type: 'HTMLSpanElement',
+    },
+  },
+};
+
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
@@ -67,6 +79,7 @@ const InternalIcon = ({
   baseProps.className = clsx(
     baseProps.className,
     styles.icon,
+    classnames.root,
     contextualSize && styles['icon-flex-height'],
     badge && styles.badge,
     !contextualSize && styles[`size-${iconSize}-mapped-height`],

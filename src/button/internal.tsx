@@ -40,6 +40,12 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+const classnames = {
+  root: 'awsui-style-button-root',
+  button: 'awsui-style-button-button',
+  link: 'awsui-style-button-link',
+};
+
 export const button_style_api = {
   desc: 'Button Style API. To target button icons, use the [Icon Style API](./...).',
   variables: {
@@ -49,7 +55,7 @@ export const button_style_api = {
     '--awsui-style-focus-outline-border-radius': {},
   },
   selectors: {
-    'awsui-style-button-button': {
+    [classnames.button]: {
       desc: "Selects the button element when variant 'normal', 'primary', 'icon', 'inline-icon', 'inline-icon-pointer-target', 'flashbar-icon', 'breadcrumb-group', 'menu-trigger', or 'modal-dismiss' is active",
       type: 'HTMLButtonElement',
       attributes: {
@@ -58,7 +64,7 @@ export const button_style_api = {
         },
       },
     },
-    'awsui-style-button-link': {
+    [classnames.link]: {
       desc: "Selects the button element when variant 'link' is active",
       type: 'HTMLAnchorElement',
       attributes: {
@@ -252,8 +258,8 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: clsx(
         buttonClass,
-        'awsui-style-button-root',
-        isAnchor ? 'awsui-style-button-link' : 'awsui-style-button-button'
+        classnames.root,
+        isAnchor ? classnames.link : classnames.button
       ),
       'data-awsui-style-variant': variant,
       onClick: handleClick,
