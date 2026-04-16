@@ -30,77 +30,77 @@ const styleApi: StyleAPI = {
   variables: [
     {
       name: tableStyleDictionary.vars.rowSelectionBorderColor,
-      description: 'Border color of row selection frame',
+      description: 'Border color of a selected row.',
     },
     {
       name: tableStyleDictionary.vars.rowSelectionBackgroundColor,
-      description: 'Background color of row selection frame',
+      description: 'Background color of a selected row.',
     },
   ],
   selectors: [
     {
       className: tableStyleDictionary.classNames.root,
-      description: 'Table wrapper element that includes the table and its slots (header, footer, filter, etc.).',
+      description:
+        'Root element of the table. Contains the table and its slots (header, footer, filter, pagination, preferences).',
     },
     {
       className: tableStyleDictionary.classNames.header,
-      description: 'Table header slot.',
+      description: 'Header slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.footer,
-      description: 'Table footer slot.',
+      description: 'Footer slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.filter,
-      description: 'Table filter slot.',
+      description: 'Filter slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.pagination,
-      description: 'Table pagination slot.',
+      description: 'Pagination slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.preferences,
-      description: 'Table preferences slot.',
+      description: 'Preferences slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.table,
-      description: 'The table element.',
+      description: 'The semantic table element.',
       tags: ['table'],
     },
     {
       className: tableStyleDictionary.classNames.thead,
-      description: 'Table thead element. Use it in combination with rows or cells to target table header styles.',
+      description: 'The thead element. Combine with row or cell selectors to target header-specific styles.',
       tags: ['thead'],
     },
     {
       className: tableStyleDictionary.classNames.tbody,
-      description:
-        'Table table tbody element. Use it in combination with rows or cells to target table data cell styles.',
+      description: 'The tbody element. Combine with row or cell selectors to target body-specific styles.',
       tags: ['tbody'],
     },
     {
       className: tableStyleDictionary.classNames.row,
-      description: 'Table tr element.',
+      description: 'A table row element.',
       tags: ['tr'],
     },
     {
       className: tableStyleDictionary.classNames.cell,
-      description: 'Table cell (td or th) element.',
+      description: 'A table cell element. Present on both header (th) and data (td) cells.',
       tags: ['td', 'th'],
     },
     {
       className: tableStyleDictionary.classNames.selectionCell,
-      description: 'Table selection cell (first column cells in tables with selection).',
+      description: 'The selection cell in the first column of tables with row selection enabled.',
       tags: ['td'],
     },
     {
       className: tableStyleDictionary.classNames.resizeHandle,
-      description: 'Table column resize handle.',
+      description: 'The column resize handle in tables with resizable columns.',
       tags: ['button'],
     },
     {
       className: tableStyleDictionary.classNames.expandToggle,
-      description: 'Table expand toggle button in tables with expandable rows.',
+      description: 'The row expand toggle button in tables with expandable rows.',
       tags: ['button'],
     },
   ],

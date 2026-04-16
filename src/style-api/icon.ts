@@ -10,7 +10,7 @@ export const iconStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [{ name: iconStyleDictionary.vars.color, description: 'Icon color' }],
+  variables: [{ name: iconStyleDictionary.vars.color, description: 'Color of the icon.' }],
   selectors: [],
 };
 

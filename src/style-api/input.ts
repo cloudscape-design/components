@@ -17,7 +17,7 @@ const styleApi: StyleAPI = {
     {
       className: inputStyleDictionary.classNames.root,
       description:
-        'The root element of the input that includes a semantic input and optional icons to the left and right.',
+        'Root element of the input. Contains the semantic input element and optional leading and trailing icons.',
     },
     {
       className: inputStyleDictionary.classNames.input,

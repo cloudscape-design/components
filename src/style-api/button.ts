@@ -12,16 +12,18 @@ export const buttonStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [...focusOutlineVars, { name: iconStyleDictionary.vars.color, description: 'Icon color' }],
+  variables: [...focusOutlineVars, { name: iconStyleDictionary.vars.color, description: 'Color of the icon.' }],
   selectors: [
     {
       className: buttonStyleDictionary.classNames.root,
-      description: 'The root element which can be a button or an anchor depending on properties.',
+      description:
+        'Root element of the button. Renders as a `<button>` or `<a>` depending on the component properties.',
       tags: ['button', 'a'],
       attributes: [
         {
           name: 'aria-disabled',
-          description: 'Can be used to select disabled buttons or links. Do not use "disabled" attribute for that.',
+          description:
+            'Present when the button is disabled. Prefer this over the "disabled" attribute when targeting disabled buttons or links.',
         },
       ],
     },

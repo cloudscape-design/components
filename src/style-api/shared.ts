@@ -13,10 +13,13 @@ export const focusOutlineStyleDictionary = {
 };
 
 export const focusOutlineVars: readonly StyleAPIVariable[] = [
-  { name: focusOutlineStyleDictionary.vars.color, description: 'Focus outline color' },
-  { name: focusOutlineStyleDictionary.vars.width, description: 'Focus outline width' },
-  { name: focusOutlineStyleDictionary.vars.offset, description: 'Focus outline distance from the focused element' },
-  { name: focusOutlineStyleDictionary.vars.radius, description: 'Focus outline border radius' },
+  { name: focusOutlineStyleDictionary.vars.color, description: 'Color of the focus outline.' },
+  { name: focusOutlineStyleDictionary.vars.width, description: 'Width of the focus outline.' },
+  {
+    name: focusOutlineStyleDictionary.vars.offset,
+    description: 'Gap between the focused element and the focus outline.',
+  },
+  { name: focusOutlineStyleDictionary.vars.radius, description: 'Border radius of the focus outline.' },
 ];
 
 export const placeholderStyleDictionary = {
@@ -29,8 +32,8 @@ export const placeholderStyleDictionary = {
 };
 
 export const placeholderVars: readonly StyleAPIVariable[] = [
-  { name: placeholderStyleDictionary.vars.placeholderColor, description: 'Color of the input placeholder' },
-  { name: placeholderStyleDictionary.vars.placeholderFont, description: 'Font of the input placeholder' },
-  { name: placeholderStyleDictionary.vars.placeholderFontStyle, description: 'Font style of the input placeholder' },
-  { name: placeholderStyleDictionary.vars.placeholderFontWeight, description: 'Font weight of the input placeholder' },
+  { name: placeholderStyleDictionary.vars.placeholderColor, description: 'Color of the placeholder text.' },
+  { name: placeholderStyleDictionary.vars.placeholderFont, description: 'Font shorthand for the placeholder text.' },
+  { name: placeholderStyleDictionary.vars.placeholderFontStyle, description: 'Font style of the placeholder text.' },
+  { name: placeholderStyleDictionary.vars.placeholderFontWeight, description: 'Font weight of the placeholder text.' },
 ];

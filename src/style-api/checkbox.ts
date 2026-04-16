@@ -18,23 +18,26 @@ export const checkboxStyleDictionary = {
 const styleApi: StyleAPI = {
   variables: [
     ...focusOutlineVars,
-    { name: checkboxStyleDictionary.vars.fillColor, description: 'Color of the checkbox rect background' },
-    { name: checkboxStyleDictionary.vars.markColor, description: 'Color of the checkbox mark' },
+    { name: checkboxStyleDictionary.vars.fillColor, description: 'Background color of the checkbox.' },
+    {
+      name: checkboxStyleDictionary.vars.markColor,
+      description: 'Color of the checkmark or indeterminate mark inside the checkbox.',
+    },
   ],
   selectors: [
     {
       className: checkboxStyleDictionary.classNames.root,
       description:
-        'The root element of the checkbox that includes invisible semantic input and visible checkbox SVG and label.',
+        'Root element of the checkbox. Contains the hidden semantic input, the visible checkbox SVG, and the label.',
       attributes: [
-        { name: 'data-checked', description: 'Use it to assert if the checkbox is checked.' },
-        { name: 'data-indeterminate', description: 'Use it to assert if the checkbox is indeterminate.' },
-        { name: 'data-disabled', description: 'Use it to assert if the checkbox is disabled.' },
+        { name: 'data-checked', description: 'Present when the checkbox is checked.' },
+        { name: 'data-indeterminate', description: 'Present when the checkbox is in an indeterminate state.' },
+        { name: 'data-disabled', description: 'Present when the checkbox is disabled.' },
       ],
     },
     {
       className: checkboxStyleDictionary.classNames.label,
-      description: 'Checkbox selector, rendered next to checkbox SVG element.',
+      description: 'Label element rendered next to the checkbox SVG.',
     },
   ],
 };
