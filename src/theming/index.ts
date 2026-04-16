@@ -5,6 +5,8 @@ import {
   applyTheme as coreApplyTheme,
   generateThemeStylesheet as coreGenerateThemeStylesheet,
 } from '@cloudscape-design/theming-runtime';
+import { createFullThemeDeclarations } from '@cloudscape-design/theming-runtime/shared/declaration/index';
+import { getThemeFromPreset } from '@cloudscape-design/theming-runtime/shared/theme/validate';
 
 import { preset, TypedOverride } from '../internal/generated/theming';
 
@@ -37,4 +39,13 @@ export function generateThemeStylesheet({ theme, baseThemeId }: GenerateThemeSty
     preset,
     baseThemeId,
   });
+}
+
+export interface GenerateFullThemeStylesheetParams {
+  baseThemeId?: string;
+}
+
+export function generateFullThemeStylesheet({ baseThemeId }: GenerateFullThemeStylesheetParams = {}): string {
+  const theme = getThemeFromPreset(preset, baseThemeId);
+  return createFullThemeDeclarations(theme, preset.propertiesMap);
 }
