@@ -33,6 +33,21 @@ import { drawerItems, drawerLabels } from '../app-layout/utils/drawers';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
 
+function Typography() {
+  return (
+    <SpaceBetween size="s">
+      <Box variant="h1">Heading XL (h1)</Box>
+      <Box variant="h2">Heading L (h2)</Box>
+      <Box variant="h3">Heading M (h3)</Box>
+      <Box variant="h4">Heading S (h4)</Box>
+      <Box variant="h5">Heading XS (h5)</Box>
+      <Box variant="awsui-value-large">Display L value</Box>
+      <Box variant="p">Body M — Regular paragraph text used for descriptions and content blocks.</Box>
+      <Box variant="small">Body S — Small text used for secondary information.</Box>
+    </SpaceBetween>
+  );
+}
+
 function Buttons() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
   const [toggle1, setToggle1] = useState(true);
@@ -425,6 +440,7 @@ export default function ThemedComponentsPage() {
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
+          fontWeightDisplayLBold: '300',
         },
       };
 
@@ -453,6 +469,8 @@ export default function ThemedComponentsPage() {
             <span style={{ marginInlineStart: 5 }}>Apply custom themes</span>
           </label>
         </SpaceBetween>
+
+        <Typography />
 
         <SpaceBetween size="l">
           <Grid gridDefinition={[{ colspan: { default: 12, xxs: 6 } }, { colspan: { default: 12, xxs: 6 } }]}>

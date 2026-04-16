@@ -50,7 +50,6 @@
     }
     &.value-large-variant {
       @include styles.font-display-l;
-      font-weight: awsui.$font-box-value-large-weight;
       color: inherit;
     }
     &.inline-code-variant {
