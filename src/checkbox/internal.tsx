@@ -17,43 +17,12 @@ import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import { checkboxStyleDictionary } from '../style-api/checkbox';
 import { GeneratedAnalyticsMetadataCheckboxComponent } from './analytics-metadata/interfaces';
 import { CheckboxProps } from './interfaces';
 import { getAbstractSwitchStyles, getCheckboxIconStyles } from './style';
 
 import styles from './styles.css.js';
-
-const classnames = {
-  root: 'awsui-style-checkbox-root',
-  label: 'awsui-style-checkbox-label',
-};
-
-export const checkbox_style_api = {
-  variables: {
-    '--awsui-style-focus-outline-color': {},
-    '--awsui-style-focus-outline-width': {},
-    '--awsui-style-focus-outline-offset': {},
-    '--awsui-style-focus-outline-border-radius': {},
-  },
-  selectors: {
-    [classnames.root]: {
-      type: 'HTMLDivElement',
-      attributes: {
-        'data-checked': {},
-        'data-disabled': {},
-        'data-indeterminate': {},
-      },
-      variables: {
-        '--var-awsui-style-checkbox-stroke': {},
-        '--var-awsui-style-checkbox-fill': {},
-        '--var-awsui-style-checkbox-checkmark': {},
-      },
-    },
-    [classnames.label]: {
-      type: 'HTMLSpanElement',
-    },
-  },
-};
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
@@ -118,14 +87,14 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className, classnames.root)}
+        className={clsx(styles.root, baseProps.className, checkboxStyleDictionary.classNames.root)}
         controlClassName={clsx(styles['checkbox-control'])}
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
         readOnly={readOnly}
         label={children}
-        labelClassName={classnames.label}
+        labelClassName={checkboxStyleDictionary.classNames.label}
         description={description}
         descriptionBottomPadding={true}
         data-checked={checked || undefined}

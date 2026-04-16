@@ -1,7 +1,7 @@
 @layer application, awsui-components;
 
 @layer application {
-  .awsui-style-button-button {
+  .awsui-style-button-root:is(button) {
     border-color: #6366f1;
     background-color: #818cf8;
     color: #fff;
@@ -9,77 +9,76 @@
     border-start-start-radius: 6px;
   }
 
-  .awsui-style-button-button:hover {
+  .awsui-style-button-root:is(button):hover {
     background-color: #6366f1;
     border-color: #4f46e5;
   }
 
-  .awsui-style-button-button:disabled {
+  .awsui-style-button-root:is(button):disabled {
     background-color: #c7d2fe;
     border-color: #a5b4fc;
     color: #6366f1;
     cursor: not-allowed;
   }
 
-  .awsui-style-button-button:disabled:hover {
+  .awsui-style-button-root:is(button):disabled:hover {
     background-color: #fecaca;
     border-color: #f87171;
     color: #b91c1c;
-
   }
 
-  .my-primary.awsui-style-button-button {
+  .my-primary.awsui-style-button-root:is(button) {
     background-color: #4f46e5;
     border-color: #3730a3;
   }
 
-  .my-primary.awsui-style-button-button:hover {
+  .my-primary.awsui-style-button-root:is(button):hover {
     background-color: #3730a3;
     border-color: #312e81;
   }
 
-  .my-primary.awsui-style-button-button .awsui-style-icon-svg {
-    color: #e0e7ff;
+  .my-primary.awsui-style-button-root:is(button) {
+    --awsui-style-icon-color: #e0e7ff;
   }
 
-  .my-normal.awsui-style-button-button .awsui-style-icon-svg {
-    color: #fde047;
+  .my-normal.awsui-style-button-root:is(button) {
+    --awsui-style-icon-color: #fde047;
   }
 
-  .my-normal.awsui-style-button-button:hover .awsui-style-icon-svg {
-    color: #facc15;
+  .my-normal.awsui-style-button-root:is(button):hover {
+    --awsui-style-icon-color: #facc15;
   }
 
-  .my-link.awsui-style-button-link .awsui-style-icon-svg {
-    color: #7c3aed;
+  .my-link.awsui-style-button-root:is(a) {
+    --awsui-style-icon-color: #7c3aed;
   }
 
-  .my-link.awsui-style-button-link:hover .awsui-style-icon-svg {
-    color: #5b21b6;
+  .my-link.awsui-style-button-root:is(a):hover {
+    --awsui-style-icon-color: #5b21b6;
   }
 
-  .my-link.awsui-style-button-link {
+  .my-link.awsui-style-button-root:is(a) {
     --awsui-style-focus-outline-color: #dc2626;
     --awsui-style-focus-outline-width: 3px;
     --awsui-style-focus-outline-border-radius: 0px;
   }
 
-  .my-icon.awsui-style-button-button {
+  .my-icon.awsui-style-button-root:is(button) {
     --awsui-style-focus-outline-color: #dc2626;
     --awsui-style-focus-outline-width: 3px;
     --awsui-style-focus-outline-offset: 6px;
     --awsui-style-focus-outline-border-radius: 50px;
   }
 
-  .my-icon.awsui-style-button-button .awsui-style-icon-svg {
-    color: #ea580c;
+  .my-icon.awsui-style-button-root:is(button) {
+    --awsui-style-icon-color: #ea580c;
   }
 
-  .my-icon.awsui-style-button-button:hover .awsui-style-icon-svg {
-    color: #c2410c;
+  .my-icon.awsui-style-button-root:is(button):hover {
+    --awsui-style-icon-color: #c2410c;
   }
 
-  .awsui-style-button-button:disabled .awsui-style-icon-svg {
-    color: #a5b4fc;
+  .awsui-style-button-root:is(button):disabled {
+    --awsui-style-icon-color: #a5b4fc;
   }
 }

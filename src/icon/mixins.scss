@@ -94,7 +94,7 @@ $_icon-sizes: (
 @mixin make-icon-variants {
   @each $variant in map.keys($_variant-colors) {
     &.variant-#{$variant} {
-      color: #{map.get($_variant-colors, $variant)};
+      color: var(--awsui-style-icon-color, #{map.get($_variant-colors, $variant)});
     }
   }
 }

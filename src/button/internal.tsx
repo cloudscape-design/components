@@ -31,6 +31,7 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import InternalLiveRegion from '../live-region/internal';
 import Tooltip from '../tooltip/internal.js';
+import { buttonStyleDictionary } from '../style-api/button';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
@@ -39,42 +40,6 @@ import { getButtonStyles } from './style';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-
-const classnames = {
-  root: 'awsui-style-button-root',
-  button: 'awsui-style-button-button',
-  link: 'awsui-style-button-link',
-};
-
-export const button_style_api = {
-  desc: 'Button Style API. To target button icons, use the [Icon Style API](./...).',
-  variables: {
-    '--awsui-style-focus-outline-color': {},
-    '--awsui-style-focus-outline-width': {},
-    '--awsui-style-focus-outline-offset': {},
-    '--awsui-style-focus-outline-border-radius': {},
-  },
-  selectors: {
-    [classnames.button]: {
-      desc: "Selects the button element when variant 'normal', 'primary', 'icon', 'inline-icon', 'inline-icon-pointer-target', 'flashbar-icon', 'breadcrumb-group', 'menu-trigger', or 'modal-dismiss' is active",
-      type: 'HTMLButtonElement',
-      attributes: {
-        'aria-disabled': {
-          desc: 'Can be used to style disabled buttons',
-        },
-      },
-    },
-    [classnames.link]: {
-      desc: "Selects the button element when variant 'link' is active",
-      type: 'HTMLAnchorElement',
-      attributes: {
-        'aria-disabled': {
-          desc: 'Can be used to style disabled buttons',
-        },
-      },
-    },
-  },
-};
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?:
@@ -258,8 +223,7 @@ export const InternalButton = React.forwardRef(
       title: __title ?? ariaLabel,
       className: clsx(
         buttonClass,
-        classnames.root,
-        isAnchor ? classnames.link : classnames.button
+        buttonStyleDictionary.classNames.root
       ),
       onClick: handleClick,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
