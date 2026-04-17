@@ -13,6 +13,7 @@ export default function Page() {
   const [value3, setValue3] = useState('');
   const [value4, setValue4] = useState('');
   const [value5, setValue5] = useState('');
+  const [value6, setValue6] = useState('Invalid value');
 
   return (
     <SimplePage title="Input CSS Style API">
@@ -81,6 +82,17 @@ export default function Page() {
             value={value5}
             onChange={e => setValue5(e.detail.value)}
             placeholder="Focus me..."
+          />
+        </div>
+
+        <div>
+          <h2>Invalid state (hover to see custom hover styling)</h2>
+          <Input
+            className="my-invalid"
+            value={value6}
+            onChange={e => setValue6(e.detail.value)}
+            invalid={true}
+            placeholder="Invalid input..."
           />
         </div>
       </SpaceBetween>

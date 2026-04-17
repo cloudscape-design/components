@@ -90,4 +90,25 @@
     box-shadow: 0 0 0 3px #fca5a5;
     border-radius: 0;
   }
+
+  /* Invalid state with custom hover */
+  .my-invalid .awsui-style-input-input[aria-invalid='true'] {
+    border-color: #b45309;
+    background-color: #fffbeb;
+    color: #78350f;
+    border-inline-start-width: 3px;
+  }
+
+  .my-invalid .awsui-style-input-input[aria-invalid='true']:hover {
+    border-color: #d97706;
+    background-color: #fef3c7;
+    color: #451a03;
+    box-shadow: 0 0 0 2px #fde68a;
+  }
+
+  .my-invalid .awsui-style-input-input[aria-invalid='true']:focus {
+    border-color: #92400e;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px #fde68a;
+  }
 }

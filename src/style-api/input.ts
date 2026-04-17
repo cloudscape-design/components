@@ -23,6 +23,13 @@ const styleApi: StyleAPI = {
       className: inputStyleDictionary.classNames.input,
       tags: ['input'],
       description: 'The semantic input element.',
+      attributes: [
+        {
+          name: 'aria-invalid',
+          description:
+            'Present when the input is in an invalid state.',
+        },
+      ],
     },
   ],
 };
