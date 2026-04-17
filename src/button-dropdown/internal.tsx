@@ -18,6 +18,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { buttonDropdownStyleDictionary } from '../style-api/button-dropdown';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
@@ -59,6 +60,7 @@ const InternalButtonDropdown = React.forwardRef(
       nativeMainActionAttributes,
       nativeTriggerAttributes,
       renderItem,
+      referrerClassName,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -156,7 +158,8 @@ const InternalButtonDropdown = React.forwardRef(
       className: clsx(
         styles['trigger-button'],
         styles['test-utils-button-trigger'],
-        analyticsSelectors['trigger-label']
+        analyticsSelectors['trigger-label'],
+        buttonDropdownStyleDictionary.classNames.trigger
       ),
       ...iconProps,
       variant: triggerVariant,
@@ -246,7 +249,8 @@ const InternalButtonDropdown = React.forwardRef(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
             isVisualRefresh && styles['visual-refresh'],
-            canBeFullWidth && styles['main-action-full-width']
+            canBeFullWidth && styles['main-action-full-width'],
+            buttonDropdownStyleDictionary.classNames.mainAction
           )}
           variant={variant}
           ariaLabel={mainActionAriaLabel}
@@ -352,6 +356,7 @@ const InternalButtonDropdown = React.forwardRef(
           styles['button-dropdown'],
           styles[`variant-${variant}`],
           canBeFullWidth && styles['full-width'],
+          buttonDropdownStyleDictionary.classNames.root,
           baseProps.className
         )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
@@ -367,6 +372,7 @@ const InternalButtonDropdown = React.forwardRef(
           onOutsideClick={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
+          referrerClassName={clsx(referrerClassName, buttonDropdownStyleDictionary.classNames.dropdown)}
           content={
             <>
               {hasHeader && (

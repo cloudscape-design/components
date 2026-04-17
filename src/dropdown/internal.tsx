@@ -51,6 +51,7 @@ export interface InternalDropdownProps
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
   triggerRef?: React.RefObject<HTMLElement>;
   triggerId?: string;
+  referrerClassName?: string;
 }
 
 import styles from './styles.css.js';
@@ -62,6 +63,7 @@ interface DropdownContainerProps {
   renderWithPortal: boolean;
   id?: string;
   referrerId?: string;
+  referrerClassName?: string;
   open?: boolean;
 }
 
@@ -71,6 +73,7 @@ const DropdownContainer = ({
   renderWithPortal,
   id,
   referrerId,
+  referrerClassName,
   open,
 }: DropdownContainerProps) => {
   if (!renderWithPortal) {
@@ -81,7 +84,7 @@ const DropdownContainer = ({
   }
   const currentDocument = triggerRef.current?.ownerDocument ?? document;
   return createPortal(
-    <div id={id} data-awsui-referrer-id={referrerId}>
+    <div id={id} data-awsui-referrer-id={referrerId} className={referrerClassName}>
       {children}
     </div>,
     currentDocument.body
@@ -232,6 +235,7 @@ const InternalDropdown = ({
   ariaLabelledby,
   ariaDescribedby,
   style,
+  referrerClassName,
   __internalRootRef,
   ...restProps
 }: InternalDropdownProps) => {
@@ -567,6 +571,7 @@ const InternalDropdown = ({
         renderWithPortal={expandToViewport && !interior}
         id={dropdownId}
         referrerId={referrerId}
+        referrerClassName={referrerClassName}
         open={open}
       >
         <Transition in={open ?? false} exit={false}>

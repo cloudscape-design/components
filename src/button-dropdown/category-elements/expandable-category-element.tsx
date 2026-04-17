@@ -9,6 +9,7 @@ import Dropdown from '../../dropdown/internal';
 import InternalIcon from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { buttonDropdownStyleDictionary } from '../../style-api/button-dropdown';
 import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
@@ -149,7 +150,11 @@ const ExpandableCategoryElement = ({
             <ul
               role="menu"
               aria-label={item.text}
-              className={clsx(styles['items-list-container'], styles['in-dropdown'])}
+              className={clsx(
+                styles['items-list-container'],
+                styles['in-dropdown'],
+                buttonDropdownStyleDictionary.classNames.dropdownExpandableGroup
+              )}
             >
               <ItemsList
                 items={item.items}

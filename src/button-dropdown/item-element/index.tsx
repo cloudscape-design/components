@@ -13,6 +13,7 @@ import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { getDataAttributes } from '../../internal/utils/data-attributes';
+import { buttonDropdownStyleDictionary } from '../../style-api/button-dropdown';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
 import { ButtonDropdownProps, InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
@@ -62,15 +63,20 @@ const ItemElement = ({
 
   return (
     <li
-      className={clsx(styles['item-element'], styles[`variant-${variant}`], {
-        [styles.highlighted]: highlighted,
-        [styles.disabled]: disabled,
-        [styles['has-category-header']]: hasCategoryHeader,
-        [styles['has-checkmark']]: isCheckbox,
-        [styles['show-divider']]: showDivider,
-        [styles['is-focused']]: isKeyboardHighlighted,
-        [styles['visual-refresh']]: isVisualRefresh,
-      })}
+      className={clsx(
+        styles['item-element'],
+        styles[`variant-${variant}`],
+        buttonDropdownStyleDictionary.classNames.dropdownOption,
+        {
+          [styles.highlighted]: highlighted,
+          [styles.disabled]: disabled,
+          [styles['has-category-header']]: hasCategoryHeader,
+          [styles['has-checkmark']]: isCheckbox,
+          [styles['show-divider']]: showDivider,
+          [styles['is-focused']]: isKeyboardHighlighted,
+          [styles['visual-refresh']]: isVisualRefresh,
+        }
+      )}
       role="presentation"
       data-testid={item.id}
       data-description={item.description}

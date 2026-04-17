@@ -204,6 +204,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
     button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
     anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
   };
+
+  /**
+   * This class name is attached to the portal element when the component is used with `expandToViewport`.
+   */
+  referrerClassName?: string;
 }
 
 export namespace ButtonDropdownProps {

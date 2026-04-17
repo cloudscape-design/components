@@ -1,0 +1,64 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-combinator-disallowed-list */
+
+@layer application, awsui-components;
+
+@layer application {
+  /* ── Root ── */
+  .custom-button-dropdown.awsui-style-button-dropdown-root {
+    --awsui-style-focus-outline-color: #7c3aed;
+  }
+
+  /* ── Trigger button ── */
+  .custom-button-dropdown .awsui-style-button-dropdown-trigger {
+    background-color: #7c3aed;
+    color: #ffffff;
+    border-color: #6d28d9;
+  }
+
+  .custom-button-dropdown .awsui-style-button-dropdown-trigger:hover {
+    background-color: #6d28d9;
+    border-color: #5b21b6;
+  }
+
+  /* ── Main action button (split variant) ── */
+  .custom-button-dropdown .awsui-style-button-dropdown-main-action {
+    background-color: #7c3aed;
+    color: #ffffff;
+    border-color: #6d28d9;
+  }
+
+  .custom-button-dropdown .awsui-style-button-dropdown-main-action:hover {
+    background-color: #6d28d9;
+    border-color: #5b21b6;
+  }
+
+  /* ── Dropdown options ── */
+  .custom-button-dropdown .awsui-style-button-dropdown-dropdown-option:hover {
+    background-color: #ede9fe;
+  }
+
+  /* ── Dropdown groups ── */
+  .custom-button-dropdown .awsui-style-button-dropdown-dropdown-group,
+  .custom-button-dropdown .awsui-style-button-dropdown-dropdown-expandable-group {
+    border-inline-start: 2px solid #ddd6fe;
+    margin-inline-start: 8px;
+    padding-inline-start: 4px;
+  }
+
+  /* ── Portal case (expandToViewport=true): scope via referrer class ── */
+  .custom-button-dropdown-portal .awsui-style-button-dropdown-dropdown-option:hover {
+    background-color: #ede9fe;
+  }
+
+  .custom-button-dropdown-portal .awsui-style-button-dropdown-dropdown-group,
+  .custom-button-dropdown-portal .awsui-style-button-dropdown-dropdown-expandable-group {
+    border-inline-start: 2px solid #ddd6fe;
+    margin-inline-start: 8px;
+    padding-inline-start: 4px;
+  }
+}

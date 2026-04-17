@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
+import { buttonDropdownStyleDictionary } from '../../style-api/button-dropdown';
 import { ButtonDropdownProps, CategoryProps } from '../interfaces';
 import ItemsList from '../items-list';
 
@@ -66,7 +67,12 @@ const CategoryElement = ({
           )}
         </p>
       )}
-      <ul className={styles['items-list-container']} role="group" aria-label={item.text} aria-disabled={disabled}>
+      <ul
+        className={clsx(styles['items-list-container'], buttonDropdownStyleDictionary.classNames.dropdownGroup)}
+        role="group"
+        aria-label={item.text}
+        aria-disabled={disabled}
+      >
         {item.items && (
           <ItemsList
             items={item.items}
