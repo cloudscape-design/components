@@ -4,7 +4,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { ButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -24,7 +23,7 @@ const items: Item[] = [
   { id: 3, name: 'Bananas' },
 ];
 
-const selectionControllerItems: ButtonDropdownProps.Items = [
+const selectionControllerItems: TableProps['selectionControllerItems'] = [
   { id: 'all', text: 'All' },
   { id: 'none', text: 'None' },
   { id: 'with-desc', text: 'With description', secondaryText: 'A helpful description' },

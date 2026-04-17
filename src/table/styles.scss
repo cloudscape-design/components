@@ -192,6 +192,16 @@ filter search icon.
   }
 }
 
+.selection-notification {
+  padding-inline: awsui.$space-table-horizontal;
+  padding-block-end: awsui.$space-scaled-xs;
+
+  &.variant-embedded,
+  &.variant-borderless {
+    padding-inline: 0;
+  }
+}
+
 .footer-wrapper {
   &.variant-stacked,
   &.variant-container {

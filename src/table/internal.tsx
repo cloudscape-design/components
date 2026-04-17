@@ -150,6 +150,7 @@ const InternalTable = React.forwardRef(
       cellVerticalAlign,
       selectionControllerItems,
       onSelectionControllerItemClick,
+      selectionNotification,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -509,6 +510,11 @@ const InternalTable = React.forwardRef(
                           />
                         </CollectionLabelContext.Provider>
                       </div>
+                    </div>
+                  )}
+                  {selectionNotification && (
+                    <div className={clsx(styles['selection-notification'], styles[`variant-${computedVariant}`])}>
+                      {selectionNotification}
                     </div>
                   )}
                   {stickyHeader && (
