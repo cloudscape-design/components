@@ -15,7 +15,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 $cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
 $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
 $selected-border: awsui.$border-width-item-selected solid var(--awsui-style-table-row-selection-border-color, awsui.$color-border-item-selected);
-$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
+$selected-border-placeholder: awsui.$border-divider-list-width solid var(--awsui-style-table-row-selection-border-color, awsui.$color-border-item-placeholder);
 $border-placeholder: awsui.$border-item-width solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 // Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
