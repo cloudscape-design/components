@@ -132,7 +132,6 @@ filter search icon.
 */
 .selection-control {
   box-sizing: border-box;
-  max-inline-size: awsui.$size-table-selection-horizontal;
   min-inline-size: awsui.$size-table-selection-horizontal;
   position: relative;
   inline-size: awsui.$size-table-selection-horizontal;
@@ -191,6 +190,11 @@ filter search icon.
     padding-inline: awsui.$space-table-header-horizontal;
     padding-block-start: awsui.$space-table-embedded-header-top;
   }
+}
+
+.selection-notification {
+  padding-inline: 0;
+  padding-block: 0;
 }
 
 .footer-wrapper {

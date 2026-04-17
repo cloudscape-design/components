@@ -32,3 +32,85 @@
 .stud {
   visibility: hidden;
 }
+
+.selection-controller-trigger {
+  @include styles.styles-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-inline: none;
+  border-block: none;
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xxs;
+  color: awsui.$color-text-interactive-default;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+    background: awsui.$color-background-input-default;
+  }
+
+  &:focus-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+
+  &:disabled {
+    color: awsui.$color-text-interactive-disabled;
+    cursor: default;
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.selection-controller-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: awsui.$space-xxs;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 100%;
+  inline-size: 100%;
+  box-sizing: border-box;
+
+  // Override the checkbox label's absolute positioning when inside the wrapper.
+  // The label (which has .root and .label) is a direct child of this wrapper
+  // because SelectionControl renders a fragment.
+  > .label {
+    position: relative;
+    inline-size: auto;
+    block-size: auto;
+    inset-block-start: auto;
+    inset-inline-start: auto;
+    padding-block-end: 0;
+    border-inline-end: none;
+  }
+
+  // Hide the invisible spacing stud — not needed when the wrapper controls layout.
+  > .stud {
+    display: none;
+  }
+}
+
+// Wrapper for body row selection controls when the selection controller is present.
+// Constrains the absolutely-positioned label so the checkbox stays in its normal
+// position and the extra column width appears as space on the inline-end side.
+.body-selection-controller-wrapper {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 100%;
+  // Use the standard selection column width so the label centers within it,
+  // leaving extra column space on the right.
+  inline-size: awsui.$size-table-selection-horizontal;
+}

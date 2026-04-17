@@ -46,6 +46,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
   empty?: React.ReactNode;
 
   /**
+   * Displays a notification banner between the table header and the table body.
+   * Use this slot to render contextual messages related to the current selection state,
+   * such as cross-page selection prompts (for example, "12 items selected on this page.
+   * Select 85 items across the table.") or confirmation messages after selecting all items.
+   *
+   * The content is rendered inside the table container, below the filter and above the
+   * column headers. It is only visible when this property is not `undefined`.
+   */
+  selectionNotification?: React.ReactNode;
+
+  /**
    * Specifies the data that's displayed in the table rows. Each item contains the data for one row. The display of a row is handled
    * by the `cell` property of each column definition in the `columnDefinitions` property.
    */
@@ -429,6 +440,54 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Renders loader counter that is appended to the loader content in all loader states.
    */
   renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
+
+  /**
+   * Specifies the items displayed in the selection controller dropdown.
+   *
+   * The selection controller adds a small dropdown trigger next to the "select all"
+   * checkbox in the table header. It provides quick access to predefined selection
+   * actions, such as selecting items by attribute (for example, by status or type).
+   *
+   * Each entry in the array is either a `SelectionControllerItem` or a `SelectionControllerItemGroup`.
+   *
+   * SelectionControllerItem has the following properties:
+   * * `id` (string) - A unique identifier for the selection action.
+   * * `text` (string) - The display label for the selection action.
+   * * `itemType` (optional, `'checkbox'`) - Set to `'checkbox'` to render the item as a toggleable checkbox.
+   * * `checked` (optional, boolean) - Whether the checkbox item is checked. Only applicable when `itemType` is `'checkbox'`.
+   * * `disabled` (optional, boolean) - When `true`, the item is rendered in a disabled state and cannot be activated.
+   * * `disabledReason` (optional, string) - A reason displayed when hovering over a disabled item.
+   * * `secondaryText` (optional, string) - Secondary descriptive text displayed below the item text.
+   * * `ariaLabel` (optional, string) - An accessible label for the item.
+   * * `iconName` (optional, string) - An icon name displayed before the item text.
+   * * `iconSvg` (optional, ReactNode) - An icon SVG displayed before the item text.
+   *
+   * SelectionControllerItemGroup has the following properties:
+   * * `text` (optional, string) - A display label for the group header.
+   * * `items` (SelectionControllerItem[]) - The items within this group.
+   * * `disabled` (optional, boolean) - When `true`, the group is rendered in a disabled state.
+   *
+   * The selection controller is only rendered when `selectionType` is `"multi"` and
+   * this property contains at least one item. It is not rendered when `selectionType`
+   * is `"single"`, when `expandableRows` with group selection is configured, or when
+   * this property is `undefined` or an empty array.
+   */
+  selectionControllerItems?: ReadonlyArray<
+    TableProps.SelectionControllerItem | TableProps.SelectionControllerItemGroup
+  >;
+
+  /**
+   * Called when a user clicks a selection controller item in the dropdown.
+   *
+   * The event `detail` contains the `id` of the clicked item. For checkbox items,
+   * it also includes the new `checked` state after the toggle.
+   *
+   * The table does not automatically change `selectedItems` when a selection
+   * controller item is clicked. Use this event handler to implement your own
+   * selection logic (for example, selecting all items that match a filter condition)
+   * and update `selectedItems` accordingly.
+   */
+  onSelectionControllerItemClick?: NonCancelableEventHandler<TableProps.SelectionControllerItemClickDetail>;
 }
 
 export namespace TableProps {
@@ -547,6 +606,7 @@ export namespace TableProps {
     successfulEditLabel?: (column: ColumnDefinition<any>) => string;
     expandButtonLabel?: (item: T) => string;
     collapseButtonLabel?: (item: T) => string;
+    selectionControllerLabel?: string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -654,6 +714,45 @@ export namespace TableProps {
 
   export interface RenderLoaderEmptyDetail<T> {
     item: T;
+  }
+
+  export interface SelectionControllerItem {
+    /** Unique identifier for the selection action. */
+    id: string;
+    /** Display label for the selection action. */
+    text: string;
+    /** Set to `'checkbox'` to render the item as a toggleable checkbox. */
+    itemType?: 'checkbox';
+    /** Whether the checkbox item is checked. Only applicable when `itemType` is `'checkbox'`. */
+    checked?: boolean;
+    /** When true, the item is rendered in a disabled state and cannot be activated. */
+    disabled?: boolean;
+    /** Optional reason displayed when hovering over a disabled item. */
+    disabledReason?: string;
+    /** Optional secondary descriptive text displayed below the item text. */
+    secondaryText?: string;
+    /** Optional accessible label for the item. */
+    ariaLabel?: string;
+    /** Optional icon name displayed before the item text. */
+    iconName?: string;
+    /** Optional icon SVG displayed before the item text. */
+    iconSvg?: React.ReactNode;
+  }
+
+  export interface SelectionControllerItemGroup {
+    /** Optional display label for the group header. */
+    text?: string;
+    /** The items within this group. */
+    items: ReadonlyArray<SelectionControllerItem>;
+    /** When true, the group is rendered in a disabled state. */
+    disabled?: boolean;
+  }
+
+  export interface SelectionControllerItemClickDetail {
+    /** The `id` of the activated item. */
+    id: string;
+    /** For checkbox items, the new checked state after the click. */
+    checked?: boolean;
   }
 }
 
