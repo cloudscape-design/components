@@ -110,6 +110,7 @@ export default function SelectionControllerPage() {
 
 function FunctionsTable() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
+  const [notificationDismissed, setNotificationDismissed] = useState(false);
 
   const { items, actions, filteredItemsCount, crossPageSelectionState, collectionProps, filterProps, paginationProps } =
     useCollection(allFunctions, {
@@ -183,19 +184,22 @@ function FunctionsTable() {
             },
           ];
         },
-        onSelectionControllerItemClick: (detail, visibleItems, hookActions) => {
+        onSelectionControllerItemClick: (detail, visibleItems, hookActions, allItems) => {
+          setNotificationDismissed(false);
           const pred = predicates[detail.id];
           if (!pred) {
             return;
           }
           const current = (collectionProps.selectedItems ?? []) as LambdaFunction[];
           const matching = visibleItems.filter(pred) as LambdaFunction[];
+          const allMatching = (allItems as LambdaFunction[]).filter(pred);
           if (detail.checked) {
             const existing = new Set(current.map(s => s.name));
             hookActions.setSelectedItems([...current, ...matching.filter(m => !existing.has(m.name))]);
           } else {
             hookActions.setSelectedItems(current.filter(s => !matching.some(m => m.name === s.name)));
           }
+          return { allMatchingItems: allMatching };
         },
       },
     });
@@ -206,21 +210,40 @@ function FunctionsTable() {
 
   // Cross-page selection notification — state computed by the hook
   let selectionNotification: React.ReactNode = undefined;
-  if (crossPageSelectionState?.type === 'all-selected') {
+  if (!notificationDismissed && crossPageSelectionState?.type === 'all-selected') {
     selectionNotification = (
-      <Alert type="warning" dismissible={true} onDismiss={() => actions.setSelectedItems([])}>
+      <Alert type="warning" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
         {crossPageSelectionState.totalCount} items are selected across the table.{' '}
-        <Button variant="link" onClick={() => actions.setSelectedItems([])}>
-          Clear selection.
+        <Button
+          variant="inline-link"
+          onClick={() => {
+            actions.setSelectedItems([]);
+          }}
+        >
+          <u>Clear selection</u>
         </Button>
+        .
       </Alert>
+
+      // <Alert type="warning" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
+      //   {crossPageSelectionState.totalCount} items are selected across the table.{' '}
+      //   <Button variant="inline-link" onClick={() => actions.setSelectedItems([])}>
+      //     Clear selection.
+      //   </Button>{' '}
+      // </Alert>
     );
-  } else if (crossPageSelectionState?.type === 'page-selected') {
+  } else if (!notificationDismissed && crossPageSelectionState?.type === 'page-selected') {
     selectionNotification = (
-      <Alert type="info" dismissible={true} onDismiss={() => actions.setSelectedItems([])}>
-        {crossPageSelectionState.pageCount} items selected on this page.{' '}
-        <Button variant="link" onClick={() => actions.selectAllAcrossPages()}>
-          Select {crossPageSelectionState.totalCount} items
+      <Alert type="info" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
+        {selectedItems.length} items selected on this page. {crossPageSelectionState.pageCount} items selected on this
+        page.{' '}
+        <Button
+          variant="inline-link"
+          onClick={() => {
+            actions.selectAllAcrossPages();
+          }}
+        >
+          <u>Select {crossPageSelectionState.totalCount} items</u>
         </Button>{' '}
         across the table.
       </Alert>
@@ -266,6 +289,7 @@ function FunctionsTable() {
         tableLabel: 'Functions',
         selectionControllerLabel: 'Function selection options',
       }}
+      selectionType="multi"
       pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
       filter={
         <TextFilter
