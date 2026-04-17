@@ -7,228 +7,230 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
-$cell-horizontal-padding: awsui.$space-scaled-l;
+@layer awsui-components {
+  $cell-horizontal-padding: awsui.$space-scaled-l;
 
-@mixin when-focus-visible-or-fake {
-  @include focus-visible.when-visible {
-    @content;
-  }
-  &.header-cell-fake-focus {
-    @include focus-visible.when-visible-unfocused {
+  @mixin when-focus-visible-or-fake {
+    @include focus-visible.when-visible {
       @content;
     }
-  }
-}
-
-@mixin header-cell-focus-outline($gutter) {
-  @include when-focus-visible-or-fake {
-    @include styles.focus-highlight(calc(-1 * #{$gutter}));
-  }
-}
-
-@mixin header-cell-focus-outline-first($gutter) {
-  @include when-focus-visible-or-fake {
-    // Give extra space on the left (inline start) to compensate for missing header cell padding.
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{$gutter}),
-        'horizontal': (
-          'left': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
-          'right': calc(-1 * #{$gutter}),
-        ),
-      )
-    );
-  }
-}
-
-@mixin cell-offset($padding) {
-  padding-inline-start: $padding;
-
-  &.header-cell-content-expandable {
-    padding-inline-start: calc(#{$padding} + #{awsui.$space-m} + #{awsui.$space-xs});
-  }
-}
-
-.header-cell {
-  position: relative;
-  text-align: start;
-  box-sizing: border-box;
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  background: awsui.$color-background-table-header;
-  color: awsui.$color-text-column-header;
-  font-weight: awsui.$font-weight-heading-s;
-  @include styles.font-smoothing;
-  padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
-
-  @include header-cell-focus-outline(awsui.$space-scaled-xxs);
-
-  &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
-  }
-  &-stuck:not(.header-cell-variant-full-page) {
-    border-block-end-color: transparent;
-  }
-  &-variant-full-page {
-    background: awsui.$color-background-layout-main;
-  }
-  &-variant-full-page.header-cell-hidden {
-    border-block-end-color: transparent;
-  }
-  &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
-  &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
-    background: none;
-  }
-  &:last-child,
-  &.header-cell-sortable {
-    padding-inline-end: awsui.$space-xs;
-  }
-
-  &.sticky-cell {
-    position: sticky;
-    background: awsui.$color-background-table-header;
-    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
-    @include styles.with-motion {
-      transition-property: padding;
-      transition-duration: awsui.$motion-duration-transition-show-quick;
-      transition-timing-function: awsui.$motion-easing-sticky;
+    &.header-cell-fake-focus {
+      @include focus-visible.when-visible-unfocused {
+        @content;
+      }
     }
-    &.table-variant-full-page {
+  }
+
+  @mixin header-cell-focus-outline($gutter) {
+    @include when-focus-visible-or-fake {
+      @include styles.focus-highlight(calc(-1 * #{$gutter}));
+    }
+  }
+
+  @mixin header-cell-focus-outline-first($gutter) {
+    @include when-focus-visible-or-fake {
+      // Give extra space on the left (inline start) to compensate for missing header cell padding.
+      @include styles.focus-highlight(
+        (
+          'vertical': calc(-1 * #{$gutter}),
+          'horizontal': (
+            'left': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
+            'right': calc(-1 * #{$gutter}),
+          ),
+        )
+      );
+    }
+  }
+
+  @mixin cell-offset($padding) {
+    padding-inline-start: $padding;
+
+    &.header-cell-content-expandable {
+      padding-inline-start: calc(#{$padding} + #{awsui.$space-m} + #{awsui.$space-xs});
+    }
+  }
+
+  .header-cell {
+    position: relative;
+    text-align: start;
+    box-sizing: border-box;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    background: awsui.$color-background-table-header;
+    color: awsui.$color-text-column-header;
+    font-weight: awsui.$font-weight-heading-s;
+    @include styles.font-smoothing;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-xs;
+
+    @include header-cell-focus-outline(awsui.$space-scaled-xxs);
+
+    &-sticky {
+      border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    }
+    &-stuck:not(.header-cell-variant-full-page) {
+      border-block-end-color: transparent;
+    }
+    &-variant-full-page {
       background: awsui.$color-background-layout-main;
     }
-    &-pad-left:not(.has-selection) {
-      padding-inline-start: awsui.$space-table-horizontal;
+    &-variant-full-page.header-cell-hidden {
+      border-block-end-color: transparent;
     }
-    &-last-inline-start {
-      box-shadow: awsui.$shadow-sticky-column-first;
-      clip-path: inset(0px -24px 0px 0px);
-      & > .resize-divider {
-        display: none;
-      }
+    &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
+    &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
+      background: none;
+    }
+    &:last-child,
+    &.header-cell-sortable {
+      padding-inline-end: awsui.$space-xs;
+    }
 
-      @include styles.with-direction('rtl') {
+    &.sticky-cell {
+      position: sticky;
+      background: awsui.$color-background-table-header;
+      z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+      @include styles.with-motion {
+        transition-property: padding;
+        transition-duration: awsui.$motion-duration-transition-show-quick;
+        transition-timing-function: awsui.$motion-easing-sticky;
+      }
+      &.table-variant-full-page {
+        background: awsui.$color-background-layout-main;
+      }
+      &-pad-left:not(.has-selection) {
+        padding-inline-start: awsui.$space-table-horizontal;
+      }
+      &-last-inline-start {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0px -24px 0px 0px);
+        & > .resize-divider {
+          display: none;
+        }
+
+        @include styles.with-direction('rtl') {
+          box-shadow: awsui.$shadow-sticky-column-last;
+          clip-path: inset(0 0 0 -24px);
+        }
+      }
+      &-last-inline-end {
         box-shadow: awsui.$shadow-sticky-column-last;
         clip-path: inset(0 0 0 -24px);
-      }
-    }
-    &-last-inline-end {
-      box-shadow: awsui.$shadow-sticky-column-last;
-      clip-path: inset(0 0 0 -24px);
 
-      @include styles.with-direction('rtl') {
-        box-shadow: awsui.$shadow-sticky-column-first;
-        clip-path: inset(0 -24px 0 0);
+        @include styles.with-direction('rtl') {
+          box-shadow: awsui.$shadow-sticky-column-first;
+          clip-path: inset(0 -24px 0 0);
+        }
       }
     }
   }
-}
 
-.sorting-icon {
-  position: absolute;
-  inset-block-start: 50%;
-  transform: translateY(-50%);
-  inset-inline-end: awsui.$space-xxs;
-  color: awsui.$color-text-column-sorting-icon;
-}
-
-.edit-icon {
-  margin-inline-start: awsui.$space-xxs;
-  margin-block-start: awsui.$space-scaled-xxs;
-  color: inherit;
-}
-
-.header-cell-content {
-  position: relative;
-  padding-block: awsui.$space-scaled-xxs;
-  padding-inline-end: awsui.$space-s;
-  @include cell-offset(awsui.$space-s);
-
-  .header-cell-sortable > & {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
-  }
-  &:focus {
-    outline: none;
-    text-decoration: none;
+  .sorting-icon {
+    position: absolute;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    inset-inline-end: awsui.$space-xxs;
+    color: awsui.$color-text-column-sorting-icon;
   }
 
-  @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
+  .edit-icon {
+    margin-inline-start: awsui.$space-xxs;
+    margin-block-start: awsui.$space-scaled-xxs;
+    color: inherit;
+  }
 
-  .header-cell-disabled.header-cell-sorted > & {
-    & > .sorting-icon {
-      color: awsui.$color-text-interactive-disabled;
+  .header-cell-content {
+    position: relative;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline-end: awsui.$space-s;
+    @include cell-offset(awsui.$space-s);
+
+    .header-cell-sortable > & {
+      padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+    }
+    &:focus {
+      outline: none;
+      text-decoration: none;
+    }
+
+    @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
+
+    .header-cell-disabled.header-cell-sorted > & {
+      & > .sorting-icon {
+        color: awsui.$color-text-interactive-disabled;
+      }
     }
   }
-}
 
-.header-cell-sortable:not(.header-cell-disabled) {
-  & > .header-cell-content {
-    cursor: pointer;
-  }
-  & > .header-cell-content:hover,
-  &.header-cell-sorted > .header-cell-content {
-    color: awsui.$color-text-interactive-active;
-    & > .sorting-icon {
+  .header-cell-sortable:not(.header-cell-disabled) {
+    & > .header-cell-content {
+      cursor: pointer;
+    }
+    & > .header-cell-content:hover,
+    &.header-cell-sorted > .header-cell-content {
       color: awsui.$color-text-interactive-active;
+      & > .sorting-icon {
+        color: awsui.$color-text-interactive-active;
+      }
     }
   }
-}
 
-.header-cell-text {
-  line-height: awsui.$line-height-heading-xs;
+  .header-cell-text {
+    line-height: awsui.$line-height-heading-xs;
 
-  padding-block: calc(#{awsui.$space-xxxs} / 2);
+    padding-block: calc(#{awsui.$space-xxxs} / 2);
 
-  &:not(.header-cell-text-wrap) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    &:not(.header-cell-text-wrap) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
-}
 
-.header-cell-ascending,
-.header-cell-descending {
-  /* used in test-utils */
-}
+  .header-cell-ascending,
+  .header-cell-descending {
+    /* used in test-utils */
+  }
 
-/*
+  /*
 In Visual Refresh the first cell in the header should align
 with the left edge of the table as closely as possible. If the
 last header cell is sortable the sort icon should align with the
 settings icon in the pagination slot.
 */
-.header-cell:not(.is-visual-refresh) {
-  &:first-child {
-    @include cell-offset(awsui.$space-xs);
-  }
-}
-
-.header-cell.is-visual-refresh {
-  &:first-child {
-    @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
-  }
-  &:first-child > .header-cell-content {
-    @include cell-offset(0px);
-    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  .header-cell:not(.is-visual-refresh) {
+    &:first-child {
+      @include cell-offset(awsui.$space-xs);
+    }
   }
 
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start) {
-    @include cell-offset(awsui.$space-xxxs);
-  }
+  .header-cell.is-visual-refresh {
+    &:first-child {
+      @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+    }
+    &:first-child > .header-cell-content {
+      @include cell-offset(0px);
+      @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+    }
 
-  /*
+    &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start) {
+      @include cell-offset(awsui.$space-xxxs);
+    }
+
+    /*
     Striped rows requires additional left padding because the
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start) {
-    @include cell-offset(awsui.$space-xxs);
-  }
+    &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start) {
+      @include cell-offset(awsui.$space-xxs);
+    }
 
-  &:last-child.header-cell-sortable:not(.header-cell-resizable) {
-    padding-inline-end: awsui.$space-xxxs;
-  }
+    &:last-child.header-cell-sortable:not(.header-cell-resizable) {
+      padding-inline-end: awsui.$space-xxxs;
+    }
 
-  &.sticky-cell-pad-inline-start {
-    @include cell-offset($cell-horizontal-padding);
+    &.sticky-cell-pad-inline-start {
+      @include cell-offset($cell-horizontal-padding);
+    }
   }
 }
