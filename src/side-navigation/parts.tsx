@@ -13,11 +13,11 @@ import InternalIcon from '../icon/internal';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { sideNavigationStyleDictionary } from '../style-api/side-navigation';
 import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces';
 import { SideNavigationProps } from './interfaces';
 import { hasActiveLink } from './util';
 
-import { sideNavigationStyleDictionary } from '../style-api/side-navigation';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -66,7 +66,9 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
       <h2 className={styles.header}>
         <a
           href={definition.href}
-          className={clsx(styles['header-link'], sideNavigationStyleDictionary.classNames.header, { [styles['header-link--has-logo']]: !!definition.logo })}
+          className={clsx(styles['header-link'], sideNavigationStyleDictionary.classNames.header, {
+            [styles['header-link--has-logo']]: !!definition.logo,
+          })}
           aria-current={definition.href === activeHref ? 'page' : undefined}
           onClick={onClick}
           {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
@@ -300,7 +302,9 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
     <>
       <a
         href={definition.href}
-        className={clsx(styles.link, sideNavigationStyleDictionary.classNames.link, { [styles['link-active']]: isActive })}
+        className={clsx(styles.link, sideNavigationStyleDictionary.classNames.link, {
+          [styles['link-active']]: isActive,
+        })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-expanded={expanded}
@@ -352,7 +356,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         variant === 'section-group' && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
-      headerText={definition.text}
+      headerText={<span className={sideNavigationStyleDictionary.classNames.groupHeader}>{definition.text}</span>}
     >
       <NavigationItemsList
         variant="section"
@@ -373,7 +377,10 @@ interface SectionGroupProps extends BaseItemComponentProps {
 function SectionGroup({ definition, activeHref, fireFollow, fireChange, position }: SectionGroupProps) {
   return (
     <div className={clsx(styles['section-group'], sideNavigationStyleDictionary.classNames.group)}>
-      <InternalBox className={styles['section-group-title']} variant="h3">
+      <InternalBox
+        className={clsx(styles['section-group-title'], sideNavigationStyleDictionary.classNames.groupHeader)}
+        variant="h3"
+      >
         {definition.title}
       </InternalBox>
       <NavigationItemsList

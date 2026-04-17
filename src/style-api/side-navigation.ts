@@ -10,6 +10,7 @@ export const sideNavigationStyleDictionary = {
     root: 'awsui-style-side-navigation-root',
     header: 'awsui-style-side-navigation-header',
     group: 'awsui-style-side-navigation-group',
+    groupHeader: 'awsui-style-side-navigation-group-header',
     expandableGroup: 'awsui-style-side-navigation-expandable-group',
     divider: 'awsui-style-side-navigation-divider',
     link: 'awsui-style-side-navigation-link',
@@ -32,6 +33,11 @@ const styleApi: StyleAPI = {
     {
       className: sideNavigationStyleDictionary.classNames.group,
       description: 'Non-expandable section or link group.',
+    },
+    {
+      className: sideNavigationStyleDictionary.classNames.groupHeader,
+      description: 'Header text of a section or link group.',
+      variables: [...focusOutlineVars],
     },
     {
       className: sideNavigationStyleDictionary.classNames.expandableGroup,
