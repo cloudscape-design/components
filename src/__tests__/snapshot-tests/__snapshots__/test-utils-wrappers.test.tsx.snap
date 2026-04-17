@@ -1002,6 +1002,15 @@ findDivider(selector?: string): DividerWrapper | null;
  * @returns {Array<DividerWrapper>}
  */
 findAllDividers(selector?: string): Array<DividerWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Divider for the current element,
+ * or the element itself if it is an instance of Divider.
+ * If no Divider is found, returns \`null\`.
+ *
+ * @returns {DividerWrapper | null}
+ */
+findClosestDivider(): DividerWrapper | null;
 /**
  * Returns the wrapper of the first Drawer that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Drawer.
@@ -4106,6 +4115,11 @@ ElementWrapper.prototype.findClosestDateRangePicker = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(DateRangePickerWrapper);
+};
+ElementWrapper.prototype.findClosestDivider = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(DividerWrapper);
 };
 ElementWrapper.prototype.findClosestDrawer = function() {
   // casting to 'any' is needed to avoid this issue with generics
