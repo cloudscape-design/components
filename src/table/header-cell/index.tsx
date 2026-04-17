@@ -10,6 +10,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
+import { tableStyleDictionary } from '../../style-api/table';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
@@ -154,10 +155,14 @@ export function TableHeaderCell<ItemType>({
       <div
         ref={clickableHeaderRef}
         data-focus-id={`sorting-control-${String(columnId)}`}
-        className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-          [styles['header-cell-content-expandable']]: isExpandable,
-        })}
+        className={clsx(
+          styles['header-cell-content'],
+          {
+            [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+            [styles['header-cell-content-expandable']]: isExpandable,
+          },
+          tableStyleDictionary.classNames.sortingToggle
+        )}
         aria-label={
           column.ariaLabel
             ? column.ariaLabel({
@@ -180,7 +185,8 @@ export function TableHeaderCell<ItemType>({
           className={clsx(
             styles['header-cell-text'],
             analyticsSelectors['header-cell-text'],
-            wrapLines && styles['header-cell-text-wrap']
+            wrapLines && styles['header-cell-text-wrap'],
+            tableStyleDictionary.classNames.headerCellLabel
           )}
           id={headerId}
         >

@@ -7,6 +7,7 @@ import { TableProps } from '~components/table';
 
 import { SimplePage } from '../app/templates';
 import { ariaLabels, Item } from './shared-configs';
+
 import './css-style-api.css';
 
 interface DemoItem extends Item {
@@ -21,22 +22,21 @@ const items: DemoItem[] = [
 ];
 
 const columnDefinitions: TableProps.ColumnDefinition<DemoItem>[] = [
-  { id: 'text', header: 'Text', cell: item => item.text },
+  { id: 'text', header: 'Text', cell: item => item.text, sortingField: 'text' },
   {
     id: 'enabled',
     header: 'Enabled',
     cell: item => <Checkbox checked={item.enabled} onChange={() => {}} />,
+    sortingField: 'enabled',
   },
-  { id: 'number', header: 'Number', cell: item => item.number },
+  { id: 'number', header: 'Number', cell: item => item.number, sortingField: 'number' },
 ];
 
 export default function Page() {
   const [selectedItems, setSelectedItems] = useState([items[0], items[2]]);
   const [filterText, setFilterText] = useState('');
 
-  const filteredItems = items.filter(
-    item => !filterText || item.text.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const filteredItems = items.filter(item => !filterText || item.text.toLowerCase().includes(filterText.toLowerCase()));
 
   return (
     <SimplePage title="CSS Style API — Table">

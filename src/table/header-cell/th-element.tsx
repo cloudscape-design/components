@@ -8,6 +8,7 @@ import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { tableStyleDictionary } from '../../style-api/table';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -17,8 +18,6 @@ import { SortingStatus } from './utils';
 
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
-
-import { tableStyleDictionary } from '../../style-api/table';
 
 export interface TableThElementProps {
   resizableStyle?: ColumnWidthStyle;
@@ -89,6 +88,7 @@ export function TableThElement({
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
+        isSelection && tableStyleDictionary.classNames.selectionCell,
         tableVariant && styles[`table-variant-${tableVariant}`],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,

@@ -1,3 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-max-universal */
+/* stylelint-disable selector-combinator-disallowed-list */
+/* stylelint-disable selector-max-type */
+
 @layer application, awsui-components;
 
 @layer application {
@@ -36,11 +45,28 @@
   /* ── Header cells (th) ── */
   .custom-table .awsui-style-table-table-thead .awsui-style-table-table-cell {
     background-color: #be185d;
+  }
+
+  .custom-table .awsui-style-table-table-header-cell-label {
     color: #fce7f3;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 11px;
     font-weight: 700;
+  }
+
+  .custom-table .awsui-style-table-table-sorting-toggle {
+    color: #fce7f3;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    font-weight: 700;
+
+    --awsui-style-icon-color: #fde047;
+  }
+
+  .custom-table .awsui-style-table-table-sorting-toggle:hover {
+    --awsui-style-icon-color: #ffee47;
   }
 
   /* ── Body rows ── */
@@ -49,15 +75,17 @@
   }
 
   /* ── Alternating row stripes via nth-child ── */
-  .custom-table .awsui-style-table-table-tbody .awsui-style-table-table-row:nth-child(even) .awsui-style-table-table-cell {
+  .custom-table
+    .awsui-style-table-table-tbody
+    .awsui-style-table-table-row:nth-child(even)
+    .awsui-style-table-table-cell {
     background-color: #fff1f2;
   }
 
   /* ── Selected row hover ── */
-  .custom-table .awsui-style-table-table-row[data-awsui-style-selected="true"]:hover .awsui-style-table-table-cell {
+  .custom-table .awsui-style-table-table-row[data-awsui-style-selected='true']:hover .awsui-style-table-table-cell {
     background-color: #fce7f3;
   }
-
 
   /* ── Resize handle ── */
   .custom-table .awsui-style-table-table-resize-handle {
@@ -80,12 +108,32 @@
     --var-awsui-style-checkbox-checkmark: #ffffff;
   }
 
+  /* ── Checkbox theming inside table selection header ── */
+  .custom-table .awsui-style-table-table-thead .awsui-style-table-table-selection-cell .awsui-style-checkbox-root {
+    --var-awsui-style-checkbox-fill: #fce7f3;
+    --var-awsui-style-checkbox-stroke: #db2777;
+    --var-awsui-style-checkbox-checkmark: #444444;
+  }
+  .custom-table
+    .awsui-style-table-table-thead
+    .awsui-style-table-table-selection-cell
+    .awsui-style-checkbox-root[data-checked],
+  .custom-table
+    .awsui-style-table-table-thead
+    .awsui-style-table-table-selection-cell
+    .awsui-style-checkbox-root[data-indeterminate] {
+    --var-awsui-style-checkbox-fill: #fde047;
+  }
+
   /* ── Checkbox theming inside the "Enabled" column (3rd column) ── */
   .custom-table .awsui-style-table-table-tbody .awsui-style-table-table-cell:nth-child(3) .awsui-style-checkbox-root {
     --var-awsui-style-checkbox-fill: #ccfbf1;
     --var-awsui-style-checkbox-stroke: #0d9488;
   }
-  .custom-table .awsui-style-table-table-tbody .awsui-style-table-table-cell:nth-child(3) .awsui-style-checkbox-root[data-checked] {
+  .custom-table
+    .awsui-style-table-table-tbody
+    .awsui-style-table-table-cell:nth-child(3)
+    .awsui-style-checkbox-root[data-checked] {
     --var-awsui-style-checkbox-fill: #0d9488;
     --var-awsui-style-checkbox-stroke: #0f766e;
     --var-awsui-style-checkbox-checkmark: #ffffff;

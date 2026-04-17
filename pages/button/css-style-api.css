@@ -1,3 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-max-type */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable no-duplicate-selectors */
+
 @layer application, awsui-components;
 
 @layer application {

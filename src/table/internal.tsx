@@ -35,6 +35,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import { tableStyleDictionary } from '../style-api/table';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { checkColumnWidths } from './column-widths-utils';
@@ -66,8 +67,6 @@ import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
-
-import { tableStyleDictionary } from '../style-api/table';
 
 import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';
@@ -477,7 +476,11 @@ const InternalTable = React.forwardRef(
                     <div>
                       <div
                         ref={toolsHeaderWrapper}
-                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`], tableStyleDictionary.classNames.header)}
+                        className={clsx(
+                          styles['header-controls'],
+                          styles[`variant-${computedVariant}`],
+                          tableStyleDictionary.classNames.header
+                        )}
                       >
                         <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                           <ToolsHeader
@@ -516,7 +519,13 @@ const InternalTable = React.forwardRef(
               __disableStickyMobile={false}
               footer={
                 hasFooter ? (
-                  <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`], tableStyleDictionary.classNames.footer)}>
+                  <div
+                    className={clsx(
+                      styles['footer-wrapper'],
+                      styles[`variant-${computedVariant}`],
+                      tableStyleDictionary.classNames.footer
+                    )}
+                  >
                     <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
                       {footer && <span>{footer}</span>}
                       {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
@@ -625,7 +634,11 @@ const InternalTable = React.forwardRef(
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'], tableStyleDictionary.classNames.row)}
+                                className={clsx(
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected'],
+                                  tableStyleDictionary.classNames.row
+                                )}
                                 data-awsui-style-selected={`${sharedCellProps.isSelected}`}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.

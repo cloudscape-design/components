@@ -9,6 +9,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { tableStyleDictionary } from '../../style-api/table';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -18,8 +19,6 @@ import { getStickyClassNames } from '../utils';
 import tableStyles from '../styles.css.js';
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-
-import { tableStyleDictionary } from '../../style-api/table';
 
 export interface TableTdElementProps {
   wrapLines: boolean | undefined;

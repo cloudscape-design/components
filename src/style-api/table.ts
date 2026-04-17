@@ -21,6 +21,8 @@ export const tableStyleDictionary = {
     row: 'awsui-style-table-table-row',
     cell: 'awsui-style-table-table-cell',
     selectionCell: 'awsui-style-table-table-selection-cell',
+    headerCellLabel: 'awsui-style-table-table-header-cell-label',
+    sortingToggle: 'awsui-style-table-table-sorting-toggle',
     resizeHandle: 'awsui-style-table-table-resize-handle',
     expandToggle: 'awsui-style-table-table-expand-toggle',
   },
@@ -92,6 +94,15 @@ const styleApi: StyleAPI = {
       className: tableStyleDictionary.classNames.selectionCell,
       description: 'The selection cell in the first column of tables with row selection enabled.',
       tags: ['td'],
+    },
+    {
+      className: tableStyleDictionary.classNames.headerCellLabel,
+      description: 'The label of table header cells.',
+    },
+    {
+      className: tableStyleDictionary.classNames.sortingToggle,
+      description: 'The sortable header sorting toggle button.',
+      tags: ['button'],
     },
     {
       className: tableStyleDictionary.classNames.resizeHandle,
