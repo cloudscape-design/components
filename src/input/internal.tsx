@@ -18,6 +18,7 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../interna
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { useIMEComposition } from '../internal/hooks/use-ime-composition';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
@@ -108,6 +109,7 @@ function InternalInput(
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const { isComposing } = useIMEComposition(inputRef);
   const searchProps = useSearchProps(type, disabled, readOnly, value, inputRef, handleChange);
   __leftIcon = __leftIcon ?? searchProps.__leftIcon;
   __rightIcon = __rightIcon ?? searchProps.__rightIcon;
@@ -148,7 +150,16 @@ function InternalInput(
     step,
     inputMode,
     spellCheck: spellcheck,
-    onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+    onKeyDown:
+      onKeyDown &&
+      (event => {
+        // Prevent keydown event during IME composition to avoid race conditions
+        if (isComposing() && event.key === 'Enter') {
+          event.preventDefault();
+          return;
+        }
+        fireKeyboardEvent(onKeyDown, event);
+      }),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     // We set a default value on the component in order to force it into the controlled mode.
     value: value ?? '',

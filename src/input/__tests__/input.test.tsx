@@ -515,4 +515,31 @@ describe('Input', () => {
       expect(input).toHaveClass('additional-class');
     });
   });
+
+  describe('IME composition', () => {
+    test('does not trigger onKeyDown handler when Enter pressed during active IME composition', () => {
+      const onKeyDown = jest.fn();
+      const { wrapper, input } = renderInput({ value: '가', onKeyDown });
+
+      input.dispatchEvent(new CompositionEvent('compositionstart'));
+      wrapper.findNativeInput().keydown({ keyCode: 13, isComposing: false });
+
+      expect(onKeyDown).not.toHaveBeenCalled();
+
+      input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    });
+
+    test('allows onKeyDown handler after IME composition ends', async () => {
+      const onKeyDown = jest.fn();
+      const { wrapper, input } = renderInput({ value: '가', onKeyDown });
+
+      input.dispatchEvent(new CompositionEvent('compositionstart'));
+      input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+
+      await new Promise(resolve => requestAnimationFrame(() => resolve(null)));
+
+      wrapper.findNativeInput().keydown({ keyCode: 13 });
+      expect(onKeyDown).toHaveBeenCalled();
+    });
+  });
 });
