@@ -6,7 +6,7 @@ import React from 'react';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
-import { type ActionCardProps } from './interfaces';
+import { ActionCardProps } from './interfaces';
 import InternalActionCard from './internal';
 
 export { ActionCardProps };
