@@ -70,8 +70,7 @@ export default function InternalHeader({
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
         !actions && [styles[`root-no-actions`]],
-        description && [styles[`root-has-description`]],
-        headerStyleDictionary.classNames.root
+        description && [styles[`root-has-description`]]
       )}
       ref={__internalRootRef}
     >

@@ -10,11 +10,6 @@ export const tableStyleDictionary = {
   },
   classNames: {
     root: 'awsui-style-table-root',
-    header: 'awsui-style-table-header',
-    footer: 'awsui-style-table-footer',
-    filter: 'awsui-style-table-filter',
-    pagination: 'awsui-style-table-pagination',
-    preferences: 'awsui-style-table-preferences',
     table: 'awsui-style-table-table',
     thead: 'awsui-style-table-table-thead',
     tbody: 'awsui-style-table-table-tbody',
@@ -44,26 +39,6 @@ const styleApi: StyleAPI = {
       className: tableStyleDictionary.classNames.root,
       description:
         'Root element of the table. Contains the table and its slots (header, footer, filter, pagination, preferences).',
-    },
-    {
-      className: tableStyleDictionary.classNames.header,
-      description: 'Header slot of the table.',
-    },
-    {
-      className: tableStyleDictionary.classNames.footer,
-      description: 'Footer slot of the table.',
-    },
-    {
-      className: tableStyleDictionary.classNames.filter,
-      description: 'Filter slot of the table.',
-    },
-    {
-      className: tableStyleDictionary.classNames.pagination,
-      description: 'Pagination slot of the table.',
-    },
-    {
-      className: tableStyleDictionary.classNames.preferences,
-      description: 'Preferences slot of the table.',
     },
     {
       className: tableStyleDictionary.classNames.table,

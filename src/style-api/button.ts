@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { iconStyleDictionary } from './icon';
+import { iconVars } from './icon';
 import { focusOutlineVars } from './shared';
 import { StyleAPI } from './types';
 
@@ -12,7 +12,7 @@ export const buttonStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [...focusOutlineVars, { name: iconStyleDictionary.vars.color, description: 'Color of the icon.' }],
+  variables: [],
   selectors: [
     {
       className: buttonStyleDictionary.classNames.root,
@@ -26,6 +26,7 @@ const styleApi: StyleAPI = {
             'Present when the button is disabled. Prefer this over the "disabled" attribute when targeting disabled buttons or links.',
         },
       ],
+      variables: [...focusOutlineVars, ...iconVars],
     },
   ],
 };

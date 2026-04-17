@@ -476,11 +476,7 @@ const InternalTable = React.forwardRef(
                     <div>
                       <div
                         ref={toolsHeaderWrapper}
-                        className={clsx(
-                          styles['header-controls'],
-                          styles[`variant-${computedVariant}`],
-                          tableStyleDictionary.classNames.header
-                        )}
+                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
                       >
                         <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                           <ToolsHeader
@@ -519,13 +515,7 @@ const InternalTable = React.forwardRef(
               __disableStickyMobile={false}
               footer={
                 hasFooter ? (
-                  <div
-                    className={clsx(
-                      styles['footer-wrapper'],
-                      styles[`variant-${computedVariant}`],
-                      tableStyleDictionary.classNames.footer
-                    )}
-                  >
+                  <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
                     <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
                       {footer && <span>{footer}</span>}
                       {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}

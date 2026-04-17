@@ -14,4 +14,6 @@ const styleApi: StyleAPI = {
   selectors: [],
 };
 
+export const iconVars = [{ name: iconStyleDictionary.vars.color, description: 'Color of the icon.' }];
+
 export default styleApi;

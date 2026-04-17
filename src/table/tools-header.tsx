@@ -8,8 +8,6 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 
-import { tableStyleDictionary } from '../style-api/table';
-
 import styles from './styles.css.js';
 
 interface ToolsHeaderProps {
@@ -38,7 +36,7 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
         <div ref={ref} className={clsx(styles.tools, isSmall && styles['tools-small'])}>
           {filter && (
             <div
-              className={clsx(styles['tools-filtering'], tableStyleDictionary.classNames.filter)}
+              className={clsx(styles['tools-filtering'])}
               onClickCapture={() => setLastUserAction?.('filter')}
               onKeyDownCapture={() => setLastUserAction?.('filter')}
             >
@@ -48,12 +46,18 @@ export default function ToolsHeader({ header, filter, pagination, preferences, s
           {hasRightAlignedTools && (
             <div className={styles['tools-align-right']}>
               {pagination && (
-                <div className={clsx(styles['tools-pagination'], tableStyleDictionary.classNames.pagination)} onClickCapture={() => setLastUserAction?.('pagination')}>
+                <div
+                  className={clsx(styles['tools-pagination'])}
+                  onClickCapture={() => setLastUserAction?.('pagination')}
+                >
                   {pagination}
                 </div>
               )}
               {preferences && (
-                <div className={clsx(styles['tools-preferences'], tableStyleDictionary.classNames.preferences)} onClickCapture={() => setLastUserAction?.('preferences')}>
+                <div
+                  className={clsx(styles['tools-preferences'])}
+                  onClickCapture={() => setLastUserAction?.('preferences')}
+                >
                   {preferences}
                 </div>
               )}

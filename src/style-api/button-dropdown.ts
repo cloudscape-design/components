@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { iconVars } from './icon';
 import { focusOutlineVars } from './shared';
 import { StyleAPI } from './types';
 
@@ -17,22 +18,19 @@ export const buttonDropdownStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [...focusOutlineVars],
+  variables: [],
   selectors: [
-    {
-      className: buttonDropdownStyleDictionary.classNames.root,
-      description:
-        'Root element of the button dropdown. Container trigger and can include main action. When component is used with `expandToViewport`, use `referrerClassName` to select the *-dropdown styles.',
-    },
     {
       className: buttonDropdownStyleDictionary.classNames.mainAction,
       description: 'Main action button.',
       tags: ['button'],
+      variables: [...focusOutlineVars, ...iconVars],
     },
     {
       className: buttonDropdownStyleDictionary.classNames.trigger,
       description: 'Trigger button that opens the dropdown menu.',
       tags: ['button'],
+      variables: [...focusOutlineVars, ...iconVars],
     },
     {
       className: buttonDropdownStyleDictionary.classNames.dropdown,

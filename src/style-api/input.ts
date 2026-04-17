@@ -12,13 +12,8 @@ export const inputStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [...focusOutlineVars, ...placeholderVars],
+  variables: [],
   selectors: [
-    {
-      className: inputStyleDictionary.classNames.root,
-      description:
-        'Root element of the input. Contains the semantic input element and optional leading and trailing icons.',
-    },
     {
       className: inputStyleDictionary.classNames.input,
       tags: ['input'],
@@ -26,10 +21,10 @@ const styleApi: StyleAPI = {
       attributes: [
         {
           name: 'aria-invalid',
-          description:
-            'Present when the input is in an invalid state.',
+          description: 'Present when the input is in an invalid state.',
         },
       ],
+      variables: [...focusOutlineVars, ...placeholderVars],
     },
   ],
 };
