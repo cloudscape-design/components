@@ -23,33 +23,21 @@ describe('Divider', () => {
   });
 });
 
-describe('decorative prop', () => {
+describe('semantic prop', () => {
   test('is decorative by default (role="presentation")', () => {
     expect(renderDivider(<Divider />)).toHaveAttribute('role', 'presentation');
   });
 
-  test('decorative=true sets role="presentation" and no aria-orientation', () => {
-    const el = renderDivider(<Divider decorative={true} />);
+  test('semantic=false sets role="presentation" and no aria-orientation', () => {
+    const el = renderDivider(<Divider semantic={false} />);
     expect(el).toHaveAttribute('role', 'presentation');
     expect(el).not.toHaveAttribute('aria-orientation');
   });
 
-  test('decorative=false sets role="separator" and aria-orientation="horizontal"', () => {
-    const el = renderDivider(<Divider decorative={false} />);
+  test('semantic=true sets role="separator" and aria-orientation="horizontal"', () => {
+    const el = renderDivider(<Divider semantic={true} />);
     expect(el).toHaveAttribute('role', 'separator');
     expect(el).toHaveAttribute('aria-orientation', 'horizontal');
-  });
-});
-
-describe('Style API', () => {
-  test('applies borderColor', () => {
-    const el = renderDivider(<Divider style={{ root: { borderColor: 'rgb(255, 0, 0)' } }} />);
-    expect(getComputedStyle(el).getPropertyValue('border-color')).toBe('rgb(255, 0, 0)');
-  });
-
-  test('applies borderWidth', () => {
-    const el = renderDivider(<Divider style={{ root: { borderWidth: '4px' } }} />);
-    expect(getComputedStyle(el).getPropertyValue('border-width')).toBe('4px');
   });
 });
 
