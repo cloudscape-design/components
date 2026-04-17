@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-combinator-disallowed-list */
+
+@layer application, awsui-components;
+
+@layer application {
+  .custom-pagination .awsui-style-pagination-button {
+    --awsui-style-focus-outline-color: #0369a1;
+    --awsui-style-icon-color: #0369a1;
+    border-radius: 50%;
+  }
+
+  .custom-pagination .awsui-style-pagination-button[aria-current='page'] {
+    background-color: #0369a1;
+    color: #ffffff;
+  }
+}

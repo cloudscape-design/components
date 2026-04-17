@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+
+@layer application, awsui-components;
+
+@layer application {
+  .custom-collection-preferences .awsui-style-collection-preferences-trigger {
+    --awsui-style-focus-outline-color: #7c3aed;
+    --awsui-style-icon-color: #7c3aed;
+  }
+
+  .custom-collection-preferences .awsui-style-collection-preferences-trigger:hover {
+    --awsui-style-icon-color: #5b21b6;
+  }
+}

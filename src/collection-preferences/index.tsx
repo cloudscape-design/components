@@ -36,6 +36,7 @@ import {
 } from './utils';
 import VisibleContentPreference from './visible-content';
 
+import { collectionPreferencesStyleDictionary } from '../style-api/collection-preferences';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
@@ -158,14 +159,14 @@ export default function CollectionPreferences({
   ]);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div {...baseProps} className={clsx(baseProps.className, styles.root, collectionPreferencesStyleDictionary.classNames.root)} ref={__internalRootRef}>
       <div
         id={referrerId}
         {...getAnalyticsMetadataAttribute({ component: getComponentAnalyticsMetadata(disabled, preferences) })}
       >
         <InternalButton
           ref={triggerRef}
-          className={clsx(styles['trigger-button'], analyticsSelectors['trigger-button'])}
+          className={clsx(styles['trigger-button'], analyticsSelectors['trigger-button'], collectionPreferencesStyleDictionary.classNames.trigger)}
           disabled={disabled}
           ariaLabel={i18n('title', title)}
           onClick={() => {

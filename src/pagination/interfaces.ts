@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface PaginationProps {
+export interface PaginationProps extends BaseComponentProps {
   /**
    * Index of the current page. The first page has an index of 1.
    */

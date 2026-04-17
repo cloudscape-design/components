@@ -14,6 +14,7 @@ import { getBaseProps } from '../internal/base-component';
 import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { paginationStyleDictionary } from '../style-api/pagination';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
 import { PaginationProps } from './interfaces';
 import { getPaginationState, range } from './utils';
@@ -57,6 +58,7 @@ function PageButton({
         className={clsx(
           className,
           styles.button,
+          paginationStyleDictionary.classNames.button,
           disabled && styles['button-disabled'],
           isCurrent && styles['button-current']
         )}
@@ -157,7 +159,12 @@ export default function InternalPagination({
     <ul
       aria-label={paginationLabel}
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        paginationStyleDictionary.classNames.root,
+        disabled && styles['root-disabled']
+      )}
       ref={__internalRootRef}
     >
       <PageButton
