@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.divider {
+  @include styles.styles-reset;
+
+  display: block;
+  border-block: none;
+  border-inline: none;
+  margin-block: 0;
+  margin-inline: 0;
+  border-block-start-style: solid;
+  border-block-start-width: awsui.$border-divider-section-width;
+  border-block-start-color: awsui.$color-border-divider-default;
+  inline-size: 100%;
+  block-size: 0;
+}
