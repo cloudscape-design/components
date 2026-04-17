@@ -9,14 +9,13 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { DividerProps } from './interfaces';
-import { getDividerStyles } from './style';
 
 import styles from './styles.css.js';
 
 export { DividerProps };
 
-export default function Divider({ decorative = true, style, nativeAttributes, ...rest }: DividerProps) {
-  const { __internalRootRef } = useBaseComponent('Divider', { props: { decorative } });
+export default function Divider({ semantic = false, nativeAttributes, ...rest }: DividerProps) {
+  const { __internalRootRef } = useBaseComponent('Divider', { props: { semantic } });
   const baseProps = getBaseProps(rest);
 
   return (
@@ -26,10 +25,9 @@ export default function Divider({ decorative = true, style, nativeAttributes, ..
       componentName="Divider"
       nativeAttributes={nativeAttributes}
       className={clsx(baseProps.className, styles.divider)}
-      role={decorative ? 'presentation' : 'separator'}
-      aria-orientation={decorative ? undefined : 'horizontal'}
+      role={semantic ? 'separator' : 'presentation'}
+      aria-orientation={semantic ? 'horizontal' : undefined}
       ref={__internalRootRef}
-      style={getDividerStyles(style)}
     />
   );
 }

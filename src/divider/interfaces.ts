@@ -10,22 +10,17 @@ import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface DividerProps extends BaseComponentProps {
   /**
-   * When `true` (default), the divider is purely decorative and hidden from assistive technology (`role="presentation"`).
-   * When `false`, the divider is announced by screen readers as a separator (`role="separator"`).
+   * When `true`, the divider is announced by screen readers as a separator
+   * (`role="separator"` + `aria-orientation="horizontal"`).
+   * When `false` (default), the divider is purely decorative and hidden from assistive
+   * technology (`role="presentation"`).
    *
-   * Set to `false` only when the divider genuinely separates distinct, meaningful content regions
-   * that a screen reader user needs to be aware of.
+   * Set to `true` only when the divider genuinely separates distinct, meaningful content
+   * regions that a screen reader user needs to be aware of.
    *
-   * @defaultValue `true`
+   * @defaultValue `false`
    */
-  decorative?: boolean;
-
-  /**
-   * An object containing CSS properties to customize the divider's visual appearance.
-   * Refer to the [style](/components/divider/?tabId=style) tab for more details.
-   * @awsuiSystem core
-   */
-  style?: DividerProps.Style;
+  semantic?: boolean;
 
   /**
    * Attributes to add to the native element.
@@ -38,13 +33,4 @@ export interface DividerProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLHRElement>>;
-}
-
-export namespace DividerProps {
-  export interface Style {
-    root?: {
-      borderColor?: string;
-      borderWidth?: string;
-    };
-  }
 }
