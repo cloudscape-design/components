@@ -86,7 +86,12 @@ module.exports = ({
             },
           },
         },
-        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+        {
+          test: /\.css$/,
+          include: path.resolve(componentsPath),
+          use: [MiniCssExtractPlugin.loader, 'css-loader', path.resolve(__dirname, 'wrap-in-layer-loader.cjs')],
+        },
+        { test: /\.css$/, exclude: path.resolve(componentsPath), use: [MiniCssExtractPlugin.loader, 'css-loader'] },
         {
           test: /\.scss$/,
           use: [

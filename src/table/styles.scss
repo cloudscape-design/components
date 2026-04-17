@@ -8,221 +8,241 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 
-@layer awsui-components {
-  .root {
-    @include styles.default-text-style;
-    inline-size: 100%;
+.root {
+  @include styles.default-text-style;
+  inline-size: 100%;
+}
+
+.tools {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs awsui.$space-l;
+  padding-block-start: awsui.$space-scaled-xs;
+  padding-block-end: awsui.$space-table-header-tools-bottom;
+  padding-inline: 0;
+
+  &-filtering {
+    max-inline-size: 100%;
+
+    @supports (flex-basis: fit-content) {
+      flex: 1 1 fit-content;
+    }
+
+    @supports not (flex-basis: fit-content) {
+      flex: 1 1 auto;
+    }
   }
 
-  .tools {
+  &-align-right {
     display: flex;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: awsui.$space-scaled-xs awsui.$space-l;
-    padding-block-start: awsui.$space-scaled-xs;
-    padding-block-end: awsui.$space-table-header-tools-bottom;
-    padding-inline: 0;
-
-    &-filtering {
-      max-inline-size: 100%;
-      @supports (flex-basis: fit-content) {
-        flex: 1 1 fit-content;
-      }
-      @supports not (flex-basis: fit-content) {
-        flex: 1 1 auto;
-      }
-    }
-
-    &-align-right {
-      display: flex;
-      margin-inline-start: auto;
-    }
-
-    &-pagination + &-preferences {
-      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-      box-sizing: border-box;
-      margin-inline-start: awsui.$space-xs;
-      padding-inline-start: awsui.$space-xs;
-    }
-
-    &-small > &-filtering {
-      flex-basis: 100%;
-    }
+    margin-inline-start: auto;
   }
 
-  .table {
-    inline-size: 100%;
-    border-spacing: 0;
-    position: relative;
+  &-pagination+&-preferences {
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
-    &-layout-fixed {
-      table-layout: fixed;
-    }
+    margin-inline-start: awsui.$space-xs;
+    padding-inline-start: awsui.$space-xs;
   }
 
-  .wrapper {
-    position: relative;
-    box-sizing: border-box;
-    inline-size: 100%;
-    overflow-x: auto;
-
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
-    &.variant-stacked,
-    &.variant-container {
-      & > .table,
-      & > .wrapper-content-measure {
-        padding-inline: awsui.$space-table-horizontal;
-      }
-    }
-    &.variant-stacked:not(.has-footer),
-    &.variant-container:not(.has-footer) {
-      padding-block-end: awsui.$space-table-content-bottom;
-    }
-    &:not(.has-header) {
-      border-start-end-radius: awsui.$border-radius-container;
-      border-start-start-radius: awsui.$border-radius-container;
-    }
-    &::-webkit-scrollbar {
-      display: none; /* Hide scrollbar in Safari and Chrome */
-    }
-
-    @include focus-visible.when-visible {
-      @include styles.container-focus();
-    }
+  &-small>&-filtering {
+    flex-basis: 100%;
   }
+}
 
-  .cell-merged {
-    text-align: center;
-    padding-block: 0;
-    padding-inline: 0;
-    &.has-footer {
-      /*
-    Add a bottom border to the body cell of an empty table as a separator between the
-    table and the footer
-    */
-      border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    }
-    &-content {
-      box-sizing: border-box;
-      inline-size: 100%;
-      padding-block-start: awsui.$space-scaled-m;
-      padding-block-end: awsui.$space-scaled-l;
-      padding-inline: awsui.$space-l;
-      @supports (position: sticky) {
-        position: sticky;
-        inset-inline-start: 0;
-        // Offset table paddings to position centered when sticky
-        margin-block: 0;
-        margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
-      }
-    }
+.table {
+  inline-size: 100%;
+  border-spacing: 0;
+  position: relative;
+  box-sizing: border-box;
+
+  &-layout-fixed {
+    table-layout: fixed;
   }
+}
 
-  .empty {
-    color: awsui.$color-text-empty;
-  }
+.wrapper {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  overflow-x: auto;
 
-  .loading {
-    /* used in test-utils */
-  }
+  scrollbar-width: none;
 
-  /*
-The min/max/width token values in Visual Refresh should align
-the table header and body cells selection control with the table
-filter search icon.
-*/
-  .selection-control {
-    box-sizing: border-box;
-    max-inline-size: awsui.$size-table-selection-horizontal;
-    min-inline-size: awsui.$size-table-selection-horizontal;
-    position: relative;
-    inline-size: awsui.$size-table-selection-horizontal;
+  /* Hide scrollbar in Firefox */
+  &.variant-stacked,
+  &.variant-container {
 
-    &.selection-control-header {
-      padding-block: awsui.$space-scaled-xs;
-      padding-inline: awsui.$space-scaled-l;
-      border-inline-start: awsui.$border-width-item-selected solid transparent;
-    }
-  }
-
-  .header-secondary {
-    overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    box-sizing: border-box;
-    inline-size: 100%;
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-    background: awsui.$color-background-table-header;
-    &.variant-full-page {
-      background: awsui.$color-background-layout-main;
-    }
-    &.variant-stacked,
-    &.variant-container {
-      & > .table {
-        padding-inline: awsui.$space-table-horizontal;
-      }
-
-      &:not(.table-has-header) {
-        border-start-start-radius: awsui.$border-radius-container;
-        border-start-end-radius: awsui.$border-radius-container;
-      }
-    }
-    &::-webkit-scrollbar {
-      display: none; /* Safari and Chrome */
-    }
-    &.table-has-header {
-      border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
-    }
-  }
-
-  .header-controls {
-    padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
-
-    &.variant-full-page {
-      padding-block: 0
-        calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
-    }
-    &.variant-stacked,
-    &.variant-container {
-      padding-inline: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
-    }
-    &.variant-embedded,
-    &.variant-borderless {
-      padding-inline: awsui.$space-table-header-horizontal;
-      padding-block-start: awsui.$space-table-embedded-header-top;
-    }
-  }
-
-  .footer-wrapper {
-    &.variant-stacked,
-    &.variant-container {
+    &>.table,
+    &>.wrapper-content-measure {
       padding-inline: awsui.$space-table-horizontal;
     }
   }
 
-  .footer {
-    padding-block: awsui.$space-scaled-s;
-    padding-inline: awsui.$space-table-footer-horizontal;
+  &.variant-stacked:not(.has-footer),
+  &.variant-container:not(.has-footer) {
+    padding-block-end: awsui.$space-table-content-bottom;
+  }
 
-    &-with-pagination {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: awsui.$space-scaled-s;
+  &:not(.has-header) {
+    border-start-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: awsui.$border-radius-container;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar in Safari and Chrome */
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.cell-merged {
+  text-align: center;
+  padding-block: 0;
+  padding-inline: 0;
+
+  &.has-footer {
+    /*
+    Add a bottom border to the body cell of an empty table as a separator between the
+    table and the footer
+    */
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  }
+
+  &-content {
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding-block-start: awsui.$space-scaled-m;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-l;
+
+    @supports (position: sticky) {
+      position: sticky;
+      inset-inline-start: 0;
+      // Offset table paddings to position centered when sticky
+      margin-block: 0;
+      margin-inline: calc(-2 * #{awsui.$space-table-horizontal});
     }
-    &-pagination {
-      // Align the footer pagination on the right
-      margin-inline-start: auto;
+  }
+}
+
+.empty {
+  color: awsui.$color-text-empty;
+}
+
+.loading {
+  /* used in test-utils */
+}
+
+/*
+The min/max/width token values in Visual Refresh should align
+the table header and body cells selection control with the table
+filter search icon.
+*/
+.selection-control {
+  box-sizing: border-box;
+  max-inline-size: awsui.$size-table-selection-horizontal;
+  min-inline-size: awsui.$size-table-selection-horizontal;
+  position: relative;
+  inline-size: awsui.$size-table-selection-horizontal;
+
+  &.selection-control-header {
+    padding-block: awsui.$space-scaled-xs;
+    padding-inline: awsui.$space-scaled-l;
+    border-inline-start: awsui.$border-width-item-selected solid transparent;
+  }
+}
+
+.header-secondary {
+  overflow: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  box-sizing: border-box;
+  inline-size: 100%;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  background: awsui.$color-background-table-header;
+
+  &.variant-full-page {
+    background: awsui.$color-background-layout-main;
+  }
+
+  &.variant-stacked,
+  &.variant-container {
+    &>.table {
+      padding-inline: awsui.$space-table-horizontal;
+    }
+
+    &:not(.table-has-header) {
+      border-start-start-radius: awsui.$border-radius-container;
+      border-start-end-radius: awsui.$border-radius-container;
     }
   }
 
-  .thead-active,
-  .row,
-  .row-selected {
-    /* used in test-utils */
+  &::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
   }
+
+  &.table-has-header {
+    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
+  }
+}
+
+.header-controls {
+  padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
+
+  &.variant-full-page {
+    padding-block: 0 calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
+  }
+
+  &.variant-stacked,
+  &.variant-container {
+    padding-inline: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+  }
+
+  &.variant-embedded,
+  &.variant-borderless {
+    padding-inline: awsui.$space-table-header-horizontal;
+    padding-block-start: awsui.$space-table-embedded-header-top;
+  }
+}
+
+.footer-wrapper {
+
+  &.variant-stacked,
+  &.variant-container {
+    padding-inline: awsui.$space-table-horizontal;
+  }
+}
+
+.footer {
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-table-footer-horizontal;
+
+  &-with-pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: awsui.$space-scaled-s;
+  }
+
+  &-pagination {
+    // Align the footer pagination on the right
+    margin-inline-start: auto;
+  }
+}
+
+.thead-active,
+.row,
+.row-selected {
+  /* used in test-utils */
 }
