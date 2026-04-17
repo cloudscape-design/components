@@ -86,34 +86,7 @@ module.exports = ({
             },
           },
         },
-        {
-          test: /\.css$/,
-          oneOf: [
-            {
-              // Wrap global-styles in its own layer so it doesn't override layered component styles
-              include: /global-styles/,
-              use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    postcssOptions: {
-                      plugins: [
-                        require(path.resolve(__dirname, '../build-tools/postcss/postcss-layer-wrap.cjs'))({
-                          layerName: 'global-styles',
-                        }),
-                      ],
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            },
-          ],
-        },
+        { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
         {
           test: /\.scss$/,
           use: [

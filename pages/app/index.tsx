@@ -15,8 +15,6 @@ import IndexPage from './components/index-page';
 import PageView from './components/page-view';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 
-// declare CSS layer order before any styles load
-import './layer-order.css';
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
