@@ -45,16 +45,20 @@
       outline-offset: -2px;
     }
 
-    &:first-child {
-      padding-inline-start: 2px;
+    // Use data-col-index="0" set by the component to reliably target the
+    // leftmost visual column, even with rowSpan across header rows.
+    &[data-col-index='0'] {
       border-inline-start: none;
     }
+
     &:last-child {
       padding-inline-end: 2px;
     }
 
     &.sticky-cell {
       position: sticky;
+      z-index: 800;
+      background: red;
 
       &-last-left {
         border-inline-end: 2px solid red;

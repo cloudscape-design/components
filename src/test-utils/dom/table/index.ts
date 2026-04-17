@@ -30,6 +30,9 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findByClassName(styles['thead-active'])!;
   }
 
+  /**
+   * Returns the header slot of the table.
+   */
   findHeaderSlot(): ElementWrapper | null {
     return this.findByClassName(styles['header-controls']);
   }
@@ -42,21 +45,66 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findHeaderSlot();
   }
 
+  /**
+   * Returns the footer slot of the table.
+   */
   findFooterSlot(): ElementWrapper | null {
     return this.containerWrapper.findFooter();
   }
 
-  findColumnHeaders(): Array<ElementWrapper> {
-    return this.findActiveTHead().findAll('tr > *');
+  /**
+   * Returns column header cells from the table's header region.
+   *
+   * By default, returns all cells in the last header row (leaf columns).
+   * For tables without column grouping this is equivalent to querying all `<th>` elements.
+   * For tables with column grouping this returns only the leaf-level column headers,
+   * not the group header cells above them.
+   *
+   * Both `level` and `groupId` can be combined to narrow the result set.
+   *
+   * @param option.level 1-based index of the header row to query. Level 1 is the topmost row
+   *   (group headers); the last level is always the leaf-column row. Defaults to the last row.
+   * @param option.groupId ID of the parent group whose direct child columns to return.
+   *   Uses the `data-column-group-id` attribute set on each leaf `<th>` by the renderer.
+   */
+  findColumnHeaders(
+    option: {
+      groupId?: string;
+      level?: number;
+    } = {}
+  ): Array<ElementWrapper> {
+    const { groupId, level } = option;
+    const parts: string[] = [];
+
+    // Row selector
+    if (level !== undefined) {
+      parts.push(`tr:nth-child(${level}) > `);
+    } else if (groupId === undefined) {
+      parts.push('tr:last-child > ');
+    }
+
+    // Element selector
+    if (groupId !== undefined) {
+      parts.push(`th[data-column-group-id="${groupId}"]`);
+    } else {
+      parts.push('*');
+    }
+
+    return this.findActiveTHead().findAll(parts.join(''));
   }
 
   /**
    * Returns the element the user clicks when resizing a column.
    *
-   * @param columnIndex 1-based index of the column containing the resizer.
+   * Targets leaf-column headers (`scope="col"`), which reliably identifies
+   * individual columns regardless of which `<tr>` they appear in. In grouped
+   * tables, leaf columns may span multiple rows and sit in an earlier `<tr>`
+   * rather than the last one.
+   *
+   * @param columnIndex 1-based index of the leaf column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
+    return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
   }
 
   /**
@@ -81,10 +129,16 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findBodyCell(rowIndex, columnIndex)?.find(`.${testUtilStyles['body-cell-counter']}`) ?? null;
   }
 
+  /**
+   * Returns all table rows within the table body.
+   */
   findRows(): Array<ElementWrapper> {
     return this.findNativeTable().findAllByClassName(styles.row);
   }
 
+  /**
+   * Returns all selected table rows.
+   */
   findSelectedRows(): Array<ElementWrapper> {
     return this.findAllByClassName(styles['row-selected']);
   }
@@ -97,16 +151,28 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findEmptySlot();
   }
 
+  /**
+   * Returns the empty state slot of the table.
+   */
   findEmptySlot(): ElementWrapper | null {
     return this.findByClassName(styles.empty);
   }
 
+  /**
+   * Returns the loading text element of the table.
+   */
   findLoadingText(): ElementWrapper | null {
     return this.findByClassName(styles.loading);
   }
 
+  /**
+   * Returns the clickable sorting area of a column header.
+   * Targets the leaf-column header row by default.
+   *
+   * @param colIndex 1-based index of the column.
+   */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
+    return this.findActiveTHead().find(`tr:last-child > *:nth-child(${colIndex}) [role=button]`);
   }
 
   /**
@@ -132,26 +198,44 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) .${selectionStyles.root}`);
   }
 
+  /**
+   * Returns the "select all" checkbox or radio button in the table header.
+   */
   findSelectAllTrigger(): ElementWrapper | null {
     return this.findActiveTHead().find(`.${selectionStyles.root}`);
   }
 
+  /**
+   * Returns the text filter component used in the table.
+   */
   findTextFilter(): TextFilterWrapper | null {
     return this.findComponent(`.${styles['tools-filtering']}`, TextFilterWrapper);
   }
 
+  /**
+   * Returns the property filter component used in the table.
+   */
   findPropertyFilter(): PropertyFilterWrapper | null {
     return this.findComponent(`.${styles['tools-filtering']}`, PropertyFilterWrapper);
   }
 
+  /**
+   * Returns the filter slot of the table.
+   */
   findFilterSlot(): ElementWrapper | null {
     return this.findComponent(`.${styles['tools-filtering']}`, ElementWrapper);
   }
 
+  /**
+   * Returns the collection preferences component used in the table.
+   */
   findCollectionPreferences(): CollectionPreferencesWrapper | null {
     return this.findComponent(`.${styles['tools-preferences']}`, CollectionPreferencesWrapper);
   }
 
+  /**
+   * Returns the pagination component used in the table.
+   */
   findPagination(): PaginationWrapper | null {
     return this.findComponent(`.${styles['tools-pagination']}`, PaginationWrapper);
   }
@@ -166,6 +250,9 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findBodyCell(rowIndex, columnIndex)?.findByClassName(bodyCellStyles['body-cell-editor']) ?? null;
   }
 
+  /**
+   * Returns the currently active inline editing cell.
+   */
   findEditingCell(): ElementWrapper | null {
     return this.findNativeTable().findByClassName(bodyCellStyles['body-cell-edit-active']);
   }
@@ -174,10 +261,16 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-controls']) ?? null;
   }
 
+  /**
+   * Returns the save button of the currently active inline editing cell.
+   */
   findEditingCellSaveButton(): ElementWrapper | null {
     return this._findEditingCellControls()?.find('button[type="submit"]') ?? null;
   }
 
+  /**
+   * Returns the cancel button of the currently active inline editing cell.
+   */
   findEditingCellCancelButton(): ElementWrapper | null {
     return this._findEditingCellControls()?.find('button:first-child') ?? null;
   }

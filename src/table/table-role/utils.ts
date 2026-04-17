@@ -68,14 +68,75 @@ export function findTableRowCellByAriaColIndex(
   targetAriaColIndex: number,
   delta: number
 ) {
-  let targetCell: null | HTMLTableCellElement = null;
-  const cellElements = Array.from(tableRow.querySelectorAll('td[aria-colindex],th[aria-colindex]'));
-  if (delta < 0) {
-    cellElements.reverse();
+  const cellElements = Array.from(
+    tableRow.querySelectorAll<HTMLTableCellElement>('td[aria-colindex],th[aria-colindex]')
+  );
+  return findClosestCellByAriaColIndex(cellElements, targetAriaColIndex, delta);
+}
+
+/**
+ * Collects all cells visually present in a row, including cells from earlier rows
+ * that span into this row via rowspan. This is needed because cells with rowspan > 1
+ * are only in one <tr> in the DOM but visually occupy multiple rows.
+ */
+export function getAllCellsInRow(table: null | HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
+  if (!table) {
+    return [];
   }
+
+  const cells: HTMLTableCellElement[] = [];
+  const rows = table.querySelectorAll<HTMLTableRowElement>('tr[aria-rowindex]');
+
+  for (const row of Array.from(rows)) {
+    const rowIndex = parseInt(row.getAttribute('aria-rowindex') ?? '');
+    if (isNaN(rowIndex) || rowIndex > targetAriaRowIndex) {
+      continue;
+    }
+
+    const rowCells = row.querySelectorAll<HTMLTableCellElement>('td[aria-colindex],th[aria-colindex]');
+    for (const cell of Array.from(rowCells)) {
+      const rowspan = cell.rowSpan || 1;
+      // Cell is visible in target row if: rowIndex <= targetAriaRowIndex < rowIndex + rowspan
+      if (rowIndex + rowspan > targetAriaRowIndex) {
+        cells.push(cell);
+      }
+    }
+  }
+
+  return cells;
+}
+
+/**
+ * From a list of cell elements, find the closest one to targetAriaColIndex in the direction of delta.
+ * Accounts for colspan: a cell with colindex=2 and colspan=4 covers columns 2,3,4,5.
+ */
+export function findClosestCellByAriaColIndex(
+  cellElements: HTMLTableCellElement[],
+  targetAriaColIndex: number,
+  delta: number
+): HTMLTableCellElement | null {
+  // First check if any cell's colspan range covers the target exactly.
   for (const element of cellElements) {
+    const colIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
+    const colspan = element.colSpan || 1;
+    if (colIndex <= targetAriaColIndex && targetAriaColIndex < colIndex + colspan) {
+      return element;
+    }
+  }
+
+  // Otherwise find the closest cell in the direction of delta.
+  let targetCell: null | HTMLTableCellElement = null;
+  const sorted = [...cellElements].sort((a, b) => {
+    const aIdx = parseInt(a.getAttribute('aria-colindex') ?? '0');
+    const bIdx = parseInt(b.getAttribute('aria-colindex') ?? '0');
+    return aIdx - bIdx;
+  });
+  if (delta < 0) {
+    sorted.reverse();
+  }
+  for (const element of sorted) {
     const columnIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
-    targetCell = element as HTMLTableCellElement;
+    targetCell = element;
 
     if (columnIndex === targetAriaColIndex) {
       break;

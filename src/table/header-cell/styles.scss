@@ -13,6 +13,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include focus-visible.when-visible {
     @content;
   }
+
   &.header-cell-fake-focus {
     @include focus-visible.when-visible-unfocused {
       @content;
@@ -66,12 +67,15 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &-sticky {
     border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
+
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
   }
+
   &-variant-full-page {
     background: awsui.$color-background-layout-main;
   }
+
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }
@@ -111,6 +115,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
         clip-path: inset(0 0 0 -24px);
       }
     }
+
     &-last-inline-end {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
@@ -146,6 +151,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
   }
+
   &:focus {
     outline: none;
     text-decoration: none;
@@ -160,13 +166,35 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 }
 
+.header-cell-spans-rows {
+  block-size: 100%;
+  vertical-align: bottom;
+
+  > .header-cell-content {
+    block-size: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    // stylelint-disable-next-line no-descending-specificity
+    > .sorting-icon {
+      inset-block-start: auto;
+      inset-block-end: awsui.$space-scaled-xxs;
+      transform: none;
+    }
+  }
+}
+
 .header-cell-sortable:not(.header-cell-disabled) {
   & > .header-cell-content {
     cursor: pointer;
   }
+
   & > .header-cell-content:hover,
   &.header-cell-sorted > .header-cell-content {
     color: awsui.$color-text-interactive-active;
+
     & > .sorting-icon {
       color: awsui.$color-text-interactive-active;
     }
@@ -206,12 +234,23 @@ settings icon in the pagination slot.
   &:first-child {
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
+
+  // &:nth-child(2):not(:first-child) {
+  //   @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+  // }
+
   &:first-child > .header-cell-content {
-    @include cell-offset(0px);
+    // TODO: Causes group misalignment, look into this
+    // @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start) {
+  // &:nth-child(2):not(:first-child) > .header-cell-content {
+  //   @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  // }
+
+  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group),
+  &:nth-child(2):not(:first-child):not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
     @include cell-offset(awsui.$space-xxxs);
   }
 
@@ -220,7 +259,8 @@ settings icon in the pagination slot.
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start) {
+  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group),
+  &:nth-child(2):not(:first-child).has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
     @include cell-offset(awsui.$space-xxs);
   }
 
@@ -231,4 +271,68 @@ settings icon in the pagination slot.
   &.sticky-cell-pad-inline-start {
     @include cell-offset($cell-horizontal-padding);
   }
+}
+
+// stylelint-disable custom-property-pattern
+$resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
+// stylelint-enable custom-property-pattern
+
+.header-cell-group,
+.header-cell-group:last-child {
+  // stylelint-disable custom-property-pattern
+  --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
+  --awsui-resizer-margin-block-start: auto;
+  --awsui-resizer-margin-block-end: 0px;
+  // stylelint-enable custom-property-pattern
+}
+
+.header-cell-group.header-cell-grouped {
+  // stylelint-disable custom-property-pattern
+  --awsui-resizer-max-block-size: 100%;
+  --awsui-resizer-margin-block-start: 0px;
+  --awsui-resizer-margin-block-end: 0px;
+  // stylelint-enable custom-property-pattern
+}
+
+.header-cell-last-child-of-group:not(.header-cell-group) {
+  // stylelint-disable custom-property-pattern
+  --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
+  --awsui-resizer-margin-block-start: 0px;
+  --awsui-resizer-margin-block-end: auto;
+  // stylelint-enable custom-property-pattern
+}
+
+// stylelint-disable-next-line
+.header-cell-group:not(.header-cell-grouped):last-child .resize-divider {
+  display: none;
+}
+
+// stylelint-disable-next-line
+.header-cell-group .resize-divider {
+  position: absolute;
+  outline: none;
+  pointer-events: none;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  inset-block-start: 0;
+  min-block-size: awsui.$line-height-heading-xs;
+  // stylelint-disable-next-line custom-property-pattern
+  max-block-size: var(--awsui-resizer-max-block-size, calc(100% - #{$resizer-block-gap}));
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-start: var(--awsui-resizer-margin-block-start, auto);
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-end: var(--awsui-resizer-margin-block-end, 0px);
+  margin-inline: auto;
+  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+}
+
+// stylelint-disable-next-line no-descending-specificity
+.header-cell-last-child-of-group:not(.header-cell-group) > .resize-divider {
+  // stylelint-disable-next-line custom-property-pattern
+  max-block-size: var(--awsui-resizer-max-block-size, calc(100% - #{$resizer-block-gap}));
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-start: var(--awsui-resizer-margin-block-start, auto);
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-end: var(--awsui-resizer-margin-block-end, auto);
 }

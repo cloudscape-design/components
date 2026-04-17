@@ -155,6 +155,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_content-before_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
+    "awsui_content-display-group-header_tc96w",
     "awsui_content-display-no-match_tc96w",
     "awsui_content-display-option-content_tc96w",
     "awsui_content-display-option-label_tc96w",
