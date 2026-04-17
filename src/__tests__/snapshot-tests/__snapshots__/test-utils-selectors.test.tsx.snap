@@ -251,6 +251,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_today_1afkv",
     "awsui_validation-error_1afkv",
   ],
+  "divider": [
+    "awsui_divider_1noo2",
+  ],
   "drawer": [
     "awsui_drawer_1sxt8",
     "awsui_footer_1sxt8",

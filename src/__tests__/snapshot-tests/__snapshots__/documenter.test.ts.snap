@@ -11696,6 +11696,70 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for divider matches the snapshot: divider 1`] = `
+{
+  "dashCaseName": "divider",
+  "events": [],
+  "functions": [],
+  "name": "Divider",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLHRElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLHRElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLHRElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "defaultValue": "false",
+      "description": "When \`true\`, the divider is announced by screen readers as a separator
+(\`role="separator"\` + \`aria-orientation="horizontal"\`).
+When \`false\` (default), the divider is purely decorative and hidden from assistive
+technology (\`role="presentation"\`).
+
+Set to \`true\` only when the divider genuinely separates distinct, meaningful content
+regions that a screen reader user needs to be aware of.",
+      "name": "semantic",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
 {
   "dashCaseName": "drawer",
@@ -38502,6 +38566,10 @@ wrapper.selectOptionByValue('option_1');
       "name": "SelectWrapper",
     },
     {
+      "methods": [],
+      "name": "DividerWrapper",
+    },
+    {
       "methods": [
         {
           "name": "findContent",
@@ -48861,6 +48929,10 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [],
+      "name": "DividerWrapper",
     },
     {
       "methods": [
