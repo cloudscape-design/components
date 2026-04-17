@@ -7,97 +7,99 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-.root {
-  @include styles.styles-reset;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  //reset base styles for ul
-  padding-inline-start: 0;
-  margin-block: 0;
-  margin-inline: 0;
-  list-style: none;
-}
-
-.button,
-.dots {
-  min-inline-size: awsui.$space-l;
-  border-block: awsui.$border-width-button solid transparent;
-  border-inline: awsui.$border-width-button solid transparent;
-}
-
-.button {
-  cursor: pointer;
-  text-align: center;
-  box-sizing: border-box;
-  background: transparent;
-  line-height: inherit;
-  padding-block: 0;
-  padding-inline: 0;
-
-  &:focus {
-    outline: none;
+@layer awsui-components {
+  .root {
+    @include styles.styles-reset;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    //reset base styles for ul
+    padding-inline-start: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    list-style: none;
   }
 
-  @include focus-visible.when-visible {
-    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  .button,
+  .dots {
+    min-inline-size: awsui.$space-l;
+    border-block: awsui.$border-width-button solid transparent;
+    border-inline: awsui.$border-width-button solid transparent;
   }
 
-  &-disabled {
-    cursor: default;
-    color: awsui.$color-text-interactive-disabled;
-  }
-}
+  .button {
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    background: transparent;
+    line-height: inherit;
+    padding-block: 0;
+    padding-inline: 0;
 
-.arrow {
-  color: awsui.$color-text-interactive-default;
-  &:not(.button-disabled):hover {
-    color: awsui.$color-text-interactive-hover;
-  }
-  &.button-disabled {
-    color: awsui.$color-text-interactive-disabled;
-  }
-}
+    &:focus {
+      outline: none;
+    }
 
-.page-number {
-  color: awsui.$color-text-pagination-page-number-default;
-  &:not(.button-disabled):hover {
-    color: awsui.$color-text-interactive-hover;
-  }
-  &.button-current {
-    font-weight: awsui.$font-wayfinding-link-active-weight;
-    @include styles.font-smoothing;
-    color: awsui.$color-text-interactive-active;
-    &.button-disabled {
-      color: awsui.$color-text-pagination-page-number-active-disabled;
+    @include focus-visible.when-visible {
+      @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+    }
+
+    &-disabled {
+      cursor: default;
+      color: awsui.$color-text-interactive-disabled;
     }
   }
-  &.button-disabled {
+
+  .arrow {
+    color: awsui.$color-text-interactive-default;
+    &:not(.button-disabled):hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+    &.button-disabled {
+      color: awsui.$color-text-interactive-disabled;
+    }
+  }
+
+  .page-number {
+    color: awsui.$color-text-pagination-page-number-default;
+    &:not(.button-disabled):hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+    &.button-current {
+      font-weight: awsui.$font-wayfinding-link-active-weight;
+      @include styles.font-smoothing;
+      color: awsui.$color-text-interactive-active;
+      &.button-disabled {
+        color: awsui.$color-text-pagination-page-number-active-disabled;
+      }
+    }
+    &.button-disabled {
+      color: awsui.$color-text-interactive-disabled;
+    }
+  }
+
+  .dots {
+    color: awsui.$color-text-interactive-default;
+  }
+
+  .page-item,
+  .dots {
+    margin-block: styles.$control-padding-vertical;
+    margin-inline: awsui.$space-xxs;
+    text-align: center;
+    box-sizing: border-box;
+    padding-block: 0;
+    padding-inline: 0;
+    &:first-child {
+      margin-inline-start: 0;
+    }
+    &:last-child {
+      margin-inline-end: 0;
+    }
+  }
+
+  .root-disabled > .dots {
     color: awsui.$color-text-interactive-disabled;
   }
-}
-
-.dots {
-  color: awsui.$color-text-interactive-default;
-}
-
-.page-item,
-.dots {
-  margin-block: styles.$control-padding-vertical;
-  margin-inline: awsui.$space-xxs;
-  text-align: center;
-  box-sizing: border-box;
-  padding-block: 0;
-  padding-inline: 0;
-  &:first-child {
-    margin-inline-start: 0;
-  }
-  &:last-child {
-    margin-inline-end: 0;
-  }
-}
-
-.root-disabled > .dots {
-  color: awsui.$color-text-interactive-disabled;
 }
