@@ -11,7 +11,7 @@ import { fireCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
-import { type ActionCardProps } from './interfaces';
+import { ActionCardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
