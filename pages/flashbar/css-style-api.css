@@ -1,0 +1,75 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+
+@layer application, awsui-components;
+
+@layer application {
+  /* All flash items: rounded corners and custom border */
+  .my-flashbar .awsui-style-flashbar-root {
+    border-radius: 8px;
+    border: 2px solid transparent;
+  }
+
+  /* Success */
+  .my-flashbar .awsui-style-flashbar-root[data-type='success'] {
+    background-color: #dcfce7;
+    border-color: #16a34a;
+    color: #14532d;
+  }
+
+  /* Error */
+  .my-flashbar .awsui-style-flashbar-root[data-type='error'] {
+    background-color: #fee2e2;
+    border-color: #dc2626;
+    color: #7f1d1d;
+  }
+
+  /* Warning */
+  .my-flashbar .awsui-style-flashbar-root[data-type='warning'] {
+    background-color: #fef9c3;
+    border-color: #ca8a04;
+    color: #713f12;
+  }
+
+  /* Info */
+  .my-flashbar .awsui-style-flashbar-root[data-type='info'] {
+    background-color: #dbeafe;
+    border-color: #2563eb;
+    color: #1e3a8a;
+  }
+
+  /* In-progress */
+  .my-flashbar .awsui-style-flashbar-root[data-type='in-progress'] {
+    background-color: #f0fdf4;
+    border-color: #0891b2;
+    color: #164e63;
+  }
+
+  /* Custom focus ring for all flash items */
+  .my-flashbar .awsui-style-flashbar-root {
+    --awsui-style-focus-outline-color: #6366f1;
+    --awsui-style-focus-outline-width: 2px;
+    --awsui-style-focus-outline-border-radius: 8px;
+  }
+
+  /* Dismiss button icon color per flash type */
+  .my-flashbar .awsui-style-flashbar-root[data-type='success'] .awsui-style-button-root {
+    --awsui-style-icon-color: #14532d;
+  }
+
+  .my-flashbar .awsui-style-flashbar-root[data-type='error'] .awsui-style-button-root {
+    --awsui-style-icon-color: #7f1d1d;
+  }
+
+  .my-flashbar .awsui-style-flashbar-root[data-type='warning'] .awsui-style-button-root {
+    --awsui-style-icon-color: #713f12;
+  }
+
+  .my-flashbar .awsui-style-flashbar-root[data-type='info'] .awsui-style-button-root {
+    --awsui-style-icon-color: #1e3a8a;
+  }
+
+}

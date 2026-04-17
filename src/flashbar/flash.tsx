@@ -13,6 +13,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { AnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/base-component/metrics/interfaces';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
+import { flashbarStyleDictionary } from '../style-api/flashbar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
@@ -216,10 +217,12 @@ export const Flash = React.forwardRef(
         role={ariaRole}
         aria-live={ariaRole ? 'off' : undefined}
         data-itemid={id}
+        data-type={effectiveType}
         className={clsx(
           styles.flash,
           styles[`flash-type-${effectiveType}`],
           className,
+          flashbarStyleDictionary.classNames.item,
           transitionState && {
             [styles.enter]: transitionState === 'enter',
             [styles.entering]: transitionState === 'entering',
