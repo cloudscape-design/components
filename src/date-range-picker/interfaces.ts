@@ -222,6 +222,12 @@ export interface DateRangePickerProps
    * or current if a selection is present.
    */
   absoluteMultiGridStartPeriod?: DateRangePickerProps.StartPeriod;
+
+  /**
+   * Specifies custom content to fully override the trigger content.
+   * When provided, the default content of the trigger is replaced.
+   */
+  renderTriggerContent?: DateRangePickerProps.RenderTriggerContent;
 }
 
 export namespace DateRangePickerProps {
@@ -311,6 +317,8 @@ export namespace DateRangePickerProps {
     selectedRange: RelativeValue | null,
     setSelectedRange: (value: RelativeValue) => void
   ) => React.ReactNode;
+
+  export type RenderTriggerContent = (props: { formattedDate: JSX.Element }) => React.ReactNode;
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 

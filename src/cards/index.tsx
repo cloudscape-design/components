@@ -5,7 +5,7 @@ import React, { FocusEventHandler, useCallback, useImperativeHandle, useRef } fr
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalContainerAsSubstep } from '../container/internal';
@@ -247,6 +247,151 @@ const Cards = React.forwardRef(function <T = any>(
 
 export default Cards;
 
+interface CardsListProps<T>
+  extends Pick<
+    CardsProps<T>,
+    'items' | 'cardDefinition' | 'trackBy' | 'selectionType' | 'visibleSections' | 'entireCardClickable'
+  > {
+  columns: number | null;
+  isItemSelected: (item: T) => boolean;
+  getItemSelectionProps?: (item: T) => SelectionControlProps;
+  onFocus: FocusEventHandler<HTMLElement>;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+}
+
+interface CardItemProps<T> {
+  item: T;
+  index: number;
+  itemKey: string;
+  cardDefinition: CardsProps.CardDefinition<T>;
+  selectable: boolean;
+  canClickEntireCard: boolean;
+  selectionProps: SelectionControlProps | null;
+  isItemSelected: (item: T) => boolean;
+  visibleSectionsDefinition: ReadonlyArray<CardsProps.SectionDefinition<T>>;
+  listItemRole: 'presentation' | undefined;
+  moveFocusDown: React.KeyboardEventHandler | undefined;
+  moveFocusUp: React.KeyboardEventHandler | undefined;
+  onFocus: FocusEventHandler<HTMLElement>;
+}
+
+const CardItem = <T,>({
+  item,
+  index,
+  itemKey,
+  cardDefinition,
+  selectable,
+  canClickEntireCard,
+  selectionProps,
+  isItemSelected,
+  visibleSectionsDefinition,
+  listItemRole,
+  moveFocusDown,
+  moveFocusUp,
+  onFocus,
+}: CardItemProps<T>) => {
+  const cardId = useUniqueId('card:');
+  const selected = isItemSelected(item);
+  const disabled = selectionProps && selectionProps.disabled;
+
+  const selectionAnalyticsMetadata: GeneratedAnalyticsMetadataCardsSelect | GeneratedAnalyticsMetadataCardsDeselect = {
+    action: selected ? 'deselect' : 'select',
+    detail: {
+      label: {
+        selector: `.${analyticsSelectors['cards-list']} li:nth-child(${index + 1}) .${analyticsSelectors['card-header']}`,
+        root: 'component',
+      },
+      position: `${index + 1}`,
+      item: `${itemKey}`,
+    },
+  };
+
+  const firstContentSectionIndex = selectionProps
+    ? visibleSectionsDefinition.findIndex(({ content }) => !!content)
+    : -1;
+  const ariaDescribedby = firstContentSectionIndex >= 0 ? `${cardId}-section-${firstContentSectionIndex}` : undefined;
+
+  return (
+    <li
+      className={clsx(styles.card, {
+        [styles['card-selected']]: selectable && selected,
+      })}
+      onFocus={onFocus}
+      {...(focusMarkers && focusMarkers.item)}
+      role={listItemRole}
+      {...getAnalyticsMetadataAttribute({
+        component: {
+          innerContext: {
+            position: `${index + 1}`,
+            item: `${itemKey}`,
+          },
+        },
+      })}
+    >
+      <InternalItemCard
+        fullHeight={true}
+        highlighted={selectable && selected}
+        header={
+          <div className={styles['card-header']}>
+            <div
+              className={clsx(
+                styles['card-header-inner'],
+                selectable && styles['card-header-inner-selectable'],
+                analyticsSelectors['card-header']
+              )}
+            >
+              {cardDefinition.header ? cardDefinition.header(item) : ''}
+            </div>
+            {selectionProps && (
+              <div
+                className={styles['selection-control']}
+                {...(!canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {})}
+              >
+                <SelectionControl
+                  onFocusDown={moveFocusDown}
+                  onFocusUp={moveFocusUp}
+                  {...selectionProps}
+                  ariaDescribedby={ariaDescribedby}
+                />
+              </div>
+            )}
+          </div>
+        }
+        metadataAttributes={
+          canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
+        }
+        onClick={
+          canClickEntireCard
+            ? event => {
+                selectionProps?.onChange();
+                // Manually move focus to the native input (checkbox or radio button)
+                event.currentTarget.querySelector('input')?.focus();
+              }
+            : undefined
+        }
+      >
+        {visibleSectionsDefinition.length > 0 &&
+          visibleSectionsDefinition.map(({ width = 100, header, content, id }, sectionIndex) => (
+            <div
+              key={id || sectionIndex}
+              id={
+                selectionProps && sectionIndex === firstContentSectionIndex
+                  ? `${cardId}-section-${sectionIndex}`
+                  : undefined
+              }
+              className={styles.section}
+              style={{ width: `${width}%` }}
+            >
+              {header ? <div className={styles['section-header']}>{header}</div> : ''}
+              {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
+            </div>
+          ))}
+      </InternalItemCard>
+    </li>
+  );
+};
+
 const CardsList = <T,>({
   items,
   cardDefinition,
@@ -260,20 +405,9 @@ const CardsList = <T,>({
   ariaLabelledby,
   ariaLabel,
   entireCardClickable,
-}: Pick<
-  CardsProps<T>,
-  'items' | 'cardDefinition' | 'trackBy' | 'selectionType' | 'visibleSections' | 'entireCardClickable'
-> & {
-  columns: number | null;
-  isItemSelected: (item: T) => boolean;
-  getItemSelectionProps?: (item: T) => SelectionControlProps;
-  onFocus: FocusEventHandler<HTMLElement>;
-  ariaLabel?: string;
-  ariaLabelledby?: string;
-  ariaDescribedby?: string;
-}) => {
+}: CardsListProps<T>) => {
   const selectable = !!selectionType;
-  const canClickEntireCard = selectable && entireCardClickable;
+  const canClickEntireCard = selectable && !!entireCardClickable;
 
   const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
@@ -303,87 +437,23 @@ const CardsList = <T,>({
       {items.map((item, index) => {
         const key = getItemKey(trackBy, item, index);
         const selectionProps = getItemSelectionProps ? getItemSelectionProps(item) : null;
-        const selected = isItemSelected(item);
-        const disabled = selectionProps && selectionProps.disabled;
-        const selectionAnalyticsMetadata:
-          | GeneratedAnalyticsMetadataCardsSelect
-          | GeneratedAnalyticsMetadataCardsDeselect = {
-          action: selected ? 'deselect' : 'select',
-          detail: {
-            label: {
-              selector: `.${analyticsSelectors['cards-list']} li:nth-child(${index + 1}) .${analyticsSelectors['card-header']}`,
-              root: 'component',
-            },
-            position: `${index + 1}`,
-            item: `${key}`,
-          },
-        };
         return (
-          <li
-            className={clsx(styles.card, {
-              [styles['card-selected']]: selectable && selected,
-            })}
+          <CardItem
             key={key}
+            item={item}
+            index={index}
+            itemKey={key}
+            cardDefinition={cardDefinition}
+            selectable={selectable}
+            canClickEntireCard={canClickEntireCard}
+            selectionProps={selectionProps}
+            isItemSelected={isItemSelected}
+            visibleSectionsDefinition={visibleSectionsDefinition}
+            listItemRole={listItemRole}
+            moveFocusDown={moveFocusDown}
+            moveFocusUp={moveFocusUp}
             onFocus={onFocus}
-            {...(focusMarkers && focusMarkers.item)}
-            role={listItemRole}
-            {...getAnalyticsMetadataAttribute({
-              component: {
-                innerContext: {
-                  position: `${index + 1}`,
-                  item: `${key}`,
-                },
-              },
-            })}
-          >
-            <InternalItemCard
-              fullHeight={true}
-              highlighted={selectable && selected}
-              header={
-                <div className={styles['card-header']}>
-                  <div
-                    className={clsx(
-                      styles['card-header-inner'],
-                      selectable && styles['card-header-inner-selectable'],
-                      analyticsSelectors['card-header']
-                    )}
-                  >
-                    {cardDefinition.header ? cardDefinition.header(item) : ''}
-                  </div>
-                  {selectionProps && (
-                    <div
-                      className={styles['selection-control']}
-                      {...(!canClickEntireCard && !disabled
-                        ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata)
-                        : {})}
-                    >
-                      <SelectionControl onFocusDown={moveFocusDown} onFocusUp={moveFocusUp} {...selectionProps} />
-                    </div>
-                  )}
-                </div>
-              }
-              metadataAttributes={
-                canClickEntireCard && !disabled ? getAnalyticsMetadataAttribute(selectionAnalyticsMetadata) : {}
-              }
-              onClick={
-                canClickEntireCard
-                  ? event => {
-                      selectionProps?.onChange();
-                      // Manually move focus to the native input (checkbox or radio button)
-                      event.currentTarget.querySelector('input')?.focus();
-                    }
-                  : undefined
-              }
-            >
-              {visibleSectionsDefinition.length > 0 &&
-                visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-                  <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
-                    {header ? <div className={styles['section-header']}>{header}</div> : ''}
-                    {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
-                  </div>
-                ))}
-            </InternalItemCard>
-          </li>
+          />
         );
       })}
     </ol>
