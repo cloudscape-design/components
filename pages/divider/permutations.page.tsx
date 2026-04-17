@@ -10,7 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DividerProps>([
   {
-    decorative: [true, false],
+    semantic: [false, true],
   },
 ]);
 
