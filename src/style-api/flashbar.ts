@@ -11,7 +11,7 @@ export const flashbarStyleDictionary = {
 };
 
 const styleApi: StyleAPI = {
-  variables: [...focusOutlineVars],
+  variables: [],
   selectors: [
     {
       className: flashbarStyleDictionary.classNames.item,
