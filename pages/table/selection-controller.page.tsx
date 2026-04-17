@@ -224,13 +224,6 @@ function FunctionsTable() {
         </Button>
         .
       </Alert>
-
-      // <Alert type="warning" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
-      //   {crossPageSelectionState.totalCount} items are selected across the table.{' '}
-      //   <Button variant="inline-link" onClick={() => actions.setSelectedItems([])}>
-      //     Clear selection.
-      //   </Button>{' '}
-      // </Alert>
     );
   } else if (!notificationDismissed && crossPageSelectionState?.type === 'page-selected') {
     selectionNotification = (
