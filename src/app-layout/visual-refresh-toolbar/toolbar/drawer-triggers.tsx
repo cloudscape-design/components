@@ -7,6 +7,7 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { useMobile } from '../../../internal/hooks/use-mobile';
+import { appLayoutToolbarStyleDictionary } from '../../../style-api/app-layout-toolbar';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
@@ -164,7 +165,8 @@ export function DrawerTriggers({
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
-                splitPanelTestUtilStyles['open-button']
+                splitPanelTestUtilStyles['open-button'],
+                appLayoutToolbarStyleDictionary.classNames.drawerTrigger
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => {
@@ -197,7 +199,8 @@ export function DrawerTriggers({
                 className={clsx(
                   styles['drawers-trigger'],
                   !toolsOnlyMode && testutilStyles['drawers-trigger'],
-                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+                  item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle'],
+                  appLayoutToolbarStyleDictionary.classNames.drawerTrigger
                 )}
                 iconName={item.trigger!.iconName}
                 iconSvg={item.trigger!.iconSvg}
@@ -251,7 +254,8 @@ export function DrawerTriggers({
                 className={clsx(
                   styles['drawers-trigger'],
                   testutilStyles['drawers-trigger'],
-                  testutilStyles['drawers-trigger-global']
+                  testutilStyles['drawers-trigger-global'],
+                  appLayoutToolbarStyleDictionary.classNames.drawerTrigger
                 )}
                 iconName={item.trigger!.iconName}
                 iconSvg={item.trigger!.iconSvg}

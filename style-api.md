@@ -94,6 +94,74 @@ If you need to propagate a value, set a CSS variable on the root selector and le
 
 ## Style API Docs
 
+### App Layout Toolbar
+
+#### Selectors
+
+##### `.awsui-style-app-layout-toolbar-side-nav-trigger`
+
+Side navigation trigger button.
+
+**Applies to:** `<button>`
+
+**CSS Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `--awsui-style-focus-outline-color` | Color of the focus outline. |
+| `--awsui-style-focus-outline-width` | Width of the focus outline. |
+| `--awsui-style-focus-outline-offset` | Gap between the focused element and the focus outline. |
+| `--awsui-style-focus-outline-radius` | Border radius of the focus outline. |
+| `--awsui-style-icon-color` | Color of the icon. |
+
+##### `.awsui-style-app-layout-toolbar-drawer-trigger`
+
+Drawer trigger button.
+
+**Applies to:** `<button>`
+
+**CSS Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `--awsui-style-focus-outline-color` | Color of the focus outline. |
+| `--awsui-style-focus-outline-width` | Width of the focus outline. |
+| `--awsui-style-focus-outline-offset` | Gap between the focused element and the focus outline. |
+| `--awsui-style-focus-outline-radius` | Border radius of the focus outline. |
+| `--awsui-style-icon-color` | Color of the icon. |
+
+##### `.awsui-style-app-layout-toolbar-breadcrumbs`
+
+Breadcrumbs slot. Use it in combination with Breadcrumbs component selectors
+
+### Breadcrumb Group
+
+#### Selectors
+
+##### `.awsui-style-breadcrumb-page-link`
+
+Breadcrumb group interactive page link.
+
+**Applies to:** `<a>`
+
+**CSS Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `--awsui-style-focus-outline-color` | Color of the focus outline. |
+| `--awsui-style-focus-outline-width` | Width of the focus outline. |
+| `--awsui-style-focus-outline-offset` | Gap between the focused element and the focus outline. |
+| `--awsui-style-focus-outline-radius` | Border radius of the focus outline. |
+| `--awsui-style-icon-color` | Color of the icon. |
+
+##### `.awsui-style-breadcrumb-side-active-page-text`
+
+Breadcrumb group active page label element.
+
+##### `.awsui-style-breadcrumb-divider-icon`
+
+Breadcrumb group divider icon. Use it in combination with Icon component styles.
+
 ### Button
 
 #### Selectors
@@ -327,6 +395,60 @@ Root element of the link that renders as `<a>`.
 Pagination button (with page number or arrow).
 
 **Applies to:** `<button>`
+
+**CSS Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `--awsui-style-focus-outline-color` | Color of the focus outline. |
+| `--awsui-style-focus-outline-width` | Width of the focus outline. |
+| `--awsui-style-focus-outline-offset` | Gap between the focused element and the focus outline. |
+| `--awsui-style-focus-outline-radius` | Border radius of the focus outline. |
+| `--awsui-style-icon-color` | Color of the icon. |
+
+### Side Navigation
+
+#### Selectors
+
+##### `.awsui-style-side-navigation-root`
+
+Root element of the side navigation.
+
+##### `.awsui-style-side-navigation-header`
+
+Header link of the side navigation.
+
+**Applies to:** `<a>`
+
+**CSS Variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `--awsui-style-focus-outline-color` | Color of the focus outline. |
+| `--awsui-style-focus-outline-width` | Width of the focus outline. |
+| `--awsui-style-focus-outline-offset` | Gap between the focused element and the focus outline. |
+| `--awsui-style-focus-outline-radius` | Border radius of the focus outline. |
+| `--awsui-style-icon-color` | Color of the icon. |
+
+##### `.awsui-style-side-navigation-group`
+
+Non-expandable section or link group.
+
+##### `.awsui-style-side-navigation-expandable-group`
+
+Expandable section or expandable link group.
+
+##### `.awsui-style-side-navigation-divider`
+
+Horizontal divider between navigation items.
+
+**Applies to:** `<hr>`
+
+##### `.awsui-style-side-navigation-link`
+
+Navigation link.
+
+**Applies to:** `<a>`
 
 **CSS Variables:**
 

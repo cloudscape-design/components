@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { appLayoutToolbarStyleDictionary } from '../../../style-api/app-layout-toolbar';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 
@@ -35,7 +36,7 @@ export function ToolbarBreadcrumbsSection({
 }: ToolbarBreadcrumbsSectionProps) {
   return (
     <div
-      className={clsx(toolbarStyles['universal-toolbar-breadcrumbs'], includeTestUtils && testutilStyles.breadcrumbs)}
+      className={clsx(toolbarStyles['universal-toolbar-breadcrumbs'], appLayoutToolbarStyleDictionary.classNames.breadcrumbs, includeTestUtils && testutilStyles.breadcrumbs)}
     >
       <BreadcrumbsSlot ownBreadcrumbs={ownBreadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
     </div>

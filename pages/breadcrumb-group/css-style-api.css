@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+
+@layer application, awsui-components;
+
+@layer application {
+  .custom-breadcrumbs .awsui-style-breadcrumb-page-link {
+    --awsui-style-focus-outline-color: #b45309;
+    --awsui-style-icon-color: #b45309;
+    color: #b45309;
+    font-weight: 600;
+  }
+
+  .custom-breadcrumbs .awsui-style-breadcrumb-page-link:hover {
+    color: #92400e;
+  }
+
+  .custom-breadcrumbs .awsui-style-breadcrumb-side-active-page-text {
+    color: #1e293b;
+    font-weight: 700;
+  }
+
+  .custom-breadcrumbs .awsui-style-breadcrumb-divider-icon {
+    --awsui-style-icon-color: #b45309;
+  }
+}

@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { breadcrumbStyleDictionary } from '../../style-api/breadcrumb-group';
 import InternalIcon from '../../icon/internal';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import Tooltip from '../../tooltip/internal.js';
@@ -60,11 +61,11 @@ type ItemProps = React.HTMLAttributes<HTMLElement> & {
 const Item = React.forwardRef<HTMLElement, ItemProps>(
   ({ anchorAttributes, children, isLast, ...itemAttributes }, ref) => {
     return isLast ? (
-      <span ref={ref} className={styles.anchor} {...itemAttributes}>
+      <span ref={ref} className={clsx(styles.anchor, breadcrumbStyleDictionary.classNames.activePageLabel)} {...itemAttributes}>
         {children}
       </span>
     ) : (
-      <a ref={ref as React.Ref<HTMLAnchorElement>} className={styles.anchor} {...itemAttributes} {...anchorAttributes}>
+      <a ref={ref as React.Ref<HTMLAnchorElement>} className={clsx(styles.anchor, breadcrumbStyleDictionary.classNames.pageLink)} {...itemAttributes} {...anchorAttributes}>
         {children}
       </a>
     );
@@ -134,7 +135,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
         </Item>
       )}
       {!isLast ? (
-        <span className={styles.icon}>
+        <span className={clsx(styles.icon, breadcrumbStyleDictionary.classNames.dividerIcon)}>
           <InternalIcon name="angle-right" />
         </span>
       ) : null}

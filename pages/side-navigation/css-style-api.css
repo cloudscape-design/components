@@ -1,0 +1,43 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+
+@layer application, awsui-components;
+
+@layer application {
+  .custom-nav.awsui-style-side-navigation-root {
+    background-color: #0f172a;
+    border-inline-end: 1px solid #1e293b;
+  }
+
+  .custom-nav .awsui-style-side-navigation-header {
+    --awsui-style-focus-outline-color: #818cf8;
+    color: #e2e8f0;
+    font-size: 1.1em;
+  }
+
+  .custom-nav .awsui-style-side-navigation-header:hover {
+    color: #a5b4fc;
+  }
+
+  .custom-nav .awsui-style-side-navigation-link {
+    --awsui-style-focus-outline-color: #818cf8;
+    --awsui-style-icon-color: #818cf8;
+    color: #94a3b8;
+  }
+
+  .custom-nav .awsui-style-side-navigation-link:hover {
+    color: #e2e8f0;
+  }
+
+  .custom-nav .awsui-style-side-navigation-link[aria-current='page'] {
+    color: #a5b4fc;
+    font-weight: 600;
+  }
+
+  .custom-nav .awsui-style-side-navigation-divider {
+    border-color: #1e293b;
+  }
+}

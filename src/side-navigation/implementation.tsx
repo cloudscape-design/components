@@ -13,6 +13,7 @@ import { SideNavigationProps } from './interfaces';
 import { Header, NavigationItemsList } from './parts';
 import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util';
 
+import { sideNavigationStyleDictionary } from '../style-api/side-navigation';
 import styles from './styles.css.js';
 
 type SideNavigationInternalProps = SideNavigationProps & InternalBaseComponentProps;
@@ -62,7 +63,7 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.root, baseProps.className, isToolbar && styles['with-toolbar'])}
+      className={clsx(styles.root, sideNavigationStyleDictionary.classNames.root, baseProps.className, isToolbar && styles['with-toolbar'])}
       ref={__internalRootRef}
     >
       {header && (

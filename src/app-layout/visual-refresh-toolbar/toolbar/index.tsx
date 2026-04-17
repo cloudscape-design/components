@@ -8,6 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { appLayoutToolbarStyleDictionary } from '../../../style-api/app-layout-toolbar';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
@@ -208,7 +209,10 @@ export function AppLayoutToolbarImplementation({
                 ariaLabel={ariaLabels?.navigationToggle ?? undefined}
                 ariaExpanded={!drawerExpandedMode && navigationOpen}
                 iconName="menu"
-                className={testutilStyles['navigation-toggle']}
+                className={clsx(
+                  testutilStyles['navigation-toggle'],
+                  appLayoutToolbarStyleDictionary.classNames.sideNavTrigger
+                )}
                 onClick={() => {
                   if (setExpandedDrawerId) {
                     setExpandedDrawerId(null);

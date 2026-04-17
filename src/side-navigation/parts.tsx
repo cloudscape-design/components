@@ -17,6 +17,7 @@ import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metad
 import { SideNavigationProps } from './interfaces';
 import { hasActiveLink } from './util';
 
+import { sideNavigationStyleDictionary } from '../style-api/side-navigation';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -65,7 +66,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
       <h2 className={styles.header}>
         <a
           href={definition.href}
-          className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
+          className={clsx(styles['header-link'], sideNavigationStyleDictionary.classNames.header, { [styles['header-link--has-logo']]: !!definition.logo })}
           aria-current={definition.href === activeHref ? 'page' : undefined}
           onClick={onClick}
           {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
@@ -258,7 +259,7 @@ interface DividerProps {
 function Divider({ variant = 'default', isPresentational = false }: DividerProps) {
   return (
     <hr
-      className={clsx(styles.divider, styles[`divider-${variant}`])}
+      className={clsx(styles.divider, styles[`divider-${variant}`], sideNavigationStyleDictionary.classNames.divider)}
       role={isPresentational ? 'presentation' : undefined}
     />
   );
@@ -299,7 +300,7 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
     <>
       <a
         href={definition.href}
-        className={clsx(styles.link, { [styles['link-active']]: isActive })}
+        className={clsx(styles.link, sideNavigationStyleDictionary.classNames.link, { [styles['link-active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-expanded={expanded}
@@ -347,6 +348,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
       onChange={onExpandedChange}
       className={clsx(
         styles.section,
+        sideNavigationStyleDictionary.classNames.group,
         variant === 'section-group' && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
@@ -370,7 +372,7 @@ interface SectionGroupProps extends BaseItemComponentProps {
 
 function SectionGroup({ definition, activeHref, fireFollow, fireChange, position }: SectionGroupProps) {
   return (
-    <div className={styles['section-group']}>
+    <div className={clsx(styles['section-group'], sideNavigationStyleDictionary.classNames.group)}>
       <InternalBox className={styles['section-group-title']} variant="h3">
         {definition.title}
       </InternalBox>
@@ -474,6 +476,7 @@ function ExpandableLinkGroup({
     <InternalExpandableSection
       className={clsx(
         styles['expandable-link-group'],
+        sideNavigationStyleDictionary.classNames.expandableGroup,
         variant === 'section-group' && styles['expandable-link-group--no-ident']
       )}
       variant="navigation"
