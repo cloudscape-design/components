@@ -1,0 +1,93 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable no-descending-specificity */
+
+@layer application, awsui-components;
+
+@layer application {
+  /* Indigo-themed input */
+  .my-indigo .awsui-style-input-input {
+    border-color: #6366f1;
+    background-color: #eef2ff;
+    color: #1e1b4b;
+    border-radius: 6px;
+  }
+
+  .my-indigo .awsui-style-input-input:hover {
+    border-color: #4f46e5;
+    background-color: #e0e7ff;
+  }
+
+  .my-indigo .awsui-style-input-input:focus {
+    border-color: #4338ca;
+    box-shadow: 0 0 0 2px #c7d2fe;
+    background-color: #fff;
+  }
+
+  .my-indigo .awsui-style-input-input:disabled {
+    background-color: #f5f3ff;
+    border-color: #c4b5fd;
+    color: #7c3aed;
+    cursor: not-allowed;
+  }
+
+  .my-indigo .awsui-style-input-input[readonly] {
+    background-color: #f5f3ff;
+    border-color: #a5b4fc;
+    color: #3730a3;
+  }
+
+  /* Custom placeholder color and style */
+  .my-placeholder .awsui-style-input-input {
+    border-color: #d1d5db;
+    border-radius: 8px;
+  }
+
+  .my-placeholder .awsui-style-input-input::placeholder {
+    color: #a78bfa;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .my-placeholder .awsui-style-input-input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px #ddd6fe;
+  }
+
+  /* Search-themed input with pill shape */
+  .my-search .awsui-style-input-input {
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+    border-radius: 9999px;
+    padding-inline: 16px;
+  }
+
+  .my-search .awsui-style-input-input:hover {
+    border-color: #0284c7;
+    background-color: #e0f2fe;
+  }
+
+  .my-search .awsui-style-input-input:focus {
+    border-color: #0369a1;
+    box-shadow: 0 0 0 2px #bae6fd;
+    background-color: #fff;
+  }
+
+  .my-search .awsui-style-input-input::placeholder {
+    color: #7dd3fc;
+  }
+
+  /* Custom focus ring — sharp red outline */
+  .my-focus .awsui-style-input-input {
+    border-color: #d1d5db;
+  }
+
+  .my-focus .awsui-style-input-input:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px #fca5a5;
+    border-radius: 0;
+  }
+}

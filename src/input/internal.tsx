@@ -19,6 +19,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
+import { inputStyleDictionary } from '../style-api/input';
 import {
   GeneratedAnalyticsMetadataInputClearInput,
   GeneratedAnalyticsMetadataInputComponent,
@@ -131,6 +132,7 @@ function InternalInput(
     id: controlId,
     className: clsx(
       styles.input,
+      inputStyleDictionary.classNames.input,
       type && styles[`input-type-${type}`],
       __rightIcon && styles['input-has-icon-right'],
       __leftIcon && styles['input-has-icon-left'],
@@ -199,7 +201,7 @@ function InternalInput(
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles['input-container'])}
+      className={clsx(baseProps.className, styles['input-container'], inputStyleDictionary.classNames.root)}
       ref={__internalRootRef}
       dir={type === 'email' ? 'ltr' : undefined}
       {...(__injectAnalyticsComponentMetadata
