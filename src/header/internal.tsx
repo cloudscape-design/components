@@ -16,6 +16,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
+import { headerStyleDictionary } from '../style-api/header';
 import { useTableIntegration } from './analytics/use-table-integration';
 import { HeaderProps } from './interfaces';
 
@@ -69,7 +70,8 @@ export default function InternalHeader({
         styles[`root-variant-${variantOverride}`],
         isRefresh && styles.refresh,
         !actions && [styles[`root-no-actions`]],
-        description && [styles[`root-has-description`]]
+        description && [styles[`root-has-description`]],
+        headerStyleDictionary.classNames.root
       )}
       ref={__internalRootRef}
     >
@@ -93,13 +95,16 @@ export default function InternalHeader({
               className={clsx(
                 styles['heading-text'],
                 analyticsSelectors['heading-text'],
-                styles[`heading-text-variant-${variantOverride}`]
+                styles[`heading-text-variant-${variantOverride}`],
+                headerStyleDictionary.classNames.text
               )}
               id={headingId}
             >
               {children}
             </span>
-            {counter !== undefined && <span className={styles.counter}> {counter}</span>}
+            {counter !== undefined && (
+              <span className={clsx(styles.counter, headerStyleDictionary.classNames.counter)}> {counter}</span>
+            )}
           </HeadingTag>
           {info && (
             <InfoLinkLabelContext.Provider value={headingId}>

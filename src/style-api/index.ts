@@ -5,8 +5,10 @@
 import button from './button';
 import buttonDropdown from './button-dropdown';
 import checkbox from './checkbox';
+import header from './header';
 import icon from './icon';
 import input from './input';
+import link from './link';
 import table from './table';
 
-export { icon, checkbox, button, buttonDropdown, input, table };
+export { button, buttonDropdown, checkbox, header, icon, input, link, table };

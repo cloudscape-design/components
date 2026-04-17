@@ -37,3 +37,21 @@ export const placeholderVars: readonly StyleAPIVariable[] = [
   { name: placeholderStyleDictionary.vars.placeholderFontStyle, description: 'Font style of the placeholder text.' },
   { name: placeholderStyleDictionary.vars.placeholderFontWeight, description: 'Font weight of the placeholder text.' },
 ];
+
+export const typographyStyleDictionary = {
+  vars: {
+    font: '--awsui-style-typography-font',
+    fontSize: '--awsui-style-typography-font-size',
+    fontStyle: '--awsui-style-typography-font-style',
+    fontWeight: '--awsui-style-typography-font-weight',
+    color: '--awsui-style-typography-color',
+  },
+};
+
+export const typographyVars: readonly StyleAPIVariable[] = [
+  { name: typographyStyleDictionary.vars.font, description: 'Typography font.' },
+  { name: typographyStyleDictionary.vars.fontSize, description: 'Typography font size.' },
+  { name: typographyStyleDictionary.vars.fontStyle, description: 'Typography font style.' },
+  { name: typographyStyleDictionary.vars.fontWeight, description: 'Typography font weight.' },
+  { name: typographyStyleDictionary.vars.color, description: 'Typography font color.' },
+];

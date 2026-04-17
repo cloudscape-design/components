@@ -16,6 +16,7 @@ export interface StyleAPISelector {
   tags?: string[];
   description?: string;
   attributes?: readonly StyleAPIAttribute[];
+  variables?: readonly StyleAPIVariable[];
 }
 
 export interface StyleAPIAttribute {

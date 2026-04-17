@@ -27,6 +27,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import { linkStyleDictionary } from '../style-api/link';
 import { LinkProps } from './interfaces';
 import { getLinkStyles } from './style';
 
@@ -176,7 +177,8 @@ const InternalLink = React.forwardRef(
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],
         styles[getColorStyle(variant, color)],
-        isInlineToken && styles['in-inline-token']
+        isInlineToken && styles['in-inline-token'],
+        linkStyleDictionary.classNames.root
       ),
       style: getLinkStyles(style),
       'aria-label': ariaLabel,
