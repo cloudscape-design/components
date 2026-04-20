@@ -32,29 +32,6 @@ export default function SkeletonSimple() {
           </SpaceBetween>
         </Container>
 
-        <Container header={<h2>Custom border radius</h2>}>
-          <SpaceBetween size="m">
-            <Skeleton height="100px" width="100px" style={{ root: { borderRadius: '50%' } }} />
-            <p>Circular skeleton with custom border radius</p>
-          </SpaceBetween>
-        </Container>
-
-        <Container header={<h2>Custom background</h2>}>
-          <SpaceBetween size="m">
-            <Skeleton
-              height="80px"
-              width="400px"
-              style={{
-                root: {
-                  background: 'linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%)',
-                  borderRadius: '12px',
-                },
-              }}
-            />
-            <p>Custom gradient background and border radius</p>
-          </SpaceBetween>
-        </Container>
-
         <Container header={<h2>Multiple skeletons (simulating content loading)</h2>}>
           <SpaceBetween size="s">
             <Skeleton height="24px" width="200px" />
