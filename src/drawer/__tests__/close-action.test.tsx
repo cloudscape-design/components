@@ -51,7 +51,6 @@ test('fires when close button is clicked', () => {
   );
   wrapper.findCloseAction()!.click();
   expect(onClose).toHaveBeenCalledTimes(1);
-  expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'close-action' } }));
 });
 
 test('removes reserved header padding when true', () => {

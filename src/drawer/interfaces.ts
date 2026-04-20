@@ -128,14 +128,31 @@ export interface NextDrawerProps extends DrawerProps {
   hideCloseAction?: boolean;
 
   /**
-   * Called when the drawer is about to close. The `detail.method` indicates the trigger method:
-   * * `'close-action'` - The close button was used.
+   * Called when the drawer's close action is clicked.
    *
    * The event is cancelable - call `event.preventDefault()` to prevent the drawer from closing.
    *
    * @awsuiSystem core
    */
-  onClose?: CancelableEventHandler<NextDrawerProps.CloseDetail>;
+  onClose?: CancelableEventHandler<null>;
+
+  /**
+   * Drawer open state in controlled mode. When provided, the component operates in controlled mode
+   * and you must handle the `onClose` event to update this value.
+   *
+   * @awsuiSystem core
+   */
+  open?: boolean;
+
+  /**
+   * Default open state for uncontrolled mode. Use `ref.current.open()`, `ref.current.close()`, or `ref.current.toggle()`
+   * to change drawer's visibility when in uncontrolled mode.
+   *
+   * When neither `open` nor `defaultOpen` is provided, the drawer is always visible.
+   *
+   * @awsuiSystem core
+   */
+  defaultOpen?: boolean;
 }
 
 export namespace NextDrawerProps {
@@ -155,7 +172,12 @@ export namespace NextDrawerProps {
     bottom?: number;
   }
 
-  export interface CloseDetail {
-    method: 'close-action';
+  export interface Ref {
+    /** Opens the drawer. No-op in controlled mode. */
+    open(): void;
+    /** Closes the drawer. No-op in controlled mode. */
+    close(): void;
+    /** Toggles the drawer open/closed. No-op in controlled mode. */
+    toggle(): void;
   }
 }

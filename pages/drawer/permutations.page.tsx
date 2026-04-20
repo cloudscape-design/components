@@ -4,14 +4,13 @@
 import React from 'react';
 
 import { Button } from '~components';
-import { NextDrawerProps } from '~components/drawer/interfaces';
-import NextDrawer from '~components/drawer/next';
+import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next';
 
 import { SimplePage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 
-const permutations = createPermutations<NextDrawerProps>([
+const permutations = createPermutations<DrawerProps>([
   // Paddings and slots
   {
     disableContentPaddings: [true, false],
@@ -55,7 +54,7 @@ export default function () {
             {!permutation.header && !permutation.children && !permutation.loading && <p>(empty permutation)</p>}
             {/* add visible border to capture component paddings */}
             <div style={{ border: '1px solid red' }}>
-              <NextDrawer {...permutation} />
+              <Drawer {...permutation} />
             </div>
           </>
         )}

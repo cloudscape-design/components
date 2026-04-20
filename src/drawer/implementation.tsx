@@ -97,7 +97,7 @@ export function DrawerImplementation({
                 variant="icon"
                 iconName="close"
                 {...closeAction}
-                onClick={() => fireCancelableEvent(onClose, { method: 'close-action' })}
+                onClick={() => fireCancelableEvent(onClose, null)}
               />
             </div>
           )}
