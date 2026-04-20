@@ -10,13 +10,12 @@ import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
 export interface DividerProps extends BaseComponentProps {
   /**
-   * When `true`, the divider is announced by screen readers as a separator
-   * (`role="separator"` + `aria-orientation="horizontal"`).
-   * When `false` (default), the divider is purely decorative and hidden from assistive
-   * technology (`role="presentation"`).
+   * Announces the divider component as a semantic separator to assistive technology
+   * by adding semantic attributes like `role="separator"` and `aria-orientation`.
+   * Only set this to `true` when the divider genuinely separates distinct, meaningful content
+   * regions that assistive technology needs to be aware of.
    *
-   * Set to `true` only when the divider genuinely separates distinct, meaningful content
-   * regions that a screen reader user needs to be aware of.
+   * By default, the divider is not semantic and is therefore hidden from assistive technology.
    *
    * @defaultValue `false`
    */
