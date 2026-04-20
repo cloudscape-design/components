@@ -169,6 +169,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  spaceOptionPaddingVertical: {
+    description: 'The vertical padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceOptionPaddingHorizontal: {
+    description: 'The horizontal padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
 };
 
 export default metadata;
