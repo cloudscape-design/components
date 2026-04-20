@@ -2605,7 +2605,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -5613,7 +5613,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -8621,7 +8621,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -11629,7 +11629,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -14637,7 +14637,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -17645,7 +17645,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -20653,7 +20653,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font weight for button text.",
       "$value": "700",
     },
-    "font-weight-display-l-bold": {
+    "font-weight-display-l": {
       "$description": "The default font weight for large display text.",
       "$value": "700",
     },
@@ -23666,7 +23666,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -26674,7 +26674,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -29682,7 +29682,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -32690,7 +32690,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -35698,7 +35698,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -38706,7 +38706,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -41714,7 +41714,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -44722,7 +44722,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for button text.",
           "$value": "700",
         },
-        "font-weight-display-l-bold": {
+        "font-weight-display-l": {
           "$description": "The default font weight for large display text.",
           "$value": "700",
         },
@@ -47730,7 +47730,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font weight for button text.",
       "$value": "700",
     },
-    "font-weight-display-l-bold": {
+    "font-weight-display-l": {
       "$description": "The default font weight for large display text.",
       "$value": "700",
     },

@@ -105,7 +105,7 @@
   line-height: awsui.$line-height-display-l;
   letter-spacing: awsui.$letter-spacing-display-l;
   @if $weight {
-    font-weight: awsui.$font-weight-display-l-bold;
+    font-weight: awsui.$font-weight-display-l;
     @include font-smoothing;
   }
 }

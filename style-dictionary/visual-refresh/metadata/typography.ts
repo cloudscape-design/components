@@ -114,7 +114,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  fontWeightDisplayLBold: {
+  fontWeightDisplayL: {
     description: 'The default font weight for large display text.',
     themeable: true,
     public: true,

@@ -464,7 +464,7 @@ export default function ThemedComponentsPage() {
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
-          fontWeightDisplayLBold: '900',
+          fontWeightDisplayL: '900',
           colorTextAccent: { light: '#1b232d', dark: '#F9F9FB' },
         },
       };
