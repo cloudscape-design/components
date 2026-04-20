@@ -53,6 +53,7 @@
   box-shadow: var(#{custom-props.$styleBoxShadowDefault});
 
   @include styles.font-body-m;
+  min-block-size: awsui.$size-vertical-input;
 
   &:hover {
     border-color: var(

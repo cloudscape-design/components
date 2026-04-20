@@ -253,6 +253,9 @@ function Inputs() {
         <Input value={inputValue} readOnly={true} placeholder="Read-only input" />
       </SpaceBetween>
       <SpaceBetween size="s" direction="horizontal">
+        <Input value="" />
+      </SpaceBetween>
+      <SpaceBetween size="s" direction="horizontal">
         <Select
           options={selectOptions}
           selectedOption={selectedOption}
@@ -534,14 +537,16 @@ export default function ThemedComponentsPage() {
       const theme: Theme = {
         tokens: {
           spaceButtonHorizontal: '12px',
-          spaceButtonVertical: '4px',
+          spaceButtonVertical: { comfortable: '4px', compact: '3px' },
           borderRadiusButton: '8px',
           borderWidthButton: '1px',
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
           colorTextAccent: { light: '#1b232d', dark: '#F9F9FB' },
-          //spaceFieldVertical: '4px',
+          fontWeightDisplayL: '900',
+          spaceFieldVertical: { comfortable: '4px', compact: '2px' },
+          sizeVerticalInput: { comfortable: '30px', compact: '28px' },
         },
       };
 
