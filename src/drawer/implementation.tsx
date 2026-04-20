@@ -5,9 +5,11 @@ import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import InternalButton from '../button/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import { fireCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
@@ -17,6 +19,7 @@ import { useStickyFooter } from './use-sticky-footer';
 import { getPositionStyles } from './utils';
 
 import styles from './styles.css.js';
+import testClasses from './test-classes/styles.css.js';
 
 type DrawerInternalProps = NextDrawerProps & InternalBaseComponentProps;
 
@@ -34,6 +37,9 @@ export function DrawerImplementation({
   offset,
   stickyOffset,
   zIndex,
+  closeAction,
+  hideCloseAction = false,
+  onClose,
   ...restProps
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
@@ -79,13 +85,25 @@ export function DrawerImplementation({
           className={clsx(
             styles.header,
             runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditionalDrawerAction && styles['with-additional-action']
+            hasAdditionalDrawerAction && styles['with-additional-action'],
+            hideCloseAction && styles['hide-close-action']
           )}
         >
           {header}
           {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+          {closeAction && !hideCloseAction && (
+            <div className={clsx(styles['close-action'], testClasses['close-action'])}>
+              <InternalButton
+                variant="icon"
+                iconName="close"
+                {...closeAction}
+                onClick={() => fireCancelableEvent(onClose, { method: 'close-action' })}
+              />
+            </div>
+          )}
         </div>
       )}
+
       <div
         className={clsx(
           styles['test-utils-drawer-content'],

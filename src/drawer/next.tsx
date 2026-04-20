@@ -24,6 +24,9 @@ const Drawer = function Drawer({
   offset,
   stickyOffset,
   zIndex,
+  closeAction,
+  hideCloseAction = false,
+  onClose,
   ...props
 }: NextDrawerProps) {
   const baseComponentProps = useBaseComponent('Drawer', {
@@ -33,6 +36,7 @@ const Drawer = function Drawer({
       placement,
       position,
       zIndex,
+      hideCloseAction,
     },
     metadata: {
       hasHeader: !!header,
@@ -40,6 +44,7 @@ const Drawer = function Drawer({
       hasFooter: !!footer,
       hasOffset: !!offset,
       hasStickyOffset: !!stickyOffset,
+      hasCloseAction: !!closeAction,
     },
   });
   return (
@@ -56,6 +61,9 @@ const Drawer = function Drawer({
       offset={offset}
       stickyOffset={stickyOffset}
       zIndex={zIndex}
+      closeAction={closeAction}
+      hideCloseAction={hideCloseAction}
+      onClose={onClose}
     />
   );
 };

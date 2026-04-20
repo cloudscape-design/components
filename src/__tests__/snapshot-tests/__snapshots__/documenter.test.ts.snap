@@ -38676,6 +38676,14 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -49054,6 +49062,14 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     },
     {
       "methods": [
+        {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
         {
           "name": "findContent",
           "parameters": [],

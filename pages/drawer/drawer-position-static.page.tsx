@@ -58,18 +58,12 @@ function DrawerFeaturesTab() {
         </DrawerWithBorder>
 
         <Box variant="p">Drawer with header, content, and footer.</Box>
-        <DrawerWithBorder header="Header" footer="Footer">
+        <DrawerWithBorder header="Header" footer="Footer" closeAction={{ ariaLabel: 'Close drawer' }}>
           Content
         </DrawerWithBorder>
 
-        <SpaceBetween size="xs">
-          <Box variant="p">Drawer with header actions.</Box>
-          <Box variant="p">
-            By default, there is a reserved space next to header actions where an externally-provided close action can
-            be rendered (using absolute positioning).
-          </Box>
-        </SpaceBetween>
-        <DrawerWithBorder header="Header" headerActions={<Button>Action</Button>}>
+        <Box variant="p">Drawer with header actions.</Box>
+        <DrawerWithBorder header="Header" headerActions={<Button>Action</Button>} hideCloseAction={true}>
           Content
         </DrawerWithBorder>
       </ColumnLayout>

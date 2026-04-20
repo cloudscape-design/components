@@ -3,7 +3,9 @@
 
 import React from 'react';
 
+import { ButtonProps } from '../button/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { CancelableEventHandler } from '../internal/events';
 
 export interface DrawerProps extends BaseComponentProps {
   /**
@@ -103,6 +105,37 @@ export interface NextDrawerProps extends DrawerProps {
    * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`.
    */
   zIndex?: number;
+
+  /**
+   * Renders a close button in the header with the provided configuration.
+   * The close button fires the `onClose` event with method `'close-action'` when
+   * clicked.
+   *
+   * @awsuiSystem core
+   */
+  closeAction?: Pick<
+    ButtonProps,
+    'ariaLabel' | 'disabled' | 'disabledReason' | 'iconName' | 'iconSvg' | 'iconUrl' | 'iconAlt'
+  >;
+
+  /**
+   * Hides the close action slot next to the header actions, which is present even
+   * when close action is not set. Use it when a close action is not needed, or a
+   * custom close action implementation is used.
+   *
+   * @awsuiSystem core
+   */
+  hideCloseAction?: boolean;
+
+  /**
+   * Called when the drawer is about to close. The `detail.method` indicates the trigger method:
+   * * `'close-action'` - The close button was used.
+   *
+   * The event is cancelable - call `event.preventDefault()` to prevent the drawer from closing.
+   *
+   * @awsuiSystem core
+   */
+  onClose?: CancelableEventHandler<NextDrawerProps.CloseDetail>;
 }
 
 export namespace NextDrawerProps {
@@ -120,5 +153,9 @@ export namespace NextDrawerProps {
   export interface StickyOffset {
     top?: number;
     bottom?: number;
+  }
+
+  export interface CloseDetail {
+    method: 'close-action';
   }
 }
