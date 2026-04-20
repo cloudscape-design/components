@@ -103,8 +103,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
    *
    * When returning `null`, the default styling will be applied.
-   *
-   * @awsuiSystem core
    */
   renderItem?: ButtonDropdownProps.ItemRenderer;
 
