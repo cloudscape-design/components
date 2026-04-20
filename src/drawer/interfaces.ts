@@ -128,13 +128,16 @@ export interface NextDrawerProps extends DrawerProps {
   hideCloseAction?: boolean;
 
   /**
-   * Called when the drawer's close action is clicked.
+   * Called when the user requests to close the drawer. The `event.detail.method` indicates the trigger:
+   * * `'close-action'` - The close button was clicked.
+   * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
+   * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
    *
    * The event is cancelable - call `event.preventDefault()` to prevent the drawer from closing.
    *
    * @awsuiSystem core
    */
-  onClose?: CancelableEventHandler<null>;
+  onClose?: CancelableEventHandler<NextDrawerProps.CloseDetail>;
 
   /**
    * Drawer open state in controlled mode. When provided, the component operates in controlled mode
@@ -153,6 +156,17 @@ export interface NextDrawerProps extends DrawerProps {
    * @awsuiSystem core
    */
   defaultOpen?: boolean;
+
+  /**
+   * Shows a semi-transparent backdrop behind the drawer when open. Used with `absolute`
+   * and `fixed` positions.
+   *
+   * When a backdrop is set, the keyboard focus is trapped inside the drawer to
+   * prevent it from moving to elements covered by the backdrop.
+   *
+   * @awsuiSystem core
+   */
+  backdrop?: boolean;
 }
 
 export namespace NextDrawerProps {
@@ -170,6 +184,10 @@ export namespace NextDrawerProps {
   export interface StickyOffset {
     top?: number;
     bottom?: number;
+  }
+
+  export interface CloseDetail {
+    method: 'close-action' | 'backdrop-click' | 'escape';
   }
 
   export interface Ref {

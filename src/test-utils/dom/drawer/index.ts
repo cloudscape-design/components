@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-
 import styles from '../../../drawer/styles.selectors.js';
 import testUtilStyles from '../../../drawer/test-classes/styles.selectors.js';
 
 export default class DrawerWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.drawer;
+  static rootSelector: string = testUtilStyles.drawer;
 
   findHeader(): ElementWrapper | null {
     return this.findByClassName(styles.header);
@@ -24,9 +22,5 @@ export default class DrawerWrapper extends ComponentWrapper {
 
   findContent(): ElementWrapper | null {
     return this.findByClassName(styles['test-utils-drawer-content']);
-  }
-
-  findCloseAction(): ButtonWrapper | null {
-    return this.findComponent(`.${testUtilStyles['close-action']} .${ButtonWrapper.rootSelector}`, ButtonWrapper);
   }
 }

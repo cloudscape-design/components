@@ -16,6 +16,8 @@ import { InternalDrawer } from './internal';
 
 export { NextDrawerProps };
 
+const DEFAULT_Z_INDEX = 830;
+
 const Drawer = forwardRef(function Drawer(
   {
     header,
@@ -27,11 +29,12 @@ const Drawer = forwardRef(function Drawer(
     placement = 'end',
     offset,
     stickyOffset,
-    zIndex,
+    zIndex = DEFAULT_Z_INDEX,
     closeAction,
     hideCloseAction = false,
     open,
     defaultOpen,
+    backdrop = false,
     onClose,
     ...props
   }: NextDrawerProps,
@@ -39,6 +42,9 @@ const Drawer = forwardRef(function Drawer(
 ) {
   if (open !== undefined && defaultOpen !== undefined) {
     warnOnce('Drawer', 'You provided both `open` and `defaultOpen`. `defaultOpen` will be ignored in controlled mode.');
+  }
+  if (backdrop && position !== 'fixed' && position !== 'absolute') {
+    warnOnce('Drawer', `\`backdrop\` is not supported with position="${position}" and will be ignored.`);
   }
 
   const [isOpen, setIsOpen] = useControllable(open, onClose, defaultOpen ?? true, {
@@ -69,6 +75,13 @@ const Drawer = forwardRef(function Drawer(
     [open, setIsOpen]
   );
 
+  const handleClose: NonNullable<NextDrawerProps['onClose']> = event => {
+    onClose?.(event);
+    if (!event.defaultPrevented && open === undefined) {
+      setIsOpen(false);
+    }
+  };
+
   const baseComponentProps = useBaseComponent('Drawer', {
     props: {
       disableContentPaddings,
@@ -77,6 +90,7 @@ const Drawer = forwardRef(function Drawer(
       position,
       zIndex,
       hideCloseAction,
+      backdrop,
     },
     metadata: {
       hasHeader: !!header,
@@ -108,7 +122,8 @@ const Drawer = forwardRef(function Drawer(
       zIndex={zIndex}
       closeAction={closeAction}
       hideCloseAction={hideCloseAction}
-      onClose={onClose}
+      backdrop={backdrop}
+      onClose={handleClose}
     />
   );
 });

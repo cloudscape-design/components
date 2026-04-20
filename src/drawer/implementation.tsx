@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useRef } from 'react';
+
+import React, { RefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
@@ -9,6 +10,7 @@ import InternalButton from '../button/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import FocusLock from '../internal/components/focus-lock';
 import { fireCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
@@ -39,6 +41,7 @@ export function DrawerImplementation({
   zIndex,
   closeAction,
   hideCloseAction = false,
+  backdrop = false,
   onClose,
   ...restProps
 }: DrawerInternalProps) {
@@ -47,10 +50,8 @@ export function DrawerImplementation({
   const i18n = useInternalI18n('drawer');
   const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });
   const containerProps = {
-    ...baseProps,
     style: positionStyles.style,
     className: clsx(
-      baseProps.className,
       styles.drawer,
       isToolbar && styles['with-toolbar'],
       !!footer && styles['with-footer'],
@@ -66,12 +67,8 @@ export function DrawerImplementation({
     footerRef,
   });
 
-  return loading ? (
-    <div
-      {...containerProps}
-      className={clsx(containerProps.className, styles['content-with-paddings'])}
-      ref={__internalRootRef}
-    >
+  const content = loading ? (
+    <div {...containerProps} className={clsx(containerProps.className, styles['content-with-paddings'])}>
       <InternalStatusIndicator type="loading">
         <InternalLiveRegion tagName="span">
           {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
@@ -79,7 +76,7 @@ export function DrawerImplementation({
       </InternalStatusIndicator>
     </div>
   ) : (
-    <div {...containerProps} ref={__internalRootRef}>
+    <div {...containerProps}>
       {header && (
         <div
           className={clsx(
@@ -92,12 +89,13 @@ export function DrawerImplementation({
           {header}
           {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
           {closeAction && !hideCloseAction && (
-            <div className={clsx(styles['close-action'], testClasses['close-action'])}>
+            <div className={styles['close-action']}>
               <InternalButton
                 variant="icon"
                 iconName="close"
                 {...closeAction}
-                onClick={() => fireCancelableEvent(onClose, null)}
+                className={testClasses['close-action']}
+                onClick={() => fireCancelableEvent(onClose, { method: 'close-action' })}
               />
             </div>
           )}
@@ -123,6 +121,34 @@ export function DrawerImplementation({
           {footer}
         </div>
       )}
+    </div>
+  );
+
+  const showBackdrop = backdrop && (position === 'fixed' || position === 'absolute');
+
+  useEffect(() => {
+    if (!showBackdrop) {
+      return;
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        fireCancelableEvent(onClose, { method: 'escape' });
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [showBackdrop, onClose]);
+
+  return (
+    <div {...baseProps} className={clsx(baseProps.className, testClasses.drawer)} ref={__internalRootRef}>
+      {showBackdrop && (
+        <div
+          className={clsx(styles.backdrop, testClasses.backdrop, styles[`backdrop-${position}`])}
+          style={{ zIndex }}
+          onClick={() => fireCancelableEvent(onClose, { method: 'backdrop-click' })}
+        />
+      )}
+      <FocusLock disabled={!showBackdrop}>{content}</FocusLock>
     </div>
   );
 }

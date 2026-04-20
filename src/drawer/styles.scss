@@ -121,3 +121,16 @@
 .test-utils-drawer-content {
   /* used in test-utils */
 }
+
+.backdrop {
+  inset: 0;
+  background-color: awsui.$color-background-drawer-backdrop;
+
+  &.backdrop-fixed {
+    position: fixed;
+  }
+
+  &.backdrop-absolute {
+    position: absolute;
+  }
+}

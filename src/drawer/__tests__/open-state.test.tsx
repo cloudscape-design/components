@@ -7,8 +7,6 @@ import { act, render } from '@testing-library/react';
 import NextDrawer, { NextDrawerProps } from '../../../lib/components/drawer/next';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-jest.mock('../../../lib/components/internal/is-development', () => ({ isDevelopment: true }));
-
 const warnOnceMock = jest.fn();
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

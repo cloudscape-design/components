@@ -35,6 +35,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundItemSelected: { dark: '{colorPrimary1000}' },
   colorBackgroundLayoutMain: { light: '{colorNeutral200}', dark: '{colorNeutral950}' },
   colorBackgroundDrawer: '{colorBackgroundLayoutPanelContent}',
+  colorBackgroundDrawerBackdrop: { light: '{colorGreyOpaque90}', dark: '{colorGreyOpaque80}' },
   colorBackgroundLayoutMobilePanel: '{colorBackgroundLayoutPanelContent}',
   colorBackgroundLayoutToggleActive: '{colorNeutral750}',
   colorBackgroundLayoutToggleDefault: 'transparent',
