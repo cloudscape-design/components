@@ -65,7 +65,7 @@
   display: flex;
   align-items: flex-start;
   padding-block: styles.$option-padding-vertical;
-  padding-inline: awsui.$space-l;
+  padding-inline: styles.$option-padding-horizontal;
   color: inherit;
   text-decoration: none;
 
@@ -98,7 +98,7 @@
   .has-category-header > &,
   .has-category-header > .item-tooltip-wrapper > &,
   .has-category-header:not(.has-checkmark) > span > & {
-    padding-inline-start: calc(#{awsui.$space-xs} + #{awsui.$space-l});
+    padding-inline-start: calc(#{awsui.$space-xs} + #{styles.$option-padding-horizontal});
     &.no-content-styling {
       padding-inline-start: 0;
     }
