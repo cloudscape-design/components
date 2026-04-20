@@ -117,6 +117,7 @@ $operator-field-width: 120px;
 
   &-multiselect-wrapper {
     position: relative;
+    min-block-size: awsui.$size-vertical-input;
     min-inline-size: 200px;
 
     &-inner {
