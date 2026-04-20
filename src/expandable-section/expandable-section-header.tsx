@@ -166,7 +166,7 @@ const ExpandableHeaderTextWrapper = ({
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
   const supportsInteractiveElements = variantSupportsActions(variant);
-  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
+  const restrictClickableArea = headerDescription || (supportsInteractiveElements && (headerInfo || headerActions));
   const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
