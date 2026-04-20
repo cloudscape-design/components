@@ -630,7 +630,7 @@ const InternalTable = React.forwardRef(
                                       maxWidth: column.maxWidth,
                                     }}
                                     ariaLabels={ariaLabels}
-                                    column={{ ...column, cell: () => <InternalSkeleton variant="text-body-m" /> }}
+                                    column={{ ...column, cell: () => <InternalSkeleton /> }}
                                     item={{} as T}
                                     wrapLines={wrapLines}
                                     isEditable={false}

@@ -5,9 +5,7 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { SkeletonProps } from './interfaces';
-import { getSkeletonStyles } from './style';
 
 import styles from './styles.css.js';
 
@@ -18,29 +16,30 @@ export default function InternalSkeleton({
   height,
   width,
   display,
-  style,
-  nativeAttributes,
   __internalRootRef,
   ...props
 }: InternalSkeletonProps) {
   const baseProps = getBaseProps(props);
 
   const inlineStyle: React.CSSProperties = {
-    ...getSkeletonStyles(style),
     ...(height !== undefined && { blockSize: height }),
     ...(width !== undefined && { inlineSize: width }),
   };
 
   return (
-    <WithNativeAttributes
+    <div
       {...baseProps}
-      tag="div"
-      componentName="Skeleton"
-      nativeAttributes={nativeAttributes}
-      className={clsx(baseProps.className, styles.root, variant && styles[`variant-${variant}`], display && styles[`display-${display}`])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        variant && styles[`variant-${variant}`],
+        display && styles[`display-${display}`]
+      )}
       ref={__internalRootRef}
       style={inlineStyle}
       aria-hidden="true"
-    />
+    >
+      <div className={styles.inner} />
+    </div>
   );
 }
