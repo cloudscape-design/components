@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
@@ -13,6 +13,7 @@ import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
 import { fireCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useControllable } from '../internal/hooks/use-controllable';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -23,7 +24,10 @@ import { getPositionStyles } from './utils';
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
-type DrawerInternalProps = NextDrawerProps & InternalBaseComponentProps;
+type DrawerInternalProps = NextDrawerProps &
+  InternalBaseComponentProps & {
+    __ref?: React.Ref<NextDrawerProps.Ref>;
+  };
 
 export function DrawerImplementation({
   header,
@@ -33,6 +37,7 @@ export function DrawerImplementation({
   i18nStrings,
   disableContentPaddings,
   __internalRootRef,
+  __ref,
   headerActions,
   position = 'static',
   placement = 'end',
@@ -42,6 +47,8 @@ export function DrawerImplementation({
   closeAction,
   hideCloseAction = false,
   backdrop = false,
+  open,
+  defaultOpen,
   onClose,
   ...restProps
 }: DrawerInternalProps) {
@@ -60,12 +67,67 @@ export function DrawerImplementation({
   };
   const footerRef = useRef<HTMLDivElement>(null);
 
+  const [isOpen, setIsOpen] = useControllable(open, onClose, defaultOpen ?? true, {
+    componentName: 'Drawer',
+    controlledProp: 'open',
+    changeHandler: 'onClose',
+  });
+
+  const handleClose: NonNullable<NextDrawerProps['onClose']> = event => {
+    onClose?.(event);
+    if (!event.defaultPrevented && open === undefined) {
+      setIsOpen(false);
+    }
+  };
+
+  useImperativeHandle(
+    __ref,
+    () => ({
+      open() {
+        if (open === undefined) {
+          setIsOpen(true);
+        }
+      },
+      close() {
+        if (open === undefined) {
+          setIsOpen(false);
+        }
+      },
+      toggle() {
+        if (open === undefined) {
+          setIsOpen(current => !current);
+        }
+      },
+    }),
+    [open, setIsOpen]
+  );
+
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
   const { isSticky: isFooterSticky } = useStickyFooter({
     drawerRef: __internalRootRef as RefObject<HTMLElement>,
     footerRef,
   });
+
+  const showBackdrop = backdrop && (position === 'fixed' || position === 'absolute');
+
+  useEffect(() => {
+    if (!showBackdrop) {
+      return;
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        fireCancelableEvent(handleClose, { method: 'escape' });
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showBackdrop]);
+
+  if (!isOpen) {
+    return null;
+  }
 
   const content = loading ? (
     <div {...containerProps} className={clsx(containerProps.className, styles['content-with-paddings'])}>
@@ -95,7 +157,7 @@ export function DrawerImplementation({
                 iconName="close"
                 {...closeAction}
                 className={testClasses['close-action']}
-                onClick={() => fireCancelableEvent(onClose, { method: 'close-action' })}
+                onClick={() => fireCancelableEvent(handleClose, { method: 'close-action' })}
               />
             </div>
           )}
@@ -124,28 +186,13 @@ export function DrawerImplementation({
     </div>
   );
 
-  const showBackdrop = backdrop && (position === 'fixed' || position === 'absolute');
-
-  useEffect(() => {
-    if (!showBackdrop) {
-      return;
-    }
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        fireCancelableEvent(onClose, { method: 'escape' });
-      }
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [showBackdrop, onClose]);
-
   return (
     <div {...baseProps} className={clsx(baseProps.className, testClasses.drawer)} ref={__internalRootRef}>
       {showBackdrop && (
         <div
           className={clsx(styles.backdrop, testClasses.backdrop, styles[`backdrop-${position}`])}
           style={{ zIndex }}
-          onClick={() => fireCancelableEvent(onClose, { method: 'backdrop-click' })}
+          onClick={() => fireCancelableEvent(handleClose, { method: 'backdrop-click' })}
         />
       )}
       <FocusLock disabled={!showBackdrop}>{content}</FocusLock>

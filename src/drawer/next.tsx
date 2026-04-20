@@ -3,12 +3,11 @@
 
 // eslint-disable-next-line @cloudscape-design/build-tools/react-server-components-directive
 'use client';
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { NextDrawerProps } from './interfaces';
@@ -47,51 +46,8 @@ const Drawer = forwardRef(function Drawer(
     warnOnce('Drawer', `\`backdrop\` is not supported with position="${position}" and will be ignored.`);
   }
 
-  const [isOpen, setIsOpen] = useControllable(open, onClose, defaultOpen ?? true, {
-    componentName: 'Drawer',
-    controlledProp: 'open',
-    changeHandler: 'onClose',
-  });
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      open() {
-        if (open === undefined) {
-          setIsOpen(true);
-        }
-      },
-      close() {
-        if (open === undefined) {
-          setIsOpen(false);
-        }
-      },
-      toggle() {
-        if (open === undefined) {
-          setIsOpen(current => !current);
-        }
-      },
-    }),
-    [open, setIsOpen]
-  );
-
-  const handleClose: NonNullable<NextDrawerProps['onClose']> = event => {
-    onClose?.(event);
-    if (!event.defaultPrevented && open === undefined) {
-      setIsOpen(false);
-    }
-  };
-
   const baseComponentProps = useBaseComponent('Drawer', {
-    props: {
-      disableContentPaddings,
-      loading,
-      placement,
-      position,
-      zIndex,
-      hideCloseAction,
-      backdrop,
-    },
+    props: { disableContentPaddings, loading, placement, position, zIndex, hideCloseAction, backdrop },
     metadata: {
       hasHeader: !!header,
       hasHeaderActions: !!headerActions,
@@ -102,14 +58,11 @@ const Drawer = forwardRef(function Drawer(
     },
   });
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
     <InternalDrawer
       {...getExternalProps(props)}
       {...baseComponentProps}
+      __ref={ref}
       header={header}
       headerActions={headerActions}
       footer={footer}
@@ -122,8 +75,10 @@ const Drawer = forwardRef(function Drawer(
       zIndex={zIndex}
       closeAction={closeAction}
       hideCloseAction={hideCloseAction}
+      open={open}
+      defaultOpen={defaultOpen}
       backdrop={backdrop}
-      onClose={handleClose}
+      onClose={onClose}
     />
   );
 });
