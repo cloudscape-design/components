@@ -217,14 +217,14 @@ describe('token mode rendering and props', () => {
   });
 
   test('contentEditable is false when disabled', () => {
-    const { container } = renderTokenMode({ props: { disabled: true, tokens: [] } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { disabled: true, tokens: [] } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
   test('contentEditable is false when readOnly', () => {
-    const { container } = renderTokenMode({ props: { readOnly: true, tokens: [] } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { readOnly: true, tokens: [] } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
@@ -243,30 +243,28 @@ describe('token mode rendering and props', () => {
 
 describe('token mode disabled, readOnly, and state', () => {
   test('sets aria-disabled when disabled', () => {
-    const { container } = renderTokenMode({ props: { disabled: true } });
-    // When disabled, contenteditable="false" so findContentEditableElement returns null
-    // Query the role=textbox element directly
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { disabled: true } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('aria-disabled', 'true');
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
   test('sets aria-readonly when readOnly', () => {
-    const { container } = renderTokenMode({ props: { readOnly: true } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { readOnly: true } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('aria-readonly', 'true');
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
   test('removes tabIndex when disabled so element is not focusable', () => {
-    const { container } = renderTokenMode({ props: { disabled: true } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { disabled: true } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).not.toHaveAttribute('tabindex');
   });
 
   test('switching from disabled to enabled re-enables editing', () => {
-    const { container, rerender } = renderTokenMode({ props: { disabled: true } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper, rerender } = renderTokenMode({ props: { disabled: true } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('contenteditable', 'false');
     rerender(
       <PromptInput
@@ -2813,7 +2811,7 @@ describe('internal.tsx paths', () => {
         invalid={true}
       />
     );
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('aria-invalid')).toBe('true');
   });
 
@@ -2828,7 +2826,7 @@ describe('internal.tsx paths', () => {
         warning={true}
       />
     );
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('aria-invalid')).toBeNull();
     expect(editable.getAttribute('role')).toBe('textbox');
   });
@@ -2845,7 +2843,7 @@ describe('internal.tsx paths', () => {
         warning={true}
       />
     );
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('aria-invalid')).toBe('true');
   });
 
@@ -3149,8 +3147,8 @@ describe('internal.tsx paths', () => {
   });
 
   test('renders with invalid state', () => {
-    const { container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('aria-label', 'Chat input');
     expect(editable).toHaveAttribute('contenteditable', 'true');
   });
@@ -3256,10 +3254,10 @@ describe('internal.tsx paths', () => {
   });
 
   test('clicking buffer area focuses the editable element', () => {
-    const { container } = renderTokenMode({
+    const { wrapper, container } = renderTokenMode({
       props: { secondaryActions: <button>Attach</button>, tokens: [{ type: 'text', value: 'hello' }] },
     });
-    const editable = container.querySelector('[role="textbox"]') as HTMLElement;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     const focusSpy = jest.spyOn(editable, 'focus');
     // Find the buffer div and click it
     const bufferDiv = container.querySelector('[class*="buffer"]');
@@ -3347,7 +3345,7 @@ describe('token render effect', () => {
 
   test('handles disabled state change triggering re-render', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { container, rerender } = renderTokenMode({ props: { tokens, disabled: false } });
+    const { wrapper, rerender } = renderTokenMode({ props: { tokens, disabled: false } });
     act(() => {
       rerender(
         <PromptInput
@@ -3361,13 +3359,13 @@ describe('token render effect', () => {
       );
     });
 
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
   test('handles readOnly state change triggering re-render', () => {
     const tokens: PromptInputProps.InputToken[] = [{ type: 'text', value: 'hello' }];
-    const { container, rerender } = renderTokenMode({ props: { tokens, readOnly: false } });
+    const { wrapper, rerender } = renderTokenMode({ props: { tokens, readOnly: false } });
     act(() => {
       rerender(
         <PromptInput
@@ -3381,7 +3379,7 @@ describe('token render effect', () => {
       );
     });
 
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('contenteditable', 'false');
   });
 
@@ -3925,7 +3923,6 @@ describe('handleInput scenarios', () => {
 
 describe('autoFocus', () => {
   test('autoFocus focuses the editable element on mount', () => {
-    // Render with autoFocus by using the raw component
     const { container } = render(
       <PromptInput
         tokens={[{ type: 'text', value: 'hello' }]}
@@ -3936,9 +3933,7 @@ describe('autoFocus', () => {
         autoFocus={true}
       />
     );
-    const editable = container.querySelector('[role="textbox"]');
-    // autoFocus should have focused the element
-    expect(editable).not.toBeNull();
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(document.activeElement).toBe(editable);
   });
 
@@ -3955,8 +3950,7 @@ describe('autoFocus', () => {
         onFocus={onFocus}
       />
     );
-    const editable = container.querySelector('[role="textbox"]');
-    expect(editable).not.toBeNull();
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(document.activeElement).toBe(editable);
     expect(onFocus).toHaveBeenCalled();
   });
@@ -4933,7 +4927,7 @@ describe('use-token-mode', () => {
         ariaRequired={true}
       />
     );
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('aria-required')).toBe('true');
   });
 
@@ -4947,7 +4941,7 @@ describe('use-token-mode', () => {
         i18nStrings={defaultI18nStrings}
       />
     );
-    const editable = container.querySelector('[role="textbox"]')!;
+    const editable = createWrapper(container).findPromptInput()!.findContentEditableElement()!.getElement();
     expect(editable.getAttribute('aria-required')).toBeNull();
     expect(editable.getAttribute('role')).toBe('textbox');
   });
@@ -6100,11 +6094,11 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
   test('space inside trigger splits it and positions cursor after the space (no trailing text)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    setupTrigger(onChange, [{ type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' }], ref);
+    const { wrapper } = setupTrigger(onChange, [{ type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' }], ref);
     // Simulate the browser inserting a space inside the trigger at offset 1.
     // The trigger DOM text becomes "@ bob". extractTriggerTokens parses this as
     // trigger(value:" bob") which processTokens then handles.
-    const editable = document.querySelector('[contenteditable="true"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     const trigger = editable.querySelector('[data-type="trigger"]')!;
     trigger.textContent = '@ bob';
     act(() => {
@@ -6124,7 +6118,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
   test('space inside trigger splits it and positions cursor after the space (with trailing text)', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    setupTrigger(
+    const { wrapper } = setupTrigger(
       onChange,
       [
         { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
@@ -6132,7 +6126,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
       ],
       ref
     );
-    const editable = document.querySelector('[contenteditable="true"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     const trigger = editable.querySelector('[data-type="trigger"]')!;
     trigger.textContent = '@ bob';
     act(() => {
@@ -6152,7 +6146,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
   test('delete character from trigger filter text preserves cursor position', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    setupTrigger(
+    const { wrapper } = setupTrigger(
       onChange,
       [
         { type: 'trigger', value: 'bob', triggerChar: '@', id: 't1' },
@@ -6161,7 +6155,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
       ref
     );
     // Simulate deleting "b" at offset 1: "@bob" → "@ob"
-    const editable = document.querySelector('[contenteditable="true"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     const trigger = editable.querySelector('[data-type="trigger"]')!;
     trigger.textContent = '@ob';
     act(() => {
@@ -6180,7 +6174,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
   test('empty trigger absorbs adjacent text when space is removed', () => {
     const onChange = jest.fn();
     const ref = React.createRef<PromptInputProps.Ref>();
-    setupTrigger(
+    const { wrapper } = setupTrigger(
       onChange,
       [
         { type: 'trigger', value: '', triggerChar: '@', id: 't1' },
@@ -6189,7 +6183,7 @@ describe('trigger cursor behavior — full-flow regression tests', () => {
       ref
     );
     // Simulate backspace removing the space: text becomes "bob" (no leading space)
-    const editable = document.querySelector('[contenteditable="true"]')!;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     const p = editable.querySelector('p')!;
     const textNode = Array.from(p.childNodes).find(n => n.nodeType === 3);
     if (textNode) {
@@ -6662,23 +6656,23 @@ describe('token removal caret restoration', () => {
 
 describe('disabled state focus behavior', () => {
   test('disabled contentEditable has no tabindex attribute', () => {
-    const { container } = renderTokenMode({ props: { disabled: true, tokens: [{ type: 'text', value: 'hi' }] } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { disabled: true, tokens: [{ type: 'text', value: 'hi' }] } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).not.toHaveAttribute('tabindex');
   });
 
   test('enabled contentEditable has tabindex 0', () => {
-    const { container } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hi' }] } });
-    const editable = container.querySelector('[role="textbox"]')!;
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hi' }] } });
+    const editable = wrapper.findContentEditableElement()!.getElement();
     expect(editable).toHaveAttribute('tabindex', '0');
   });
 
   test('onFocus is not fired when disabled', () => {
     const onFocus = jest.fn();
-    const { container } = renderTokenMode({
+    const { wrapper } = renderTokenMode({
       props: { disabled: true, onFocus, tokens: [{ type: 'text', value: 'hi' }] },
     });
-    const editable = container.querySelector('[role="textbox"]') as HTMLElement;
+    const editable = wrapper.findContentEditableElement()!.getElement();
     // In a real browser, the missing tabindex prevents focus. jsdom doesn't enforce this,
     // so we verify the attribute-level guard instead.
     expect(editable).not.toHaveAttribute('tabindex');
@@ -6987,11 +6981,11 @@ describe('paste via fireEvent', () => {
   test('single-line paste into empty input produces text token', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    const { wrapper } = renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
     act(() => {
       ref.current!.focus();
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'hello world');
     });
@@ -7007,11 +7001,11 @@ describe('paste via fireEvent', () => {
   test('multiline paste produces break tokens', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    const { wrapper } = renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
     act(() => {
       ref.current!.focus();
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'line1\nline2\nline3');
     });
@@ -7026,7 +7020,7 @@ describe('paste via fireEvent', () => {
   test('paste replaces selected text', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'hello world' }], onChange },
       ref,
     });
@@ -7037,7 +7031,7 @@ describe('paste via fireEvent', () => {
     act(() => {
       ref.current!.setSelectionRange(6, 11);
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'universe');
     });
@@ -7051,11 +7045,11 @@ describe('paste via fireEvent', () => {
   test('paste with HTML clipboard data inserts only plain text', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
+    const { wrapper } = renderStatefulTokenMode({ props: { tokens: [], onChange }, ref });
     act(() => {
       ref.current!.focus();
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, '<b>bold</b> text');
     });
@@ -7067,12 +7061,12 @@ describe('paste via fireEvent', () => {
   test('paste is no-op when disabled', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'original' }], onChange, disabled: true },
       ref,
     });
     const callsBefore = onChange.mock.calls.length;
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'injected');
     });
@@ -7151,7 +7145,7 @@ describe('paste partial selection replacement', () => {
   test('paste replaces partial text selection within a single line', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'hello world' }], onChange },
       ref,
     });
@@ -7161,7 +7155,7 @@ describe('paste partial selection replacement', () => {
     act(() => {
       ref.current!.setSelectionRange(6, 11);
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'universe');
     });
@@ -7175,7 +7169,7 @@ describe('paste partial selection replacement', () => {
   test('paste multiline over partial selection in multiline content', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: {
         tokens: [
           { type: 'text', value: 'aaa' },
@@ -7195,7 +7189,7 @@ describe('paste partial selection replacement', () => {
     act(() => {
       ref.current!.setSelectionRange(4, 7);
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'xxx\nyyy');
     });
@@ -7211,12 +7205,12 @@ describe('paste partial selection replacement', () => {
   test('paste is no-op when readOnly', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'original' }], onChange, readOnly: true },
       ref,
     });
     const callsBefore = onChange.mock.calls.length;
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, 'injected');
     });
@@ -7226,7 +7220,7 @@ describe('paste partial selection replacement', () => {
   test('paste empty string is no-op', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'original' }], onChange },
       ref,
     });
@@ -7234,7 +7228,7 @@ describe('paste partial selection replacement', () => {
       ref.current!.focus();
     });
     const callsBefore = onChange.mock.calls.length;
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       pasteText(el, '');
     });
@@ -7280,7 +7274,7 @@ describe('insertText multiline edge cases', () => {
   test('paste over partial selection with multiline content produces correct tokens', () => {
     const ref = React.createRef<PromptInputProps.Ref>();
     const onChange = jest.fn();
-    renderStatefulTokenMode({
+    const { wrapper } = renderStatefulTokenMode({
       props: { tokens: [{ type: 'text', value: 'abcdef' }], onChange },
       ref,
     });
@@ -7290,7 +7284,7 @@ describe('insertText multiline edge cases', () => {
     act(() => {
       ref.current!.setSelectionRange(2, 4);
     });
-    const el = document.querySelector('[role="textbox"]') as HTMLElement;
+    const el = wrapper.findContentEditableElement()!.getElement();
     act(() => {
       fireEvent.paste(el, {
         clipboardData: {
@@ -7611,5 +7605,147 @@ describe('selection deletion DOM sync', () => {
     expect(textValues.join('')).toBe('Hello ');
     // DOM must also reflect the deletion
     expect(getValue(wrapper)).toBe('Hello ');
+  });
+});
+
+describe('cut updates state to match DOM', () => {
+  function fireCut(el: HTMLElement): void {
+    const event = new Event('cut', { bubbles: true }) as any;
+    event.clipboardData = { setData: () => {} };
+    event.preventDefault = () => {};
+    el.dispatchEvent(event);
+  }
+
+  test('cut with all content selected clears tokens and DOM', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    // Select all content
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    act(() => {
+      fireCut(el);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail;
+    expect(lastCall.value).toBe('');
+  });
+
+  test('cut with partial selection removes selected text', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    act(() => {
+      ref.current!.setSelectionRange(5, 11);
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    act(() => {
+      fireCut(el);
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastTokens = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail.tokens;
+    const textValues = lastTokens.filter((t: any) => t.type === 'text').map((t: any) => t.value);
+    expect(textValues.join('')).toBe('hello');
+  });
+
+  test('cut is no-op when readOnly', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello' }],
+        onChange,
+        readOnly: true,
+      },
+    });
+    const callsBefore = onChange.mock.calls.length;
+    const el = wrapper.findContentEditableElement()!.getElement();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    act(() => {
+      fireCut(el);
+    });
+    expect(onChange.mock.calls.length).toBe(callsBefore);
+  });
+});
+
+describe('select-all deletion with root-level selection range', () => {
+  test('delete key removes all content when selection spans the editable root', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    // Simulate a root-level selection (container = editable element itself)
+    const range = document.createRange();
+    range.setStart(el, 0);
+    range.setEnd(el, el.childNodes.length);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', keyCode: 46, bubbles: true }));
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail;
+    expect(lastCall.value).toBe('');
+    expect(getValue(wrapper)).toBe('');
+  });
+
+  test('backspace removes all content when selection spans the editable root', () => {
+    const ref = React.createRef<PromptInputProps.Ref>();
+    const onChange = jest.fn();
+    const { wrapper } = renderStatefulTokenMode({
+      props: {
+        tokens: [{ type: 'text', value: 'hello world' }],
+        onChange,
+      },
+      ref,
+    });
+    act(() => {
+      ref.current!.focus();
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    const range = document.createRange();
+    range.setStart(el, 0);
+    range.setEnd(el, el.childNodes.length);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    act(() => {
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', keyCode: 8, bubbles: true }));
+    });
+    expect(onChange).toHaveBeenCalled();
+    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail;
+    expect(lastCall.value).toBe('');
+    expect(getValue(wrapper)).toBe('');
   });
 });

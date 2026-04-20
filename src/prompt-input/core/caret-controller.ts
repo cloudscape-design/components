@@ -305,8 +305,21 @@ export class CaretController {
       return 0;
     }
 
-    const container = useEnd ? range.endContainer : range.startContainer;
-    const offset = useEnd ? range.endOffset : range.startOffset;
+    let container = useEnd ? range.endContainer : range.startContainer;
+    let offset = useEnd ? range.endOffset : range.startOffset;
+
+    // When the selection container is the editable root rather than a
+    // descendant node, resolve to the actual child so the paragraph
+    // loop below works correctly.
+    if (container === this.element) {
+      if (offset >= container.childNodes.length) {
+        container = container.childNodes[container.childNodes.length - 1];
+        offset = container.childNodes.length;
+      } else {
+        container = container.childNodes[offset];
+        offset = 0;
+      }
+    }
 
     let position = 0;
 

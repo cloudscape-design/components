@@ -1562,6 +1562,66 @@ describe('CaretController - remaining uncovered branches', () => {
   });
 });
 
+describe('getPosition when selection container is the editable root', () => {
+  let el: HTMLDivElement;
+  let controller: CaretController;
+
+  beforeEach(() => {
+    el = document.createElement('div');
+    el.setAttribute('contenteditable', 'true');
+    document.body.appendChild(el);
+    controller = new CaretController(el);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  test('returns 0 when range starts at root with offset 0', () => {
+    addParagraph(el, 'hello');
+    el.focus();
+    const range = document.createRange();
+    range.setStart(el, 0);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    expect(controller.getPosition()).toBe(0);
+  });
+
+  test('returns total content length when range starts at root past last child', () => {
+    addParagraph(el, 'hello');
+    el.focus();
+    const range = document.createRange();
+    range.setStart(el, el.childNodes.length);
+    range.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+    expect(controller.getPosition()).toBe(5);
+  });
+
+  test('returns correct positions for multi-paragraph root selection', () => {
+    addParagraph(el, 'abc');
+    addParagraph(el, 'de');
+    el.focus();
+
+    // Start at root offset 0
+    const startRange = document.createRange();
+    startRange.setStart(el, 0);
+    startRange.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(startRange);
+    expect(controller.getPosition()).toBe(0);
+
+    // End at root offset past last child: 'abc' (3) + line break (1) + 'de' (2) = 6
+    const endRange = document.createRange();
+    endRange.setStart(el, el.childNodes.length);
+    endRange.collapse(true);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(endRange);
+    expect(controller.getPosition()).toBe(6);
+  });
+});
+
 describe('CaretController - null textContent fallbacks', () => {
   let el: HTMLDivElement;
   let controller: CaretController;
