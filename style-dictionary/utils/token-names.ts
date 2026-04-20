@@ -841,6 +841,7 @@ export type TypographyTokenName =
   | 'fontWeightHeadingM'
   | 'fontWeightHeadingS'
   | 'fontWeightHeadingXs'
+  | 'fontWeightDisplayL'
   | 'fontWeightHeavy'
   | 'letterSpacingBodyS'
   | 'letterSpacingDisplayL'

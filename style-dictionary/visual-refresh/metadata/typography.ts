@@ -114,6 +114,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightDisplayL: {
+    description: 'The default font weight for large display text.',
+    themeable: true,
+    public: true,
+  },
   fontSizeTabs: {
     description: 'The default font size for tabs.',
     themeable: true,

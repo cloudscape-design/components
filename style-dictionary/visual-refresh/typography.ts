@@ -41,6 +41,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightHeadingM: '700',
   fontWeightHeadingS: '700',
   fontWeightHeadingXs: '700',
+  fontWeightDisplayL: '700',
   fontWeightHeavy: '700',
   letterSpacingBodyS: '0.005em',
   letterSpacingDisplayL: '-0.03em',

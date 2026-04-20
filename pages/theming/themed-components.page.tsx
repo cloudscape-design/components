@@ -14,6 +14,7 @@ import {
   Grid,
   Header,
   Input,
+  Link,
   Multiselect,
   SegmentedControl,
   Select,
@@ -32,6 +33,27 @@ import { Breadcrumbs, Tools } from '../app-layout/utils/content-blocks';
 import { drawerItems, drawerLabels } from '../app-layout/utils/drawers';
 import labels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
+
+function Typography() {
+  return (
+    <SpaceBetween size="s">
+      <Box variant="h1">Heading XL (h1)</Box>
+      <Box variant="h2">Heading L (h2)</Box>
+      <Box variant="h3">Heading M (h3)</Box>
+      <Box variant="h4">Heading S (h4)</Box>
+      <Box variant="h5">Heading XS (h5)</Box>
+      <Link variant="awsui-value-large" href="#" ariaLabel="Running instances (14)">
+        14
+      </Link>
+      <Box variant="awsui-value-large">Display L bold</Box>
+      <Box variant="awsui-value-large" fontWeight="light">
+        Display L light
+      </Box>
+      <Box variant="p">Body M — Regular paragraph text used for descriptions and content blocks.</Box>
+      <Box variant="small">Body S — Small text used for secondary information.</Box>
+    </SpaceBetween>
+  );
+}
 
 function Buttons() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
@@ -387,6 +409,7 @@ function TableCardsAndTiles() {
 
 function AppLayoutToolbarWithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const [activeHref, setActiveHref] = React.useState('#/page1');
 
   return (
     <AppLayoutToolbar
@@ -394,11 +417,27 @@ function AppLayoutToolbarWithDrawers() {
       breadcrumbs={<Breadcrumbs />}
       navigation={
         <SideNavigation
-          header={{
-            href: '#',
-            text: 'Service name',
+          activeHref={activeHref}
+          header={{ href: '#/', text: 'Service name' }}
+          onFollow={event => {
+            if (!event.detail.external) {
+              event.preventDefault();
+              setActiveHref(event.detail.href);
+            }
           }}
-          items={[0, 1, 2].map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
+          items={[
+            { type: 'link', text: 'Page 1', href: '#/page1' },
+            { type: 'link', text: 'Page 2', href: '#/page2' },
+            { type: 'link', text: 'Page 3', href: '#/page3' },
+            { type: 'link', text: 'Page 4', href: '#/page4' },
+            { type: 'divider' },
+            {
+              type: 'link',
+              text: 'Documentation',
+              href: 'https://example.com',
+              external: true,
+            },
+          ]}
         />
       }
       tools={<Tools>{toolsContent.long}</Tools>}
@@ -425,6 +464,8 @@ export default function ThemedComponentsPage() {
           borderWidthToken: '1px',
           borderWidthItemSelected: '1px',
           borderWidthCardSelected: '1px',
+          fontWeightDisplayL: '900',
+          colorTextAccent: { light: '#1b232d', dark: '#F9F9FB' },
         },
       };
 
@@ -453,6 +494,8 @@ export default function ThemedComponentsPage() {
             <span style={{ marginInlineStart: 5 }}>Apply custom themes</span>
           </label>
         </SpaceBetween>
+
+        <Typography />
 
         <SpaceBetween size="l">
           <Grid gridDefinition={[{ colspan: { default: 12, xxs: 6 } }, { colspan: { default: 12, xxs: 6 } }]}>
