@@ -5032,7 +5032,7 @@ exports[`Components definition for breadcrumb-group matches the snapshot: breadc
   "events": [
     {
       "cancelable": true,
-      "description": "Called when the user clicks on a breadcrumb item.",
+      "description": "Called when the user clicks on a breadcrumb item. Do not use this handler for navigation, use the \`onFollow\` event instead.",
       "detailInlineType": {
         "name": "BreadcrumbGroupProps.ClickDetail<T>",
         "properties": [
