@@ -2,17 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps } from '~components';
-import ButtonGroup from '~components/button-group';
+import { Table } from '~components';
+import Header from '~components/header';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const profileItems: ButtonDropdownProps.Items = [
-  { id: 'profile', text: 'Profile' },
-  { id: 'signout', text: 'Sign out' },
-];
+const tableItems = Array.from({ length: 20 }, (_, i) => ({ id: `${i}`, name: `Item ${i + 1}` }));
 
 export default function NavigationBarIntegPage() {
   return (
@@ -22,38 +19,48 @@ export default function NavigationBarIntegPage() {
         <NavigationBar
           data-testid="primary-bar"
           ariaLabel="Primary navigation"
-          startContent={
+          content={
             <Link href="#" fontSize="heading-m" color="inverted">
               App Name
             </Link>
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Utilities"
-              items={[
-                { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
-                { type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems },
-              ]}
-              onItemClick={() => {}}
-            />
           }
         />
         <NavigationBar
           data-testid="secondary-bar"
           variant="secondary"
           ariaLabel="Page toolbar"
-          startContent={<span>Toolbar content</span>}
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Actions"
-              items={[{ type: 'icon-button', id: 'refresh', text: 'Refresh', iconName: 'refresh' }]}
-              onItemClick={() => {}}
-            />
-          }
+          content={<span>Toolbar content</span>}
         />
       </ScreenshotArea>
+
+      {/* Sticky stacking scenario: both bars sticky, table header should offset below both */}
+      <div data-testid="sticky-scenario" style={{ height: 600, overflowY: 'auto' }}>
+        <NavigationBar
+          data-testid="sticky-primary"
+          sticky={true}
+          ariaLabel="Sticky primary"
+          content={
+            <Link href="#" fontSize="heading-m" color="inverted">
+              App
+            </Link>
+          }
+        />
+        <NavigationBar
+          data-testid="sticky-secondary"
+          variant="secondary"
+          sticky={true}
+          ariaLabel="Sticky secondary"
+          content={<span>Toolbar</span>}
+        />
+        <Table
+          data-testid="sticky-table"
+          stickyHeader={true}
+          header={<Header>Resources</Header>}
+          columnDefinitions={[{ id: 'name', header: 'Name', cell: item => item.name }]}
+          items={tableItems}
+          ariaLabels={{ tableLabel: 'Resources' }}
+        />
+      </div>
     </article>
   );
 }

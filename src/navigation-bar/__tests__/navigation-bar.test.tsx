@@ -1,22 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
-
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { act, render } from '@testing-library/react';
 
 import { getVisualContextClassname } from '../../../lib/components/internal/components/visual-context';
 import NavigationBar, { NavigationBarProps } from '../../../lib/components/navigation-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
-
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-});
+import styles from '../../../lib/components/navigation-bar/styles.selectors.js';
 
 function renderNavigationBar(props: Partial<NavigationBarProps> = {}) {
   const { container } = render(<NavigationBar {...props} />);
@@ -30,64 +21,31 @@ describe('NavigationBar', () => {
       expect(wrapper.getElement().tagName).toBe('NAV');
     });
 
-    test('renders empty bar when no slots provided', () => {
+    test('renders empty bar when no content provided', () => {
       const wrapper = renderNavigationBar();
-      expect(wrapper.findStartContent()).toBeNull();
-      expect(wrapper.findCenterContent()).toBeNull();
-      expect(wrapper.findEndContent()).toBeNull();
+      expect(wrapper.findContent()).toBeNull();
     });
 
-    test('renders startContent', () => {
-      const wrapper = renderNavigationBar({ startContent: <span>Start</span> });
-      expect(wrapper.findStartContent()!.getElement()).toHaveTextContent('Start');
-    });
-
-    test('renders centerContent in horizontal placement', () => {
-      const wrapper = renderNavigationBar({ centerContent: <span>Center</span> });
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-    });
-
-    test('renders endContent', () => {
-      const wrapper = renderNavigationBar({ endContent: <span>End</span> });
-      expect(wrapper.findEndContent()!.getElement()).toHaveTextContent('End');
-    });
-
-    test('renders all three slots together', () => {
-      const wrapper = renderNavigationBar({
-        startContent: <span>Start</span>,
-        centerContent: <span>Center</span>,
-        endContent: <span>End</span>,
-      });
-      expect(wrapper.findStartContent()!.getElement()).toHaveTextContent('Start');
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-      expect(wrapper.findEndContent()!.getElement()).toHaveTextContent('End');
+    test('renders content', () => {
+      const wrapper = renderNavigationBar({ content: <span>Hello</span> });
+      expect(wrapper.findContent()!.getElement()).toHaveTextContent('Hello');
     });
   });
 
   describe('Variants', () => {
     test('defaults to primary variant', () => {
       const wrapper = renderNavigationBar();
-      expect(wrapper.getElement()).toHaveClass(expect.stringContaining('variant-primary'));
-    });
-
-    test('applies primary variant class', () => {
-      const wrapper = renderNavigationBar({ variant: 'primary' });
-      expect(wrapper.getElement()).toHaveClass(expect.stringContaining('variant-primary'));
+      expect(wrapper.getElement()).toHaveClass(styles['variant-primary']);
     });
 
     test('applies secondary variant class', () => {
       const wrapper = renderNavigationBar({ variant: 'secondary' });
-      expect(wrapper.getElement()).toHaveClass(expect.stringContaining('variant-secondary'));
+      expect(wrapper.getElement()).toHaveClass(styles['variant-secondary']);
     });
 
     test('primary variant applies top-navigation visual context', () => {
       const wrapper = renderNavigationBar({ variant: 'primary' });
       expect(wrapper.getElement()).toHaveClass(getVisualContextClassname('top-navigation'));
-    });
-
-    test('secondary variant does not apply top-navigation visual context', () => {
-      const wrapper = renderNavigationBar({ variant: 'secondary' });
-      expect(wrapper.getElement()).not.toHaveClass(getVisualContextClassname('top-navigation'));
     });
 
     test('secondary variant applies app-layout-toolbar visual context', () => {
@@ -99,56 +57,16 @@ describe('NavigationBar', () => {
   describe('Placement', () => {
     test('defaults to block-start placement', () => {
       const wrapper = renderNavigationBar();
-      expect(wrapper.getElement()).toHaveClass(expect.stringContaining('placement-block-start'));
+      expect(wrapper.getElement()).toHaveClass(styles['placement-block-start']);
     });
 
     test.each(['block-start', 'block-end', 'inline-start', 'inline-end'] as const)(
       'applies %s placement class',
       placement => {
         const wrapper = renderNavigationBar({ placement });
-        expect(wrapper.getElement()).toHaveClass(expect.stringContaining(`placement-${placement}`));
+        expect(wrapper.getElement()).toHaveClass(styles[`placement-${placement}`]);
       }
     );
-
-    test('does not render centerContent in vertical placement (inline-start)', () => {
-      const wrapper = renderNavigationBar({
-        placement: 'inline-start',
-        centerContent: <span>Center</span>,
-      });
-      expect(wrapper.findCenterContent()).toBeNull();
-    });
-
-    test('does not render centerContent in vertical placement (inline-end)', () => {
-      const wrapper = renderNavigationBar({
-        placement: 'inline-end',
-        centerContent: <span>Center</span>,
-      });
-      expect(wrapper.findCenterContent()).toBeNull();
-    });
-
-    test('renders centerContent in block-end placement', () => {
-      const wrapper = renderNavigationBar({
-        placement: 'block-end',
-        centerContent: <span>Center</span>,
-      });
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-    });
-
-    test('warns when centerContent is used with vertical placement', () => {
-      renderNavigationBar({
-        placement: 'inline-start',
-        centerContent: <span>Center</span>,
-      });
-      expect(warnOnce).toHaveBeenCalledWith('NavigationBar', expect.stringContaining('centerContent'));
-    });
-
-    test('does not warn when centerContent is used with horizontal placement', () => {
-      renderNavigationBar({
-        placement: 'block-start',
-        centerContent: <span>Center</span>,
-      });
-      expect(warnOnce).not.toHaveBeenCalled();
-    });
   });
 
   describe('Accessibility', () => {
@@ -171,59 +89,6 @@ describe('NavigationBar', () => {
     });
   });
 
-  describe('Slot combinations', () => {
-    test('renders only startContent when others are absent', () => {
-      const wrapper = renderNavigationBar({ startContent: <span>Start</span> });
-      expect(wrapper.findStartContent()!.getElement()).toHaveTextContent('Start');
-      expect(wrapper.findCenterContent()).toBeNull();
-      expect(wrapper.findEndContent()).toBeNull();
-    });
-
-    test('renders only centerContent when others are absent', () => {
-      const wrapper = renderNavigationBar({ centerContent: <span>Center</span> });
-      expect(wrapper.findStartContent()).toBeNull();
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-      expect(wrapper.findEndContent()).toBeNull();
-    });
-
-    test('renders only endContent when others are absent', () => {
-      const wrapper = renderNavigationBar({ endContent: <span>End</span> });
-      expect(wrapper.findStartContent()).toBeNull();
-      expect(wrapper.findCenterContent()).toBeNull();
-      expect(wrapper.findEndContent()!.getElement()).toHaveTextContent('End');
-    });
-
-    test('renders startContent and endContent without centerContent', () => {
-      const wrapper = renderNavigationBar({
-        startContent: <span>Start</span>,
-        endContent: <span>End</span>,
-      });
-      expect(wrapper.findStartContent()!.getElement()).toHaveTextContent('Start');
-      expect(wrapper.findCenterContent()).toBeNull();
-      expect(wrapper.findEndContent()!.getElement()).toHaveTextContent('End');
-    });
-
-    test('renders startContent and centerContent without endContent', () => {
-      const wrapper = renderNavigationBar({
-        startContent: <span>Start</span>,
-        centerContent: <span>Center</span>,
-      });
-      expect(wrapper.findStartContent()!.getElement()).toHaveTextContent('Start');
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-      expect(wrapper.findEndContent()).toBeNull();
-    });
-
-    test('renders centerContent and endContent without startContent', () => {
-      const wrapper = renderNavigationBar({
-        centerContent: <span>Center</span>,
-        endContent: <span>End</span>,
-      });
-      expect(wrapper.findStartContent()).toBeNull();
-      expect(wrapper.findCenterContent()!.getElement()).toHaveTextContent('Center');
-      expect(wrapper.findEndContent()!.getElement()).toHaveTextContent('End');
-    });
-  });
-
   describe('Custom properties', () => {
     test('passes data attributes to root element', () => {
       const { container } = render(<NavigationBar data-testid="my-nav" />);
@@ -234,10 +99,74 @@ describe('NavigationBar', () => {
       const { container } = render(<NavigationBar className="custom-class" />);
       expect(container.querySelector('.custom-class')).toBeTruthy();
     });
+  });
 
-    test('passes id to root element', () => {
-      const { container } = render(<NavigationBar id="my-nav-id" />);
-      expect(container.querySelector('#my-nav-id')).toBeTruthy();
+  describe('disablePadding', () => {
+    test('does not apply disable-padding class by default', () => {
+      const wrapper = renderNavigationBar();
+      expect(wrapper.getElement()).not.toHaveClass(styles['disable-padding']);
+    });
+
+    test('applies disable-padding class when disablePadding={true}', () => {
+      const wrapper = renderNavigationBar({ disablePadding: true });
+      expect(wrapper.getElement()).toHaveClass(styles['disable-padding']);
+    });
+  });
+
+  describe('sticky offset management', () => {
+    const originalResizeObserver = global.ResizeObserver;
+    let lastObserverCb: ResizeObserverCallback | null = null;
+    const allObserverCbs: ResizeObserverCallback[] = [];
+
+    beforeEach(() => {
+      lastObserverCb = null;
+      allObserverCbs.length = 0;
+      global.ResizeObserver = class MockResizeObserver {
+        constructor(cb: ResizeObserverCallback) {
+          lastObserverCb = cb;
+          allObserverCbs.push(cb);
+        }
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      } as unknown as typeof ResizeObserver;
+    });
+
+    afterEach(() => {
+      global.ResizeObserver = originalResizeObserver;
+      document.body.style.removeProperty('--awsui-sticky-vertical-top-offset');
+    });
+
+    function triggerHeight(cb: ResizeObserverCallback, height: number) {
+      cb([{ contentRect: { height } } as unknown as ResizeObserverEntry], {} as ResizeObserver);
+    }
+
+    test('sets --awsui-sticky-vertical-top-offset when sticky', () => {
+      const { unmount } = render(<NavigationBar sticky={true} ariaLabel="nav" />);
+      act(() => triggerHeight(lastObserverCb!, 60));
+      expect(document.body.style.getPropertyValue('--awsui-sticky-vertical-top-offset')).toBe('60px');
+      unmount();
+    });
+
+    test('does not set offset when not sticky', () => {
+      const { unmount } = render(<NavigationBar sticky={false} ariaLabel="nav" />);
+      // Variable should not be set to a non-zero value
+      const value = document.body.style.getPropertyValue('--awsui-sticky-vertical-top-offset');
+      expect(value === '' || value === '0px').toBe(true);
+      unmount();
+    });
+
+    test('does not set offset for vertical placements', () => {
+      const { unmount } = render(<NavigationBar sticky={true} placement="inline-start" ariaLabel="nav" />);
+      expect(document.body.style.getPropertyValue('--awsui-sticky-vertical-top-offset')).toBe('');
+      unmount();
+    });
+
+    test('cleans up offset on unmount', () => {
+      const { unmount } = render(<NavigationBar sticky={true} ariaLabel="nav" />);
+      act(() => triggerHeight(lastObserverCb!, 60));
+      unmount();
+      expect(document.body.style.getPropertyValue('--awsui-sticky-vertical-top-offset')).toBe('0px');
     });
   });
 });

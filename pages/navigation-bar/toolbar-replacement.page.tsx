@@ -9,21 +9,14 @@
  */
 import React from 'react';
 
-import { ButtonDropdownProps, Container, Header } from '~components';
+import { Container, Header } from '~components';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
-import ButtonGroup from '~components/button-group';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
-
-const profileItems: ButtonDropdownProps.Items = [
-  { id: 'profile', text: 'Profile' },
-  { id: 'preferences', text: 'Preferences' },
-  { id: 'signout', text: 'Sign out' },
-];
 
 export default function NavigationBarToolbarReplacementPage() {
   return (
@@ -39,28 +32,16 @@ export default function NavigationBarToolbarReplacementPage() {
         <NavigationBar
           variant="primary"
           ariaLabel="Main navigation"
-          startContent={
+          content={
             <Link href="#" fontSize="heading-m" color="inverted">
               My Service
             </Link>
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Utilities"
-              items={[
-                { type: 'icon-button', id: 'help', text: 'Help', iconName: 'status-info' },
-                { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
-                { type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems },
-              ]}
-              onItemClick={() => {}}
-            />
           }
         />
         <NavigationBar
           variant="secondary"
           ariaLabel="Page toolbar"
-          startContent={
+          content={
             <SpaceBetween size="xs" direction="horizontal" alignItems="center">
               <Button iconName="menu" variant="icon" ariaLabel="Open side navigation" />
               <BreadcrumbGroup
@@ -71,17 +52,6 @@ export default function NavigationBarToolbarReplacementPage() {
                 ]}
               />
             </SpaceBetween>
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Panel triggers"
-              items={[
-                { type: 'icon-button', id: 'info', text: 'Info panel', iconName: 'status-info' },
-                { type: 'icon-button', id: 'settings', text: 'Settings panel', iconName: 'settings' },
-              ]}
-              onItemClick={() => {}}
-            />
           }
         />
         <div style={{ padding: '20px' }}>
@@ -104,40 +74,20 @@ export default function NavigationBarToolbarReplacementPage() {
         <NavigationBar
           variant="primary"
           ariaLabel="Main navigation"
-          startContent={
+          content={
             <Link href="#" fontSize="heading-m" color="inverted">
               Analytics Dashboard
             </Link>
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Account"
-              items={[{ type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems }]}
-              onItemClick={() => {}}
-            />
           }
         />
         <NavigationBar
           variant="secondary"
           ariaLabel="Dashboard toolbar"
-          startContent={
+          content={
             <SpaceBetween size="xs" direction="horizontal" alignItems="center">
               <Button iconName="menu" variant="icon" ariaLabel="Open navigation" />
               <span style={{ fontWeight: 'bold' }}>Q1 2026 Report</span>
             </SpaceBetween>
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="View controls"
-              items={[
-                { type: 'icon-button', id: 'refresh', text: 'Refresh data', iconName: 'refresh' },
-                { type: 'icon-button', id: 'download', text: 'Export', iconName: 'download' },
-                { type: 'icon-button', id: 'expand', text: 'Full screen', iconName: 'expand' },
-              ]}
-              onItemClick={() => {}}
-            />
           }
         />
         <div style={{ padding: '20px' }}>

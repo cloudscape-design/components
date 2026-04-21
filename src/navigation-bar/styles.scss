@@ -12,26 +12,48 @@
   align-items: center;
   box-sizing: border-box;
   gap: awsui.$space-s;
+
+  @include styles.with-motion {
+    transition:
+      min-block-size awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c,
+      min-inline-size awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c,
+      padding-block awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c,
+      padding-inline awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
+  }
 }
 
 .sticky {
   position: sticky;
   z-index: 1000;
 
-  &.placement-block-start {
-    inset-block-start: 0;
+  // Primary bar must have a higher z-index than secondary so that dropdowns
+  // opened from the primary bar render above the secondary bar.
+  // Both bars use position:sticky which creates a stacking context — a dropdown
+  // inside the primary bar has z-index relative to the primary's stacking context,
+  // so the primary context must be above the secondary context.
+  &.variant-primary {
+    z-index: 1001;
   }
 
-  &.placement-block-end {
-    inset-block-end: 0;
-  }
-
+  // inset-block-start is set dynamically by JS to stack bars correctly.
+  // For inline placements (vertical bars), JS doesn't manage the offset,
+  // so we keep the CSS default.
+  //
+  // Note: sticky on vertical bars (inline-start/inline-end) only sticks during
+  // horizontal scroll — not vertical scroll. To keep a vertical rail visible
+  // as the page scrolls vertically, place it outside the scroll container
+  // (flex sibling of the scrollable div). See composition.page.tsx for the
+  // correct layout pattern.
   &.placement-inline-start {
     inset-inline-start: 0;
   }
 
   &.placement-inline-end {
     inset-inline-end: 0;
+  }
+
+  &.placement-block-end {
+    inset-block-end: 0;
   }
 }
 
@@ -45,63 +67,62 @@
 }
 
 // Slot layout (must precede placement rules for specificity ordering)
-.start {
+.content {
   display: flex;
   align-items: center;
-  gap: awsui.$space-s;
-  flex-shrink: 0;
-  // Stretch to full bar height so dropdowns anchor correctly.
-  block-size: 100%;
-}
-
-.center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: awsui.$space-s;
   flex: 1;
   min-inline-size: 0;
-  block-size: 100%;
 }
 
-.end {
-  display: flex;
-  align-items: center;
-  gap: awsui.$space-s;
-  flex-shrink: 0;
-  margin-inline-start: auto;
-  // Stretch to full bar height so dropdowns anchor correctly.
+// Vertical placements — content stacks vertically, full dimensions
+.placement-inline-start,
+.placement-inline-end {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  min-inline-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+  padding-block: awsui.$space-xxl;
   block-size: 100%;
+
+  &.variant-secondary {
+    min-inline-size: awsui.$space-xxxl;
+  }
+
+  > .content {
+    flex-direction: column;
+    block-size: auto;
+    inline-size: 100%;
+  }
 }
 
 // Horizontal placements
 .placement-block-start,
 .placement-block-end {
   flex-direction: row;
-  flex-wrap: nowrap;
-  block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+  flex-wrap: wrap;
+  min-block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
   padding-inline: awsui.$space-xxl;
 
   &.variant-secondary {
-    block-size: awsui.$space-xxxl;
+    min-block-size: awsui.$space-xxxl;
   }
 
   // Responsive height reduction matching top-navigation breakpoints
   &.breakpoint-medium {
-    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    min-block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
     padding-inline: awsui.$space-l;
 
     &.variant-secondary {
-      block-size: awsui.$space-xxxl;
+      min-block-size: awsui.$space-xxxl;
     }
   }
 
   &.breakpoint-narrow {
-    block-size: awsui.$space-xxxl;
+    min-block-size: awsui.$space-xxxl;
     padding-inline: awsui.$space-l;
 
     &.variant-secondary {
-      block-size: awsui.$space-xxxl;
+      min-block-size: awsui.$space-xxxl;
     }
   }
 }
@@ -115,34 +136,15 @@
 }
 
 // Vertical placements
-.placement-inline-start,
-.placement-inline-end {
-  flex-direction: column;
-  flex-wrap: nowrap;
-  inline-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
-  padding-block: awsui.$space-xxl;
-  block-size: 100%;
-
-  &.variant-secondary {
-    inline-size: awsui.$space-xxxl;
-  }
-
-  > .start,
-  > .end {
-    flex-direction: column;
-    block-size: auto;
-    inline-size: 100%;
-  }
-  > .end {
-    margin-inline-start: unset;
-    margin-block-start: auto;
-  }
-}
-
 .placement-inline-start {
   border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .placement-inline-end {
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.disable-padding {
+  padding-block: 0;
+  padding-inline: 0;
 }

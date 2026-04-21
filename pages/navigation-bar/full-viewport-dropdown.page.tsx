@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { Box, ButtonDropdownProps, Container, Header, SpaceBetween } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
-import ButtonGroup from '~components/button-group';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 
@@ -52,12 +51,6 @@ const megaMenuItems: ButtonDropdownProps.Items = [
   },
 ];
 
-const simpleItems: ButtonDropdownProps.Items = [
-  { id: 'profile', text: 'Profile' },
-  { id: 'preferences', text: 'Preferences' },
-  { id: 'signout', text: 'Sign out' },
-];
-
 export default function NavigationBarFullViewportDropdownPage() {
   const [expandToViewport, setExpandToViewport] = useState(true);
 
@@ -82,7 +75,7 @@ export default function NavigationBarFullViewportDropdownPage() {
           <div style={{ overflow: 'hidden', border: '2px dashed #aab7b8', borderRadius: 8 }}>
             <NavigationBar
               ariaLabel="Viewport dropdown demo"
-              startContent={
+              content={
                 <SpaceBetween size="xs" direction="horizontal" alignItems="center">
                   <Link href="#" fontSize="heading-m" color="inverted">
                     Console
@@ -91,11 +84,6 @@ export default function NavigationBarFullViewportDropdownPage() {
                     Services
                   </ButtonDropdown>
                 </SpaceBetween>
-              }
-              endContent={
-                <ButtonDropdown items={simpleItems} expandToViewport={expandToViewport}>
-                  Account
-                </ButtonDropdown>
               }
             />
             <div style={{ padding: 20, height: 100 }}>
@@ -111,7 +99,7 @@ export default function NavigationBarFullViewportDropdownPage() {
           <Header variant="h2">Nested grouped dropdown (mega-menu style)</Header>
           <NavigationBar
             ariaLabel="Mega menu demo"
-            startContent={
+            content={
               <SpaceBetween size="xs" direction="horizontal" alignItems="center">
                 <Link href="#" fontSize="heading-m" color="inverted">
                   AWS
@@ -120,17 +108,6 @@ export default function NavigationBarFullViewportDropdownPage() {
                   All Services
                 </ButtonDropdown>
               </SpaceBetween>
-            }
-            endContent={
-              <ButtonGroup
-                variant="icon"
-                ariaLabel="Utilities"
-                items={[
-                  { type: 'icon-button', id: 'help', text: 'Help', iconName: 'status-info' },
-                  { type: 'menu-dropdown', id: 'user', text: 'User', items: simpleItems },
-                ]}
-                onItemClick={() => {}}
-              />
             }
           />
         </Box>
@@ -141,12 +118,7 @@ export default function NavigationBarFullViewportDropdownPage() {
           <NavigationBar
             variant="secondary"
             ariaLabel="Bottom bar with dropdown"
-            startContent={<span>Status: Connected</span>}
-            endContent={
-              <ButtonDropdown items={simpleItems} expandToViewport={expandToViewport}>
-                Options
-              </ButtonDropdown>
-            }
+            content={<span>Status: Connected</span>}
           />
         </Box>
 

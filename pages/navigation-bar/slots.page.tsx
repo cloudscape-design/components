@@ -1,10 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, Header } from '~components';
-import ButtonGroup from '~components/button-group';
-import Input from '~components/input';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 import SpaceBetween from '~components/space-between';
@@ -16,33 +14,6 @@ const start = (
     App Name
   </Link>
 );
-
-const end = (
-  <ButtonGroup
-    variant="icon"
-    ariaLabel="Actions"
-    items={[
-      { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
-      { type: 'icon-button', id: 'profile', text: 'Profile', iconName: 'user-profile' },
-    ]}
-    onItemClick={() => {}}
-  />
-);
-
-function SearchInput() {
-  const [value, setValue] = useState('');
-  return (
-    <div style={{ inlineSize: '100%' }}>
-      <Input
-        type="search"
-        ariaLabel="Search"
-        placeholder="Search..."
-        value={value}
-        onChange={({ detail }) => setValue(detail.value)}
-      />
-    </div>
-  );
-}
 
 export default function NavigationBarSlotsPage() {
   return (
@@ -57,42 +28,37 @@ export default function NavigationBarSlotsPage() {
 
           <Box>
             <Header variant="h3">Start only</Header>
-            <NavigationBar ariaLabel="Start only" startContent={start} />
+            <NavigationBar ariaLabel="Start only" content={start} />
           </Box>
 
           <Box>
             <Header variant="h3">Center only</Header>
-            <NavigationBar ariaLabel="Center only" centerContent={<SearchInput />} />
+            <NavigationBar ariaLabel="Center only" />
           </Box>
 
           <Box>
             <Header variant="h3">End only</Header>
-            <NavigationBar ariaLabel="End only" endContent={end} />
+            <NavigationBar ariaLabel="End only" />
           </Box>
 
           <Box>
             <Header variant="h3">Start + End</Header>
-            <NavigationBar ariaLabel="Start and end" startContent={start} endContent={end} />
+            <NavigationBar ariaLabel="Start and end" content={start} />
           </Box>
 
           <Box>
             <Header variant="h3">Start + Center</Header>
-            <NavigationBar ariaLabel="Start and center" startContent={start} centerContent={<SearchInput />} />
+            <NavigationBar ariaLabel="Start and center" content={start} />
           </Box>
 
           <Box>
             <Header variant="h3">Center + End</Header>
-            <NavigationBar ariaLabel="Center and end" centerContent={<SearchInput />} endContent={end} />
+            <NavigationBar ariaLabel="Center and end" />
           </Box>
 
           <Box>
             <Header variant="h3">Start + Center + End</Header>
-            <NavigationBar
-              ariaLabel="All slots"
-              startContent={start}
-              centerContent={<SearchInput />}
-              endContent={end}
-            />
+            <NavigationBar ariaLabel="All slots" content={start} />
           </Box>
         </SpaceBetween>
       </ScreenshotArea>

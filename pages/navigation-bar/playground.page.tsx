@@ -16,9 +16,7 @@ type PageContext = React.Context<
     variant: NavigationBarProps.Variant;
     placement: NavigationBarProps.Placement;
     sticky: boolean;
-    showStart: boolean;
-    showCenter: boolean;
-    showEnd: boolean;
+    disablePadding: boolean;
     largeContent: boolean;
   }>
 >;
@@ -34,15 +32,11 @@ function Settings() {
       variant = 'primary',
       placement = 'block-start',
       sticky = false,
-      showStart = true,
-      showCenter = true,
-      showEnd = true,
+      disablePadding = false,
       largeContent = false,
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
-
-  const isVertical = placement === 'inline-start' || placement === 'inline-end';
 
   return (
     <SpaceBetween size="m">
@@ -74,18 +68,8 @@ function Settings() {
         <Checkbox checked={sticky} onChange={({ detail }) => setUrlParams({ sticky: detail.checked })}>
           Sticky
         </Checkbox>
-        <Checkbox checked={showStart} onChange={({ detail }) => setUrlParams({ showStart: detail.checked })}>
-          startContent
-        </Checkbox>
-        <Checkbox
-          checked={showCenter}
-          onChange={({ detail }) => setUrlParams({ showCenter: detail.checked })}
-          disabled={isVertical}
-        >
-          centerContent
-        </Checkbox>
-        <Checkbox checked={showEnd} onChange={({ detail }) => setUrlParams({ showEnd: detail.checked })}>
-          endContent
+        <Checkbox checked={disablePadding} onChange={({ detail }) => setUrlParams({ disablePadding: detail.checked })}>
+          disablePadding
         </Checkbox>
         <Checkbox checked={largeContent} onChange={({ detail }) => setUrlParams({ largeContent: detail.checked })}>
           Large content area
@@ -101,9 +85,7 @@ export default function NavigationBarPlaygroundPage() {
       variant = 'primary',
       placement = 'block-start',
       sticky = false,
-      showStart = true,
-      showCenter = true,
-      showEnd = true,
+      disablePadding = false,
       largeContent = false,
     },
   } = useContext(AppContext as PageContext);
@@ -111,43 +93,42 @@ export default function NavigationBarPlaygroundPage() {
   const [searchValue, setSearchValue] = useState('');
   const isVertical = placement === 'inline-start' || placement === 'inline-end';
 
-  const startContent = isVertical ? (
+  const navContent = isVertical ? (
     <ButtonGroup
       variant="icon"
       ariaLabel="Tools"
       items={[
         { type: 'icon-button', id: 'home', text: 'Home', iconName: 'view-full' },
         { type: 'icon-button', id: 'search', text: 'Search', iconName: 'search' },
+        { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
       ]}
       onItemClick={() => {}}
     />
   ) : (
-    <Link href="#" fontSize="heading-m" color={variant === 'primary' ? 'inverted' : undefined}>
-      Application
-    </Link>
-  );
-
-  const centerContent = (
-    <Input
-      type="search"
-      ariaLabel="Search"
-      placeholder="Search..."
-      value={searchValue}
-      onChange={({ detail }) => setSearchValue(detail.value)}
-    />
-  );
-
-  const endContent = (
-    <ButtonGroup
-      variant="icon"
-      ariaLabel="Utilities"
-      items={[
-        { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
-        { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
-        { type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems },
-      ]}
-      onItemClick={() => {}}
-    />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+      <Link href="#" fontSize="heading-m" color={variant === 'primary' ? 'inverted' : undefined}>
+        Application
+      </Link>
+      <div style={{ flex: 1 }}>
+        <Input
+          type="search"
+          ariaLabel="Search"
+          placeholder="Search..."
+          value={searchValue}
+          onChange={({ detail }) => setSearchValue(detail.value)}
+        />
+      </div>
+      <ButtonGroup
+        variant="icon"
+        ariaLabel="Utilities"
+        items={[
+          { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
+          { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
+          { type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems },
+        ]}
+        onItemClick={() => {}}
+      />
+    </div>
   );
 
   return (
@@ -157,7 +138,6 @@ export default function NavigationBarPlaygroundPage() {
           display: 'flex',
           flexDirection: isVertical ? 'row' : 'column',
           border: '1px solid #e9ebed',
-          // height: isVertical ? 400 : undefined,
         }}
       >
         {(placement === 'block-start' || placement === 'inline-start') && (
@@ -165,10 +145,9 @@ export default function NavigationBarPlaygroundPage() {
             variant={variant}
             placement={placement}
             sticky={sticky}
+            disablePadding={disablePadding}
             ariaLabel="Playground navigation"
-            startContent={showStart ? startContent : undefined}
-            centerContent={showCenter ? centerContent : undefined}
-            endContent={showEnd ? endContent : undefined}
+            content={navContent}
           />
         )}
         <div
@@ -190,10 +169,9 @@ export default function NavigationBarPlaygroundPage() {
             variant={variant}
             placement={placement}
             sticky={sticky}
+            disablePadding={disablePadding}
             ariaLabel="Playground navigation"
-            startContent={showStart ? startContent : undefined}
-            centerContent={showCenter ? centerContent : undefined}
-            endContent={showEnd ? endContent : undefined}
+            content={navContent}
           />
         )}
       </div>

@@ -12,38 +12,19 @@ import ScreenshotArea from '../utils/screenshot-area';
 const iconItems = [
   { type: 'icon-button' as const, id: 'home', text: 'Home', iconName: 'view-full' as const },
   { type: 'icon-button' as const, id: 'search', text: 'Search', iconName: 'search' as const },
+  { type: 'icon-button' as const, id: 'settings', text: 'Settings', iconName: 'settings' as const },
 ];
 
-const start = <ButtonGroup variant="icon" ariaLabel="Tools" items={iconItems} onItemClick={() => {}} />;
-const end = (
-  <ButtonGroup
-    variant="icon"
-    ariaLabel="Account"
-    items={[{ type: 'icon-button' as const, id: 'settings', text: 'Settings', iconName: 'settings' as const }]}
-    onItemClick={() => {}}
-  />
-);
+const toolRailContent = <ButtonGroup variant="icon" ariaLabel="Tools" items={iconItems} onItemClick={() => {}} />;
 
 const permutations = createPermutations<NavigationBarProps>([
   {
     variant: ['primary', 'secondary'],
     placement: ['inline-start', 'inline-end'],
-    startContent: [start],
-    endContent: [end],
+    content: [toolRailContent],
     ariaLabel: ['Tool rail'],
   },
-  // Start only
-  {
-    placement: ['inline-start'],
-    startContent: [start],
-    ariaLabel: ['Tool rail'],
-  },
-  // End only
-  {
-    placement: ['inline-start'],
-    endContent: [end],
-    ariaLabel: ['Tool rail'],
-  },
+  { placement: ['inline-start'], content: [toolRailContent, undefined], ariaLabel: ['Tool rail'] },
 ]);
 
 export default function NavigationBarVerticalPermutations() {

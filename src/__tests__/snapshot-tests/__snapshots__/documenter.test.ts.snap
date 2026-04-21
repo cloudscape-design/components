@@ -18864,6 +18864,163 @@ need to be direct children of the group:
 }
 `;
 
+exports[`Components definition for navigation-bar matches the snapshot: navigation-bar 1`] = `
+{
+  "dashCaseName": "navigation-bar",
+  "events": [],
+  "functions": [],
+  "name": "NavigationBar",
+  "properties": [
+    {
+      "description": "Accessible label for the navigation landmark.
+
+The component renders as a \`<nav>\` element. When multiple navigation bars
+exist on the same page, each must have a unique \`ariaLabel\` to distinguish
+them for assistive technology users.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "NavigationBarProps.I18nStrings",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "NavigationBarProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'block-start'",
+      "description": "Placement of the navigation bar relative to its container, using CSS logical
+property names. Controls flex direction and border placement.
+
+- \`block-start\`: Top of the container (horizontal bar, border on bottom edge).
+- \`block-end\`: Bottom of the container (horizontal bar, border on top edge).
+- \`inline-start\`: Start side — left in LTR, right in RTL (vertical bar, border on end edge).
+- \`inline-end\`: End side — right in LTR, left in RTL (vertical bar, border on start edge).",
+      "inlineType": {
+        "name": "NavigationBarProps.Placement",
+        "type": "union",
+        "values": [
+          "block-end",
+          "block-start",
+          "inline-end",
+          "inline-start",
+        ],
+      },
+      "name": "placement",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Makes the navigation bar stick to the edge of the viewport corresponding
+to its placement. Uses \`position: sticky\`.",
+      "name": "sticky",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'primary'",
+      "description": "Visual variant of the navigation bar.
+
+- \`primary\`: Branded/dark background matching the Top Navigation visual context.
+  Applies the \`awsui-context-top-navigation\` visual context so child components
+  (buttons, links, icons) automatically adapt their colors.
+- \`secondary\`: Neutral background matching the App Layout toolbar style.",
+      "inlineType": {
+        "name": "NavigationBarProps.Variant",
+        "type": "union",
+        "values": [
+          "primary",
+          "secondary",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content aligned to the center of the navigation bar.
+
+Only rendered in horizontal placements (\`block-start\`, \`block-end\`).
+Ignored in vertical placements.
+
+This is the only slot that grows to fill available space. It expands to
+occupy all remaining width between \`startContent\` and \`endContent\`, with
+its content centered within that region. When used alone, it fills the
+entire bar width.
+
+Note: content is centered within the available region, not absolute-centered
+in the viewport. If \`startContent\` is wider than \`endContent\`, the center
+region shifts accordingly.
+
+Accepts any ReactNode. Common content: search input, navigation tabs.",
+      "isDefault": false,
+      "name": "centerContent",
+    },
+    {
+      "description": "Content aligned to the end of the navigation bar.
+
+- Horizontal placement: inline-end (right in LTR, left in RTL).
+- Vertical placement: block-end (bottom).
+
+This slot has a fixed width — it takes only the space its content needs
+and is pushed to the far end of the bar. When used without \`startContent\`,
+the left side of the bar remains empty.
+
+Accepts any ReactNode. Common content: utility buttons, profile menu.",
+      "isDefault": false,
+      "name": "endContent",
+    },
+    {
+      "description": "Content aligned to the start of the navigation bar.
+
+- Horizontal placement: inline-start (left in LTR, right in RTL).
+- Vertical placement: block-start (top).
+
+This slot has a fixed width — it takes only the space its content needs
+and does not grow to fill available space. To place expanding content
+(e.g. a search input), use \`centerContent\` instead.
+
+Accepts any ReactNode. Common content: logo, branding, primary nav links.",
+      "isDefault": false,
+      "name": "startContent",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for pagination matches the snapshot: pagination 1`] = `
 {
   "dashCaseName": "pagination",

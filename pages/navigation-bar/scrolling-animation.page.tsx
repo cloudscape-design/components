@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Container, Header } from '~components';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
-import ButtonGroup from '~components/button-group';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 import SpaceBetween from '~components/space-between';
@@ -45,24 +44,10 @@ export default function NavigationBarScrollingPage() {
         <div style={{ opacity: primaryOpacity, transition: 'opacity 0.15s ease' }}>
           <NavigationBar
             ariaLabel="Primary navigation"
-            startContent={
+            content={
               <Link href="#" fontSize="heading-m" color="inverted">
                 Scroll Demo
               </Link>
-            }
-            centerContent={
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>scrollY: {Math.round(scrollY)}px</span>
-            }
-            endContent={
-              <ButtonGroup
-                variant="icon"
-                ariaLabel="Actions"
-                items={[
-                  { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
-                  { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
-                ]}
-                onItemClick={() => {}}
-              />
             }
           />
         </div>
@@ -78,7 +63,7 @@ export default function NavigationBarScrollingPage() {
           <NavigationBar
             variant="secondary"
             ariaLabel="Page toolbar"
-            startContent={
+            content={
               <SpaceBetween size="xs" direction="horizontal" alignItems="center">
                 <Button iconName="menu" variant="icon" ariaLabel="Navigation" />
                 <BreadcrumbGroup
@@ -89,17 +74,6 @@ export default function NavigationBarScrollingPage() {
                   ]}
                 />
               </SpaceBetween>
-            }
-            endContent={
-              <ButtonGroup
-                variant="icon"
-                ariaLabel="Tools"
-                items={[
-                  { type: 'icon-button', id: 'refresh', text: 'Refresh', iconName: 'refresh' },
-                  { type: 'icon-button', id: 'info', text: 'Info', iconName: 'status-info' },
-                ]}
-                onItemClick={() => {}}
-              />
             }
           />
         </div>

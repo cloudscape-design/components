@@ -9,10 +9,9 @@
  * below it. The vertical bar fills the row height via block-size:100%.
  * min-height:0 on the row prevents tall content from pushing it beyond the viewport.
  */
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import {
-  ButtonDropdownProps,
   // Checkbox,
   Container,
   // FormField,
@@ -21,7 +20,6 @@ import {
   SpaceBetween,
 } from '~components';
 import ButtonGroup from '~components/button-group';
-import Input from '~components/input';
 import Link from '~components/link';
 import NavigationBar, { NavigationBarProps } from '~components/navigation-bar';
 import SideNavigation from '~components/side-navigation';
@@ -36,12 +34,6 @@ type PageContext = React.Context<
     showSideNav: boolean;
   }>
 >;
-
-const profileItems: ButtonDropdownProps.Items = [
-  { id: 'profile', text: 'Profile' },
-  { id: 'preferences', text: 'Preferences' },
-  { id: 'signout', text: 'Sign out' },
-];
 
 const filler = Array.from({ length: 8 }, (_, i) => (
   <Container key={i} header={<Header variant="h2">Resource {i + 1}</Header>}>
@@ -91,8 +83,6 @@ export default function NavigationBarHorizontalVerticalPage() {
     urlParams: { horizontalVariant = 'primary', verticalVariant = 'secondary', showSideNav = true },
   } = useContext(AppContext as PageContext);
 
-  const [searchValue, setSearchValue] = useState('');
-
   return (
     <SimplePage
       title="Navigation Bar — Horizontal + Vertical Composition"
@@ -102,31 +92,10 @@ export default function NavigationBarHorizontalVerticalPage() {
         <NavigationBar
           variant={horizontalVariant}
           ariaLabel="Global navigation"
-          startContent={
+          content={
             <Link href="#" fontSize="heading-m" color={horizontalVariant === 'primary' ? 'inverted' : undefined}>
               My Application
             </Link>
-          }
-          centerContent={
-            <Input
-              ariaLabel="Search"
-              type="search"
-              placeholder="Search resources..."
-              value={searchValue}
-              onChange={({ detail }) => setSearchValue(detail.value)}
-            />
-          }
-          endContent={
-            <ButtonGroup
-              variant="icon"
-              ariaLabel="Utilities"
-              items={[
-                { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
-                { type: 'icon-button', id: 'settings', text: 'Settings', iconName: 'settings' },
-                { type: 'menu-dropdown', id: 'profile', text: 'User', items: profileItems },
-              ]}
-              onItemClick={() => {}}
-            />
           }
         />
 
@@ -135,7 +104,7 @@ export default function NavigationBarHorizontalVerticalPage() {
             variant={verticalVariant}
             placement="inline-start"
             ariaLabel="Tool rail"
-            startContent={
+            content={
               <ButtonGroup
                 variant="icon"
                 ariaLabel="Tools"
@@ -145,14 +114,6 @@ export default function NavigationBarHorizontalVerticalPage() {
                   { type: 'icon-button', id: 'folder', text: 'Files', iconName: 'folder' },
                   { type: 'icon-button', id: 'edit', text: 'Editor', iconName: 'edit' },
                 ]}
-                onItemClick={() => {}}
-              />
-            }
-            endContent={
-              <ButtonGroup
-                variant="icon"
-                ariaLabel="Account"
-                items={[{ type: 'icon-button', id: 'account', text: 'Settings', iconName: 'settings' }]}
                 onItemClick={() => {}}
               />
             }

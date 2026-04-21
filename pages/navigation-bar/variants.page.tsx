@@ -22,10 +22,6 @@ const toolItems = [
   { type: 'icon-button' as const, id: 'settings', text: 'Settings', iconName: 'settings' as const },
 ];
 
-const accountItems = [
-  { type: 'icon-button' as const, id: 'profile', text: 'Profile', iconName: 'user-profile' as const },
-];
-
 export default function NavigationBarVariantsPage() {
   const {
     urlParams: { variant = 'primary', placement = 'block-start' },
@@ -81,7 +77,7 @@ export default function NavigationBarVariantsPage() {
               variant={variant}
               placement={placement}
               ariaLabel="Demo navigation"
-              startContent={
+              content={
                 isVertical ? (
                   <ButtonGroup variant="icon" ariaLabel="Tools" items={toolItems} onItemClick={() => {}} />
                 ) : (
@@ -89,9 +85,6 @@ export default function NavigationBarVariantsPage() {
                     Application
                   </Link>
                 )
-              }
-              endContent={
-                <ButtonGroup variant="icon" ariaLabel="Account" items={accountItems} onItemClick={() => {}} />
               }
             />
           )}
@@ -108,7 +101,7 @@ export default function NavigationBarVariantsPage() {
               variant={variant}
               placement={placement}
               ariaLabel="Demo navigation"
-              startContent={
+              content={
                 isVertical ? (
                   <ButtonGroup variant="icon" ariaLabel="Tools" items={toolItems} onItemClick={() => {}} />
                 ) : (
@@ -116,9 +109,6 @@ export default function NavigationBarVariantsPage() {
                     Application
                   </Link>
                 )
-              }
-              endContent={
-                <ButtonGroup variant="icon" ariaLabel="Account" items={accountItems} onItemClick={() => {}} />
               }
             />
           )}

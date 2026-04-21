@@ -15,16 +15,18 @@ export default function NavigationBar({
   variant = 'primary',
   placement = 'block-start',
   sticky = false,
+  disablePadding = false,
   ...restProps
 }: NavigationBarProps) {
   const baseComponentProps = useBaseComponent('NavigationBar', {
-    props: { variant, placement, sticky },
+    props: { variant, placement, sticky, disablePadding },
   });
   return (
     <InternalNavigationBar
       variant={variant}
       placement={placement}
       sticky={sticky}
+      disablePadding={disablePadding}
       {...getExternalProps(restProps)}
       {...baseComponentProps}
     />

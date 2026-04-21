@@ -31,51 +31,10 @@ export interface NavigationBarProps extends BaseComponentProps {
   placement?: NavigationBarProps.Placement;
 
   /**
-   * Content aligned to the start of the navigation bar.
-   *
-   * - Horizontal placement: inline-start (left in LTR, right in RTL).
-   * - Vertical placement: block-start (top).
-   *
-   * This slot has a fixed width — it takes only the space its content needs
-   * and does not grow to fill available space. To place expanding content
-   * (e.g. a search input), use `centerContent` instead.
-   *
-   * Accepts any ReactNode. Common content: logo, branding, primary nav links.
+   * Content of the navigation bar. Accepts any ReactNode.
+   * The consumer is responsible for layout within the bar (flex, spacing, alignment).
    */
-  startContent?: ReactNode;
-
-  /**
-   * Content aligned to the center of the navigation bar.
-   *
-   * Only rendered in horizontal placements (`block-start`, `block-end`).
-   * Ignored in vertical placements.
-   *
-   * This is the only slot that grows to fill available space. It expands to
-   * occupy all remaining width between `startContent` and `endContent`, with
-   * its content centered within that region. When used alone, it fills the
-   * entire bar width.
-   *
-   * Note: content is centered within the available region, not absolute-centered
-   * in the viewport. If `startContent` is wider than `endContent`, the center
-   * region shifts accordingly.
-   *
-   * Accepts any ReactNode. Common content: search input, navigation tabs.
-   */
-  centerContent?: ReactNode;
-
-  /**
-   * Content aligned to the end of the navigation bar.
-   *
-   * - Horizontal placement: inline-end (right in LTR, left in RTL).
-   * - Vertical placement: block-end (bottom).
-   *
-   * This slot has a fixed width — it takes only the space its content needs
-   * and is pushed to the far end of the bar. When used without `startContent`,
-   * the left side of the bar remains empty.
-   *
-   * Accepts any ReactNode. Common content: utility buttons, profile menu.
-   */
-  endContent?: ReactNode;
+  content?: ReactNode;
 
   /**
    * Accessible label for the navigation landmark.
@@ -93,6 +52,14 @@ export interface NavigationBarProps extends BaseComponentProps {
    * @default false
    */
   sticky?: boolean;
+
+  /**
+   * Removes the built-in padding from the navigation bar.
+   * Useful when embedding inside another padded container or for edge-to-edge content.
+   *
+   * @default false
+   */
+  disablePadding?: boolean;
 
   /**
    * An object containing all the necessary localized strings required by

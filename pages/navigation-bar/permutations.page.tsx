@@ -9,43 +9,32 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const start = (
+const contentFull = (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+    <Link href="#" fontSize="heading-m" color="inverted">
+      App
+    </Link>
+    <span style={{ flex: 1, textAlign: 'center' }}>Center</span>
+    <span>End</span>
+  </div>
+);
+
+const contentStartOnly = (
   <Link href="#" fontSize="heading-m" color="inverted">
     App
   </Link>
 );
-const center = <span>Center content</span>;
-const end = <span>End content</span>;
 
 const permutations = createPermutations<NavigationBarProps>([
-  // Variant × placement (horizontal)
   {
     variant: ['primary', 'secondary'],
     placement: ['block-start', 'block-end'],
-    startContent: [start],
-    endContent: [end],
+    content: [contentFull],
     ariaLabel: ['Navigation'],
   },
-  // All three slots
-  {
-    variant: ['primary', 'secondary'],
-    startContent: [start],
-    centerContent: [center],
-    endContent: [end],
-    ariaLabel: ['Navigation'],
-  },
-  // Slot combinations
-  {
-    startContent: [start, undefined],
-    centerContent: [center, undefined],
-    endContent: [end, undefined],
-    ariaLabel: ['Navigation'],
-  },
-  // Empty bar
-  {
-    variant: ['primary', 'secondary'],
-    ariaLabel: ['Empty'],
-  },
+  { variant: ['primary', 'secondary'], content: [contentStartOnly, undefined], ariaLabel: ['Navigation'] },
+  { variant: ['primary', 'secondary'], disablePadding: [true], content: [contentFull], ariaLabel: ['No padding'] },
+  { variant: ['primary', 'secondary'], ariaLabel: ['Empty'] },
 ]);
 
 export default function NavigationBarPermutations() {

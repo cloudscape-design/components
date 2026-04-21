@@ -2,21 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { ButtonDropdownProps, Container, Header } from '~components';
+import { Container, Header } from '~components';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
-import ButtonGroup from '~components/button-group';
-import Input from '~components/input';
 import Link from '~components/link';
 import NavigationBar from '~components/navigation-bar';
 import SideNavigation from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
-
-const profileItems: ButtonDropdownProps.Items = [
-  { id: 'profile', text: 'Profile' },
-  { id: 'preferences', text: 'Preferences' },
-  { id: 'signout', text: 'Sign out' },
-];
 
 const filler = Array.from({ length: 10 }, (_, i) => (
   <Container key={i} header={<Header variant="h2">Resource {i + 1}</Header>}>
@@ -25,7 +17,6 @@ const filler = Array.from({ length: 10 }, (_, i) => (
 ));
 
 export default function NavigationBarCombinedPage() {
-  const [searchValue, setSearchValue] = useState('');
   const [navOpen, setNavOpen] = useState(true);
 
   return (
@@ -33,31 +24,10 @@ export default function NavigationBarCombinedPage() {
       {/* Primary navigation — sticky top */}
       <NavigationBar
         ariaLabel="Global navigation"
-        startContent={
+        content={
           <Link href="#" fontSize="heading-m" color="inverted">
             CloudOps Dashboard
           </Link>
-        }
-        centerContent={
-          <Input
-            ariaLabel="Search"
-            type="search"
-            placeholder="Search resources, services, docs..."
-            value={searchValue}
-            onChange={({ detail }) => setSearchValue(detail.value)}
-          />
-        }
-        endContent={
-          <ButtonGroup
-            variant="icon"
-            ariaLabel="Global utilities"
-            items={[
-              { type: 'icon-button', id: 'notifications', text: 'Notifications', iconName: 'notification' },
-              { type: 'icon-button', id: 'help', text: 'Help', iconName: 'status-info' },
-              { type: 'menu-dropdown', id: 'profile', text: 'admin@company.com', items: profileItems },
-            ]}
-            onItemClick={() => {}}
-          />
         }
       />
 
@@ -65,7 +35,7 @@ export default function NavigationBarCombinedPage() {
       <NavigationBar
         variant="secondary"
         ariaLabel="Page toolbar"
-        startContent={
+        content={
           <SpaceBetween size="xs" direction="horizontal" alignItems="center">
             <Button
               iconName="menu"
@@ -81,18 +51,6 @@ export default function NavigationBarCombinedPage() {
               ]}
             />
           </SpaceBetween>
-        }
-        endContent={
-          <ButtonGroup
-            variant="icon"
-            ariaLabel="Page actions"
-            items={[
-              { type: 'icon-button', id: 'refresh', text: 'Refresh', iconName: 'refresh' },
-              { type: 'icon-button', id: 'download', text: 'Export', iconName: 'download' },
-              { type: 'icon-button', id: 'settings', text: 'Page settings', iconName: 'settings' },
-            ]}
-            onItemClick={() => {}}
-          />
         }
       />
 
