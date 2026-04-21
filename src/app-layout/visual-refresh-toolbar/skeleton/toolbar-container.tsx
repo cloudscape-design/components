@@ -47,14 +47,14 @@ export function ToolbarBreadcrumbsSection({
 interface ToolbarSkeletonStructureProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
-  hasNavigation?: boolean;
+  navigation?: React.ReactNode;
 }
 
 export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
-  ({ ownBreadcrumbs, discoveredBreadcrumbs, hasNavigation }, ref) => (
+  ({ ownBreadcrumbs, discoveredBreadcrumbs, navigation }, ref) => (
     <ToolbarSlot ref={ref}>
       <ToolbarContainer>
-        {hasNavigation && (
+        {navigation && (
           <nav className={toolbarStyles['universal-toolbar-nav']}>
             <div className={triggerButtonStyles['trigger-wrapper']}>
               <button

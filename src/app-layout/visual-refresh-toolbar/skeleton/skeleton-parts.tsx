@@ -22,7 +22,7 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
           <ToolbarSkeletonStructure
             ref={ref}
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
-            hasNavigation={!!appLayoutProps.navigation}
+            navigation={appLayoutProps.navigation}
           />
         )}
         {toolbarProps?.navigationOpen && <div className={styles.navigation}>{appLayoutProps.navigation}</div>}
@@ -41,7 +41,7 @@ export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImp
       ref={ref}
       ownBreadcrumbs={appLayoutInternals.breadcrumbs}
       discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-      hasNavigation={!!appLayoutInternals.navigation}
+      navigation={appLayoutInternals.navigation}
     />
   )
 );
