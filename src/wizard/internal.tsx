@@ -156,6 +156,9 @@ export default function InternalWizard({
     );
   }
 
+  // Error context is already included in the AnalyticsFunnel context provider in index.tsx (funnelErrorContext)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { errorContext, ...analyticsMetadataProperties } = rest.analyticsMetadata || {};
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataWizardComponent = {
     name: 'awsui.Wizard',
     label: {
@@ -166,7 +169,7 @@ export default function InternalWizard({
       stepsCount: `${(steps || []).length}`,
       activeStepIndex: `${activeStepIndex}`,
       activeStepLabel: `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`,
-      ...(rest.analyticsMetadata || {}),
+      ...analyticsMetadataProperties,
     },
   };
 
