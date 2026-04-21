@@ -60,11 +60,10 @@ export interface NextDrawerProps extends DrawerProps {
   /**
    * Specifies the CSS positioning mode of the drawer, and supports the following options:
    * * `static` (default) - The drawer is positioned in the normal document flow.
-   * * `sticky` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with `placement="top"` or `placement="bottom"`. Using `sticky` with `placement="start"` or `placement="end"` falls back to `static`.
+   * * `sticky` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with `placement="top"` or `placement="bottom"`.
+   * Using `sticky` with `placement="start"` or `placement="end"` falls back to `static`.
    * * `absolute` - The drawer is positioned relative to its nearest positioned ancestor.
    * * `fixed` - The drawer is positioned relative to the viewport.
-   *
-   * @awsuiSystem core
    */
   position?: NextDrawerProps.Position;
 
@@ -74,8 +73,6 @@ export interface NextDrawerProps extends DrawerProps {
    * * `end` - (default) Anchored to the inline-end edge.
    * * `top` - Anchored to the top edge.
    * * `bottom` - Anchored to the bottom edge.
-   *
-   * @awsuiSystem core
    */
   placement?: NextDrawerProps.Placement;
 
@@ -87,8 +84,6 @@ export interface NextDrawerProps extends DrawerProps {
    * * `end` - Distance from the inline-end edge. Not applicable when `placement` is `"start"`.
    * * `top` - Distance from the top edge. Not applicable when `placement` is `"bottom"`.
    * * `bottom` - Distance from the bottom edge. Not applicable when `placement` is `"top"`.
-   *
-   * @awsuiSystem core
    */
   offset?: NextDrawerProps.Offset;
 
@@ -98,8 +93,6 @@ export interface NextDrawerProps extends DrawerProps {
    * * Supported properties:
    * * `top` - Distance from the top of the scrolling container.
    * * `bottom` - Distance from the bottom of the scrolling container.
-   *
-   * @awsuiSystem core
    */
   stickyOffset?: NextDrawerProps.StickyOffset;
 
@@ -108,8 +101,6 @@ export interface NextDrawerProps extends DrawerProps {
    * overlaps other positioned elements on the page.
    *
    * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`.
-   *
-   * @awsuiSystem core
    */
   zIndex?: number;
 }
