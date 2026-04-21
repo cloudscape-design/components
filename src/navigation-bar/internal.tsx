@@ -19,7 +19,7 @@ import testStyles from './test-classes/styles.css.js';
 type InternalNavigationBarProps = SomeRequired<NavigationBarProps, 'variant' | 'placement' | 'sticky'> &
   InternalBaseComponentProps;
 
-// Registry: scrollContainer → Map<navBarElement, height>
+// Registry: scrollContainer → Map<navBarElement, { height, offset }>
 //
 // Why a registry instead of independent offset accumulation:
 //
@@ -39,9 +39,12 @@ type InternalNavigationBarProps = SomeRequired<NavigationBarProps, 'variant' | '
 //
 // The registry is keyed by the scroll container element (WeakMap) so it's
 // automatically garbage collected when the container is removed from the DOM.
-const registries = new WeakMap<HTMLElement, Map<HTMLElement, number>>();
+//
+// Each entry stores { height, offset } where offset is the stickyOffset prop value —
+// the gap between this bar and the bar above it (or the viewport edge).
+const registries = new WeakMap<HTMLElement, Map<HTMLElement, { height: number; offset: number }>>();
 
-function getRegistry(container: HTMLElement): Map<HTMLElement, number> {
+function getRegistry(container: HTMLElement): Map<HTMLElement, { height: number; offset: number }> {
   if (!registries.has(container)) {
     registries.set(container, new Map());
   }
@@ -52,18 +55,21 @@ function getRegistry(container: HTMLElement): Map<HTMLElement, number> {
 // Sorts by DOM position so the result is independent of mount/toggle order.
 // Also updates --awsui-sticky-vertical-top-offset so Container sticky headers
 // (and any other component that reads this variable) automatically offset correctly.
-function recompute(registry: Map<HTMLElement, number>, container: HTMLElement) {
+function recompute(registry: Map<HTMLElement, { height: number; offset: number }>, container: HTMLElement) {
   const sorted = [...registry.keys()].sort((a, b) =>
     a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
   );
 
-  let offset = 0;
+  let stackOffset = 0;
   for (const el of sorted) {
-    el.style.setProperty('inset-block-start', `${offset}px`);
-    offset += registry.get(el)!;
+    const { height, offset } = registry.get(el)!;
+    // Bar sticks at: cumulative height of bars above + this bar's own gap
+    el.style.setProperty('inset-block-start', `${stackOffset + offset}px`);
+    // Next bar stacks below: this bar's height + this bar's gap
+    stackOffset += height + offset;
   }
   // Set the total offset for downstream sticky components (Container headers, etc.)
-  container.style.setProperty(globalVars.stickyVerticalTopOffset, `${offset}px`);
+  container.style.setProperty(globalVars.stickyVerticalTopOffset, `${stackOffset}px`);
 }
 
 function getOffsetTarget(element: HTMLElement): HTMLElement {
@@ -79,6 +85,8 @@ export default function InternalNavigationBar({
   placement,
   sticky,
   disablePadding,
+  stickyOffset = 0,
+  maxWidth,
   content,
   ariaLabel,
   i18nStrings,
@@ -103,14 +111,14 @@ export default function InternalNavigationBar({
     const registry = getRegistry(target);
 
     // Register with height 0 immediately so recompute() can assign us a slot.
-    // inset-block-start will be set to 0 until the ResizeObserver fires.
-    registry.set(el, 0);
+    // inset-block-start will be set to stickyOffset until the ResizeObserver fires.
+    registry.set(el, { height: 0, offset: stickyOffset });
     recompute(registry, target);
 
     // Watch our own height. On every change (initial measurement, content wrap/unwrap,
     // window resize) update the registry and recompute all offsets.
     const observer = new ResizeObserver(([entry]) => {
-      registry.set(el, entry.contentRect.height);
+      registry.set(el, { height: entry.contentRect.height, offset: stickyOffset });
       recompute(registry, target);
     });
     observer.observe(el);
@@ -122,14 +130,18 @@ export default function InternalNavigationBar({
       recompute(registry, target);
       el.style.removeProperty('inset-block-start');
     };
-    // isHorizontalSticky combines sticky + placement — re-run if either changes.
-  }, [isHorizontalSticky]);
+    // Re-run if sticky, placement, or stickyOffset changes.
+  }, [isHorizontalSticky, stickyOffset]);
 
   return (
     <nav
       {...baseProps}
       ref={mergedRef}
       aria-label={resolvedAriaLabel}
+      style={{
+        ...baseProps.style,
+        ...(maxWidth ? { maxInlineSize: maxWidth, marginInline: 'auto' } : {}),
+      }}
       className={clsx(
         baseProps.className,
         styles.root,
@@ -144,6 +156,7 @@ export default function InternalNavigationBar({
         disablePadding && styles['disable-padding']
       )}
     >
+      {stickyOffset > 0 && <div style={{ blockSize: stickyOffset }} aria-hidden="true" />}
       {content && <div className={clsx(styles.content, testStyles.content)}>{content}</div>}
     </nav>
   );

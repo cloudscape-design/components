@@ -54,12 +54,31 @@ export interface NavigationBarProps extends BaseComponentProps {
   sticky?: boolean;
 
   /**
+   * Gap in pixels between the bar and the edge it sticks to.
+   * Adds `padding-block-start` to the bar (visible gap always) and adjusts
+   * `inset-block-start` when sticky so the gap is preserved while scrolling.
+   *
+   * Only applies to horizontal sticky bars (`block-start`/`block-end`).
+   *
+   * @default 0
+   */
+  stickyOffset?: number;
+
+  /**
    * Removes the built-in padding from the navigation bar.
    * Useful when embedding inside another padded container or for edge-to-edge content.
    *
    * @default false
    */
   disablePadding?: boolean;
+
+  /**
+   * Maximum width of the navigation bar in pixels.
+   * When not set, the bar fills the full available width.
+   *
+   * The consumer controls the content layout inside the bar via the `content` prop.
+   */
+  maxWidth?: number;
 
   /**
    * An object containing all the necessary localized strings required by
