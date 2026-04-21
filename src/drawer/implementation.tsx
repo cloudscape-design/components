@@ -64,9 +64,9 @@ export function DrawerImplementation({
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
   const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });
-  const generatedHeaderId = useUniqueId('drawer-header');
-  const headerId = header ? generatedHeaderId : undefined;
-  ariaLabelledby = ariaLabelledby ?? (ariaLabel ? undefined : headerId);
+  const headerId = useUniqueId('drawer-header');
+  const defaultRegionLabelledBy = header ? headerId : undefined;
+  ariaLabelledby = ariaLabelledby ?? (ariaLabel ? undefined : defaultRegionLabelledBy);
   const containerProps = {
     ref: containerRef,
     role: 'region',
@@ -168,6 +168,7 @@ export function DrawerImplementation({
                     styles.header,
                     runtimeDrawerContext && styles['with-runtime-context'],
                     hasAdditionalDrawerAction && styles['with-additional-action'],
+                    closeAction && styles['has-close-action'],
                     hideCloseAction && styles['hide-close-action']
                   )}
                 >

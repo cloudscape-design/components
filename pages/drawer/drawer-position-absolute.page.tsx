@@ -55,6 +55,7 @@ export default function () {
           ))}
         </div>
         <AbsoluteDrawer
+          header="Top"
           placement="top"
           offset={{ start: 200, end: 200 }}
           zIndex={1}
@@ -62,6 +63,7 @@ export default function () {
           backdrop={hasBackdrop('top')}
         />
         <AbsoluteDrawer
+          header="Start"
           placement="start"
           offset={{ bottom: 200 }}
           zIndex={2}
@@ -69,6 +71,7 @@ export default function () {
           backdrop={hasBackdrop('start')}
         />
         <AbsoluteDrawer
+          header="End"
           placement="end"
           offset={{ bottom: 200 }}
           zIndex={3}
@@ -76,6 +79,7 @@ export default function () {
           backdrop={hasBackdrop('end')}
         />
         <AbsoluteDrawer
+          header="Bottom 1"
           placement="bottom"
           offset={{}}
           zIndex={4}
@@ -83,10 +87,11 @@ export default function () {
           backdrop={hasBackdrop('bottom-1')}
         />
         <AbsoluteDrawer
+          header="Bottom 2"
           placement="bottom"
           offset={{}}
           zIndex={5}
-          contentHeight={150}
+          contentHeight={140}
           backdrop={hasBackdrop('bottom-2')}
         />
       </div>
@@ -95,6 +100,7 @@ export default function () {
 }
 
 function AbsoluteDrawer({
+  header,
   placement,
   offset,
   zIndex,
@@ -106,6 +112,7 @@ function AbsoluteDrawer({
   const formatOffset = (offset?: DrawerProps.Offset) => JSON.stringify(offset, null, 2).replace(/"/g, '');
   return (
     <Drawer
+      header={header}
       position="absolute"
       placement={placement}
       disableContentPaddings={true}

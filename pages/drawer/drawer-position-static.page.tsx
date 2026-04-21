@@ -58,12 +58,12 @@ function DrawerFeaturesTab() {
         </DrawerWithBorder>
 
         <Box variant="p">Drawer with header, content, and footer.</Box>
-        <DrawerWithBorder header="Header" footer="Footer" closeAction={{ ariaLabel: 'Close drawer' }}>
+        <DrawerWithBorder header="Header A" footer="Footer" closeAction={{ ariaLabel: 'Close drawer' }}>
           Content
         </DrawerWithBorder>
 
         <Box variant="p">Drawer with header actions.</Box>
-        <DrawerWithBorder header="Header" headerActions={<Button>Action</Button>} hideCloseAction={true}>
+        <DrawerWithBorder header="Header B" headerActions={<Button>Action</Button>} hideCloseAction={true}>
           Content
         </DrawerWithBorder>
       </ColumnLayout>

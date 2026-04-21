@@ -64,8 +64,6 @@ export interface NextDrawerProps extends DrawerProps {
    * By default the body is labelled by the drawer's `header` content. Use this when you need a different
    * or more specific label (e.g. to include additional context or exclude parts of the header).
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
-   *
-   * @awsuiSystem core
    */
   ariaLabel?: string;
 
@@ -74,8 +72,6 @@ export interface NextDrawerProps extends DrawerProps {
    * By default the body is labelled by the drawer's `header` content. Use this when you need a different
    * or more specific label (e.g. to include additional context or exclude parts of the header).
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
-   *
-   * @awsuiSystem core
    */
   ariaLabelledby?: string;
 
@@ -130,8 +126,6 @@ export interface NextDrawerProps extends DrawerProps {
    * Renders a close button in the header with the provided configuration.
    * The close button fires the `onClose` event with method `'close-action'` when
    * clicked.
-   *
-   * @awsuiSystem core
    */
   closeAction?: Pick<
     ButtonProps,
@@ -142,8 +136,6 @@ export interface NextDrawerProps extends DrawerProps {
    * Hides the close action slot next to the header actions, which is present even
    * when close action is not set. Use it when a close action is not needed, or a
    * custom close action implementation is used.
-   *
-   * @awsuiSystem core
    */
   hideCloseAction?: boolean;
 
@@ -152,8 +144,6 @@ export interface NextDrawerProps extends DrawerProps {
    * * `'close-action'` - The close button was clicked.
    * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
    * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
-   *
-   * @awsuiSystem core
    */
   onClose?: NonCancelableEventHandler<NextDrawerProps.CloseDetail>;
 
@@ -162,8 +152,6 @@ export interface NextDrawerProps extends DrawerProps {
    * Handle the `onClose` event to update this value when the user requests to close the drawer.
    *
    * When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
-   *
-   * @awsuiSystem core
    */
   open?: boolean;
 
@@ -174,8 +162,6 @@ export interface NextDrawerProps extends DrawerProps {
    * When a backdrop is set, the keyboard focus is trapped inside the drawer by default
    * to prevent it from moving to elements covered by the backdrop. This can be overridden
    * with `focusBehavior.trapFocus`.
-   *
-   * @awsuiSystem core
    */
   backdrop?: boolean;
 
@@ -193,8 +179,6 @@ export interface NextDrawerProps extends DrawerProps {
    *   Use this to override where focus lands on close (e.g. a specific trigger element).
    *   If omitted, focus returns to the element that was focused when the drawer opened.
    *   If that element is no longer in the DOM, the behavior silently no-ops.
-   *
-   * @awsuiSystem core
    */
   focusBehavior?: NextDrawerProps.FocusBehavior;
 }

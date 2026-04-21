@@ -54,6 +54,17 @@ test('drawer is always visible when open is not provided', () => {
   expect(isHidden(renderDrawer(<NextDrawer>content</NextDrawer>))).toBe(false);
 });
 
+test('re-renders without open prop do not trigger focus transitions', () => {
+  const { container, rerender } = render(
+    <NextDrawer open={false} onClose={jest.fn()}>
+      content
+    </NextDrawer>
+  );
+  const body = container.querySelector<HTMLElement>('[role="region"]')!;
+  rerender(<NextDrawer>content</NextDrawer>);
+  expect(body).not.toHaveFocus();
+});
+
 test('warns when open is provided without onClose', () => {
   render(<NextDrawer open={true}>content</NextDrawer>);
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('`open`'));
