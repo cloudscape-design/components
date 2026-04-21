@@ -11,12 +11,16 @@ import { getBaseProps } from '../../base-component';
 import AbstractSwitch from '../../components/abstract-switch';
 import { fireNonCancelableEvent } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
-import WithNativeAttributes from '../../utils/with-native-attributes';
+import WithNativeAttributes, { SkipWarnings } from '../../utils/with-native-attributes';
 import { RadioButtonProps } from './interfaces';
 import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
+
+export interface InternalRadioButtonProps extends RadioButtonProps, InternalBaseComponentProps {
+  __skipNativeAttributesWarnings?: SkipWarnings;
+}
 
 export default React.forwardRef(function RadioButton(
   {
@@ -32,8 +36,9 @@ export default React.forwardRef(function RadioButton(
     style,
     nativeInputAttributes,
     onSelect,
+    __skipNativeAttributesWarnings,
     ...rest
-  }: RadioButtonProps & InternalBaseComponentProps,
+  }: InternalRadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const radioButtonRef = useRef<HTMLInputElement>(null);
@@ -62,6 +67,7 @@ export default React.forwardRef(function RadioButton(
           tag="input"
           componentName="RadioButton"
           nativeAttributes={nativeInputAttributes}
+          skipWarnings={__skipNativeAttributesWarnings}
           tabIndex={tabIndex}
           type="radio"
           ref={mergedRefs}
