@@ -2879,8 +2879,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -5901,8 +5901,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -8923,8 +8923,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -11945,8 +11945,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -14967,8 +14967,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -17989,8 +17989,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "space-field-vertical": {
           "$description": "The vertical padding inside control components.",
           "$value": {
-            "comfortable": "5px",
-            "compact": "3px",
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -21011,8 +21011,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "space-field-vertical": {
       "$description": "The vertical padding inside control components.",
       "$value": {
-        "comfortable": "5px",
-        "compact": "3px",
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
