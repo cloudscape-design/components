@@ -54,7 +54,6 @@ function renderWizard(props: Partial<WizardProps> = {}) {
 const getMetadata = (
   activeStepIndex: number,
   label = '',
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   { errorContext, ...analyticsMetadata }: WizardProps['analyticsMetadata'] = {}
 ) => {
   const metadata: GeneratedAnalyticsMetadataFragment = {
@@ -68,6 +67,7 @@ const getMetadata = (
             activeStepIndex: `${activeStepIndex}`,
             activeStepLabel: steps[activeStepIndex].title,
             stepsCount: '3',
+            ...errorContext,
             ...analyticsMetadata,
           },
         },
