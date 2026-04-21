@@ -58,6 +58,16 @@ export function useMultiAppLayout(
     };
   }
 
+  // During SSR, useLayoutEffect never fires so registration stays null.
+  // Return sensible defaults: treat as a single primary layout.
+  const isSSR = typeof window === 'undefined';
+  if (isSSR) {
+    return {
+      registered: true,
+      toolbarProps: mergeProps(props, []),
+    };
+  }
+
   return {
     registered: !!registration?.type,
     toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
