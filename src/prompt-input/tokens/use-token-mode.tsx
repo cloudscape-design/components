@@ -1102,7 +1102,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     },
     onCut: (event: React.ClipboardEvent) => {
       if (editableElementRef.current) {
-        handleClipboardEvent(event, editableElementRef.current, true);
+        handleClipboardEvent(event, editableElementRef.current, !disabled && !readOnly);
+        if (!disabled && !readOnly) {
+          handleInput();
+        }
       }
     },
     onPaste: (event: React.ClipboardEvent) => {

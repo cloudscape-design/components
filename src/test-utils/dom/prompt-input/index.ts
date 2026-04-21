@@ -58,7 +58,7 @@ export default class PromptInputWrapper extends ComponentWrapper {
    * Finds the contentEditable element used when `menus` or `tokens` is defined.
    */
   findContentEditableElement(): ElementWrapper<HTMLDivElement> | null {
-    return this.find('[contenteditable="true"]');
+    return this.findByClassName<HTMLDivElement>(testutilStyles['content-editable']);
   }
 
   /**
