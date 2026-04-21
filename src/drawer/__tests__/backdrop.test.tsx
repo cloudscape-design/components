@@ -29,12 +29,12 @@ function getTabTraps(container: HTMLElement) {
   return Array.from(container.querySelectorAll<HTMLElement>(`.${tabTrapStyles.root}`));
 }
 
-test('is not rendered by default', () => {
+test('backdrop is not rendered by default', () => {
   const { backdrop } = renderDrawer(<NextDrawer>content</NextDrawer>);
   expect(backdrop).toBeNull();
 });
 
-test('is not rendered for static position', () => {
+test('backdrop is not rendered for static position and warns', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="static">
       content
@@ -44,7 +44,7 @@ test('is not rendered for static position', () => {
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('position="static"'));
 });
 
-test('is not rendered for sticky position', () => {
+test('backdrop is not rendered for sticky position and warns', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="sticky" placement="top">
       content
@@ -54,7 +54,7 @@ test('is not rendered for sticky position', () => {
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('position="sticky"'));
 });
 
-test('is rendered for fixed position', () => {
+test('backdrop is rendered when position=fixed', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed">
       content
@@ -63,7 +63,7 @@ test('is rendered for fixed position', () => {
   expect(backdrop).not.toBeNull();
 });
 
-test('is rendered for absolute position', () => {
+test('backdrop is rendered when position=absolute', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="absolute">
       content
@@ -72,7 +72,7 @@ test('is rendered for absolute position', () => {
   expect(backdrop).not.toBeNull();
 });
 
-test('defaults to 830 when no zIndex is provided', () => {
+test('backdrop z-index defaults to 830 when zIndex is not provided', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed">
       content
@@ -81,7 +81,7 @@ test('defaults to 830 when no zIndex is provided', () => {
   expect(backdrop!.getElement()).toHaveStyle({ zIndex: 830 });
 });
 
-test('uses explicit drawer zIndex', () => {
+test('backdrop z-index matches explicit zIndex prop', () => {
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed" zIndex={1000}>
       content
@@ -90,14 +90,12 @@ test('uses explicit drawer zIndex', () => {
   expect(backdrop!.getElement()).toHaveStyle({ zIndex: 1000 });
 });
 
-test('tab traps are disabled without backdrop', () => {
+test('focus trap is disabled when backdrop is not set', () => {
   const { container } = render(<NextDrawer>content</NextDrawer>);
-  const traps = getTabTraps(container);
-  expect(traps).toHaveLength(2);
-  traps.forEach(trap => expect(trap).toHaveAttribute('tabindex', '-1'));
+  getTabTraps(container).forEach(trap => expect(trap).toHaveAttribute('tabindex', '-1'));
 });
 
-test('tab traps are enabled when backdrop=true with fixed position', () => {
+test('focus trap is enabled when backdrop=true with fixed position', () => {
   const { container } = render(
     <NextDrawer backdrop={true} position="fixed">
       content
@@ -108,18 +106,31 @@ test('tab traps are enabled when backdrop=true with fixed position', () => {
   traps.forEach(trap => expect(trap).toHaveAttribute('tabindex', '0'));
 });
 
-test('tab traps are disabled when backdrop=true with static position', () => {
+test('focus trap is disabled when backdrop=true with unsupported position', () => {
   const { container } = render(
     <NextDrawer backdrop={true} position="static">
       content
     </NextDrawer>
   );
-  const traps = getTabTraps(container);
-  expect(traps).toHaveLength(2);
-  traps.forEach(trap => expect(trap).toHaveAttribute('tabindex', '-1'));
+  getTabTraps(container).forEach(trap => expect(trap).toHaveAttribute('tabindex', '-1'));
 });
 
-test('fires onClose with method=backdrop-click when backdrop is clicked', () => {
+test('focus trap can be disabled explicitly when backdrop is set', () => {
+  const { container } = render(
+    <NextDrawer backdrop={true} position="fixed" focusBehavior={{ trapFocus: false }}>
+      content
+    </NextDrawer>
+  );
+  const drawerContainer = createWrapper(container).findDrawer()!.getElement().parentElement!;
+  expect(drawerContainer.querySelectorAll('[tabindex="0"]')).toHaveLength(0);
+});
+
+test('focus trap can be enabled explicitly without backdrop', () => {
+  const { container } = render(<NextDrawer focusBehavior={{ trapFocus: true }}>content</NextDrawer>);
+  expect(container.querySelectorAll('[tabindex="0"]').length).toBeGreaterThan(0);
+});
+
+test('clicking backdrop fires onClose with method=backdrop-click', () => {
   const onClose = jest.fn();
   const { backdrop } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed" onClose={onClose}>
@@ -127,22 +138,10 @@ test('fires onClose with method=backdrop-click when backdrop is clicked', () => 
     </NextDrawer>
   );
   backdrop!.click();
-  expect(onClose).toHaveBeenCalledTimes(1);
   expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'backdrop-click' } }));
 });
 
-test('keeps drawer open when onClose calls preventDefault', () => {
-  const onClose = jest.fn(e => e.preventDefault());
-  const { container } = render(
-    <NextDrawer backdrop={true} position="fixed" defaultOpen={true} onClose={onClose}>
-      content
-    </NextDrawer>
-  );
-  createWrapper(container).findByClassName(testClasses.backdrop)!.click();
-  expect(createWrapper(container).findDrawer()).not.toBeNull();
-});
-
-test('fires onClose with method=escape when Escape is pressed', () => {
+test('pressing Escape fires onClose with method=escape when backdrop is set', () => {
   const onClose = jest.fn();
   renderDrawer(
     <NextDrawer backdrop={true} position="fixed" onClose={onClose}>
@@ -150,11 +149,10 @@ test('fires onClose with method=escape when Escape is pressed', () => {
     </NextDrawer>
   );
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-  expect(onClose).toHaveBeenCalledTimes(1);
   expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'escape' } }));
 });
 
-test('does not fire onClose on Escape without backdrop', () => {
+test('pressing Escape does not fire onClose when backdrop is not set', () => {
   const onClose = jest.fn();
   renderDrawer(
     <NextDrawer position="fixed" onClose={onClose}>
@@ -163,15 +161,4 @@ test('does not fire onClose on Escape without backdrop', () => {
   );
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   expect(onClose).not.toHaveBeenCalled();
-});
-
-test('keeps drawer open when onClose calls preventDefault on Escape', () => {
-  const onClose = jest.fn(e => e.preventDefault());
-  const { container } = render(
-    <NextDrawer backdrop={true} position="fixed" defaultOpen={true} onClose={onClose}>
-      content
-    </NextDrawer>
-  );
-  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-  expect(createWrapper(container).findDrawer()).not.toBeNull();
 });

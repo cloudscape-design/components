@@ -5,7 +5,7 @@ import React from 'react';
 
 import { ButtonProps } from '../button/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { CancelableEventHandler } from '../internal/events';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface DrawerProps extends BaseComponentProps {
   /**
@@ -148,34 +148,24 @@ export interface NextDrawerProps extends DrawerProps {
   hideCloseAction?: boolean;
 
   /**
-   * Called when the user requests to close the drawer. The `event.detail.method` indicates the trigger:
+   * Called when the user performs a close action. The `event.detail.method` indicates the trigger:
    * * `'close-action'` - The close button was clicked.
    * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
    * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
    *
-   * The event is cancelable - call `event.preventDefault()` to prevent the drawer from closing.
-   *
    * @awsuiSystem core
    */
-  onClose?: CancelableEventHandler<NextDrawerProps.CloseDetail>;
+  onClose?: NonCancelableEventHandler<NextDrawerProps.CloseDetail>;
 
   /**
-   * Drawer open state in controlled mode. When provided, the component operates in controlled mode
-   * and you must handle the `onClose` event to update this value.
+   * Drawer open state. Set to `true` to show the drawer, `false` to hide it.
+   * Handle the `onClose` event to update this value when the user requests to close the drawer.
+   *
+   * When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
    *
    * @awsuiSystem core
    */
   open?: boolean;
-
-  /**
-   * Default open state for uncontrolled mode. Use `ref.current.open()`, `ref.current.close()`, or `ref.current.toggle()`
-   * to change drawer's visibility when in uncontrolled mode.
-   *
-   * When neither `open` nor `defaultOpen` is provided, the drawer is always visible.
-   *
-   * @awsuiSystem core
-   */
-  defaultOpen?: boolean;
 
   /**
    * Shows a semi-transparent backdrop behind the drawer when open. Used with `absolute`
@@ -192,14 +182,17 @@ export interface NextDrawerProps extends DrawerProps {
   /**
    * Customizes focus-related behavior:
    *
+   * - `autoFocus` - Whether focus moves into the drawer when `open` changes from `false` to `true`,
+   *   and captures the previously focused element for default return-focus on close.
+   *   Defaults to `true`. Set to `false` to manage focus-in manually via `ref.current.focus()`.
+   *
    * - `trapFocus` - Whether keyboard focus is constrained to elements inside the drawer.
    *   Defaults to `true` when `backdrop` is set, `false` otherwise.
    *
-   * - `returnFocus` - Called instead of the default return-focus behavior when the drawer
-   *   closes after being opened via `ref.current.open()` or `ref.current.toggle()`.
+   * - `returnFocus` - Called instead of the default return-focus behavior when the drawer closes.
    *   Use this to override where focus lands on close (e.g. a specific trigger element).
-   *   If the element that was focused when the drawer opened is no longer in the DOM,
-   *   the default behavior silently no-ops; use `returnFocus` to handle this case explicitly.
+   *   If omitted, focus returns to the element that was focused when the drawer opened.
+   *   If that element is no longer in the DOM, the behavior silently no-ops.
    *
    * @awsuiSystem core
    */
@@ -228,30 +221,16 @@ export namespace NextDrawerProps {
   }
 
   export interface FocusBehavior {
-    returnFocus?: () => void;
+    autoFocus?: boolean;
     trapFocus?: boolean;
+    returnFocus?: () => void;
   }
 
   export interface Ref {
     /**
-     * Opens the drawer and moves focus inside. No-op in controlled mode.
-     * The element focused before calling `open()` is remembered and focus returns to it
-     * when the drawer closes, unless overridden by `focusBehavior.returnFocus`.
-     */
-    open(): void;
-    /**
-     * Closes the drawer and returns focus to the element that was focused when the drawer
-     * was opened (or calls `focusBehavior.returnFocus` if provided). No-op in controlled mode.
-     */
-    close(): void;
-    /**
-     * Toggles the drawer open/closed. When opening, behaves like `open()`. When closing,
-     * behaves like `close()`. No-op in controlled mode.
-     */
-    toggle(): void;
-    /**
-     * Moves focus to the drawer body. In controlled mode, call this after setting `open={true}`
-     * to move focus inside. No-op if the drawer is not currently open.
+     * Moves focus to the drawer body. Use in controlled mode when `focusBehavior.autoFocus`
+     * is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
+     * with `open=true`.
      */
     focus(): void;
   }

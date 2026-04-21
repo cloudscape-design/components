@@ -17,12 +17,12 @@ function renderDrawer(jsx: React.ReactElement) {
   return { drawer, closeAction };
 }
 
-test('is not rendered when closeAction is not set', () => {
+test('close button is not rendered when closeAction is not set', () => {
   const { closeAction } = renderDrawer(<NextDrawer header="Title">content</NextDrawer>);
   expect(closeAction).toBeNull();
 });
 
-test('is rendered when closeAction is set', () => {
+test('close button is rendered when closeAction is set', () => {
   const { closeAction } = renderDrawer(
     <NextDrawer header="Title" closeAction={{ ariaLabel: 'Close' }}>
       content
@@ -31,7 +31,7 @@ test('is rendered when closeAction is set', () => {
   expect(closeAction).not.toBeNull();
 });
 
-test('is not rendered when hideCloseAction is true', () => {
+test('close button is not rendered when hideCloseAction=true', () => {
   const { closeAction } = renderDrawer(
     <NextDrawer header="Title" closeAction={{ ariaLabel: 'Close' }} hideCloseAction={true}>
       content
@@ -40,12 +40,12 @@ test('is not rendered when hideCloseAction is true', () => {
   expect(closeAction).toBeNull();
 });
 
-test('is not rendered when header is not set', () => {
+test('close button is not rendered when header is not provided', () => {
   const { closeAction } = renderDrawer(<NextDrawer closeAction={{ ariaLabel: 'Close' }}>content</NextDrawer>);
   expect(closeAction).toBeNull();
 });
 
-test('fires when close button is clicked', () => {
+test('clicking close button fires onClose with method=close-action', () => {
   const onClose = jest.fn();
   const { closeAction } = renderDrawer(
     <NextDrawer header="Title" closeAction={{ ariaLabel: 'Close' }} onClose={onClose}>
@@ -57,7 +57,7 @@ test('fires when close button is clicked', () => {
   expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'close-action' } }));
 });
 
-test('removes reserved header padding when true', () => {
+test('hideCloseAction=true removes reserved header padding', () => {
   const { drawer } = renderDrawer(
     <NextDrawer header="Title" hideCloseAction={true}>
       content
@@ -66,7 +66,7 @@ test('removes reserved header padding when true', () => {
   expect(drawer.findHeader()!.getElement()).toHaveClass(drawerStyles['hide-close-action']);
 });
 
-test('does not add hide-close-action class by default', () => {
+test('header padding is not removed when hideCloseAction is not set', () => {
   const { drawer } = renderDrawer(<NextDrawer header="Title">content</NextDrawer>);
   expect(drawer.findHeader()!.getElement()).not.toHaveClass(drawerStyles['hide-close-action']);
 });

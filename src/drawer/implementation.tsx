@@ -13,9 +13,9 @@ import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
-import { fireCancelableEvent } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -50,7 +50,6 @@ export function DrawerImplementation({
   hideCloseAction = false,
   backdrop = false,
   open,
-  defaultOpen,
   onClose,
   ariaLabel,
   ariaLabelledby,
@@ -84,65 +83,38 @@ export function DrawerImplementation({
     ),
   };
 
-  const scheduledCallRef = useRef<null | (() => void)>(null);
-  useEffect(() => {
-    if (scheduledCallRef.current) {
-      scheduledCallRef.current();
-    }
-    scheduledCallRef.current = null;
-  });
-
-  const [isOpen, setIsOpen] = useControllable(open, onClose, defaultOpen ?? true, {
-    componentName: 'Drawer',
-    controlledProp: 'open',
-    changeHandler: 'onClose',
-  });
-
-  const focusDrawer = useStableCallback(() => {
-    containerRef.current?.focus();
-  });
-
   const returnFocusFromDrawer = useStableCallback(() => {
     if (focusBehavior?.returnFocus) {
       focusBehavior.returnFocus();
-    } else {
-      const target = returnFocusTargetRef.current;
-      if (target && target.isConnected) {
-        target.focus();
-      }
+    } else if (returnFocusTargetRef.current && returnFocusTargetRef.current.isConnected) {
+      returnFocusTargetRef.current.focus();
     }
     returnFocusTargetRef.current = null;
   });
 
-  const handleClose: NonNullable<NextDrawerProps['onClose']> = useStableCallback(event => {
-    onClose?.(event);
-    if (!event.defaultPrevented && open === undefined) {
-      scheduledCallRef.current = returnFocusFromDrawer;
-      setIsOpen(false);
-    }
-  });
+  const autoFocusRef = useRef(false);
+  autoFocusRef.current = focusBehavior?.autoFocus ?? true;
 
-  useImperativeHandle(__ref, () => {
-    const doOpen = () => {
-      if (open === undefined) {
-        returnFocusTargetRef.current = document.activeElement as HTMLElement;
-        scheduledCallRef.current = focusDrawer;
-        setIsOpen(true);
-      }
-    };
-    const doClose = () => {
-      if (open === undefined) {
-        scheduledCallRef.current = returnFocusFromDrawer;
-        setIsOpen(false);
-      }
-    };
-    return {
-      open: doOpen,
-      close: doClose,
-      toggle: () => (isOpen ? doClose() : doOpen()),
-      focus: () => focusDrawer(),
-    };
-  }, [open, isOpen, setIsOpen, focusDrawer, returnFocusFromDrawer]);
+  // The use-effect-on-update ensures no focus transition on component's initial render.
+  // If focus transition is needed - the drawerRef.current.focus() should be used instead.
+  useEffectOnUpdate(() => {
+    if (open === undefined) {
+      return;
+    }
+    if (open && autoFocusRef.current) {
+      returnFocusTargetRef.current = document.activeElement as HTMLElement;
+      containerRef.current?.focus();
+    }
+    if (!open) {
+      returnFocusFromDrawer();
+    }
+  }, [open, returnFocusFromDrawer]);
+
+  const handleClose = useStableCallback((method: 'close-action' | 'backdrop-click' | 'escape') =>
+    fireNonCancelableEvent(onClose, { method })
+  );
+
+  useImperativeHandle(__ref, () => ({ focus: () => containerRef.current?.focus() }), []);
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
@@ -160,7 +132,7 @@ export function DrawerImplementation({
     }
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        fireCancelableEvent(handleClose, { method: 'escape' });
+        handleClose('escape');
       }
     };
     document.addEventListener('keydown', onKeyDown);
@@ -170,14 +142,14 @@ export function DrawerImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, testClasses.drawer, !isOpen && styles.hidden)}
+      className={clsx(baseProps.className, testClasses.drawer, open === false && styles.hidden)}
       ref={__internalRootRef}
     >
       {showBackdrop && (
         <div
           className={clsx(styles.backdrop, testClasses.backdrop, styles[`backdrop-${position}`])}
           style={{ zIndex }}
-          onClick={() => fireCancelableEvent(handleClose, { method: 'backdrop-click' })}
+          onClick={() => handleClose('backdrop-click')}
         />
       )}
       <FocusLock disabled={!trapFocus}>
@@ -208,7 +180,7 @@ export function DrawerImplementation({
                         iconName="close"
                         {...closeAction}
                         className={testClasses['close-action']}
-                        onClick={() => fireCancelableEvent(handleClose, { method: 'close-action' })}
+                        onClick={() => handleClose('close-action')}
                       />
                     </div>
                   )}

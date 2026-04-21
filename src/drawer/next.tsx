@@ -33,7 +33,6 @@ const Drawer = forwardRef(function Drawer(
     closeAction,
     hideCloseAction = false,
     open,
-    defaultOpen,
     backdrop = false,
     onClose,
     focusBehavior,
@@ -41,11 +40,14 @@ const Drawer = forwardRef(function Drawer(
   }: NextDrawerProps,
   ref: React.Ref<NextDrawerProps.Ref>
 ) {
-  if (open !== undefined && defaultOpen !== undefined) {
-    warnOnce('Drawer', 'You provided both `open` and `defaultOpen`. `defaultOpen` will be ignored in controlled mode.');
-  }
   if (backdrop && position !== 'fixed' && position !== 'absolute') {
     warnOnce('Drawer', `\`backdrop\` is not supported with position="${position}" and will be ignored.`);
+  }
+  if (open !== undefined && !onClose) {
+    warnOnce(
+      'Drawer',
+      'You provided `open` without an `onClose` handler. The drawer will not respond to close actions.'
+    );
   }
 
   const baseComponentProps = useBaseComponent('Drawer', {
@@ -57,8 +59,9 @@ const Drawer = forwardRef(function Drawer(
       hasOffset: !!offset,
       hasStickyOffset: !!stickyOffset,
       hasCloseAction: !!closeAction,
-      overridesReturnFocus: !!focusBehavior?.returnFocus,
+      autoFocus: !!focusBehavior?.autoFocus,
       trapFocus: !!focusBehavior?.trapFocus,
+      returnFocus: !!focusBehavior?.returnFocus,
     },
   });
 
@@ -80,7 +83,6 @@ const Drawer = forwardRef(function Drawer(
       closeAction={closeAction}
       hideCloseAction={hideCloseAction}
       open={open}
-      defaultOpen={defaultOpen}
       backdrop={backdrop}
       onClose={onClose}
       focusBehavior={focusBehavior}
