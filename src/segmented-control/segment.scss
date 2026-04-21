@@ -28,7 +28,7 @@ $segment-radius: calc(awsui.$border-radius-button - 3px);
   @include styles.text-flex-wrapping;
   @include styles.font-button;
   letter-spacing: 0.25px;
-  padding-block: styles.$control-padding-vertical;
+  padding-block: calc(awsui.$space-field-vertical - awsui.$border-width-field);
   padding-inline: calc(awsui.$space-button-horizontal - $segment-gap);
 
   background: $default-background;
