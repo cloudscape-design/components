@@ -153,6 +153,15 @@ export function ColumnWidthsProvider({
   }, [hierarchicalStructure]);
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
+    // Allow sticky lookups for columns that aren't in visibleColumns (e.g. the selection column)
+    // as long as we have a measured cell to read from.
+    if (sticky) {
+      const measured = cellsRef.current.get(columnId)?.getBoundingClientRect().width;
+      if (measured) {
+        return { width: measured };
+      }
+    }
+
     const column = visibleColumns.find(column => column.id === columnId);
     if (!column) {
       return {};
@@ -160,9 +169,7 @@ export function ColumnWidthsProvider({
 
     if (sticky) {
       return {
-        width:
-          cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
-          (columnWidths?.get(column.id) ?? column.width),
+        width: columnWidths?.get(column.id) ?? column.width,
       };
     }
 

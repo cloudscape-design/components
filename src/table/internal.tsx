@@ -78,7 +78,7 @@ import headerStyles from '../header/styles.css.js';
 import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
-const SELECTION_COLUMN_WIDTH = 54;
+const SELECTION_COLUMN_WIDTH = 40;
 const selectionColumnId = Symbol('selection-column-id');
 
 /**
@@ -555,7 +555,6 @@ const InternalTable = React.forwardRef(
                       hasGroupedColumns={!!hierarchicalStructure && hierarchicalStructure.rows.length > 1}
                       columnDefinitions={visibleColumnDefinitions}
                       hasSelection={hasSelection}
-                      selectionColumnWidth={SELECTION_COLUMN_WIDTH}
                     />
                   )}
                 </>
@@ -615,6 +614,7 @@ const InternalTable = React.forwardRef(
                     className={clsx(
                       styles.table,
                       resizableColumns && styles['table-layout-fixed'],
+                      hierarchicalStructure && hierarchicalStructure.rows.length > 1 && styles['has-grouped-header'],
                       contentDensity === 'compact' && getVisualContextClassname('compact-table')
                     )}
                     {...getTableRoleProps({

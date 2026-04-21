@@ -57,6 +57,7 @@ export interface TableHeaderCellProps<ItemType> {
   columnGroupId?: string;
   /** When true, this cell is the rightmost child within its parent group. */
   isLastChildOfGroup?: boolean;
+  isRightmost?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -92,6 +93,7 @@ export function TableHeaderCell<ItemType>({
   rowSpan,
   columnGroupId,
   isLastChildOfGroup,
+  isRightmost,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -153,6 +155,7 @@ export function TableHeaderCell<ItemType>({
       rowSpan={rowSpan}
       columnGroupId={columnGroupId}
       isLastChildOfGroup={isLastChildOfGroup}
+      isRightmost={isRightmost}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

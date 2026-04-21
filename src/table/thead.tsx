@@ -199,6 +199,7 @@ const Thead = React.forwardRef(
                 {...commonCellProps}
                 focusedComponent={focusedComponent}
                 columnId={selectionColumnId}
+                cellRef={node => setCell(sticky, selectionColumnId, node)}
                 getSelectAllProps={getSelectAllProps}
                 onFocusMove={onFocusMove}
                 singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
@@ -235,6 +236,7 @@ const Thead = React.forwardRef(
                   resizerTooltipText={resizerTooltipText}
                   isExpandable={colIndex === 0 && isExpandable}
                   hasDynamicContent={hidden && !resizableColumns && column.hasDynamicContent}
+                  isRightmost={colIndex === columnDefinitions.length - 1}
                 />
               );
             })}
@@ -244,7 +246,7 @@ const Thead = React.forwardRef(
     }
 
     // Grouped columns
-    // console.log(hierarchicalStructure.rows);
+    const totalLeafColumns = columnDefinitions.length;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         {hierarchicalStructure.rows.map((row, rowIndex) => (
@@ -267,6 +269,7 @@ const Thead = React.forwardRef(
                 {...commonCellProps}
                 focusedComponent={focusedComponent}
                 columnId={selectionColumnId}
+                cellRef={node => setCell(sticky, selectionColumnId, node)}
                 getSelectAllProps={getSelectAllProps}
                 onFocusMove={onFocusMove}
                 singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
@@ -342,8 +345,10 @@ const Thead = React.forwardRef(
                         childColumnMinWidths={getColumnMinWidths(leftChildIds as string[])}
                         cellRef={split.side === 'first' ? node => setCell(sticky, col.id, node) : () => {}}
                         isLastChildOfGroup={false}
+                        isRightmost={false}
                         stickyColumnId={split.side === 'first' ? childIds[0] : undefined}
                       />
+
                       {/* Right half */}
                       <TableGroupHeaderCell
                         {...commonCellProps}
@@ -378,6 +383,7 @@ const Thead = React.forwardRef(
                         resizerRoleDescription={resizerRoleDescription}
                         resizerTooltipText={resizerTooltipText}
                         isLastChildOfGroup={isLastChildOfGroup}
+                        isRightmost={rightColIndex + rightColspan === totalLeafColumns}
                         stickyColumnId={split.side === 'last' ? childIds[childIds.length - 1] : undefined}
                         columnGroupId={
                           col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
@@ -424,6 +430,7 @@ const Thead = React.forwardRef(
                     resizerRoleDescription={resizerRoleDescription}
                     resizerTooltipText={resizerTooltipText}
                     isLastChildOfGroup={isLastChildOfGroup}
+                    isRightmost={col.colIndex + col.colspan === totalLeafColumns}
                     stickyColumnId={fullyStickyColumnId}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
@@ -469,6 +476,7 @@ const Thead = React.forwardRef(
                     colSpan={col.colspan}
                     rowSpan={col.rowspan}
                     isLastChildOfGroup={isLastChildOfGroup}
+                    isRightmost={col.colIndex + col.colspan === totalLeafColumns}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
                     }

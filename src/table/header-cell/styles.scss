@@ -79,10 +79,12 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }
+
   &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
   &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
     background: none;
   }
+
   &:last-child,
   &.header-cell-sortable {
     padding-inline-end: awsui.$space-xs;
@@ -92,20 +94,25 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
+
     &.table-variant-full-page {
       background: awsui.$color-background-layout-main;
     }
+
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
+
     &-last-inline-start {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
+
       & > .resize-divider {
         display: none;
       }
@@ -235,22 +242,15 @@ settings icon in the pagination slot.
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
 
-  // &:nth-child(2):not(:first-child) {
-  //   @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
-  // }
-
-  &:first-child > .header-cell-content {
+  &:first-child:not(.header-cell-grouped) > .header-cell-content {
     // TODO: Causes group misalignment, look into this
-    // @include cell-offset(0px);
+    @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  // &:nth-child(2):not(:first-child) > .header-cell-content {
-  //   @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
-  // }
-
-  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group),
-  &:nth-child(2):not(:first-child):not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
+  &:first-child:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+      .header-cell-grouped
+    ) {
     @include cell-offset(awsui.$space-xxxs);
   }
 
@@ -259,8 +259,7 @@ settings icon in the pagination slot.
     shaded background makes the child content appear too close
     to the table edge.
   */
-  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group),
-  &:nth-child(2):not(:first-child).has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group) {
+  &:first-child.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(.header-cell-grouped) {
     @include cell-offset(awsui.$space-xxs);
   }
 
@@ -277,8 +276,7 @@ settings icon in the pagination slot.
 $resizer-block-gap: var(--awsui-table-resizer-block-gap, 18px);
 // stylelint-enable custom-property-pattern
 
-.header-cell-group,
-.header-cell-group:last-child {
+.header-cell-group {
   // stylelint-disable custom-property-pattern
   --awsui-resizer-max-block-size: calc(100% - #{$resizer-block-gap} / 2);
   --awsui-resizer-margin-block-start: auto;

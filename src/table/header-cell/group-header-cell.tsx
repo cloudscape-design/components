@@ -45,6 +45,7 @@ export interface TableGroupHeaderCellProps {
   columnGroupId?: string;
   /** When set, the <th> uses this column ID for sticky positioning instead of groupId. */
   stickyColumnId?: PropertyKey;
+  isRightmost?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -72,6 +73,7 @@ export function TableGroupHeaderCell({
   isLastChildOfGroup,
   columnGroupId,
   stickyColumnId,
+  isRightmost,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
@@ -96,6 +98,7 @@ export function TableGroupHeaderCell({
       rowSpan={rowspan}
       scope="colgroup"
       isLastChildOfGroup={isLastChildOfGroup}
+      isRightmost={isRightmost}
       columnGroupId={columnGroupId}
     >
       <div

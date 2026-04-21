@@ -34,7 +34,6 @@ interface StickyHeaderProps {
   hasGroupedColumns?: boolean;
   columnDefinitions?: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   hasSelection?: boolean;
-  selectionColumnWidth?: number;
 }
 
 export default forwardRef(StickyHeader);
@@ -46,15 +45,14 @@ function StickyHeader(
     wrapperRef,
     theadRef,
     secondaryWrapperRef,
-    onScroll,
     tableRef,
+    onScroll,
     tableHasHeader,
     contentDensity,
     tableRole,
     hasGroupedColumns,
     columnDefinitions,
     hasSelection,
-    selectionColumnWidth,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -89,6 +87,8 @@ function StickyHeader(
         [styles['table-has-header']]: tableHasHeader,
       })}
       aria-hidden={true}
+      // Prevents receiving focus in Firefox. Focus on the overflowing table is sufficient
+      // to scroll the table horizontally
       tabIndex={-1}
       ref={secondaryWrapperRef}
       onScroll={onScroll}
@@ -97,6 +97,7 @@ function StickyHeader(
         className={clsx(
           styles.table,
           styles['table-layout-fixed'],
+          hasGroupedColumns && styles['has-grouped-header'],
           contentDensity === 'compact' && getVisualContextClassname('compact-table')
         )}
         ref={secondaryTableRef}
@@ -104,7 +105,7 @@ function StickyHeader(
       >
         {hasGroupedColumns && columnDefinitions && (
           <colgroup>
-            {hasSelection && <col style={{ width: selectionColumnWidth }} />}
+            {hasSelection && <col style={{ width: getColumnStyles(true, theadProps.selectionColumnId).width }} />}
             {columnDefinitions.map((column, colIndex) => {
               const columnId = getColumnKey(column, colIndex);
               const colStyles = getColumnStyles(true, columnId);

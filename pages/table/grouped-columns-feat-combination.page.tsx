@@ -585,9 +585,9 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
 const groupingPresetOptions = [
   { value: 'single-level', label: 'Single-level groups' },
   { value: 'nested', label: 'Nested groups (3 levels)' },
-  { value: 'mixed', label: 'Mixed grouped + ungrouped' },
+  { value: 'mixed', label: 'Mixed (grouped + ungrouped)' },
   { value: 'single-child-groups', label: 'Single-child groups' },
-  { value: 'flat', label: 'No grouping (flat) current ¯\\_(ツ)_/¯' },
+  { value: 'flat', label: 'Without grouping / current' },
 ];
 
 // ============================================================================

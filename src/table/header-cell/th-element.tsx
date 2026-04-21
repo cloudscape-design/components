@@ -52,6 +52,8 @@ export interface TableThElementProps {
    * Its divider/resizer extends fully to connect to the parent group's horizontal border.
    */
   isLastChildOfGroup?: boolean;
+  /** When true, this cell occupies the rightmost visual column position in the table. */
+  isRightmost?: boolean;
 }
 
 export function TableThElement({
@@ -79,6 +81,7 @@ export function TableThElement({
   scope,
   columnGroupId,
   isLastChildOfGroup,
+  isRightmost,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -117,6 +120,7 @@ export function TableThElement({
           [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
           [styles['header-cell-grouped']]: !!columnGroupId,
           [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
+          [styles['header-cell-rightmost']]: isRightmost,
         },
         stickyStyles.className
       )}

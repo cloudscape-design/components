@@ -34,6 +34,9 @@
   align-items: end;
   // Match the bottom padding of leaf column header text:
   // .header-cell padding-block-end ($space-scaled-xxs) + .header-cell-content padding-block-end ($space-scaled-xxs)
+
+  // align-items: baseline;
+  padding-block-start: awsui.$space-xs;
   padding-block-end: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxs});
 }
 
