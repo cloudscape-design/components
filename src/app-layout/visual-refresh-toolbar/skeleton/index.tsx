@@ -90,7 +90,9 @@ export const SkeletonLayout = ({
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered ? <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary> : null}
+              {registered || typeof window === 'undefined' ? (
+                <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary>
+              ) : null}
             </div>
           </div>
           <AppLayoutBottomContentSlot {...mergedProps} />
