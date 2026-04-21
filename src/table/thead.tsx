@@ -284,7 +284,24 @@ const Thead = React.forwardRef(
               const nextCol = row.columns[colIndexInRow + 1];
               const thisParent = col.parentGroupIds[col.parentGroupIds.length - 1] ?? null;
               const nextParent = nextCol ? (nextCol.parentGroupIds[nextCol.parentGroupIds.length - 1] ?? null) : null;
-              const isLastChildOfGroup = thisParent !== null && thisParent !== nextParent;
+              // A leaf is also considered last-child-of-group when the sticky boundary
+              // bisects its parent group just after this leaf — visually it's the rightmost
+              // leaf of the sticky half, so its resizer should span full-height like a
+              // normal last-child-of-group.
+              const isLeafAtStickyFirstBoundary =
+                !col.isGroup &&
+                thisParent !== null &&
+                stickyColumnsFirst > 0 &&
+                col.colIndex === stickyColumnsFirst - 1;
+              const isLeafAtStickyLastBoundary =
+                !col.isGroup &&
+                thisParent !== null &&
+                stickyColumnsLast > 0 &&
+                col.colIndex === columnDefinitions.length - stickyColumnsLast - 1;
+              const isLastChildOfGroup =
+                (thisParent !== null && thisParent !== nextParent) ||
+                isLeafAtStickyFirstBoundary ||
+                isLeafAtStickyLastBoundary;
 
               if (col.isGroup) {
                 // Group header cell
