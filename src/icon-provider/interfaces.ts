@@ -184,6 +184,21 @@ export interface IconProviderProps extends BaseComponentProps {
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
+
+  /**
+   * Specifies a default icon size for all descendant `Icon` components.
+   *
+   * When set, any `Icon` that does not receive an explicit `size` prop will render at this size.
+   * Icons that specify their own `size` prop will not be affected.
+   *
+   * Use this to create dense UI regions where icons should be smaller (for example, `"small"` for 12×12px icons).
+   *
+   * Nested `IconProvider` instances can override or reset this value. Set to `undefined` (or omit)
+   * to inherit the parent provider's icon size, or set explicitly to reset.
+   *
+   * @defaultValue undefined (no size override — icons use their own default of `"normal"`)
+   */
+  iconSize?: IconProps.Size;
 }
 
 export namespace IconProviderProps {

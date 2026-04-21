@@ -60,7 +60,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthField: '1px',
   borderWidthPopover: '2px',
   borderWidthToken: '2px',
-  borderWidthIconSmall: '2px',
+  borderWidthIconSmall: '1.5px',
   borderWidthIconNormal: '2px',
   borderWidthIconMedium: '2px',
   borderWidthIconBig: '3px',

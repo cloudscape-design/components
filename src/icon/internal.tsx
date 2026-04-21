@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalIconContext } from '../icon-provider/context';
+import { InternalIconContext, InternalIconSizeContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -54,13 +54,19 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
+  const contextIconSize = useContext(InternalIconSizeContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
-  const contextualSize = size === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
+
+  // Apply the context icon size as a default when no explicit size was provided (i.e. the caller
+  // relied on the default value of "normal"). An explicit size prop always wins.
+  const effectiveSize = size === 'normal' && contextIconSize ? contextIconSize : size;
+
+  const contextualSize = effectiveSize === 'inherit';
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 

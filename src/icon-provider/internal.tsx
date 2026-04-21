@@ -4,11 +4,12 @@
 import React, { useContext } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
-import { InternalIconContext } from './context';
+import { InternalIconContext, InternalIconSizeContext } from './context';
 import { IconProviderProps } from './interfaces';
 
-function InternalIconProvider({ children, icons }: IconProviderProps) {
+function InternalIconProvider({ children, icons, iconSize }: IconProviderProps) {
   const contextIcons = useContext(InternalIconContext);
+  const contextIconSize = useContext(InternalIconSizeContext);
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
@@ -27,7 +28,14 @@ function InternalIconProvider({ children, icons }: IconProviderProps) {
     iconsToProvide = { ...contextIcons, ...clonedIcons };
   }
 
-  return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
+  // If iconSize is not explicitly provided, inherit from the parent provider
+  const iconSizeToProvide = iconSize ?? contextIconSize;
+
+  return (
+    <InternalIconContext.Provider value={iconsToProvide}>
+      <InternalIconSizeContext.Provider value={iconSizeToProvide}>{children}</InternalIconSizeContext.Provider>
+    </InternalIconContext.Provider>
+  );
 }
 
 export default InternalIconProvider;
