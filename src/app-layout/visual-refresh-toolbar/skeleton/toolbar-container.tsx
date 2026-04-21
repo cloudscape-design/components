@@ -4,10 +4,12 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import Icon from '../../../icon/internal';
 import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import toolbarStyles from '../toolbar/styles.css.js';
+import triggerButtonStyles from '../toolbar/trigger-button/styles.css.js';
 
 interface ToolbarContainerProps {
   children: React.ReactNode;
@@ -54,14 +56,21 @@ export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSke
       <ToolbarContainer>
         {hasNavigation && (
           <nav className={toolbarStyles['universal-toolbar-nav']}>
-            <button
-              type="button"
-              className={testutilStyles['navigation-toggle']}
-              aria-label="Open navigation"
-              aria-expanded={false}
-            >
-              <span aria-hidden="true">☰</span>
-            </button>
+            <div className={triggerButtonStyles['trigger-wrapper']}>
+              <button
+                type="button"
+                aria-label="Open navigation"
+                aria-expanded={false}
+                aria-haspopup={true}
+                className={clsx(
+                  triggerButtonStyles.trigger,
+                  triggerButtonStyles.default,
+                  testutilStyles['navigation-toggle']
+                )}
+              >
+                <Icon name="menu" />
+              </button>
+            </div>
           </nav>
         )}
         <ToolbarBreadcrumbsSection
