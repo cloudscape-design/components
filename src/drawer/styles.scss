@@ -6,6 +6,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../app-layout/constants.scss' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -34,6 +35,10 @@
     > .content {
       flex: 1;
     }
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight($gutter: -2px);
   }
 }
 
@@ -120,6 +125,10 @@
 
 .test-utils-drawer-content {
   /* used in test-utils */
+}
+
+.hidden {
+  display: none;
 }
 
 .backdrop {

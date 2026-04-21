@@ -60,6 +60,26 @@ export namespace DrawerProps {
 // Props for a future release
 export interface NextDrawerProps extends DrawerProps {
   /**
+   * Sets the `aria-label` on the drawer body (focused when the drawer opens).
+   * By default the body is labelled by the drawer's `header` content. Use this when you need a different
+   * or more specific label (e.g. to include additional context or exclude parts of the header).
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   *
+   * @awsuiSystem core
+   */
+  ariaLabel?: string;
+
+  /**
+   * Sets the `aria-labelledby` on the drawer body (focused when the drawer opens).
+   * By default the body is labelled by the drawer's `header` content. Use this when you need a different
+   * or more specific label (e.g. to include additional context or exclude parts of the header).
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   *
+   * @awsuiSystem core
+   */
+  ariaLabelledby?: string;
+
+  /**
    * Specifies the CSS positioning mode of the drawer, and supports the following options:
    * * `static` (default) - The drawer is positioned in the normal document flow.
    * * `sticky` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with `placement="top"` or `placement="bottom"`.
@@ -161,12 +181,29 @@ export interface NextDrawerProps extends DrawerProps {
    * Shows a semi-transparent backdrop behind the drawer when open. Used with `absolute`
    * and `fixed` positions.
    *
-   * When a backdrop is set, the keyboard focus is trapped inside the drawer to
-   * prevent it from moving to elements covered by the backdrop.
+   * When a backdrop is set, the keyboard focus is trapped inside the drawer by default
+   * to prevent it from moving to elements covered by the backdrop. This can be overridden
+   * with `focusBehavior.trapFocus`.
    *
    * @awsuiSystem core
    */
   backdrop?: boolean;
+
+  /**
+   * Customizes focus-related behavior:
+   *
+   * - `trapFocus` - Whether keyboard focus is constrained to elements inside the drawer.
+   *   Defaults to `true` when `backdrop` is set, `false` otherwise.
+   *
+   * - `returnFocus` - Called instead of the default return-focus behavior when the drawer
+   *   closes after being opened via `ref.current.open()` or `ref.current.toggle()`.
+   *   Use this to override where focus lands on close (e.g. a specific trigger element).
+   *   If the element that was focused when the drawer opened is no longer in the DOM,
+   *   the default behavior silently no-ops; use `returnFocus` to handle this case explicitly.
+   *
+   * @awsuiSystem core
+   */
+  focusBehavior?: NextDrawerProps.FocusBehavior;
 }
 
 export namespace NextDrawerProps {
@@ -190,12 +227,32 @@ export namespace NextDrawerProps {
     method: 'close-action' | 'backdrop-click' | 'escape';
   }
 
+  export interface FocusBehavior {
+    returnFocus?: () => void;
+    trapFocus?: boolean;
+  }
+
   export interface Ref {
-    /** Opens the drawer. No-op in controlled mode. */
+    /**
+     * Opens the drawer and moves focus inside. No-op in controlled mode.
+     * The element focused before calling `open()` is remembered and focus returns to it
+     * when the drawer closes, unless overridden by `focusBehavior.returnFocus`.
+     */
     open(): void;
-    /** Closes the drawer. No-op in controlled mode. */
+    /**
+     * Closes the drawer and returns focus to the element that was focused when the drawer
+     * was opened (or calls `focusBehavior.returnFocus` if provided). No-op in controlled mode.
+     */
     close(): void;
-    /** Toggles the drawer open/closed. No-op in controlled mode. */
+    /**
+     * Toggles the drawer open/closed. When opening, behaves like `open()`. When closing,
+     * behaves like `close()`. No-op in controlled mode.
+     */
     toggle(): void;
+    /**
+     * Moves focus to the drawer body. In controlled mode, call this after setting `open={true}`
+     * to move focus inside. No-op if the drawer is not currently open.
+     */
+    focus(): void;
   }
 }

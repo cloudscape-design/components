@@ -4,7 +4,8 @@
 import React, { useContext, useRef, useState } from 'react';
 
 import { Button, Checkbox, Header, SpaceBetween } from '~components';
-import Drawer from '~components/drawer/next';
+import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next';
+import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -21,8 +22,18 @@ export default function () {
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const triggerRef = useRef<{ focus: () => void }>(null);
-  const drawerWrapperRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<DrawerProps.Ref>(null);
   const [isOpen, setOpen] = useState(false);
+
+  // The initial render is ignored to prevent focus stealing.
+  useEffectOnUpdate(() => {
+    if (isOpen) {
+      drawerRef.current?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [isOpen]);
+
   return (
     <SimplePage
       title="Drawer visibility: controlled"
@@ -35,25 +46,17 @@ export default function () {
       }
     >
       <SpaceBetween size="m">
-        <Button
-          ref={triggerRef}
-          onClick={() => {
-            setOpen(true);
-            drawerWrapperRef.current?.focus();
-          }}
-        >
+        <Button ref={triggerRef} onClick={() => setOpen(true)}>
           Open drawer
         </Button>
         <Drawer
+          ref={drawerRef}
           position="fixed"
           placement="end"
           backdrop={backdrop}
           closeAction={{ ariaLabel: 'Close' }}
           open={isOpen}
-          onClose={() => {
-            setOpen(false);
-            triggerRef.current?.focus();
-          }}
+          onClose={() => setOpen(false)}
           header={<Header variant="h3">Header</Header>}
         >
           <div style={{ width: 300 }}>Content</div>

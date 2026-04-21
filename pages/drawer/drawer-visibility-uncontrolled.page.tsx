@@ -9,9 +9,6 @@ import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next'
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-// Note: in this demo the focus does not automatically move to the drawer or back to the trigger yet: this part will be implemented
-// in the upcoming stages.
-
 type PageContext = React.Context<
   AppContextType<{
     backdrop?: boolean;

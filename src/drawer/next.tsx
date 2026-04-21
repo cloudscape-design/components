@@ -15,6 +15,7 @@ import { InternalDrawer } from './internal';
 
 export { NextDrawerProps };
 
+// Matches App Layout drawers z-index.
 const DEFAULT_Z_INDEX = 830;
 
 const Drawer = forwardRef(function Drawer(
@@ -35,6 +36,7 @@ const Drawer = forwardRef(function Drawer(
     defaultOpen,
     backdrop = false,
     onClose,
+    focusBehavior,
     ...props
   }: NextDrawerProps,
   ref: React.Ref<NextDrawerProps.Ref>
@@ -55,6 +57,8 @@ const Drawer = forwardRef(function Drawer(
       hasOffset: !!offset,
       hasStickyOffset: !!stickyOffset,
       hasCloseAction: !!closeAction,
+      overridesReturnFocus: !!focusBehavior?.returnFocus,
+      trapFocus: !!focusBehavior?.trapFocus,
     },
   });
 
@@ -79,6 +83,7 @@ const Drawer = forwardRef(function Drawer(
       defaultOpen={defaultOpen}
       backdrop={backdrop}
       onClose={onClose}
+      focusBehavior={focusBehavior}
     />
   );
 });
