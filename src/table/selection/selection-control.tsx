@@ -110,6 +110,7 @@ export function SelectionControl({
       value={''}
       onSelect={onChange}
       nativeInputAttributes={Object.keys(nativeInputAttributes).length > 0 ? nativeInputAttributes : undefined}
+      __skipNativeAttributesWarnings={['aria-label', 'aria-describedby']}
     />
   );
 
