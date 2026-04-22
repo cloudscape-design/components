@@ -31461,6 +31461,9 @@ exports[`Components definition for tooltip matches the snapshot: tooltip 1`] = `
       "cancelable": false,
       "description": "Callback fired when the user presses the Escape key while the tooltip is visible.",
       "name": "onEscape",
+      "systemTags": [
+        "core",
+      ],
     },
   ],
   "functions": [],
@@ -31476,8 +31479,11 @@ Can return null if the element is not yet mounted or available.",
         "type": "function",
       },
       "name": "getTrack",
-      "optional": false,
-      "type": "() => HTMLElement | SVGElement | null",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "(() => HTMLElement | SVGElement | null)",
     },
     {
       "defaultValue": "'top'",
@@ -31496,6 +31502,28 @@ Can return null if the element is not yet mounted or available.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "The behavior of the tooltip trigger.
+
+* \`manual\` (default) - The tooltip is always shown.
+* \`truncation\` - The tooltip is only shown when the trigger element is truncated.
+* \`group\` - The tooltip is shown on hover or focus and is associated to the content using aria-describedby.
+* \`announcement\` - The tooltip is shown on hover or focus and announced using LiveRegion.",
+      "inlineType": {
+        "name": "TooltipProps.TriggerVariant",
+        "type": "union",
+        "values": [
+          "manual",
+          "group",
+          "truncation",
+          "visually-hidden",
+          "announcement",
+        ],
+      },
+      "name": "triggerVariant",
+      "optional": true,
+      "type": "string",
+    },
   ],
   "regions": [
     {
@@ -31503,11 +31531,13 @@ Can return null if the element is not yet mounted or available.",
       "isDefault": false,
       "name": "content",
     },
+    {
+      "description": "Optional trigger element that the tooltip is anchored to, if getTrack isn't provided.",
+      "isDefault": false,
+      "name": "trigger",
+    },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
