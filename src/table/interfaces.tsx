@@ -62,6 +62,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
   loadingText?: string;
 
   /**
+   * Renders a skeleton layout instead of loading text when `loading` is set to true.
+   * Set the `rows` property to a number that matches the most likely final number of rows rendered, to reduce layout shift.
+   */
+  skeleton?: TableProps.SkeletonConfig;
+
+  /**
    * Specifies a property that uniquely identifies an individual item.
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
@@ -654,6 +660,10 @@ export namespace TableProps {
 
   export interface RenderLoaderEmptyDetail<T> {
     item: T;
+  }
+
+  export interface SkeletonConfig {
+    rows: number;
   }
 }
 

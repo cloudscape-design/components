@@ -1,0 +1,102 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+@keyframes skeleton-wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.root {
+  inline-size: 100%;
+
+  > .inner {
+    block-size: 1em;
+    inline-size: 100%;
+    vertical-align: middle;
+
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+
+    background-color: awsui.$color-background-skeleton;
+    border-start-start-radius: awsui.$border-radius-skeleton;
+    border-start-end-radius: awsui.$border-radius-skeleton;
+    border-end-start-radius: awsui.$border-radius-skeleton;
+    border-end-end-radius: awsui.$border-radius-skeleton;
+
+    @include styles.with-motion {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: 0;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        background: linear-gradient(90deg, transparent, awsui.$color-background-skeleton-wave, transparent);
+        @include styles.with-motion {
+          animation: skeleton-wave 1.25s ease-in-out infinite;
+        }
+      }
+    }
+  }
+}
+
+.display-block {
+  display: block;
+}
+.display-inline-block {
+  display: inline-block;
+  vertical-align: middle;
+}
+.display-inline {
+  display: inline;
+}
+
+.variant-text-body-s {
+  font-size: awsui.$font-size-body-s;
+  line-height: awsui.$line-height-body-s;
+}
+
+.variant-text-body-m {
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-body-m;
+}
+
+.variant-text-heading-xs {
+  font-size: awsui.$font-size-heading-xs;
+  line-height: awsui.$line-height-heading-xs;
+}
+
+.variant-text-heading-s {
+  font-size: awsui.$font-size-heading-s;
+  line-height: awsui.$line-height-heading-s;
+}
+
+.variant-text-heading-m {
+  font-size: awsui.$font-size-heading-m;
+  line-height: awsui.$line-height-heading-m;
+}
+
+.variant-text-heading-l {
+  font-size: awsui.$font-size-heading-l;
+  line-height: awsui.$line-height-heading-l;
+}
+
+.variant-text-heading-xl {
+  font-size: awsui.$font-size-heading-xl;
+  line-height: awsui.$line-height-heading-xl;
+}
+
+.variant-text-display-l {
+  font-size: awsui.$font-size-display-l;
+  line-height: awsui.$line-height-display-l;
+}

@@ -35,6 +35,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
+import InternalSkeleton from '../skeleton/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { checkColumnWidths } from './column-widths-utils';
@@ -110,6 +111,7 @@ const InternalTable = React.forwardRef(
       trackBy,
       loading,
       loadingText,
+      skeleton,
       selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
@@ -577,7 +579,79 @@ const InternalTable = React.forwardRef(
                       {...theadProps}
                     />
                     <tbody>
-                      {loading || allItems.length === 0 ? (
+                      {loading && skeleton ? (
+                        Array.from({ length: skeleton.rows }, (_, rowIndex) => {
+                          const isFirstRow = rowIndex === 0;
+                          const isLastRow = rowIndex === skeleton.rows - 1;
+                          const sharedCellProps = {
+                            isFirstRow,
+                            isLastRow,
+                            isSelected: false,
+                            isPrevSelected: false,
+                            isNextSelected: false,
+                            hasSelection,
+                            hasFooter,
+                            stickyState,
+                            tableRole,
+                          };
+                          return (
+                            <tr key={`skeleton-row-${rowIndex}`} className={styles.row}>
+                              {hasSelection && (
+                                <TableBodyCell
+                                  {...sharedCellProps}
+                                  resizableStyle={{}}
+                                  ariaLabels={ariaLabels}
+                                  column={{ header: '', cell: () => {} }}
+                                  item={{} as T}
+                                  wrapLines={false}
+                                  isEditable={false}
+                                  isEditing={false}
+                                  isRowHeader={false}
+                                  successfulEdit={false}
+                                  resizableColumns={false}
+                                  onEditStart={() => {}}
+                                  onEditEnd={() => {}}
+                                  submitEdit={() => Promise.resolve()}
+                                  columnId={selectionColumnId}
+                                  colIndex={0}
+                                  verticalAlign={cellVerticalAlign}
+                                  tableVariant={computedVariant}
+                                />
+                              )}
+                              {visibleColumnDefinitions.map((column, colIndex) => {
+                                const colId = `skeleton-${getColumnKey(column, colIndex)}`;
+                                return (
+                                  <TableBodyCell
+                                    key={colId}
+                                    {...sharedCellProps}
+                                    resizableStyle={{
+                                      width: column.width,
+                                      minWidth: column.minWidth,
+                                      maxWidth: column.maxWidth,
+                                    }}
+                                    ariaLabels={ariaLabels}
+                                    column={{ ...column, cell: () => <InternalSkeleton /> }}
+                                    item={{} as T}
+                                    wrapLines={wrapLines}
+                                    isEditable={false}
+                                    isEditing={false}
+                                    isRowHeader={column.isRowHeader}
+                                    successfulEdit={false}
+                                    resizableColumns={resizableColumns}
+                                    onEditStart={() => {}}
+                                    onEditEnd={() => {}}
+                                    submitEdit={() => Promise.resolve()}
+                                    columnId={column.id ?? colIndex}
+                                    colIndex={colIndex + colIndexOffset}
+                                    verticalAlign={column.verticalAlign ?? cellVerticalAlign}
+                                    tableVariant={computedVariant}
+                                  />
+                                );
+                              })}
+                            </tr>
+                          );
+                        })
+                      ) : loading || allItems.length === 0 ? (
                         <tr>
                           <NoDataCell
                             totalColumnsCount={totalColumnsCount}

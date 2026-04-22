@@ -70,6 +70,7 @@ const pluralizationMap = {
   SegmentedControl: 'SegmentedControls',
   Select: 'Selects',
   SideNavigation: 'SideNavigations',
+  Skeleton: 'Skeletons',
   Slider: 'Sliders',
   SpaceBetween: 'SpaceBetweens',
   Spinner: 'Spinners',
