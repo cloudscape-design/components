@@ -164,6 +164,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  spaceTokenVertical: {
+    description: 'The vertical padding inside tokens.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

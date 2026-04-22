@@ -11,6 +11,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceButtonFocusOutlineGutter: '4px',
   spaceButtonHorizontal: '{spaceScaledL}',
   spaceButtonVertical: '{spaceScaledXxs}',
+  spaceTokenVertical: '{spaceScaledXxs}',
   spaceButtonIconFocusOutlineGutterVertical: '0px',
   spaceButtonIconOnlyHorizontal: { comfortable: '6px', compact: '{spaceXxs}' },
   spaceButtonInlineIconFocusOutlineGutter: '0px',

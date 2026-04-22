@@ -11,11 +11,14 @@ import {
   Cards,
   Container,
   DatePicker,
+  FileTokenGroup,
   Grid,
   Header,
+  Icon,
   Input,
   Link,
   Multiselect,
+  PromptInput,
   SegmentedControl,
   Select,
   SelectProps,
@@ -25,6 +28,8 @@ import {
   Table,
   Tiles,
   ToggleButton,
+  Token,
+  TokenGroup,
 } from '~components';
 import { MultiselectProps } from '~components/multiselect';
 import { applyTheme, Theme } from '~components/theming';
@@ -451,6 +456,23 @@ function AppLayoutToolbarWithDrawers() {
 
 export default function ThemedComponentsPage() {
   const [themed, setThemed] = useState<boolean>(false);
+  const [items, setItems] = React.useState([
+    { label: 'Item 1', dismissLabel: 'Remove item 1' },
+    { label: 'Item 2', dismissLabel: 'Remove item 2' },
+    { label: 'Item 3', dismissLabel: 'Remove item 3' },
+  ]);
+
+  const [promptValue, setPromptValue] = React.useState('');
+  const [files, setFiles] = React.useState([
+    new File([new Blob(['Test content'])], 'file-1.pdf', {
+      type: 'application/pdf',
+      lastModified: 1590962400000,
+    }),
+    new File([new Blob(['Test content'])], 'file-2.pdf', {
+      type: 'application/pdf',
+      lastModified: 1590962400000,
+    }),
+  ]);
 
   useLayoutEffect(() => {
     let reset: () => void = () => {};
@@ -466,6 +488,7 @@ export default function ThemedComponentsPage() {
           borderWidthCardSelected: '1px',
           fontWeightDisplayL: '900',
           colorTextAccent: { light: '#1b232d', dark: '#F9F9FB' },
+          spaceTokenVertical: '2px',
         },
       };
 
@@ -509,6 +532,73 @@ export default function ThemedComponentsPage() {
           <StatusIndicator type="success">Success</StatusIndicator>
           <StatusIndicator type="warning">Warning</StatusIndicator>
           <StatusIndicator type="info">Info</StatusIndicator>
+        </SpaceBetween>
+
+        <SpaceBetween size="xs">
+          <TokenGroup
+            onDismiss={({ detail: { itemIndex } }) => {
+              setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+            }}
+            items={items}
+          />
+          <Token onDismiss={() => {}} dismissLabel="Dismiss token" variant="inline" label="Inline token" />
+          <Token
+            onDismiss={() => {}}
+            description="This is a description for a token with features"
+            dismissLabel="Dismiss token"
+            labelTag="Label tag"
+            tags={['A tag', 'Another tag']}
+            icon={<Icon name="share" />}
+            label="Token with features"
+          />
+          <PromptInput
+            onChange={({ detail }) => setPromptValue(detail.value)}
+            value={promptValue}
+            actionButtonAriaLabel="Send message"
+            actionButtonIconName="send"
+            disableSecondaryActionsPaddings={true}
+            placeholder="Ask a question"
+            ariaLabel="Prompt input with files"
+            secondaryActions={
+              <Box padding={{ left: 'xxs', top: 'xs' }}>
+                <ButtonGroup
+                  ariaLabel="Chat actions"
+                  items={[
+                    {
+                      type: 'icon-button',
+                      id: 'copy',
+                      iconName: 'upload',
+                      text: 'Upload files',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'expand',
+                      iconName: 'expand',
+                      text: 'Go full page',
+                    },
+                  ]}
+                  variant="icon"
+                />
+              </Box>
+            }
+            secondaryContent={
+              <FileTokenGroup
+                items={files.map(file => ({ file }))}
+                onDismiss={({ detail }) => setFiles(files => files.filter((_, index) => index !== detail.fileIndex))}
+                alignment="horizontal"
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={{
+                  removeFileAriaLabel: () => 'Remove file',
+                  limitShowFewer: 'Show fewer files',
+                  limitShowMore: 'Show more files',
+                  errorIconAriaLabel: 'Error',
+                  warningIconAriaLabel: 'Warning',
+                }}
+              />
+            }
+          />
         </SpaceBetween>
 
         <TableCardsAndTiles />
