@@ -1095,7 +1095,9 @@ export type SpacingTokenName =
   | 'spaceActionCardVerticalDefault'
   | 'spaceActionCardVerticalEmbedded'
   | 'spaceActionCardDescriptionPaddingTop'
-  | 'spaceActionCardContentPaddingTop';
+  | 'spaceActionCardContentPaddingTop'
+  | 'spaceOptionPaddingVertical'
+  | 'spaceOptionPaddingHorizontal';
 export type ShadowsTokenName =
   | 'shadowCard'
   | 'shadowItemCard'

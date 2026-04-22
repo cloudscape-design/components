@@ -2883,6 +2883,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -5903,6 +5917,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-scaled-l": {
@@ -8927,6 +8955,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -11947,6 +11989,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "4px",
             "compact": "2px",
+          },
+        },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-scaled-l": {
@@ -14971,6 +15027,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -17993,6 +18063,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -21013,6 +21097,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "4px",
         "compact": "2px",
+      },
+    },
+    "space-option-padding-horizontal": {
+      "$description": "The horizontal padding inside dropdown option items.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-option-padding-vertical": {
+      "$description": "The vertical padding inside dropdown option items.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-scaled-l": {
@@ -24042,6 +24140,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "3px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -27062,6 +27174,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "5px",
             "compact": "3px",
+          },
+        },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-scaled-l": {
@@ -30086,6 +30212,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "3px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -33106,6 +33246,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "5px",
             "compact": "3px",
+          },
+        },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-scaled-l": {
@@ -36130,6 +36284,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "3px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -39150,6 +39318,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "5px",
             "compact": "3px",
+          },
+        },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
           },
         },
         "space-scaled-l": {
@@ -42174,6 +42356,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "3px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -45196,6 +45392,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "3px",
           },
         },
+        "space-option-padding-horizontal": {
+          "$description": "The horizontal padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "space-option-padding-vertical": {
+          "$description": "The vertical padding inside dropdown option items.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "4px",
+          },
+        },
         "space-scaled-l": {
           "$description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
           "$value": {
@@ -48216,6 +48426,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "5px",
         "compact": "3px",
+      },
+    },
+    "space-option-padding-horizontal": {
+      "$description": "The horizontal padding inside dropdown option items.",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "space-option-padding-vertical": {
+      "$description": "The vertical padding inside dropdown option items.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "4px",
       },
     },
     "space-scaled-l": {

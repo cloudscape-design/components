@@ -81,6 +81,9 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
   spaceActionCardContentPaddingTop: '{spaceScaledXs}',
 
+  spaceOptionPaddingVertical: '{spaceXxs}',
+  spaceOptionPaddingHorizontal: '{spaceL}',
+
   spaceScaled2xNone: '{spaceNone}',
   spaceScaled2xXxxs: { comfortable: '{spaceXxxs}', compact: '{spaceNone}' },
   spaceScaled2xXxs: { comfortable: '{spaceXxs}', compact: '{spaceNone}' },
