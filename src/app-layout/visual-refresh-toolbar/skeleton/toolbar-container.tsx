@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutProps } from '../../../app-layout/interfaces';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 import TriggerButton from '../toolbar/trigger-button';
@@ -44,34 +45,40 @@ export function ToolbarBreadcrumbsSection({
 }
 
 interface ToolbarSkeletonStructureProps {
+  ariaLabels?: AppLayoutProps.Labels;
+  expandedDrawerId?: string | null;
+  navigation?: React.ReactNode;
+  navigationOpen?: boolean;
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
-  navigation?: React.ReactNode;
 }
 
 export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
-  ({ ownBreadcrumbs, discoveredBreadcrumbs, navigation }, ref) => (
-    <ToolbarSlot ref={ref}>
-      <ToolbarContainer>
-        {navigation && (
-          <nav className={toolbarStyles['universal-toolbar-nav']}>
-            <TriggerButton
-              iconName="menu"
-              ariaLabel="Open navigation"
-              ariaExpanded={false}
-              // No-op during SSR — real handler attached after hydration.
-              onClick={() => {}}
-              className={testutilStyles['navigation-toggle']}
-            />
-          </nav>
-        )}
-        <ToolbarBreadcrumbsSection
-          ownBreadcrumbs={ownBreadcrumbs}
-          discoveredBreadcrumbs={discoveredBreadcrumbs}
-          includeTestUtils={true}
-        />
-        <div className={toolbarStyles['universal-toolbar-drawers']} />
-      </ToolbarContainer>
-    </ToolbarSlot>
-  )
+  ({ ariaLabels, expandedDrawerId, navigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
+    const drawerExpandedMode = !!expandedDrawerId;
+    return (
+      <ToolbarSlot ref={ref}>
+        <ToolbarContainer>
+          {navigation && (
+            <nav className={toolbarStyles['universal-toolbar-nav']}>
+              <TriggerButton
+                ariaLabel={ariaLabels?.navigationToggle ?? undefined}
+                ariaExpanded={!drawerExpandedMode && navigationOpen}
+                iconName="menu"
+                className={testutilStyles['navigation-toggle']}
+                onClick={() => {}}
+                selected={!drawerExpandedMode && navigationOpen}
+              />
+            </nav>
+          )}
+          <ToolbarBreadcrumbsSection
+            ownBreadcrumbs={ownBreadcrumbs}
+            discoveredBreadcrumbs={discoveredBreadcrumbs}
+            includeTestUtils={true}
+          />
+          <div className={toolbarStyles['universal-toolbar-drawers']} />
+        </ToolbarContainer>
+      </ToolbarSlot>
+    );
+  }
 );
