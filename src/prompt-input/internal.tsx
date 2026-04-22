@@ -158,7 +158,7 @@ const InternalPromptInput = React.forwardRef(
       // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
       element.style.height = 'auto';
 
-      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceScaledXxs} * 2)`;
+      const minRowsHeight = `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
       const scrollHeight = `calc(${element.scrollHeight}px)`;
 
       if (maxRows === -1) {

@@ -19,7 +19,7 @@ $group-option-padding-with-border-placeholder-vertical: calc(
   #{$group-option-padding-vertical} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
 
-$control-padding-vertical: awsui.$space-scaled-xxs;
+$control-padding-vertical: awsui.$space-field-vertical;
 $control-padding-horizontal: awsui.$space-field-horizontal;
 $control-padding: $control-padding-vertical $control-padding-horizontal;
 
