@@ -1,0 +1,207 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useRef, useState } from 'react';
+
+import { CollectionPreferences } from '~components';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
+import Pagination, { PaginationProps } from '~components/pagination';
+import Table from '~components/table';
+
+import { generateItems, Instance } from './generate-data';
+
+const PAGE_SIZE = 10;
+const TOTAL_ITEMS = 100; // Simulated server-side total
+
+function JumpToPageOpenEndContent() {
+  const [currentPageIndex, setCurrentPageIndex] = useState(1);
+  const [loadedPages, setLoadedPages] = useState<Record<number, Instance[]>>({ 1: generateItems(10) });
+  const [jumpToPageIsLoading, setJumpToPageIsLoading] = useState(false);
+  const [maxKnownPage, setMaxKnownPage] = useState(1);
+  const [openEnd, setOpenEnd] = useState(true);
+  const jumpToPageRef = useRef<PaginationProps.Ref>(null);
+
+  const currentItems = loadedPages[currentPageIndex] || [];
+
+  const loadPage = (pageIndex: number) => {
+    return new Promise<Instance[]>((resolve, reject) => {
+      setTimeout(() => {
+        const totalPages = Math.ceil(TOTAL_ITEMS / PAGE_SIZE);
+        if (pageIndex > totalPages) {
+          reject({
+            message: `Page ${pageIndex} does not exist. Maximum page is ${totalPages}.`,
+            maxPage: totalPages,
+          });
+        } else {
+          const startIndex = (pageIndex - 1) * PAGE_SIZE;
+          resolve(generateItems(10).map((item, i) => ({ ...item, id: `${startIndex + i + 1}` })));
+        }
+      }, 500);
+    });
+  };
+
+  return (
+    <Table
+      header={
+        <div>
+          <h1>Jump to Page - Open End Pagination (100 items total, lazy loaded)</h1>
+          <p>
+            Current: Page {currentPageIndex}, Max Known: {maxKnownPage}, Mode: {openEnd ? 'Open-End' : 'Closed'}
+          </p>
+        </div>
+      }
+      columnDefinitions={[
+        { header: 'ID', cell: (item: Instance) => item.id },
+        { header: 'State', cell: (item: Instance) => item.state },
+        { header: 'Type', cell: (item: Instance) => item.type },
+        { header: 'DNS Name', cell: (item: Instance) => item.dnsName || '-' },
+      ]}
+      items={currentItems}
+      preferences={
+        <CollectionPreferences
+          title="Preferences"
+          confirmLabel="Confirm"
+          cancelLabel="Cancel"
+          preferences={{
+            pageSize: 10,
+            contentDisplay: [
+              { id: 'variable', visible: true },
+              { id: 'value', visible: true },
+              { id: 'type', visible: true },
+              { id: 'description', visible: true },
+            ],
+          }}
+          pageSizePreference={{
+            title: 'Page size',
+            options: [
+              { value: 10, label: '10 resources' },
+              { value: 20, label: '20 resources' },
+            ],
+          }}
+          wrapLinesPreference={{}}
+          stripedRowsPreference={{}}
+          contentDensityPreference={{}}
+          contentDisplayPreference={{
+            options: [
+              {
+                id: 'variable',
+                label: 'Variable name',
+                alwaysVisible: true,
+              },
+              { id: 'value', label: 'Text value' },
+              { id: 'type', label: 'Type' },
+              { id: 'description', label: 'Description' },
+            ],
+          }}
+          stickyColumnsPreference={{
+            firstColumns: {
+              title: 'Stick first column(s)',
+              description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
+              options: [
+                { label: 'None', value: 0 },
+                { label: 'First column', value: 1 },
+                { label: 'First two columns', value: 2 },
+              ],
+            },
+            lastColumns: {
+              title: 'Stick last column',
+              description: 'Keep the last column visible while horizontally scrolling the table content.',
+              options: [
+                { label: 'None', value: 0 },
+                { label: 'Last column', value: 1 },
+              ],
+            },
+          }}
+        />
+      }
+      pagination={
+        <Pagination
+          ref={jumpToPageRef}
+          currentPageIndex={currentPageIndex}
+          pagesCount={maxKnownPage}
+          openEnd={openEnd}
+          onChange={({ detail }) => {
+            const requestedPage = detail.currentPageIndex;
+            // If page already loaded, just navigate
+            if (loadedPages[requestedPage]) {
+              setCurrentPageIndex(requestedPage);
+              return;
+            }
+            // Otherwise, load the page
+            setJumpToPageIsLoading(true);
+            loadPage(requestedPage)
+              .then(items => {
+                setLoadedPages(prev => ({ ...prev, [requestedPage]: items }));
+                setCurrentPageIndex(requestedPage);
+                setMaxKnownPage(Math.max(maxKnownPage, requestedPage));
+                setJumpToPageIsLoading(false);
+              })
+              .catch((error: { message: string; maxPage?: number }) => {
+                const newMaxPage = error.maxPage || maxKnownPage;
+                setMaxKnownPage(newMaxPage);
+                setOpenEnd(false);
+                jumpToPageRef.current?.setError(true);
+                // Load all pages from current to max
+                const pagesToLoad = [];
+                for (let i = 1; i <= newMaxPage; i++) {
+                  if (!loadedPages[i]) {
+                    pagesToLoad.push(loadPage(i).then(items => ({ page: i, items })));
+                  }
+                }
+
+                Promise.all(pagesToLoad).then(results => {
+                  setLoadedPages(prev => {
+                    const updated = { ...prev };
+                    results.forEach(({ page, items }) => {
+                      updated[page] = items;
+                    });
+                    return updated;
+                  });
+                  setCurrentPageIndex(newMaxPage);
+                  setJumpToPageIsLoading(false);
+                });
+              });
+          }}
+          onNextPageClick={({ detail }) => {
+            // If page already loaded, just navigate
+            if (loadedPages[detail.requestedPageIndex]) {
+              setCurrentPageIndex(detail.requestedPageIndex);
+              return;
+            }
+            // Load the next page
+            setJumpToPageIsLoading(true);
+            loadPage(detail.requestedPageIndex)
+              .then(items => {
+                setLoadedPages(prev => ({ ...prev, [detail.requestedPageIndex]: items }));
+                setCurrentPageIndex(detail.requestedPageIndex);
+                setMaxKnownPage(Math.max(maxKnownPage, detail.requestedPageIndex));
+                setJumpToPageIsLoading(false);
+              })
+              .catch((error: { message: string; maxPage?: number }) => {
+                // Discovered the end - switch to closed pagination and stay on current page
+                if (error.maxPage) {
+                  setMaxKnownPage(error.maxPage);
+                  setOpenEnd(false);
+                }
+                // Reset to current page (undo the navigation that already happened)
+                setCurrentPageIndex(currentPageIndex);
+                jumpToPageRef.current?.setError(true);
+                setJumpToPageIsLoading(false);
+              });
+          }}
+          jumpToPage={{
+            loading: jumpToPageIsLoading,
+          }}
+        />
+      }
+    />
+  );
+}
+
+export default function JumpToPageOpenEndExample() {
+  return (
+    <I18nProvider messages={[messages]} locale="en">
+      <JumpToPageOpenEndContent />
+    </I18nProvider>
+  );
+}
