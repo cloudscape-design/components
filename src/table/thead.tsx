@@ -364,6 +364,12 @@ const Thead = React.forwardRef(
                         isLastChildOfGroup={false}
                         isRightmost={false}
                         stickyColumnId={split.side === 'first' ? childIds[0] : undefined}
+                        stickyBoundaryColumnId={
+                          split.side === 'first' ? leftChildIds[leftChildIds.length - 1] : undefined
+                        }
+                        columnGroupId={
+                          col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
+                        }
                       />
 
                       {/* Right half */}
@@ -421,6 +427,18 @@ const Thead = React.forwardRef(
                     ? childIds[childIds.length - 1]
                     : undefined;
 
+                // When the group's last child is the sticky-first boundary, the group
+                // needs the shadow from that child (but offset from the first child).
+                const isAtStickyFirstBoundary =
+                  isFullyStickyFirst && col.colIndex + col.colspan - 1 === stickyColumnsFirst - 1;
+                const isAtStickyLastBoundary =
+                  isFullyStickyLast && col.colIndex === columnDefinitions.length - stickyColumnsLast;
+                const fullyStickyBoundaryColumnId = isAtStickyFirstBoundary
+                  ? childIds[childIds.length - 1]
+                  : isAtStickyLastBoundary
+                    ? childIds[0]
+                    : undefined;
+
                 return (
                   <TableGroupHeaderCell
                     {...commonCellProps}
@@ -449,6 +467,7 @@ const Thead = React.forwardRef(
                     isLastChildOfGroup={isLastChildOfGroup}
                     isRightmost={col.colIndex + col.colspan === totalLeafColumns}
                     stickyColumnId={fullyStickyColumnId}
+                    stickyBoundaryColumnId={fullyStickyBoundaryColumnId}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
                     }

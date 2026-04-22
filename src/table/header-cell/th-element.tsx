@@ -54,6 +54,10 @@ export interface TableThElementProps {
   isLastChildOfGroup?: boolean;
   /** When true, this cell occupies the rightmost visual column position in the table. */
   isRightmost?: boolean;
+  /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
+  extraClassName?: string;
+  /** Additional ref for boundary sticky subscription (imperatively updates shadow classes). */
+  extraRef?: React.RefCallback<HTMLElement>;
 }
 
 export function TableThElement({
@@ -82,6 +86,8 @@ export function TableThElement({
   columnGroupId,
   isLastChildOfGroup,
   isRightmost,
+  extraClassName,
+  extraRef,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -93,7 +99,7 @@ export function TableThElement({
   });
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, extraRef);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
   return (
@@ -122,7 +128,8 @@ export function TableThElement({
           [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
           [styles['header-cell-rightmost']]: isRightmost,
         },
-        stickyStyles.className
+        stickyStyles.className,
+        extraClassName
       )}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
@@ -134,6 +141,7 @@ export function TableThElement({
       {...(colSpan && colSpan > 1 ? { colSpan } : {})}
       {...(rowSpan && rowSpan > 1 ? { rowSpan } : {})}
       {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
+      {...(isRightmost ? { 'data-rightmost': 'true' } : {})}
       {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
     >
       {children}

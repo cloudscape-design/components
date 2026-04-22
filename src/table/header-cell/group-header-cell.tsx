@@ -9,8 +9,9 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { StickyColumnsModel } from '../sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole } from '../table-role';
+import { getStickyClassNames } from '../utils';
 import { TableThElement } from './th-element';
 
 import styles from './styles.css.js';
@@ -45,6 +46,12 @@ export interface TableGroupHeaderCellProps {
   columnGroupId?: string;
   /** When set, the <th> uses this column ID for sticky positioning instead of groupId. */
   stickyColumnId?: PropertyKey;
+  /**
+   * When set, subscribes to this column's sticky state to inherit boundary classes
+   * (shadow) without affecting the offset. Used when the positioning column
+   * and the boundary column differ (e.g. sticky-first split groups).
+   */
+  stickyBoundaryColumnId?: PropertyKey;
   isRightmost?: boolean;
 }
 
@@ -73,11 +80,24 @@ export function TableGroupHeaderCell({
   isLastChildOfGroup,
   columnGroupId,
   stickyColumnId,
+  stickyBoundaryColumnId,
   isRightmost,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
+
+  // Subscribe to the boundary leaf's sticky state to inherit shadow/clip-path classes.
+  // The offset/position comes from stickyColumnId (first child); this only adds boundary classes.
+  const boundaryStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
+    columnId: stickyBoundaryColumnId ?? stickyColumnId ?? groupId,
+    getClassName: props => getStickyClassNames(styles, props),
+    classOnly: true,
+  });
+
+  // Extract only the shadow classes from the boundary subscription
+  const boundaryClassName = stickyBoundaryColumnId && boundaryStyles.className ? boundaryStyles.className : undefined;
 
   return (
     <TableThElement
@@ -100,6 +120,8 @@ export function TableGroupHeaderCell({
       isLastChildOfGroup={isLastChildOfGroup}
       isRightmost={isRightmost}
       columnGroupId={columnGroupId}
+      extraClassName={boundaryClassName}
+      extraRef={stickyBoundaryColumnId ? boundaryStyles.ref : undefined}
     >
       <div
         ref={clickableHeaderRef}

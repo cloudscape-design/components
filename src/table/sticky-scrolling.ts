@@ -27,7 +27,10 @@ export default function stickyScrolling(
     if (!item || !containerRef.current || !stickyRef.current) {
       return;
     }
-    const stickyBottom = getLogicalBoundingClientRect(stickyRef.current).insetBlockEnd;
+    // For grouped headers with multiple <tr> rows, stickyRef points to the first <tr>.
+    // Use the full <thead> bottom so we account for all header rows.
+    const stickyEl = stickyRef.current.closest('thead') ?? stickyRef.current;
+    const stickyBottom = getLogicalBoundingClientRect(stickyEl).insetBlockEnd;
     const scrollingOffset = stickyBottom - getLogicalBoundingClientRect(item).insetBlockStart;
     if (scrollingOffset > 0) {
       scrollUpBy(scrollingOffset, containerRef.current);
