@@ -6588,9 +6588,6 @@ When returning \`null\`, the default styling will be applied.",
       },
       "name": "renderItem",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "ButtonDropdownProps.ItemRenderer",
     },
     {
