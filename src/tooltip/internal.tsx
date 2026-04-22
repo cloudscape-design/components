@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { Portal } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
@@ -39,6 +39,7 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const triggerRef = useRef<HTMLSpanElement>(null);
+  const groupAriaDescribedbyId = useUniqueId('tooltip-content-');
   const [showTooltip, setShowTooltip] = useState(triggerVariant === 'manual');
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -87,8 +88,12 @@ export default function InternalTooltip({
       : {};
 
   const triggerAriaProps: React.HTMLAttributes<HTMLSpanElement> = {};
+  if (triggerVariant === 'visually-hidden') {
+    triggerAriaProps.role = 'group';
+  }
   if (triggerVariant === 'group') {
     triggerAriaProps.role = 'group';
+    triggerAriaProps['aria-describedby'] = groupAriaDescribedbyId;
   }
 
   const tooltipContent =
@@ -147,7 +152,12 @@ export default function InternalTooltip({
         {...triggerAriaProps}
       >
         {trigger}
-        {triggerVariant === 'group' && <ScreenreaderOnly>{content}</ScreenreaderOnly>}
+        {triggerVariant === 'visually-hidden' && <ScreenreaderOnly>{content}</ScreenreaderOnly>}
+        {triggerVariant === 'group' && (
+          <span id={groupAriaDescribedbyId} hidden={true}>
+            {content}
+          </span>
+        )}
         {isVisible && renderTooltipPopover()}
       </span>
     );

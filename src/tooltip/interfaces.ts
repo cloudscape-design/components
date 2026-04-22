@@ -53,7 +53,7 @@ export namespace TooltipProps {
   /**
    * The behavior of the tooltip trigger.
    */
-  export type TriggerVariant = 'manual' | 'truncation' | 'group' | 'announcement';
+  export type TriggerVariant = 'manual' | 'truncation' | 'group' | 'visually-hidden' | 'announcement';
 }
 
 /**

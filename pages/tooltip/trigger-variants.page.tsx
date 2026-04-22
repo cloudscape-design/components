@@ -45,27 +45,12 @@ export default function TriggerVariantsPage() {
       }
     >
       <SpaceBetween size="xl">
-        <ManualExample position={position} />
         <TruncationExample position={position} />
         <GroupExample position={position} />
+        <VisuallyHiddenExample position={position} />
         <AnnouncementExample position={position} />
       </SpaceBetween>
     </SimplePage>
-  );
-}
-
-function ManualExample({ position }: { position: TooltipProps.Position }) {
-  return (
-    <SpaceBetween size="s">
-      <Header variant="h2">manual (default)</Header>
-      <Box variant="p">Tooltip is always visible. This is the original behavior using getTrack.</Box>
-      <Tooltip
-        content="This tooltip is always visible"
-        trigger={<Box variant="span">Hover not required — always shown</Box>}
-        triggerVariant="manual"
-        position={position}
-      />
-    </SpaceBetween>
   );
 }
 
@@ -117,7 +102,7 @@ function GroupExample({ position }: { position: TooltipProps.Position }) {
   return (
     <SpaceBetween size="s">
       <Header variant="h2">group</Header>
-      <Box variant="p">Tooltip shown on hover/focus. Content is associated via aria-describedby with role=group.</Box>
+      <Box variant="p">Tooltip shown on hover/focus. Content is role=group with aria-describedby.</Box>
       <SpaceBetween direction="horizontal" size="l">
         <Tooltip
           content="Status: Healthy"
@@ -135,6 +120,35 @@ function GroupExample({ position }: { position: TooltipProps.Position }) {
           content="Last deployed 2 hours ago"
           trigger={<Box variant="span">📦 Production</Box>}
           triggerVariant="group"
+          position={position}
+        />
+      </SpaceBetween>
+    </SpaceBetween>
+  );
+}
+
+function VisuallyHiddenExample({ position }: { position: TooltipProps.Position }) {
+  return (
+    <SpaceBetween size="s">
+      <Header variant="h2">visually-hidden</Header>
+      <Box variant="p">Tooltip shown on hover/focus. Content is visually hidden screen-reader only text.</Box>
+      <SpaceBetween direction="horizontal" size="l">
+        <Tooltip
+          content="Status: Healthy"
+          trigger={<Box variant="span">🟢 Instance i-0abc123</Box>}
+          triggerVariant="visually-hidden"
+          position={position}
+        />
+        <Tooltip
+          content="3 unresolved findings"
+          trigger={<Box variant="span">⚠️ Security Hub</Box>}
+          triggerVariant="visually-hidden"
+          position={position}
+        />
+        <Tooltip
+          content="Last deployed 2 hours ago"
+          trigger={<Box variant="span">📦 Production</Box>}
+          triggerVariant="visually-hidden"
           position={position}
         />
       </SpaceBetween>
