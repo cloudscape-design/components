@@ -352,6 +352,26 @@ describe('Autosuggest renderOption', () => {
         expect(optionElement).toHaveTextContent('Test Option');
         expect(renderOption).toHaveBeenCalled();
       });
+
+      test('wraps custom content inside option element with data-value', () => {
+        const renderOption = () => <div data-testid="custom">Custom</div>;
+        const wrapper = renderAutosuggest({ options: [{ label: 'One', value: '1' }], renderOption });
+        wrapper.focus();
+
+        const option = wrapper.findDropdown().findOption(1)!.getElement();
+        expect(option).toHaveAttribute('data-value', '1');
+        expect(option.querySelector('[data-testid="custom"]')).not.toBeNull();
+      });
+
+      test('wraps default content inside option element with data-value when renderOption returns null', () => {
+        const renderOption = jest.fn(() => null);
+        const wrapper = renderAutosuggest({ options: [{ label: 'One', value: '1' }], renderOption });
+        wrapper.focus();
+
+        const option = wrapper.findDropdown().findOption(1)!.getElement();
+        expect(option).toHaveAttribute('data-value', '1');
+        expect(option).toHaveTextContent('One');
+      });
     });
   }
 });
