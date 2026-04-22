@@ -61,7 +61,6 @@ export const SkeletonLayout = ({
   } = skeletonSlotsAttributes;
 
   const isWidgetLoaded = isWidgetReady(appLayoutState);
-  const isSSR = typeof window === 'undefined';
 
   return (
     <VisualContext contextName="app-layout-toolbar">
@@ -91,9 +90,7 @@ export const SkeletonLayout = ({
             {contentHeader && <div {...contentHeaderElAttributes}>{contentHeader}</div>}
             {/*delay rendering the content until registration of this instance is complete*/}
             <div {...contentElAttributes} className={contentElAttributes?.className ?? testutilStyles.content}>
-              {registered || isSSR ? (
-                <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary>
-              ) : null}
+              {registered ? <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary> : null}
             </div>
           </div>
           <AppLayoutBottomContentSlot {...mergedProps} />
