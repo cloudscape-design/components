@@ -2806,6 +2806,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -2867,6 +2874,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -5814,6 +5828,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -5875,6 +5896,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -8822,6 +8850,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -8883,6 +8918,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -11830,6 +11872,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -11891,6 +11940,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -14838,6 +14894,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -14899,6 +14962,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -17846,6 +17916,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -17907,6 +17984,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "8px",
             "compact": "8px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "4px",
+            "compact": "2px",
           },
         },
         "space-scaled-l": {
@@ -20854,6 +20938,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
+    "size-vertical-input": {
+      "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "28px",
+      },
+    },
     "space-alert-vertical": {
       "$description": "The vertical padding inside alert components.",
       "$value": {
@@ -20915,6 +21006,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "comfortable": "8px",
         "compact": "8px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "4px",
+        "compact": "2px",
       },
     },
     "space-scaled-l": {
@@ -23867,6 +23965,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -23928,6 +24033,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -26875,6 +26987,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -26936,6 +27055,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -29883,6 +30009,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -29944,6 +30077,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -32891,6 +33031,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "28px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -32952,6 +33099,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -35899,6 +36053,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -35960,6 +36121,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -38907,6 +39075,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -38968,6 +39143,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -41915,6 +42097,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -41976,6 +42165,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -44923,6 +45119,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
+        "size-vertical-input": {
+          "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "28px",
+          },
+        },
         "space-alert-vertical": {
           "$description": "The vertical padding inside alert components.",
           "$value": {
@@ -44984,6 +45187,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "12px",
             "compact": "12px",
+          },
+        },
+        "space-field-vertical": {
+          "$description": "The vertical padding inside control components.",
+          "$value": {
+            "comfortable": "5px",
+            "compact": "3px",
           },
         },
         "space-scaled-l": {
@@ -47931,6 +48141,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
       },
     },
+    "size-vertical-input": {
+      "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "28px",
+      },
+    },
     "space-alert-vertical": {
       "$description": "The vertical padding inside alert components.",
       "$value": {
@@ -47992,6 +48209,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "12px",
         "compact": "12px",
+      },
+    },
+    "space-field-vertical": {
+      "$description": "The vertical padding inside control components.",
+      "$value": {
+        "comfortable": "5px",
+        "compact": "3px",
       },
     },
     "space-scaled-l": {
