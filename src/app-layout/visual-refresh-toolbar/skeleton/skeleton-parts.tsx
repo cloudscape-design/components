@@ -21,8 +21,11 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
         {!!toolbarProps && (
           <ToolbarSkeletonStructure
             ref={ref}
-            ownBreadcrumbs={appLayoutProps.breadcrumbs}
+            ariaLabels={toolbarProps.ariaLabels}
+            expandedDrawerId={toolbarProps.expandedDrawerId}
             navigation={appLayoutProps.navigation}
+            navigationOpen={toolbarProps.navigationOpen}
+            ownBreadcrumbs={appLayoutProps.breadcrumbs}
           />
         )}
         {toolbarProps?.navigationOpen && <div className={styles.navigation}>{appLayoutProps.navigation}</div>}
@@ -39,9 +42,12 @@ export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImp
   ({ appLayoutInternals }: AppLayoutToolbarImplementationProps, ref) => (
     <ToolbarSkeletonStructure
       ref={ref}
+      ariaLabels={appLayoutInternals.ariaLabels}
+      expandedDrawerId={appLayoutInternals.expandedDrawerId}
+      navigation={appLayoutInternals.navigation}
+      navigationOpen={appLayoutInternals.navigationOpen}
       ownBreadcrumbs={appLayoutInternals.breadcrumbs}
       discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
-      navigation={appLayoutInternals.navigation}
     />
   )
 );
