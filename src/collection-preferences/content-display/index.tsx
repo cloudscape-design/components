@@ -78,7 +78,7 @@ function HierarchicalContentDisplay({
               </div>
               {/* Recursively render children (sub-groups or leaf columns) */}
               {node.children.length > 0 && (
-                <InternalBox padding={{ left: 'l' }}>
+                <div className={styles['content-display-group-children']}>
                   <HierarchicalContentDisplay
                     tree={node.children}
                     onToggle={onToggle}
@@ -89,7 +89,7 @@ function HierarchicalContentDisplay({
                     depth={depth + 1}
                     sortDisabled={sortDisabled}
                   />
-                </InternalBox>
+                </div>
               )}
             </InternalSpaceBetween>
           </div>
