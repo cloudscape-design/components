@@ -60,18 +60,29 @@ export namespace DrawerProps {
 // Props for a future release
 export interface NextDrawerProps extends DrawerProps {
   /**
-   * Sets the `aria-label` on the drawer body (focused when the drawer opens).
+   * Sets the ARIA role of the drawer.
+   * - `"region"` (default for non-`static` positions) — exposes the drawer as a
+   * landmark region. The drawer receives focus when opened.
+   * - `"presentation"` (default for `position="static"`) — removes landmark semantics
+   * from the drawer body. Use this when the containing element already provides the
+   * appropriate semantic role (e.g. a wrapping `<nav>` or `<aside>`). The drawer does not
+   * receive focus when opened.
+   */
+  role?: 'region' | 'presentation';
+
+  /**
+   * Sets the `aria-label` on the drawer body.
    * By default the body is labelled by the drawer's `header` content. Use this when you need a different
    * or more specific label (e.g. to include additional context or exclude parts of the header).
-   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   * Does not apply when `role="presentation"`. Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabel?: string;
 
   /**
-   * Sets the `aria-labelledby` on the drawer body (focused when the drawer opens).
+   * Sets the `aria-labelledby` on the drawer body.
    * By default the body is labelled by the drawer's `header` content. Use this when you need a different
    * or more specific label (e.g. to include additional context or exclude parts of the header).
-   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   * Does not apply when `role="presentation"`. Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabelledby?: string;
 
@@ -169,16 +180,17 @@ export interface NextDrawerProps extends DrawerProps {
    * Customizes focus-related behavior:
    *
    * - `autoFocus` - Whether focus moves into the drawer when `open` changes from `false` to `true`,
-   *   and captures the previously focused element for default return-focus on close.
-   *   Defaults to `true`. Set to `false` to manage focus-in manually via `ref.current.focus()`.
+   * and captures the previously focused element for default return-focus on close.
+   * Defaults to `true`. Set to `false` to manage focus-in manually via `ref.current.focus()`.
+   * The drawer with `role="presentation"` cannot be focused.
    *
    * - `trapFocus` - Whether keyboard focus is constrained to elements inside the drawer.
-   *   Defaults to `true` when `backdrop` is set, `false` otherwise.
+   * Defaults to `true` when `backdrop` is set, `false` otherwise.
    *
    * - `returnFocus` - Called instead of the default return-focus behavior when the drawer closes.
-   *   Use this to override where focus lands on close (e.g. a specific trigger element).
-   *   If omitted, focus returns to the element that was focused when the drawer opened.
-   *   If that element is no longer in the DOM, the behavior silently no-ops.
+   * Use this to override where focus lands on close (e.g. a specific trigger element).
+   * If omitted, focus returns to the element that was focused when the drawer opened.
+   * If that element is no longer in the DOM, the behavior silently no-ops.
    */
   focusBehavior?: NextDrawerProps.FocusBehavior;
 }
@@ -212,9 +224,9 @@ export namespace NextDrawerProps {
 
   export interface Ref {
     /**
-     * Moves focus to the drawer body. Use in controlled mode when `focusBehavior.autoFocus`
+     * Moves focus to the drawer element. Use in controlled mode when `focusBehavior.autoFocus`
      * is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
-     * with `open=true`.
+     * with `open=true`. The drawer with `role="presentation"` cannot be focused.
      */
     focus(): void;
   }

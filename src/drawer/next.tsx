@@ -36,6 +36,7 @@ const Drawer = forwardRef(function Drawer(
     backdrop = false,
     onClose,
     focusBehavior,
+    role,
     ...props
   }: NextDrawerProps,
   ref: React.Ref<NextDrawerProps.Ref>
@@ -51,7 +52,7 @@ const Drawer = forwardRef(function Drawer(
   }
 
   const baseComponentProps = useBaseComponent('Drawer', {
-    props: { disableContentPaddings, loading, placement, position, zIndex, hideCloseAction, backdrop },
+    props: { disableContentPaddings, loading, placement, position, zIndex, hideCloseAction, backdrop, role },
     metadata: {
       hasHeader: !!header,
       hasHeaderActions: !!headerActions,
@@ -86,6 +87,7 @@ const Drawer = forwardRef(function Drawer(
       backdrop={backdrop}
       onClose={onClose}
       focusBehavior={focusBehavior}
+      role={role}
     />
   );
 });

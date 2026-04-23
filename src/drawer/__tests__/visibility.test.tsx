@@ -60,9 +60,9 @@ test('re-renders without open prop do not trigger focus transitions', () => {
       content
     </NextDrawer>
   );
-  const body = container.querySelector<HTMLElement>('[role="region"]')!;
+  const drawer = container.querySelector<HTMLElement>(`.${drawerStyles.drawer}`)!;
   rerender(<NextDrawer>content</NextDrawer>);
-  expect(body).not.toHaveFocus();
+  expect(drawer).not.toHaveFocus();
 });
 
 test('warns when open is provided without onClose', () => {

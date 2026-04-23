@@ -54,6 +54,7 @@ export function DrawerImplementation({
   ariaLabel,
   ariaLabelledby,
   focusBehavior,
+  role,
   ...restProps
 }: DrawerInternalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,12 +68,14 @@ export function DrawerImplementation({
   const headerId = useUniqueId('drawer-header');
   const defaultRegionLabelledBy = header ? headerId : undefined;
   ariaLabelledby = ariaLabelledby ?? (ariaLabel ? undefined : defaultRegionLabelledBy);
+  role = role ?? (position === 'static' ? 'presentation' : 'region');
+  const roleProps =
+    role === 'region'
+      ? { role: 'region', tabIndex: -1, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby }
+      : {};
   const containerProps = {
     ref: containerRef,
-    role: 'region',
-    tabIndex: -1,
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledby,
+    ...roleProps,
     style: positionStyles.style,
     className: clsx(
       styles.drawer,
@@ -142,7 +145,7 @@ export function DrawerImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, testClasses.drawer, open === false && styles.hidden)}
+      className={clsx(baseProps.className, styles.root, testClasses.root, open === false && styles.hidden)}
       ref={__internalRootRef}
     >
       {showBackdrop && (

@@ -14,6 +14,10 @@
   }
 }
 
+.root {
+  display: contents;
+}
+
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
@@ -35,6 +39,10 @@
     > .content {
       flex: 1;
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 
   @include focus-visible.when-visible {

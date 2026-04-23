@@ -46,7 +46,14 @@ export default function () {
       }
     >
       <SpaceBetween size="m">
-        <Button ref={triggerRef} onClick={() => setOpen(true)}>
+        <Button
+          ref={triggerRef}
+          onClick={() => {
+            setOpen(true);
+            // When drawer is already open when the button is pressed - move the focus inside.
+            drawerRef.current?.focus();
+          }}
+        >
           Open drawer
         </Button>
         <Drawer
