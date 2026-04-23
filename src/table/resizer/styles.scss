@@ -14,7 +14,7 @@
 }
 
 $handle-width: awsui.$space-xl;
-$active-separator-width: 2px;
+$active-separator-width: 1px;
 // $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 // Use a CSS custom property so the gap can be overridden at runtime (demo/playground for designers).
 // stylelint-disable-next-line custom-property-pattern
@@ -53,7 +53,7 @@ th:not([data-rightmost]) > .divider,
   // stylelint-disable-next-line custom-property-pattern
   margin-block-end: var(--awsui-resizer-margin-block-end, auto);
   margin-inline: auto;
-  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
 }
 
