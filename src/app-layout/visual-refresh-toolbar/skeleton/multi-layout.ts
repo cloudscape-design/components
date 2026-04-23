@@ -55,6 +55,8 @@ export function useMultiAppLayout(
   if (!isToolbar || isPublicToolbarInSSR) {
     return {
       registered: true,
+      // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
+      // in this function. For example, navigation trigger visibility
       toolbarProps: mergeProps(props, []),
     };
   }
