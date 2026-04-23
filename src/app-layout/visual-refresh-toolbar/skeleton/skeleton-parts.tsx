@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
 import { AppLayoutNotificationsImplementationProps } from '../notifications';
 import { AppLayoutToolbarImplementationProps } from '../toolbar';
@@ -28,7 +29,18 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
           />
         )}
-        {toolbarProps?.navigationOpen && <div className={styles.navigation}>{appLayoutProps.navigation}</div>}
+        {appLayoutProps.navigation && (
+          <div
+            className={clsx(
+              styles.navigation,
+              !toolbarProps?.navigationOpen && styles['panel-hidden'],
+              !!toolbarProps?.activeDrawerId && styles['unfocusable-mobile'],
+              !!toolbarProps?.expandedDrawerId && styles.hidden
+            )}
+          >
+            {appLayoutProps.navigation}
+          </div>
+        )}
       </>
     );
   }
