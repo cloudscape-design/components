@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { AppLayoutProps } from '../../../app-layout/interfaces';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
-import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 import TriggerButton from '../toolbar/trigger-button';
+import { BreadcrumbsSlot, ToolbarSlot } from './slots';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import toolbarStyles from '../toolbar/styles.css.js';
