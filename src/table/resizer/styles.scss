@@ -58,9 +58,7 @@ th:not([data-rightmost]) > .divider,
 }
 
 th:not([data-rightmost]) > .divider-disabled {
-  // Use CSS variable from .has-grouped-header when present, otherwise default low-contrast color
-  // stylelint-disable-next-line custom-property-pattern
-  border-inline-start-color: var(--awsui-table-divider-color, #{awsui.$color-border-divider-default});
+  border-inline-start-color: awsui.$color-border-divider-interactive-default;
 }
 
 .divider-interactive {

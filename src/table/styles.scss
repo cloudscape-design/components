@@ -64,10 +64,6 @@
 
 // When grouped headers are present, set a CSS variable that child components
 // use to override divider color for 3:1 contrast ratio.
-.has-grouped-header {
-  // stylelint-disable-next-line custom-property-pattern
-  --awsui-table-divider-color: #{awsui.$color-border-divider-interactive-default};
-}
 
 .wrapper {
   position: relative;
