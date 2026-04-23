@@ -162,6 +162,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
   },
+  colorBackgroundLayoutToolbar: {
+    description:
+      "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
+    public: true,
+    themeable: true,
+  },
   colorBackgroundLayoutToggleActive: {
     description: "The background color of the app layout toggle button when it's active.",
     public: true,
@@ -388,8 +394,23 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBorderButtonPrimaryActive: {
+    description: 'The border color of primary buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryDefault: {
+    description: 'The border color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonPrimaryDisabled: {
     description: 'The border color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryHover: {
+    description: 'The border color of primary buttons in hover state.',
     themeable: true,
     public: true,
   },
