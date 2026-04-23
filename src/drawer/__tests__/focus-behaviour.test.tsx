@@ -93,6 +93,20 @@ test('autoFocus moves focus into drawer when open changes to true', () => {
   expect(getSemanticDrawer(container)).toHaveFocus();
 });
 
+test('autoFocus focuses first interactive element when drawer is not semantic', () => {
+  const { container, rerender } = render(
+    <NextDrawer role="presentation" open={false} onClose={jest.fn()}>
+      <button>action</button>
+    </NextDrawer>
+  );
+  rerender(
+    <NextDrawer role="presentation" open={true} onClose={jest.fn()}>
+      <button>action</button>
+    </NextDrawer>
+  );
+  expect(container.querySelector('button')).toHaveFocus();
+});
+
 test('autoFocus does not move focus on initial render with open=true', () => {
   const { container } = render(
     <NextDrawer open={true} onClose={jest.fn()}>

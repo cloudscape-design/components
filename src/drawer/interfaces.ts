@@ -182,7 +182,6 @@ export interface NextDrawerProps extends DrawerProps {
    * - `autoFocus` - Whether focus moves into the drawer when `open` changes from `false` to `true`,
    * and captures the previously focused element for default return-focus on close.
    * Defaults to `true`. Set to `false` to manage focus-in manually via `ref.current.focus()`.
-   * The drawer with `role="presentation"` cannot be focused.
    *
    * - `trapFocus` - Whether keyboard focus is constrained to elements inside the drawer.
    * Defaults to `true` when `backdrop` is set, `false` otherwise.

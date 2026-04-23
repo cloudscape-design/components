@@ -13,6 +13,7 @@ import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
+import { getAllFocusables, isFocusable } from '../internal/components/focus-lock/utils';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
@@ -86,7 +87,16 @@ export function DrawerImplementation({
     ),
   };
 
-  const returnFocusFromDrawer = useStableCallback(() => {
+  const focusIn = useStableCallback(() => {
+    returnFocusTargetRef.current = document.activeElement as HTMLElement;
+    if (containerRef.current && isFocusable(containerRef.current)) {
+      containerRef.current.focus();
+    } else if (containerRef.current) {
+      getAllFocusables(containerRef.current)[0]?.focus();
+    }
+  });
+
+  const focusOut = useStableCallback(() => {
     if (focusBehavior?.returnFocus) {
       focusBehavior.returnFocus();
     } else if (returnFocusTargetRef.current && returnFocusTargetRef.current.isConnected) {
@@ -105,13 +115,12 @@ export function DrawerImplementation({
       return;
     }
     if (open && autoFocusRef.current) {
-      returnFocusTargetRef.current = document.activeElement as HTMLElement;
-      containerRef.current?.focus();
+      focusIn();
     }
     if (!open) {
-      returnFocusFromDrawer();
+      focusOut();
     }
-  }, [open, returnFocusFromDrawer]);
+  }, [open, focusIn, focusOut]);
 
   const handleClose = useStableCallback((method: 'close-action' | 'backdrop-click' | 'escape') =>
     fireNonCancelableEvent(onClose, { method })
