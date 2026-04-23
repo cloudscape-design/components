@@ -83,10 +83,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       );
       // cannot use wrapper.findNavigation() because our public test utils resolve to nothing in skeleton state
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
       rerender(<AppLayout navigation="test nav" navigationOpen={false} onNavigationChange={noop} />);
-      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeFalsy();
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeTruthy();
       rerender(<AppLayout navigation="test nav" navigationOpen={true} onNavigationChange={noop} />);
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
     });
 
     it('toolbar can render conditionally', () => {
