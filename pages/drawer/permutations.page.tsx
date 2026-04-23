@@ -49,12 +49,12 @@ export default function () {
     <SimplePage title="Drawer permutations" screenshotArea={{ disableAnimations: true }}>
       <PermutationsView
         permutations={permutations}
-        render={(permutation, i) => (
+        render={permutation => (
           <>
             {!permutation.header && !permutation.children && !permutation.loading && <p>(empty permutation)</p>}
             {/* add visible border to capture component paddings */}
             <div style={{ border: '1px solid red' }}>
-              <Drawer {...permutation} ariaLabel={`Permutation ${i}`} />
+              <Drawer {...permutation} />
             </div>
           </>
         )}
