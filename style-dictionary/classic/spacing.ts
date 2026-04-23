@@ -61,6 +61,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
   spaceTableHorizontal: '0px',
+  spaceTokenVertical: '{spaceScaledXxs}',
   spaceActionCardHorizontalDefault: '{spaceCardHorizontalDefault}',
   spaceActionCardHorizontalEmbedded: '{spaceCardHorizontalEmbedded}',
   spaceActionCardVerticalDefault: '{spaceCardVerticalDefault}',
