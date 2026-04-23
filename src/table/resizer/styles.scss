@@ -14,7 +14,10 @@
 }
 
 $handle-width: awsui.$space-xl;
-$active-separator-width: 2px;
+$active-separator-width: 1px;
+// $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+// Use a CSS custom property so the gap can be overridden at runtime (demo/playground for designers).
+// stylelint-disable-next-line custom-property-pattern
 $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
 .resizer-wrapper {
@@ -25,7 +28,7 @@ $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
   overflow: hidden;
   z-index: 10;
 
-  th:last-child > &:has(.divider-interactive).is-borderless {
+  th[data-rightmost] > &:has(.divider-interactive).is-borderless {
     inset-inline-end: 0;
   }
 }
@@ -34,7 +37,7 @@ $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
   block-size: 100%;
 }
 
-th:not(:last-child) > .divider,
+th:not([data-rightmost]) > .divider,
 .divider-interactive {
   position: absolute;
   outline: none;
@@ -43,15 +46,19 @@ th:not(:last-child) > .divider,
   inset-block-end: 0;
   inset-block-start: 0;
   min-block-size: awsui.$line-height-heading-xs;
-  max-block-size: calc(100% - #{$block-gap});
-  margin-block: auto;
+  // stylelint-disable-next-line custom-property-pattern
+  max-block-size: var(--awsui-resizer-max-block-size, calc(100% - #{$block-gap}));
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-start: var(--awsui-resizer-margin-block-start, auto);
+  // stylelint-disable-next-line custom-property-pattern
+  margin-block-end: var(--awsui-resizer-margin-block-end, auto);
   margin-inline: auto;
-  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
 }
 
-th:not(:last-child) > .divider-disabled {
-  border-inline-start-color: awsui.$color-border-divider-default;
+th:not([data-rightmost]) > .divider-disabled {
+  border-inline-start-color: awsui.$color-border-divider-interactive-default;
 }
 
 .divider-interactive {
@@ -59,7 +66,7 @@ th:not(:last-child) > .divider-disabled {
 }
 
 // stylelint-disable-next-line selector-combinator-disallowed-list
-th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
+th[data-rightmost] > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
   inset-inline-end: 0;
 }
 

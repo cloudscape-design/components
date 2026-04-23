@@ -109,6 +109,9 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `title` (string) - Specifies the text displayed at the top of the preference.
    * - `description` (string) - Specifies the description displayed below the title.
    * - `options` - Specifies an array of options for reordering and visible content selection.
+   * - `groups` - (Optional) Specifies an array of column group definitions for multi-level content display. Each group contains:
+   *   - `id` (string) - A unique identifier for the group.
+   *   - `label` (string) - The text displayed as the group label.
    * - `enableColumnFiltering` (boolean) - Adds a columns filter.
    * - `liveAnnouncementDndStarted` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
    * - `liveAnnouncementDndDiscarded` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
@@ -123,6 +126,16 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `alwaysVisible` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to `false` by default.
    *
    * You must provide an ordered list of the items to display in the `preferences.contentDisplay` property.
+   * Each content display item is one of the following:
+   * - `ContentDisplayColumn` - Represents a single column.
+   *   - `type` ('column') - (Optional) Identifies the entry as a column. Defaults to `'column'` when omitted.
+   *   - `id` (string) - The column identifier.
+   *   - `visible` (boolean) - Whether the column is visible.
+   * - `ContentDisplayGroup` - Represents a column group.
+   *   - `type` ('group') - Identifies the entry as a group.
+   *   - `id` (string) - The group identifier.
+   *   - `visible` (boolean) - Whether the group is visible.
+   *   - `children` (ReadonlyArray<ContentDisplayItem>) - The columns or nested groups within this group.
    * @i18n
    */
   contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
@@ -229,9 +242,25 @@ export namespace CollectionPreferencesProps {
     title?: string;
     description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+    groups?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
+
+  export interface ContentDisplayColumn {
+    type?: 'column';
+    id: string;
+    visible: boolean;
+  }
+
+  export interface ContentDisplayGroup {
+    type: 'group';
+    id: string;
+    visible: boolean;
+    children: ReadonlyArray<ContentDisplayItem>;
+  }
+
+  export type ContentDisplayItem = ContentDisplayColumn | ContentDisplayGroup;
 
   export interface ContentDisplayOption {
     id: string;
@@ -239,9 +268,9 @@ export namespace CollectionPreferencesProps {
     alwaysVisible?: boolean;
   }
 
-  export interface ContentDisplayItem {
+  export interface ContentDisplayOptionGroup {
     id: string;
-    visible: boolean;
+    label: string;
   }
 
   export interface VisibleContentPreference {

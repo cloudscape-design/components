@@ -139,6 +139,8 @@ interface UseStickyCellStylesProps {
   stickyColumns: StickyColumnsModel;
   columnId: PropertyKey;
   getClassName: (styles: null | StickyColumnsCellState) => Record<string, boolean>;
+  /** When true, only apply class updates — skip offset (insetInlineStart/End) writes. */
+  classOnly?: boolean;
 }
 
 interface StickyCellStyles {
@@ -151,6 +153,7 @@ export function useStickyCellStyles({
   stickyColumns,
   columnId,
   getClassName,
+  classOnly,
 }: UseStickyCellStylesProps): StickyCellStyles {
   const setCell = stickyColumns.refs.cell;
 
@@ -166,7 +169,9 @@ export function useStickyCellStyles({
       }
 
       // Update cellRef and the store's state to point to the new DOM node
-      setCell(columnId, cellElement);
+      if (!classOnly) {
+        setCell(columnId, cellElement);
+      }
 
       // Update cell styles imperatively to avoid unnecessary re-renders.
       const selector = (state: StickyColumnsState) => state.cellState.get(columnId) ?? null;
@@ -185,10 +190,12 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
-          cellElement.style.insetInlineStart =
-            state?.offset.insetInlineStart !== undefined ? `${state.offset.insetInlineStart}px` : '';
-          cellElement.style.insetInlineEnd =
-            state?.offset.insetInlineEnd !== undefined ? `${state.offset.insetInlineEnd}px` : '';
+          if (!classOnly) {
+            cellElement.style.insetInlineStart =
+              state?.offset.insetInlineStart !== undefined ? `${state.offset.insetInlineStart}px` : '';
+            cellElement.style.insetInlineEnd =
+              state?.offset.insetInlineEnd !== undefined ? `${state.offset.insetInlineEnd}px` : '';
+          }
         }
       };
 

@@ -32,3 +32,9 @@
   padding-block: 0;
   padding-inline: 0;
 }
+
+// 28px text-to-text indentation between group header and child items.
+// The drag handle (~20px) is rendered before the content, so we subtract it.
+.content-display-group-children {
+  padding-inline-start: calc(28px - #{awsui.$size-icon-normal} - 2 * #{awsui.$space-scaled-xxxs});
+}

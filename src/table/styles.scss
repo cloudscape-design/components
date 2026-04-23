@@ -24,9 +24,11 @@
 
   &-filtering {
     max-inline-size: 100%;
+
     @supports (flex-basis: fit-content) {
       flex: 1 1 fit-content;
     }
+
     @supports not (flex-basis: fit-content) {
       flex: 1 1 auto;
     }
@@ -54,10 +56,14 @@
   border-spacing: 0;
   position: relative;
   box-sizing: border-box;
+
   &-layout-fixed {
     table-layout: fixed;
   }
 }
+
+// When grouped headers are present, set a CSS variable that child components
+// use to override divider color for 3:1 contrast ratio.
 
 .wrapper {
   position: relative;
@@ -65,7 +71,9 @@
   inline-size: 100%;
   overflow-x: auto;
 
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
+  scrollbar-width: none;
+
+  /* Hide scrollbar in Firefox */
   &.variant-stacked,
   &.variant-container {
     & > .table,
@@ -73,16 +81,20 @@
       padding-inline: awsui.$space-table-horizontal;
     }
   }
+
   &.variant-stacked:not(.has-footer),
   &.variant-container:not(.has-footer) {
     padding-block-end: awsui.$space-table-content-bottom;
   }
+
   &:not(.has-header) {
     border-start-end-radius: awsui.$border-radius-container;
     border-start-start-radius: awsui.$border-radius-container;
   }
+
   &::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in Safari and Chrome */
+    display: none;
+    /* Hide scrollbar in Safari and Chrome */
   }
 
   @include focus-visible.when-visible {
@@ -94,6 +106,7 @@
   text-align: center;
   padding-block: 0;
   padding-inline: 0;
+
   &.has-footer {
     /*
     Add a bottom border to the body cell of an empty table as a separator between the
@@ -101,12 +114,14 @@
     */
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
+
   &-content {
     box-sizing: border-box;
     inline-size: 100%;
     padding-block-start: awsui.$space-scaled-m;
     padding-block-end: awsui.$space-scaled-l;
     padding-inline: awsui.$space-l;
+
     @supports (position: sticky) {
       position: sticky;
       inset-inline-start: 0;
@@ -142,11 +157,21 @@ filter search icon.
     padding-inline: awsui.$space-scaled-l;
     border-inline-start: awsui.$border-width-item-selected solid transparent;
   }
+
+  // When the selection cell spans multiple header rows, use flex to push the
+  // checkbox to the bottom of the cell, matching bottom-aligned leaf column headers.
+  &-content-spans-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    block-size: 100%;
+  }
 }
 
 .header-secondary {
   overflow: auto;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  /* Firefox */
   box-sizing: border-box;
   inline-size: 100%;
   border-start-start-radius: 0;
@@ -154,9 +179,11 @@ filter search icon.
   border-end-start-radius: 0;
   border-end-end-radius: 0;
   background: awsui.$color-background-table-header;
+
   &.variant-full-page {
     background: awsui.$color-background-layout-main;
   }
+
   &.variant-stacked,
   &.variant-container {
     & > .table {
@@ -168,9 +195,12 @@ filter search icon.
       border-start-end-radius: awsui.$border-radius-container;
     }
   }
+
   &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+    display: none;
+    /* Safari and Chrome */
   }
+
   &.table-has-header {
     border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
   }
@@ -182,10 +212,12 @@ filter search icon.
   &.variant-full-page {
     padding-block: 0 calc(#{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom});
   }
+
   &.variant-stacked,
   &.variant-container {
     padding-inline: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
   }
+
   &.variant-embedded,
   &.variant-borderless {
     padding-inline: awsui.$space-table-header-horizontal;
@@ -212,6 +244,7 @@ filter search icon.
     flex-wrap: wrap;
     gap: awsui.$space-scaled-s;
   }
+
   &-pagination {
     // Align the footer pagination on the right
     margin-inline-start: auto;
