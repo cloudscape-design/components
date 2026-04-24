@@ -56,6 +56,8 @@ interface ToolbarSkeletonStructureProps {
 export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
   ({ ariaLabels, expandedDrawerId, hasNavigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
     const drawerExpandedMode = !!expandedDrawerId;
+    // istanbul ignore next: not interactive during SSR
+    const noop = () => {};
     return (
       <ToolbarSlot ref={ref}>
         <ToolbarContainer>
@@ -66,7 +68,7 @@ export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSke
                 ariaExpanded={!drawerExpandedMode && navigationOpen}
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
-                onClick={() => {}}
+                onClick={noop}
                 selected={!drawerExpandedMode && navigationOpen}
               />
             </nav>
