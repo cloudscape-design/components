@@ -9,6 +9,8 @@ import { getBaseProps } from '../internal/base-component';
 import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { usePortalContainer } from '../internal/hooks/use-portal-container';
+import { getOwnerWindow } from '../internal/utils/dom';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
@@ -42,9 +44,12 @@ export default function InternalTooltip({
     trackRef.current = element;
   }, [getTrack]);
 
+  const portalContainer = usePortalContainer(getTrack);
+
   useEffect(() => {
+    const targetWindow = getOwnerWindow(getTrack());
     const controller = new AbortController();
-    window.addEventListener(
+    targetWindow.addEventListener(
       'keydown',
       (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -64,10 +69,10 @@ export default function InternalTooltip({
     return () => {
       controller.abort();
     };
-  }, [onEscape]);
+  }, [getTrack, onEscape]);
 
   return (
-    <Portal>
+    <Portal container={portalContainer}>
       <div
         {...baseProps}
         className={clsx(testUtilStyles.root, baseProps.className)}
