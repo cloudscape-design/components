@@ -47,19 +47,19 @@ export function ToolbarBreadcrumbsSection({
 interface ToolbarSkeletonStructureProps {
   ariaLabels?: AppLayoutProps.Labels;
   expandedDrawerId?: string | null;
-  navigation?: React.ReactNode;
+  hasNavigation?: boolean;
   navigationOpen?: boolean;
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
 }
 
 export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
-  ({ ariaLabels, expandedDrawerId, navigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
+  ({ ariaLabels, expandedDrawerId, hasNavigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
     const drawerExpandedMode = !!expandedDrawerId;
     return (
       <ToolbarSlot ref={ref}>
         <ToolbarContainer>
-          {navigation && (
+          {hasNavigation && (
             <nav className={toolbarStyles['universal-toolbar-nav']}>
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle ?? undefined}
