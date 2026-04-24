@@ -10,7 +10,6 @@ import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { usePortalContainer } from '../internal/hooks/use-portal-container';
-import { getOwnerWindow } from '../internal/utils/dom';
 import PopoverArrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
@@ -37,8 +36,6 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
-  const getTrackRef = React.useRef(getTrack);
-  getTrackRef.current = getTrack;
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -49,9 +46,8 @@ export default function InternalTooltip({
   const portalContainer = usePortalContainer(getTrack);
 
   useEffect(() => {
-    const targetWindow = getOwnerWindow(getTrackRef.current());
     const controller = new AbortController();
-    targetWindow.addEventListener(
+    window.addEventListener(
       'keydown',
       (event: KeyboardEvent) => {
         if (event.key === 'Escape') {

@@ -47,7 +47,7 @@ describe('Button disabled reason in iframe', () => {
       await page.hoverElement(buttonSelector);
       await page.waitForVisible(tooltipSelector);
       await page.keys(['Escape']);
-      await page.waitForAssertion(async () => expect(await page.isDisplayed(tooltipSelector)).toBe(false));
+      await page.waitForAssertion(async () => expect(await page.isExisting(tooltipSelector)).toBe(false));
     })
   );
 });
