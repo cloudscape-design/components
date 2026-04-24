@@ -26,6 +26,7 @@ function getComponentsExports() {
     './internal/plugins/widget': './internal/plugins/widget.js',
     // Public plugin api
     './plugins': './plugins/index.js',
+    './themes/pink': './themes/pink.css',
     // Public internal components
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './internal/do-not-use/chart-filter': './internal/do-not-use/chart-filter.js',
