@@ -241,9 +241,11 @@ test(
     await page.runInsideIframe('#inner-iframe', true, async () => {
       await page.waitForVisible(tableWrapper.toSelector());
       // Click on the disabled-edit "Type (disabled edit)" column in the first row
-      // It's the last column (index 6: id, type, dnsName, imageId, state, type-edit)
-      await page.click(tableWrapper.findBodyCell(1, 6).toSelector());
-      await expect(page.getText(liveRegion$)).resolves.toContain('Editing is disabled in iframe test');
+      // Column index 7: 1=checkbox, 2=id, 3=type, 4=dnsName, 5=imageId, 6=state, 7=type-edit
+      await page.click(tableWrapper.findBodyCell(1, 7).toSelector());
+      await page.waitForAssertion(() =>
+        expect(page.getText(liveRegion$)).resolves.toContain('Editing is disabled in iframe test')
+      );
     });
   })
 );

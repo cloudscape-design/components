@@ -37,6 +37,8 @@ export default function InternalTooltip({
 }: InternalTooltipComponentProps) {
   const baseProps = getBaseProps(restProps);
   const trackRef = React.useRef<HTMLElement | SVGElement | null>(null);
+  const getTrackRef = React.useRef(getTrack);
+  getTrackRef.current = getTrack;
 
   // Update the ref with the current tracked element
   React.useEffect(() => {
@@ -47,7 +49,7 @@ export default function InternalTooltip({
   const portalContainer = usePortalContainer(getTrack);
 
   useEffect(() => {
-    const targetWindow = getOwnerWindow(getTrack());
+    const targetWindow = getOwnerWindow(getTrackRef.current());
     const controller = new AbortController();
     targetWindow.addEventListener(
       'keydown',
@@ -69,7 +71,7 @@ export default function InternalTooltip({
     return () => {
       controller.abort();
     };
-  }, [getTrack, onEscape]);
+  }, [onEscape]);
 
   return (
     <Portal container={portalContainer}>
