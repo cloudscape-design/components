@@ -24,12 +24,12 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
             ref={ref}
             ariaLabels={toolbarProps.ariaLabels}
             expandedDrawerId={toolbarProps.expandedDrawerId}
-            navigation={appLayoutProps.navigation}
+            hasNavigation={toolbarProps.hasNavigation}
             navigationOpen={toolbarProps.navigationOpen}
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
           />
         )}
-        {appLayoutProps.navigation && (
+        {toolbarProps?.hasNavigation && (
           <div
             className={clsx(
               styles.navigation,
@@ -56,7 +56,6 @@ export const ToolbarSkeleton = React.forwardRef<HTMLElement, AppLayoutToolbarImp
       ref={ref}
       ariaLabels={appLayoutInternals.ariaLabels}
       expandedDrawerId={appLayoutInternals.expandedDrawerId}
-      navigation={appLayoutInternals.navigation}
       navigationOpen={appLayoutInternals.navigationOpen}
       ownBreadcrumbs={appLayoutInternals.breadcrumbs}
       discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
