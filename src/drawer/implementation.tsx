@@ -164,7 +164,7 @@ export function DrawerImplementation({
           onClick={() => handleClose('backdrop-click')}
         />
       )}
-      <FocusLock disabled={!trapFocus}>
+      <FocusLock disabled={!trapFocus} className={styles['focus-trap']}>
         <div {...containerProps}>
           {loading ? (
             <InternalStatusIndicator type="loading">

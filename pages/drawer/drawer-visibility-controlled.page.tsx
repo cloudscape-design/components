@@ -52,6 +52,11 @@ export default function () {
           open={isOpen}
           onClose={() => setOpen(false)}
           header={<Header variant="h3">Header</Header>}
+          footer={
+            <div style={{ float: 'inline-end' }}>
+              <Button onClick={() => setOpen(false)}>Close</Button>
+            </div>
+          }
         >
           <div style={{ width: 300 }}>Content</div>
         </Drawer>
