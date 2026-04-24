@@ -3,7 +3,9 @@
 
 import React from 'react';
 
+import { ButtonProps } from '../button/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface DrawerProps extends BaseComponentProps {
   /**
@@ -58,6 +60,33 @@ export namespace DrawerProps {
 // Props for a future release
 export interface NextDrawerProps extends DrawerProps {
   /**
+   * Sets the ARIA role of the drawer.
+   * - `"region"` (default for non-`static` positions) — exposes the drawer as a
+   * landmark region. The drawer receives focus when opened.
+   * - `"presentation"` (default for `position="static"`) — removes landmark semantics
+   * from the drawer body. Use this when the containing element already provides the
+   * appropriate semantic role (e.g. a wrapping `<nav>` or `<aside>`). The drawer does not
+   * receive focus when opened.
+   */
+  role?: 'region' | 'presentation';
+
+  /**
+   * Sets the `aria-label` on the drawer body.
+   * By default the body is labelled by the drawer's `header` content. Use this when you need a different
+   * or more specific label (e.g. to include additional context or exclude parts of the header).
+   * Does not apply when `role="presentation"`. Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Sets the `aria-labelledby` on the drawer body.
+   * By default the body is labelled by the drawer's `header` content. Use this when you need a different
+   * or more specific label (e.g. to include additional context or exclude parts of the header).
+   * Does not apply when `role="presentation"`. Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabelledby?: string;
+
+  /**
    * Specifies the CSS positioning mode of the drawer, and supports the following options:
    * * `static` (default) - The drawer is positioned in the normal document flow.
    * * `sticky` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with `placement="top"` or `placement="bottom"`.
@@ -103,6 +132,66 @@ export interface NextDrawerProps extends DrawerProps {
    * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`.
    */
   zIndex?: number;
+
+  /**
+   * Renders a close button in the header with the provided configuration.
+   * The close button fires the `onClose` event with method `'close-action'` when
+   * clicked.
+   */
+  closeAction?: Pick<
+    ButtonProps,
+    'ariaLabel' | 'disabled' | 'disabledReason' | 'iconName' | 'iconSvg' | 'iconUrl' | 'iconAlt'
+  >;
+
+  /**
+   * Hides the close action slot next to the header actions, which is present even
+   * when close action is not set. Use it when a close action is not needed, or a
+   * custom close action implementation is used.
+   */
+  hideCloseAction?: boolean;
+
+  /**
+   * Called when the user performs a close action. The `event.detail.method` indicates the trigger:
+   * * `'close-action'` - The close button was clicked.
+   * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
+   * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
+   */
+  onClose?: NonCancelableEventHandler<NextDrawerProps.CloseDetail>;
+
+  /**
+   * Drawer open state. Set to `true` to show the drawer, `false` to hide it.
+   * Handle the `onClose` event to update this value when the user requests to close the drawer.
+   *
+   * When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
+   */
+  open?: boolean;
+
+  /**
+   * Shows a semi-transparent backdrop behind the drawer when open. Used with `absolute`
+   * and `fixed` positions.
+   *
+   * When a backdrop is set, the keyboard focus is trapped inside the drawer by default
+   * to prevent it from moving to elements covered by the backdrop. This can be overridden
+   * with `focusBehavior.trapFocus`.
+   */
+  backdrop?: boolean;
+
+  /**
+   * Customizes focus-related behavior:
+   *
+   * - `autoFocus` - Whether focus moves into the drawer when `open` changes from `false` to `true`,
+   * and captures the previously focused element for default return-focus on close.
+   * Defaults to `true`. Set to `false` to manage focus-in manually via `ref.current.focus()`.
+   *
+   * - `trapFocus` - Whether keyboard focus is constrained to elements inside the drawer.
+   * Defaults to `true` when `backdrop` is set, `false` otherwise.
+   *
+   * - `returnFocus` - Called instead of the default return-focus behavior when the drawer closes.
+   * Use this to override where focus lands on close (e.g. a specific trigger element).
+   * If omitted, focus returns to the element that was focused when the drawer opened.
+   * If that element is no longer in the DOM, the behavior silently no-ops.
+   */
+  focusBehavior?: NextDrawerProps.FocusBehavior;
 }
 
 export namespace NextDrawerProps {
@@ -120,5 +209,24 @@ export namespace NextDrawerProps {
   export interface StickyOffset {
     top?: number;
     bottom?: number;
+  }
+
+  export interface CloseDetail {
+    method: 'close-action' | 'backdrop-click' | 'escape';
+  }
+
+  export interface FocusBehavior {
+    autoFocus?: boolean;
+    trapFocus?: boolean;
+    returnFocus?: () => void;
+  }
+
+  export interface Ref {
+    /**
+     * Moves focus to the drawer element. Use in controlled mode when `focusBehavior.autoFocus`
+     * is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
+     * with `open=true`. The drawer with `role="presentation"` cannot be focused.
+     */
+    focus(): void;
   }
 }

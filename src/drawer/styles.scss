@@ -6,11 +6,16 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../app-layout/constants.scss' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin desktop-only {
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     @content;
   }
+}
+
+.root {
+  display: contents;
 }
 
 .drawer {
@@ -35,6 +40,14 @@
       flex: 1;
     }
   }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight($gutter: -2px);
+  }
 }
 
 .header {
@@ -43,9 +56,18 @@
   justify-content: space-between;
   color: awsui.$color-text-heading-default;
   padding-block: awsui.$space-panel-header-vertical;
-  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
   // padding to make sure the header doesn't overlap with the close icon
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+
+  // the space on the right is reserved for absolute-positioned close action
+  padding-inline: awsui.$space-panel-side-left calc(#{awsui.$space-l} + #{awsui.$space-scaled-xxl});
+
+  &.has-close-action {
+    position: relative;
+  }
+  &.hide-close-action {
+    padding-inline: awsui.$space-panel-side-left awsui.$space-panel-side-right;
+  }
 
   @include desktop-only {
     &.with-additional-action {
@@ -85,6 +107,11 @@
   z-index: 1;
 }
 
+.close-action {
+  position: absolute;
+  inset-inline-end: awsui.$space-scaled-l;
+}
+
 .content-with-paddings:not(:empty) {
   padding-block-start: awsui.$space-panel-content-top;
   padding-inline-start: awsui.$space-panel-side-left;
@@ -109,4 +136,25 @@
 
 .test-utils-drawer-content {
   /* used in test-utils */
+}
+
+.hidden {
+  display: none;
+}
+
+.focus-trap {
+  display: contents;
+}
+
+.backdrop {
+  inset: 0;
+  background-color: awsui.$color-background-drawer-backdrop;
+
+  &.backdrop-fixed {
+    position: fixed;
+  }
+
+  &.backdrop-absolute {
+    position: absolute;
+  }
 }

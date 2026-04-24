@@ -11,13 +11,10 @@ import { colorBackgroundCellShaded as contentBackgroundColor } from '~design-tok
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-const accentColor = '#6237a7';
-const overlayFontColor = '#ffffff';
-
 type PageContext = React.Context<
   AppContextType<{
     offsets?: boolean;
-    customOverlay?: boolean;
+    backdrop?: boolean;
     placement?: DrawerProps.Placement;
   }>
 >;
@@ -26,7 +23,7 @@ const placementOptions = [{ value: 'top' }, { value: 'bottom' }, { value: 'start
 
 export default function () {
   const {
-    urlParams: { offsets = false, customOverlay = false, placement = 'bottom' },
+    urlParams: { offsets = false, backdrop = false, placement = 'bottom' },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const offset = offsets ? { start: 50, end: 50, top: 50, bottom: 50 } : {};
@@ -43,14 +40,12 @@ export default function () {
         ))}
       </div>
 
-      {customOverlay && <CustomOverlay>Custom fixed overlay</CustomOverlay>}
-
-      <FixedDrawer placement={placement} disableContentPaddings={true} offset={offset}>
+      <FixedDrawer placement={placement} disableContentPaddings={true} offset={offset} backdrop={backdrop}>
         <Checkbox checked={offsets} onChange={({ detail }) => setUrlParams({ offsets: detail.checked })}>
           Use offsets
         </Checkbox>
-        <Checkbox checked={customOverlay} onChange={({ detail }) => setUrlParams({ customOverlay: detail.checked })}>
-          Show custom overlay
+        <Checkbox checked={backdrop} onChange={({ detail }) => setUrlParams({ backdrop: detail.checked })}>
+          Show backdrop
         </Checkbox>
         <Select
           inlineLabelText="Placement"
@@ -63,10 +58,17 @@ export default function () {
   );
 }
 
-function FixedDrawer({ placement, offset, zIndex, children }: DrawerProps) {
+function FixedDrawer({ placement, offset, zIndex, backdrop, children }: DrawerProps) {
   const formatOffset = (offset?: DrawerProps.Offset) => JSON.stringify(offset, null, 2).replace(/"/g, '');
   return (
-    <Drawer position="fixed" placement={placement} disableContentPaddings={true} offset={offset} zIndex={zIndex}>
+    <Drawer
+      position="fixed"
+      placement={placement}
+      disableContentPaddings={true}
+      offset={offset}
+      zIndex={zIndex}
+      backdrop={backdrop}
+    >
       <div
         style={{ boxSizing: 'border-box', padding: 16, width: 300, height: 300, background: contentBackgroundColor }}
       >
@@ -78,24 +80,5 @@ function FixedDrawer({ placement, offset, zIndex, children }: DrawerProps) {
         </SpaceBetween>
       </div>
     </Drawer>
-  );
-}
-
-function CustomOverlay({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: accentColor,
-        color: overlayFontColor,
-        opacity: 0.85,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      {children}
-    </div>
   );
 }

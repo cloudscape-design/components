@@ -1,14 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useRef } from 'react';
+
+import React, { RefObject, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
+
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import InternalButton from '../button/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import FocusLock from '../internal/components/focus-lock';
+import { getAllFocusables, isFocusable } from '../internal/components/focus-lock/utils';
+import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -17,8 +25,12 @@ import { useStickyFooter } from './use-sticky-footer';
 import { getPositionStyles } from './utils';
 
 import styles from './styles.css.js';
+import testClasses from './test-classes/styles.css.js';
 
-type DrawerInternalProps = NextDrawerProps & InternalBaseComponentProps;
+type DrawerInternalProps = NextDrawerProps &
+  InternalBaseComponentProps & {
+    __ref?: React.Ref<NextDrawerProps.Ref>;
+  };
 
 export function DrawerImplementation({
   header,
@@ -28,30 +40,93 @@ export function DrawerImplementation({
   i18nStrings,
   disableContentPaddings,
   __internalRootRef,
+  __ref,
   headerActions,
   position = 'static',
   placement = 'end',
   offset,
   stickyOffset,
   zIndex,
+  closeAction,
+  hideCloseAction = false,
+  backdrop = false,
+  open,
+  onClose,
+  ariaLabel,
+  ariaLabelledby,
+  focusBehavior,
+  role,
   ...restProps
 }: DrawerInternalProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+  const returnFocusTargetRef = useRef<HTMLElement | null>(null);
+
   const baseProps = getBaseProps(restProps);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
   const positionStyles = getPositionStyles({ position, placement, offset, stickyOffset, zIndex });
+  const headerId = useUniqueId('drawer-header');
+  const defaultRegionLabelledBy = header ? headerId : undefined;
+  ariaLabelledby = ariaLabelledby ?? (ariaLabel ? undefined : defaultRegionLabelledBy);
+  role = role ?? (position === 'static' ? 'presentation' : 'region');
+  const roleProps =
+    role === 'region'
+      ? { role: 'region', tabIndex: -1, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby }
+      : {};
   const containerProps = {
-    ...baseProps,
+    ref: containerRef,
+    ...roleProps,
     style: positionStyles.style,
     className: clsx(
-      baseProps.className,
       styles.drawer,
+      loading && styles['content-with-paddings'],
       isToolbar && styles['with-toolbar'],
       !!footer && styles['with-footer'],
       positionStyles.className
     ),
   };
-  const footerRef = useRef<HTMLDivElement>(null);
+
+  const focusIn = useStableCallback(() => {
+    returnFocusTargetRef.current = document.activeElement as HTMLElement;
+    if (containerRef.current && isFocusable(containerRef.current)) {
+      containerRef.current.focus();
+    } else if (containerRef.current) {
+      getAllFocusables(containerRef.current)[0]?.focus();
+    }
+  });
+
+  const focusOut = useStableCallback(() => {
+    if (focusBehavior?.returnFocus) {
+      focusBehavior.returnFocus();
+    } else if (returnFocusTargetRef.current && returnFocusTargetRef.current.isConnected) {
+      returnFocusTargetRef.current.focus();
+    }
+    returnFocusTargetRef.current = null;
+  });
+
+  const autoFocusRef = useRef(false);
+  autoFocusRef.current = focusBehavior?.autoFocus ?? true;
+
+  // The use-effect-on-update ensures no focus transition on component's initial render.
+  // If focus transition is needed - the drawerRef.current.focus() should be used instead.
+  useEffectOnUpdate(() => {
+    if (open === undefined) {
+      return;
+    }
+    if (open && autoFocusRef.current) {
+      focusIn();
+    }
+    if (!open) {
+      focusOut();
+    }
+  }, [open, focusIn, focusOut]);
+
+  const handleClose = useStableCallback((method: 'close-action' | 'backdrop-click' | 'escape') =>
+    fireNonCancelableEvent(onClose, { method })
+  );
+
+  useImperativeHandle(__ref, () => ({ focus: () => containerRef.current?.focus() }), []);
 
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
@@ -60,51 +135,93 @@ export function DrawerImplementation({
     footerRef,
   });
 
-  return loading ? (
+  const showBackdrop = backdrop && (position === 'fixed' || position === 'absolute');
+  const trapFocus = focusBehavior?.trapFocus ?? showBackdrop;
+
+  useEffect(() => {
+    if (!showBackdrop) {
+      return;
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleClose('escape');
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [showBackdrop, handleClose]);
+
+  return (
     <div
-      {...containerProps}
-      className={clsx(containerProps.className, styles['content-with-paddings'])}
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, testClasses.root, open === false && styles.hidden)}
       ref={__internalRootRef}
     >
-      <InternalStatusIndicator type="loading">
-        <InternalLiveRegion tagName="span">
-          {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
-        </InternalLiveRegion>
-      </InternalStatusIndicator>
-    </div>
-  ) : (
-    <div {...containerProps} ref={__internalRootRef}>
-      {header && (
+      {showBackdrop && (
         <div
-          className={clsx(
-            styles.header,
-            runtimeDrawerContext && styles['with-runtime-context'],
-            hasAdditionalDrawerAction && styles['with-additional-action']
+          className={clsx(styles.backdrop, testClasses.backdrop, styles[`backdrop-${position}`])}
+          style={{ zIndex }}
+          onClick={() => handleClose('backdrop-click')}
+        />
+      )}
+      <FocusLock disabled={!trapFocus} className={styles['focus-trap']}>
+        <div {...containerProps}>
+          {loading ? (
+            <InternalStatusIndicator type="loading">
+              <InternalLiveRegion tagName="span">
+                {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
+              </InternalLiveRegion>
+            </InternalStatusIndicator>
+          ) : (
+            <>
+              {header && (
+                <div
+                  className={clsx(
+                    styles.header,
+                    runtimeDrawerContext && styles['with-runtime-context'],
+                    hasAdditionalDrawerAction && styles['with-additional-action'],
+                    closeAction && styles['has-close-action'],
+                    hideCloseAction && styles['hide-close-action']
+                  )}
+                >
+                  <span id={headerId}>{header}</span>
+                  {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+                  {closeAction && !hideCloseAction && (
+                    <div className={styles['close-action']}>
+                      <InternalButton
+                        variant="icon"
+                        iconName="close"
+                        {...closeAction}
+                        className={testClasses['close-action']}
+                        onClick={() => handleClose('close-action')}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+              <div
+                className={clsx(
+                  styles['test-utils-drawer-content'],
+                  styles.content,
+                  !disableContentPaddings && styles['content-with-paddings']
+                )}
+              >
+                <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
+              </div>
+              {footer && (
+                <div
+                  ref={footerRef}
+                  className={clsx(styles.footer, {
+                    [styles['is-sticky']]: isFooterSticky,
+                  })}
+                >
+                  {footer}
+                </div>
+              )}
+            </>
           )}
-        >
-          {header}
-          {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
         </div>
-      )}
-      <div
-        className={clsx(
-          styles['test-utils-drawer-content'],
-          styles.content,
-          !disableContentPaddings && styles['content-with-paddings']
-        )}
-      >
-        <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
-      </div>
-      {footer && (
-        <div
-          ref={footerRef}
-          className={clsx(styles.footer, {
-            [styles['is-sticky']]: isFooterSticky,
-          })}
-        >
-          {footer}
-        </div>
-      )}
+      </FocusLock>
     </div>
   );
 }
