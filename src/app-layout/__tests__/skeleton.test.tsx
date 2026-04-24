@@ -102,6 +102,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
     });
 
+    it('renders navigation trigger in skeleton', () => {
+      const { wrapper } = renderComponent(<AppLayout navigation="test nav" />);
+      expect(wrapper.findNavigationToggle()).toBeTruthy();
+    });
+
     it('skeleton toolbar has correct classes for SSR compatibility', () => {
       const { wrapper } = renderComponent(<AppLayout breadcrumbs="test breadcrumbs" />);
       const toolbarContainer = wrapper.findByClassName(skeletonStyles['toolbar-container']);
