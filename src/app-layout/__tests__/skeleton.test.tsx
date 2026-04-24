@@ -83,10 +83,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       );
       // cannot use wrapper.findNavigation() because our public test utils resolve to nothing in skeleton state
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
       rerender(<AppLayout navigation="test nav" navigationOpen={false} onNavigationChange={noop} />);
-      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeFalsy();
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeTruthy();
       rerender(<AppLayout navigation="test nav" navigationOpen={true} onNavigationChange={noop} />);
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
     });
 
     it('toolbar can render conditionally', () => {
@@ -97,6 +100,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeTruthy();
       rerender(<AppLayout navigationHide={true} toolsHide={true} />);
       expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
+    });
+
+    it('renders navigation trigger in skeleton', () => {
+      const { wrapper } = renderComponent(<AppLayout navigation="test nav" />);
+      expect(wrapper.findNavigationToggle()).toBeTruthy();
     });
 
     it('skeleton toolbar has correct classes for SSR compatibility', () => {
