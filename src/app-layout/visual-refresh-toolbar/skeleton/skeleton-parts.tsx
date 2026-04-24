@@ -17,6 +17,7 @@ import styles from './styles.css.js';
 
 export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPartProps>(
   ({ toolbarProps, appLayoutProps }, ref) => {
+    const hasNavigation = toolbarProps ? toolbarProps.hasNavigation : !!appLayoutProps.navigation;
     return (
       <>
         {!!toolbarProps && (
@@ -24,12 +25,12 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
             ref={ref}
             ariaLabels={toolbarProps.ariaLabels}
             expandedDrawerId={toolbarProps.expandedDrawerId}
-            hasNavigation={toolbarProps.hasNavigation}
+            hasNavigation={hasNavigation}
             navigationOpen={toolbarProps.navigationOpen}
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
           />
         )}
-        {toolbarProps?.hasNavigation && (
+        {hasNavigation && (
           <div
             className={clsx(
               styles.navigation,
