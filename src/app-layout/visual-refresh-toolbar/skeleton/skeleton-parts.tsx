@@ -3,12 +3,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { InternalButton } from '../../../button/internal';
 import { AppLayoutNotificationsImplementationProps } from '../notifications';
 import { AppLayoutToolbarImplementationProps } from '../toolbar';
 import { SkeletonPartProps } from './interfaces';
 import { NotificationsSlot } from './slots';
 import { ToolbarSkeletonStructure } from './toolbar-container';
 
+import navStyles from '../navigation/styles.css.js';
 import styles from './styles.css.js';
 
 /**
@@ -39,7 +41,19 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
               !!toolbarProps?.expandedDrawerId && styles.hidden
             )}
           >
-            {appLayoutProps.navigation}
+            <div
+              className={clsx(
+                navStyles['navigation-container'],
+                toolbarProps?.navigationOpen && navStyles['is-navigation-open']
+              )}
+            >
+              <nav className={navStyles.navigation}>
+                <div className={navStyles['hide-navigation']}>
+                  <InternalButton iconName="angle-left" variant="icon" formAction="none" />
+                </div>
+                {appLayoutProps.navigation}
+              </nav>
+            </div>
           </div>
         )}
       </>
