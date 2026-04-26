@@ -11,20 +11,19 @@ const componentsDir = path.resolve(__dirname, '../../lib/components');
 const designTokensDir = path.resolve(__dirname, '../../lib/design-tokens');
 
 export function getAllComponents(): string[] {
-  return fs
-    .readdirSync(componentsDir)
-    .filter(
-      name =>
-        name !== 'internal' &&
-        name !== 'test-utils' &&
-        name !== 'theming' &&
-        name !== 'contexts' &&
-        name !== 'plugins' &&
-        name !== 'i18n' &&
-        !name.includes('.') &&
-        !name.includes('LICENSE') &&
-        !name.includes('NOTICE')
-    );
+  return fs.readdirSync(componentsDir).filter(
+    name =>
+      name !== 'internal' &&
+      name !== 'navigation-bar' && // in development, not yet public
+      name !== 'test-utils' &&
+      name !== 'theming' &&
+      name !== 'contexts' &&
+      name !== 'plugins' &&
+      name !== 'i18n' &&
+      !name.includes('.') &&
+      !name.includes('LICENSE') &&
+      !name.includes('NOTICE')
+  );
 }
 
 /**
