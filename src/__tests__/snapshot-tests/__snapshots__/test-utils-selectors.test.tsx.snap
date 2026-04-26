@@ -488,6 +488,10 @@ exports[`test-utils selectors 1`] = `
   "navigable-group": [
     "awsui_root_efqlv",
   ],
+  "navigation-bar": [
+    "awsui_content_zll8a",
+    "awsui_root_zll8a",
+  ],
   "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",

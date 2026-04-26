@@ -75,3 +75,11 @@ export const createAppLayoutToolbarContext = (tokens: TokenCategory<string, Glob
     tokens,
   };
 };
+
+export const createNavigationBarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'navigation-bar',
+    selector: '.awsui-context-navigation-bar',
+    tokens,
+  };
+};
