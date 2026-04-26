@@ -79,4 +79,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthBadge: '0px',
   borderWidthPopover: '2px',
   borderWidthToken: '2px',
+  borderWidthNavigationBarPrimary: '{borderDividerSectionWidth}',
+  borderWidthNavigationBarSecondary: '{borderDividerSectionWidth}',
 };

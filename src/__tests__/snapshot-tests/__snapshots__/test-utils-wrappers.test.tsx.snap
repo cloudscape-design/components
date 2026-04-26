@@ -65,6 +65,7 @@ import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
+import NavigationBarWrapper from './navigation-bar';
 import PaginationWrapper from './pagination';
 import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
@@ -161,6 +162,7 @@ export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
+export { NavigationBarWrapper };
 export { PaginationWrapper };
 export { PanelLayoutWrapper };
 export { PieChartWrapper };
@@ -1771,6 +1773,34 @@ findAllNavigableGroups(selector?: string): Array<NavigableGroupWrapper>;
  * @returns {NavigableGroupWrapper | null}
  */
 findClosestNavigableGroup(): NavigableGroupWrapper | null;
+/**
+ * Returns the wrapper of the first NavigationBar that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first NavigationBar.
+ * If no matching NavigationBar is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {NavigationBarWrapper | null}
+ */
+findNavigationBar(selector?: string): NavigationBarWrapper | null;
+
+/**
+ * Returns an array of NavigationBar wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the NavigationBars inside the current wrapper.
+ * If no matching NavigationBar is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<NavigationBarWrapper>}
+ */
+findAllNavigationBars(selector?: string): Array<NavigationBarWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent NavigationBar for the current element,
+ * or the element itself if it is an instance of NavigationBar.
+ * If no NavigationBar is found, returns \`null\`.
+ *
+ * @returns {NavigationBarWrapper | null}
+ */
+findClosestNavigationBar(): NavigationBarWrapper | null;
 /**
  * Returns the wrapper of the first Pagination that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Pagination.
@@ -3567,6 +3597,19 @@ ElementWrapper.prototype.findNavigableGroup = function(selector) {
 ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
   return this.findAllComponents(NavigableGroupWrapper, selector);
 };
+ElementWrapper.prototype.findNavigationBar = function(selector) {
+  let rootSelector = \`.\${NavigationBarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in NavigationBarWrapper && NavigationBarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${NavigationBarWrapper.rootSelector}, .\${NavigationBarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, NavigationBarWrapper);
+};
+
+ElementWrapper.prototype.findAllNavigationBars = function(selector) {
+  return this.findAllComponents(NavigationBarWrapper, selector);
+};
 ElementWrapper.prototype.findPagination = function(selector) {
   let rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
   if("legacyRootSelector" in PaginationWrapper && PaginationWrapper.legacyRootSelector){
@@ -4342,6 +4385,11 @@ ElementWrapper.prototype.findClosestNavigableGroup = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(NavigableGroupWrapper);
 };
+ElementWrapper.prototype.findClosestNavigationBar = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(NavigationBarWrapper);
+};
 ElementWrapper.prototype.findClosestPagination = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4607,6 +4655,7 @@ import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
+import NavigationBarWrapper from './navigation-bar';
 import PaginationWrapper from './pagination';
 import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
@@ -4703,6 +4752,7 @@ export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
+export { NavigationBarWrapper };
 export { PaginationWrapper };
 export { PanelLayoutWrapper };
 export { PieChartWrapper };
@@ -5697,6 +5747,23 @@ findNavigableGroup(selector?: string): NavigableGroupWrapper;
  * @returns {MultiElementWrapper<NavigableGroupWrapper>}
  */
 findAllNavigableGroups(selector?: string): MultiElementWrapper<NavigableGroupWrapper>;
+/**
+ * Returns a wrapper that matches the NavigationBars with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches NavigationBars.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {NavigationBarWrapper}
+ */
+findNavigationBar(selector?: string): NavigationBarWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches NavigationBars with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches NavigationBars.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<NavigationBarWrapper>}
+ */
+findAllNavigationBars(selector?: string): MultiElementWrapper<NavigationBarWrapper>;
 /**
  * Returns a wrapper that matches the Paginations with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Paginations.
@@ -7074,6 +7141,19 @@ ElementWrapper.prototype.findNavigableGroup = function(selector) {
 
 ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
   return this.findAllComponents(NavigableGroupWrapper, selector);
+};
+ElementWrapper.prototype.findNavigationBar = function(selector) {
+  let rootSelector = \`.\${NavigationBarWrapper.rootSelector}\`;
+  if("legacyRootSelector" in NavigationBarWrapper && NavigationBarWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${NavigationBarWrapper.rootSelector}, .\${NavigationBarWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, NavigationBarWrapper);
+};
+
+ElementWrapper.prototype.findAllNavigationBars = function(selector) {
+  return this.findAllComponents(NavigationBarWrapper, selector);
 };
 ElementWrapper.prototype.findPagination = function(selector) {
   let rootSelector = \`.\${PaginationWrapper.rootSelector}\`;

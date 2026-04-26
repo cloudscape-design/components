@@ -597,6 +597,8 @@ export type ColorsTokenName =
   | 'colorBackgroundLayoutToggleSelectedHover'
   | 'colorBackgroundLayoutToggleSelectedActive'
   | 'colorBackgroundModalOverlay'
+  | 'colorBackgroundNavigationBarPrimary'
+  | 'colorBackgroundNavigationBarSecondary'
   | 'colorBackgroundNotificationBlue'
   | 'colorBackgroundNotificationGreen'
   | 'colorBackgroundFlashbarSuccess'
@@ -721,6 +723,9 @@ export type ColorsTokenName =
   | 'colorBorderItemPlaceholder'
   | 'colorBorderItemSelected'
   | 'colorBorderLayout'
+  | 'colorBorderNavigationBarPrimary'
+  | 'colorBorderNavigationBarPrimaryAccent'
+  | 'colorBorderNavigationBarSecondary'
   | 'colorBorderNotificationStackBar'
   | 'colorBorderPanelHeader'
   | 'colorBorderPopover'
@@ -1078,7 +1083,9 @@ export type BordersTokenName =
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
   | 'borderWidthBadge'
-  | 'borderRadiusTokenInline';
+  | 'borderRadiusTokenInline'
+  | 'borderWidthNavigationBarPrimary'
+  | 'borderWidthNavigationBarSecondary';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
