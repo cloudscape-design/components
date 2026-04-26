@@ -19712,6 +19712,144 @@ need to be direct children of the group:
 }
 `;
 
+exports[`Components definition for navigation-bar matches the snapshot: navigation-bar 1`] = `
+{
+  "dashCaseName": "navigation-bar",
+  "events": [],
+  "functions": [],
+  "name": "NavigationBar",
+  "properties": [
+    {
+      "description": "Accessible label for the landmark. Required when multiple navigation bars
+exist on the same page to distinguish them for assistive technology.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "ID of an element that labels this landmark. Alternative to \`ariaLabel\`.
+Ignored when \`ariaLabel\` or \`i18nStrings.ariaLabel\` is provided.",
+      "name": "ariaLabelledBy",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "NavigationBarProps.I18nStrings",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "NavigationBarProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'top'",
+      "description": "Placement relative to container. Controls border edge and content flow.
+
+- \`top\`: Horizontal, border on bottom edge.
+- \`bottom\`: Horizontal, border on top edge.
+- \`start\`: Vertical on start side (left in LTR), border on end edge.
+- \`end\`: Vertical on end side (right in LTR), border on start edge.",
+      "inlineType": {
+        "name": "NavigationBarProps.Placement",
+        "type": "union",
+        "values": [
+          "end",
+          "start",
+          "top",
+          "bottom",
+        ],
+      },
+      "name": "placement",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'region'",
+      "description": "Landmark role rendered by the navigation bar.
+
+- \`navigation\`: Renders \`<nav>\`. For bars containing navigation links.
+   Multiple allowed per page; each must have a unique accessible name.
+- \`banner\`: Renders \`<header>\`. For the site-wide header consistent across pages.
+   Only one per page. Should be first in DOM order.
+- \`region\`: Renders \`<section role="region">\`. For tools/actions areas
+   without navigation links. Must have an accessible name.
+
+Role is independent of variant.",
+      "inlineType": {
+        "name": "NavigationBarProps.Role",
+        "type": "union",
+        "values": [
+          "region",
+          "banner",
+          "navigation",
+        ],
+      },
+      "name": "role",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'primary'",
+      "description": "Visual variant of the navigation bar.
+
+- \`primary\`: Default header style. Uses page theme colors.
+- \`primary-accent\`: Inverted/branded header. Applies \`navigation-bar\` visual context
+   so child components auto-adapt to inverted colors.
+- \`secondary\`: Toolbar style with neutral background.
+
+Primary and secondary use identical default tokens (both white background).
+The separation exists for theming — themes can target them independently.",
+      "inlineType": {
+        "name": "NavigationBarProps.Variant",
+        "type": "union",
+        "values": [
+          "secondary",
+          "primary",
+          "primary-accent",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Content of the navigation bar. Any ReactNode.",
+      "isDefault": false,
+      "name": "content",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for pagination matches the snapshot: pagination 1`] = `
 {
   "dashCaseName": "pagination",
@@ -41806,6 +41944,24 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "NavigationBarWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Returns the wrapper for the main content element.",
           "name": "findMainContent",
           "parameters": [],
@@ -51566,6 +51722,19 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
       ],
       "name": "NavigableGroupWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "NavigationBarWrapper",
     },
     {
       "methods": [
