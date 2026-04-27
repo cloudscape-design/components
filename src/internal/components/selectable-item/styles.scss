@@ -7,7 +7,8 @@
 @use '../../styles/tokens' as awsui;
 
 // Box-shadow spread values for simulating borders without layout shifts
-$border-offset: awsui.$border-item-width;
+$border-offset: awsui.$border-width-item-selected;
+$border-offset-double: calc(2 * #{$border-offset});
 $border-offset-double: calc(2 * awsui.$border-width-item-selected);
 
 // Divider widths (and negative) for reuse
