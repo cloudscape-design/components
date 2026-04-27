@@ -46,17 +46,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
   empty?: React.ReactNode;
 
   /**
-   * Displays a notification banner between the table header and the table body.
-   * Use this slot to render contextual messages related to the current selection state,
-   * such as cross-page selection prompts (for example, "12 items selected on this page.
-   * Select 85 items across the table.") or confirmation messages after selecting all items.
-   *
-   * The content is rendered inside the table container, below the filter and above the
-   * column headers. It is only visible when this property is not `undefined`.
-   */
-  selectionNotification?: React.ReactNode;
-
-  /**
    * Specifies the data that's displayed in the table rows. Each item contains the data for one row. The display of a row is handled
    * by the `cell` property of each column definition in the `columnDefinitions` property.
    */
@@ -717,25 +706,15 @@ export namespace TableProps {
   }
 
   export interface SelectionControllerItem {
-    /** Unique identifier for the selection action. */
     id: string;
-    /** Display label for the selection action. */
     text: string;
-    /** Set to `'checkbox'` to render the item as a toggleable checkbox. */
     itemType?: 'checkbox';
-    /** Whether the checkbox item is checked. Only applicable when `itemType` is `'checkbox'`. */
     checked?: boolean;
-    /** When true, the item is rendered in a disabled state and cannot be activated. */
     disabled?: boolean;
-    /** Optional reason displayed when hovering over a disabled item. */
     disabledReason?: string;
-    /** Optional secondary descriptive text displayed below the item text. */
     secondaryText?: string;
-    /** Optional accessible label for the item. */
     ariaLabel?: string;
-    /** Optional icon name displayed before the item text. */
     iconName?: string;
-    /** Optional icon SVG displayed before the item text. */
     iconSvg?: React.ReactNode;
   }
 

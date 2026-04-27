@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-import Alert from '~components/alert';
 import Box from '~components/box';
 import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
@@ -110,10 +109,10 @@ export default function SelectionControllerPage() {
 
 function FunctionsTable() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>(defaultPreferences);
-  const [notificationDismissed, setNotificationDismissed] = useState(false);
 
-  const { items, actions, filteredItemsCount, crossPageSelectionState, collectionProps, filterProps, paginationProps } =
-    useCollection(allFunctions, {
+  const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
+    allFunctions,
+    {
       filtering: {
         empty: <EmptyState action={<Button>Create function</Button>} />,
         noMatch: <NoMatchState onClearFilter={() => actions.setFiltering('')} />,
@@ -122,7 +121,6 @@ function FunctionsTable() {
       sorting: { defaultState: { sortingColumn: columnDefinitions[3], isDescending: false } },
       selection: {
         trackBy: 'name',
-        crossPageSelection: {},
         selectionControllerItems: (visibleItems, selectedItems) => {
           const allSelected = (pred: (f: LambdaFunction) => boolean) => {
             const m = visibleItems.filter(pred);
@@ -131,7 +129,7 @@ function FunctionsTable() {
           const has = (pred: (f: LambdaFunction) => boolean) => visibleItems.some(pred);
           return [
             {
-              text: 'By runtime',
+              text: 'By runtime (current page)',
               items: [
                 {
                   id: 'nodejs',
@@ -164,6 +162,13 @@ function FunctionsTable() {
               ],
             },
             {
+              text: 'By runtime (across pages)',
+              items: [
+                { id: 'all-nodejs', text: 'All Node.js' },
+                { id: 'all-python', text: 'All Python' },
+              ],
+            },
+            {
               text: 'By package type',
               items: [
                 {
@@ -185,68 +190,42 @@ function FunctionsTable() {
           ];
         },
         onSelectionControllerItemClick: (detail, visibleItems, hookActions, allItems) => {
-          setNotificationDismissed(false);
+          // "Across pages" items — select from allItems
+          const allPagePredicates: Record<string, (f: LambdaFunction) => boolean> = {
+            'all-nodejs': predicates.nodejs,
+            'all-python': predicates.python,
+          };
+          const allPagePred = allPagePredicates[detail.id];
+          if (allPagePred) {
+            hookActions.setSelectedItems((allItems as LambdaFunction[]).filter(allPagePred));
+            return;
+          }
+
+          // "Current page" checkbox items — toggle from visibleItems
           const pred = predicates[detail.id];
           if (!pred) {
             return;
           }
           const current = (collectionProps.selectedItems ?? []) as LambdaFunction[];
           const matching = visibleItems.filter(pred) as LambdaFunction[];
-          const allMatching = (allItems as LambdaFunction[]).filter(pred);
           if (detail.checked) {
             const existing = new Set(current.map(s => s.name));
             hookActions.setSelectedItems([...current, ...matching.filter(m => !existing.has(m.name))]);
           } else {
             hookActions.setSelectedItems(current.filter(s => !matching.some(m => m.name === s.name)));
           }
-          return { allMatchingItems: allMatching };
         },
       },
-    });
+    }
+  );
 
   const selectedItems = collectionProps.selectedItems ?? [];
   const singleSelected = selectedItems.length === 1;
   const hasSelection = selectedItems.length > 0;
 
-  // Cross-page selection notification — state computed by the hook
-  let selectionNotification: React.ReactNode = undefined;
-  if (!notificationDismissed && crossPageSelectionState?.type === 'all-selected') {
-    selectionNotification = (
-      <Alert type="warning" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
-        {crossPageSelectionState.totalCount} items are selected across the table.{' '}
-        <Button
-          variant="inline-link"
-          onClick={() => {
-            actions.setSelectedItems([]);
-          }}
-        >
-          <u>Clear selection</u>
-        </Button>
-        .
-      </Alert>
-    );
-  } else if (!notificationDismissed && crossPageSelectionState?.type === 'page-selected') {
-    selectionNotification = (
-      <Alert type="info" dismissible={true} onDismiss={() => setNotificationDismissed(true)}>
-        {selectedItems.length} items selected on this page. {crossPageSelectionState.pageCount} items selected on this
-        page.{' '}
-        <Button
-          variant="inline-link"
-          onClick={() => {
-            actions.selectAllAcrossPages();
-          }}
-        >
-          <u>Select {crossPageSelectionState.totalCount} items</u>
-        </Button>{' '}
-        across the table.
-      </Alert>
-    );
-  }
-
   return (
     <Table<LambdaFunction>
       {...collectionProps}
-      selectionNotification={selectionNotification}
       header={
         <Header
           counter={`(${selectedItems.length} / ${allFunctions.length})`}
