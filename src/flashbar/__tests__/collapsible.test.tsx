@@ -317,12 +317,14 @@ describe('Collapsible Flashbar', () => {
       });
 
       it('announces updates to the item counter with aria-live', () => {
-        const flashbar = renderFlashbar();
-        const counter = findOuterCounter(flashbar);
-        expect(counter).toHaveAttribute('aria-live', 'polite');
-        // We add `role="status"` as well, to maximize compatibility
-        // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions#roles_with_implicit_live_region_attributes
-        expect(counter).toHaveAttribute('role', 'status');
+        // Fake timers to bypass the live region delay.
+        const { rerender } = render(<Flashbar {...defaultProps} items={defaultItems} />);
+        jest.useFakeTimers();
+        rerender(<Flashbar {...defaultProps} items={[...defaultItems, { type: 'info', content: 'Info' }]} />);
+        jest.runAllTimers();
+        jest.useRealTimers();
+        const liveRegion = document.querySelector('[aria-live=polite]')!;
+        expect(liveRegion).toHaveTextContent('Notifications Error 1 Warning 0 Success 1 Information 1 In progress 0');
       });
 
       it('renders the toggle element header as H2 element', () => {
