@@ -23,8 +23,7 @@ function listPublicItems(baseDir) {
         elem !== 'i18n' &&
         elem !== 'theming' &&
         elem !== 'plugins' &&
-        elem !== 'contexts' &&
-        elem !== 'themes'
+        elem !== 'contexts'
     );
 }
 

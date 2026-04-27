@@ -5,7 +5,6 @@ const { readFileSync } = require('fs');
 const { createHash } = require('crypto');
 const { join } = require('path');
 const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build/internal');
-const sass = require('sass');
 
 const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');
@@ -86,17 +85,8 @@ function stylesTask(theme) {
   });
 }
 
-function compileThemes() {
-  return task('styles:themes', () => {
-    const result = sass.compile(join(workspace.sourcePath, 'themes/pink.scss'));
-    writeFile(join(workspace.targetPath, 'components/themes/pink.css'), result.css);
-    return Promise.resolve();
-  });
-}
-
 module.exports = series(
   generateEnvironment(),
   compileStyleDictionary(),
-  parallel(themes.map(theme => stylesTask(theme))),
-  compileThemes()
+  parallel(themes.map(theme => stylesTask(theme)))
 );

@@ -17,7 +17,6 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
-import '~components/themes/pink.css';
 // screenshot test overrides
 import styles from './styles.scss';
 
