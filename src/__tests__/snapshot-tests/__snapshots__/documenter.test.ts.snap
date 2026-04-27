@@ -26566,9 +26566,6 @@ The function is called for each step and should return an object with the follow
       },
       "name": "renderStep",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "((step: StepsProps.Step) => { header: React.ReactNode; details?: React.ReactNode; icon?: React.ReactNode; })",
     },
     {
