@@ -26,7 +26,6 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
           <ToolbarSkeletonStructure
             ref={ref}
             ariaLabels={toolbarProps.ariaLabels}
-            expandedDrawerId={toolbarProps.expandedDrawerId}
             hasNavigation={hasNavigation}
             navigationOpen={toolbarProps.navigationOpen}
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
@@ -37,8 +36,7 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
             className={clsx(
               styles.navigation,
               !toolbarProps?.navigationOpen && styles['panel-hidden'],
-              !!toolbarProps?.activeDrawerId && styles['unfocusable-mobile'],
-              !!toolbarProps?.expandedDrawerId && styles.hidden
+              !!toolbarProps?.activeDrawerId && styles['unfocusable-mobile']
             )}
           >
             <div

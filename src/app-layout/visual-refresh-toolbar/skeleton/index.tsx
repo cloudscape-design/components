@@ -76,7 +76,6 @@ export const SkeletonLayout = ({
           clsx(styles.root, testutilStyles.root, {
             [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
             [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
-            [styles['drawer-expanded-mode']]: !!toolbarProps?.expandedDrawerId,
           })
         }
         style={
