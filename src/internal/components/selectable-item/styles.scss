@@ -8,7 +8,7 @@
 
 // Box-shadow spread values for simulating borders without layout shifts
 $border-offset: awsui.$border-item-width;
-$border-offset-double: calc(2 * #{awsui.$border-item-width});
+$border-offset-double: calc(2 * awsui.$border-width-item-selected);
 
 // Divider widths (and negative) for reuse
 $divider-w: awsui.$border-divider-list-width;
