@@ -43,6 +43,7 @@ export type BuiltInIconName =
   | 'copy'
   | 'command-prompt'
   | 'delete-marker'
+  | 'dot'
   | 'download'
   | 'drag-indicator'
   | 'edit'
