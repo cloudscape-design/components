@@ -10,7 +10,7 @@ import styles from './styles.scss';
 
 export function DisabledReasonDemo() {
   return (
-    <ScreenshotArea>
+    <>
       <Button variant="primary" disabled={true} disabledReason="disabled reason">
         Primary
       </Button>
@@ -31,15 +31,17 @@ export function DisabledReasonDemo() {
         iconName="star"
         ariaLabel="Disabled reason icon button"
       />
-    </ScreenshotArea>
+    </>
   );
 }
 
 export default function ButtonsScenario() {
   return (
     <article>
-      <h1 className={styles.styledWrapper}>Buttons with disabled reason</h1>
-      <DisabledReasonDemo />
+      <ScreenshotArea>
+        <h1 className={styles.styledWrapper}>Buttons with disabled reason</h1>
+        <DisabledReasonDemo />
+      </ScreenshotArea>
     </article>
   );
 }
