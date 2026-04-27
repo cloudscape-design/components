@@ -37,7 +37,7 @@ export default function PaginationPermutations() {
   return (
     <I18nProvider messages={[messages]} locale="en">
       <h1>Pagination permutations</h1>
-      <ScreenshotArea>
+      <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={permutation => <Pagination {...permutation} />} />
       </ScreenshotArea>
     </I18nProvider>
