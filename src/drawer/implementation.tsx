@@ -131,7 +131,8 @@ export function DrawerImplementation({
   const runtimeDrawerContext = useRuntimeDrawerContext({ rootRef: __internalRootRef as RefObject<HTMLElement> });
   const hasAdditionalDrawerAction = !!runtimeDrawerContext?.isExpandable;
   const { isSticky: isFooterSticky } = useStickyFooter({
-    drawerRef: __internalRootRef as RefObject<HTMLElement>,
+    rootRef: __internalRootRef as RefObject<HTMLElement>,
+    drawerRef: containerRef,
     footerRef,
   });
 
