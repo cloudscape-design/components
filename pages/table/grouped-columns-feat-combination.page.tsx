@@ -606,37 +606,6 @@ const collectionPreferencesProps: CollectionPreferencesProps<unknown> = {
       { value: 15, label: '15 instances' },
     ],
   },
-  wrapLinesPreference: {
-    label: 'Wrap lines',
-    description: 'Wrap long text in table cells',
-  },
-  stripedRowsPreference: {
-    label: 'Striped rows',
-    description: 'Alternate row shading',
-  },
-  contentDensityPreference: {
-    label: 'Compact mode',
-    description: 'Reduce spacing between rows',
-  },
-  stickyColumnsPreference: {
-    firstColumns: {
-      title: 'First column(s)',
-      description: 'Keep the first column(s) visible while scrolling horizontally',
-      options: [
-        { label: 'None', value: 0 },
-        { label: '1', value: 1 },
-        { label: '2', value: 2 },
-      ],
-    },
-    lastColumns: {
-      title: 'Last column(s)',
-      description: 'Keep the last column(s) visible while scrolling horizontally',
-      options: [
-        { label: 'None', value: 0 },
-        { label: '1', value: 1 },
-      ],
-    },
-  },
   contentDisplayPreference: {
     title: 'Column preferences',
     description: 'Customize column visibility and order.',
