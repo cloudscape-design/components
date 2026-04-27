@@ -176,6 +176,7 @@ const Thead = React.forwardRef(
       variant,
       tableVariant,
       stickyState,
+      wrapLines,
     };
 
     // No grouping - render single row

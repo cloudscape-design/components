@@ -53,6 +53,7 @@ export interface TableGroupHeaderCellProps {
    */
   stickyBoundaryColumnId?: PropertyKey;
   isRightmost?: boolean;
+  wrapLines?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -82,6 +83,7 @@ export function TableGroupHeaderCell({
   stickyColumnId,
   stickyBoundaryColumnId,
   isRightmost,
+  wrapLines,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
@@ -132,7 +134,7 @@ export function TableGroupHeaderCell({
         aria-label={group.ariaLabel?.({ sorted: false, descending: false, disabled: true })}
         tabIndex={clickableHeaderTabIndex}
       >
-        <div className={styles['header-cell-text']} id={headerId}>
+        <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {group.header}
         </div>
       </div>
