@@ -15515,6 +15515,32 @@ The same applies to switching icons in the same configuration (for example, \`{'
       "type": "IconProviderProps.Icons | null",
     },
     {
+      "description": "Specifies a default icon size for all descendant \`Icon\` components.
+
+When set, any \`Icon\` that does not receive an explicit \`size\` prop will render at this size.
+Icons that specify their own \`size\` prop will not be affected.
+
+Use this to create dense UI regions where icons should be smaller (for example, \`"small"\` for 12×12px icons).
+
+Nested \`IconProvider\` instances can override or reset this value. Set to \`undefined\` (or omit)
+to inherit the parent provider's icon size, or set explicitly to reset.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSize",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
