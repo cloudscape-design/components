@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
+import { PluginMap, setPlugin } from '../plugin-slots';
 import { ActionButtonsController, ActionsApiInternal, ActionsApiPublic } from './controllers/action-buttons';
 import {
   AlertFlashContentApiInternal,
@@ -22,6 +23,7 @@ interface AwsuiApi {
     alertContent: AlertFlashContentApiPublic;
     flashbar: ActionsApiPublic;
     flashContent: AlertFlashContentApiPublic;
+    registerPlugin: <K extends keyof PluginMap>(name: K, provider: PluginMap[K]) => void;
   };
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
@@ -110,6 +112,10 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   api.awsuiPluginsInternal.sharedReactContexts = sharedReactContexts.installInternal(
     api.awsuiPluginsInternal.sharedReactContexts
   );
+
+  api.awsuiPlugins.registerPlugin ??= <K extends keyof PluginMap>(name: K, provider: PluginMap[K]) => {
+    setPlugin(name, provider);
+  };
 
   return api as AwsuiApi;
 }

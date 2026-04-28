@@ -2,58 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /* istanbul ignore file */
 
-import { IComponentMetrics, IFunnelMetrics, IPerformanceMetrics } from './interfaces';
-
-export function setFunnelMetrics(funnelMetrics: IFunnelMetrics) {
-  FunnelMetrics = funnelMetrics;
-}
-export function setPerformanceMetrics(performanceMetrics: IPerformanceMetrics) {
-  PerformanceMetrics = performanceMetrics;
-}
-export function setComponentMetrics(componentMetrics: IComponentMetrics) {
-  ComponentMetrics = componentMetrics;
-}
-
-/**
- * This is a stub implementation of the FunnelMetrics interface and will be replaced during
- * build time with the actual implementation.
- */
-export let FunnelMetrics: IFunnelMetrics = {
-  funnelStart(): string {
-    return '';
-  },
-
-  funnelError(): void {},
-  funnelComplete(): void {},
-  funnelSuccessful(): void {},
-  funnelCancelled(): void {},
-  funnelChange(): void {},
-  funnelStepStart(): void {},
-  funnelStepComplete(): void {},
-  funnelStepNavigation(): void {},
-  funnelStepError(): void {},
-  funnelStepChange(): void {},
-  funnelSubStepStart(): void {},
-  funnelSubStepComplete(): void {},
-  funnelSubStepError(): void {},
-  helpPanelInteracted(): void {},
-  externalLinkInteracted(): void {},
-};
-
-/**
- * This is a stub implementation of the PerformanceMetrics interface and will be replaced during
- * build time with the actual implementation.
- */
-export let PerformanceMetrics: IPerformanceMetrics = {
-  tableInteraction(): void {},
-  taskCompletionData(): void {},
-  modalPerformanceData(): void {},
-};
-
-export let ComponentMetrics: IComponentMetrics = {
-  componentMounted(): string {
-    return '';
-  },
-
-  componentUpdated(): void {},
-};
+export { value as FunnelMetrics, set as setFunnelMetrics } from '../plugin-slots/analytics-funnel';
+export { value as PerformanceMetrics, set as setPerformanceMetrics } from '../plugin-slots/analytics-performance';
+export { value as ComponentMetrics, set as setComponentMetrics } from '../plugin-slots/analytics-component';

@@ -6,6 +6,11 @@
     "url": "https://github.com/cloudscape-design/components.git"
   },
   "homepage": "https://cloudscape.design",
+  "imports": {
+    "#plugin-slots/analytics-funnel": "./lib/components/internal/plugin-slots/analytics-funnel.js",
+    "#plugin-slots/analytics-performance": "./lib/components/internal/plugin-slots/analytics-performance.js",
+    "#plugin-slots/analytics-component": "./lib/components/internal/plugin-slots/analytics-component.js"
+  },
   "files": [],
   "scripts": {
     "quick-build": "gulp quick-build",
