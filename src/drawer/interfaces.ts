@@ -134,7 +134,7 @@ export interface NextDrawerProps extends DrawerProps {
   zIndex?: number;
 
   /**
-   * Renders a close button in the header with the provided configuration.
+   * When defined, renders a close button in the header with the provided configuration.
    * The close button fires the `onClose` event with method `'close-action'` when
    * clicked.
    */

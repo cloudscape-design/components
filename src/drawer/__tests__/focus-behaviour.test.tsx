@@ -95,21 +95,26 @@ describe('return focus', () => {
     document.body.appendChild(trigger);
     trigger.focus();
 
-    const { rerender } = render(
-      <NextDrawer open={false} onClose={jest.fn()}>
+    const { container, rerender } = render(
+      <NextDrawer role="region" open={false} onClose={jest.fn()}>
         content
       </NextDrawer>
     );
+    expect(getDrawerElement(container)).not.toHaveFocus();
+
     rerender(
-      <NextDrawer open={true} onClose={jest.fn()}>
+      <NextDrawer role="region" open={true} onClose={jest.fn()}>
         content
       </NextDrawer>
     );
+    expect(getDrawerElement(container)).toHaveFocus();
+
     rerender(
-      <NextDrawer open={false} onClose={jest.fn()}>
+      <NextDrawer role="region" open={false} onClose={jest.fn()}>
         content
       </NextDrawer>
     );
+    expect(getDrawerElement(container)).not.toHaveFocus();
 
     expect(trigger).toHaveFocus();
     document.body.removeChild(trigger);

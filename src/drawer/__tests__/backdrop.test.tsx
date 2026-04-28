@@ -6,8 +6,8 @@ import { render } from '@testing-library/react';
 
 import NextDrawer from '../../../lib/components/drawer/next';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { renderDrawer } from './shared';
 
-import testClasses from '../../../lib/components/drawer/test-classes/styles.selectors.js';
 import tabTrapStyles from '../../../lib/components/internal/components/tab-trap/styles.selectors.js';
 
 const warnOnceMock = jest.fn();
@@ -18,76 +18,69 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 
 afterEach(() => warnOnceMock.mockReset());
 
-function renderDrawer(jsx: React.ReactElement) {
-  const { container } = render(jsx);
-  const drawer = createWrapper(container).findDrawer()!;
-  const backdrop = createWrapper(container).findByClassName(testClasses.backdrop);
-  return { drawer, backdrop };
-}
-
 function getTabTraps(container: HTMLElement) {
   return Array.from(container.querySelectorAll<HTMLElement>(`.${tabTrapStyles.root}`));
 }
 
 test('backdrop is not rendered by default', () => {
-  const { backdrop } = renderDrawer(<NextDrawer>content</NextDrawer>);
-  expect(backdrop).toBeNull();
+  const { drawer } = renderDrawer(<NextDrawer>content</NextDrawer>);
+  expect(drawer.findBackdrop()).toBeNull();
 });
 
 test('backdrop is not rendered for static position and warns', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="static">
       content
     </NextDrawer>
   );
-  expect(backdrop).toBeNull();
+  expect(drawer.findBackdrop()).toBeNull();
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('position="static"'));
 });
 
 test('backdrop is not rendered for sticky position and warns', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="sticky" placement="top">
       content
     </NextDrawer>
   );
-  expect(backdrop).toBeNull();
+  expect(drawer.findBackdrop()).toBeNull();
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('position="sticky"'));
 });
 
 test('backdrop is rendered when position=fixed', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed">
       content
     </NextDrawer>
   );
-  expect(backdrop).not.toBeNull();
+  expect(drawer.findBackdrop()).not.toBeNull();
 });
 
 test('backdrop is rendered when position=absolute', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="absolute">
       content
     </NextDrawer>
   );
-  expect(backdrop).not.toBeNull();
+  expect(drawer.findBackdrop()).not.toBeNull();
 });
 
 test('backdrop z-index defaults to 830 when zIndex is not provided', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed">
       content
     </NextDrawer>
   );
-  expect(backdrop!.getElement()).toHaveStyle({ zIndex: 830 });
+  expect(drawer.findBackdrop()!.getElement()).toHaveStyle({ zIndex: 830 });
 });
 
 test('backdrop z-index matches explicit zIndex prop', () => {
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed" zIndex={1000}>
       content
     </NextDrawer>
   );
-  expect(backdrop!.getElement()).toHaveStyle({ zIndex: 1000 });
+  expect(drawer.findBackdrop()!.getElement()).toHaveStyle({ zIndex: 1000 });
 });
 
 test('focus trap is disabled when backdrop is not set', () => {
@@ -132,12 +125,12 @@ test('focus trap can be enabled explicitly without backdrop', () => {
 
 test('clicking backdrop fires onClose with method=backdrop-click', () => {
   const onClose = jest.fn();
-  const { backdrop } = renderDrawer(
+  const { drawer } = renderDrawer(
     <NextDrawer backdrop={true} position="fixed" onClose={onClose}>
       content
     </NextDrawer>
   );
-  backdrop!.click();
+  drawer.findBackdrop()!.click();
   expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ detail: { method: 'backdrop-click' } }));
 });
 
