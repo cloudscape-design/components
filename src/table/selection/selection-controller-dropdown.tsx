@@ -35,12 +35,12 @@ function isItemGroup(
 function mapItem(
   item: TableProps.SelectionControllerItem
 ): ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem {
-  if (item.itemType === 'checkbox') {
+  if (item.checked !== undefined) {
     return {
       id: item.id,
       text: item.text,
       itemType: 'checkbox',
-      checked: item.checked ?? false,
+      checked: item.checked,
       disabled: item.disabled,
       disabledReason: item.disabledReason,
       secondaryText: item.secondaryText,
@@ -86,20 +86,13 @@ export default function SelectionControllerDropdown({
   return (
     <InternalButtonDropdown
       items={mappedItems}
-      onItemClick={({ detail }) => onItemClick({ id: detail.id, checked: detail.checked })}
+      onItemClick={({ detail }) => onItemClick({ id: detail.id })}
       ariaLabel={ariaLabel}
       disabled={disabled}
       variant="inline-icon"
       expandToViewport={true}
       expandableGroups={false}
-      customTriggerBuilder={({
-        triggerRef,
-        testUtilsClass,
-        ariaExpanded,
-        onClick,
-        // isOpen, ... we can use it if we want to display diff/t icon based on open state latr
-        disabled: triggerDisabled,
-      }) => (
+      customTriggerBuilder={({ triggerRef, testUtilsClass, ariaExpanded, onClick, disabled: triggerDisabled }) => (
         <button
           ref={triggerRef as React.Ref<HTMLButtonElement>}
           className={clsx(styles['selection-controller-trigger'], testUtilsClass)}
@@ -111,7 +104,7 @@ export default function SelectionControllerDropdown({
           tabIndex={sticky ? -1 : undefined}
           type="button"
         >
-          <InternalIcon name={'ellipsis'} />
+          <InternalIcon name="caret-down-filled" />
         </button>
       )}
     />

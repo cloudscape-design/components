@@ -706,15 +706,23 @@ export namespace TableProps {
   }
 
   export interface SelectionControllerItem {
+    /** Unique identifier for the selection action. */
     id: string;
+    /** Display label for the selection action. */
     text: string;
-    itemType?: 'checkbox';
+    /** Whether this item is the currently active selection criteria. */
     checked?: boolean;
+    /** When true, the item is rendered in a disabled state and cannot be activated. */
     disabled?: boolean;
+    /** Optional reason displayed when hovering over a disabled item. */
     disabledReason?: string;
+    /** Optional secondary descriptive text displayed below the item text. */
     secondaryText?: string;
+    /** Optional accessible label for the item. */
     ariaLabel?: string;
+    /** Optional icon name displayed before the item text. */
     iconName?: string;
+    /** Optional icon SVG displayed before the item text. */
     iconSvg?: React.ReactNode;
   }
 
@@ -730,8 +738,6 @@ export namespace TableProps {
   export interface SelectionControllerItemClickDetail {
     /** The `id` of the activated item. */
     id: string;
-    /** For checkbox items, the new checked state after the click. */
-    checked?: boolean;
   }
 }
 
