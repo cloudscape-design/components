@@ -231,7 +231,7 @@ describe('Autosuggest renderOption', () => {
         );
       });
 
-      test('renders custom content for entered-text option', () => {
+      test('does not render custom content for entered-text option', () => {
         const renderOption = jest.fn(props => {
           if (props.item.type === 'entered-text') {
             return <div>Use custom: {props.item.option.value}</div>;
@@ -248,7 +248,8 @@ describe('Autosuggest renderOption', () => {
 
         const enteredTextOption = wrapper.findEnteredTextOption();
         expect(enteredTextOption).not.toBe(null);
-        expect(enteredTextOption!.getElement()).toHaveTextContent('Use custom: custom-value');
+        // entered-text options always use option.label, ignoring renderOption
+        expect(enteredTextOption!.getElement()).toHaveTextContent('Use value');
       });
 
       test('maintains option index in item properties', () => {

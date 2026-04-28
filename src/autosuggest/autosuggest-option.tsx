@@ -150,12 +150,12 @@ const AutosuggestOption = (
 
   let optionContent;
   if (useEntered) {
-    optionContent = renderResult ?? option.label;
+    optionContent = option.label;
     // we don't want fancy generated content for screenreader for the "Use..." option,
     // just the visible text is fine
     screenReaderContent = undefined;
   } else if (isParent) {
-    optionContent = renderResult ?? option.label;
+    optionContent = option.label;
   } else {
     const a11yProperties: AutosuggestOptionProps['nativeAttributes'] = {};
     if (nativeAttributes['aria-label']) {
