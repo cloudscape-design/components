@@ -31,9 +31,9 @@ test('close button is not rendered when hideCloseAction=true', () => {
   expect(drawer.findCloseAction()).toBeNull();
 });
 
-test('close button is not rendered when header is not provided', () => {
+test('close button is rendered when header is not provided', () => {
   const { drawer } = renderDrawer(<NextDrawer closeAction={{ ariaLabel: 'Close' }}>content</NextDrawer>);
-  expect(drawer.findCloseAction()).toBeNull();
+  expect(drawer.findCloseAction()).not.toBeNull();
 });
 
 test('clicking close button fires onClose with method=close-action', () => {

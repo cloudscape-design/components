@@ -83,6 +83,7 @@ export function DrawerImplementation({
       loading && styles['content-with-paddings'],
       isToolbar && styles['with-toolbar'],
       !!footer && styles['with-footer'],
+      closeAction && !hideCloseAction && styles['has-close-action'],
       positionStyles.className
     ),
   };
@@ -181,23 +182,22 @@ export function DrawerImplementation({
                     styles.header,
                     runtimeDrawerContext && styles['with-runtime-context'],
                     hasAdditionalDrawerAction && styles['with-additional-action'],
-                    closeAction && styles['has-close-action'],
                     hideCloseAction && styles['hide-close-action']
                   )}
                 >
                   <span id={headerId}>{header}</span>
                   {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
-                  {closeAction && !hideCloseAction && (
-                    <div className={styles['close-action']}>
-                      <InternalButton
-                        variant="icon"
-                        iconName="close"
-                        {...closeAction}
-                        className={testClasses['close-action']}
-                        onClick={() => handleClose('close-action')}
-                      />
-                    </div>
-                  )}
+                </div>
+              )}
+              {closeAction && !hideCloseAction && (
+                <div className={styles['close-action']}>
+                  <InternalButton
+                    variant="icon"
+                    iconName="close"
+                    {...closeAction}
+                    className={testClasses['close-action']}
+                    onClick={() => handleClose('close-action')}
+                  />
                 </div>
               )}
               <div
