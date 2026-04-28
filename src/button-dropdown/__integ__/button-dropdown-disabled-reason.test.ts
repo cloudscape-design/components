@@ -166,3 +166,49 @@ const overlaps = (one: ElementRect, two: ElementRect) => {
 
   return true;
 };
+
+const setupIframeTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<void>) => {
+  return useBrowser(async browser => {
+    const page = new ButtonDropdownDisabledReasonPage(browser);
+    await browser.url('#/light/button-dropdown/disabled-reason-iframe');
+    await page.runInsideIframe('#button-dropdown-iframe', true, async () => {
+      await page.waitForVisible(page.findButtonDropdown().toSelector());
+      await page.openDropdown();
+      await testFn(page);
+    });
+  });
+};
+
+describe('Button Dropdown - Disabled Reason in iframe', () => {
+  it(
+    'shows tooltip on hover',
+    setupIframeTest(async page => {
+      await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
+      await page.waitForVisible(page.findDisabledReason().toSelector());
+      expect(await page.getDisabledReason()).toEqual('Instance must be running.');
+    })
+  );
+
+  it(
+    'closes on escape',
+    setupIframeTest(async page => {
+      await page.hoverElement(page.findButtonDropdown().findItemById('connect').toSelector());
+      await page.waitForVisible(page.findDisabledReason().toSelector());
+      await page.keys('Escape');
+      await page.waitForAssertion(async () =>
+        expect(await page.isDisplayed(page.findDisabledReason().toSelector())).toBeFalsy()
+      );
+    })
+  );
+
+  it(
+    'shows tooltip on nested disabled elements',
+    setupIframeTest(async page => {
+      await page.click(page.findButtonDropdown().findExpandableCategoryById('settings').toSelector());
+      await page.waitForVisible(page.findDisabledReason().toSelector());
+      expect(await page.getDisabledReason()).toEqual(
+        'Instance must be running and not already be attached to an Auto Scaling Group.'
+      );
+    })
+  );
+});
