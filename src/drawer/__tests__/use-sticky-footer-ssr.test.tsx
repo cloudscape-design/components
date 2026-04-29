@@ -9,9 +9,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { useStickyFooter } from '../../../lib/components/drawer/use-sticky-footer';
 
 function TestComponent() {
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const drawerRef = React.useRef<HTMLDivElement>(null);
   const footerRef = React.useRef<HTMLDivElement>(null);
-  const { isSticky } = useStickyFooter({ drawerRef, footerRef });
+  const { isSticky } = useStickyFooter({ rootRef, drawerRef, footerRef });
 
   return (
     <div ref={drawerRef}>

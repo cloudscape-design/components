@@ -3,9 +3,10 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../drawer/styles.selectors.js';
+import testUtilStyles from '../../../drawer/test-classes/styles.selectors.js';
 
 export default class DrawerWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.drawer;
+  static rootSelector: string = testUtilStyles.root;
 
   findHeader(): ElementWrapper | null {
     return this.findByClassName(styles.header);

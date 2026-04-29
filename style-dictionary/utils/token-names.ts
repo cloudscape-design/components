@@ -544,6 +544,7 @@ export type ColorsTokenName =
   | 'colorBackgroundItemSelected'
   | 'colorBackgroundLayoutMain'
   | 'colorBackgroundDrawer'
+  | 'colorBackgroundDrawerBackdrop'
   | 'colorBackgroundLayoutMobilePanel'
   | 'colorBackgroundLayoutPanelContent'
   | 'colorBackgroundLayoutPanelHover'

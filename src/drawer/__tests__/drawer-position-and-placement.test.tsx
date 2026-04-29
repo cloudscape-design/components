@@ -26,7 +26,7 @@ function renderDrawer(jsx: React.ReactElement) {
 }
 
 function getDrawerElement(jsx: React.ReactElement) {
-  return renderDrawer(jsx).getElement();
+  return renderDrawer(jsx).findByClassName(drawerStyles.drawer)!.getElement();
 }
 
 describe('position=static (default)', () => {
