@@ -74,6 +74,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightNormal: {
+    description: 'The default normal font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightBold: {
+    description: 'The default bold font weight for body text. For example, <strong> and <b> tags in text content.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightLighter: {
+    description: 'The default lighter font weight.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightHeavy: {
+    description: 'The default heavy font weight.',
+    themeable: true,
+    public: true,
+  },
   fontWeightButton: {
     description: 'The default font weight for button text.',
     themeable: true,

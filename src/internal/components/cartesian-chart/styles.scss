@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
 .axis,
@@ -16,7 +17,7 @@
 }
 
 .axis-label {
-  font-weight: bold;
+  font-weight: styles.$font-weight-bold;
   fill: awsui.$color-text-body-default;
 }
 
