@@ -78,6 +78,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundCardEmbedded: {
+    description: 'The background color of an embedded card.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundContainerContent: {
     description:
       'The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.',
@@ -427,6 +432,16 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderCard: {
     description: 'The border color of a card.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderCardEmbedded: {
+    description: 'The border color of an embedded card.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderContainer: {
+    description: 'The border color of containers.',
     public: true,
     themeable: true,
   },

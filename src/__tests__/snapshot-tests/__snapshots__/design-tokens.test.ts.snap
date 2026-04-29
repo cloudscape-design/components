@@ -125,6 +125,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -265,6 +269,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -720,6 +731,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#545b64",
@@ -3212,6 +3237,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -3352,6 +3381,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -3807,6 +3843,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
@@ -6299,6 +6349,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -6439,6 +6493,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -6894,6 +6955,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
@@ -9386,6 +9461,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -9526,6 +9605,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -9981,6 +10067,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -12473,6 +12573,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -12613,6 +12717,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#2a2e33",
             "light": "#ffffff",
@@ -13068,6 +13179,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
@@ -15560,6 +15685,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -15700,6 +15829,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#232f3e",
+            "light": "#232f3e",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#232f3e",
             "light": "#232f3e",
@@ -16155,6 +16291,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#414750",
             "light": "#414750",
@@ -18647,6 +18797,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of a selected card.",
       "$value": "1px",
     },
+    "border-width-container": {
+      "$description": "The border width of containers.",
+      "$value": "1px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "1px",
@@ -18787,6 +18941,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "color-background-card": {
       "$description": "The background color of a card.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-card-embedded": {
+      "$description": "The background color of an embedded card.",
       "$value": {
         "dark": "#2a2e33",
         "light": "#ffffff",
@@ -19242,6 +19403,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "color-border-card": {
       "$description": "The border color of a card.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-border-card-embedded": {
+      "$description": "The border color of an embedded card.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
+      },
+    },
+    "color-border-container": {
+      "$description": "The border color of containers.",
       "$value": {
         "dark": "#414750",
         "light": "#eaeded",
@@ -21739,6 +21914,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -21879,6 +22058,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -22334,6 +22520,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#dedee3",
             "light": "#424650",
@@ -24826,6 +25026,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -24966,6 +25170,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -25421,6 +25632,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
@@ -27913,6 +28138,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -28053,6 +28282,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -28508,6 +28744,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
@@ -31000,6 +31250,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -31140,6 +31394,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -31595,6 +31856,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
@@ -34087,6 +34362,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -34227,6 +34506,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -34682,6 +34968,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -37174,6 +37474,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -37314,6 +37618,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#ffffff",
@@ -37769,6 +38080,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
@@ -40261,6 +40586,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -40401,6 +40730,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -40856,6 +41192,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#424650",
             "light": "#424650",
@@ -43348,6 +43698,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-container": {
+          "$description": "The border width of containers.",
+          "$value": "1px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -43488,6 +43842,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-background-card": {
           "$description": "The background color of a card.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
+        "color-background-card-embedded": {
+          "$description": "The background color of an embedded card.",
           "$value": {
             "dark": "#161d26",
             "light": "#161d26",
@@ -43943,6 +44304,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-border-card": {
           "$description": "The border color of a card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-border-card-embedded": {
+          "$description": "The border color of an embedded card.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
+        "color-border-container": {
+          "$description": "The border color of containers.",
           "$value": {
             "dark": "#424650",
             "light": "#424650",
@@ -46435,6 +46810,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of a selected card.",
       "$value": "2px",
     },
+    "border-width-container": {
+      "$description": "The border width of containers.",
+      "$value": "1px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "2px",
@@ -46575,6 +46954,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-background-card": {
       "$description": "The background color of a card.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
+    "color-background-card-embedded": {
+      "$description": "The background color of an embedded card.",
       "$value": {
         "dark": "#161d26",
         "light": "#ffffff",
@@ -47030,6 +47416,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-border-card": {
       "$description": "The border color of a card.",
+      "$value": {
+        "dark": "#424650",
+        "light": "#c6c6cd",
+      },
+    },
+    "color-border-card-embedded": {
+      "$description": "The border color of an embedded card.",
+      "$value": {
+        "dark": "#424650",
+        "light": "#c6c6cd",
+      },
+    },
+    "color-border-container": {
+      "$description": "The border color of containers.",
       "$value": {
         "dark": "#424650",
         "light": "#c6c6cd",

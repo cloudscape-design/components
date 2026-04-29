@@ -149,6 +149,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthContainer: {
+    description: 'The border width of containers.',
+    public: true,
+    themeable: true,
+  },
   borderWidthButton: {
     description: 'The border width of buttons.',
     public: true,

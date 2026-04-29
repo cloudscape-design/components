@@ -247,8 +247,8 @@
   box-sizing: border-box;
 
   &.refresh {
-    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
-    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-block: solid awsui.$border-width-container awsui.$color-border-container;
+    border-inline: solid awsui.$border-width-container awsui.$color-border-container;
   }
 
   &:not(.refresh)::before {

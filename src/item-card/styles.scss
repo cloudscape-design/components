@@ -13,18 +13,28 @@
 
 // Variant configuration maps — adjust values here for easy customization
 $variant-border-radius: (
-  'embedded': awsui.$border-radius-item-card-embedded,
-  'default': awsui.$border-radius-item-card-default,
+  'embedded': awsui.$border-radius-card-embedded,
+  'default': awsui.$border-radius-card-default,
+);
+
+$variant-background: (
+  'embedded': awsui.$color-background-card-embedded,
+  'default': awsui.$color-background-card,
+);
+
+$variant-border-color: (
+  'embedded': awsui.$color-border-card-embedded,
+  'default': awsui.$color-border-card,
 );
 
 $variant-padding-block: (
-  'embedded': awsui.$space-item-card-vertical-embedded,
-  'default': awsui.$space-item-card-vertical-default,
+  'embedded': awsui.$space-card-vertical-embedded,
+  'default': awsui.$space-card-vertical-default,
 );
 
 $variant-padding-inline: (
-  'embedded': awsui.$space-item-card-horizontal-embedded,
-  'default': awsui.$space-item-card-horizontal-default,
+  'embedded': awsui.$space-card-horizontal-embedded,
+  'default': awsui.$space-card-horizontal-default,
 );
 
 $action-padding-vertical: awsui.$space-scaled-xxs;
@@ -61,18 +71,18 @@ $action-padding-horizontal: awsui.$space-xxs;
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
-  background: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card);
+  background: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-card);
   min-inline-size: 0;
-  box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-item-card);
+  box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-card);
 
   &:before {
     @include styles.base-pseudo-element;
     box-shadow: none;
     border-color: transparent;
-    border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card);
-    border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card);
+    border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
+    border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-card)
+      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-card);
   }
 
   &::after {
@@ -88,8 +98,8 @@ $action-padding-horizontal: awsui.$space-xxs;
     background: awsui.$color-background-item-selected;
 
     &:before {
-      border-block: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
-      border-inline: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
+      border-block: solid awsui.$border-width-card-selected awsui.$color-border-card-highlighted;
+      border-inline: solid awsui.$border-width-card-selected awsui.$color-border-card-highlighted;
     }
   }
 
@@ -121,11 +131,17 @@ $action-padding-horizontal: awsui.$space-xxs;
   // Generate variant styles from the configuration maps
   @each $variant in ('embedded', 'default') {
     &.variant-#{$variant} {
+      background: var(#{custom-props.$styleItemCardBackgroundDefault}, map.get($variant-background, $variant));
+
       &,
       &:before,
       &::after,
       > .inner-card {
         @include apply-border-radius($variant);
+      }
+
+      &:before {
+        border-color: var(#{custom-props.$styleItemCardBorderColorDefault}, map.get($variant-border-color, $variant));
       }
 
       $padding-block: map.get($variant-padding-block, $variant);
