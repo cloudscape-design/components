@@ -285,7 +285,7 @@
   &-expandable-menu {
     &-trigger {
       color: awsui.$color-text-dropdown-group-label;
-      font-weight: bold;
+      font-weight: styles.$font-weight-bold;
 
       &:hover {
         color: awsui.$color-text-accent;
