@@ -34,14 +34,16 @@ type LoadingState = 'skeleton' | 'loading' | 'data';
 type SelectionMode = 'none' | 'single' | 'multi';
 
 export default function TableSkeletonRowsPage() {
-  const { urlParams, setUrlParams } = useAppContext<'loadingState' | 'skeletonRows' | 'dataRows' | 'stripedRows' | 'selectionMode'>();
-  
+  const { urlParams, setUrlParams } = useAppContext<
+    'loadingState' | 'skeletonRows' | 'dataRows' | 'stripedRows' | 'selectionMode'
+  >();
+
   const loadingState = (urlParams.loadingState || 'skeleton') as LoadingState;
   const skeletonRowsCount = String(urlParams.skeletonRows || '5');
   const dataRowsCount = String(urlParams.dataRows || '10');
   const stripedRows = urlParams.stripedRows !== 'false' && urlParams.stripedRows !== false;
   const selectionMode = (urlParams.selectionMode || 'multi') as SelectionMode;
-  
+
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
   const skeletonRows = parseInt(skeletonRowsCount, 10) || 0;
@@ -126,8 +128,8 @@ export default function TableSkeletonRowsPage() {
               </FormField>
 
               <FormField label="Table Options" stretch={false}>
-                <Checkbox 
-                  checked={stripedRows} 
+                <Checkbox
+                  checked={stripedRows}
                   onChange={({ detail }) => setUrlParams({ stripedRows: detail.checked })}
                 >
                   Striped rows
@@ -140,13 +142,15 @@ export default function TableSkeletonRowsPage() {
         <Table
           columnDefinitions={columnDefinitions}
           items={items}
-          skeleton={loadingState === 'skeleton' ? {rows: skeletonRows} : undefined}
+          skeleton={loadingState === 'skeleton' ? { rows: skeletonRows } : undefined}
           loading={loadingState !== 'data'}
           loadingText="Loading items..."
           empty="No items to display"
           selectionType={selectionMode === 'none' ? undefined : selectionMode}
           selectedItems={selectionMode !== 'none' ? selectedItems : undefined}
-          onSelectionChange={selectionMode !== 'none' ? ({ detail }) => setSelectedItems(detail.selectedItems) : undefined}
+          onSelectionChange={
+            selectionMode !== 'none' ? ({ detail }) => setSelectedItems(detail.selectedItems) : undefined
+          }
           stripedRows={stripedRows}
           header={
             <Header
