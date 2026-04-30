@@ -354,6 +354,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -2258,6 +2265,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -2312,6 +2326,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#687078",
           },
         },
         "color-text-input-disabled": {
@@ -3448,6 +3469,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -5352,6 +5380,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -5406,6 +5441,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#687078",
           },
         },
         "color-text-input-disabled": {
@@ -6542,6 +6584,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -8446,6 +8495,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -8500,6 +8556,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#687078",
           },
         },
         "color-text-input-disabled": {
@@ -9634,6 +9697,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -11540,6 +11610,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -11594,6 +11671,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#687078",
           },
         },
         "color-text-input-disabled": {
@@ -12728,6 +12812,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#f2f3f3",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
           },
         },
         "color-background-home-header": {
@@ -14634,6 +14725,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#687078",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -14688,6 +14786,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#687078",
           },
         },
         "color-text-input-disabled": {
@@ -15822,6 +15927,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#414750",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
           },
         },
         "color-background-home-header": {
@@ -17728,6 +17840,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#95a5a6",
+            "light": "#95a5a6",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -17782,6 +17901,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#aab7b8",
+            "light": "#aab7b8",
           },
         },
         "color-text-input-disabled": {
@@ -18916,6 +19042,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#f2f3f3",
+      },
+    },
+    "color-background-dropdown-item-selected": {
+      "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
       },
     },
     "color-background-home-header": {
@@ -20822,6 +20955,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#16191f",
       },
     },
+    "color-text-dropdown-item-secondary": {
+      "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+      "$value": {
+        "dark": "#95a5a6",
+        "light": "#687078",
+      },
+    },
     "color-text-empty": {
       "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
       "$value": {
@@ -20876,6 +21016,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#d5dbdb",
         "light": "#d5dbdb",
+      },
+    },
+    "color-text-icon-subtle": {
+      "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+      "$value": {
+        "dark": "#aab7b8",
+        "light": "#687078",
       },
     },
     "color-text-input-disabled": {
@@ -22015,6 +22162,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -23921,6 +24075,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#656871",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -23975,6 +24136,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#656871",
           },
         },
         "color-text-input-disabled": {
@@ -25109,6 +25277,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#131920",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
           },
         },
         "color-background-home-header": {
@@ -27015,6 +27190,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -27069,6 +27251,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
           },
         },
         "color-text-input-disabled": {
@@ -28203,6 +28392,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -30109,6 +30305,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#656871",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -30163,6 +30366,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#656871",
           },
         },
         "color-text-input-disabled": {
@@ -31297,6 +31507,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -33203,6 +33420,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#656871",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -33257,6 +33481,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#656871",
           },
         },
         "color-text-input-disabled": {
@@ -34391,6 +34622,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -36297,6 +36535,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#656871",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -36351,6 +36596,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#656871",
           },
         },
         "color-text-input-disabled": {
@@ -37485,6 +37737,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
+          },
+        },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
           },
         },
         "color-background-home-header": {
@@ -39391,6 +39650,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#656871",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -39445,6 +39711,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#656871",
           },
         },
         "color-text-input-disabled": {
@@ -40581,6 +40854,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -42485,6 +42765,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -42539,6 +42826,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
           },
         },
         "color-text-input-disabled": {
@@ -43675,6 +43969,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-dropdown-item-selected": {
+          "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -45579,6 +45880,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ebebf0",
           },
         },
+        "color-text-dropdown-item-secondary": {
+          "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+          "$value": {
+            "dark": "#a4a4ad",
+            "light": "#a4a4ad",
+          },
+        },
         "color-text-empty": {
           "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
           "$value": {
@@ -45633,6 +45941,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
+          },
+        },
+        "color-text-icon-subtle": {
+          "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+          "$value": {
+            "dark": "#b4b4bb",
+            "light": "#b4b4bb",
           },
         },
         "color-text-input-disabled": {
@@ -46767,6 +47082,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#131920",
         "light": "#f3f3f7",
+      },
+    },
+    "color-background-dropdown-item-selected": {
+      "$description": "The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
       },
     },
     "color-background-home-header": {
@@ -48673,6 +48995,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#0f141a",
       },
     },
+    "color-text-dropdown-item-secondary": {
+      "$description": "The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.",
+      "$value": {
+        "dark": "#a4a4ad",
+        "light": "#656871",
+      },
+    },
     "color-text-empty": {
       "$description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.",
       "$value": {
@@ -48727,6 +49056,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#c6c6cd",
         "light": "#c6c6cd",
+      },
+    },
+    "color-text-icon-subtle": {
+      "$description": "The color of subtle icons. For example: secondary icons with lower visual emphasis.",
+      "$value": {
+        "dark": "#b4b4bb",
+        "light": "#656871",
       },
     },
     "color-text-input-disabled": {
