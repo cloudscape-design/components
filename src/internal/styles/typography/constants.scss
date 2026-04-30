@@ -15,8 +15,8 @@ $font-family-monospace: awsui.$font-family-monospace;
 
 // Font weights
 $font-weight-heavy: awsui.$font-weight-heavy;
-$font-weight-bold: 700;
-$font-weight-normal: 400;
-$font-weight-lighter: 300;
+$font-weight-bold: awsui.$font-weight-bold;
+$font-weight-normal: awsui.$font-weight-normal;
+$font-weight-lighter: awsui.$font-weight-lighter;
 
 $letter-spacing-bold-link: 0.005em;
