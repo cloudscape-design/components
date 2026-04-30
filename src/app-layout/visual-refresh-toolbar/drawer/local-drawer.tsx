@@ -40,6 +40,7 @@ export function AppLayoutDrawerImplementation({
     drawersOpenQueue,
     onActiveDrawerChange,
     onActiveDrawerResize,
+    drawerAnimationDisabled,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id;
@@ -70,7 +71,8 @@ export function AppLayoutDrawerImplementation({
   const isLegacyDrawer = drawersOpenQueue === undefined;
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
-  const animationDisabled = activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id);
+  const animationDisabled =
+    drawerAnimationDisabled || (activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id));
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
