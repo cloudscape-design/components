@@ -11730,10 +11730,10 @@ Some attributes will be automatically combined with internal attribute values:
 
 We do not support using this attribute to apply custom styling.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLHRElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
         "type": "union",
         "values": [
-          "Omit<React.HTMLAttributes<HTMLHRElement>, "children">",
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
         ],
       },
@@ -11742,7 +11742,29 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLHRElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "defaultValue": "'horizontal'",
+      "description": "Orientation of the divider line.
+
+- \`"horizontal"\` (default) — renders a full-width horizontal line. Use inside block-level
+  containers to separate stacked content sections.
+- \`"vertical"\` — renders a full-height vertical line. Use inside flex or inline containers
+  to separate side-by-side elements (e.g. toolbar actions, breadcrumb segments).
+
+When \`semantic={true}\`, \`aria-orientation\` is set automatically to match this value.",
+      "inlineType": {
+        "name": "DividerProps.Orientation",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "orientation",
+      "optional": true,
+      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -11757,7 +11779,18 @@ By default, the divider is not semantic and is therefore hidden from assistive t
       "type": "boolean",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Text label rendered at the center of a horizontal divider line.
+Use for labels like "OR", "AND", or short section titles.
+
+Only supported when \`orientation="horizontal"\`. Ignored for vertical dividers.",
+      "displayName": "content",
+      "i18nTag": true,
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -38764,7 +38797,22 @@ wrapper.selectOptionByValue('option_1');
       "name": "SelectWrapper",
     },
     {
-      "methods": [],
+      "methods": [
+        {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
       "name": "DividerWrapper",
     },
     {
@@ -49147,7 +49195,17 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
       "name": "SelectWrapper",
     },
     {
-      "methods": [],
+      "methods": [
+        {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
       "name": "DividerWrapper",
     },
     {

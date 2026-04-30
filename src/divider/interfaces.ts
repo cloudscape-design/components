@@ -22,6 +22,30 @@ export interface DividerProps extends BaseComponentProps {
   semantic?: boolean;
 
   /**
+   * Orientation of the divider line.
+   *
+   * - `"horizontal"` (default) — renders a full-width horizontal line. Use inside block-level
+   *   containers to separate stacked content sections.
+   * - `"vertical"` — renders a full-height vertical line. Use inside flex or inline containers
+   *   to separate side-by-side elements (e.g. toolbar actions, breadcrumb segments).
+   *
+   * When `semantic={true}`, `aria-orientation` is set automatically to match this value.
+   *
+   * @defaultValue `"horizontal"`
+   */
+  orientation?: DividerProps.Orientation;
+
+  /**
+   * Text label rendered at the center of a horizontal divider line.
+   * Use for labels like "OR", "AND", or short section titles.
+   *
+   * Only supported when `orientation="horizontal"`. Ignored for vertical dividers.
+   *
+   * @displayname content
+   */
+  children?: React.ReactNode;
+
+  /**
    * Attributes to add to the native element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -31,5 +55,9 @@ export interface DividerProps extends BaseComponentProps {
    *
    * @awsuiSystem core
    */
-  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLHRElement>>;
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+}
+
+export namespace DividerProps {
+  export type Orientation = 'horizontal' | 'vertical';
 }

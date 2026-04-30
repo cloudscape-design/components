@@ -9,9 +9,12 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DividerProps>([
-  {
-    semantic: [false, true],
-  },
+  // Horizontal — no label
+  { semantic: [false, true] },
+  // Horizontal — with label
+  { children: ['OR', 'This is a longer section title'], semantic: [false, true] },
+  // Vertical
+  { orientation: ['vertical'], semantic: [false, true] },
 ]);
 
 export default function DividerPermutations() {
@@ -21,13 +24,21 @@ export default function DividerPermutations() {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
-            <div style={{ width: '300px', padding: '16px' }}>
-              <p>Above</p>
-              <Divider {...permutation} />
-              <p>Below</p>
-            </div>
-          )}
+          render={permutation =>
+            permutation.orientation === 'vertical' ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '16px', height: '48px' }}>
+                <span>Left</span>
+                <Divider {...permutation} />
+                <span>Right</span>
+              </div>
+            ) : (
+              <div style={{ width: '200px', padding: '16px' }}>
+                <p>Above</p>
+                <Divider {...permutation} />
+                <p>Below</p>
+              </div>
+            )
+          }
         />
       </ScreenshotArea>
     </>
