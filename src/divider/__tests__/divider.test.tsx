@@ -10,34 +10,71 @@ import styles from '../../../lib/components/divider/styles.css.js';
 
 function renderDivider(jsx: React.ReactElement) {
   const { container } = render(jsx);
-  return createWrapper(container).findDivider()!.getElement();
+  return createWrapper(container).findDivider()!;
 }
 
 describe('Divider', () => {
-  test('renders an hr element', () => {
-    expect(renderDivider(<Divider />).tagName).toBe('HR');
+  test('renders an hr element by default', () => {
+    expect(renderDivider(<Divider />).getElement().tagName).toBe('HR');
   });
 
   test('applies root CSS class', () => {
-    expect(renderDivider(<Divider />)).toHaveClass(styles.divider);
+    expect(renderDivider(<Divider />).getElement()).toHaveClass(styles.divider);
   });
 });
 
 describe('semantic prop', () => {
   test('is decorative by default (role="presentation")', () => {
-    expect(renderDivider(<Divider />)).toHaveAttribute('role', 'presentation');
+    expect(renderDivider(<Divider />).getElement()).toHaveAttribute('role', 'presentation');
   });
 
   test('semantic=false sets role="presentation" and no aria-orientation', () => {
-    const el = renderDivider(<Divider semantic={false} />);
+    const el = renderDivider(<Divider semantic={false} />).getElement();
     expect(el).toHaveAttribute('role', 'presentation');
     expect(el).not.toHaveAttribute('aria-orientation');
   });
 
-  test('semantic=true sets role="separator" and aria-orientation="horizontal"', () => {
-    const el = renderDivider(<Divider semantic={true} />);
+  test('semantic=true sets role="separator" and aria-orientation="horizontal" by default', () => {
+    const el = renderDivider(<Divider semantic={true} />).getElement();
     expect(el).toHaveAttribute('role', 'separator');
     expect(el).toHaveAttribute('aria-orientation', 'horizontal');
+  });
+});
+
+describe('orientation prop', () => {
+  test('horizontal renders an hr element', () => {
+    expect(renderDivider(<Divider orientation="horizontal" />).getElement().tagName).toBe('HR');
+  });
+
+  test('vertical renders a div element', () => {
+    expect(renderDivider(<Divider orientation="vertical" />).getElement().tagName).toBe('DIV');
+  });
+
+  test('semantic=true with vertical sets aria-orientation="vertical"', () => {
+    const el = renderDivider(<Divider semantic={true} orientation="vertical" />).getElement();
+    expect(el).toHaveAttribute('role', 'separator');
+    expect(el).toHaveAttribute('aria-orientation', 'vertical');
+  });
+});
+
+describe('children (label)', () => {
+  test('renders a div when children is set', () => {
+    expect(renderDivider(<Divider>OR</Divider>).getElement().tagName).toBe('DIV');
+  });
+
+  test('findLabel returns the label element with correct text', () => {
+    const wrapper = renderDivider(<Divider>OR</Divider>);
+    expect(wrapper.findLabel()!.getElement()).toHaveTextContent('OR');
+  });
+
+  test('findLabel returns null when no children', () => {
+    expect(renderDivider(<Divider />).findLabel()).toBeNull();
+  });
+
+  test('children is ignored for vertical orientation', () => {
+    const wrapper = renderDivider(<Divider orientation="vertical">OR</Divider>);
+    expect(wrapper.getElement().tagName).toBe('DIV');
+    expect(wrapper.findLabel()).toBeNull();
   });
 });
 
