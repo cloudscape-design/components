@@ -231,3 +231,21 @@ describe.each([false, true])('enableKeyboardNavigation=%s', enableKeyboardNaviga
     })
   );
 });
+
+test(
+  'disabled reason is displayed inside iframe',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await page.setWindowSize({ width: 1200, height: 800 });
+    await browser.url('#/light/table/with-iframe');
+    await page.runInsideIframe('#inner-iframe', true, async () => {
+      await page.waitForVisible(tableWrapper.toSelector());
+      // Click on the disabled-edit "Type (disabled edit)" column in the first row
+      // Column index 7: 1=checkbox, 2=id, 3=type, 4=dnsName, 5=imageId, 6=state, 7=type-edit
+      await page.click(tableWrapper.findBodyCell(1, 7).toSelector());
+      await page.waitForAssertion(() =>
+        expect(page.getText(liveRegion$)).resolves.toContain('Editing is disabled in iframe test')
+      );
+    });
+  })
+);
