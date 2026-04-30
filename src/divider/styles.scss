@@ -46,7 +46,7 @@
   font-size: awsui.$font-size-body-s;
   line-height: awsui.$line-height-body-s;
   text-align: center;
-  overflow-wrap: break-word;
+  @include styles.text-wrapping;
 }
 
 // Vertical
