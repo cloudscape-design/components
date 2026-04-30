@@ -11786,7 +11786,6 @@ Use for labels like "OR", "AND", or short section titles.
 
 Only supported when \`orientation="horizontal"\`. Ignored for vertical dividers.",
       "displayName": "content",
-      "i18nTag": true,
       "isDefault": true,
       "name": "children",
     },
