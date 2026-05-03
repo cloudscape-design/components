@@ -29,6 +29,7 @@ interface RowProps<T> {
   customRowActions?: (props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
   removeButtonAriaLabel?: (item: T) => string;
+  parentDirection?: 'vertical' | 'horizontal';
 }
 
 function render<T>(
@@ -60,6 +61,7 @@ export const Row = React.memo(
     customRowActions,
     onRemoveButtonClick,
     removeButtonAriaLabel,
+    parentDirection,
   }: RowProps<T>) => {
     const i18n = useInternalI18n('attribute-editor');
 
@@ -85,9 +87,15 @@ export const Row = React.memo(
       ownRow: !removeButtonOnSameLine,
     });
 
+    const withLabels = definition.every(item => !!item.label);
+
     return (
       <div
-        className={clsx(styles.row, layout.rows.length === 1 && styles['single-row'])}
+        className={clsx(
+          styles.row,
+          layout.rows.length === 1 && styles['single-row'],
+          styles[`direction-${parentDirection}`]
+        )}
         role="group"
         aria-labelledby={`${firstControlId}-label ${firstControlId}`}
       >
@@ -118,7 +126,7 @@ export const Row = React.memo(
         })}
         <div
           className={clsx(styles['remove-button-container'], {
-            [styles['remove-button-field-padding']]: removeButtonOnSameLine && index === 0,
+            [styles['remove-button-field-padding']]: withLabels && removeButtonOnSameLine && index === 0,
             [styles['remove-button-own-row']]: !removeButtonOnSameLine,
           })}
           style={{ ...getRemoveButtonGridColumns(layout, gridColumnEnd) }}

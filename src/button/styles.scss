@@ -154,6 +154,33 @@
     border-inline-width: 0;
   }
 
+  &.variant-condensed-filter {
+    padding-inline: awsui.$space-s;
+    padding-block: 5px;
+    border-start-end-radius: styles.$control-border-radius;
+    border-end-end-radius: styles.$control-border-radius;
+    background: awsui.$color-background-button-normal-default;
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-inline-start: none;
+    color: awsui.$color-text-button-normal-default;
+  }
+
+  &.variant-condensed-filter-standalone {
+    padding-inline: awsui.$space-s;
+    padding-block: 5px;
+    border-start-end-radius: styles.$control-border-radius;
+    border-end-end-radius: styles.$control-border-radius;
+    border-start-start-radius: styles.$control-border-radius;
+    border-end-start-radius: styles.$control-border-radius;
+    background: awsui.$color-background-button-normal-default;
+    border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+    border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+    color: awsui.$color-text-button-normal-default;
+  }
+
   > .icon-left {
     position: relative;
     // margin-left was breaking layout on firefox

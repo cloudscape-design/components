@@ -38,6 +38,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
+  variant?: 'group-start' | 'group-middle' | 'group-end';
 }
 
 const ButtonTrigger = (
@@ -63,6 +64,7 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
+    variant,
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
@@ -84,7 +86,8 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
-      !!hasCustomContent && styles['custom-option']
+      !!hasCustomContent && styles['custom-option'],
+      !!variant && styles[`variant-${variant}`]
     ),
     disabled: disabled,
     'aria-expanded': pressed,
