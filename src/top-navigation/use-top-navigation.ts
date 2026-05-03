@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { TopNavigationProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -41,7 +40,6 @@ interface UseTopNavigation {
   virtualRef: React.Ref<HTMLDivElement>;
 
   responsiveState: ResponsiveState;
-  breakpoint: 'default' | 'xxs' | 's';
   isSearchExpanded: boolean;
   onSearchUtilityClick: () => void;
 }
@@ -50,10 +48,9 @@ interface UseTopNavigation {
 const RESPONSIVENESS_BUFFER = 20;
 
 export function useTopNavigation({ identity, search, utilities }: UseTopNavigationParams): UseTopNavigation {
-  // Refs and breakpoints
+  // Refs
   const mainRef = useRef<HTMLElement | null>(null);
   const virtualRef = useRef<HTMLDivElement | null>(null);
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xxs', 's']);
 
   // Responsiveness state
   // The component works by calculating the possible resize states that it can
@@ -149,13 +146,12 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
     }
   }, [isSearchExpanded, mainRef]);
 
-  const mergedMainRef = useMergeRefs(mainRef, containerQueryRef, breakpointRef);
+  const mergedMainRef = useMergeRefs(mainRef, containerQueryRef);
 
   return {
     mainRef: mergedMainRef,
     virtualRef: onVirtualMount,
     responsiveState: responsiveState ?? responsiveStates[0],
-    breakpoint: breakpoint ?? 'default',
     isSearchExpanded: !!isSearchExpanded,
     onSearchUtilityClick: () => setSearchMinimized(isSearchMinimized => !isSearchMinimized),
   };
