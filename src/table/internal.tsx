@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -294,11 +294,10 @@ const InternalTable = React.forwardRef(
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
-    const visibleColumnDefinitions = getVisibleColumnDefinitions({
-      columnDefinitions,
-      columnDisplay,
-      visibleColumns,
-    });
+    const visibleColumnDefinitions = useMemo(
+      () => getVisibleColumnDefinitions({ columnDefinitions, columnDisplay, visibleColumns }),
+      [columnDefinitions, columnDisplay, visibleColumns]
+    );
 
     const selectionProps = {
       items: allItems,
@@ -360,17 +359,20 @@ const InternalTable = React.forwardRef(
       headerIdRef.current = id;
     }, []);
 
-    const visibleColumnWidthsWithSelection: ColumnWidthDefinition[] = [];
-    const visibleColumnIdsWithSelection: PropertyKey[] = [];
-    if (hasSelection) {
-      visibleColumnWidthsWithSelection.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
-      visibleColumnIdsWithSelection.push(selectionColumnId);
-    }
-    for (let columnIndex = 0; columnIndex < visibleColumnDefinitions.length; columnIndex++) {
-      const columnId = getColumnKey(visibleColumnDefinitions[columnIndex], columnIndex);
-      visibleColumnWidthsWithSelection.push({ ...visibleColumnDefinitions[columnIndex], id: columnId });
-      visibleColumnIdsWithSelection.push(columnId);
-    }
+    const { visibleColumnWidthsWithSelection, visibleColumnIdsWithSelection } = useMemo(() => {
+      const widths: ColumnWidthDefinition[] = [];
+      const ids: PropertyKey[] = [];
+      if (hasSelection) {
+        widths.push({ id: selectionColumnId, width: SELECTION_COLUMN_WIDTH });
+        ids.push(selectionColumnId);
+      }
+      for (let columnIndex = 0; columnIndex < visibleColumnDefinitions.length; columnIndex++) {
+        const columnId = getColumnKey(visibleColumnDefinitions[columnIndex], columnIndex);
+        widths.push({ ...visibleColumnDefinitions[columnIndex], id: columnId });
+        ids.push(columnId);
+      }
+      return { visibleColumnWidthsWithSelection: widths, visibleColumnIdsWithSelection: ids };
+    }, [hasSelection, visibleColumnDefinitions]);
 
     const stickyState = useStickyColumns({
       visibleColumns: visibleColumnIdsWithSelection,
