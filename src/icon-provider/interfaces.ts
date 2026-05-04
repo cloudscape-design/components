@@ -184,6 +184,22 @@ export interface IconProviderProps extends BaseComponentProps {
    * The same applies to switching icons in the same configuration (for example, `{'close': <Icon name='arrow-left' />, 'arrow-left': <Icon name='close' />}`).
    */
   icons: IconProviderProps.Icons | null;
+
+  /**
+   * Specifies a scale factor applied to all descendant `Icon` components via CSS `transform: scale()`.
+   *
+   * The icon retains its original size class and layout box, but is visually scaled by this factor.
+   * For example, a value of `0.75` renders a 16×16 icon visually at 12×12 while keeping its 16px
+   * layout footprint. A value of `1` (or omitting the prop) means no scaling.
+   *
+   * Use this to create dense UI regions where icons should appear smaller without changing their
+   * logical size or requiring per-component layout adjustments.
+   *
+   * Nested `IconProvider` instances can override or reset this value.
+   *
+   * @defaultValue 1 (no scaling)
+   */
+  iconScale?: number;
 }
 
 export namespace IconProviderProps {

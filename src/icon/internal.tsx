@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalIconContext } from '../icon-provider/context';
+import { InternalIconContext, InternalIconScaleContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -54,6 +54,7 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
+  const iconScale = useContext(InternalIconScaleContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
@@ -61,7 +62,13 @@ const InternalIcon = ({
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
-  const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
+
+  // Build inline styles: combine contextual height with scale transform
+  const scaleTransform = iconScale !== 1 ? `scale(${iconScale})` : undefined;
+  const inlineStyles: React.CSSProperties = {
+    ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
+    ...(scaleTransform ? { transform: scaleTransform } : {}),
+  };
   const baseProps = getBaseProps(props);
 
   baseProps.className = clsx(
