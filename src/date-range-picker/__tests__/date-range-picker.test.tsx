@@ -606,7 +606,7 @@ describe('renderTriggerContent', () => {
 });
 
 describe('disabled reason behavior', () => {
-  const findDate = (wrapper: DateRangePickerWrapper) => wrapper.findDropdown()!.findDateAt('left', 1, 1);
+  const findDate = (wrapper: DateRangePickerWrapper) => wrapper.findDropdown()!.findDateAt('left', 2, 1);
 
   test('clicking on disabled reason does not close the calendar', () => {
     const { wrapper } = renderDateRangePicker({
