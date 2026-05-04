@@ -139,6 +139,7 @@ interface UseStickyCellStylesProps {
   stickyColumns: StickyColumnsModel;
   columnId: PropertyKey;
   getClassName: (styles: null | StickyColumnsCellState) => Record<string, boolean>;
+  classOnly?: boolean;
 }
 
 interface StickyCellStyles {

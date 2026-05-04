@@ -51,6 +51,14 @@ export interface TableHeaderCellProps<ItemType> {
   hasDynamicContent?: boolean;
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
+  colSpan?: number;
+  rowSpan?: number;
+  /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
+  columnGroupId?: string;
+  /** When true, this cell is the rightmost child within its parent group. */
+  isLastChildOfGroup?: boolean;
+  /** Determine if the cell is the right most cell of the header */
+  isRightmost?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -81,6 +89,11 @@ export function TableHeaderCell<ItemType>({
   isExpandable,
   hasDynamicContent,
   variant,
+  colSpan,
+  rowSpan,
+  columnGroupId,
+  isLastChildOfGroup,
+  isRightmost,
   tableVariant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -139,6 +152,11 @@ export function TableHeaderCell<ItemType>({
       tableRole={tableRole}
       variant={variant}
       tableVariant={tableVariant}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      columnGroupId={columnGroupId}
+      isLastChildOfGroup={isLastChildOfGroup}
+      isRightmost={isRightmost}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({
@@ -214,9 +232,13 @@ export function TableHeaderCell<ItemType>({
           // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
+          dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
-        <Divider className={styles['resize-divider']} />
+        <Divider
+          position={isLastChildOfGroup ? 'top' : undefined}
+          variant={columnGroupId || (rowSpan && rowSpan > 1) ? 'interactive' : 'default'}
+        />
       )}
     </TableThElement>
   );
