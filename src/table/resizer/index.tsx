@@ -30,6 +30,7 @@ interface ResizerProps {
   roleDescription?: string;
   tooltipText?: string;
   isBorderless: boolean;
+  dividerPosition?: DividerPosition;
 }
 
 const RESIZE_THROTTLE = 25;
@@ -37,8 +38,27 @@ const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Divider({ className }: { className?: string }) {
-  return <span className={clsx(styles.divider, styles['divider-disabled'], className)} />;
+export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
+
+export function Divider({
+  className,
+  position,
+  variant = 'default',
+}: {
+  className?: string;
+  position?: DividerPosition;
+  variant?: 'default' | 'interactive';
+}) {
+  return (
+    <span
+      className={clsx(
+        styles.divider,
+        variant === 'default' && styles['divider-disabled'],
+        position && position !== 'default' && styles[`divider-position-${position}`],
+        className
+      )}
+    />
+  );
 }
 
 export function Resizer({
@@ -52,6 +72,7 @@ export function Resizer({
   roleDescription,
   tooltipText,
   isBorderless,
+  dividerPosition,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
   onWidthUpdateCommit = useStableCallback(onWidthUpdateCommit);
@@ -411,7 +432,11 @@ export function Resizer({
           data-focus-id={focusId}
         />
         <span
-          className={clsx(styles['divider-interactive'], (isPointerDown || isDragging) && styles['divider-active'])}
+          className={clsx(
+            styles['divider-interactive'],
+            (isPointerDown || isDragging) && styles['divider-active'],
+            dividerPosition && dividerPosition !== 'default' && styles[`divider-position-${dividerPosition}`]
+          )}
           data-awsui-table-suppress-navigation={true}
           ref={resizerSeparatorRef}
           id={separatorId}

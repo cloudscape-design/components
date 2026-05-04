@@ -38,6 +38,26 @@ export interface TableThElementProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   ariaLabel?: string;
+  colSpan?: number;
+  rowSpan?: number;
+  scope?: 'col' | 'colgroup';
+  /**
+   * ID of the direct parent group for this leaf column cell.
+   * Used as a `data-column-group-id` test-utils hook to allow querying columns by group.
+   * Omit for top-level columns that have no group parent.
+   */
+  columnGroupId?: string;
+  /**
+   * When true, this cell is the rightmost child within its parent group.
+   * Its divider/resizer extends fully to connect to the parent group's horizontal border.
+   */
+  isLastChildOfGroup?: boolean;
+  /** When true, this cell occupies the rightmost visual column position in the table. */
+  isRightmost?: boolean;
+  /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
+  extraClassName?: string;
+  /** Additional ref for boundary sticky subscription (imperatively updates shadow classes). */
+  extraRef?: React.RefCallback<HTMLElement>;
 }
 
 export function TableThElement({
@@ -60,6 +80,14 @@ export function TableThElement({
   variant,
   ariaLabel,
   tableVariant,
+  colSpan,
+  rowSpan,
+  scope,
+  columnGroupId,
+  isLastChildOfGroup,
+  isRightmost,
+  extraClassName,
+  extraRef,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -71,12 +99,12 @@ export function TableThElement({
   });
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, extraRef);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
   return (
     <th
-      data-focus-id={`header-${String(columnId)}`}
+      // data-focus-id={`header-${String(columnId)}`}
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
@@ -87,6 +115,7 @@ export function TableThElement({
         isVisualRefresh && styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         tableVariant && styles[`table-variant-${tableVariant}`],
+        scope === 'colgroup' && styles['header-cell-group'],
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,
@@ -95,15 +124,24 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
+          [styles['header-cell-grouped']]: !!columnGroupId,
+          [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
+          [styles['header-cell-rightmost']]: isRightmost,
         },
-        stickyStyles.className
+        stickyStyles.className,
+        extraClassName
       )}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      scope={scope}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+      {...(isRightmost ? { 'data-rightmost': true } : {})}
     >
       {children}
     </th>

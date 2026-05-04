@@ -1,13 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import React, { useContext, useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import {
   Box,
-  Button,
   FormField,
   Header,
   Input,
@@ -15,8 +13,6 @@ import {
   Pagination,
   Select,
   SpaceBetween,
-  StatusIndicator,
-  StatusIndicatorProps,
   Table,
   TableProps,
   TextFilter,
@@ -27,248 +23,41 @@ import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
 // ============================================================================
-// Data model
+// Data
 // ============================================================================
-
-type InstanceState = 'running' | 'stopped' | 'pending' | 'terminated';
 
 interface Instance {
   id: string;
   name: string;
   type: string;
   az: string;
-  state: InstanceState;
-  cpuUtilization: number;
-  memoryUtilization: number;
-  networkIn: number;
-  networkOut: number;
-  monthlyCost: number;
-  spotPrice: number;
-  launchDate: string;
+  state: string;
+  cpu: number;
+  memory: number;
+  netIn: number;
+  netOut: number;
+  cost: number;
 }
 
-const stateIndicator: Record<InstanceState, StatusIndicatorProps['type']> = {
-  running: 'success',
-  stopped: 'stopped',
-  pending: 'pending',
-  terminated: 'error',
-};
+const TYPES = ['t3.medium', 't3.large', 'r5.xlarge', 'c5.large', 'p3.2xlarge'];
+const AZS = ['us-east-1a', 'us-east-1b', 'us-east-1c', 'us-east-1d'];
+const STATES = ['running', 'stopped', 'pending'];
 
-const allInstances: Instance[] = [
-  {
-    id: 'i-001',
-    name: 'web-server-1',
-    type: 't3.medium',
-    az: 'us-east-1a',
-    state: 'running',
-    cpuUtilization: 45.2,
-    memoryUtilization: 62.8,
-    networkIn: 1250,
-    networkOut: 890,
-    monthlyCost: 30.4,
-    spotPrice: 0.0416,
-    launchDate: '2025-01-15',
-  },
-  {
-    id: 'i-002',
-    name: 'api-server-1',
-    type: 't3.large',
-    az: 'us-east-1b',
-    state: 'running',
-    cpuUtilization: 78.5,
-    memoryUtilization: 81.2,
-    networkIn: 3420,
-    networkOut: 2890,
-    monthlyCost: 60.8,
-    spotPrice: 0.0832,
-    launchDate: '2025-02-20',
-  },
-  {
-    id: 'i-003',
-    name: 'db-server-1',
-    type: 'r5.xlarge',
-    az: 'us-east-1c',
-    state: 'running',
-    cpuUtilization: 23.1,
-    memoryUtilization: 45.6,
-    networkIn: 890,
-    networkOut: 450,
-    monthlyCost: 201.6,
-    spotPrice: 0.252,
-    launchDate: '2024-11-03',
-  },
-  {
-    id: 'i-004',
-    name: 'cache-server-1',
-    type: 'r5.large',
-    az: 'us-east-1a',
-    state: 'stopped',
-    cpuUtilization: 0,
-    memoryUtilization: 0,
-    networkIn: 0,
-    networkOut: 0,
-    monthlyCost: 100.8,
-    spotPrice: 0.126,
-    launchDate: '2024-08-12',
-  },
-  {
-    id: 'i-005',
-    name: 'worker-1',
-    type: 'c5.2xlarge',
-    az: 'us-east-1d',
-    state: 'running',
-    cpuUtilization: 91.3,
-    memoryUtilization: 88.7,
-    networkIn: 4560,
-    networkOut: 3210,
-    monthlyCost: 248.0,
-    spotPrice: 0.34,
-    launchDate: '2025-03-01',
-  },
-  {
-    id: 'i-006',
-    name: 'batch-processor',
-    type: 'c5.xlarge',
-    az: 'us-east-1a',
-    state: 'pending',
-    cpuUtilization: 0,
-    memoryUtilization: 0,
-    networkIn: 0,
-    networkOut: 0,
-    monthlyCost: 124.0,
-    spotPrice: 0.17,
-    launchDate: '2025-03-25',
-  },
-  {
-    id: 'i-007',
-    name: 'ml-training-1',
-    type: 'p3.2xlarge',
-    az: 'us-east-1b',
-    state: 'running',
-    cpuUtilization: 95.8,
-    memoryUtilization: 92.1,
-    networkIn: 8900,
-    networkOut: 7200,
-    monthlyCost: 2203.2,
-    spotPrice: 0.918,
-    launchDate: '2025-01-10',
-  },
-  {
-    id: 'i-008',
-    name: 'dev-server-1',
-    type: 't3.micro',
-    az: 'us-east-1c',
-    state: 'stopped',
-    cpuUtilization: 0,
-    memoryUtilization: 0,
-    networkIn: 0,
-    networkOut: 0,
-    monthlyCost: 7.6,
-    spotPrice: 0.0031,
-    launchDate: '2024-06-15',
-  },
-  {
-    id: 'i-009',
-    name: 'load-balancer-1',
-    type: 't3.small',
-    az: 'us-east-1a',
-    state: 'running',
-    cpuUtilization: 12.4,
-    memoryUtilization: 28.3,
-    networkIn: 15600,
-    networkOut: 14200,
-    monthlyCost: 15.2,
-    spotPrice: 0.0104,
-    launchDate: '2024-12-01',
-  },
-  {
-    id: 'i-010',
-    name: 'monitoring-1',
-    type: 't3.medium',
-    az: 'us-east-1b',
-    state: 'running',
-    cpuUtilization: 34.7,
-    memoryUtilization: 55.9,
-    networkIn: 2100,
-    networkOut: 1800,
-    monthlyCost: 30.4,
-    spotPrice: 0.0416,
-    launchDate: '2025-02-14',
-  },
-  {
-    id: 'i-011',
-    name: 'staging-web',
-    type: 't3.medium',
-    az: 'us-east-1c',
-    state: 'terminated',
-    cpuUtilization: 0,
-    memoryUtilization: 0,
-    networkIn: 0,
-    networkOut: 0,
-    monthlyCost: 0,
-    spotPrice: 0.0416,
-    launchDate: '2024-05-20',
-  },
-  {
-    id: 'i-012',
-    name: 'analytics-1',
-    type: 'r5.2xlarge',
-    az: 'us-east-1a',
-    state: 'running',
-    cpuUtilization: 67.2,
-    memoryUtilization: 78.4,
-    networkIn: 5600,
-    networkOut: 4300,
-    monthlyCost: 403.2,
-    spotPrice: 0.504,
-    launchDate: '2025-01-28',
-  },
-  {
-    id: 'i-013',
-    name: 'queue-worker-1',
-    type: 'c5.large',
-    az: 'us-east-1b',
-    state: 'running',
-    cpuUtilization: 55.1,
-    memoryUtilization: 42.3,
-    networkIn: 1800,
-    networkOut: 1200,
-    monthlyCost: 62.0,
-    spotPrice: 0.085,
-    launchDate: '2025-03-10',
-  },
-  {
-    id: 'i-014',
-    name: 'search-node-1',
-    type: 'r5.xlarge',
-    az: 'us-east-1c',
-    state: 'running',
-    cpuUtilization: 41.8,
-    memoryUtilization: 71.2,
-    networkIn: 3200,
-    networkOut: 2800,
-    monthlyCost: 201.6,
-    spotPrice: 0.252,
-    launchDate: '2024-10-05',
-  },
-  {
-    id: 'i-015',
-    name: 'gateway-1',
-    type: 't3.large',
-    az: 'us-east-1a',
-    state: 'running',
-    cpuUtilization: 28.9,
-    memoryUtilization: 35.6,
-    networkIn: 12400,
-    networkOut: 11800,
-    monthlyCost: 60.8,
-    spotPrice: 0.0832,
-    launchDate: '2024-09-18',
-  },
-];
+const allInstances: Instance[] = Array.from({ length: 15 }, (_, i) => ({
+  id: `i-${String(i + 1).padStart(3, '0')}`,
+  name: `instance-${i + 1}`,
+  type: TYPES[i % TYPES.length],
+  az: AZS[i % AZS.length],
+  state: STATES[i % STATES.length],
+  cpu: +(Math.random() * 100).toFixed(1),
+  memory: +(Math.random() * 100).toFixed(1),
+  netIn: Math.round(Math.random() * 10000),
+  netOut: Math.round(Math.random() * 10000),
+  cost: +(Math.random() * 500).toFixed(2),
+}));
 
 // ============================================================================
-// Column definitions
+// Column & group definitions
 // ============================================================================
 
 const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
@@ -278,107 +67,23 @@ const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
     cell: item => <Link href="#">{item.id}</Link>,
     sortingField: 'id',
     isRowHeader: true,
-    minWidth: 160,
   },
-  {
-    id: 'name',
-    header: 'Name',
-    cell: item => item.name,
-    sortingField: 'name',
-    minWidth: 180,
-    editConfig: {
-      ariaLabel: 'Edit name',
-      editIconAriaLabel: 'editable',
-      errorIconAriaLabel: 'Error',
-      editingCell: (item, { currentValue, setValue }) => (
-        <Input
-          autoFocus={true}
-          value={currentValue ?? item.name}
-          onChange={event => setValue(event.detail.value)}
-          ariaLabel="Edit instance name"
-        />
-      ),
-    },
-  },
-  { id: 'type', header: 'Instance type', cell: item => item.type, sortingField: 'type', minWidth: 140 },
-  { id: 'az', header: 'Availability zone', cell: item => item.az, sortingField: 'az', minWidth: 160 },
-  {
-    id: 'state',
-    header: 'State',
-    cell: item => <StatusIndicator type={stateIndicator[item.state]}>{item.state}</StatusIndicator>,
-    sortingField: 'state',
-    minWidth: 130,
-  },
-  {
-    id: 'cpuUtilization',
-    header: 'CPU (%)',
-    cell: item => `${item.cpuUtilization.toFixed(1)}%`,
-    sortingField: 'cpuUtilization',
-    minWidth: 110,
-  },
-  {
-    id: 'memoryUtilization',
-    header: 'Memory (%)',
-    cell: item => `${item.memoryUtilization.toFixed(1)}%`,
-    sortingField: 'memoryUtilization',
-    minWidth: 120,
-  },
-  {
-    id: 'networkIn',
-    header: 'Network in (MB/s)',
-    cell: item => item.networkIn.toLocaleString(),
-    sortingField: 'networkIn',
-    minWidth: 150,
-  },
-  {
-    id: 'networkOut',
-    header: 'Network out (MB/s)',
-    cell: item => item.networkOut.toLocaleString(),
-    sortingField: 'networkOut',
-    minWidth: 160,
-  },
-  {
-    id: 'monthlyCost',
-    header: 'Monthly cost ($)',
-    cell: item => `$${item.monthlyCost.toFixed(2)}`,
-    sortingField: 'monthlyCost',
-    minWidth: 150,
-    editConfig: {
-      ariaLabel: 'Edit monthly cost',
-      editIconAriaLabel: 'editable',
-      errorIconAriaLabel: 'Error',
-      editingCell: (item, { currentValue, setValue }) => (
-        <Input
-          autoFocus={true}
-          value={currentValue ?? String(item.monthlyCost)}
-          onChange={event => setValue(event.detail.value)}
-          ariaLabel="Edit monthly cost"
-          inputMode="decimal"
-        />
-      ),
-      validation: (_item, value) => (value !== undefined && isNaN(Number(value)) ? 'Must be a number' : undefined),
-    },
-  },
-  {
-    id: 'spotPrice',
-    header: 'Spot price ($/hr)',
-    cell: item => `$${item.spotPrice.toFixed(4)}`,
-    sortingField: 'spotPrice',
-    minWidth: 150,
-  },
-  { id: 'launchDate', header: 'Launch date', cell: item => item.launchDate, sortingField: 'launchDate', minWidth: 140 },
+  { id: 'name', header: 'Name', cell: item => item.name, sortingField: 'name' },
+  { id: 'type', header: 'Type', cell: item => item.type, sortingField: 'type' },
+  { id: 'az', header: 'AZ', cell: item => item.az, sortingField: 'az' },
+  { id: 'state', header: 'State', cell: item => item.state, sortingField: 'state' },
+  { id: 'cpu', header: 'CPU (%)', cell: item => `${item.cpu}%`, sortingField: 'cpu' },
+  { id: 'memory', header: 'Memory (%)', cell: item => `${item.memory}%`, sortingField: 'memory' },
+  { id: 'netIn', header: 'Network in', cell: item => item.netIn.toLocaleString(), sortingField: 'netIn' },
+  { id: 'netOut', header: 'Network out', cell: item => item.netOut.toLocaleString(), sortingField: 'netOut' },
+  { id: 'cost', header: 'Cost ($)', cell: item => `$${item.cost}`, sortingField: 'cost' },
 ];
 
-// ============================================================================
-// Group definitions
-// ============================================================================
-
 const groupDefinitions: TableProps.GroupDefinition[] = [
-  { id: 'identity', header: 'Identity' },
-  { id: 'configuration', header: 'Configuration' },
+  { id: 'config', header: 'Configuration' },
   { id: 'performance', header: 'Performance' },
-  { id: 'metrics', header: 'Metrics' },
   { id: 'network', header: 'Network' },
+  { id: 'metrics', header: 'Metrics' },
   { id: 'cost', header: 'Cost' },
 ];
 
@@ -386,7 +91,7 @@ const groupDefinitions: TableProps.GroupDefinition[] = [
 // Column display presets
 // ============================================================================
 
-type GroupingPreset = 'nested' | 'flat' | 'single-level' | 'single-child-groups';
+type GroupingPreset = 'flat' | 'single-level' | 'nested' | 'single-child-groups';
 
 const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayProperties[]> = {
   flat: [
@@ -395,20 +100,18 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
     { id: 'type', visible: true },
     { id: 'az', visible: true },
     { id: 'state', visible: true },
-    { id: 'cpuUtilization', visible: true },
-    { id: 'memoryUtilization', visible: true },
-    { id: 'networkIn', visible: true },
-    { id: 'networkOut', visible: true },
-    { id: 'monthlyCost', visible: true },
-    { id: 'spotPrice', visible: true },
-    { id: 'launchDate', visible: true },
+    { id: 'cpu', visible: true },
+    { id: 'memory', visible: true },
+    { id: 'netIn', visible: true },
+    { id: 'netOut', visible: true },
+    { id: 'cost', visible: true },
   ],
   'single-level': [
     { id: 'id', visible: true },
     { id: 'name', visible: true },
     {
       type: 'group',
-      id: 'configuration',
+      id: 'config',
       visible: true,
       children: [
         { id: 'type', visible: true },
@@ -421,8 +124,8 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
       id: 'performance',
       visible: true,
       children: [
-        { id: 'cpuUtilization', visible: true },
-        { id: 'memoryUtilization', visible: true },
+        { id: 'cpu', visible: true },
+        { id: 'memory', visible: true },
       ],
     },
     {
@@ -430,27 +133,18 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
       id: 'network',
       visible: true,
       children: [
-        { id: 'networkIn', visible: true },
-        { id: 'networkOut', visible: true },
+        { id: 'netIn', visible: true },
+        { id: 'netOut', visible: true },
       ],
     },
-    {
-      type: 'group',
-      id: 'cost',
-      visible: true,
-      children: [
-        { id: 'monthlyCost', visible: true },
-        { id: 'spotPrice', visible: true },
-      ],
-    },
-    { id: 'launchDate', visible: true },
+    { id: 'cost', visible: true },
   ],
   nested: [
     { id: 'id', visible: true },
     { id: 'name', visible: true },
     {
       type: 'group',
-      id: 'configuration',
+      id: 'config',
       visible: true,
       children: [
         { id: 'type', visible: true },
@@ -468,8 +162,8 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
           id: 'performance',
           visible: true,
           children: [
-            { id: 'cpuUtilization', visible: true },
-            { id: 'memoryUtilization', visible: true },
+            { id: 'cpu', visible: true },
+            { id: 'memory', visible: true },
           ],
         },
         {
@@ -477,65 +171,37 @@ const columnDisplayPresets: Record<GroupingPreset, TableProps.ColumnDisplayPrope
           id: 'network',
           visible: true,
           children: [
-            { id: 'networkIn', visible: true },
-            { id: 'networkOut', visible: true },
+            { id: 'netIn', visible: true },
+            { id: 'netOut', visible: true },
           ],
         },
       ],
     },
-    {
-      type: 'group',
-      id: 'cost',
-      visible: true,
-      children: [
-        { id: 'monthlyCost', visible: true },
-        { id: 'spotPrice', visible: true },
-      ],
-    },
-    { id: 'launchDate', visible: true },
+    { id: 'cost', visible: true },
   ],
   'single-child-groups': [
     { id: 'id', visible: true },
     { id: 'name', visible: true },
-    { type: 'group', id: 'configuration', visible: true, children: [{ id: 'type', visible: true }] },
+    { type: 'group', id: 'config', visible: true, children: [{ id: 'type', visible: true }] },
     { id: 'az', visible: true },
     { id: 'state', visible: true },
-    { type: 'group', id: 'performance', visible: true, children: [{ id: 'cpuUtilization', visible: true }] },
-    { type: 'group', id: 'cost', visible: true, children: [{ id: 'monthlyCost', visible: true }] },
-    { id: 'launchDate', visible: true },
+    { type: 'group', id: 'performance', visible: true, children: [{ id: 'cpu', visible: true }] },
+    { id: 'memory', visible: true },
+    { id: 'netIn', visible: true },
+    { id: 'netOut', visible: true },
+    { id: 'cost', visible: true },
   ],
 };
 
-const groupingPresetOptions = [
+const presetOptions = [
   { value: 'single-level', label: 'Single-level groups' },
   { value: 'nested', label: 'Nested groups (3 levels)' },
-  { value: 'mixed', label: 'Mixed (grouped + ungrouped)' },
   { value: 'single-child-groups', label: 'Single-child groups' },
-  { value: 'flat', label: 'Without grouping / current' },
+  { value: 'flat', label: 'Without grouping' },
 ];
 
 // ============================================================================
-// Helpers
-// ============================================================================
-
-function EmptyState({ title, subtitle, action }: { title: string; subtitle?: string; action?: React.ReactNode }) {
-  return (
-    <Box textAlign="center" color="inherit">
-      <Box variant="strong" textAlign="center" color="inherit">
-        {title}
-      </Box>
-      {subtitle && (
-        <Box variant="p" padding={{ bottom: 's' }} color="inherit">
-          {subtitle}
-        </Box>
-      )}
-      {action}
-    </Box>
-  );
-}
-
-// ============================================================================
-// URL params type
+// Page component
 // ============================================================================
 
 type DemoContext = React.Context<
@@ -559,11 +225,7 @@ type DemoContext = React.Context<
   }>
 >;
 
-// ============================================================================
-// Main page component
-// ============================================================================
-
-export default function GroupedColumnsFeatCombination() {
+export default function ColumnGroupsPage() {
   const {
     urlParams: {
       direction = 'ltr' as 'ltr' | 'rtl',
@@ -593,35 +255,18 @@ export default function GroupedColumnsFeatCombination() {
 
   const tableItems = empty ? [] : allInstances;
 
-  const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
-    tableItems,
-    {
-      filtering: {
-        empty: <EmptyState title="No instances" subtitle="No instances to display." />,
-        noMatch: (
-          <EmptyState
-            title="No matches"
-            subtitle="We can't find a match."
-            action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
-          />
-        ),
-      },
-      pagination: { pageSize: 10 },
-      sorting: {},
-      selection: {},
-    }
-  );
-
-  const { selectedItems } = collectionProps;
-
-  const handleSubmitEdit: TableProps.SubmitEditFunction<Instance> = async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-  };
-
-  const effectiveGroupDefinitions = groupingPreset === 'flat' ? undefined : groupDefinitions;
+  const { items, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(tableItems, {
+    filtering: {
+      empty: <Box textAlign="center">No instances</Box>,
+      noMatch: <Box textAlign="center">No matches</Box>,
+    },
+    pagination: { pageSize: 10 },
+    sorting: {},
+    selection: {},
+  });
 
   return (
-    <SimplePage title="Column Grouping - Feature Combination page" i18n={{}} screenshotArea={{}}>
+    <SimplePage title="Column Grouping - Feature Combinations" i18n={{}} screenshotArea={{}}>
       <SpaceBetween size="l">
         {/* Control panel */}
         <SpaceBetween size="xs">
@@ -632,8 +277,8 @@ export default function GroupedColumnsFeatCombination() {
           <SpaceBetween size="m" direction="horizontal" alignItems="end">
             <FormField label="Grouping preset">
               <Select
-                selectedOption={groupingPresetOptions.find(o => o.value === groupingPreset) ?? groupingPresetOptions[0]}
-                options={groupingPresetOptions}
+                selectedOption={presetOptions.find(o => o.value === groupingPreset) ?? presetOptions[0]}
+                options={presetOptions}
                 onChange={({ detail }) => {
                   const preset = detail.selectedOption.value as GroupingPreset;
                   setUrlParams({ groupingPreset: preset });
@@ -757,10 +402,15 @@ export default function GroupedColumnsFeatCombination() {
           </SpaceBetween>
         </SpaceBetween>
 
-        {/* The table */}
+        {/* Table */}
         <div dir={direction}>
           <Table
             {...collectionProps}
+            columnDefinitions={columnDefinitions}
+            groupDefinitions={groupingPreset === 'flat' ? undefined : groupDefinitions}
+            columnDisplay={columnDisplay}
+            items={items}
+            trackBy="id"
             selectionType={selectionType === 'none' ? undefined : (selectionType as TableProps.SelectionType)}
             resizableColumns={resizable}
             stickyHeader={stickyHeader}
@@ -774,53 +424,9 @@ export default function GroupedColumnsFeatCombination() {
             cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
             sortingDisabled={sortingDisabled}
             loading={loading}
-            loadingText="Loading instances..."
-            ariaLabels={{
-              selectionGroupLabel: 'Instance selection',
-              allItemsSelectionLabel: ({ selectedItems }) =>
-                `${selectedItems.length} ${selectedItems.length === 1 ? 'instance' : 'instances'} selected`,
-              itemSelectionLabel: ({ selectedItems }, item) =>
-                `${item.name} is ${selectedItems.includes(item) ? '' : 'not '}selected`,
-              tableLabel: 'Instances',
-              resizerRoleDescription: 'Resize button',
-              activateEditLabel: (column, item) => `Edit ${column.header} for ${item.name}`,
-              cancelEditLabel: column => `Cancel editing ${column.header}`,
-              submitEditLabel: column => `Submit edit for ${column.header}`,
-              successfulEditLabel: column => `Successfully edited ${column.header}`,
-              submittingEditText: column => `Submitting edit for ${column.header}`,
-            }}
-            columnDefinitions={columnDefinitions}
-            groupDefinitions={effectiveGroupDefinitions}
-            columnDisplay={columnDisplay}
-            items={items}
-            trackBy="id"
-            totalItemsCount={tableItems.length}
-            firstIndex={1}
-            submitEdit={handleSubmitEdit}
-            isItemDisabled={item => item.state === 'terminated'}
-            renderAriaLive={({ firstIndex, lastIndex, totalItemsCount }) =>
-              `Displaying items ${firstIndex} to ${lastIndex} of ${totalItemsCount}`
-            }
-            header={
-              <Header
-                variant={variant === 'full-page' ? 'awsui-h1-sticky' : 'h2'}
-                counter={
-                  selectedItems && selectedItems.length
-                    ? `(${selectedItems.length}/${tableItems.length})`
-                    : `(${tableItems.length})`
-                }
-                description="Feature Combination test page — toggle features above to test every combination"
-                actions={
-                  <SpaceBetween size="xs" direction="horizontal">
-                    <Button disabled={!selectedItems?.length}>Stop</Button>
-                    <Button disabled={!selectedItems?.length}>Terminate</Button>
-                    <Button variant="primary">Launch instance</Button>
-                  </SpaceBetween>
-                }
-              >
-                Instances
-              </Header>
-            }
+            loadingText="Loading..."
+            ariaLabels={{ tableLabel: 'Instances', selectionGroupLabel: 'Selection' }}
+            header={<Header counter={`(${tableItems.length})`}>Instances</Header>}
             filter={
               <TextFilter
                 {...filterProps}
@@ -829,13 +435,7 @@ export default function GroupedColumnsFeatCombination() {
               />
             }
             pagination={<Pagination {...paginationProps} />}
-            empty={
-              <EmptyState
-                title="No instances"
-                subtitle="No instances to display."
-                action={<Button>Launch instance</Button>}
-              />
-            }
+            empty={<Box textAlign="center">No instances</Box>}
           />
         </div>
       </SpaceBetween>
