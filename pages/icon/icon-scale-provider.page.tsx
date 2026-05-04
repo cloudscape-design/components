@@ -143,47 +143,75 @@ export default function IconScaleProviderScenario() {
 
   return (
     <ScreenshotArea>
-      <h1>IconProvider iconScale prop (CSS transform: scale approach)</h1>
+      <h1>IconProvider per-variant pixel size (CSS transform: scale approach)</h1>
 
       <Toggle checked={useLongText} onChange={({ detail }) => setUseLongText(detail.checked)}>
         Toggle (placeholder)
       </Toggle>
 
       <SpaceBetween size="l">
-        {/* Baseline: no scaling */}
-        <DemoContent label="No iconScale (default = 1)" />
+        {/* Baseline: no overrides */}
+        <DemoContent label="No overrides (default sizes)" />
 
-        {/* Scale down to 75% (simulates 12px from 16px) */}
-        <IconProvider icons={null} iconScale={0.75}>
-          <DemoContent label="iconScale = 0.75 (visually 12×12 from 16×16)" />
+        {/* Scale normal icons to 12px (75% of 16px) */}
+        <IconProvider icons={null} iconSizeNormal="12px">
+          <DemoContent label='iconSizeNormal="12px" (scale 0.75)' />
         </IconProvider>
 
-        {/* Scale down to 87.5% (simulates ~14px from 16px) */}
-        <IconProvider icons={null} iconScale={0.875}>
-          <DemoContent label="iconScale = 0.875 (visually ~14×14 from 16×16)" />
+        {/* Scale normal to 12px AND inherit to 12px */}
+        <IconProvider icons={null} iconSizeNormal="12px" iconSizeInherit="12px">
+          <DemoContent label='iconSizeNormal="12px" iconSizeInherit="12px"' />
         </IconProvider>
 
-        {/* Scale up to 150% (simulates 24px from 16px) */}
-        <IconProvider icons={null} iconScale={1.5}>
-          <DemoContent label="iconScale = 1.5 (visually 24×24 from 16×16)" />
+        {/* Scale normal to 14px (~87.5% of 16px) */}
+        <IconProvider icons={null} iconSizeNormal="14px" iconSizeInherit="13px">
+          <DemoContent label='iconSizeNormal="14px" iconSizeInherit="13px"' />
+        </IconProvider>
+
+        {/* Scale up: normal to 24px (150% of 16px) */}
+        <IconProvider icons={null} iconSizeNormal="32px">
+          <DemoContent label='iconSizeNormal="24px" (scale 1.5)' />
         </IconProvider>
 
         {/* Nested: outer scales down, inner resets */}
-        <IconProvider icons={null} iconScale={0.75}>
+        <IconProvider icons={null} iconSizeNormal="12px" iconSizeInherit="12px">
           <section>
-            <Box variant="h2">Nested: outer iconScale=0.75, inner resets to 1</Box>
+            <Box variant="h2">Nested: outer 12px, inner resets (no override)</Box>
             <SpaceBetween size="s">
               <SpaceBetween size="xs">
-                <StatusIndicator type="success">Scaled down (0.75)</StatusIndicator>
-                <StatusIndicator type="error">Scaled down (0.75)</StatusIndicator>
+                <StatusIndicator type="success">Scaled to 12px</StatusIndicator>
+                <StatusIndicator type="error">Scaled to 12px</StatusIndicator>
               </SpaceBetween>
+              <div>
+                <Link href="#" external={true}>
+                  External link scaled to 12px
+                </Link>
+              </div>
 
-              <IconProvider icons={null} iconScale={1}>
+              {/* Inner provider with no iconSize* props inherits parent overrides */}
+              <IconProvider icons={null}>
                 <SpaceBetween size="xs">
-                  <StatusIndicator type="success">Reset to normal (1.0)</StatusIndicator>
-                  <StatusIndicator type="error">Reset to normal (1.0)</StatusIndicator>
+                  <StatusIndicator type="success">Still 12px (inherited)</StatusIndicator>
                 </SpaceBetween>
               </IconProvider>
+            </SpaceBetween>
+          </section>
+        </IconProvider>
+
+        {/* Only override inherit, leave normal alone */}
+        <IconProvider icons={null} iconSizeInherit="10px">
+          <section>
+            <Box variant="h2">Only iconSizeInherit=&quot;10px&quot; (normal unchanged)</Box>
+            <SpaceBetween size="s">
+              <SpaceBetween size="xs">
+                <StatusIndicator type="success">Normal size (unchanged)</StatusIndicator>
+                <StatusIndicator type="error">Normal size (unchanged)</StatusIndicator>
+              </SpaceBetween>
+              <div>
+                <Link href="#" external={true}>
+                  External link icon scaled to 10px
+                </Link>
+              </div>
             </SpaceBetween>
           </section>
         </IconProvider>

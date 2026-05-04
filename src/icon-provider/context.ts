@@ -13,9 +13,17 @@ import { IconProviderProps } from './interfaces';
 export const InternalIconContext = createContext<IconProviderProps.Icons>(generatedIcons);
 
 /**
- * Provides a scale factor to all descendant Icon components.
- * When set to a value other than 1, icons will be rendered with `transform: scale(factor)`
- * while preserving their original layout box size.
- * A value of 1 means no scaling (default behavior).
+ * A mapping from each icon size variant to an optional target pixel size.
+ * When a key is set, icons that would normally render at that size will instead be scaled
+ * via CSS `transform: scale()` to match the target pixel value.
+ * An empty object means no overrides — icons render at their original size.
  */
-export const InternalIconScaleContext = createContext<number>(1);
+export type IconSizeOverrideMap = Partial<Record<string, string>>;
+
+/**
+ * Provides per-size-variant icon size overrides (in pixels) to all descendant Icon components.
+ * Each key corresponds to an original icon size variant (e.g. "normal", "inherit");
+ * the value is the target pixel size string (e.g. "12px").
+ * An empty object means no overrides.
+ */
+export const InternalIconSizeOverrideContext = createContext<IconSizeOverrideMap>({});

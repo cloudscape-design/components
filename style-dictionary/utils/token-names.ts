@@ -981,6 +981,7 @@ export type SizesTokenName =
   | 'sizeIconLarge'
   | 'sizeIconMedium'
   | 'sizeIconNormal'
+  | 'sizeIconSmall'
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
   | 'sizeVerticalPanelIconOffset';

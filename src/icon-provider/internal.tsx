@@ -1,15 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
-import { InternalIconContext, InternalIconScaleContext } from './context';
+import { IconSizeOverrideMap, InternalIconContext, InternalIconSizeOverrideContext } from './context';
 import { IconProviderProps } from './interfaces';
 
-function InternalIconProvider({ children, icons, iconScale }: IconProviderProps) {
+function InternalIconProvider({
+  children,
+  icons,
+  iconSizeSmall,
+  iconSizeNormal,
+  iconSizeMedium,
+  iconSizeBig,
+  iconSizeLarge,
+  iconSizeInherit,
+}: IconProviderProps) {
   const contextIcons = useContext(InternalIconContext);
-  const contextScale = useContext(InternalIconScaleContext);
+  const contextSizeOverrides = useContext(InternalIconSizeOverrideContext);
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
@@ -28,12 +37,45 @@ function InternalIconProvider({ children, icons, iconScale }: IconProviderProps)
     iconsToProvide = { ...contextIcons, ...clonedIcons };
   }
 
-  // If iconScale is explicitly provided, use it. Otherwise inherit from the parent provider.
-  const scaleToProvide = iconScale ?? contextScale;
+  // Build the size override map by merging parent context with this provider's props.
+  const sizeOverridesToProvide = useMemo<IconSizeOverrideMap>(() => {
+    const map: IconSizeOverrideMap = { ...contextSizeOverrides };
+
+    if (iconSizeSmall !== undefined) {
+      map.small = iconSizeSmall;
+    }
+    if (iconSizeNormal !== undefined) {
+      map.normal = iconSizeNormal;
+    }
+    if (iconSizeMedium !== undefined) {
+      map.medium = iconSizeMedium;
+    }
+    if (iconSizeBig !== undefined) {
+      map.big = iconSizeBig;
+    }
+    if (iconSizeLarge !== undefined) {
+      map.large = iconSizeLarge;
+    }
+    if (iconSizeInherit !== undefined) {
+      map.inherit = iconSizeInherit;
+    }
+
+    return map;
+  }, [
+    contextSizeOverrides,
+    iconSizeSmall,
+    iconSizeNormal,
+    iconSizeMedium,
+    iconSizeBig,
+    iconSizeLarge,
+    iconSizeInherit,
+  ]);
 
   return (
     <InternalIconContext.Provider value={iconsToProvide}>
-      <InternalIconScaleContext.Provider value={scaleToProvide}>{children}</InternalIconScaleContext.Provider>
+      <InternalIconSizeOverrideContext.Provider value={sizeOverridesToProvide}>
+        {children}
+      </InternalIconSizeOverrideContext.Provider>
     </InternalIconContext.Provider>
   );
 }

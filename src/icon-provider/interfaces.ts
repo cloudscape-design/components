@@ -186,20 +186,59 @@ export interface IconProviderProps extends BaseComponentProps {
   icons: IconProviderProps.Icons | null;
 
   /**
-   * Specifies a scale factor applied to all descendant `Icon` components via CSS `transform: scale()`.
+   * Specifies a target pixel size for icons that render at `"small"` size (default 16×16).
    *
-   * The icon retains its original size class and layout box, but is visually scaled by this factor.
-   * For example, a value of `0.75` renders a 16×16 icon visually at 12×12 while keeping its 16px
-   * layout footprint. A value of `1` (or omitting the prop) means no scaling.
+   * The icon retains its original layout box but is visually scaled via CSS `transform: scale()`
+   * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
    *
-   * Use this to create dense UI regions where icons should appear smaller without changing their
-   * logical size or requiring per-component layout adjustments.
-   *
-   * Nested `IconProvider` instances can override or reset this value.
-   *
-   * @defaultValue 1 (no scaling)
+   * @defaultValue undefined (no override — icons render at their original size)
    */
-  iconScale?: number;
+  iconSizeSmall?: string;
+
+  /**
+   * Specifies a target pixel size for icons that render at `"normal"` size (default 16×16).
+   *
+   * The icon retains its original layout box but is visually scaled via CSS `transform: scale()`
+   * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
+   *
+   * Use this to create dense UI regions where icons should appear smaller.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeNormal?: string;
+
+  /**
+   * Specifies a target pixel size for icons that render at `"medium"` size (default 20×20).
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeMedium?: string;
+
+  /**
+   * Specifies a target pixel size for icons that render at `"big"` size (default 24×24).
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeBig?: string;
+
+  /**
+   * Specifies a target pixel size for icons that render at `"large"` size (default 48×48).
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeLarge?: string;
+
+  /**
+   * Specifies a target pixel size for icons that use `"inherit"` size (contextual sizing based
+   * on line-height). When set, the icon switches from contextual sizing to a fixed pixel render
+   * at the specified size, scaled via CSS `transform: scale()`.
+   *
+   * This is useful for overriding icons like the external-link icon which normally scales with
+   * surrounding text.
+   *
+   * @defaultValue undefined (no override — icons use contextual line-height sizing)
+   */
+  iconSizeInherit?: string;
 }
 
 export namespace IconProviderProps {

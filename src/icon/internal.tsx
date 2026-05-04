@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalIconContext, InternalIconScaleContext } from '../icon-provider/context';
+import { InternalIconContext, InternalIconSizeOverrideContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -18,6 +18,29 @@ type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
     badge?: boolean;
   };
+
+/**
+ * Base pixel sizes for each named icon size variant.
+ * Used to compute the scale factor when a pixel override is provided.
+ */
+const BASE_SIZE_PX: Record<string, number> = {
+  small: 16,
+  normal: 16,
+  medium: 20,
+  big: 24,
+  large: 48,
+};
+
+/**
+ * Parses a pixel string like "12px" and returns the numeric value, or undefined if invalid.
+ */
+function parsePx(value: string | undefined): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+  const match = value.match(/^(\d+(?:\.\d+)?)px$/);
+  return match ? parseFloat(match[1]) : undefined;
+}
 
 function iconSizeMap(height: number | null, fontSize?: number | null) {
   if (height === null) {
@@ -54,21 +77,50 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
-  const iconScale = useContext(InternalIconScaleContext);
+  const sizeOverrides = useContext(InternalIconSizeOverrideContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
-  const contextualSize = size === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
 
-  // Build inline styles: combine contextual height with scale transform
-  const scaleTransform = iconScale !== 1 ? `scale(${iconScale})` : undefined;
+  // Check if there's a pixel override for the "inherit" size variant.
+  // If so, we switch from contextual sizing to the "normal" size class and apply a scale.
+  const inheritOverride = sizeOverrides.inherit;
+  const hasInheritOverride = size === 'inherit' && inheritOverride !== undefined;
+
+  // Determine the effective size class for CSS purposes
+  const effectiveSize = hasInheritOverride ? 'normal' : size;
+  const contextualSize = effectiveSize === 'inherit';
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;
+
+  // Compute the scale factor from the pixel override
+  let scaleFactor = 1;
+  if (hasInheritOverride) {
+    // For inherit override, scale relative to the "normal" base (16px)
+    const targetPx = parsePx(inheritOverride);
+    if (targetPx !== undefined) {
+      scaleFactor = targetPx / BASE_SIZE_PX.normal;
+    }
+  } else if (!contextualSize) {
+    // For non-contextual sizes, check if there's an override for this size variant
+    const override = sizeOverrides[iconSize];
+    if (override !== undefined) {
+      const targetPx = parsePx(override);
+      const basePx = BASE_SIZE_PX[iconSize];
+      if (targetPx !== undefined && basePx !== undefined) {
+        scaleFactor = targetPx / basePx;
+      }
+    }
+  }
+
+  // Build inline styles
+  const scaleTransform = scaleFactor !== 1 ? `scale(${scaleFactor})` : undefined;
   const inlineStyles: React.CSSProperties = {
     ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
     ...(scaleTransform ? { transform: scaleTransform } : {}),
   };
+
   const baseProps = getBaseProps(props);
 
   baseProps.className = clsx(
