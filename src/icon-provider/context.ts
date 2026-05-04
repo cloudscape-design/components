@@ -14,8 +14,14 @@ import { IconProviderProps } from './interfaces';
 export const InternalIconContext = createContext<IconProviderProps.Icons>(generatedIcons);
 
 /**
- * Provides a default icon size to all descendant Icon components.
- * When set, Icon components that don't specify an explicit size (or use the default "normal")
- * will render at this size instead. `undefined` means no override — use the component's own default.
+ * A mapping from each icon size variant to an optional override size.
+ * When a key is set, icons that would normally render at that size will instead render at the mapped value.
  */
-export const InternalIconSizeContext = createContext<IconProps.Size | undefined>(undefined);
+export type IconSizeMap = Partial<Record<IconProps.Size, IconProps.Size>>;
+
+/**
+ * Provides per-size-variant icon size overrides to all descendant Icon components.
+ * Each key in the map corresponds to an original icon size; the value is the size it should render as.
+ * An empty object means no overrides — icons render at their original size.
+ */
+export const InternalIconSizeContext = createContext<IconSizeMap>({});

@@ -54,16 +54,16 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
-  const contextIconSize = useContext(InternalIconSizeContext);
+  const contextSizeMap = useContext(InternalIconSizeContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
 
-  // Apply the context icon size as a default when no explicit size was provided (i.e. the caller
-  // relied on the default value of "normal"). An explicit size prop always wins.
-  const effectiveSize = size === 'normal' && contextIconSize ? contextIconSize : size;
+  // Look up the icon's size in the context size map. If a mapping exists for this size variant,
+  // use the mapped value. This allows any size (including "inherit") to be remapped.
+  const effectiveSize = contextSizeMap[size] ?? size;
 
   const contextualSize = effectiveSize === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;

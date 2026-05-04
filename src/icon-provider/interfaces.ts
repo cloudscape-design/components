@@ -186,10 +186,11 @@ export interface IconProviderProps extends BaseComponentProps {
   icons: IconProviderProps.Icons | null;
 
   /**
-   * Specifies a default icon size for all descendant `Icon` components.
+   * Specifies a default icon size for all descendant `Icon` components that use the `"normal"` size
+   * (either explicitly or by default).
    *
-   * When set, any `Icon` that does not receive an explicit `size` prop will render at this size.
-   * Icons that specify their own `size` prop will not be affected.
+   * This is a shorthand for `iconSizeNormal`. If both `iconSize` and `iconSizeNormal` are set,
+   * `iconSizeNormal` takes precedence.
    *
    * Use this to create dense UI regions where icons should be smaller (for example, `"small"` for 12×12px icons).
    *
@@ -199,6 +200,52 @@ export interface IconProviderProps extends BaseComponentProps {
    * @defaultValue undefined (no size override — icons use their own default of `"normal"`)
    */
   iconSize?: IconProps.Size;
+
+  /**
+   * Remaps icons that would render at `"small"` size to the specified size instead.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeSmall?: IconProps.Size;
+
+  /**
+   * Remaps icons that would render at `"normal"` size (the default) to the specified size instead.
+   *
+   * Takes precedence over `iconSize` if both are set.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeNormal?: IconProps.Size;
+
+  /**
+   * Remaps icons that would render at `"medium"` size to the specified size instead.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeMedium?: IconProps.Size;
+
+  /**
+   * Remaps icons that would render at `"big"` size to the specified size instead.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeBig?: IconProps.Size;
+
+  /**
+   * Remaps icons that would render at `"large"` size to the specified size instead.
+   *
+   * @defaultValue undefined (no override — icons render at their original size)
+   */
+  iconSizeLarge?: IconProps.Size;
+
+  /**
+   * Remaps icons that use `"inherit"` size (contextual sizing based on line-height) to the specified
+   * size instead. This is useful for overriding icons like the external link icon which normally
+   * scales with surrounding text.
+   *
+   * @defaultValue undefined (no override — icons use contextual line-height sizing)
+   */
+  iconSizeInherit?: IconProps.Size;
 }
 
 export namespace IconProviderProps {

@@ -9,6 +9,14 @@
 
 @use './motion';
 
+.icon {
+  // display: inline-flex;
+  // align-items: center;
+  //vertical-align: middle;
+  //outline: solid red 2px;
+  block-size: awsui.$line-height-body-m;
+}
+
 $_status-colors: (
   'error': awsui.$color-text-status-error,
   'warning': awsui.$color-text-status-warning,
@@ -44,12 +52,23 @@ $_color-overrides: (
 }
 
 .container {
+  display: inline-flex;
+  align-items: center;
+
+  > .icon {
+    flex-shrink: 0;
+    padding-inline-end: awsui.$space-xxs;
+    display: inline-flex;
+    align-items: center;
+  }
+
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;
 
     > .icon {
       white-space: nowrap;
+      padding-inline-end: 0;
     }
   }
 
@@ -57,10 +76,6 @@ $_color-overrides: (
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
-
-    > .icon {
-      padding-inline-end: awsui.$space-xxs;
-    }
   }
 }
 
