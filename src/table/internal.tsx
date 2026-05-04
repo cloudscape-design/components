@@ -37,6 +37,7 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
+import { useColumnGroups } from './column-groups/use-column-groups';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
@@ -61,7 +62,7 @@ import {
 import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
-import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH, TableColGroup } from './use-column-widths';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
@@ -72,7 +73,7 @@ import headerStyles from '../header/styles.css.js';
 import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
-const SELECTION_COLUMN_WIDTH = 54;
+const SELECTION_COLUMN_WIDTH = 40;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<
@@ -107,6 +108,7 @@ const InternalTable = React.forwardRef(
       preferences,
       items,
       columnDefinitions,
+      groupDefinitions,
       trackBy,
       loading,
       loadingText,
@@ -300,6 +302,11 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
+    // Build visible column IDs set for grouping
+    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => col.id || `column-${idx}`));
+
+    const hierarchicalStructure = useColumnGroups(columnDefinitions, groupDefinitions, visibleColumnIds, columnDisplay);
+
     const selectionProps = {
       items: allItems,
       rootItems: items,
@@ -394,6 +401,8 @@ const InternalTable = React.forwardRef(
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
+      groupDefinitions,
+      hierarchicalStructure,
       variant: computedVariant,
       tableVariant: computedVariant,
       wrapLines,
@@ -418,6 +427,8 @@ const InternalTable = React.forwardRef(
       resizerTooltipText: ariaLabels?.resizerTooltipText,
       stripedRows,
       stickyState,
+      stickyColumnsFirst: stickyColumns?.first ?? 0,
+      stickyColumnsLast: stickyColumns?.last ?? 0,
       selectionColumnId,
       tableRole,
       isExpandable,
@@ -452,6 +463,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
+    const headerRowCount = hierarchicalStructure?.rows.length || 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -460,6 +472,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
+            hierarchicalStructure={hierarchicalStructure}
           >
             <InternalContainer
               {...baseProps}
@@ -501,6 +514,9 @@ const InternalTable = React.forwardRef(
                       tableHasHeader={hasHeader}
                       contentDensity={contentDensity}
                       tableRole={tableRole}
+                      hasGroupedColumns={!!hierarchicalStructure && hierarchicalStructure.rows.length > 1}
+                      columnDefinitions={visibleColumnDefinitions}
+                      hasSelection={hasSelection}
                     />
                   )}
                 </>
@@ -560,16 +576,25 @@ const InternalTable = React.forwardRef(
                     className={clsx(
                       styles.table,
                       resizableColumns && styles['table-layout-fixed'],
+                      hierarchicalStructure && hierarchicalStructure.rows.length > 1 && styles['has-grouped-header'],
                       contentDensity === 'compact' && getVisualContextClassname('compact-table')
                     )}
                     {...getTableRoleProps({
                       tableRole,
                       totalItemsCount,
                       totalColumnsCount: totalColumnsCount,
+                      headerRowCount,
                       ariaLabel: ariaLabels?.tableLabel,
                       ariaLabelledby,
                     })}
                   >
+                    {resizableColumns && hierarchicalStructure && hierarchicalStructure.rows.length > 1 && (
+                      <TableColGroup
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        hasSelection={hasSelection}
+                        selectionColumnWidth={SELECTION_COLUMN_WIDTH}
+                      />
+                    )}
                     <Thead
                       ref={theadRef}
                       hidden={stickyHeader}
@@ -599,6 +624,7 @@ const InternalTable = React.forwardRef(
                             tableRole,
                             firstIndex,
                             rowIndex,
+                            headerRowCount,
                             level: row.type === 'loader' ? row.level : undefined,
                             ...rowExpandableProps,
                           });
