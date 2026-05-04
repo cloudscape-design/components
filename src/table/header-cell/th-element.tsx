@@ -142,6 +142,8 @@ export function TableThElement({
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
       {...(isRightmost ? { 'data-rightmost': true } : {})}
+      {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
+      {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
     >
       {children}
     </th>
