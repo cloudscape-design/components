@@ -15515,10 +15515,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
       "type": "IconProviderProps.Icons | null",
     },
     {
-      "description": "Specifies a default icon size for all descendant \`Icon\` components.
+      "description": "Specifies a default icon size for all descendant \`Icon\` components that use the \`"normal"\` size
+(either explicitly or by default).
 
-When set, any \`Icon\` that does not receive an explicit \`size\` prop will render at this size.
-Icons that specify their own \`size\` prop will not be affected.
+This is a shorthand for \`iconSizeNormal\`. If both \`iconSize\` and \`iconSizeNormal\` are set,
+\`iconSizeNormal\` takes precedence.
 
 Use this to create dense UI regions where icons should be smaller (for example, \`"small"\` for 12×12px icons).
 
@@ -15537,6 +15538,118 @@ to inherit the parent provider's icon size, or set explicitly to reset.",
         ],
       },
       "name": "iconSize",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that would render at \`"big"\` size to the specified size instead.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeBig",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that use \`"inherit"\` size (contextual sizing based on line-height) to the specified
+size instead. This is useful for overriding icons like the external link icon which normally
+scales with surrounding text.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeInherit",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that would render at \`"large"\` size to the specified size instead.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeLarge",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that would render at \`"medium"\` size to the specified size instead.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeMedium",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that would render at \`"normal"\` size (the default) to the specified size instead.
+
+Takes precedence over \`iconSize\` if both are set.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeNormal",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Remaps icons that would render at \`"small"\` size to the specified size instead.",
+      "inlineType": {
+        "name": "IconProps.Size",
+        "type": "union",
+        "values": [
+          "big",
+          "small",
+          "normal",
+          "medium",
+          "inherit",
+          "large",
+        ],
+      },
+      "name": "iconSizeSmall",
       "optional": true,
       "type": "string",
     },
