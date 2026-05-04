@@ -15,8 +15,8 @@ import styles from './styles.css.js';
 type InternalDividerProps = DividerProps & InternalBaseComponentProps;
 
 export default function InternalDivider({
-  semantic = false,
-  orientation = 'horizontal',
+  semantic,
+  orientation,
   children,
   ariaLabel,
   nativeAttributes,
