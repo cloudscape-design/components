@@ -42,10 +42,6 @@
 
 .divider-label {
   flex: 0 1 auto;
-  color: awsui.$color-text-body-secondary;
-  font-size: awsui.$font-size-body-s;
-  line-height: awsui.$line-height-body-s;
-  text-align: center;
   @include styles.text-wrapping;
 }
 

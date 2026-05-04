@@ -27,9 +27,9 @@ export interface DividerProps extends BaseComponentProps {
    * - `"horizontal"` (default) — renders a full-width horizontal line. Use inside block-level
    *   containers to separate stacked content sections.
    * - `"vertical"` — renders a full-height vertical line. Use inside flex or inline containers
-   *   to separate side-by-side elements (e.g. toolbar actions, breadcrumb segments).
+   *   to separate side-by-side elements.
    *
-   * When `semantic={true}`, `aria-orientation` is set automatically to match this value.
+   * When `semantic` is `true`, `aria-orientation` is set automatically to match this value.
    *
    * @defaultValue `"horizontal"`
    */
@@ -37,13 +37,25 @@ export interface DividerProps extends BaseComponentProps {
 
   /**
    * Text label rendered at the center of a horizontal divider line.
-   * Use for labels like "OR", "AND", or short section titles.
+   * Use for labels or short section titles.
    *
-   * Only supported when `orientation="horizontal"`. Ignored for vertical dividers.
+   * Only supported by horizontal dividers.
    *
-   * @displayname content
+   * When a label is provided and `semantic` is `true`, the separator is automatically
+   * associated with the label text via `aria-labelledby`.
+   *
+   * @displayname label
    */
   children?: React.ReactNode;
+
+  /**
+   * Adds an `aria-label` to the separator element.
+   * Use when the divider needs an accessible name but you don't want visible label text,
+   * or to provide a more descriptive label for assistive technology.
+   *
+   * Only takes effect when `semantic` is `true`.
+   */
+  ariaLabel?: string;
 
   /**
    * Attributes to add to the native element.
