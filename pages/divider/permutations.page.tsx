@@ -12,7 +12,9 @@ const permutations = createPermutations<DividerProps>([
   // Horizontal — no label
   { semantic: [false, true] },
   // Horizontal — with label
-  { children: ['OR', 'This is a longer section title'], semantic: [false, true] },
+  { children: ['And', 'This is a mucher longer section title'], semantic: [false, true] },
+  // Horizontal — with ariaLabel
+  { ariaLabel: ['Section separator'], semantic: [true] },
   // Vertical
   { orientation: ['vertical'], semantic: [false, true] },
 ]);
@@ -32,7 +34,7 @@ export default function DividerPermutations() {
                 <span>Right</span>
               </div>
             ) : (
-              <div style={{ width: '200px', padding: '16px' }}>
+              <div style={{ maxWidth: '400px', padding: '16px' }}>
                 <p>Above</p>
                 <Divider {...permutation} />
                 <p>Below</p>

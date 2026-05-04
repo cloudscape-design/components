@@ -76,6 +76,43 @@ describe('children (label)', () => {
     expect(wrapper.getElement().tagName).toBe('DIV');
     expect(wrapper.findLabel()).toBeNull();
   });
+
+  test('semantic label sets aria-labelledby pointing to the label element', () => {
+    const wrapper = renderDivider(<Divider semantic={true}>OR</Divider>);
+    const root = wrapper.getElement();
+    const labelEl = wrapper.findLabel()!.getElement();
+
+    expect(root).toHaveAttribute('aria-labelledby', labelEl.id);
+    expect(labelEl.id).toBeTruthy();
+  });
+
+  test('non-semantic label does not set aria-labelledby', () => {
+    const wrapper = renderDivider(<Divider semantic={false}>OR</Divider>);
+    expect(wrapper.getElement()).not.toHaveAttribute('aria-labelledby');
+  });
+});
+
+describe('ariaLabel prop', () => {
+  test('semantic divider applies aria-label', () => {
+    const el = renderDivider(<Divider semantic={true} ariaLabel="Section separator" />).getElement();
+    expect(el).toHaveAttribute('aria-label', 'Section separator');
+  });
+
+  test('non-semantic divider does not apply aria-label', () => {
+    const el = renderDivider(<Divider semantic={false} ariaLabel="Section separator" />).getElement();
+    expect(el).not.toHaveAttribute('aria-label');
+  });
+
+  test('ariaLabel takes precedence over aria-labelledby when both label and ariaLabel are set', () => {
+    const wrapper = renderDivider(
+      <Divider semantic={true} ariaLabel="Custom label">
+        OR
+      </Divider>
+    );
+    const root = wrapper.getElement();
+    expect(root).toHaveAttribute('aria-label', 'Custom label');
+    expect(root).not.toHaveAttribute('aria-labelledby');
+  });
 });
 
 describe('nativeAttributes', () => {
