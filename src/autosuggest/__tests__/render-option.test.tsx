@@ -231,7 +231,7 @@ describe('Autosuggest renderOption', () => {
         );
       });
 
-      test('renders custom content for entered-text option', () => {
+      test('does not render custom content for entered-text option', () => {
         const renderOption = jest.fn(props => {
           if (props.item.type === 'entered-text') {
             return <div>Use custom: {props.item.option.value}</div>;
@@ -248,7 +248,8 @@ describe('Autosuggest renderOption', () => {
 
         const enteredTextOption = wrapper.findEnteredTextOption();
         expect(enteredTextOption).not.toBe(null);
-        expect(enteredTextOption!.getElement()).toHaveTextContent('Use custom: custom-value');
+        // entered-text options always use option.label, ignoring renderOption
+        expect(enteredTextOption!.getElement()).toHaveTextContent('Use value');
       });
 
       test('maintains option index in item properties', () => {
@@ -351,6 +352,26 @@ describe('Autosuggest renderOption', () => {
         // Should display the default content (the option label) instead of custom content
         expect(optionElement).toHaveTextContent('Test Option');
         expect(renderOption).toHaveBeenCalled();
+      });
+
+      test('wraps custom content inside option element with data-value', () => {
+        const renderOption = () => <div data-testid="custom">Custom</div>;
+        const wrapper = renderAutosuggest({ options: [{ label: 'One', value: '1' }], renderOption });
+        wrapper.focus();
+
+        const option = wrapper.findDropdown().findOption(1)!.getElement();
+        expect(option).toHaveAttribute('data-value', '1');
+        expect(option.querySelector('[data-testid="custom"]')).not.toBeNull();
+      });
+
+      test('wraps default content inside option element with data-value when renderOption returns null', () => {
+        const renderOption = jest.fn(() => null);
+        const wrapper = renderAutosuggest({ options: [{ label: 'One', value: '1' }], renderOption });
+        wrapper.focus();
+
+        const option = wrapper.findDropdown().findOption(1)!.getElement();
+        expect(option).toHaveAttribute('data-value', '1');
+        expect(option).toHaveTextContent('One');
       });
     });
   }
