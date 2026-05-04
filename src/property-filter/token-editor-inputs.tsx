@@ -9,7 +9,7 @@ import { NonCancelableEventHandler } from '../internal/events/index.js';
 import InternalMultiselect from '../multiselect/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
-import { getAllowedOperators, getPropertySuggestions } from './controller.js';
+import { getAllowedFreeTextOperators, getAllowedOperators, getPropertySuggestions } from './controller.js';
 import { I18nStringsInternal, operatorToDescription } from './i18n-utils.js';
 import {
   ComparisonOperator,
@@ -99,7 +99,8 @@ export function OperatorInput({
   freeTextFiltering,
   triggerVariant,
 }: OperatorInputProps) {
-  const operatorOptions = (property ? getAllowedOperators(property) : freeTextFiltering.operators).map(operator => ({
+  const operators = property ? getAllowedOperators(property) : getAllowedFreeTextOperators(freeTextFiltering);
+  const operatorOptions = operators.map(operator => ({
     value: operator,
     label: operator,
     description: operatorToDescription(operator, i18nStrings),

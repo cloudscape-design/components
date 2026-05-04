@@ -108,8 +108,8 @@ describe('getAllowedOperators', () => {
     ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
   ];
-  test.each<TestCase>(cases)('%s', (__description, input, exepcted) => {
-    expect(getAllowedOperators(input)).toEqual(exepcted);
+  test.each<TestCase>(cases)('%s', (__description, input, expected) => {
+    expect(getAllowedOperators(input)).toEqual(expected);
   });
 });
 

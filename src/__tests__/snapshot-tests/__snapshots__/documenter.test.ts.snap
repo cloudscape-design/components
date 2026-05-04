@@ -22162,7 +22162,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
           {
             "name": "operators",
             "optional": true,
-            "type": "ReadonlyArray<string>",
+            "type": "ReadonlyArray<string | PropertyFilterTextOperatorExtended>",
           },
         ],
         "type": "object",

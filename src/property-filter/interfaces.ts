@@ -14,6 +14,7 @@ import {
   PropertyFilterOption,
   PropertyFilterProperty,
   PropertyFilterQuery,
+  PropertyFilterTextOperatorExtended,
   PropertyFilterToken,
   PropertyFilterTokenGroup,
   PropertyFilterTokenType,
@@ -394,7 +395,7 @@ export interface InternalFilteringOption {
 
 export interface InternalFreeTextFiltering {
   disabled: boolean;
-  operators: readonly PropertyFilterOperator[];
+  operators: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
   defaultOperator: PropertyFilterOperator;
 }
 
