@@ -43,8 +43,6 @@ import Tiles from '~components/tiles';
 import Toggle from '~components/toggle';
 import ToggleButton from '~components/toggle-button';
 
-import ScreenshotArea from '../utils/screenshot-area';
-
 const createNumericHandler = (setter: (value: string) => void, min?: number, max?: number) => {
   return (evt: NonCancelableCustomEvent<InputProps.ChangeDetail>) => {
     const val = evt.detail.value;
@@ -948,68 +946,66 @@ export default function IconScaleProviderScenario() {
   );
 
   return (
-    <ScreenshotArea gutters={false}>
-      <AppLayoutToolbar
-        ariaLabels={{
-          navigation: 'Navigation',
-          navigationToggle: 'Open navigation',
-          navigationClose: 'Close navigation',
-          notifications: 'Notifications',
-          tools: 'Tools',
-          toolsToggle: 'Open tools',
-          toolsClose: 'Close tools',
-        }}
-        navigationHide={true}
-        toolsHide={true}
-        splitPanelOpen={splitPanelOpen}
-        onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
-        splitPanelPreferences={{ position: 'side' }}
-        splitPanel={
-          <SplitPanel
-            header="Design configuration"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Resize split panel',
-            }}
-          >
-            {splitPanelContent}
-          </SplitPanel>
-        }
-        content={
-          <IconProvider
-            icons={null}
-            iconSizeSmall={sizeSmallValue}
-            iconSizeNormal={sizeValue}
-            iconSizeInherit={sizeValue}
-            iconSizeMedium={sizeMediumValue}
-            iconSizeBig={sizeBigValue}
-            iconSizeLarge={sizeLargeValue}
-          >
-            <SpaceBetween size="l">
-              <Header
-                variant="h1"
-                description="Comprehensive component showcase with configurable icon scale and theming tokens."
-              >
-                Components overview
-              </Header>
-              <Typography />
-              <ButtonsInputsDropdowns />
-              <NavigationComponents />
-              <TableAndCards />
-              <StatusComponents />
-              <KvpForm />
-            </SpaceBetween>
-          </IconProvider>
-        }
-      />
-    </ScreenshotArea>
+    <AppLayoutToolbar
+      ariaLabels={{
+        navigation: 'Navigation',
+        navigationToggle: 'Open navigation',
+        navigationClose: 'Close navigation',
+        notifications: 'Notifications',
+        tools: 'Tools',
+        toolsToggle: 'Open tools',
+        toolsClose: 'Close tools',
+      }}
+      navigationHide={true}
+      toolsHide={true}
+      splitPanelOpen={splitPanelOpen}
+      onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
+      splitPanelPreferences={{ position: 'side' }}
+      splitPanel={
+        <SplitPanel
+          header="Design configuration"
+          i18nStrings={{
+            preferencesTitle: 'Preferences',
+            preferencesPositionLabel: 'Split panel position',
+            preferencesPositionDescription: 'Choose the default split panel position.',
+            preferencesPositionSide: 'Side',
+            preferencesPositionBottom: 'Bottom',
+            preferencesConfirm: 'Confirm',
+            preferencesCancel: 'Cancel',
+            closeButtonAriaLabel: 'Close panel',
+            openButtonAriaLabel: 'Open panel',
+            resizeHandleAriaLabel: 'Resize split panel',
+          }}
+        >
+          {splitPanelContent}
+        </SplitPanel>
+      }
+      content={
+        <IconProvider
+          icons={null}
+          iconSizeSmall={sizeSmallValue}
+          iconSizeNormal={sizeValue}
+          iconSizeInherit={sizeValue}
+          iconSizeMedium={sizeMediumValue}
+          iconSizeBig={sizeBigValue}
+          iconSizeLarge={sizeLargeValue}
+        >
+          <SpaceBetween size="l">
+            <Header
+              variant="h1"
+              description="Comprehensive component showcase with configurable icon scale and theming tokens."
+            >
+              Components overview
+            </Header>
+            <Typography />
+            <ButtonsInputsDropdowns />
+            <NavigationComponents />
+            <TableAndCards />
+            <StatusComponents />
+            <KvpForm />
+          </SpaceBetween>
+        </IconProvider>
+      }
+    />
   );
 }
