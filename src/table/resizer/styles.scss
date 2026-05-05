@@ -77,6 +77,10 @@ th:not([data-rightmost]) > .divider-disabled {
   inset-inline-end: calc(#{$handle-width} / 2);
 }
 
+.divider-active {
+  /* used in test-utils */
+}
+
 // stylelint-disable-next-line selector-combinator-disallowed-list
 th[data-rightmost] > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
   inset-inline-end: 0;
