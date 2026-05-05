@@ -3077,7 +3077,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "AutosuggestProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -3097,7 +3097,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "AutosuggestProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
     {
@@ -18428,7 +18428,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "MultiselectProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -18448,7 +18448,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "MultiselectProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
   ],
@@ -24750,7 +24750,7 @@ The detail object contains the following properties:
 * \`firstPage\` - Indicates that you should fetch the first page of options that match the \`filteringText\`.
 * \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).",
       "detailInlineType": {
-        "name": "OptionsLoadItemsDetail",
+        "name": "SelectProps.LoadItemsDetail",
         "properties": [
           {
             "name": "filteringText",
@@ -24770,7 +24770,7 @@ The detail object contains the following properties:
         ],
         "type": "object",
       },
-      "detailType": "OptionsLoadItemsDetail",
+      "detailType": "SelectProps.LoadItemsDetail",
       "name": "onLoadItems",
     },
   ],
