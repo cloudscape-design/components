@@ -64,8 +64,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
   &.header-cell-group,
-  &.header-cell-grouped,
-  &.header-cell-spans-rows {
+  &.header-cell-grouped {
     padding-block: awsui.$space-xxxs;
     padding-inline: awsui.$space-scaled-xs;
   }
@@ -151,8 +150,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include cell-offset(awsui.$space-s);
 
   .header-cell-group > &,
-  .header-cell-grouped > &,
-  .header-cell-spans-rows > & {
+  .header-cell-grouped > & {
     padding-block: awsui.$space-xxxs;
   }
 
