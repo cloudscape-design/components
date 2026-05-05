@@ -2629,10 +2629,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -2663,18 +2659,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -5716,10 +5700,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -5750,18 +5730,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -8803,10 +8771,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -8837,18 +8801,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -11890,10 +11842,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -11924,18 +11872,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -14977,10 +14913,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -15011,18 +14943,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -18064,10 +17984,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -18098,18 +18014,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
-          "$value": "400",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
           "$value": "400",
         },
         "font-weight-tabs": {
@@ -21151,10 +21055,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font weight for alert header text.",
       "$value": "700",
     },
-    "font-weight-bold": {
-      "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-      "$value": "700",
-    },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
       "$value": "700",
@@ -21185,18 +21085,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
-      "$value": "400",
-    },
-    "font-weight-heavy": {
-      "$description": "The default heavy font weight.",
-      "$value": "700",
-    },
-    "font-weight-lighter": {
-      "$description": "The default lighter font weight.",
-      "$value": "300",
-    },
-    "font-weight-normal": {
-      "$description": "The default normal font weight.",
       "$value": "400",
     },
     "font-weight-tabs": {
@@ -24243,10 +24131,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -24278,18 +24162,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -27330,10 +27202,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -27365,18 +27233,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -30417,10 +30273,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -30452,18 +30304,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -33504,10 +33344,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -33539,18 +33375,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -36591,10 +36415,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -36626,18 +36446,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -39678,10 +39486,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -39713,18 +39517,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -42765,10 +42557,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -42800,18 +42588,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -45852,10 +45628,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for alert header text.",
           "$value": "700",
         },
-        "font-weight-bold": {
-          "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-          "$value": "700",
-        },
         "font-weight-button": {
           "$description": "The default font weight for button text.",
           "$value": "700",
@@ -45887,18 +45659,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-heading-xs": {
           "$description": "The default font weight for h5s.",
           "$value": "700",
-        },
-        "font-weight-heavy": {
-          "$description": "The default heavy font weight.",
-          "$value": "700",
-        },
-        "font-weight-lighter": {
-          "$description": "The default lighter font weight.",
-          "$value": "300",
-        },
-        "font-weight-normal": {
-          "$description": "The default normal font weight.",
-          "$value": "400",
         },
         "font-weight-tabs": {
           "$description": "The default font weight for tabs.",
@@ -48939,10 +48699,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The default font weight for alert header text.",
       "$value": "700",
     },
-    "font-weight-bold": {
-      "$description": "The default bold font weight for body text. For example, <strong> and <b> tags in text content.",
-      "$value": "700",
-    },
     "font-weight-button": {
       "$description": "The default font weight for button text.",
       "$value": "700",
@@ -48974,18 +48730,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-heading-xs": {
       "$description": "The default font weight for h5s.",
       "$value": "700",
-    },
-    "font-weight-heavy": {
-      "$description": "The default heavy font weight.",
-      "$value": "700",
-    },
-    "font-weight-lighter": {
-      "$description": "The default lighter font weight.",
-      "$value": "300",
-    },
-    "font-weight-normal": {
-      "$description": "The default normal font weight.",
-      "$value": "400",
     },
     "font-weight-tabs": {
       "$description": "The default font weight for tabs.",
