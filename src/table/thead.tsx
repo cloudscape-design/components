@@ -61,7 +61,7 @@ const Thead = React.forwardRef(
       selectionType,
       getSelectAllProps,
       columnDefinitions,
-      hierarchicalStructure: h,
+      hierarchicalStructure,
       sortingColumn,
       sortingDisabled,
       sortingDescending,
@@ -92,8 +92,6 @@ const Thead = React.forwardRef(
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
-
-    const hierarchicalStructure: HierarchicalStructure<any> | undefined = h;
 
     // Helper to get child column IDs for a group (for getting minWidths)
     const getChildColumnIds = (groupId: string): string[] => {
