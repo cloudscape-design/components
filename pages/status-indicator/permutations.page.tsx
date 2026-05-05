@@ -19,7 +19,7 @@ const permutations = createPermutations<InternalStatusIndicatorProps>([
   {
     type: ['info'],
     wrapText: [true, false],
-    __display: ['inline', 'inline-block'],
+    __display: ['inline', 'inline-block', 'inline-flex'],
     children: [
       'Simple',
       'very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text very long text',

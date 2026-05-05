@@ -33,7 +33,7 @@ export interface InternalStatusIndicatorProps
   /**
    * The CSS behavior of the status indicator container element.
    */
-  __display?: 'inline' | 'inline-block';
+  __display?: 'inline' | 'inline-block' | 'inline-flex';
 }
 
 const typeToIcon: (size: IconProps.Size) => Record<StatusIndicatorProps.Type, JSX.Element> = size => ({
@@ -83,7 +83,7 @@ export default function StatusIndicator({
   __animate = false,
   __internalRootRef,
   __size = 'normal',
-  __display = 'inline-block',
+  __display = 'inline-flex',
   ...rest
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);

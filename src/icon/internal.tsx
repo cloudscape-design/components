@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalIconContext } from '../icon-provider/context';
+import { InternalIconContext, InternalIconSizeContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -54,13 +54,19 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
+  const contextSizeMap = useContext(InternalIconSizeContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
-  const contextualSize = size === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
+
+  // Look up the icon's size in the context size map. If a mapping exists for this size variant,
+  // use the mapped value. This allows any size (including "inherit") to be remapped.
+  const effectiveSize = contextSizeMap[size] ?? size;
+
+  const contextualSize = effectiveSize === 'inherit';
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;
   const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
