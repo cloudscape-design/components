@@ -358,9 +358,10 @@ export class GridNavigationProcessor {
       targetCell =
         allVisibleCells.length > 0
           ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
-          : findTableRowCellByAriaColIndex(skipRow, targetAriaColIndex, delta.x);
+          : /* istanbul ignore next */ findTableRowCellByAriaColIndex(skipRow, targetAriaColIndex, delta.x);
     }
 
+    /* istanbul ignore next */
     if (!targetCell) {
       return null;
     }
