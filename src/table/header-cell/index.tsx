@@ -155,7 +155,6 @@ export function TableHeaderCell<ItemType>({
       colSpan={colSpan}
       rowSpan={rowSpan}
       columnGroupId={columnGroupId}
-      isLastChildOfGroup={isLastChildOfGroup}
       isRightmost={isRightmost}
       {...(sortingDisabled
         ? {}
