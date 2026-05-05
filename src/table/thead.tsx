@@ -113,21 +113,6 @@ const Thead = React.forwardRef(
       return childIds;
     };
 
-    // Helper to get minWidth for columns
-    const getColumnMinWidths = (columnIds: string[]): Map<string, number> => {
-      const minWidths = new Map<string, number>();
-
-      columnIds.forEach(colId => {
-        const col = columnDefinitions.find((c, idx) => (c.id || `column-${idx}`) === colId);
-        if (col && col.minWidth) {
-          const minWidth = typeof col.minWidth === 'string' ? parseInt(col.minWidth) : col.minWidth;
-          minWidths.set(colId, minWidth);
-        }
-      });
-
-      return minWidths;
-    };
-
     // Determine if a group is split by the sticky boundary.
     // Returns null if no split, or { stickyColspan, nonStickyColspan, side } if split.
     // `side` indicates which side is sticky: 'first' means left columns are sticky,
@@ -361,7 +346,6 @@ const Thead = React.forwardRef(
                         childColumnIds={leftChildIds}
                         firstChildColumnId={leftChildIds[0]}
                         lastChildColumnId={leftChildIds[leftChildIds.length - 1]}
-                        childColumnMinWidths={getColumnMinWidths(leftChildIds as string[])}
                         cellRef={split.side === 'first' ? node => setCell(sticky, col.id, node) : () => {}}
                         isLastChildOfGroup={false}
                         isRightmost={false}
@@ -403,7 +387,6 @@ const Thead = React.forwardRef(
                         childColumnIds={rightChildIds}
                         firstChildColumnId={rightChildIds[0]}
                         lastChildColumnId={rightChildIds[rightChildIds.length - 1]}
-                        childColumnMinWidths={getColumnMinWidths(rightChildIds as string[])}
                         cellRef={split.side === 'last' ? node => setCell(sticky, col.id, node) : () => {}}
                         resizerRoleDescription={resizerRoleDescription}
                         resizerTooltipText={resizerTooltipText}
@@ -462,7 +445,6 @@ const Thead = React.forwardRef(
                     childColumnIds={childIds}
                     firstChildColumnId={childIds[0]}
                     lastChildColumnId={childIds[childIds.length - 1]}
-                    childColumnMinWidths={getColumnMinWidths(childIds)}
                     cellRef={node => setCell(sticky, col.id, node)}
                     resizerRoleDescription={resizerRoleDescription}
                     resizerTooltipText={resizerTooltipText}
