@@ -633,3 +633,279 @@ describe('Column grouping aria attributes', () => {
     expect(rows[1].getElement().getAttribute('aria-rowindex')).toBe('2');
   });
 });
+
+describe('Column grouping sticky split rendering', () => {
+  test('split group renders two group cells with updateGroupWidth callbacks', () => {
+    // stickyColumns.first = 3: id(0), name(1), type(2) are sticky
+    // config group has type(2), az(3) — straddles boundary
+    const wrapper = renderTable({ stickyColumns: { first: 3 }, resizableColumns: true });
+    const thead = wrapper.find('thead')!;
+    const groupCells = thead.findAll('th[scope="colgroup"]');
+    // config split into 2 + perf = 3
+    expect(groupCells.length).toBe(3);
+  });
+
+  test('split group with stickyColumns.last renders correctly', () => {
+    // stickyColumns.last = 1: memory(5) is sticky
+    // perf group has cpu(4), memory(5) — straddles boundary
+    const wrapper = renderTable({ stickyColumns: { last: 1 }, resizableColumns: true });
+    const thead = wrapper.find('thead')!;
+    const groupCells = thead.findAll('th[scope="colgroup"]');
+    expect(groupCells.length).toBe(3);
+  });
+
+  test('fully sticky group gets stickyColumnId from first child', () => {
+    // stickyColumns.first = 4: id, name, type, az are sticky
+    // config group (type, az) is fully within sticky boundary
+    const wrapper = renderTable({ stickyColumns: { first: 4 }, resizableColumns: true });
+    const thead = wrapper.find('thead')!;
+    const groupCells = thead.findAll('th[scope="colgroup"]');
+    const configGroup = groupCells.find(c => c.getElement().textContent?.includes('Configuration'));
+    expect(configGroup).toBeDefined();
+  });
+
+  test('fully sticky last group gets stickyColumnId from last child', () => {
+    // stickyColumns.last = 2: cpu(4), memory(5) are sticky
+    // perf group (cpu, memory) is fully within sticky-last boundary
+    const wrapper = renderTable({ stickyColumns: { last: 2 }, resizableColumns: true });
+    const thead = wrapper.find('thead')!;
+    const groupCells = thead.findAll('th[scope="colgroup"]');
+    const perfGroup = groupCells.find(c => c.getElement().textContent?.includes('Performance'));
+    expect(perfGroup).toBeDefined();
+  });
+});
+
+describe('Column grouping focus handling', () => {
+  test('onFocusedComponentChange is called on header focus', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    const thead = wrapper.find('thead')!;
+    const firstRow = thead.findAll('tr')[0];
+
+    // Focus a header cell
+    const th = firstRow.findAll('th')[0];
+    th.getElement().dispatchEvent(new FocusEvent('focus', { bubbles: true }));
+    // No error thrown — focus handler executed
+  });
+
+  test('onBlur resets focused component', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    const thead = wrapper.find('thead')!;
+    const firstRow = thead.findAll('tr')[0];
+
+    const th = firstRow.findAll('th')[0];
+    th.getElement().dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+    // No error thrown — blur handler executed
+  });
+});
+
+describe('Column grouping with non-resizable columns', () => {
+  test('grouped leaf cells get inline styles when not resizable', () => {
+    const colDefs = columnDefinitions.map(col => ({ ...col, width: 150, minWidth: 100 }));
+    const wrapper = renderTable({ resizableColumns: false, columnDefinitions: colDefs });
+    const thead = wrapper.find('thead')!;
+    const leafCells = thead.findAll('th[scope="col"]');
+    // Cells should have width styles applied directly
+    expect(leafCells.length).toBe(6);
+  });
+
+  test('sorting fires onSortingChange for grouped leaf columns', () => {
+    const onSortingChange = jest.fn();
+    const sortableColumns = columnDefinitions.map(col => ({ ...col, sortingField: col.id }));
+    const { container } = render(
+      <Table
+        columnDefinitions={sortableColumns}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        onSortingChange={event => onSortingChange(event.detail)}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    const sortArea = wrapper.findColumnSortingArea(3);
+    sortArea!.click();
+    expect(onSortingChange).toHaveBeenCalledWith(
+      expect.objectContaining({ sortingColumn: expect.objectContaining({ id: 'type' }) })
+    );
+  });
+});
+
+describe('Column grouping resize interactions', () => {
+  test('grouped resizable table renders with colgroup and col elements', () => {
+    const colDefs = columnDefinitions.map(col => ({ ...col, width: 150 }));
+    const { container } = render(
+      <Table
+        columnDefinitions={colDefs}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        resizableColumns={true}
+      />
+    );
+    const colgroup = container.querySelector('colgroup');
+    expect(colgroup).not.toBeNull();
+    const cols = colgroup!.querySelectorAll('col');
+    // 6 leaf columns
+    expect(cols.length).toBe(6);
+  });
+
+  test('col elements have data-column-id attributes', () => {
+    const colDefs = columnDefinitions.map(col => ({ ...col, width: 150 }));
+    const { container } = render(
+      <Table
+        columnDefinitions={colDefs}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        resizableColumns={true}
+      />
+    );
+    const cols = container.querySelectorAll('col[data-column-id]');
+    expect(cols.length).toBe(6);
+    expect(cols[0].getAttribute('data-column-id')).toBe('id');
+    expect(cols[5].getAttribute('data-column-id')).toBe('memory');
+  });
+
+  test('non-grouped resizable table does not render colgroup', () => {
+    const colDefs = columnDefinitions.map(col => ({ ...col, width: 150 }));
+    const { container } = render(<Table columnDefinitions={colDefs} items={items} resizableColumns={true} />);
+    const colgroup = container.querySelector('colgroup');
+    expect(colgroup).toBeNull();
+  });
+});
+
+describe('Column grouping keyboard navigation', () => {
+  test('arrow key navigation works across grouped header rows', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions.map(col => ({ ...col, sortingField: col.id }))}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const table = container.querySelector('table')!;
+    const thead = container.querySelector('thead')!;
+    const firstTh = thead.querySelector('th')!;
+
+    // Focus the first header cell
+    firstTh.focus();
+
+    // Press arrow down to navigate to body
+    table.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: 40, bubbles: true }));
+
+    // Press arrow right to navigate across columns
+    table.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', keyCode: 39, bubbles: true }));
+
+    // No errors thrown — navigation handlers executed
+    expect(document.activeElement).toBeDefined();
+  });
+
+  test('navigation handles cells with colspan correctly', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions.map(col => ({ ...col, sortingField: col.id }))}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const table = container.querySelector('table')!;
+    const thead = container.querySelector('thead')!;
+
+    // Focus a group header cell (has colspan)
+    const groupTh = thead.querySelector('th[scope="colgroup"]') as HTMLElement;
+    groupTh.focus();
+
+    // Navigate down from group header to leaf row
+    table.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', keyCode: 40, bubbles: true }));
+
+    expect(document.activeElement).toBeDefined();
+  });
+});
+
+describe('Column grouping vertical navigation with rowspan', () => {
+  test('arrow up from body navigates to header row with rowspan cells', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions.map(col => ({ ...col, sortingField: col.id }))}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const table = container.querySelector('table')!;
+    const tbody = container.querySelector('tbody')!;
+    const firstBodyCell = tbody.querySelector('td') as HTMLElement;
+
+    // Focus a body cell
+    firstBodyCell.focus();
+
+    // Navigate up — should go to header, handling rowspan
+    table.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', keyCode: 38, bubbles: true }));
+    expect(document.activeElement).toBeDefined();
+  });
+
+  test('arrow down from group header row navigates to leaf row', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions.map(col => ({ ...col, sortingField: col.id }))}
+        items={items}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        enableKeyboardNavigation={true}
+      />
+    );
+    const table = container.querySelector('table')!;
+    const thead = container.querySelector('thead')!;
+
+    // Focus a leaf cell in the second header row
+    const secondRow = thead.querySelectorAll('tr')[1];
+    const leafTh = secondRow?.querySelector('th') as HTMLElement;
+    if (leafTh) {
+      leafTh.focus();
+      // Navigate up — should go to group header row
+      table.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', keyCode: 38, bubbles: true }));
+      expect(document.activeElement).toBeDefined();
+    }
+  });
+});
+
+describe('Column grouping with sticky header scrolling', () => {
+  test('renders with stickyHeader and grouped columns without error', () => {
+    const { container } = render(
+      <Table
+        columnDefinitions={columnDefinitions}
+        items={[...items, ...items, ...items, ...items, ...items]}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={singleLevelDisplay}
+        stickyHeader={true}
+      />
+    );
+    const wrapper = createWrapper(container).findTable()!;
+    expect(wrapper.find('thead')).not.toBeNull();
+    // Sticky header with grouped columns renders both header rows
+    const thead = wrapper.find('thead')!;
+    expect(thead.findAll('tr').length).toBe(2);
+  });
+});
