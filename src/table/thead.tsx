@@ -385,7 +385,7 @@ const Thead = React.forwardRef(
                         colIndex={selectionType ? rightColIndex + 1 : rightColIndex}
                         groupId={rightGroupId}
                         resizableColumns={resizableColumns}
-                        resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
+                        resizableStyle={getColumnStyles(sticky, col.id)}
                         onResizeFinish={() => onResizeFinish(columnWidths)}
                         updateGroupWidth={(_, newWidth) => {
                           // Resize the rightmost leaf of the right half
@@ -454,7 +454,7 @@ const Thead = React.forwardRef(
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
                     resizableColumns={resizableColumns}
-                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, col.id)}
+                    resizableStyle={getColumnStyles(sticky, col.id)}
                     onResizeFinish={() => onResizeFinish(columnWidths)}
                     updateGroupWidth={(groupId, newWidth) => {
                       updateGroup(groupId, newWidth);
@@ -497,7 +497,7 @@ const Thead = React.forwardRef(
                     updateColumn={updateColumn}
                     onResizeFinish={() => onResizeFinish(columnWidths)}
                     resizableColumns={resizableColumns}
-                    resizableStyle={resizableColumns ? {} : getColumnStyles(sticky, columnId)}
+                    resizableStyle={getColumnStyles(sticky, columnId)}
                     onClick={detail => {
                       setLastUserAction('sorting');
                       fireNonCancelableEvent(onSortingChange, detail);

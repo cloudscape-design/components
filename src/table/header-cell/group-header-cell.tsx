@@ -66,6 +66,8 @@ export function TableGroupHeaderCell({
   resizableStyle,
   onResizeFinish,
   updateGroupWidth,
+  childColumnIds,
+  childColumnMinWidths,
   focusedComponent,
   tabIndex,
   sticky,
@@ -78,7 +80,6 @@ export function TableGroupHeaderCell({
   resizerTooltipText,
   variant,
   tableVariant,
-  isLastChildOfGroup,
   columnGroupId,
   stickyColumnId,
   stickyBoundaryColumnId,
@@ -119,7 +120,6 @@ export function TableGroupHeaderCell({
       colSpan={colspan}
       rowSpan={rowspan}
       scope="colgroup"
-      isLastChildOfGroup={isLastChildOfGroup}
       isRightmost={isRightmost}
       columnGroupId={columnGroupId}
       extraClassName={boundaryClassName}
@@ -146,7 +146,7 @@ export function TableGroupHeaderCell({
           onWidthUpdate={newWidth => updateGroupWidth(groupId, newWidth)}
           onWidthUpdateCommit={onResizeFinish}
           ariaLabelledby={headerId}
-          minWidth={undefined}
+          minWidth={childColumnIds.reduce<number>((sum, id) => sum + (childColumnMinWidths.get(id) || 120), 0)}
           roleDescription={resizerRoleDescription}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
