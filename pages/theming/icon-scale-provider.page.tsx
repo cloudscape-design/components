@@ -283,6 +283,7 @@ function ButtonsInputsDropdowns() {
             placeholder="Multiselect"
             selectedOptions={selectedItems}
             onChange={({ detail }) => setSelectedItems(detail.selectedOptions)}
+            deselectAriaLabel={option => `Remove ${option.label}`}
           />
           <DatePicker
             value={dateValue}
@@ -294,6 +295,7 @@ function ButtonsInputsDropdowns() {
         <TextFilter
           filteringText={filteringText}
           filteringAriaLabel="Filter items"
+          filteringClearAriaLabel="Clear filter"
           onChange={({ detail }) => setFilteringText(detail.filteringText)}
         />
         <PropertyFilter
