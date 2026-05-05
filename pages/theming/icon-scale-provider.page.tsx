@@ -70,7 +70,7 @@ function Typography() {
   return (
     <Container header={<Header variant="h2">Typography &amp; Iconography</Header>}>
       <Box padding={{ top: 'm' }}>
-        <TextContent>
+        {/* <TextContent>
           <h1>
             <Icon name="settings" size="big" /> Heading 1 <Icon name="external" size="inherit" />
           </h1>
@@ -91,6 +91,29 @@ function Typography() {
           </p>
           <small>
             <Icon name="settings" size="small" /> Small <Icon name="external" size="inherit" />
+          </small>
+        </TextContent> */}
+        <TextContent>
+          <h1>
+            <Icon name="settings" size="big" /> Heading 1
+          </h1>
+          <h2>
+            <Icon name="settings" size="medium" /> Heading 2
+          </h2>
+          <h3>
+            <Icon name="settings" /> Heading 3
+          </h3>
+          <h4>
+            <Icon name="settings" /> Heading 4
+          </h4>
+          <h5>
+            <Icon name="settings" /> Heading 5
+          </h5>
+          <p>
+            <Icon name="settings" /> Paragraph
+          </p>
+          <small>
+            <Icon name="settings" size="small" /> Small
           </small>
         </TextContent>
       </Box>
