@@ -11,6 +11,7 @@ import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { TableRole } from '../table-role';
+import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from '../use-column-widths';
 import { getStickyClassNames } from '../utils';
 import { TableThElement } from './th-element';
 
@@ -29,7 +30,6 @@ export interface TableGroupHeaderCellProps {
   childColumnIds: PropertyKey[];
   firstChildColumnId?: PropertyKey;
   lastChildColumnId?: PropertyKey;
-  childColumnMinWidths: Map<PropertyKey, number>;
   focusedComponent?: null | string;
   tabIndex: number;
   sticky?: boolean;
@@ -67,7 +67,6 @@ export function TableGroupHeaderCell({
   onResizeFinish,
   updateGroupWidth,
   childColumnIds,
-  childColumnMinWidths,
   focusedComponent,
   tabIndex,
   sticky,
@@ -87,6 +86,16 @@ export function TableGroupHeaderCell({
   wrapLines,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
+  const { columnWidths } = useColumnWidths();
+
+  // Effective min = sum of non-rightmost children's current widths (fixed) + rightmost child's minWidth
+  const lastChild = childColumnIds[childColumnIds.length - 1];
+  const groupMinWidth = childColumnIds.reduce<number>((sum, id) => {
+    if (id === lastChild) {
+      return sum + DEFAULT_COLUMN_WIDTH;
+    }
+    return sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH);
+  }, 0);
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
 
@@ -146,7 +155,7 @@ export function TableGroupHeaderCell({
           onWidthUpdate={newWidth => updateGroupWidth(groupId, newWidth)}
           onWidthUpdateCommit={onResizeFinish}
           ariaLabelledby={headerId}
-          minWidth={childColumnIds.reduce<number>((sum, id) => sum + (childColumnMinWidths.get(id) || 120), 0)}
+          minWidth={groupMinWidth}
           roleDescription={resizerRoleDescription}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
