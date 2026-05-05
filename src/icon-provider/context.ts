@@ -15,7 +15,7 @@ export const InternalIconContext = createContext<IconProviderProps.Icons>(genera
 /**
  * A mapping from each icon size variant to an optional target pixel size.
  * When a key is set, icons that would normally render at that size will instead be scaled
- * via CSS `transform: scale()` to match the target pixel value.
+ * via the CSS `scale` property to match the target pixel value.
  * An empty object means no overrides — icons render at their original size.
  */
 export type IconSizeOverrideMap = Partial<Record<string, string>>;

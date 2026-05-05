@@ -188,7 +188,7 @@ export interface IconProviderProps extends BaseComponentProps {
   /**
    * Specifies a target pixel size for icons that render at `"small"` size (default 16×16).
    *
-   * The icon retains its original layout box but is visually scaled via CSS `transform: scale()`
+   * The icon retains its original layout box but is visually scaled via the CSS `scale` property
    * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
    *
    * @defaultValue undefined (no override — icons render at their original size)
@@ -198,7 +198,7 @@ export interface IconProviderProps extends BaseComponentProps {
   /**
    * Specifies a target pixel size for icons that render at `"normal"` size (default 16×16).
    *
-   * The icon retains its original layout box but is visually scaled via CSS `transform: scale()`
+   * The icon retains its original layout box but is visually scaled via the CSS `scale` property
    * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
    *
    * Use this to create dense UI regions where icons should appear smaller.
@@ -231,7 +231,7 @@ export interface IconProviderProps extends BaseComponentProps {
   /**
    * Specifies a target pixel size for icons that use `"inherit"` size (contextual sizing based
    * on line-height). When set, the icon switches from contextual sizing to a fixed pixel render
-   * at the specified size, scaled via CSS `transform: scale()`.
+   * at the specified size, scaled via the CSS `scale` property.
    *
    * This is useful for overriding icons like the external-link icon which normally scales with
    * surrounding text.

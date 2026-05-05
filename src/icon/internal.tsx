@@ -24,7 +24,7 @@ type InternalIconProps = IconProps &
  * Used to compute the scale factor when a pixel override is provided.
  */
 const BASE_SIZE_PX: Record<string, number> = {
-  small: 16,
+  small: 12,
   normal: 16,
   medium: 20,
   big: 24,
@@ -114,11 +114,18 @@ const InternalIcon = ({
     }
   }
 
-  // Build inline styles
-  const scaleTransform = scaleFactor !== 1 ? `scale(${scaleFactor})` : undefined;
+  // Build inline styles.
+  // We use the CSS `scale` property instead of `transform: scale(...)` so that it composes
+  // with any `transform: rotate(...)` applied by parent components (e.g. expandable-section,
+  // button-dropdown caret rotation). Using `transform` inline would override CSS transforms.
+  // Counter-scale the stroke-width so it remains visually consistent regardless of scaling.
+  // The CSS uses: stroke-width: calc(token / cssScaleFactor * var(--icon-stroke-scale, 1))
+  // By setting --icon-stroke-scale to 1/scaleFactor, the visual stroke stays at the themed value.
+  const strokeScale = scaleFactor !== 1 ? 1 / scaleFactor : undefined;
   const inlineStyles: React.CSSProperties = {
     ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
-    ...(scaleTransform ? { transform: scaleTransform } : {}),
+    ...(scaleFactor !== 1 ? { scale: `${scaleFactor}` } : {}),
+    ...(strokeScale ? ({ '--icon-stroke-scale': strokeScale } as React.CSSProperties) : {}),
   };
 
   const baseProps = getBaseProps(props);

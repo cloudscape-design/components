@@ -84,7 +84,8 @@ $_icon-sizes: (
       > svg {
         &,
         * {
-          stroke-width: calc(#{$stroke} / #{$scaleFactor});
+          /* stylelint-disable-next-line custom-property-pattern */
+          stroke-width: calc(#{$stroke} / #{$scaleFactor} * var(--icon-stroke-scale, 1));
         }
       }
     }
