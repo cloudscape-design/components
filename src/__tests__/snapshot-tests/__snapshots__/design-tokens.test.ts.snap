@@ -151,7 +151,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -3238,7 +3238,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -6325,7 +6325,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -9412,7 +9412,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -12499,7 +12499,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -15586,7 +15586,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -18673,7 +18673,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
-      "$value": "1.5px",
+      "$value": "2px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
@@ -21765,7 +21765,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -24852,7 +24852,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -27939,7 +27939,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -31026,7 +31026,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -34113,7 +34113,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -37200,7 +37200,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -40287,7 +40287,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -43374,7 +43374,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
-          "$value": "1.5px",
+          "$value": "2px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -46461,7 +46461,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
-      "$value": "1.5px",
+      "$value": "2px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
