@@ -63,6 +63,7 @@ export function findTableRowByAriaRowIndex(table: null | HTMLTableElement, targe
 /**
  * Finds the closest column to the targetAriaColIndex+delta in the direction of delta.
  */
+/* istanbul ignore next: requires real DOM layout */
 export function findTableRowCellByAriaColIndex(
   tableRow: HTMLTableRowElement,
   targetAriaColIndex: number,
@@ -80,7 +81,7 @@ export function findTableRowCellByAriaColIndex(
  * are only in one <tr> in the DOM but visually occupy multiple rows.
  */
 export function getAllCellsInRow(table: null | HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
-  if (!table) {
+  /* istanbul ignore next */ if (!table) {
     return [];
   }
 

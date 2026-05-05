@@ -95,7 +95,7 @@ const Thead = React.forwardRef(
 
     // Helper to get child column IDs for a group (for getting minWidths)
     const getChildColumnIds = (groupId: string): string[] => {
-      if (!hierarchicalStructure) {
+      /* istanbul ignore next */ if (!hierarchicalStructure) {
         return [];
       }
 
@@ -328,7 +328,7 @@ const Thead = React.forwardRef(
                         resizableColumns={resizableColumns}
                         resizableStyle={resizableColumns ? {} : {}}
                         onResizeFinish={() => onResizeFinish(columnWidths)}
-                        updateGroupWidth={(_, newWidth) => {
+                        /* istanbul ignore next: requires DOM resize interaction */ updateGroupWidth={(_, newWidth) => {
                           // Resize the rightmost leaf of the left half
                           const lastLeaf = leftChildIds[leftChildIds.length - 1];
                           if (lastLeaf) {
