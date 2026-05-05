@@ -194,7 +194,10 @@ export class OptionsDropdownContentWrapper extends ComponentWrapper {
 
   findOptionByValue(value: string): OptionWrapper | null {
     const toReplace = escapeSelector(value);
-    return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']} .${OptionWrapper.rootSelector}[data-value="${toReplace}"]`,
+      OptionWrapper
+    );
   }
 
   /**

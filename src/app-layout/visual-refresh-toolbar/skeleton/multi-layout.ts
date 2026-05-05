@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 
 import { metrics } from '../../../internal/metrics';
 import { awsuiPluginsInternal } from '../../../internal/plugins/api';
 import { RegistrationState } from '../../../internal/plugins/controllers/app-layout-widget';
 import { useAppLayoutFlagEnabled } from '../../utils/feature-flags';
+import { AppLayoutToolbarPublicContext } from '../contexts';
 import { MergeProps, SharedProps } from '../state/interfaces';
 import { ToolbarProps } from '../toolbar';
 
@@ -49,7 +50,9 @@ export function useMultiAppLayout(
     }
   }, [registration]);
 
-  if (!isToolbar) {
+  const isPublicAppLayout = useContext(AppLayoutToolbarPublicContext);
+  const isPublicToolbarInSSR = isPublicAppLayout && typeof window === 'undefined';
+  if (!isToolbar || isPublicToolbarInSSR) {
     return {
       registered: true,
       // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
