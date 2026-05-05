@@ -424,7 +424,12 @@ export default function ColumnGroupsPage() {
             sortingDisabled={sortingDisabled}
             loading={loading}
             loadingText="Loading..."
-            ariaLabels={{ tableLabel: 'Instances', selectionGroupLabel: 'Selection' }}
+            ariaLabels={{
+              tableLabel: 'Instances',
+              selectionGroupLabel: 'Selection',
+              allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} items selected`,
+              itemSelectionLabel: (_, item) => `Select ${item.name}`,
+            }}
             header={<Header counter={`(${tableItems.length})`}>Instances</Header>}
             filter={
               <TextFilter
