@@ -42,7 +42,6 @@ export interface TableThElementProps {
   rowSpan?: number;
   scope?: 'col' | 'colgroup';
   columnGroupId?: string;
-  // isLastChildOfGroup?: boolean;
   isRightmost?: boolean;
   /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
   extraClassName?: string;
@@ -74,7 +73,6 @@ export function TableThElement({
   rowSpan,
   scope,
   columnGroupId,
-  // isLastChildOfGroup,
   isRightmost,
   extraClassName,
   extraRef,
