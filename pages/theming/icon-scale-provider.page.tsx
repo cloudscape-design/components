@@ -651,16 +651,16 @@ function StatusComponents() {
         <Flashbar items={flashbarItems} />
         <ColumnLayout columns={2}>
           <SpaceBetween size="xs">
-            <Alert type="error" dismissible={true} header="Error">
+            <Alert type="error" dismissible={true} dismissAriaLabel="Dismiss error" header="Error">
               This is an error alert.
             </Alert>
-            <Alert type="warning" dismissible={true} header="Warning">
+            <Alert type="warning" dismissible={true} dismissAriaLabel="Dismiss warning" header="Warning">
               This is a warning alert.
             </Alert>
-            <Alert type="success" dismissible={true} header="Success">
+            <Alert type="success" dismissible={true} dismissAriaLabel="Dismiss success" header="Success">
               This is a success alert.
             </Alert>
-            <Alert type="info" dismissible={true} header="Info">
+            <Alert type="info" dismissible={true} dismissAriaLabel="Dismiss info" header="Info">
               This is an info alert.
             </Alert>
           </SpaceBetween>
