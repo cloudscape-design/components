@@ -284,6 +284,7 @@ export function ColumnWidthsProvider({
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
   }
 
+  /* istanbul ignore next: covered by integration tests, requires real DOM measurements */
   function updateGroup(groupId: PropertyKey, newGroupWidth: number) {
     if (!columnWidths) {
       return;
