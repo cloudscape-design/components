@@ -28,6 +28,7 @@ export default function stickyScrolling(
       return;
     }
     // For grouped headers with multiple <tr> rows, stickyRef points to the first <tr>.
+    /* istanbul ignore next: requires DOM scroll measurements */
     // Use the full <thead> bottom so we account for all header rows.
     const stickyEl = stickyRef.current.closest('thead') ?? stickyRef.current;
     const stickyBottom = getLogicalBoundingClientRect(stickyEl).insetBlockEnd;
