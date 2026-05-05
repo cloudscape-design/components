@@ -134,10 +134,10 @@ export function TableThElement({
       )}
       colSpan={colSpan}
       rowSpan={rowSpan}
-      scope={scope}
       style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
+      scope={scope ?? 'col'}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
