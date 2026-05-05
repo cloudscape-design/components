@@ -41,18 +41,8 @@ export interface TableThElementProps {
   colSpan?: number;
   rowSpan?: number;
   scope?: 'col' | 'colgroup';
-  /**
-   * ID of the direct parent group for this leaf column cell.
-   * Used as a `data-column-group-id` test-utils hook to allow querying columns by group.
-   * Omit for top-level columns that have no group parent.
-   */
   columnGroupId?: string;
-  /**
-   * When true, this cell is the rightmost child within its parent group.
-   * Its divider/resizer extends fully to connect to the parent group's horizontal border.
-   */
-  isLastChildOfGroup?: boolean;
-  /** When true, this cell occupies the rightmost visual column position in the table. */
+  // isLastChildOfGroup?: boolean;
   isRightmost?: boolean;
   /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
   extraClassName?: string;
@@ -84,7 +74,7 @@ export function TableThElement({
   rowSpan,
   scope,
   columnGroupId,
-  isLastChildOfGroup,
+  // isLastChildOfGroup,
   isRightmost,
   extraClassName,
   extraRef,
@@ -126,8 +116,6 @@ export function TableThElement({
           [styles['header-cell-hidden']]: hidden,
           [styles['header-cell-spans-rows']]: (rowSpan ?? 1) > 1,
           [styles['header-cell-grouped']]: !!columnGroupId,
-          [styles['header-cell-last-child-of-group']]: isLastChildOfGroup,
-          [styles['header-cell-rightmost']]: isRightmost,
         },
         stickyStyles.className,
         extraClassName
