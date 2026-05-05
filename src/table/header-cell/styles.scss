@@ -53,7 +53,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -70,7 +70,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-interactive-default;
+    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
@@ -85,6 +85,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
     background: none;
   }
+  &:last-child,
   &[data-rightmost],
   &.header-cell-sortable {
     padding-inline-end: awsui.$space-xs;
