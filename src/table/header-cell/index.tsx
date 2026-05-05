@@ -235,6 +235,7 @@ export function TableHeaderCell<ItemType>({
         />
       ) : (
         <Divider
+          className={styles['resize-divider']}
           position={isLastChildOfGroup ? 'top' : undefined}
           variant={columnGroupId || (rowSpan && rowSpan > 1) ? 'interactive' : 'default'}
         />
