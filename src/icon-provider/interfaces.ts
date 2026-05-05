@@ -186,10 +186,10 @@ export interface IconProviderProps extends BaseComponentProps {
   icons: IconProviderProps.Icons | null;
 
   /**
-   * Specifies a target pixel size for icons that render at `"small"` size (default 16×16).
+   * Specifies a target pixel size for icons that render at `"small"` size (default 12×12).
    *
-   * The icon retains its original layout box but is visually scaled via the CSS `scale` property
-   * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
+   * The icon's inline-size (both the wrapper span and the child SVG) is set to the target
+   * pixel value. For example, `"10px"` renders a 10×10 icon instead of the default 12×12.
    *
    * @defaultValue undefined (no override — icons render at their original size)
    */
@@ -198,8 +198,8 @@ export interface IconProviderProps extends BaseComponentProps {
   /**
    * Specifies a target pixel size for icons that render at `"normal"` size (default 16×16).
    *
-   * The icon retains its original layout box but is visually scaled via the CSS `scale` property
-   * to match the target pixel size. For example, `"12px"` scales a 16px icon to 75%.
+   * The icon's inline-size (both the wrapper span and the child SVG) is set to the target
+   * pixel value. For example, `"12px"` renders a 12×12 icon instead of the default 16×16.
    *
    * Use this to create dense UI regions where icons should appear smaller.
    *
@@ -215,7 +215,7 @@ export interface IconProviderProps extends BaseComponentProps {
   iconSizeMedium?: string;
 
   /**
-   * Specifies a target pixel size for icons that render at `"big"` size (default 24×24).
+   * Specifies a target pixel size for icons that render at `"big"` size (default 32×32).
    *
    * @defaultValue undefined (no override — icons render at their original size)
    */
@@ -231,7 +231,7 @@ export interface IconProviderProps extends BaseComponentProps {
   /**
    * Specifies a target pixel size for icons that use `"inherit"` size (contextual sizing based
    * on line-height). When set, the icon switches from contextual sizing to a fixed pixel render
-   * at the specified size, scaled via the CSS `scale` property.
+   * at the specified size.
    *
    * This is useful for overriding icons like the external-link icon which normally scales with
    * surrounding text.

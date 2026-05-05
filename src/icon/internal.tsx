@@ -21,13 +21,13 @@ type InternalIconProps = IconProps &
 
 /**
  * Base pixel sizes for each named icon size variant.
- * Used to compute the scale factor when a pixel override is provided.
+ * Used to compute the stroke-width scale factor when a pixel override is provided.
  */
 const BASE_SIZE_PX: Record<string, number> = {
   small: 12,
   normal: 16,
   medium: 20,
-  big: 24,
+  big: 32,
   large: 48,
 };
 
@@ -85,7 +85,7 @@ const InternalIcon = ({
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
 
   // Check if there's a pixel override for the "inherit" size variant.
-  // If so, we switch from contextual sizing to the "normal" size class and apply a scale.
+  // If so, we switch from contextual sizing to the "normal" size class and apply inline sizing.
   const inheritOverride = sizeOverrides.inherit;
   const hasInheritOverride = size === 'inherit' && inheritOverride !== undefined;
 
@@ -94,37 +94,42 @@ const InternalIcon = ({
   const contextualSize = effectiveSize === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;
 
-  // Compute the scale factor from the pixel override
-  let scaleFactor = 1;
+  // Compute the target pixel size and stroke-width scale from the override.
+  // Instead of CSS `scale`, we directly set inline-size on both the span and SVG.
+  // The stroke-width scale compensates so the themed stroke remains visually consistent.
+  // The CSS uses: stroke-width: calc(token / cssScaleFactor * var(--icon-stroke-scale, 1))
+  // By setting --icon-stroke-scale to basePx/targetPx, the visual stroke stays at the themed value.
+  let targetSizePx: number | undefined;
+  let strokeScale: number | undefined;
   if (hasInheritOverride) {
-    // For inherit override, scale relative to the "normal" base (16px)
     const targetPx = parsePx(inheritOverride);
     if (targetPx !== undefined) {
-      scaleFactor = targetPx / BASE_SIZE_PX.normal;
+      targetSizePx = targetPx;
+      const basePx = BASE_SIZE_PX.normal;
+      if (targetPx !== basePx) {
+        strokeScale = basePx / targetPx;
+      }
     }
   } else if (!contextualSize) {
-    // For non-contextual sizes, check if there's an override for this size variant
     const override = sizeOverrides[iconSize];
     if (override !== undefined) {
       const targetPx = parsePx(override);
       const basePx = BASE_SIZE_PX[iconSize];
       if (targetPx !== undefined && basePx !== undefined) {
-        scaleFactor = targetPx / basePx;
+        targetSizePx = targetPx;
+        if (targetPx !== basePx) {
+          strokeScale = basePx / targetPx;
+        }
       }
     }
   }
 
-  // Build inline styles.
-  // We use the CSS `scale` property instead of `transform: scale(...)` so that it composes
-  // with any `transform: rotate(...)` applied by parent components (e.g. expandable-section,
-  // button-dropdown caret rotation). Using `transform` inline would override CSS transforms.
-  // Counter-scale the stroke-width so it remains visually consistent regardless of scaling.
-  // The CSS uses: stroke-width: calc(token / cssScaleFactor * var(--icon-stroke-scale, 1))
-  // By setting --icon-stroke-scale to 1/scaleFactor, the visual stroke stays at the themed value.
-  const strokeScale = scaleFactor !== 1 ? 1 / scaleFactor : undefined;
+  // Build inline styles for the wrapper span.
+  // When a size override is active, we set --icon-size-override which the CSS uses
+  // for both the span's inline-size and the child SVG's inline-size/block-size.
   const inlineStyles: React.CSSProperties = {
     ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
-    ...(scaleFactor !== 1 ? { scale: `${scaleFactor}` } : {}),
+    ...(targetSizePx !== undefined ? ({ '--icon-size-override': `${targetSizePx}px` } as React.CSSProperties) : {}),
     ...(strokeScale ? ({ '--icon-stroke-scale': strokeScale } as React.CSSProperties) : {}),
   };
 
