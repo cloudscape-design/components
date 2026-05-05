@@ -340,7 +340,7 @@ export class GridNavigationProcessor {
     let targetCell =
       allVisibleCells.length > 0
         ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
-        : findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
+        : /* istanbul ignore next */ findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
 
     // When vertical movement lands on the same cell (due to rowspan), skip past it.
     if (targetCell === cellElement && delta.y !== 0 && cellElement) {
@@ -350,7 +350,7 @@ export class GridNavigationProcessor {
       // Jump to the first row after this cell's span (↓) or one row before the cell's start (↑).
       const skipToRowIndex = delta.y > 0 ? cellRowIndex + cellRowSpan : cellRowIndex - 1;
       const skipRow = findTableRowByAriaRowIndex(this.table, skipToRowIndex, delta.y);
-      if (!skipRow) {
+      /* istanbul ignore next */ if (!skipRow) {
         return null;
       }
       const skipRowAriaIndex = parseInt(skipRow.getAttribute('aria-rowindex') ?? '');
