@@ -82,10 +82,6 @@ th[data-rightmost] > .resizer-wrapper.visual-refresh.is-borderless .divider-inte
   inset-inline-end: 0;
 }
 
-.divider-active {
-  border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
-}
-
 .resizer {
   @include styles.styles-reset;
   border-block: none;
@@ -102,9 +98,6 @@ th[data-rightmost] > .resizer-wrapper.visual-refresh.is-borderless .divider-inte
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     pointer-events: none;
-  }
-  &:hover + .divider {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
