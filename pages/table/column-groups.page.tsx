@@ -84,7 +84,6 @@ const groupDefinitions: TableProps.GroupDefinition[] = [
   { id: 'performance', header: 'Performance' },
   { id: 'network', header: 'Network' },
   { id: 'metrics', header: 'Metrics' },
-  { id: 'cost', header: 'Cost' },
 ];
 
 // ============================================================================
