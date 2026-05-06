@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import Box from '~components/box';
+import Checkbox from '~components/checkbox';
 import Select from '~components/select';
 
 import { generateOptions } from './generate-options';
@@ -24,10 +25,16 @@ const onBlur = () => {
 export default function SelectPage() {
   const [selectedOption1, setSelectedOption1] = React.useState(null);
   const [selectedOption2, setSelectedOption2] = React.useState(null);
+  const [readOnly, setReadOnly] = React.useState(false);
 
   return (
     <article>
       <Box padding="l">
+        <Box padding="s">
+          <Checkbox checked={readOnly} onChange={({ detail }) => setReadOnly(detail.checked)}>
+            Read-only
+          </Checkbox>
+        </Box>
         <Box padding="s">
           <Box variant="h1">Select with filteringType = none</Box>
           <Box margin={{ bottom: 'xxs' }} color="text-label">
@@ -46,6 +53,7 @@ export default function SelectPage() {
             noMatch={<b>No match</b>}
             loadingText="Fetching equipment"
             selectedAriaLabel="Selected"
+            readOnly={readOnly}
             onBlur={onBlur}
             onFocus={onFocus}
             onLoadItems={onLoadItems}
@@ -75,6 +83,7 @@ export default function SelectPage() {
             noMatch={<b>No match</b>}
             loadingText="Fetching equipment"
             selectedAriaLabel="Selected"
+            readOnly={readOnly}
             onBlur={onBlur}
             onFocus={onFocus}
             onLoadItems={onLoadItems}
