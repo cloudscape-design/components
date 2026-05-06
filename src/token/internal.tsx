@@ -32,6 +32,7 @@ type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
     disableInnerPadding?: boolean;
+    tokenBoxClassName?: string;
   };
 
 function InternalToken({
@@ -52,6 +53,7 @@ function InternalToken({
   // Internal
   role,
   disableInnerPadding,
+  tokenBoxClassName,
 
   // Base
   __internalRootRef,
@@ -131,9 +133,9 @@ function InternalToken({
           analyticsSelectors.token,
           baseProps.className
         )}
-        aria-label={ariaLabel}
-        aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}
-        aria-disabled={!!disabled}
+        aria-label={role === 'presentation' ? undefined : ariaLabel}
+        aria-labelledby={role === 'presentation' || ariaLabel ? undefined : ariaLabelledbyId}
+        aria-disabled={role === 'presentation' ? undefined : !!disabled}
         role={role ?? 'group'}
         onFocus={() => {
           setShowTooltip(true);
@@ -155,7 +157,8 @@ function InternalToken({
             disabled && styles['token-box-disabled'],
             readOnly && styles['token-box-readonly'],
             !isInline && !onDismiss && styles['token-box-without-dismiss'],
-            disableInnerPadding && styles['disable-padding']
+            disableInnerPadding && styles['disable-padding'],
+            tokenBoxClassName
           )}
           style={tokenRootStyleProps}
         >
