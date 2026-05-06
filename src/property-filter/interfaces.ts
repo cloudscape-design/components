@@ -4,7 +4,6 @@
 import React from 'react';
 
 import {
-  PropertyFilterFreeTextFiltering,
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
@@ -14,7 +13,6 @@ import {
   PropertyFilterOption,
   PropertyFilterProperty,
   PropertyFilterQuery,
-  PropertyFilterTextOperatorExtended,
   PropertyFilterToken,
   PropertyFilterTokenGroup,
   PropertyFilterTokenType,
@@ -236,6 +234,17 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+}
+
+// TODO: replace with PropertyFilterTextOperatorExtended from collection-hooks once it is released
+export interface PropertyFilterTextOperatorExtended {
+  operator: PropertyFilterOperator;
+  match?: (item: unknown, text: string) => boolean;
+}
+// TODO: replace with PropertyFilterFreeTextFiltering from collection-hooks once it is released
+export interface PropertyFilterFreeTextFiltering {
+  operators?: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
+  defaultOperator?: PropertyFilterOperator;
 }
 
 export namespace PropertyFilterProps {
