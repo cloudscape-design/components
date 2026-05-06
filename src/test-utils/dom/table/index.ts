@@ -65,7 +65,7 @@ export default class TableWrapper extends ComponentWrapper {
     if (groupId !== undefined) {
       return this.findActiveTHead().findAll(`th[data-column-group-id="${groupId}"]`);
     }
-    return this.findActiveTHead().findAll('th[scope="col"]');
+    return this.findActiveTHead().findAll('tr > *');
   }
 
   /**
