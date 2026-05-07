@@ -83,97 +83,100 @@ export default function ContentDisplayPreference({
         {i18n('contentDisplayPreference.description', description)}
       </p>
 
-      {/* Filter input */}
-      {enableColumnFiltering && (
-        <div className={getClassName('text-filter')}>
-          <InternalTextFilter
-            filteringText={columnFilteringText}
-            filteringPlaceholder={i18n(
-              'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
-              i18nStrings?.columnFilteringPlaceholder
-            )}
-            filteringAriaLabel={i18n(
-              'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
-              i18nStrings?.columnFilteringAriaLabel
-            )}
-            filteringClearAriaLabel={i18n(
-              'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
-              i18nStrings?.columnFilteringClearFilterText
-            )}
-            onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
-            countText={i18n(
-              'contentDisplayPreference.i18nStrings.columnFilteringCountText',
-              i18nStrings?.columnFilteringCountText
-                ? i18nStrings?.columnFilteringCountText(sortedAndFilteredOptions.length)
-                : undefined,
-              format => format({ count: sortedAndFilteredOptions.length })
-            )}
-          />
-        </div>
-      )}
-
-      {/* No match */}
-      {sortedAndFilteredOptions.length === 0 && (
-        <div className={getClassName('no-match')}>
-          <InternalSpaceBetween size="s" alignItems="center">
-            <InternalBox margin={{ top: 'm' }}>
-              {i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
-                i18nStrings?.columnFilteringNoMatchText
+        {/* Filter input */}
+        {enableColumnFiltering && (
+          <div className={getClassName('text-filter')}>
+            <InternalTextFilter
+              filteringText={columnFilteringText}
+              filteringPlaceholder={i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
+                i18nStrings?.columnFilteringPlaceholder
               )}
-            </InternalBox>
-            <InternalButton onClick={() => setColumnFilteringText('')}>
-              {i18n(
+              filteringAriaLabel={i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
+                i18nStrings?.columnFilteringAriaLabel
+              )}
+              filteringClearAriaLabel={i18n(
                 'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
                 i18nStrings?.columnFilteringClearFilterText
               )}
-            </InternalButton>
-          </InternalSpaceBetween>
-        </div>
-      )}
+              onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
+              countText={i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringCountText',
+                i18nStrings?.columnFilteringCountText
+                  ? i18nStrings?.columnFilteringCountText(sortedAndFilteredOptions.length)
+                  : undefined,
+                format => format({ count: sortedAndFilteredOptions.length })
+              )}
+            />
+          </div>
+        )}
 
-      <InternalList
-        items={sortedAndFilteredOptions}
-        renderItem={item => ({
-          id: item.id,
-          content: <ContentDisplayOption option={item} onToggle={onToggle} />,
-          announcementLabel: item.label,
-        })}
-        disableItemPaddings={true}
-        sortable={true}
-        sortDisabled={columnFilteringText.trim().length > 0}
-        onSortingChange={({ detail: { items } }) => {
-          onChange(items);
-        }}
-        ariaDescribedby={descriptionId}
-        ariaLabelledby={titleId}
-        i18nStrings={{
-          liveAnnouncementDndStarted: i18n(
-            'contentDisplayPreference.liveAnnouncementDndStarted',
-            liveAnnouncementDndStarted,
-            formatDndStarted
-          ),
-          liveAnnouncementDndItemReordered: i18n(
-            'contentDisplayPreference.liveAnnouncementDndItemReordered',
-            liveAnnouncementDndItemReordered,
-            formatDndItemReordered
-          ),
-          liveAnnouncementDndItemCommitted: i18n(
-            'contentDisplayPreference.liveAnnouncementDndItemCommitted',
-            liveAnnouncementDndItemCommitted,
-            formatDndItemCommitted
-          ),
-          liveAnnouncementDndDiscarded: i18n(
-            'contentDisplayPreference.liveAnnouncementDndDiscarded',
-            liveAnnouncementDndDiscarded
-          ),
-          dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
-          dragHandleAriaDescription: i18n(
-            'contentDisplayPreference.dragHandleAriaDescription',
-            dragHandleAriaDescription
-          ),
-        }}
-      />
+        {/* No match */}
+        {sortedAndFilteredOptions.length === 0 && (
+          <div className={getClassName('no-match')}>
+            <InternalSpaceBetween size="s" alignItems="center">
+              <InternalBox margin={{ top: 'm' }}>
+                {i18n(
+                  'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
+                  i18nStrings?.columnFilteringNoMatchText
+                )}
+              </InternalBox>
+              <InternalButton onClick={() => setColumnFilteringText('')}>
+                {i18n(
+                  'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+                  i18nStrings?.columnFilteringClearFilterText
+                )}
+              </InternalButton>
+            </InternalSpaceBetween>
+          </div>
+        )}
+
+        <div role="application" aria-labelledby={titleId}>
+          <InternalList
+            items={sortedAndFilteredOptions}
+            renderItem={item => ({
+              id: item.id,
+              content: <ContentDisplayOption option={item} onToggle={onToggle} />,
+              announcementLabel: item.label,
+            })}
+            disableItemPaddings={true}
+            sortable={true}
+            sortDisabled={columnFilteringText.trim().length > 0}
+            onSortingChange={({ detail: { items } }) => {
+              onChange(items);
+            }}
+            ariaDescribedby={descriptionId}
+            ariaLabelledby={titleId}
+            i18nStrings={{
+              liveAnnouncementDndStarted: i18n(
+                'contentDisplayPreference.liveAnnouncementDndStarted',
+                liveAnnouncementDndStarted,
+                formatDndStarted
+              ),
+              liveAnnouncementDndItemReordered: i18n(
+                'contentDisplayPreference.liveAnnouncementDndItemReordered',
+                liveAnnouncementDndItemReordered,
+                formatDndItemReordered
+              ),
+              liveAnnouncementDndItemCommitted: i18n(
+                'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+                liveAnnouncementDndItemCommitted,
+                formatDndItemCommitted
+              ),
+              liveAnnouncementDndDiscarded: i18n(
+                'contentDisplayPreference.liveAnnouncementDndDiscarded',
+                liveAnnouncementDndDiscarded
+              ),
+              dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
+              dragHandleAriaDescription: i18n(
+                'contentDisplayPreference.dragHandleAriaDescription',
+                dragHandleAriaDescription
+              ),
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
