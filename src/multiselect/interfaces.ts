@@ -88,7 +88,9 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
   export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export interface MultiselectOptionItem {
     type: 'item';

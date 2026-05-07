@@ -225,7 +225,9 @@ export namespace SelectProps {
   export type SelectItem = SelectOptionItem | SelectOptionGroupItem | SelectTriggerOptionItem;
   export type SelectOptionItemRenderer = (props: { item: SelectItem; filterText?: string }) => ReactNode | null;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
   export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
 
   export interface ChangeDetail {

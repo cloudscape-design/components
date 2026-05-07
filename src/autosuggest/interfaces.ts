@@ -180,7 +180,9 @@ export namespace AutosuggestProps {
     label?: string;
     options: ReadonlyArray<Option>;
   }
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
   export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
