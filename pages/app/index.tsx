@@ -95,7 +95,7 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget, oneTheme } = parseQuery(
   history.location.search
 );
 
@@ -113,6 +113,10 @@ window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
+
+if (oneTheme) {
+  document.body.classList.add('awsui-one-theme');
+}
 
 // Apply Safari-specific class to hide flaky scrollbars in tests
 const lowerCaseUserAgent = navigator.userAgent.toLowerCase();

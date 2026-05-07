@@ -14,6 +14,7 @@ interface AppUrlParams {
   visualRefresh: boolean;
   motionDisabled: boolean;
   appLayoutWidget: boolean;
+  oneTheme: boolean;
   mode?: Mode;
 }
 
@@ -34,6 +35,7 @@ const appContextDefaults: AppContextType = {
     visualRefresh: THEME === 'default',
     motionDisabled: false,
     appLayoutWidget: false,
+    oneTheme: false,
   },
   setMode: () => {},
   setUrlParams: () => {},
