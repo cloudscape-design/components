@@ -74,7 +74,7 @@ $_icon-sizes: (
       &-mapped-height {
         //block-size: $supportedLineHeight;
         /* stylelint-disable-next-line custom-property-pattern */
-        block-size: max(#{$size}, var(--icon-size-override, #{$size}));
+        block-size: max($supportedLineHeight, var(--icon-size-override, $size));
         padding-block: $padding;
         padding-inline: 0;
       }
