@@ -7,18 +7,20 @@ import { useCurrentMode, useDensityMode } from '@cloudscape-design/component-too
 
 import { useVisualContext } from '../../components/visual-context';
 import { ALWAYS_VISUAL_REFRESH } from '../../environment';
-import { useVisualRefresh } from '../use-visual-mode';
+import { useOneTheme, useVisualRefresh } from '../use-visual-mode';
 
 export function usePortalModeClasses(ref: React.RefObject<HTMLElement>, options?: { resetVisualContext?: boolean }) {
   const colorMode = useCurrentMode(ref);
   const densityMode = useDensityMode(ref);
   const context = useVisualContext(ref);
   const visualRefreshWithClass = useVisualRefresh() && !ALWAYS_VISUAL_REFRESH;
+  const oneTheme = useOneTheme();
 
   return clsx({
     'awsui-polaris-dark-mode awsui-dark-mode': colorMode === 'dark',
     'awsui-polaris-compact-mode awsui-compact-mode': densityMode === 'compact',
     'awsui-visual-refresh': visualRefreshWithClass,
+    'awsui-one-theme': oneTheme,
     [`awsui-context-${context}`]: context && !options?.resetVisualContext,
   });
 }

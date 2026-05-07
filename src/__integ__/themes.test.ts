@@ -50,6 +50,9 @@ describe('CSS Custom Properties', () => {
       '#/light/visual-contexts/content-header/?visualRefresh=true',
       '.awsui-context-content-header',
     ],
+    ['one-theme', '#light/?visualRefresh=false&oneTheme=true'],
+    ['one-theme-dark', '#dark/?visualRefresh=false&oneTheme=true'],
+    ['one-theme-compact', '#light/?visualRefresh=false&oneTheme=true&density=compact'],
   ])('match previous snapshot for mode %p', (_, url, selector = 'body') =>
     setupPage(url, page => expect(page.getCustomPropertyMap(selector)).resolves.toMatchSnapshot())()
   );
