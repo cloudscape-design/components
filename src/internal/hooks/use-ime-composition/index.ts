@@ -5,6 +5,10 @@ import { useEffect, useRef } from 'react';
 
 export interface UseIMECompositionOptions {
   /**
+   * Called synchronously when composition starts.
+   */
+  onCompositionStart?: () => void;
+  /**
    * Called synchronously when composition ends (i.e. the user commits a composed character).
    * At the point this fires, isComposing() still returns true — which blocks the spurious
    * Enter keydown that some browsers fire immediately after compositionend. The flag is
@@ -27,14 +31,17 @@ export interface UseIMECompositionOptions {
  */
 export function useIMEComposition(
   elementRef: React.RefObject<HTMLElement>,
-  { onCompositionEnd }: UseIMECompositionOptions = {}
+  { onCompositionStart, onCompositionEnd }: UseIMECompositionOptions = {}
 ) {
   const wasComposingRef = useRef(false);
+  const onCompositionStartRef = useRef(onCompositionStart);
+  onCompositionStartRef.current = onCompositionStart;
   const onCompositionEndRef = useRef(onCompositionEnd);
   onCompositionEndRef.current = onCompositionEnd;
 
   const handleCompositionStart = () => {
     wasComposingRef.current = true;
+    onCompositionStartRef.current?.();
   };
 
   const handleCompositionEnd = () => {

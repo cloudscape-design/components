@@ -533,13 +533,23 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   // Stable ref so the compositionend callback always calls the latest handleInput.
   const handleInputRef = useRef<() => void>(() => {});
 
+  // `composing` React state drives placeholder visibility — hidden while the user
+  // is actively composing CJK characters so intermediate characters don't flash
+  // the placeholder on and off.
+  const [composing, setComposing] = useState(false);
+
   // Track IME composition state so the onInput handler skips intermediate characters
   // during CJK (and other) composition sequences. The onCompositionEnd callback
   // fires synchronously when the user commits a composed character — handleInput
-  // runs unconditionally there, while isComposing() is still true (blocking the
-  // spurious Enter that fires immediately after compositionend in some browsers).
+  // runs unconditionally there. `isComposing()` stays true briefly after compositionend
+  // (until the next animation frame) to block the spurious Enter keydown that some
+  // browsers fire immediately after compositionend.
   const { isComposing } = useIMEComposition(editableElementRef, {
-    onCompositionEnd: () => handleInputRef.current(),
+    onCompositionStart: () => setComposing(true),
+    onCompositionEnd: () => {
+      setComposing(false);
+      handleInputRef.current();
+    },
   });
 
   const handleInput = useCallback(() => {
@@ -964,6 +974,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       onChange,
       markTokensAsSent,
       onKeyDown,
+      isComposing,
     });
   });
 
@@ -1084,7 +1095,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     return !!(menuIsOpen && activeMenu && menuItemsState && triggerVisible);
   }, [menuIsOpen, activeMenu, menuItemsState, triggerVisible]);
 
-  const showPlaceholder = !!(placeholder && (!tokens || tokens.length === 0));
+  const showPlaceholder = !!(placeholder && (!tokens || tokens.length === 0) && !composing);
 
   const editableElementAttributes: React.HTMLAttributes<HTMLDivElement> & { 'data-placeholder'?: string } = {
     'aria-label': ariaLabel,
@@ -1171,7 +1182,11 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       // for each keystroke during CJK composition and must not trigger token
       // detection. The onCompositionEnd callback calls handleInput directly
       // (bypassing this guard) once the final text is committed.
-      if (!isComposing()) {
+      // Note: we use `composing` (React state) rather than `isComposing()` (ref)
+      // so that input events after compositionend — such as the user immediately
+      // deleting the committed text — are processed normally. The spurious-Enter
+      // guard in the keyboard handler uses `isComposing()` separately.
+      if (!composing) {
         handleInput();
       }
     },
