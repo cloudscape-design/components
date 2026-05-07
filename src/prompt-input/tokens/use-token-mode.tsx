@@ -9,6 +9,7 @@ import { useStableCallback, useUniqueId } from '@cloudscape-design/component-too
 
 import { useDropdownStatus } from '../../internal/components/dropdown-status';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../../internal/events';
+import { useIMEComposition } from '../../internal/hooks/use-ime-composition';
 import { getFirstScrollableParent } from '../../internal/utils/scrollable-containers';
 import Token from '../../token/internal';
 import { calculateTokenPosition, CaretController, getOwnerSelection } from '../core/caret-controller';
@@ -529,6 +530,18 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
   const menusRef = useRef(menus);
   menusRef.current = menus;
 
+  // Stable ref so the compositionend callback always calls the latest handleInput.
+  const handleInputRef = useRef<() => void>(() => {});
+
+  // Track IME composition state so the onInput handler skips intermediate characters
+  // during CJK (and other) composition sequences. The onCompositionEnd callback
+  // fires synchronously when the user commits a composed character — handleInput
+  // runs unconditionally there, while isComposing() is still true (blocking the
+  // spurious Enter that fires immediately after compositionend in some browsers).
+  const { isComposing } = useIMEComposition(editableElementRef, {
+    onCompositionEnd: () => handleInputRef.current(),
+  });
+
   const handleInput = useCallback(() => {
     if (!editableElementRef.current) {
       return;
@@ -651,6 +664,9 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     shortcutsState.triggerElementsRef,
     shortcutsState.cancelledTriggerIds,
   ]);
+
+  // Keep the ref in sync so the compositionend handler always calls the latest version.
+  handleInputRef.current = handleInput;
 
   // Token render effect
   useLayoutEffect(() => {
@@ -1150,7 +1166,15 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     menuItemsHandlers,
     menuDropdownStatus,
     shouldRenderMenuDropdown,
-    handleInput,
+    handleInput: () => {
+      // Skip processing during IME composition — intermediate input events fire
+      // for each keystroke during CJK composition and must not trigger token
+      // detection. The onCompositionEnd callback calls handleInput directly
+      // (bypassing this guard) once the final text is committed.
+      if (!isComposing()) {
+        handleInput();
+      }
+    },
     handleLoadMore,
     tokenOperationAnnouncement,
     markTokensAsSent,
