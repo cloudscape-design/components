@@ -61,6 +61,18 @@ export default function ThemeSwitcher() {
         />
         Disable motion
       </label>
+      <label>
+        <input
+          id="one-theme-toggle"
+          type="checkbox"
+          checked={urlParams.oneTheme}
+          onChange={event => {
+            setUrlParams({ oneTheme: event.target.checked });
+            window.location.reload();
+          }}
+        />
+        One Theme
+      </label>
     </SpaceBetween>
   );
 }

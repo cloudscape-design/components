@@ -95,7 +95,7 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
   history.location.search
 );
 
@@ -110,6 +110,14 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
+
+// One Theme is driven purely by a class on <body>. Set it before React mounts
+// so the theme state cached by useOneTheme on first render matches the URL.
+if (oneTheme) {
+  document.body.classList.add('awsui-one-theme');
+} else {
+  document.body.classList.remove('awsui-one-theme');
+}
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
