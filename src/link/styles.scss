@@ -73,13 +73,14 @@
 
 .icon-wrapper {
   white-space: nowrap;
+}
+
+.icon {
+  display: inline-block;
+
   /* Add non-breaking space for consistent spacing */
   &::before {
     content: '\a0';
     display: inline-block;
   }
-}
-
-.icon {
-  display: inline-block;
 }
