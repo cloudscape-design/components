@@ -2,52 +2,94 @@
 // SPDX-License-Identifier: Apache-2.0
 
 'use client';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-import { getBaseProps } from '../internal/base-component';
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
 import { DrawerProps } from './interfaces';
 import { InternalDrawer } from './internal';
 
 export { DrawerProps };
 
-const Drawer = function Drawer({
-  header,
-  headerActions,
-  footer,
-  disableContentPaddings = false,
-  loading = false,
-  children,
-  i18nStrings,
-  ...props
-}: DrawerProps) {
+// Matches App Layout drawers z-index.
+const DEFAULT_Z_INDEX = 830;
+
+const Drawer = forwardRef(function Drawer(
+  {
+    header,
+    headerActions,
+    footer,
+    disableContentPaddings = false,
+    loading = false,
+    position = 'static',
+    placement = 'end',
+    offset,
+    stickyOffset,
+    zIndex = DEFAULT_Z_INDEX,
+    closeAction,
+    hideCloseAction = false,
+    open,
+    backdrop = false,
+    onClose,
+    focusBehavior,
+    role,
+    ...props
+  }: DrawerProps,
+  ref: React.Ref<DrawerProps.Ref>
+) {
+  if (backdrop && position !== 'fixed' && position !== 'absolute') {
+    warnOnce('Drawer', `\`backdrop\` is not supported with position="${position}" and will be ignored.`);
+  }
+  if (open !== undefined && !onClose) {
+    warnOnce(
+      'Drawer',
+      'You provided `open` without an `onClose` handler. The drawer will not respond to close actions.'
+    );
+  }
+
   const baseComponentProps = useBaseComponent('Drawer', {
-    props: {
-      disableContentPaddings,
-      loading,
-    },
+    props: { disableContentPaddings, loading, placement, position, zIndex, hideCloseAction, backdrop, role },
     metadata: {
       hasHeader: !!header,
       hasHeaderActions: !!headerActions,
       hasFooter: !!footer,
+      hasOffset: !!offset,
+      hasStickyOffset: !!stickyOffset,
+      hasCloseAction: !!closeAction,
+      autoFocus: !!focusBehavior?.autoFocus,
+      trapFocus: !!focusBehavior?.trapFocus,
+      returnFocus: !!focusBehavior?.returnFocus,
     },
   });
+
   return (
     <InternalDrawer
-      {...getBaseProps(props)}
+      {...getExternalProps(props)}
       {...baseComponentProps}
+      __ref={ref}
       header={header}
       headerActions={headerActions}
       footer={footer}
       disableContentPaddings={disableContentPaddings}
       loading={loading}
-      i18nStrings={i18nStrings}
-    >
-      {children}
-    </InternalDrawer>
+      placement={placement}
+      position={position}
+      offset={offset}
+      stickyOffset={stickyOffset}
+      zIndex={zIndex}
+      closeAction={closeAction}
+      hideCloseAction={hideCloseAction}
+      open={open}
+      backdrop={backdrop}
+      onClose={onClose}
+      focusBehavior={focusBehavior}
+      role={role}
+    />
   );
-};
+});
 
 export default Drawer;
 

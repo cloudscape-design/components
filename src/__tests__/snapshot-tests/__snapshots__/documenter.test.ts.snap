@@ -11783,10 +11783,83 @@ Only supported by horizontal dividers.",
 exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
 {
   "dashCaseName": "drawer",
-  "events": [],
-  "functions": [],
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user performs a close action. The \`event.detail.method\` indicates the trigger:
+* \`'close-action'\` - The close button was clicked.
+* \`'backdrop-click'\` - The backdrop was clicked (only when \`backdrop=true\`).
+* \`'escape'\` - The Escape key was pressed (only when \`backdrop=true\`).
+
+Do not use this property when using drawers inside AppLayout.",
+      "detailInlineType": {
+        "name": "DrawerProps.CloseDetail",
+        "properties": [
+          {
+            "inlineType": {
+              "name": ""escape" | "close-action" | "backdrop-click"",
+              "type": "union",
+              "values": [
+                "escape",
+                "close-action",
+                "backdrop-click",
+              ],
+            },
+            "name": "method",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "DrawerProps.CloseDetail",
+      "name": "onClose",
+    },
+  ],
+  "functions": [
+    {
+      "description": "Moves focus to the drawer element. Use in controlled mode when \`focusBehavior.autoFocus\`
+is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
+with \`open=true\`. The drawer with \`role="presentation"\` cannot be focused.",
+      "name": "focus",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
   "name": "Drawer",
   "properties": [
+    {
+      "description": "Sets the \`aria-label\` on the drawer body.
+By default the body is labelled by the drawer's \`header\` content. Use this when you need a different
+or more specific label (e.g. to include additional context or exclude parts of the header).
+Does not apply when \`role="presentation"\`. Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` on the drawer body.
+By default the body is labelled by the drawer's \`header\` content. Use this when you need a different
+or more specific label (e.g. to include additional context or exclude parts of the header).
+Does not apply when \`role="presentation"\`. Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Shows a semi-transparent backdrop behind the drawer when open. Used with \`absolute\`
+and \`fixed\` positions.
+
+When a backdrop is set, the keyboard focus is trapped inside the drawer by default
+to prevent it from moving to elements covered by the backdrop. This can be overridden
+with \`focusBehavior.trapFocus\`.
+
+Do not use this property when using drawers inside AppLayout.",
+      "name": "backdrop",
+      "optional": true,
+      "type": "boolean",
+    },
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
@@ -11795,9 +11868,262 @@ exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
       "type": "string",
     },
     {
+      "description": "When defined, renders a close button in the header with the provided configuration.
+The close button fires the \`onClose\` event with method \`'close-action'\` when
+clicked.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.CloseActionProps",
+        "properties": [
+          {
+            "name": "ariaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "disabled",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "iconAlt",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "IconProps.Name",
+              "type": "union",
+              "values": [
+                "search",
+                "map",
+                "filter",
+                "key",
+                "file",
+                "pause",
+                "play",
+                "microphone",
+                "remove",
+                "copy",
+                "menu",
+                "script",
+                "close",
+                "status-pending",
+                "refresh",
+                "external",
+                "history",
+                "group",
+                "calendar",
+                "ellipsis",
+                "zoom-in",
+                "zoom-out",
+                "dot",
+                "security",
+                "download",
+                "edit",
+                "add-plus",
+                "anchor-link",
+                "angle-left-double",
+                "angle-left",
+                "angle-right-double",
+                "angle-right",
+                "angle-up",
+                "angle-down",
+                "announcement",
+                "arrow-left",
+                "arrow-right",
+                "arrow-up",
+                "arrow-down",
+                "at-symbol",
+                "audio-full",
+                "audio-half",
+                "audio-off",
+                "backward-10-seconds",
+                "bug",
+                "call",
+                "caret-down-filled",
+                "caret-down",
+                "caret-left-filled",
+                "caret-right-filled",
+                "caret-up-filled",
+                "caret-up",
+                "check",
+                "contact",
+                "closed-caption",
+                "closed-caption-unavailable",
+                "command-prompt",
+                "delete-marker",
+                "drag-indicator",
+                "edit-gen-ai",
+                "envelope",
+                "exit-full-screen",
+                "expand",
+                "face-happy",
+                "face-happy-filled",
+                "face-neutral",
+                "face-neutral-filled",
+                "face-sad",
+                "face-sad-filled",
+                "file-open",
+                "flag",
+                "folder-open",
+                "folder",
+                "forward-10-seconds",
+                "full-screen",
+                "gen-ai",
+                "globe",
+                "grid-view",
+                "group-active",
+                "heart",
+                "heart-filled",
+                "insert-row",
+                "keyboard",
+                "light-dark",
+                "list-view",
+                "location-pin",
+                "lock-private",
+                "microphone-off",
+                "mini-player",
+                "multiscreen",
+                "notification",
+                "redo",
+                "resize-area",
+                "search-gen-ai",
+                "settings",
+                "send",
+                "share",
+                "shrink",
+                "slash",
+                "star-filled",
+                "star-half",
+                "star",
+                "status-in-progress",
+                "status-info",
+                "status-negative",
+                "status-not-started",
+                "status-positive",
+                "status-stopped",
+                "status-warning",
+                "stop-circle",
+                "subtract-minus",
+                "suggestions",
+                "suggestions-gen-ai",
+                "support",
+                "thumbs-down-filled",
+                "thumbs-down",
+                "thumbs-up-filled",
+                "thumbs-up",
+                "ticket",
+                "transcript",
+                "treeview-collapse",
+                "treeview-expand",
+                "undo",
+                "unlocked",
+                "upload-download",
+                "upload",
+                "user-profile-active",
+                "user-profile",
+                "video-off",
+                "video-on",
+                "video-unavailable",
+                "video-camera-off",
+                "video-camera-on",
+                "video-camera-unavailable",
+                "view-full",
+                "view-horizontal",
+                "view-vertical",
+                "zoom-to-fit",
+              ],
+            },
+            "name": "iconName",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "iconSvg",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "iconUrl",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "closeAction",
+      "optional": true,
+      "type": "DrawerProps.CloseActionProps",
+    },
+    {
       "defaultValue": "false",
       "description": "Determines whether the drawer content has padding. If \`true\`, removes the default padding from the content area.",
       "name": "disableContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Customizes focus-related behavior:
+
+- \`autoFocus\` - Whether focus moves into the drawer when \`open\` changes from \`false\` to \`true\`,
+and captures the previously focused element for default return-focus on close.
+Defaults to \`true\`. Set to \`false\` to manage focus-in manually via \`ref.current.focus()\`.
+
+- \`trapFocus\` - Whether keyboard focus is constrained to elements inside the drawer.
+Defaults to \`true\` when \`backdrop\` is set, \`false\` otherwise.
+
+- \`returnFocus\` - Called instead of the default return-focus behavior when the drawer closes.
+Use this to override where focus lands on close (e.g. a specific trigger element).
+If omitted, focus returns to the element that was focused when the drawer opened.
+If that element is no longer in the DOM, the behavior silently no-ops.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.FocusBehavior",
+        "properties": [
+          {
+            "name": "autoFocus",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "inlineType": {
+              "name": "() => void",
+              "parameters": [],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "returnFocus",
+            "optional": true,
+            "type": "(() => void)",
+          },
+          {
+            "name": "trapFocus",
+            "optional": true,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "focusBehavior",
+      "optional": true,
+      "type": "DrawerProps.FocusBehavior",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Hides the close action slot next to the header actions, which is present even
+when close action is not set. Use it when a close action is not needed, or a
+custom close action implementation is used.
+
+Do not use this property when using drawers inside AppLayout.",
+      "name": "hideCloseAction",
       "optional": true,
       "type": "boolean",
     },
@@ -11835,6 +12161,164 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the distance in pixels between the drawer and the edges of its container.
+Applicable when using \`position="absolute"\` or \`position="fixed"\`.
+Supported properties:
+* \`start\` - Distance from the inline-start edge. Not applicable when \`placement\` is \`"end"\`.
+* \`end\` - Distance from the inline-end edge. Not applicable when \`placement\` is \`"start"\`.
+* \`top\` - Distance from the top edge. Not applicable when \`placement\` is \`"bottom"\`.
+* \`bottom\` - Distance from the bottom edge. Not applicable when \`placement\` is \`"top"\`.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.Offset",
+        "properties": [
+          {
+            "name": "bottom",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "end",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "start",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "top",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "offset",
+      "optional": true,
+      "type": "DrawerProps.Offset",
+    },
+    {
+      "description": "Drawer open state. Set to \`true\` to show the drawer, \`false\` to hide it.
+Handle the \`onClose\` event to update this value when the user requests to close the drawer.
+
+When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
+
+Do not use this property when using drawers inside AppLayout.",
+      "name": "open",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "'end'",
+      "description": "Specifies which edge of its container the drawer is anchored to, and supports these options:
+* \`start\` - Anchored to the inline-start edge.
+* \`end\` - (default) Anchored to the inline-end edge.
+* \`top\` - Anchored to the top edge.
+* \`bottom\` - Anchored to the bottom edge.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.Placement",
+        "type": "union",
+        "values": [
+          "end",
+          "start",
+          "top",
+          "bottom",
+        ],
+      },
+      "name": "placement",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'static'",
+      "description": "Specifies the CSS positioning mode of the drawer, and supports the following options:
+* \`static\` (default) - The drawer is positioned in the normal document flow.
+* \`sticky\` - The drawer sticks to its nearest scrolling ancestor. Only meaningful with \`placement="top"\` or \`placement="bottom"\`.
+Using \`sticky\` with \`placement="start"\` or \`placement="end"\` falls back to \`static\`.
+* \`absolute\` - The drawer is positioned relative to its nearest positioned ancestor.
+* \`fixed\` - The drawer is positioned relative to the viewport.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.Position",
+        "type": "union",
+        "values": [
+          "fixed",
+          "absolute",
+          "static",
+          "sticky",
+        ],
+      },
+      "name": "position",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the ARIA role of the drawer.
+- \`"region"\` (default for non-\`static\` positions) — exposes the drawer as a
+landmark region. The drawer receives focus when opened.
+- \`"presentation"\` (default for \`position="static"\`) — removes landmark semantics
+from the drawer body. Use this when the containing element already provides the
+appropriate semantic role (e.g. a wrapping \`<nav>\` or \`<aside>\`). The drawer does not
+receive focus when opened.",
+      "inlineType": {
+        "name": ""region" | "presentation"",
+        "type": "union",
+        "values": [
+          "region",
+          "presentation",
+        ],
+      },
+      "name": "role",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the distance in pixels from the top or bottom edge of the scrolling container
+at which the drawer sticks. Applicable only when using \`position="sticky"\` with \`placement="top"\` or \`placement="bottom"\`.
+* Supported properties:
+* \`top\` - Distance from the top of the scrolling container.
+* \`bottom\` - Distance from the bottom of the scrolling container.
+
+Do not use this property when using drawers inside AppLayout.",
+      "inlineType": {
+        "name": "DrawerProps.StickyOffset",
+        "properties": [
+          {
+            "name": "bottom",
+            "optional": true,
+            "type": "number",
+          },
+          {
+            "name": "top",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyOffset",
+      "optional": true,
+      "type": "DrawerProps.StickyOffset",
+    },
+    {
+      "defaultValue": "DEFAULT_Z_INDEX",
+      "description": "Sets the CSS \`z-index\` of the drawer. Use this to control stacking order when the drawer
+overlaps other positioned elements on the page.
+
+Applicable when using \`position="sticky"\`, \`position="absolute"\`, or \`position="fixed"\`.
+
+Do not use this property when using drawers inside AppLayout.",
+      "name": "zIndex",
+      "optional": true,
+      "type": "number",
     },
   ],
   "regions": [
@@ -38899,6 +39383,32 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "name": "findBackdrop",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -49295,6 +49805,22 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
     },
     {
       "methods": [
+        {
+          "name": "findBackdrop",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findCloseAction",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "name": "findContent",
           "parameters": [],
