@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { ButtonProps } from '../button/interfaces';
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -49,16 +49,7 @@ export interface DrawerProps extends BaseComponentProps {
    * to ensure content remains accessible (not covered by the footer).
    */
   footer?: React.ReactNode;
-}
 
-export namespace DrawerProps {
-  export interface I18nStrings {
-    loadingText?: string;
-  }
-}
-
-// Props for a future release
-export interface NextDrawerProps extends DrawerProps {
   /**
    * Sets the ARIA role of the drawer.
    * - `"region"` (default for non-`static` positions) — exposes the drawer as a
@@ -93,8 +84,10 @@ export interface NextDrawerProps extends DrawerProps {
    * Using `sticky` with `placement="start"` or `placement="end"` falls back to `static`.
    * * `absolute` - The drawer is positioned relative to its nearest positioned ancestor.
    * * `fixed` - The drawer is positioned relative to the viewport.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  position?: NextDrawerProps.Position;
+  position?: DrawerProps.Position;
 
   /**
    * Specifies which edge of its container the drawer is anchored to, and supports these options:
@@ -102,8 +95,10 @@ export interface NextDrawerProps extends DrawerProps {
    * * `end` - (default) Anchored to the inline-end edge.
    * * `top` - Anchored to the top edge.
    * * `bottom` - Anchored to the bottom edge.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  placement?: NextDrawerProps.Placement;
+  placement?: DrawerProps.Placement;
 
   /**
    * Specifies the distance in pixels between the drawer and the edges of its container.
@@ -113,8 +108,10 @@ export interface NextDrawerProps extends DrawerProps {
    * * `end` - Distance from the inline-end edge. Not applicable when `placement` is `"start"`.
    * * `top` - Distance from the top edge. Not applicable when `placement` is `"bottom"`.
    * * `bottom` - Distance from the bottom edge. Not applicable when `placement` is `"top"`.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  offset?: NextDrawerProps.Offset;
+  offset?: DrawerProps.Offset;
 
   /**
    * Specifies the distance in pixels from the top or bottom edge of the scrolling container
@@ -122,14 +119,18 @@ export interface NextDrawerProps extends DrawerProps {
    * * Supported properties:
    * * `top` - Distance from the top of the scrolling container.
    * * `bottom` - Distance from the bottom of the scrolling container.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  stickyOffset?: NextDrawerProps.StickyOffset;
+  stickyOffset?: DrawerProps.StickyOffset;
 
   /**
    * Sets the CSS `z-index` of the drawer. Use this to control stacking order when the drawer
    * overlaps other positioned elements on the page.
    *
    * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
   zIndex?: number;
 
@@ -137,16 +138,17 @@ export interface NextDrawerProps extends DrawerProps {
    * When defined, renders a close button in the header with the provided configuration.
    * The close button fires the `onClose` event with method `'close-action'` when
    * clicked.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  closeAction?: Pick<
-    ButtonProps,
-    'ariaLabel' | 'disabled' | 'disabledReason' | 'iconName' | 'iconSvg' | 'iconUrl' | 'iconAlt'
-  >;
+  closeAction?: DrawerProps.CloseActionProps;
 
   /**
    * Hides the close action slot next to the header actions, which is present even
    * when close action is not set. Use it when a close action is not needed, or a
    * custom close action implementation is used.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
   hideCloseAction?: boolean;
 
@@ -155,14 +157,18 @@ export interface NextDrawerProps extends DrawerProps {
    * * `'close-action'` - The close button was clicked.
    * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
    * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  onClose?: NonCancelableEventHandler<NextDrawerProps.CloseDetail>;
+  onClose?: NonCancelableEventHandler<DrawerProps.CloseDetail>;
 
   /**
    * Drawer open state. Set to `true` to show the drawer, `false` to hide it.
    * Handle the `onClose` event to update this value when the user requests to close the drawer.
    *
    * When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
   open?: boolean;
 
@@ -173,6 +179,8 @@ export interface NextDrawerProps extends DrawerProps {
    * When a backdrop is set, the keyboard focus is trapped inside the drawer by default
    * to prevent it from moving to elements covered by the backdrop. This can be overridden
    * with `focusBehavior.trapFocus`.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
   backdrop?: boolean;
 
@@ -190,11 +198,17 @@ export interface NextDrawerProps extends DrawerProps {
    * Use this to override where focus lands on close (e.g. a specific trigger element).
    * If omitted, focus returns to the element that was focused when the drawer opened.
    * If that element is no longer in the DOM, the behavior silently no-ops.
+   *
+   * Do not use this property when using drawers inside AppLayout.
    */
-  focusBehavior?: NextDrawerProps.FocusBehavior;
+  focusBehavior?: DrawerProps.FocusBehavior;
 }
 
-export namespace NextDrawerProps {
+export namespace DrawerProps {
+  export interface I18nStrings {
+    loadingText?: string;
+  }
+
   export type Position = 'static' | 'sticky' | 'absolute' | 'fixed';
 
   export type Placement = 'start' | 'end' | 'top' | 'bottom';
@@ -209,6 +223,16 @@ export namespace NextDrawerProps {
   export interface StickyOffset {
     top?: number;
     bottom?: number;
+  }
+
+  export interface CloseActionProps {
+    ariaLabel?: string;
+    disabled?: boolean;
+    disabledReason?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+    iconAlt?: string;
   }
 
   export interface CloseDetail {

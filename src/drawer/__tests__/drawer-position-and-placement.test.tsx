@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Drawer from '../../../lib/components/drawer/next';
+import Drawer from '../../../lib/components/drawer';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import drawerStyles from '../../../lib/components/drawer/styles.css.js';
