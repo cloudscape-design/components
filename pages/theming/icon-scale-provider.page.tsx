@@ -985,12 +985,14 @@ export default function IconScaleProviderScenario() {
       content={
         <IconProvider
           icons={null}
-          iconSizeSmall={sizeSmallValue}
-          iconSizeNormal={sizeValue}
-          iconSizeInherit={sizeValue}
-          iconSizeMedium={sizeMediumValue}
-          iconSizeBig={sizeBigValue}
-          iconSizeLarge={sizeLargeValue}
+          sizes={{
+            small: sizeSmallValue,
+            normal: sizeValue,
+            inherit: sizeValue,
+            medium: sizeMediumValue,
+            big: sizeBigValue,
+            large: sizeLargeValue,
+          }}
         >
           <SpaceBetween size="l">
             <Header
