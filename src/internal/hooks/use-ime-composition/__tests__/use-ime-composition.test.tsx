@@ -182,3 +182,60 @@ describe('useIMEComposition', () => {
     expect(hook.isComposing()).toBe(false);
   });
 });
+
+describe('onCompositionStart callback and composing state', () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => {
+      setTimeout(() => cb(performance.now()), 0);
+      return 1;
+    });
+  });
+
+  test('onCompositionStart is called when composition begins', () => {
+    const onCompositionStart = jest.fn();
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef, { onCompositionStart }), inputElement: mockInput };
+    });
+
+    result.current.inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    expect(onCompositionStart).toHaveBeenCalledTimes(1);
+  });
+
+  test('onCompositionEnd is called when composition ends', () => {
+    const onCompositionEnd = jest.fn();
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      return { hook: useIMEComposition(inputRef, { onCompositionEnd }), inputElement: mockInput };
+    });
+
+    const { inputElement } = result.current;
+    inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    expect(onCompositionEnd).toHaveBeenCalledTimes(1);
+  });
+
+  test('isComposing() is still true when onCompositionEnd fires (spurious Enter guard)', () => {
+    let isComposingDuringCallback = false;
+    const { result } = renderHook(() => {
+      const mockInput = document.createElement('input');
+      const inputRef = { current: mockInput };
+      // Use a ref to capture the hook's isComposing function after it's created.
+      const hookRef = { current: null as ReturnType<typeof useIMEComposition> | null };
+      const hook = useIMEComposition(inputRef, {
+        onCompositionEnd: () => {
+          isComposingDuringCallback = hookRef.current!.isComposing();
+        },
+      });
+      hookRef.current = hook;
+      return { hook, inputElement: mockInput };
+    });
+
+    result.current.inputElement.dispatchEvent(new CompositionEvent('compositionstart'));
+    result.current.inputElement.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    expect(isComposingDuringCallback).toBe(true);
+  });
+});

@@ -7,6 +7,8 @@ import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-in
 import createWrapper, { PromptInputWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode, KeyCodeA, KeyCodeDelete } from '../../internal/keycode';
 
+import promptInputStyles from '../../../lib/components/prompt-input/styles.css.js';
+
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [800, () => {}],
@@ -7747,5 +7749,206 @@ describe('select-all deletion with root-level selection range', () => {
     const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0].detail;
     expect(lastCall.value).toBe('');
     expect(getValue(wrapper)).toBe('');
+  });
+});
+
+describe('IME composition handling', () => {
+  // Helpers to dispatch composition events on the contentEditable element.
+  function startComposition(el: HTMLElement) {
+    act(() => {
+      el.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true }));
+    });
+  }
+
+  function endComposition(el: HTMLElement, data: string) {
+    act(() => {
+      el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, data }));
+    });
+  }
+
+  function dispatchInput(el: HTMLElement) {
+    act(() => {
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  }
+
+  test('input events during composition do not trigger onChange', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: '' }], onChange } });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    startComposition(el);
+
+    // Simulate intermediate input events that fire during CJK composition.
+    // Each one should be ignored because isComposing() returns true.
+    const p = el.querySelector('p')!;
+    p.textContent = 'ㄱ';
+    dispatchInput(el);
+    expect(onChange).not.toHaveBeenCalled();
+
+    p.textContent = '가';
+    dispatchInput(el);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('onChange is called once when composition ends', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: '' }], onChange } });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    startComposition(el);
+
+    // Intermediate input events are suppressed.
+    const p = el.querySelector('p')!;
+    p.textContent = '가';
+    dispatchInput(el);
+    expect(onChange).not.toHaveBeenCalled();
+
+    // compositionend commits the text — onChange should fire exactly once.
+    endComposition(el, '가');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const detail = onChange.mock.calls[0][0].detail;
+    expect(detail.value).toBe('가');
+  });
+
+  test('trigger detection runs after composition ends, not during', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTokenMode({ props: { tokens: [], onChange } });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    // Ensure there is a paragraph to type into.
+    const p =
+      el.querySelector('p') ??
+      (() => {
+        const newP = document.createElement('p');
+        el.appendChild(newP);
+        return newP;
+      })();
+
+    startComposition(el);
+
+    // Simulate typing '@' as part of a composition (should not open menu).
+    p.textContent = '@';
+    dispatchInput(el);
+    expect(wrapper.isMenuOpen()).toBe(false);
+
+    // After composition ends with a plain character, no trigger should be detected.
+    p.textContent = '안';
+    endComposition(el, '안');
+    expect(wrapper.isMenuOpen()).toBe(false);
+  });
+
+  test('placeholder reappears after composing then deleting all content', () => {
+    const { wrapper } = renderStatefulTokenMode({
+      props: { tokens: [], placeholder: 'Type a message', menus: defaultMenus },
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    const placeholderVisibleClass = promptInputStyles['placeholder-visible'];
+
+    // Placeholder is visible initially.
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(true);
+
+    // Simulate a full IME composition cycle that commits '가'.
+    startComposition(el);
+    const p = el.querySelector('p')!;
+    p.textContent = '가';
+    endComposition(el, '가');
+
+    // Placeholder is hidden because tokens now contain the committed text.
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(false);
+
+    // User deletes the committed text — input is empty again.
+    p.textContent = '';
+    dispatchInput(el);
+
+    // Placeholder should reappear.
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(true);
+  });
+
+  test('placeholder is hidden during composition and reappears when input is empty after composing', () => {
+    const { wrapper } = renderTokenMode({
+      props: { tokens: [], placeholder: 'Type a message', menus: defaultMenus },
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+    const placeholderVisibleClass = promptInputStyles['placeholder-visible'];
+
+    // Placeholder is visible initially.
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(true);
+
+    // Placeholder hides when composition starts.
+    act(() => {
+      el.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true }));
+    });
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(false);
+
+    // Placeholder reappears after compositionend when the input is still empty
+    // (e.g. the user cancelled composition without committing any text).
+    act(() => {
+      el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, data: '가' }));
+    });
+    expect(el.classList.contains(placeholderVisibleClass)).toBe(true);
+  });
+
+  test('Enter key immediately after compositionend does not submit', () => {
+    // Some browsers fire a spurious Enter keydown with isComposing=false immediately
+    // after compositionend. The isComposing() ref stays true until the next animation
+    // frame, blocking this spurious event from triggering a form submit.
+    const onAction = jest.fn();
+    const { wrapper } = renderTokenMode({
+      props: { tokens: [{ type: 'text', value: '' }], onAction },
+    });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    startComposition(el);
+    endComposition(el, '가');
+
+    // Spurious Enter fires synchronously after compositionend, before the next paint.
+    // isComposing() is still true at this point.
+    act(() => {
+      el.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true, cancelable: true, isComposing: false })
+      );
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  test('normal input events outside composition still trigger onChange', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: '' }], onChange } });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    // No composition active — input event should be processed normally.
+    const p = el.querySelector('p')!;
+    p.textContent = 'hello';
+    dispatchInput(el);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0].detail.value).toBe('hello');
+  });
+
+  test('input events after composition ends are processed normally', () => {
+    // After a full composition cycle, a new composition should work correctly.
+    const onChange = jest.fn();
+    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: '' }], onChange } });
+    const el = wrapper.findContentEditableElement()!.getElement();
+
+    // First composition cycle.
+    startComposition(el);
+    const p = el.querySelector('p')!;
+    p.textContent = '가';
+    dispatchInput(el);
+    expect(onChange).not.toHaveBeenCalled();
+    endComposition(el, '가');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    onChange.mockClear();
+
+    // Second composition cycle works independently.
+    startComposition(el);
+    p.textContent = '가나';
+    dispatchInput(el);
+    expect(onChange).not.toHaveBeenCalled();
+    endComposition(el, '나');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0].detail.value).toBe('가나');
   });
 });

@@ -4,7 +4,6 @@
 import React from 'react';
 
 import {
-  PropertyFilterFreeTextFiltering,
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
@@ -237,6 +236,17 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   tokenLimitShowMoreAriaLabel?: string;
 }
 
+// TODO: replace with PropertyFilterTextOperatorExtended from collection-hooks once it is released
+export interface PropertyFilterTextOperatorExtended {
+  operator: PropertyFilterOperator;
+  match?: (item: unknown, text: string) => boolean;
+}
+// TODO: replace with PropertyFilterFreeTextFiltering from collection-hooks once it is released
+export interface PropertyFilterFreeTextFiltering {
+  operators?: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
+  defaultOperator?: PropertyFilterOperator;
+}
+
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type TokenGroup = PropertyFilterTokenGroup;
@@ -394,7 +404,7 @@ export interface InternalFilteringOption {
 
 export interface InternalFreeTextFiltering {
   disabled: boolean;
-  operators: readonly PropertyFilterOperator[];
+  operators: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
   defaultOperator: PropertyFilterOperator;
 }
 

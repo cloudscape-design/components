@@ -52,6 +52,8 @@ export interface KeyboardHandlerProps {
   onChange: (detail: { value: string; tokens: PromptInputProps.InputToken[] }) => void;
   markTokensAsSent: (tokens: readonly PromptInputProps.InputToken[]) => void;
   onKeyDown?: PromptInputProps['onKeyDown'];
+  /** Returns true if an IME composition session is active or just ended (spurious-Enter window). */
+  isComposing?: () => boolean;
 }
 
 /** Handles all keyboard events for the editable element. */
@@ -143,7 +145,7 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
       handleDeleteAfterTrigger(event, editableElement);
     },
     onShiftEnter: () => {
-      if (event.nativeEvent.isComposing) {
+      if (event.nativeEvent.isComposing || props.isComposing?.()) {
         return;
       }
       event.preventDefault();
@@ -155,7 +157,7 @@ export function handleEditableKeyDown(event: React.KeyboardEvent<HTMLDivElement>
       }
     },
     onEnter: () => {
-      if (event.nativeEvent.isComposing) {
+      if (event.nativeEvent.isComposing || props.isComposing?.()) {
         return;
       }
       if (menuOpen && menuItemsHandlers) {

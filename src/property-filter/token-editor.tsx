@@ -20,7 +20,7 @@ import {
   GeneratedAnalyticsMetadataPropertyEditCancel,
   GeneratedAnalyticsMetadataPropertyEditConfirm,
 } from './analytics-metadata/interfaces';
-import { getAllowedOperators } from './controller.js';
+import { getAllowedFreeTextOperators, getAllowedOperators } from './controller.js';
 import { I18nStringsInternal } from './i18n-utils.js';
 import {
   ComparisonOperator,
@@ -99,7 +99,9 @@ export function TokenEditor({
         (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
         undefined
       );
-      const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextFiltering.operators;
+      const allowedOperators = filteringProperty
+        ? getAllowedOperators(filteringProperty)
+        : getAllowedFreeTextOperators(freeTextFiltering);
       const operator =
         temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
           ? temporaryToken.operator
