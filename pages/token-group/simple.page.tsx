@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import Box from '~components/box';
+import Checkbox from '~components/checkbox';
 import TokenGroup, { TokenGroupProps } from '~components/token-group';
 
 const generateItems = (numberOfItems: number) => {
@@ -20,6 +21,7 @@ const i18nStrings: TokenGroupProps.I18nStrings = {
 
 export default function TokenGroupPage() {
   const [items, setItems] = useState(generateItems(10));
+  const [readOnly, setReadOnly] = useState(false);
 
   const onDismiss = (event: { detail: { itemIndex: number } }) => {
     const newItems = [...items];
@@ -30,7 +32,11 @@ export default function TokenGroupPage() {
   return (
     <Box padding="xl">
       <h1>Token Group</h1>
-      <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={5} />
+      <Checkbox checked={readOnly} onChange={({ detail }) => setReadOnly(detail.checked)}>
+        Read-only
+      </Checkbox>
+      <br />
+      <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={5} readOnly={readOnly} />
     </Box>
   );
 }

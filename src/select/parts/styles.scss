@@ -10,6 +10,10 @@
 
 .placeholder {
   @include styles.form-placeholder;
+  // Placeholder text is purely decorative and not intended to be interacted
+  // with. Disable selection so that it doesn't become selectable inside
+  // read-only triggers (which enable text selection).
+  user-select: none;
 }
 
 $checkbox-size: awsui.$size-control;
