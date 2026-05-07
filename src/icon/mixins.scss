@@ -68,9 +68,13 @@ $_icon-sizes: (
     &.size-#{$name} {
       /* stylelint-disable-next-line custom-property-pattern */
       inline-size: var(--icon-size-override, #{$size});
+      /* stylelint-disable-next-line custom-property-pattern */
+      block-size: max(#{$size}, var(--icon-size-override, #{$size}));
       box-sizing: border-box;
       &-mapped-height {
-        block-size: $supportedLineHeight;
+        //block-size: $supportedLineHeight;
+        /* stylelint-disable-next-line custom-property-pattern */
+        block-size: max(#{$size}, var(--icon-size-override, #{$size}));
         padding-block: $padding;
         padding-inline: 0;
       }
@@ -79,7 +83,8 @@ $_icon-sizes: (
       > img {
         /* stylelint-disable-next-line custom-property-pattern */
         inline-size: var(--icon-size-override, #{$size});
-        block-size: $size;
+        /* stylelint-disable-next-line custom-property-pattern */
+        block-size: max(#{$size}, var(--icon-size-override, #{$size}));
         vertical-align: top;
       }
 
