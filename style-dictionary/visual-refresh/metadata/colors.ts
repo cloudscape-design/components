@@ -994,6 +994,51 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundActionCardDefault: {
+    description: 'The default background color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardHover: {
+    description: 'The background color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardActive: {
+    description: 'The background color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardDisabled: {
+    description: 'The background color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDefault: {
+    description: 'The default border color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardHover: {
+    description: 'The border color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardActive: {
+    description: 'The border color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDisabled: {
+    description: 'The border color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardDisabled: {
+    description: 'The text color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
   colorTextIconSubtle: {
     description: 'The color of subtle icons. For example: secondary icons with lower visual emphasis.',
     public: true,
