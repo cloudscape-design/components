@@ -17,6 +17,7 @@ interface DateRangePickerPageSettings {
   showRelativeOptions?: boolean;
   invalid?: boolean;
   warning?: boolean;
+  readOnly?: boolean;
   rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
   absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
   dateInputFormat?: DateRangePickerProps['dateInputFormat'];
@@ -36,6 +37,7 @@ const defaultSettings: Required<DateRangePickerPageSettings> = {
   showRelativeOptions: true,
   invalid: false,
   warning: false,
+  readOnly: false,
   rangeSelectorMode: 'default',
   absoluteFormat: 'iso',
   dateInputFormat: 'iso',
@@ -81,6 +83,7 @@ export function useDateRangePickerSettings(
   const showRelativeOptions = parseBoolean(def('showRelativeOptions'), urlParams.showRelativeOptions);
   const invalid = parseBoolean(def('invalid'), urlParams.invalid);
   const warning = parseBoolean(def('warning'), urlParams.warning);
+  const readOnly = parseBoolean(def('readOnly'), urlParams.readOnly);
   const rangeSelectorMode = urlParams.rangeSelectorMode ?? def('rangeSelectorMode');
   const absoluteFormat = urlParams.absoluteFormat ?? def('absoluteFormat');
   const timeInputFormat = urlParams.timeInputFormat ?? def('timeInputFormat');
@@ -98,6 +101,7 @@ export function useDateRangePickerSettings(
     showRelativeOptions,
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -204,6 +208,7 @@ export function useDateRangePickerSettings(
     granularity: monthOnly ? 'month' : 'day',
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -251,6 +256,7 @@ export function Settings({
     showRelativeOptions,
     invalid,
     warning,
+    readOnly,
     rangeSelectorMode,
     absoluteFormat,
     dateInputFormat,
@@ -380,6 +386,9 @@ export function Settings({
         </Checkbox>
         <Checkbox checked={warning} onChange={({ detail }) => setSettings({ warning: detail.checked })}>
           Warning
+        </Checkbox>
+        <Checkbox checked={readOnly} onChange={({ detail }) => setSettings({ readOnly: detail.checked })}>
+          Read-only
         </Checkbox>
         <Checkbox
           checked={expandToViewport}

@@ -17,6 +17,7 @@ export type BuiltInIconName =
   | 'angle-right'
   | 'angle-up'
   | 'angle-down'
+  | 'announcement'
   | 'arrow-left'
   | 'arrow-right'
   | 'arrow-up'

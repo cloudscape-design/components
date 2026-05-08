@@ -98,4 +98,38 @@ describe('Date Range Picker', () => {
       }, granularity)
     );
   });
+
+  describe('Read-only mode', () => {
+    const setupReadOnlyTest = (testFn: (page: DateRangePickerPage, browser: WebdriverIO.Browser) => Promise<void>) => {
+      return useBrowser(async browser => {
+        const params = new URLSearchParams({ readOnly: 'true' });
+        const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
+        await browser.url(`#/light/date-range-picker/with-value?${params}`);
+        await page.waitForLoad();
+        await testFn(page, browser);
+      });
+    };
+
+    test(
+      'trigger text is selectable',
+      setupReadOnlyTest(async (page, browser) => {
+        const triggerSelector = page.dateRangePickerTrigger;
+        const triggerText = await page.getTriggerText();
+        expect(triggerText).toContain('2018-01-09');
+
+        // Simulate a real user selection. Unlike programmatically adding a
+        // Range via the Selection API (which works regardless of CSS
+        // `user-select`), a double-click is gated by `user-select: text`
+        // and therefore actually exercises the fix.
+        const element = await browser.$(triggerSelector);
+        await element.doubleClick();
+
+        // Double-click selects a single word, so for a value like
+        // `2018-01-09T00:00:00Z` the selected text will just be `2018`.
+        const selectedText = await browser.execute(() => window.getSelection()?.toString());
+        expect(selectedText).not.toBeFalsy();
+        expect(triggerText).toContain(selectedText);
+      })
+    );
+  });
 });

@@ -107,6 +107,13 @@ $padding-block-inner-filtering-token: 0px;
     @include styles.form-readonly-element;
   }
 
+  // Allow selecting text (e.g. to copy the selected value) in all read-only
+  // button-triggers, including those inside filtering tokens. Individual
+  // placeholder elements opt out via `user-select: none`.
+  &.readonly:not(&.disabled) {
+    user-select: text;
+  }
+
   &:focus {
     outline: none;
     text-decoration: none;
