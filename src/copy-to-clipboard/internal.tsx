@@ -125,7 +125,9 @@ export default function InternalCopyToClipboard({
             {/* "Word Joiner" (WJ): Zero-width character to indicate that a line break shouldn't happen at this point. */}
             &#8288;
           </span>
-          <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'])}>
+          <span
+            className={clsx(styles['inline-container-text'], testStyles['text-to-display'], testStyles['text-to-copy'])}
+          >
             {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
         </span>
