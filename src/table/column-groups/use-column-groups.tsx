@@ -13,17 +13,15 @@ export function useColumnGroups<T>(
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>
 ) {
   return useMemo(() => {
-    // use column definition if
     const visibleIds = visibleColumns
       ? Array.from(visibleColumns)
       : columnDefinitions.map((col, idx) => col.id || `column-${idx}`);
 
-    // Convert readonly arrays to mutable for CalculateHierarchyTree
-    const groups = groupDefinitions ? [...groupDefinitions] : [];
-    const columns = [...columnDefinitions];
-    const columnDisplayMutable = columnDisplay ? [...columnDisplay] : undefined;
-
-    // Call the CalculateHierarchyTree function
-    return calculateHierarchyTree(columns, visibleIds, groups, columnDisplayMutable);
+    return calculateHierarchyTree(
+      [...columnDefinitions],
+      visibleIds,
+      [...(groupDefinitions ?? [])],
+      columnDisplay ? [...columnDisplay] : undefined
+    );
   }, [columnDefinitions, groupDefinitions, visibleColumns, columnDisplay]);
 }

@@ -23,7 +23,7 @@ export interface SelectionControlProps extends ItemSelectionProps {
   rowIndex?: number;
   itemKey?: string;
   verticalAlign?: 'middle' | 'top';
-  /** Internal:  of the cell (multi-row grouped header). */
+  /** Whether this control spans multiple header rows (grouped column header). */
   spansRows?: boolean;
 }
 

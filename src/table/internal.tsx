@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -307,6 +307,23 @@ const InternalTable = React.forwardRef(
 
     const hierarchicalStructure = useColumnGroups(columnDefinitions, groupDefinitions, visibleColumnIds, columnDisplay);
 
+    const groupLeafMap = useMemo(() => {
+      if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+        return undefined;
+      }
+      const map = new Map<string, string[]>();
+      const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+      for (const row of hierarchicalStructure.rows) {
+        for (const col of row.columns) {
+          if (col.isGroup) {
+            const leafIds = leafRow.columns.filter(l => !l.isGroup && l.parentGroupIds.includes(col.id)).map(l => l.id);
+            map.set(col.id, leafIds);
+          }
+        }
+      }
+      return map;
+    }, [hierarchicalStructure]);
+
     const selectionProps = {
       items: allItems,
       rootItems: items,
@@ -472,7 +489,7 @@ const InternalTable = React.forwardRef(
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
             containerRef={wrapperMeasureRefObject}
-            hierarchicalStructure={hierarchicalStructure}
+            groupLeafMap={groupLeafMap}
           >
             <InternalContainer
               {...baseProps}
