@@ -120,7 +120,11 @@ export default function InternalCopyToClipboard({
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       {isInline ? (
         <span className={styles['inline-container']}>
-          <span className={styles['inline-container-trigger']}>{trigger}</span>
+          <span className={styles['inline-container-trigger']}>
+            {trigger}
+            {/* "Word Joiner" (WJ): Zero-width character to indicate that a line break shouldn't happen at this point. */}
+            &#8288;
+          </span>
           <span className={clsx(testStyles['text-to-display'], testStyles['text-to-copy'])}>
             {textToDisplay !== undefined ? textToDisplay : textToCopy}
           </span>
