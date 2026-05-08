@@ -5,7 +5,6 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { HierarchicalStructure } from './column-groups/utils';
 import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
 import { TableProps } from './interfaces';
 import { getColumnKey } from './utils';
@@ -83,14 +82,14 @@ interface WidthProviderProps {
   resizableColumns: boolean | undefined;
   containerRef: React.RefObject<HTMLElement>;
   children: React.ReactNode;
-  hierarchicalStructure: HierarchicalStructure<any>;
+  groupLeafMap?: Map<string, string[]>;
 }
 
 export function ColumnWidthsProvider({
   visibleColumns,
   resizableColumns,
   containerRef,
-  hierarchicalStructure,
+  groupLeafMap,
   children,
 }: WidthProviderProps) {
   const visibleColumnsRef = useRef<PropertyKey[] | null>(null);
@@ -119,40 +118,6 @@ export function ColumnWidthsProvider({
       hasColElements.current = colsRef.current.size > 0;
     }
   };
-
-  // Precompute group → rightmost leaf mapping to avoid hierarchy traversal on every resize.
-  const groupRightmostLeafRef = useRef(new Map<string, string>());
-  const groupLeafIdsRef = useRef(new Map<string, string[]>());
-
-  useEffect(() => {
-    if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
-      groupRightmostLeafRef.current.clear();
-      groupLeafIdsRef.current.clear();
-      return;
-    }
-    const leafMap = new Map<string, string>();
-    const leafIdsMap = new Map<string, string[]>();
-    const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
-
-    for (const row of hierarchicalStructure.rows) {
-      for (const col of row.columns) {
-        if (col.isGroup) {
-          const leafIds: string[] = [];
-          for (const leafCol of leafRow.columns) {
-            if (!leafCol.isGroup && leafCol.parentGroupIds.includes(col.id)) {
-              leafIds.push(leafCol.id);
-            }
-          }
-          leafIdsMap.set(col.id, leafIds);
-          if (leafIds.length > 0) {
-            leafMap.set(col.id, leafIds[leafIds.length - 1]);
-          }
-        }
-      }
-    }
-    groupRightmostLeafRef.current = leafMap;
-    groupLeafIdsRef.current = leafIdsMap;
-  }, [hierarchicalStructure]);
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
     // Allow sticky lookups for columns that aren't in visibleColumns (e.g. the selection column)
@@ -286,18 +251,16 @@ export function ColumnWidthsProvider({
 
   /* istanbul ignore next: covered by integration tests, requires real DOM measurements */
   function updateGroup(groupId: PropertyKey, newGroupWidth: number) {
-    if (!columnWidths) {
+    if (!columnWidths || !groupLeafMap) {
       return;
     }
 
-    // Use precomputed rightmost leaf (avoids hierarchy traversal on every drag)
-    const rightmostLeaf = groupRightmostLeafRef.current.get(String(groupId));
+    const leafIds = groupLeafMap.get(String(groupId)) ?? [];
+    const rightmostLeaf = leafIds[leafIds.length - 1];
     if (!rightmostLeaf) {
       return;
     }
 
-    // Calculate current group width from precomputed leaf IDs
-    const leafIds = groupLeafIdsRef.current.get(String(groupId)) ?? [];
     let currentGroupWidth = 0;
     for (const id of leafIds) {
       currentGroupWidth += columnWidths.get(id) || DEFAULT_COLUMN_WIDTH;

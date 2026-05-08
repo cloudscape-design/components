@@ -7,6 +7,10 @@ import { PointerEventMock } from '../../../lib/components/internal/utils/pointer
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+beforeAll(() => {
+  (window as any).PointerEvent ??= PointerEventMock;
+});
+
 interface Item {
   id: string;
   name: string;
@@ -380,11 +384,12 @@ describe('Column grouping with resizable columns', () => {
     expect(resizer.getElement().getAttribute('aria-labelledby')).toBe(headerId);
   });
 
-  test('onColumnWidthsChange fires on resize', () => {
+  test('renders resizable grouped table with onColumnWidthsChange callback', () => {
     const onColumnWidthsChange = jest.fn();
-    renderTable({ resizableColumns: true, onColumnWidthsChange });
-    // Table renders without error with the callback
-    expect(true).toBe(true);
+    const wrapper = renderTable({ resizableColumns: true, onColumnWidthsChange });
+    const thead = wrapper.find('thead')!;
+    expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(2);
+    expect(thead.findAll('button[class*="resizer"]').length).toBeGreaterThanOrEqual(2);
   });
 
   test('columns have width styles when resizable', () => {
@@ -942,7 +947,7 @@ describe('Column grouping group resize callbacks', () => {
     expect(thead.findAll('th[scope="colgroup"]').length).toBe(2);
   });
 
-  test('onResizeFinish is called after group resize commit', () => {
+  test('group resize completes full pointer lifecycle without errors', () => {
     const onColumnWidthsChange = jest.fn();
     const wrapper = renderResizableGroupedTable({ onColumnWidthsChange });
     const thead = wrapper.find('thead')!;
@@ -950,10 +955,12 @@ describe('Column grouping group resize callbacks', () => {
     const resizerBtn = groupCell.find('button')!;
 
     resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
+    document.body.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'mouse', clientX: 100, bubbles: true }));
     document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
 
-    // onColumnWidthsChange fires on commit
-    expect(true).toBe(true); // resize commit requires DOM measurements
+    // Table structure remains intact after resize lifecycle
+    expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(2);
+    expect(thead.findAll('th[scope="col"]')).toHaveLength(6);
   });
 
   test('split group resize works with stickyColumns.first', () => {
@@ -985,99 +992,18 @@ describe('Column grouping group resize callbacks', () => {
     }
   });
 
-  test('leaf column onResizeFinish fires in grouped table', () => {
-    const onColumnWidthsChange = jest.fn();
-    const wrapper = renderResizableGroupedTable({ onColumnWidthsChange });
-    const resizer = wrapper.findColumnResizer(3);
-    if (resizer) {
-      resizer.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-      expect(true).toBe(true); // resize commit requires DOM measurements
-    }
-  });
-});
-
-beforeAll(() => {
-  (window as any).PointerEvent ??= PointerEventMock;
-});
-
-describe('Column grouping pointer resize interactions', () => {
-  const resizableColDefs = columnDefinitions.map(col => ({ ...col, width: 200, minWidth: 100 }));
-
-  function renderResizableGroupedTable(props: Partial<TableProps<Item>> = {}) {
-    const { container } = render(
-      <Table
-        columnDefinitions={resizableColDefs}
-        items={items}
-        groupDefinitions={groupDefinitions}
-        columnDisplay={singleLevelDisplay}
-        resizableColumns={true}
-        {...props}
-      />
-    );
-    return createWrapper(container).findTable()!;
-  }
-
-  test('group resizer triggers updateGroup on drag', () => {
+  test('leaf column resize completes pointer lifecycle in grouped table', () => {
     const wrapper = renderResizableGroupedTable();
-    const thead = wrapper.find('thead')!;
-    const groupCell = thead.findAll('th[scope="colgroup"]')[0];
-    const resizerBtn = groupCell.find('button')!;
-
-    resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-    document.body.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'mouse', bubbles: true }));
-    document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-
-    expect(thead.findAll('th[scope="colgroup"]').length).toBe(2);
-  });
-
-  test('onResizeFinish is called after group resize commit', () => {
-    const onColumnWidthsChange = jest.fn();
-    const wrapper = renderResizableGroupedTable({ onColumnWidthsChange });
-    const thead = wrapper.find('thead')!;
-    const groupCell = thead.findAll('th[scope="colgroup"]')[0];
-    const resizerBtn = groupCell.find('button')!;
-
-    resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-    document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-
-    expect(true).toBe(true); // resize commit requires DOM measurements
-  });
-
-  test('split group resize with stickyColumns.first', () => {
-    const wrapper = renderResizableGroupedTable({ stickyColumns: { first: 3 } });
-    const thead = wrapper.find('thead')!;
-    const groupCells = thead.findAll('th[scope="colgroup"]');
-
-    expect(groupCells.length).toBe(3);
-    const resizerBtn = groupCells[0].find('button');
-    if (resizerBtn) {
-      resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-    }
-  });
-
-  test('split group resize with stickyColumns.last', () => {
-    const wrapper = renderResizableGroupedTable({ stickyColumns: { last: 1 } });
-    const thead = wrapper.find('thead')!;
-    const groupCells = thead.findAll('th[scope="colgroup"]');
-
-    expect(groupCells.length).toBe(3);
-    const resizerBtn = groupCells[groupCells.length - 1].find('button');
-    if (resizerBtn) {
-      resizerBtn.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-    }
-  });
-
-  test('leaf column resize fires onResizeFinish in grouped table', () => {
-    const onColumnWidthsChange = jest.fn();
-    const wrapper = renderResizableGroupedTable({ onColumnWidthsChange });
     const resizer = wrapper.findColumnResizer(3);
-    if (resizer) {
-      resizer.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
-      document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
-      expect(true).toBe(true); // resize commit requires DOM measurements
-    }
+    expect(resizer).not.toBeNull();
+
+    resizer!.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
+    document.body.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'mouse', clientX: 100, bubbles: true }));
+    document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
+
+    // Leaf columns and group structure remain intact after resize
+    const thead = wrapper.find('thead')!;
+    expect(thead.findAll('th[scope="col"]')).toHaveLength(6);
+    expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(2);
   });
 });

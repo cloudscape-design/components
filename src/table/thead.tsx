@@ -6,11 +6,10 @@ import clsx from 'clsx';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-// import { TableGroupedTypes } from './column-grouping-utils';
-import { ColumnInRow, HierarchicalStructure } from './column-groups/utils';
+import { getChildColumnIds, getGroupSplit } from './column-groups/split-utils';
+import { HierarchicalStructure } from './column-groups/utils';
 import { TableHeaderCell } from './header-cell';
 import { TableGroupHeaderCell } from './header-cell/group-header-cell';
-// import { TableHiddenHeaderCell } from './header-cell/hidden-header-cell';
 import { InternalSelectionType, TableProps } from './interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
@@ -93,66 +92,6 @@ const Thead = React.forwardRef(
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
 
-    // Helper to get child column IDs for a group (for getting minWidths)
-    const getChildColumnIds = (groupId: string): string[] => {
-      /* istanbul ignore next */ if (!hierarchicalStructure) {
-        return [];
-      }
-
-      const childIds: string[] = [];
-      const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
-
-      leafRow.columns.forEach(col => {
-        if (!col.isGroup && col.parentGroupIds.includes(groupId)) {
-          childIds.push(col.id);
-        }
-      });
-
-      return childIds;
-    };
-
-    // Determine if a group is split by the sticky boundary.
-    // Returns null if no split, or { stickyColspan, nonStickyColspan, side } if split.
-    // `side` indicates which side is sticky: 'first' means left columns are sticky,
-    // 'last' means right columns are sticky.
-    const getGroupSplit = (
-      col: ColumnInRow<any>
-    ): { stickyColspan: number; nonStickyColspan: number; side: 'first' | 'last' } | null => {
-      /* istanbul ignore next: getGroupSplit is only called for group cells */
-      if (!col.isGroup) {
-        return null;
-      }
-      // colIndex is 0-based from the first data column (selection column not included)
-      const groupStart = col.colIndex;
-      const groupEnd = col.colIndex + col.colSpan - 1; // inclusive
-
-      // Check sticky-first boundary
-      if (stickyColumnsFirst > 0) {
-        const lastStickyFirst = stickyColumnsFirst - 1;
-        if (groupStart <= lastStickyFirst && groupEnd > lastStickyFirst) {
-          // Group is split by sticky-first boundary
-          const stickyColspan = lastStickyFirst - groupStart + 1;
-          const nonStickyColspan = col.colSpan - stickyColspan;
-          return { stickyColspan, nonStickyColspan, side: 'first' };
-        }
-      }
-
-      // Check sticky-last boundary
-      if (stickyColumnsLast > 0) {
-        const totalLeafColumns = columnDefinitions.length;
-        const firstStickyLast = totalLeafColumns - stickyColumnsLast;
-        if (groupStart < firstStickyLast && groupEnd >= firstStickyLast) {
-          // Group is split by sticky-last boundary
-          const nonStickyColspan = firstStickyLast - groupStart;
-          const stickyColspan = col.colSpan - nonStickyColspan;
-          return { stickyColspan, nonStickyColspan, side: 'last' };
-        }
-      }
-
-      return null;
-    };
-
-    /* istanbul ignore next: requires DOM resize interaction */
     const handleSplitGroupResize = (leafIds: string[], newWidth: number) => {
       const lastLeaf = leafIds[leafIds.length - 1];
       if (lastLeaf) {
@@ -303,8 +242,8 @@ const Thead = React.forwardRef(
               if (col.isGroup) {
                 // Group header cell
                 const groupDefinition = col.groupDefinition!;
-                const childIds = getChildColumnIds(col.id);
-                const split = getGroupSplit(col);
+                const childIds = getChildColumnIds(hierarchicalStructure!, col.id);
+                const split = getGroupSplit(col, stickyColumnsFirst, stickyColumnsLast, totalLeafColumns);
 
                 if (split) {
                   // Group is bisected by the sticky boundary — render two <th> elements.
@@ -338,9 +277,9 @@ const Thead = React.forwardRef(
                         colIndex={selectionType ? leftColIndex + 1 : leftColIndex}
                         groupId={leftGroupId}
                         resizableColumns={resizableColumns}
-                        resizableStyle={resizableColumns ? {} : {}}
+                        resizableStyle={undefined}
                         onResizeFinish={() => onResizeFinish(columnWidths)}
-                        /* istanbul ignore next: requires DOM resize interaction */ updateGroupWidth={(_, newWidth) => {
+                        updateGroupWidth={(_, newWidth) => {
                           handleSplitGroupResize(leftChildIds, newWidth);
                         }}
                         childColumnIds={leftChildIds}
@@ -423,13 +362,12 @@ const Thead = React.forwardRef(
                     group={groupDefinition}
                     colspan={col.colSpan}
                     rowspan={col.rowSpan}
-                    // spansRows={col.rowspan > 1}
                     colIndex={selectionType ? col.colIndex + 1 : col.colIndex}
                     groupId={col.id}
                     resizableColumns={resizableColumns}
                     resizableStyle={getColumnStyles(sticky, col.id)}
                     onResizeFinish={() => onResizeFinish(columnWidths)}
-                    /* istanbul ignore next */ updateGroupWidth={(groupId, newWidth) => {
+                    updateGroupWidth={(groupId, newWidth) => {
                       updateGroup(groupId, newWidth);
                     }}
                     childColumnIds={childIds}
