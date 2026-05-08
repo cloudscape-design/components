@@ -14,6 +14,9 @@
 
   &-trigger {
     white-space: nowrap;
-    margin-inline-end: awsui.$space-scaled-xxs;
   }
+}
+
+.inline-container-text {
+  margin-inline-start: awsui.$space-scaled-xxs;
 }
