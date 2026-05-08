@@ -179,7 +179,7 @@ const InternalPromptInput = React.forwardRef(
       } else {
         adjustInputHeight();
       }
-    }, [isTokenMode, tokens, adjustInputHeight, value, isCompactMode]);
+    }, [isTokenMode, tokens, adjustInputHeight, value, isCompactMode, placeholder]);
 
     const plainTextValue = isTokenMode
       ? tokensToText
