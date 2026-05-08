@@ -100,7 +100,7 @@ const setupTest = (
   return useBrowser(async browser => {
     const page = new PromptInputTokenModePage(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    await browser.url(`#/light/prompt-input/shortcuts?${urlSearch}`);
+    await browser.url(`#/prompt-input/shortcuts${urlSearch ? `?${urlSearch}` : ''}`);
     await page.waitForVisible(promptInputWrapper.toSelector());
     await testFn(page);
   });
@@ -604,7 +604,7 @@ const setupTest = (
         // The long placeholder wraps to multiple lines — the input should be
         // significantly taller than a single-line input (~30px).
         expect(longHeight).toBeGreaterThan(40);
-      }, 'hasSecondaryActions=true&useLongPlaceholder=true')
+      }, 'useLongPlaceholder=true')
     );
 
     test(
@@ -618,7 +618,7 @@ const setupTest = (
 
         const typedHeight = await page.getContentEditableHeight();
         expect(typedHeight).toBeLessThan(40);
-      }, 'hasSecondaryActions=true&useLongPlaceholder=true')
+      }, 'useLongPlaceholder=true')
     );
   });
 });
