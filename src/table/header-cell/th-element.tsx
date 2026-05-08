@@ -92,7 +92,7 @@ export function TableThElement({
 
   return (
     <th
-      // data-focus-id={`header-${String(columnId)}`}
+      data-focus-id={`header-${String(columnId)}`}
       className={clsx(
         styles['header-cell'],
         styles[`header-cell-variant-${variant}`],
