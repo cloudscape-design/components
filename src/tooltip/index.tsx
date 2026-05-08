@@ -11,15 +11,14 @@ import InternalTooltip from './internal';
 
 export { TooltipProps };
 
-/**
- * @awsuiSystem core
- */
-export default function Tooltip({ position = 'top', ...rest }: TooltipProps) {
+export default function Tooltip({ position = 'top', triggerVariant, ...rest }: TooltipProps) {
   const baseComponentProps = useBaseComponent('Tooltip', {
-    props: { position },
+    props: { position, triggerVariant },
   });
   const externalProps = getExternalProps(rest);
 
-  return <InternalTooltip position={position} {...externalProps} {...baseComponentProps} />;
+  return (
+    <InternalTooltip position={position} triggerVariant={triggerVariant} {...externalProps} {...baseComponentProps} />
+  );
 }
 applyDisplayName(Tooltip, 'Tooltip');
