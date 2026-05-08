@@ -230,6 +230,24 @@ export const StickyColumnsPreference = ({
   );
 };
 
+export const collectVisibleIds = (
+  items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>,
+  ancestorVisible: boolean
+): string[] => {
+  const result: string[] = [];
+  for (const item of items) {
+    if (item.type === 'group') {
+      // istanbul ignore next: covered by integration tests
+      if (ancestorVisible && item.visible) {
+        result.push(...collectVisibleIds(item.children, true));
+      }
+    } else if (ancestorVisible && item.visible) {
+      result.push(item.id);
+    }
+  }
+  return result;
+};
+
 interface CustomPreferenceProps<T = any> extends Pick<CollectionPreferencesProps<T>, 'customPreference'> {
   onChange: (value: T) => void;
   value: T;
