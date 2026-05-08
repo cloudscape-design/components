@@ -338,6 +338,32 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorBackgroundStatusIndicatorError: {
+    description: 'The background color of the status indicator in error state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorWarning: {
+    description: 'The background color of the status indicator in warning state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorSuccess: {
+    description: 'The background color of the status indicator in success state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorInfo: {
+    description: 'The background color of the status indicator in info state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorNeutral: {
+    description:
+      'The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundChatBubbleOutgoing: {
     description: 'The background color of `outgoing` chat bubble.',
     themeable: true,
