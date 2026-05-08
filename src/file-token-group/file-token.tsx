@@ -99,6 +99,58 @@ function InternalFileToken({
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
 
+  const fileMetadata = (
+    <div
+      className={clsx(styles['file-option-metadata'], {
+        [styles['with-image']]: showFileThumbnail && isImage,
+        [styles['single-row-loading']]: loading && fileIsSingleRow,
+      })}
+    >
+      <InternalSpaceBetween direction="vertical" size="xxxs">
+        <div
+          className={styles['file-name-container']}
+          onMouseOver={() => setShowTooltip(true)}
+          onMouseOut={() => setShowTooltip(false)}
+          onFocus={() => setShowTooltip(true)}
+          onBlur={() => setShowTooltip(false)}
+          role={isTruncated ? 'button' : undefined}
+          aria-expanded={isTruncated ? showTooltip : undefined}
+          tabIndex={isTruncated ? 0 : -1}
+          ref={fileNameContainerRef}
+        >
+          <InternalBox
+            fontWeight="normal"
+            className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
+              [testUtilStyles['ellipsis-active']]: isTruncated,
+            })}
+          >
+            <span ref={fileNameRef}>{file.name}</span>
+          </InternalBox>
+        </div>
+
+        {showFileSize && file.size ? (
+          <InternalBox
+            fontSize="body-s"
+            color={'text-body-secondary'}
+            className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
+          >
+            {formatFileSize(file.size)}
+          </InternalBox>
+        ) : null}
+
+        {showFileLastModified && file.lastModified ? (
+          <InternalBox
+            fontSize="body-s"
+            color={'text-body-secondary'}
+            className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
+          >
+            {formatFileLastModified(new Date(file.lastModified))}
+          </InternalBox>
+        ) : null}
+      </InternalSpaceBetween>
+    </div>
+  );
+
   const fileLabel = (
     <>
       {loading && (
@@ -110,59 +162,7 @@ function InternalFileToken({
           <InternalSpinner variant="normal" size="normal" />
         </div>
       )}
-      <InternalBox className={styles['file-option']}>
-        {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
-
-        <div
-          className={clsx(styles['file-option-metadata'], {
-            [styles['with-image']]: showFileThumbnail && isImage,
-            [styles['single-row-loading']]: loading && fileIsSingleRow,
-          })}
-        >
-          <InternalSpaceBetween direction="vertical" size="xxxs">
-            <div
-              className={styles['file-name-container']}
-              onMouseOver={() => setShowTooltip(true)}
-              onMouseOut={() => setShowTooltip(false)}
-              onFocus={() => setShowTooltip(true)}
-              onBlur={() => setShowTooltip(false)}
-              role={isTruncated ? 'button' : undefined}
-              aria-expanded={isTruncated ? showTooltip : undefined}
-              tabIndex={isTruncated ? 0 : -1}
-              ref={fileNameContainerRef}
-            >
-              <InternalBox
-                fontWeight="normal"
-                className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
-                  [testUtilStyles['ellipsis-active']]: isTruncated,
-                })}
-              >
-                <span ref={fileNameRef}>{file.name}</span>
-              </InternalBox>
-            </div>
-
-            {showFileSize && file.size ? (
-              <InternalBox
-                fontSize="body-s"
-                color={'text-body-secondary'}
-                className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
-              >
-                {formatFileSize(file.size)}
-              </InternalBox>
-            ) : null}
-
-            {showFileLastModified && file.lastModified ? (
-              <InternalBox
-                fontSize="body-s"
-                color={'text-body-secondary'}
-                className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
-              >
-                {formatFileLastModified(new Date(file.lastModified))}
-              </InternalBox>
-            ) : null}
-          </InternalSpaceBetween>
-        </div>
-      </InternalBox>
+      {fileMetadata}
       {showTooltip && isTruncated && (
         <Tooltip
           getTrack={() => containerRef.current}
@@ -188,8 +188,8 @@ function InternalFileToken({
     >
       <InternalToken
         role="presentation"
-        disabled={loading}
         label={fileLabel}
+        icon={showFileThumbnail && isImage ? <FileOptionThumbnail file={file} /> : undefined}
         onDismiss={readOnly ? undefined : onDismiss}
         dismissLabel={getDismissLabel(index)}
         tokenBoxClassName={clsx(styles['token-box'], {
