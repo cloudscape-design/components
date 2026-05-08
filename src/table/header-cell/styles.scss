@@ -53,7 +53,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -64,7 +64,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
   &.header-cell-group,
-  &.header-cell-grouped {
+  &.header-cell-grouped,
+  &.header-cell-spans-rows {
     padding-block: awsui.$space-xxxs;
     padding-inline: awsui.$space-scaled-xs;
   }
@@ -151,7 +152,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   @include cell-offset(awsui.$space-s);
 
   .header-cell-group > &,
-  .header-cell-grouped > & {
+  .header-cell-grouped > &,
+  .header-cell-spans-rows > & {
     padding-block: awsui.$space-xxxs;
   }
 
