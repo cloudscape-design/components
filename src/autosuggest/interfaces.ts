@@ -19,6 +19,7 @@ export interface AutosuggestProps
     InputClearLabel,
     FormFieldValidationControlProps,
     DropdownStatusProps {
+  onLoadItems?: NonCancelableEventHandler<AutosuggestProps.LoadItemsDetail>;
   /**
    * Specifies an array of options that are displayed to the user as a dropdown list.
    * The options can be grouped using `OptionGroup` objects.
@@ -179,7 +180,10 @@ export namespace AutosuggestProps {
     label?: string;
     options: ReadonlyArray<Option>;
   }
-  export type LoadItemsDetail = OptionsLoadItemsDetail;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;

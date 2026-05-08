@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
 
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import { BaseSelectProps } from '../select/interfaces';
@@ -49,6 +50,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * @i18n
    */
   i18nStrings?: MultiselectProps.I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<MultiselectProps.LoadItemsDetail>;
   /**
    * Called when the user selects or deselects an option.
    * The event `detail` contains the current `selectedOptions`.
@@ -86,6 +88,10 @@ export namespace MultiselectProps {
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
   export interface MultiselectOptionItem {
     type: 'item';
     index: number;
