@@ -93,10 +93,7 @@ class PromptInputTokenModePage extends BasePageObject {
   }
 }
 
-const setupTest = (
-  testFn: (page: PromptInputTokenModePage) => Promise<void>,
-  urlSearch = 'hasSecondaryActions=true'
-) => {
+const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, urlSearch = '') => {
   return useBrowser(async browser => {
     const page = new PromptInputTokenModePage(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
@@ -302,7 +299,7 @@ const setupTest = (
         expect(text).toContain('hello');
         expect(text).toContain('@');
         expect(await page.getCaretOffset()).toBe(7);
-      })
+      }, 'hasSecondaryActions=true')
     );
   });
 
