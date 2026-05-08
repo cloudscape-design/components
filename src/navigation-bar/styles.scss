@@ -1,0 +1,117 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+// Variant backgrounds and border colors.
+// Each variant defines its own border-color token so themes can style them independently.
+.variant-primary {
+  background: awsui.$color-background-navigation-bar-primary;
+  border-color: awsui.$color-border-navigation-bar-primary;
+}
+
+.variant-primary-accent {
+  background: awsui.$color-background-navigation-bar-primary;
+  border-color: awsui.$color-border-navigation-bar-primary;
+}
+
+.variant-secondary {
+  background: awsui.$color-background-navigation-bar-secondary;
+  border-color: awsui.$color-border-navigation-bar-secondary;
+}
+
+// Placement controls which edge gets the border.
+// Border color is inherited from the variant class above.
+// We use individual border properties (not shorthand) to avoid resetting border-color.
+.placement-top {
+  flex-direction: row;
+
+  &.variant-primary,
+  &.variant-primary-accent {
+    border-block-end-width: awsui.$border-width-navigation-bar-primary;
+    border-block-end-style: solid;
+  }
+
+  &.variant-secondary {
+    border-block-end-width: awsui.$border-width-navigation-bar-secondary;
+    border-block-end-style: solid;
+  }
+}
+
+.placement-bottom {
+  flex-direction: row;
+
+  &.variant-primary,
+  &.variant-primary-accent {
+    border-block-start-width: awsui.$border-width-navigation-bar-primary;
+    border-block-start-style: solid;
+  }
+
+  &.variant-secondary {
+    border-block-start-width: awsui.$border-width-navigation-bar-secondary;
+    border-block-start-style: solid;
+  }
+}
+
+.placement-start {
+  flex-direction: column;
+  inline-size: fit-content;
+
+  &.variant-primary,
+  &.variant-primary-accent {
+    border-inline-end-width: awsui.$border-width-navigation-bar-primary;
+    border-inline-end-style: solid;
+  }
+
+  &.variant-secondary {
+    border-inline-end-width: awsui.$border-width-navigation-bar-secondary;
+    border-inline-end-style: solid;
+  }
+
+  @include styles.with-motion {
+    transition: inline-size awsui.$motion-duration-refresh-only-medium;
+  }
+}
+
+.placement-end {
+  flex-direction: column;
+  inline-size: fit-content;
+
+  &.variant-primary,
+  &.variant-primary-accent {
+    border-inline-start-width: awsui.$border-width-navigation-bar-primary;
+    border-inline-start-style: solid;
+  }
+
+  &.variant-secondary {
+    border-inline-start-width: awsui.$border-width-navigation-bar-secondary;
+    border-inline-start-style: solid;
+  }
+
+  @include styles.with-motion {
+    transition: inline-size awsui.$motion-duration-refresh-only-medium;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-inline-size: 0;
+}
+
+// Vertical content stacks vertically
+.placement-start > .content,
+.placement-end > .content {
+  flex-direction: column;
+}
