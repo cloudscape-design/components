@@ -601,6 +601,11 @@ export type ColorsTokenName =
   | 'colorBackgroundLoadingBarGenAi'
   | 'colorBackgroundChatBubbleOutgoing'
   | 'colorBackgroundChatBubbleIncoming'
+  | 'colorBackgroundStatusIndicatorError'
+  | 'colorBackgroundStatusIndicatorWarning'
+  | 'colorBackgroundStatusIndicatorSuccess'
+  | 'colorBackgroundStatusIndicatorInfo'
+  | 'colorBackgroundStatusIndicatorNeutral'
   | 'colorTextChatBubbleOutgoing'
   | 'colorTextChatBubbleIncoming'
   | 'colorBorderButtonLinkDisabled'
@@ -1105,6 +1110,7 @@ export type SpacingTokenName =
   | 'spaceActionCardVerticalEmbedded'
   | 'spaceActionCardDescriptionPaddingTop'
   | 'spaceActionCardContentPaddingTop'
+  | 'spaceStatusIndicatorPaddingInline'
   | 'spaceOptionPaddingVertical'
   | 'spaceOptionPaddingHorizontal';
 export type ShadowsTokenName =

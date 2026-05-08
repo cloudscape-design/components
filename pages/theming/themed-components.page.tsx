@@ -221,9 +221,9 @@ function Buttons() {
         onChange={({ detail }) => setSelectedSegment(detail.selectedId)}
         label="Default segmented control"
         options={[
-          { text: 'Segment 1', id: 'seg-1' },
-          { text: 'Segment 2', id: 'seg-2' },
-          { text: 'Segment 3', id: 'seg-3' },
+          { text: 'Segment 1', id: 'seg-1', iconName: 'view-vertical' },
+          { text: 'Segment 2', id: 'seg-2', iconName: 'view-horizontal' },
+          { text: 'Segment 3', id: 'seg-3', iconName: 'view-full' },
         ]}
       />
     </SpaceBetween>
@@ -570,6 +570,11 @@ export default function ThemedComponentsPage() {
           fontWeightDisplayL: '900',
           spaceFieldVertical: { comfortable: '4px', compact: '2px' },
           sizeVerticalInput: { comfortable: '30px', compact: '28px' },
+          colorBackgroundStatusIndicatorInfo: { light: '#1b232d', dark: '#7ae50020' },
+          colorBackgroundStatusIndicatorSuccess: { light: '#1b232d', dark: '#7ae50020' },
+          colorBackgroundStatusIndicatorWarning: { light: '#1b232d', dark: '#7ae50020' },
+          colorBackgroundStatusIndicatorError: { light: '#1b232d', dark: '#7ae50020' },
+          spaceStatusIndicatorPaddingInline: '4px',
         },
       };
 

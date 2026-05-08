@@ -129,6 +129,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundDropdownItemSelected: {
     description:
       'The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.',
+    public: true,
+    themeable: true,
   },
   colorBackgroundHomeHeader: {
     description: "The background color of the home header, displayed on the Service's home page.",
@@ -260,7 +262,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundSegmentWrapper: {
     description: 'The background color of segmented control wrapper.',
-    public: false,
+    public: true,
     themeable: true,
   },
   colorBackgroundSliderHandleDefault: {
@@ -721,6 +723,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorTextDropdownItemSecondary: {
     description:
       'The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.',
+    public: true,
+    themeable: true,
   },
   colorTextEmpty: {
     description:
@@ -989,6 +993,37 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The color of file upload dropzone border in hovered state.',
     themeable: true,
     public: true,
+  },
+  colorTextIconSubtle: {
+    description: 'The color of subtle icons. For example: secondary icons with lower visual emphasis.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorError: {
+    description: 'The background color of the status indicator in error state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorWarning: {
+    description: 'The background color of the status indicator in warning state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorSuccess: {
+    description: 'The background color of the status indicator in success state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorInfo: {
+    description: 'The background color of the status indicator in info state.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorNeutral: {
+    description:
+      'The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.',
+    public: true,
+    themeable: true,
   },
 };
 
