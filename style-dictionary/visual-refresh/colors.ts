@@ -118,6 +118,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextAvatar: '{colorWhite}',
   colorBackgroundLoadingBarGenAi:
     'linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)',
+  colorBackgroundStatusIndicatorError: 'transparent',
+  colorBackgroundStatusIndicatorWarning: 'transparent',
+  colorBackgroundStatusIndicatorSuccess: 'transparent',
+  colorBackgroundStatusIndicatorInfo: 'transparent',
+  colorBackgroundStatusIndicatorNeutral: 'transparent',
   colorBackgroundChatBubbleOutgoing: 'transparent',
   colorBackgroundChatBubbleIncoming: { light: '{colorNeutral150}', dark: '{colorNeutral950}' },
   colorTextChatBubbleOutgoing: '{colorTextBodyDefault}',
