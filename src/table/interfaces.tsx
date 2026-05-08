@@ -277,7 +277,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * - `header` (ReactNode) - The content displayed in the group header cell.
    * - `ariaLabel` ((LabelData) => string) - (Optional) A function that provides an `aria-label` for the group header.
    */
-  groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition>;
+  groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition<T>>;
 
   /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
@@ -531,7 +531,8 @@ export namespace TableProps {
     cell(item: T): React.ReactNode;
   } & SortingColumn<T>;
 
-  export interface GroupDefinition {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export interface GroupDefinition<T = any> {
     id: string;
     header: React.ReactNode;
     ariaLabel?: (data: LabelData) => string;
