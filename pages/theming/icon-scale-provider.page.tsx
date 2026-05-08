@@ -815,7 +815,7 @@ function KvpForm() {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function IconScaleProviderScenario() {
   // Icon size state
-  const [iconSizeSmall, setIconSizeSmall] = useState('12');
+  const [iconSizeSmall, setIconSizeSmall] = useState('16');
   const [iconSize, setIconSize] = useState('16');
   const [iconSizeMedium, setIconSizeMedium] = useState('20');
   const [iconSizeBig, setIconSizeBig] = useState('24');
@@ -897,7 +897,7 @@ export default function IconScaleProviderScenario() {
   const splitPanelContent = (
     <ColumnLayout borders="horizontal">
       <Box padding={{ bottom: 'l' }}>
-        <Box variant="h3">Icon size configuration</Box>
+        <Box variant="h3">IconProvider size prop configuration</Box>
         <SpaceBetween size="s">
           <FormField label="Icon size small (px)">
             <Input
