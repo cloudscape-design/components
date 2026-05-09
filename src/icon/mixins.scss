@@ -91,11 +91,12 @@ $_icon-sizes: (
       > svg {
         &,
         * {
-          /* stylelint-disable-next-line custom-property-pattern */
+          /* stylelint-disable custom-property-pattern */
           stroke-width: var(
             --icon-stroke-width-override,
             calc(#{$stroke} / #{$scaleFactor} * var(--icon-stroke-scale, 1))
           );
+          /* stylelint-enable custom-property-pattern */
         }
       }
     }
