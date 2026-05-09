@@ -198,6 +198,19 @@ export interface IconProviderProps extends BaseComponentProps {
    * @defaultValue undefined (no overrides — icons render at their original sizes)
    */
   sizes?: IconProviderProps.Sizes;
+
+  /**
+   * Specifies stroke-width overrides for icon size variants. Each key corresponds to a size
+   * variant and accepts a pixel string value (e.g., `"1.5px"`). When specified, the icon's
+   * SVG stroke-width is set directly to this value, bypassing the default token and any
+   * automatic compensation from size scaling.
+   *
+   * Only the sizes you specify are overridden — unspecified sizes inherit from the parent
+   * provider or fall back to their default token-defined stroke-widths.
+   *
+   * @defaultValue undefined (no overrides — icons use their token-defined stroke-widths)
+   */
+  strokeWidths?: IconProviderProps.StrokeWidths;
 }
 
 export namespace IconProviderProps {
@@ -217,6 +230,21 @@ export namespace IconProviderProps {
     /** Target pixel size for icons at "large" size (default 48×48). */
     large?: string;
     /** Target pixel size for icons that use "inherit" (contextual) sizing. */
+    inherit?: string;
+  }
+
+  export interface StrokeWidths {
+    /** Stroke-width for icons at "small" size. E.g. `"1.5px"`. */
+    small?: string;
+    /** Stroke-width for icons at "normal" size. E.g. `"2px"`. */
+    normal?: string;
+    /** Stroke-width for icons at "medium" size. E.g. `"2.5px"`. */
+    medium?: string;
+    /** Stroke-width for icons at "big" size. E.g. `"3px"`. */
+    big?: string;
+    /** Stroke-width for icons at "large" size. E.g. `"4px"`. */
+    large?: string;
+    /** Stroke-width for icons that use "inherit" (contextual) sizing. */
     inherit?: string;
   }
 }

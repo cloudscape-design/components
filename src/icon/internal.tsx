@@ -5,7 +5,11 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalIconContext, InternalIconSizeOverrideContext } from '../icon-provider/context';
+import {
+  InternalIconContext,
+  InternalIconSizeOverrideContext,
+  InternalIconStrokeWidthOverrideContext,
+} from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -22,13 +26,30 @@ type InternalIconProps = IconProps &
 /**
  * Base pixel sizes for each named icon size variant.
  * Used to compute the stroke-width scale factor when a pixel override is provided.
+ * These must match the CSS `inline-size` values from the SCSS $_icon-sizes map
+ * (i.e. the actual rendered size of the SVG element without any override).
+ * Note: "small" uses $size-icon-normal (16px), same as "normal".
  */
 const BASE_SIZE_PX: Record<string, number> = {
-  small: 12,
+  small: 16,
   normal: 16,
   medium: 20,
   big: 32,
   large: 48,
+};
+
+/**
+ * CSS scale factors for each icon size variant.
+ * These match the scaleFactor values in mixins.scss and represent how much
+ * the SVG viewBox is scaled up relative to the base 16×16 coordinate system.
+ * The stroke-width must be divided by this factor to render at the intended visual size.
+ */
+const SCALE_FACTOR: Record<string, number> = {
+  small: 1,
+  normal: 1,
+  medium: 1.25,
+  big: 2,
+  large: 3,
 };
 
 /**
@@ -78,6 +99,7 @@ const InternalIcon = ({
 }: InternalIconProps) => {
   const icons = useContext(InternalIconContext);
   const sizeOverrides = useContext(InternalIconSizeOverrideContext);
+  const strokeWidthOverrides = useContext(InternalIconStrokeWidthOverrideContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
@@ -124,13 +146,52 @@ const InternalIcon = ({
     }
   }
 
+  // Resolve explicit stroke-width override from the IconProvider strokeWidths prop.
+  // When set, this takes precedence over both the token value and the automatic compensation.
+  // The value is specified in desired visual (screen) pixels. Two adjustments are needed:
+  //   1. Divide by scaleFactor — the SVG viewBox is scaled up for larger variants (e.g. 3× for "large"),
+  //      so the CSS stroke-width must be smaller to render at the intended visual size.
+  //   2. If a size override is also active, multiply by (basePx / targetPx) to convert from
+  //      screen pixels to viewBox units.
+  let strokeWidthOverride: string | undefined;
+  if (hasInheritOverride) {
+    const rawStroke = strokeWidthOverrides.inherit;
+    if (rawStroke !== undefined) {
+      const strokePx = parsePx(rawStroke);
+      if (strokePx !== undefined) {
+        const scaleFactor = SCALE_FACTOR.normal;
+        const sizeCompensation = targetSizePx !== undefined ? BASE_SIZE_PX.normal / targetSizePx : 1;
+        strokeWidthOverride = `${(strokePx / scaleFactor) * sizeCompensation}px`;
+      } else {
+        strokeWidthOverride = rawStroke;
+      }
+    }
+  } else if (!contextualSize) {
+    const rawStroke = strokeWidthOverrides[iconSize];
+    if (rawStroke !== undefined) {
+      const strokePx = parsePx(rawStroke);
+      const scaleFactor = SCALE_FACTOR[iconSize] ?? 1;
+      const basePx = BASE_SIZE_PX[iconSize];
+      if (strokePx !== undefined) {
+        const sizeCompensation = targetSizePx !== undefined && basePx !== undefined ? basePx / targetSizePx : 1;
+        strokeWidthOverride = `${(strokePx / scaleFactor) * sizeCompensation}px`;
+      } else {
+        strokeWidthOverride = rawStroke;
+      }
+    }
+  }
+
   // Build inline styles for the wrapper span.
   // When a size override is active, we set --icon-size-override which the CSS uses
   // for both the span's inline-size and the child SVG's inline-size/block-size.
   const inlineStyles: React.CSSProperties = {
     ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
     ...(targetSizePx !== undefined ? ({ '--icon-size-override': `${targetSizePx}px` } as React.CSSProperties) : {}),
-    ...(strokeScale ? ({ '--icon-stroke-scale': strokeScale } as React.CSSProperties) : {}),
+    ...(strokeWidthOverride
+      ? ({ '--icon-stroke-width-override': strokeWidthOverride } as React.CSSProperties)
+      : strokeScale
+        ? ({ '--icon-stroke-scale': strokeScale } as React.CSSProperties)
+        : {}),
   };
 
   const baseProps = getBaseProps(props);

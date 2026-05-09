@@ -4,12 +4,19 @@
 import React, { useContext, useMemo } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
-import { IconSizeOverrideMap, InternalIconContext, InternalIconSizeOverrideContext } from './context';
+import {
+  IconSizeOverrideMap,
+  IconStrokeWidthOverrideMap,
+  InternalIconContext,
+  InternalIconSizeOverrideContext,
+  InternalIconStrokeWidthOverrideContext,
+} from './context';
 import { IconProviderProps } from './interfaces';
 
-function InternalIconProvider({ children, icons, sizes }: IconProviderProps) {
+function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProviderProps) {
   const contextIcons = useContext(InternalIconContext);
   const contextSizeOverrides = useContext(InternalIconSizeOverrideContext);
+  const contextStrokeWidthOverrides = useContext(InternalIconStrokeWidthOverrideContext);
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
@@ -58,10 +65,42 @@ function InternalIconProvider({ children, icons, sizes }: IconProviderProps) {
     return map;
   }, [contextSizeOverrides, sizes]);
 
+  // Build the stroke-width override map by merging parent context with this provider's strokeWidths prop.
+  const strokeWidthOverridesToProvide = useMemo<IconStrokeWidthOverrideMap>(() => {
+    if (!strokeWidths) {
+      return contextStrokeWidthOverrides;
+    }
+
+    const map: IconStrokeWidthOverrideMap = { ...contextStrokeWidthOverrides };
+
+    if (strokeWidths.small !== undefined) {
+      map.small = strokeWidths.small;
+    }
+    if (strokeWidths.normal !== undefined) {
+      map.normal = strokeWidths.normal;
+    }
+    if (strokeWidths.medium !== undefined) {
+      map.medium = strokeWidths.medium;
+    }
+    if (strokeWidths.big !== undefined) {
+      map.big = strokeWidths.big;
+    }
+    if (strokeWidths.large !== undefined) {
+      map.large = strokeWidths.large;
+    }
+    if (strokeWidths.inherit !== undefined) {
+      map.inherit = strokeWidths.inherit;
+    }
+
+    return map;
+  }, [contextStrokeWidthOverrides, strokeWidths]);
+
   return (
     <InternalIconContext.Provider value={iconsToProvide}>
       <InternalIconSizeOverrideContext.Provider value={sizeOverridesToProvide}>
-        {children}
+        <InternalIconStrokeWidthOverrideContext.Provider value={strokeWidthOverridesToProvide}>
+          {children}
+        </InternalIconStrokeWidthOverrideContext.Provider>
       </InternalIconSizeOverrideContext.Provider>
     </InternalIconContext.Provider>
   );

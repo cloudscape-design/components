@@ -27,3 +27,19 @@ export type IconSizeOverrideMap = Partial<Record<string, string>>;
  * An empty object means no overrides.
  */
 export const InternalIconSizeOverrideContext = createContext<IconSizeOverrideMap>({});
+
+/**
+ * A mapping from each icon size variant to an optional stroke-width value.
+ * When a key is set, icons at that size will use the specified stroke-width
+ * instead of the default token value and automatic compensation.
+ * An empty object means no overrides — icons use their token-defined stroke-widths.
+ */
+export type IconStrokeWidthOverrideMap = Partial<Record<string, string>>;
+
+/**
+ * Provides per-size-variant stroke-width overrides to all descendant Icon components.
+ * Each key corresponds to an icon size variant (e.g. "normal", "small");
+ * the value is the target stroke-width string (e.g. "1.5px").
+ * An empty object means no overrides.
+ */
+export const InternalIconStrokeWidthOverrideContext = createContext<IconStrokeWidthOverrideMap>({});
