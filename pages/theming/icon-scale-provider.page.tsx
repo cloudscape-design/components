@@ -739,7 +739,7 @@ function StatusComponents() {
               <Badge color="grey">Neutral</Badge>
             </SpaceBetween>
             <FormField label="Form field" errorText="This is an error message.">
-              <Input value="Invalid" invalid={true} ariaLabel="Invalid input" />
+              <Input value="Invalid" invalid={true} ariaLabel="Invalid input" readOnly={true} />
             </FormField>
           </SpaceBetween>
         </ColumnLayout>
@@ -803,7 +803,7 @@ function KvpForm() {
               />
             </FormField>
             <FormField label="Origin domain name" description="The domain name of the resource.">
-              <Input value="example-bucket.s3.amazonaws.com" ariaLabel="Origin domain name" />
+              <Input value="example-bucket.s3.amazonaws.com" ariaLabel="Origin domain name" readOnly={true} />
             </FormField>
           </SpaceBetween>
         </Form>
