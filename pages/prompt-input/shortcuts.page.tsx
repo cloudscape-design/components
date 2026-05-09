@@ -42,6 +42,7 @@ type DemoContext = React.Context<
     hasName: boolean;
     enableAutoFocus: boolean;
     useIframe: boolean;
+    useLongPlaceholder: boolean;
   }>
 >;
 
@@ -318,6 +319,7 @@ function ShortcutsDemo() {
     enableSpellcheck,
     hasName,
     enableAutoFocus,
+    useLongPlaceholder,
   } = urlParams;
 
   const [items, setItems] = React.useState([
@@ -486,6 +488,12 @@ function ShortcutsDemo() {
           <Checkbox checked={enableAutoFocus} onChange={() => setUrlParams({ enableAutoFocus: !enableAutoFocus })}>
             Enable auto focus
           </Checkbox>
+          <Checkbox
+            checked={useLongPlaceholder}
+            onChange={() => setUrlParams({ useLongPlaceholder: !useLongPlaceholder })}
+          >
+            Use long placeholder
+          </Checkbox>
         </FormField>
         <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
           Fill with placeholder text
@@ -629,7 +637,7 @@ function ShortcutsDemo() {
                     )}`
                   );
                 }}
-                placeholder="Ask a question"
+                placeholder={useLongPlaceholder ? placeholderText : 'Ask a question'}
                 maxRows={hasInfiniteMaxRows ? -1 : 4}
                 disabled={isDisabled}
                 readOnly={isReadOnly}

@@ -86,13 +86,18 @@ class PromptInputTokenModePage extends BasePageObject {
       return result;
     }, contentEditableSelector);
   }
+
+  async getContentEditableHeight(): Promise<number> {
+    const { height } = await this.getBoundingBox(contentEditableSelector);
+    return height;
+  }
 }
 
-const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) => {
+const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, urlSearch = '') => {
   return useBrowser(async browser => {
     const page = new PromptInputTokenModePage(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    await browser.url('#/light/prompt-input/shortcuts?hasSecondaryActions=true');
+    await browser.url(`#/prompt-input/shortcuts${urlSearch ? `?${urlSearch}` : ''}`);
     await page.waitForVisible(promptInputWrapper.toSelector());
     await testFn(page);
   });
@@ -294,7 +299,7 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
         expect(text).toContain('hello');
         expect(text).toContain('@');
         expect(await page.getCaretOffset()).toBe(7);
-      })
+      }, 'hasSecondaryActions=true')
     );
   });
 
@@ -585,6 +590,32 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>) =>
         const offset = await page.getCaretOffset();
         expect(offset).toBeGreaterThanOrEqual(0);
       })
+    );
+  });
+
+  describe('placeholder sizing', () => {
+    test(
+      'long placeholder grows the input beyond a single row',
+      setupTest(async page => {
+        const longHeight = await page.getContentEditableHeight();
+        // The long placeholder wraps to multiple lines — the input should be
+        // significantly taller than a single-line input (~30px).
+        expect(longHeight).toBeGreaterThan(40);
+      }, 'useLongPlaceholder=true')
+    );
+
+    test(
+      'input shrinks back to a single row when the user starts typing',
+      setupTest(async page => {
+        const longHeight = await page.getContentEditableHeight();
+        expect(longHeight).toBeGreaterThan(40);
+
+        await page.focusInput();
+        await page.keys(['h', 'i']);
+
+        const typedHeight = await page.getContentEditableHeight();
+        expect(typedHeight).toBeLessThan(40);
+      }, 'useLongPlaceholder=true')
     );
   });
 });

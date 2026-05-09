@@ -175,6 +175,23 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   border: 0;
 
+  // When a placeholder is shown on the contentEditable div (token mode), use a
+  // grid layout so the `::before` placeholder and the paragraph children share
+  // the same grid cell. Both contribute to the cell's height, so the input grows
+  // to fit a wrapped long placeholder — matching how the native `<textarea>`
+  // `placeholder` attribute sizes the textarea. In non-placeholder states the
+  // element stays `display: block` (inherited from `styles-reset`).
+  &.placeholder-visible {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  &.placeholder-visible::before,
+  &.placeholder-visible > * {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   &.placeholder-visible::before {
     content: attr(data-placeholder);
     @include styles.form-placeholder(
@@ -185,9 +202,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     );
     opacity: 1;
     pointer-events: none;
-    position: absolute;
-    inset-block-start: styles.$control-padding-vertical;
-    inset-inline-start: styles.$control-padding-horizontal;
+    // Align self to the start so a single-line placeholder sits at the top when
+    // the cell is taller for any reason (e.g., other content growth).
+    align-self: start;
+    min-inline-size: 0;
   }
 
   &:hover {
@@ -248,18 +266,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   // Placeholder for disabled contentEditable div (token mode)
   &.textarea-disabled.placeholder-visible::before {
     @include styles.form-placeholder-disabled;
-    opacity: 1;
-    pointer-events: none;
-  }
-  
-  // Placeholder for contentEditable div (token mode) - readonly and normal states
-  &.placeholder-visible::before {
-    @include styles.form-placeholder(
-      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
-    );
     opacity: 1;
     pointer-events: none;
   }

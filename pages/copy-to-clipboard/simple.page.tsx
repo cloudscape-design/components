@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Box, CopyToClipboard, Popover, SpaceBetween } from '~components';
+import { Box, CopyToClipboard, SpaceBetween } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -14,7 +14,7 @@ const paragraphs = [
 
 const sentence = paragraphs[0].split('.')[0];
 
-export default function CopyToClipboardScenarios() {
+export default function DateInputScenario() {
   return (
     <ScreenshotArea>
       <Box>
@@ -81,21 +81,6 @@ export default function CopyToClipboardScenarios() {
                 copyErrorText="Lorem ipsum sentence failed to copy"
               />
             </div>
-          </div>
-
-          <div style={{ width: '200px' }}>
-            <CopyToClipboard
-              variant="inline"
-              copyButtonAriaLabel="Copy lorem ipsum sentence"
-              textToCopy="Relatively long text that we don't want to wrap"
-              copySuccessText="Lorem ipsum sentence copied"
-              copyErrorText="Lorem ipsum sentence failed to copy"
-              textToDisplay={
-                <Popover wrapTriggerText={false} content="Popover content.">
-                  Relatively long trigger text that we don&apos;t want to wrap
-                </Popover>
-              }
-            />
           </div>
         </SpaceBetween>
       </Box>
