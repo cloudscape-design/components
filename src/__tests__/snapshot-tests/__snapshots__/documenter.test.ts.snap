@@ -15580,6 +15580,54 @@ provider or fall back to their default token-defined values.",
       "optional": true,
       "type": "IconProviderProps.Sizes",
     },
+    {
+      "description": "Specifies stroke-width overrides for icon size variants. Each key corresponds to a size
+variant and accepts a pixel string value (e.g., \`"1.5px"\`). When specified, the icon's
+SVG stroke-width is set directly to this value, bypassing the default token and any
+automatic compensation from size scaling.
+
+Only the sizes you specify are overridden — unspecified sizes inherit from the parent
+provider or fall back to their default token-defined stroke-widths.",
+      "inlineType": {
+        "name": "IconProviderProps.StrokeWidths",
+        "properties": [
+          {
+            "name": "big",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "inherit",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "large",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "medium",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "normal",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "small",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "strokeWidths",
+      "optional": true,
+      "type": "IconProviderProps.StrokeWidths",
+    },
   ],
   "regions": [
     {
