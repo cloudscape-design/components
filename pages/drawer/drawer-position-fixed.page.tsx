@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { capitalize, range } from 'lodash';
 
 import { Box, Checkbox, Select, SpaceBetween } from '~components';
-import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next';
+import Drawer, { DrawerProps } from '~components/drawer';
 import { colorBackgroundCellShaded as contentBackgroundColor } from '~design-tokens';
 
 import AppContext, { AppContextType } from '../app/app-context';

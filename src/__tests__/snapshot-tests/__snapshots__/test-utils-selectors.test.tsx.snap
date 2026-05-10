@@ -252,6 +252,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_validation-error_1afkv",
   ],
   "drawer": [
+    "awsui_backdrop_1sr4m",
+    "awsui_close-action_1sr4m",
     "awsui_footer_1sxt8",
     "awsui_header-actions_1sxt8",
     "awsui_header_1sxt8",

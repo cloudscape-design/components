@@ -20,16 +20,16 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
-import { NextDrawerProps } from './interfaces';
+import { DrawerProps } from './interfaces';
 import { useStickyFooter } from './use-sticky-footer';
 import { getPositionStyles } from './utils';
 
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
-type DrawerInternalProps = NextDrawerProps &
+type DrawerInternalProps = DrawerProps &
   InternalBaseComponentProps & {
-    __ref?: React.Ref<NextDrawerProps.Ref>;
+    __ref?: React.Ref<DrawerProps.Ref>;
   };
 
 export function DrawerImplementation({

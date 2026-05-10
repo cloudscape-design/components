@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import NextDrawer from '../../../lib/components/drawer/next';
+import Drawer from '../../../lib/components/drawer';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import drawerStyles from '../../../lib/components/drawer/styles.selectors.js';
@@ -30,9 +30,9 @@ test('drawer is visible when open=true', () => {
   expect(
     isHidden(
       renderDrawer(
-        <NextDrawer open={true} onClose={jest.fn()}>
+        <Drawer open={true} onClose={jest.fn()}>
           content
-        </NextDrawer>
+        </Drawer>
       )
     )
   ).toBe(false);
@@ -42,31 +42,31 @@ test('drawer is hidden when open=false', () => {
   expect(
     isHidden(
       renderDrawer(
-        <NextDrawer open={false} onClose={jest.fn()}>
+        <Drawer open={false} onClose={jest.fn()}>
           content
-        </NextDrawer>
+        </Drawer>
       )
     )
   ).toBe(true);
 });
 
 test('drawer is always visible when open is not provided', () => {
-  expect(isHidden(renderDrawer(<NextDrawer>content</NextDrawer>))).toBe(false);
+  expect(isHidden(renderDrawer(<Drawer>content</Drawer>))).toBe(false);
 });
 
 test('re-renders without open prop do not trigger focus transitions', () => {
   const { container, rerender } = render(
-    <NextDrawer open={false} onClose={jest.fn()}>
+    <Drawer open={false} onClose={jest.fn()}>
       content
-    </NextDrawer>
+    </Drawer>
   );
   const drawer = container.querySelector<HTMLElement>(`.${drawerStyles.drawer}`)!;
-  rerender(<NextDrawer>content</NextDrawer>);
+  rerender(<Drawer>content</Drawer>);
   expect(drawer).not.toHaveFocus();
 });
 
 test('warns when open is provided without onClose', () => {
-  render(<NextDrawer open={true}>content</NextDrawer>);
+  render(<Drawer open={true}>content</Drawer>);
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('`open`'));
   expect(warnOnceMock).toHaveBeenCalledWith('Drawer', expect.stringContaining('`onClose`'));
 });
