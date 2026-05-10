@@ -28054,7 +28054,7 @@ Each group definition contains the following:
 - \`ariaLabel\` ((LabelData) => string) - (Optional) A function that provides an \`aria-label\` for the group header.",
       "name": "groupDefinitions",
       "optional": true,
-      "type": "ReadonlyArray<TableProps.GroupDefinition>",
+      "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
