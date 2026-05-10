@@ -162,36 +162,31 @@ export function ColumnWidthsProvider({
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
-    if (!columnWidths) {
-      return;
-    }
-
-    // When col elements exist (grouped columns), apply widths to <col> elements.
-    // With table-layout:fixed, <col> widths control the actual column widths.
-    if (hasColElements.current) {
-      for (const { id } of visibleColumns) {
-        const colElement = colsRef.current.get(id);
-        if (colElement) {
-          const styles = getColumnStyles(false, id);
-          setElementWidths(colElement, styles);
+    if (columnWidths) {
+      // When col elements exist (grouped columns), apply widths to <col> elements.
+      // With table-layout:fixed, <col> widths control the actual column widths.
+      if (hasColElements.current) {
+        for (const { id } of visibleColumns) {
+          const colElement = colsRef.current.get(id);
+          if (colElement) {
+            setElementWidths(colElement, getColumnStyles(false, id));
+          }
+          const element = cellsRef.current.get(id);
+          if (element) {
+            setElementWidths(element, getColumnStyles(false, id));
+          }
         }
-        // Still update th cells for non-width styles (but width comes from col)
-        const element = cellsRef.current.get(id);
-        if (element) {
-          setElementWidths(element, getColumnStyles(false, id));
-        }
-      }
-    } else {
-      // No col elements - apply widths directly to th cells (single-row headers)
-      for (const { id } of visibleColumns) {
-        const element = cellsRef.current.get(id);
-        if (element) {
-          setElementWidths(element, getColumnStyles(false, id));
+      } else {
+        for (const { id } of visibleColumns) {
+          const element = cellsRef.current.get(id);
+          if (element) {
+            setElementWidths(element, getColumnStyles(false, id));
+          }
         }
       }
     }
 
-    // Sticky column widths must be synchronized once all real column widths are assigned.
+    // Sticky column widths must always be synchronized regardless of columnWidths state.
     for (const { id } of visibleColumns) {
       const element = stickyCellsRef.current.get(id);
       if (element) {
