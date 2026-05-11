@@ -188,9 +188,9 @@ export interface IconProviderProps extends BaseComponentProps {
 
   /**
    * Specifies target pixel sizes for icon size variants. Each key corresponds to a size
-   * variant and accepts a pixel string value (e.g., `"12px"`). When a size is specified,
-   * the icon's inline-size (both the wrapper span and the child SVG) is set to the target
-   * pixel value.
+   * variant and accepts a number representing pixels (e.g., `12` means 12px). When a size
+   * is specified, the icon's inline-size (both the wrapper span and the child SVG) is set
+   * to the target pixel value.
    *
    * Only the sizes you specify are overridden — unspecified sizes inherit from the parent
    * provider or fall back to their default token-defined values.
@@ -201,9 +201,9 @@ export interface IconProviderProps extends BaseComponentProps {
 
   /**
    * Specifies stroke-width overrides for icon size variants. Each key corresponds to a size
-   * variant and accepts a pixel string value (e.g., `"1.5px"`). When specified, the icon's
-   * SVG stroke-width is set directly to this value, bypassing the default token and any
-   * automatic compensation from size scaling.
+   * variant and accepts a number representing pixels (e.g., `1.5` means 1.5px). When
+   * specified, the icon's SVG stroke-width is set directly to this value, bypassing the
+   * default token and any automatic compensation from size scaling.
    *
    * Only the sizes you specify are overridden — unspecified sizes inherit from the parent
    * provider or fall back to their default token-defined stroke-widths.
@@ -219,32 +219,32 @@ export namespace IconProviderProps {
   };
 
   export interface Sizes {
-    /** Target pixel size for icons at "small" size (default 12×12). E.g. `"10px"`. */
-    small?: string;
-    /** Target pixel size for icons at "normal" size (default 16×16). E.g. `"12px"`. */
-    normal?: string;
+    /** Target pixel size for icons at "small" size (default 12×12). E.g. `10` means 10px. */
+    small?: number;
+    /** Target pixel size for icons at "normal" size (default 16×16). E.g. `12` means 12px. */
+    normal?: number;
     /** Target pixel size for icons at "medium" size (default 20×20). */
-    medium?: string;
+    medium?: number;
     /** Target pixel size for icons at "big" size (default 32×32). */
-    big?: string;
+    big?: number;
     /** Target pixel size for icons at "large" size (default 48×48). */
-    large?: string;
+    large?: number;
     /** Target pixel size for icons that use "inherit" (contextual) sizing. */
-    inherit?: string;
+    inherit?: number;
   }
 
   export interface StrokeWidths {
-    /** Stroke-width for icons at "small" size. E.g. `"1.5px"`. */
-    small?: string;
-    /** Stroke-width for icons at "normal" size. E.g. `"2px"`. */
-    normal?: string;
-    /** Stroke-width for icons at "medium" size. E.g. `"2.5px"`. */
-    medium?: string;
-    /** Stroke-width for icons at "big" size. E.g. `"3px"`. */
-    big?: string;
-    /** Stroke-width for icons at "large" size. E.g. `"4px"`. */
-    large?: string;
+    /** Stroke-width for icons at "small" size. E.g. `1.5` means 1.5px. */
+    small?: number;
+    /** Stroke-width for icons at "normal" size. E.g. `2` means 2px. */
+    normal?: number;
+    /** Stroke-width for icons at "medium" size. E.g. `2.5` means 2.5px. */
+    medium?: number;
+    /** Stroke-width for icons at "big" size. E.g. `3` means 3px. */
+    big?: number;
+    /** Stroke-width for icons at "large" size. E.g. `4` means 4px. */
+    large?: number;
     /** Stroke-width for icons that use "inherit" (contextual) sizing. */
-    inherit?: string;
+    inherit?: number;
   }
 }

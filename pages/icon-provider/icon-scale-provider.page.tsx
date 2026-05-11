@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import { PromptInput } from '~components';
 import Alert from '~components/alert';
 import AppLayoutToolbar from '~components/app-layout-toolbar';
-import Badge from '~components/badge';
 import Box from '~components/box';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
@@ -38,10 +37,9 @@ import Table from '~components/table';
 import Tabs from '~components/tabs';
 import TextContent from '~components/text-content';
 import TextFilter from '~components/text-filter';
-import { applyTheme, Theme } from '~components/theming';
 import Tiles from '~components/tiles';
-import Toggle from '~components/toggle';
 import ToggleButton from '~components/toggle-button';
+import TreeView from '~components/tree-view';
 
 const createNumericHandler = (setter: (value: string) => void, min?: number, max?: number) => {
   return (evt: NonCancelableCustomEvent<InputProps.ChangeDetail>) => {
@@ -68,29 +66,6 @@ function Typography() {
   return (
     <Container header={<Header variant="h2">Typography &amp; Iconography</Header>}>
       <Box padding={{ top: 'm' }}>
-        {/* <TextContent>
-          <h1>
-            <Icon name="settings" size="big" /> Heading 1 <Icon name="external" size="inherit" />
-          </h1>
-          <h2>
-            <Icon name="settings" size="medium" /> Heading 2 <Icon name="external" size="inherit" />
-          </h2>
-          <h3>
-            <Icon name="settings" /> Heading 3 <Icon name="external" size="inherit" />
-          </h3>
-          <h4>
-            <Icon name="settings" /> Heading 4 <Icon name="external" size="inherit" />
-          </h4>
-          <h5>
-            <Icon name="settings" /> Heading 5 <Icon name="external" size="inherit" />
-          </h5>
-          <p>
-            <Icon name="settings" /> Paragraph <Icon name="external" size="inherit" />
-          </p>
-          <small>
-            <Icon name="settings" size="small" /> Small <Icon name="external" size="inherit" />
-          </small>
-        </TextContent> */}
         <TextContent>
           <h1>
             <Icon name="settings" size="big" /> Heading 1
@@ -648,7 +623,14 @@ function TableAndCards() {
           { header: 'Name', cell: (item: TableItem) => <Link href="#">{item.name}</Link>, sortingField: 'name' },
           {
             header: 'Category',
-            cell: (item: TableItem) => <Badge color="green">{item.category}</Badge>,
+            cell: (item: TableItem) => {
+              const typeMap: Record<string, 'success' | 'info' | 'warning'> = {
+                Security: 'success',
+                AI: 'info',
+                Serverless: 'warning',
+              };
+              return <StatusIndicator type={typeMap[item.category] ?? 'info'}>{item.category}</StatusIndicator>;
+            },
             sortingField: 'category',
           },
           { header: 'Description', cell: (item: TableItem) => item.description, sortingField: 'description' },
@@ -663,6 +645,170 @@ function TableAndCards() {
         }}
       />
     </SpaceBetween>
+  );
+}
+
+// ─── Tree View Components ─────────────────────────────────────────────────────
+interface ConnectorLinesItem {
+  id: string;
+  label: string;
+  children?: ConnectorLinesItem[];
+}
+
+const connectorLinesItems: ConnectorLinesItem[] = [
+  {
+    id: '1',
+    label: 'Root',
+    children: [
+      {
+        id: '1.1',
+        label: 'Documents',
+        children: [
+          { id: '1.1.1', label: 'report.pdf' },
+          { id: '1.1.2', label: 'notes.txt' },
+        ],
+      },
+      {
+        id: '1.2',
+        label: 'Images',
+        children: [
+          { id: '1.2.1', label: 'photo.png' },
+          { id: '1.2.2', label: 'diagram.svg' },
+        ],
+      },
+      { id: '1.3', label: 'readme.md' },
+    ],
+  },
+];
+
+function TreeViewWithConnectorLines() {
+  const [expandedItems, setExpandedItems] = useState(['1', '1.1', '1.2']);
+
+  return (
+    <TreeView
+      ariaLabel="Tree view with connector lines"
+      items={connectorLinesItems}
+      expandedItems={expandedItems}
+      connectorLines="vertical"
+      renderItem={item => ({
+        icon: (
+          <Icon
+            name={expandedItems.includes(item.id) && item.children ? 'folder-open' : item.children ? 'folder' : 'file'}
+          />
+        ),
+        content: item.label,
+      })}
+      getItemId={item => item.id}
+      getItemChildren={item => item.children}
+      onItemToggle={({ detail }) =>
+        setExpandedItems(prev =>
+          detail.expanded ? [...prev, detail.item.id] : prev.filter(id => id !== detail.item.id)
+        )
+      }
+      i18nStrings={{
+        expandButtonLabel: () => 'Expand item',
+        collapseButtonLabel: () => 'Collapse item',
+      }}
+    />
+  );
+}
+
+interface ActionTreeItem {
+  id: string;
+  label: string;
+  relatedNode?: string;
+  type?: 'success' | 'warning' | 'error' | 'info';
+  hasActions?: boolean;
+  children?: ActionTreeItem[];
+}
+
+const actionTreeItems: ActionTreeItem[] = [
+  {
+    id: '1',
+    label: 'Evaluated',
+    type: 'success',
+    hasActions: true,
+  },
+  {
+    id: '2',
+    label: 'node-20',
+    relatedNode: 'eksclu-node-wx456',
+    type: 'success',
+    hasActions: true,
+    children: [
+      { id: '2.1', label: 'node-17', type: 'warning' },
+      { id: '2.2', label: 'node-18', type: 'success' },
+    ],
+  },
+  {
+    id: '3',
+    label: 'node 21',
+    relatedNode: 'eksclu-node-wx457',
+    hasActions: true,
+    children: [
+      {
+        id: '3.1',
+        label: 'node 19',
+        relatedNode: 'eksclu-node-wx457',
+        type: 'success',
+        hasActions: true,
+        children: [
+          { id: '3.1.1', label: 'node-22', type: 'success' },
+          { id: '3.1.2', label: 'node-23', type: 'success' },
+        ],
+      },
+    ],
+  },
+];
+
+function TreeViewWithActions() {
+  const [expandedItems, setExpandedItems] = useState(['2', '3', '3.1']);
+
+  return (
+    <TreeView
+      ariaLabel="Tree view with actions"
+      items={actionTreeItems}
+      expandedItems={expandedItems}
+      renderItem={item => ({
+        content: (
+          <StatusIndicator type={item.type ?? 'info'} iconAriaLabel={item.type ?? 'info'}>
+            {item.label}{' '}
+            {item.relatedNode && (
+              <>
+                (
+                <Link href="#" variant="primary">
+                  {item.relatedNode}
+                </Link>
+                )
+              </>
+            )}
+          </StatusIndicator>
+        ),
+        actions: item.hasActions ? (
+          <ButtonDropdown
+            items={[
+              { id: 'start', text: 'Start' },
+              { id: 'stop', text: 'Stop' },
+              { id: 'terminate', text: 'Terminate' },
+            ]}
+            ariaLabel={`Actions menu for ${item.label}`}
+            variant="inline-icon"
+          />
+        ) : undefined,
+        announcementLabel: `${item.label} ${item.relatedNode ?? ''}`,
+      })}
+      getItemId={item => item.id}
+      getItemChildren={item => item.children}
+      onItemToggle={({ detail }) =>
+        setExpandedItems(prev =>
+          detail.expanded ? [...prev, detail.item.id] : prev.filter(id => id !== detail.item.id)
+        )
+      }
+      i18nStrings={{
+        expandButtonLabel: () => 'Expand item',
+        collapseButtonLabel: () => 'Collapse item',
+      }}
+    />
   );
 }
 
@@ -732,12 +878,8 @@ function StatusComponents() {
               <StatusIndicator type="pending">Pending</StatusIndicator>
               <StatusIndicator type="in-progress">In progress</StatusIndicator>
             </SpaceBetween>
-            <SpaceBetween direction="horizontal" size="xs">
-              <Badge color="red">Error</Badge>
-              <Badge color="green">Success</Badge>
-              <Badge color="blue">Info</Badge>
-              <Badge color="grey">Neutral</Badge>
-            </SpaceBetween>
+            <TreeViewWithConnectorLines />
+            <TreeViewWithActions />
             <FormField label="Form field" errorText="This is an error message.">
               <Input value="Invalid" invalid={true} ariaLabel="Invalid input" readOnly={true} />
             </FormField>
@@ -758,8 +900,12 @@ function KvpForm() {
         <Form
           actions={
             <SpaceBetween direction="horizontal" size="xs">
-              <Button variant="link">Cancel</Button>
-              <Button variant="primary">Submit</Button>
+              <Button variant="link" iconName="remove">
+                Cancel
+              </Button>
+              <Button variant="primary" iconName="file">
+                Submit
+              </Button>
             </SpaceBetween>
           }
         >
@@ -802,9 +948,6 @@ function KvpForm() {
                 ariaLabel="Delivery method"
               />
             </FormField>
-            <FormField label="Origin domain name" description="The domain name of the resource.">
-              <Input value="example-bucket.s3.amazonaws.com" ariaLabel="Origin domain name" readOnly={true} />
-            </FormField>
           </SpaceBetween>
         </Form>
       </Box>
@@ -822,77 +965,26 @@ export default function IconScaleProviderScenario() {
   const [iconSizeLarge, setIconSizeLarge] = useState('48');
 
   // Stroke width state (per icon size)
-  const [strokeWidthSmall, setStrokeWidthSmall] = useState('1.5');
-  const [strokeWidthNormal, setStrokeWidthNormal] = useState('1.5');
-  const [strokeWidthMedium, setStrokeWidthMedium] = useState('1.5');
-  const [strokeWidthBig, setStrokeWidthBig] = useState('2');
-  const [strokeWidthLarge, setStrokeWidthLarge] = useState('3');
-
-  // Theme toggle
-  const [themed, setThemed] = useState(false);
+  const [strokeWidthSmall, setStrokeWidthSmall] = useState('2');
+  const [strokeWidthNormal, setStrokeWidthNormal] = useState('2');
+  const [strokeWidthMedium, setStrokeWidthMedium] = useState('2');
+  const [strokeWidthBig, setStrokeWidthBig] = useState('3');
+  const [strokeWidthLarge, setStrokeWidthLarge] = useState('4');
 
   // Split panel state
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
 
-  const sizeSmallValue = `${iconSizeSmall}px`;
-  const sizeValue = `${iconSize}px`;
-  const sizeMediumValue = `${iconSizeMedium}px`;
-  const sizeBigValue = `${iconSizeBig}px`;
-  const sizeLargeValue = `${iconSizeLarge}px`;
+  const sizeSmallValue = parseFloat(iconSizeSmall);
+  const sizeValue = parseFloat(iconSize);
+  const sizeMediumValue = parseFloat(iconSizeMedium);
+  const sizeBigValue = parseFloat(iconSizeBig);
+  const sizeLargeValue = parseFloat(iconSizeLarge);
 
-  useLayoutEffect(() => {
-    let reset: () => void = () => {};
-    if (themed) {
-      const theme: Theme = {
-        tokens: {
-          borderWidthIconSmall: strokeWidthSmall ? `${strokeWidthSmall}px` : '1px',
-          borderWidthIconNormal: strokeWidthNormal ? `${strokeWidthNormal}px` : '1px',
-          borderWidthIconMedium: strokeWidthMedium ? `${strokeWidthMedium}px` : '1px',
-          borderWidthIconBig: strokeWidthBig ? `${strokeWidthBig}px` : '1.5px',
-          borderWidthIconLarge: strokeWidthLarge ? `${strokeWidthLarge}px` : '2px',
-          spaceAlertVertical: '4px',
-          spaceButtonHorizontal: '12px',
-          spaceTabsVertical: '2px',
-          spaceTokenVertical: '2px',
-          spaceFieldVertical: { comfortable: '4px', compact: '2px' },
-          sizeVerticalInput: { comfortable: '30px', compact: '26px' },
-          borderWidthButton: '1px',
-          borderWidthToken: '1px',
-          borderWidthAlert: '0px',
-          borderWidthAlertInlineStart: '2px',
-          borderWidthItemSelected: '1px',
-          borderWidthCardSelected: '1px',
-          borderRadiusAlert: '2px',
-          borderRadiusBadge: '16px',
-          borderRadiusButton: '8px',
-          borderRadiusContainer: '12px',
-          borderRadiusDropdown: '8px',
-          borderRadiusDropzone: '8px',
-          borderRadiusFlashbar: '4px',
-          borderRadiusItem: '8px',
-          borderRadiusInput: '8px',
-          borderRadiusPopover: '8px',
-          borderRadiusTabsFocusRing: '10px',
-          borderRadiusToken: '8px',
-          borderRadiusTutorialPanelItem: '4px',
-        },
-        contexts: {
-          alert: {
-            tokens: {
-              colorBackgroundStatusInfo: { light: '#f6f6f9', dark: '#232b37' },
-              colorBackgroundStatusWarning: { light: '#f6f6f9', dark: '#232b37' },
-              colorBackgroundStatusError: { light: '#f6f6f9', dark: '#232b37' },
-              colorBackgroundStatusSuccess: { light: '#f6f6f9', dark: '#232b37' },
-            },
-          },
-        },
-      };
-
-      const result = applyTheme({ theme, baseThemeId: 'visual-refresh' });
-      reset = result.reset;
-    }
-    return reset;
-  }, [themed, strokeWidthSmall, strokeWidthNormal, strokeWidthMedium, strokeWidthBig, strokeWidthLarge]);
+  const strokeWidthSmallValue = parseFloat(strokeWidthSmall);
+  const strokeWidthNormalValue = parseFloat(strokeWidthNormal);
+  const strokeWidthMediumValue = parseFloat(strokeWidthMedium);
+  const strokeWidthBigValue = parseFloat(strokeWidthBig);
+  const strokeWidthLargeValue = parseFloat(strokeWidthLarge);
 
   const splitPanelContent = (
     <ColumnLayout borders="horizontal">
@@ -942,63 +1034,55 @@ export default function IconScaleProviderScenario() {
         </SpaceBetween>
       </Box>
 
-      <Box>
-        <Box padding={{ vertical: 'l' }}>
-          <Toggle checked={themed} onChange={({ detail }) => setThemed(detail.checked)}>
-            Enable custom theme
-          </Toggle>
-        </Box>
-
-        <Box padding={{ bottom: 'l' }}>
-          <Box variant="h3">Icon stroke width configuration</Box>
-          <SpaceBetween size="s">
-            <FormField label="borderWidthIconSmall (px)">
-              <Input
-                type="number"
-                value={strokeWidthSmall}
-                onChange={createNumericHandler(setStrokeWidthSmall, 0.5, 10)}
-                step={0.5}
-                inputMode="decimal"
-              />
-            </FormField>
-            <FormField label="borderWidthIconNormal (px)">
-              <Input
-                type="number"
-                value={strokeWidthNormal}
-                onChange={createNumericHandler(setStrokeWidthNormal, 0.5, 10)}
-                step={0.5}
-                inputMode="decimal"
-              />
-            </FormField>
-            <FormField label="borderWidthIconMedium (px)">
-              <Input
-                type="number"
-                value={strokeWidthMedium}
-                onChange={createNumericHandler(setStrokeWidthMedium, 0.5, 10)}
-                step={0.5}
-                inputMode="decimal"
-              />
-            </FormField>
-            <FormField label="borderWidthIconBig (px)">
-              <Input
-                type="number"
-                value={strokeWidthBig}
-                onChange={createNumericHandler(setStrokeWidthBig, 0.5, 10)}
-                step={0.5}
-                inputMode="decimal"
-              />
-            </FormField>
-            <FormField label="borderWidthIconLarge (px)">
-              <Input
-                type="number"
-                value={strokeWidthLarge}
-                onChange={createNumericHandler(setStrokeWidthLarge, 0.5, 10)}
-                step={0.5}
-                inputMode="decimal"
-              />
-            </FormField>
-          </SpaceBetween>
-        </Box>
+      <Box padding={{ vertical: 'l' }}>
+        <Box variant="h3">IconProvider strokeWidths prop configuration</Box>
+        <SpaceBetween size="s">
+          <FormField label="Stroke width small (px)">
+            <Input
+              type="number"
+              value={strokeWidthSmall}
+              onChange={createNumericHandler(setStrokeWidthSmall, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
+          <FormField label="Stroke width normal (px)">
+            <Input
+              type="number"
+              value={strokeWidthNormal}
+              onChange={createNumericHandler(setStrokeWidthNormal, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
+          <FormField label="Stroke width medium (px)">
+            <Input
+              type="number"
+              value={strokeWidthMedium}
+              onChange={createNumericHandler(setStrokeWidthMedium, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
+          <FormField label="Stroke width big (px)">
+            <Input
+              type="number"
+              value={strokeWidthBig}
+              onChange={createNumericHandler(setStrokeWidthBig, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
+          <FormField label="Stroke width large (px)">
+            <Input
+              type="number"
+              value={strokeWidthLarge}
+              onChange={createNumericHandler(setStrokeWidthLarge, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
+        </SpaceBetween>
       </Box>
     </ColumnLayout>
   );
@@ -1040,7 +1124,14 @@ export default function IconScaleProviderScenario() {
       }
       content={
         <IconProvider
-          icons={null}
+          icons={{
+            'status-positive': (
+              <svg viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 9L7 11L11 7" />
+                <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
+              </svg>
+            ),
+          }}
           sizes={{
             small: sizeSmallValue,
             normal: sizeValue,
@@ -1049,14 +1140,17 @@ export default function IconScaleProviderScenario() {
             big: sizeBigValue,
             large: sizeLargeValue,
           }}
+          strokeWidths={{
+            small: strokeWidthSmallValue,
+            normal: strokeWidthNormalValue,
+            inherit: strokeWidthNormalValue,
+            medium: strokeWidthMediumValue,
+            big: strokeWidthBigValue,
+            large: strokeWidthLargeValue,
+          }}
         >
           <SpaceBetween size="l">
-            <Header
-              variant="h1"
-              description="Comprehensive component showcase with configurable icon scale and theming tokens."
-            >
-              Components overview
-            </Header>
+            <Header variant="h1">Icon scale overview</Header>
             <Typography />
             <ButtonsInputsDropdowns />
             <NavigationComponents />

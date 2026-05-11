@@ -52,17 +52,6 @@ const SCALE_FACTOR: Record<string, number> = {
   large: 3,
 };
 
-/**
- * Parses a pixel string like "12px" and returns the numeric value, or undefined if invalid.
- */
-function parsePx(value: string | undefined): number | undefined {
-  if (!value) {
-    return undefined;
-  }
-  const match = value.match(/^(\d+(?:\.\d+)?)px$/);
-  return match ? parseFloat(match[1]) : undefined;
-}
-
 function iconSizeMap(height: number | null, fontSize?: number | null) {
   if (height === null) {
     // This is the best guess for the contextual height while server rendering.
@@ -124,24 +113,18 @@ const InternalIcon = ({
   let targetSizePx: number | undefined;
   let strokeScale: number | undefined;
   if (hasInheritOverride) {
-    const targetPx = parsePx(inheritOverride);
-    if (targetPx !== undefined) {
-      targetSizePx = targetPx;
-      const basePx = BASE_SIZE_PX.normal;
-      if (targetPx !== basePx) {
-        strokeScale = basePx / targetPx;
-      }
+    targetSizePx = inheritOverride;
+    const basePx = BASE_SIZE_PX.normal;
+    if (targetSizePx !== basePx) {
+      strokeScale = basePx / targetSizePx;
     }
   } else if (!contextualSize) {
     const override = sizeOverrides[iconSize];
     if (override !== undefined) {
-      const targetPx = parsePx(override);
       const basePx = BASE_SIZE_PX[iconSize];
-      if (targetPx !== undefined && basePx !== undefined) {
-        targetSizePx = targetPx;
-        if (targetPx !== basePx) {
-          strokeScale = basePx / targetPx;
-        }
+      targetSizePx = override;
+      if (basePx !== undefined && targetSizePx !== basePx) {
+        strokeScale = basePx / targetSizePx;
       }
     }
   }
@@ -157,27 +140,17 @@ const InternalIcon = ({
   if (hasInheritOverride) {
     const rawStroke = strokeWidthOverrides.inherit;
     if (rawStroke !== undefined) {
-      const strokePx = parsePx(rawStroke);
-      if (strokePx !== undefined) {
-        const scaleFactor = SCALE_FACTOR.normal;
-        const sizeCompensation = targetSizePx !== undefined ? BASE_SIZE_PX.normal / targetSizePx : 1;
-        strokeWidthOverride = `${(strokePx / scaleFactor) * sizeCompensation}px`;
-      } else {
-        strokeWidthOverride = rawStroke;
-      }
+      const scaleFactor = SCALE_FACTOR.normal;
+      const sizeCompensation = targetSizePx !== undefined ? BASE_SIZE_PX.normal / targetSizePx : 1;
+      strokeWidthOverride = `${(rawStroke / scaleFactor) * sizeCompensation}px`;
     }
   } else if (!contextualSize) {
     const rawStroke = strokeWidthOverrides[iconSize];
     if (rawStroke !== undefined) {
-      const strokePx = parsePx(rawStroke);
       const scaleFactor = SCALE_FACTOR[iconSize] ?? 1;
       const basePx = BASE_SIZE_PX[iconSize];
-      if (strokePx !== undefined) {
-        const sizeCompensation = targetSizePx !== undefined && basePx !== undefined ? basePx / targetSizePx : 1;
-        strokeWidthOverride = `${(strokePx / scaleFactor) * sizeCompensation}px`;
-      } else {
-        strokeWidthOverride = rawStroke;
-      }
+      const sizeCompensation = targetSizePx !== undefined && basePx !== undefined ? basePx / targetSizePx : 1;
+      strokeWidthOverride = `${(rawStroke / scaleFactor) * sizeCompensation}px`;
     }
   }
 
