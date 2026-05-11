@@ -22,7 +22,7 @@ afterEach(() => {
 
 function renderDrawer(jsx: React.ReactElement) {
   const { container } = render(jsx);
-  return createWrapper(container).findDrawer()!;
+  return createWrapper(container).findDrawer() ?? createWrapper().findDrawer()!;
 }
 
 function getDrawerElement(jsx: React.ReactElement) {

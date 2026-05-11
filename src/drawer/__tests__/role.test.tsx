@@ -9,7 +9,8 @@ import Drawer from '../../../lib/components/drawer';
 import drawerStyles from '../../../lib/components/drawer/styles.selectors.js';
 
 function getDrawerElement(container: HTMLElement) {
-  return container.querySelector<HTMLElement>(`.${drawerStyles.drawer}`)!;
+  return (container.querySelector<HTMLElement>(`.${drawerStyles.drawer}`) ??
+    document.body.querySelector<HTMLElement>(`.${drawerStyles.drawer}`))!;
 }
 
 describe('role defaults', () => {
