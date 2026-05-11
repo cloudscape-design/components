@@ -28,8 +28,10 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install ChromeDriver
-        run: npm install -g chromedriver
+      - name: Setup Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
       # ── Build PR (test) pages ──────────────────────────────────────────────
       # Install the PR's dependencies and build its pages.
