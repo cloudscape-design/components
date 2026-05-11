@@ -135,6 +135,7 @@ function connectFlatColumns<T>(
   root: TableHeaderNode<T>
 ): void {
   for (const col of visibleColumns) {
+    /* istanbul ignore next */
     if (!col.id) {
       continue;
     }

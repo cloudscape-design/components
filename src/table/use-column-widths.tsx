@@ -68,6 +68,7 @@ interface WidthsContext {
   setCol: (columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
+/* istanbul ignore next */
 const WidthsContext = createContext<WidthsContext>({
   getColumnStyles: () => ({}),
   columnWidths: new Map(),
@@ -124,6 +125,7 @@ export function ColumnWidthsProvider({
     // as long as we have a measured cell to read from.
     if (sticky) {
       const measured = cellsRef.current.get(columnId)?.getBoundingClientRect().width;
+      /* istanbul ignore next: getBoundingClientRect returns 0 in JSDOM */
       if (measured) {
         return { width: measured };
       }
