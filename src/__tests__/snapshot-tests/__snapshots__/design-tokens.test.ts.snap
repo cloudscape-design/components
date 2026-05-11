@@ -620,6 +620,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fdf3f1",
           },
         },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-info": {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": {
@@ -3093,6 +3128,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
           },
         },
         "space-tabs-vertical": {
@@ -3735,6 +3777,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fdf3f1",
           },
         },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-info": {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": {
@@ -6210,6 +6287,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -6848,6 +6932,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#270a11",
             "light": "#fdf3f1",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -9325,6 +9444,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -9963,6 +10089,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#270a11",
             "light": "#fdf3f1",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -12438,6 +12599,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
           },
         },
         "space-tabs-vertical": {
@@ -13080,6 +13248,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fdf3f1",
           },
         },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-info": {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": {
@@ -15555,6 +15758,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -16193,6 +16403,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#270a11",
             "light": "#270a11",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -18670,6 +18915,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -19308,6 +19560,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#270a11",
         "light": "#fdf3f1",
+      },
+    },
+    "color-background-status-indicator-error": {
+      "$description": "The background color of the status indicator in error state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-info": {
+      "$description": "The background color of the status indicator in info state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-neutral": {
+      "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-success": {
+      "$description": "The background color of the status indicator in success state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-warning": {
+      "$description": "The background color of the status indicator in warning state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-status-info": {
@@ -21785,6 +22072,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "compact": "2px",
       },
     },
+    "space-status-indicator-padding-inline": {
+      "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+      "$value": {
+        "comfortable": "0px",
+        "compact": "0px",
+      },
+    },
     "space-tabs-vertical": {
       "$description": "The vertical padding inside tabs.",
       "$value": {
@@ -22428,6 +22722,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#fff5f5",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -24905,6 +25234,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -25543,6 +25879,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#1f0000",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -28020,6 +28391,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -28658,6 +29036,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#fff5f5",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -31135,6 +31548,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -31773,6 +32193,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#fff5f5",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -34250,6 +34705,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -34888,6 +35350,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#fff5f5",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -37363,6 +37860,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "comfortable": "2px",
             "compact": "2px",
+          },
+        },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
           },
         },
         "space-tabs-vertical": {
@@ -38005,6 +38509,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fff5f5",
           },
         },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-status-info": {
           "$description": "The background color of an informational item. For example: information alerts.",
           "$value": {
@@ -40480,6 +41019,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -41118,6 +41664,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#1f0000",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -43595,6 +44176,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -44233,6 +44821,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1f0000",
             "light": "#1f0000",
+          },
+        },
+        "color-background-status-indicator-error": {
+          "$description": "The background color of the status indicator in error state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-info": {
+          "$description": "The background color of the status indicator in info state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-neutral": {
+          "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-success": {
+          "$description": "The background color of the status indicator in success state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-background-status-indicator-warning": {
+          "$description": "The background color of the status indicator in warning state.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-background-status-info": {
@@ -46710,6 +47333,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "compact": "2px",
           },
         },
+        "space-status-indicator-padding-inline": {
+          "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+          "$value": {
+            "comfortable": "0px",
+            "compact": "0px",
+          },
+        },
         "space-tabs-vertical": {
           "$description": "The vertical padding inside tabs.",
           "$value": {
@@ -47348,6 +47978,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1f0000",
         "light": "#fff5f5",
+      },
+    },
+    "color-background-status-indicator-error": {
+      "$description": "The background color of the status indicator in error state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-info": {
+      "$description": "The background color of the status indicator in info state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-neutral": {
+      "$description": "The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-success": {
+      "$description": "The background color of the status indicator in success state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-background-status-indicator-warning": {
+      "$description": "The background color of the status indicator in warning state.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-background-status-info": {
@@ -49823,6 +50488,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "comfortable": "2px",
         "compact": "2px",
+      },
+    },
+    "space-status-indicator-padding-inline": {
+      "$description": "The inline padding inside the status indicator container. Applied when the status indicator background is themed.",
+      "$value": {
+        "comfortable": "0px",
+        "compact": "0px",
       },
     },
     "space-tabs-vertical": {
