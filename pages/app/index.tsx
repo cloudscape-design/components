@@ -54,7 +54,7 @@ function isAppLayoutPage(pageId?: string) {
     'error-boundary/demo-async-load',
     'error-boundary/demo-components',
     'feature-notifications',
-    'theming/icon-scale-provider',
+    'icon-provider/icon-scale-provider',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

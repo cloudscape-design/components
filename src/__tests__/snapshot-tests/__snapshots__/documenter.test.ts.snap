@@ -15534,9 +15534,9 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     {
       "description": "Specifies target pixel sizes for icon size variants. Each key corresponds to a size
-variant and accepts a pixel string value (e.g., \`"12px"\`). When a size is specified,
-the icon's inline-size (both the wrapper span and the child SVG) is set to the target
-pixel value.
+variant and accepts a number representing pixels (e.g., \`12\` means 12px). When a size
+is specified, the icon's inline-size (both the wrapper span and the child SVG) is set
+to the target pixel value.
 
 Only the sizes you specify are overridden — unspecified sizes inherit from the parent
 provider or fall back to their default token-defined values.",
@@ -15546,32 +15546,32 @@ provider or fall back to their default token-defined values.",
           {
             "name": "big",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "inherit",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "large",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "medium",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "normal",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "small",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
         ],
         "type": "object",
@@ -15582,9 +15582,9 @@ provider or fall back to their default token-defined values.",
     },
     {
       "description": "Specifies stroke-width overrides for icon size variants. Each key corresponds to a size
-variant and accepts a pixel string value (e.g., \`"1.5px"\`). When specified, the icon's
-SVG stroke-width is set directly to this value, bypassing the default token and any
-automatic compensation from size scaling.
+variant and accepts a number representing pixels (e.g., \`1.5\` means 1.5px). When
+specified, the icon's SVG stroke-width is set directly to this value, bypassing the
+default token and any automatic compensation from size scaling.
 
 Only the sizes you specify are overridden — unspecified sizes inherit from the parent
 provider or fall back to their default token-defined stroke-widths.",
@@ -15594,32 +15594,32 @@ provider or fall back to their default token-defined stroke-widths.",
           {
             "name": "big",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "inherit",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "large",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "medium",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "normal",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
           {
             "name": "small",
             "optional": true,
-            "type": "string",
+            "type": "number",
           },
         ],
         "type": "object",

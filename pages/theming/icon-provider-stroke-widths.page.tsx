@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
 import {
   Alert,
@@ -17,6 +17,7 @@ import {
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
 import { NonCancelableCustomEvent } from '~components/internal/events';
+import { applyTheme, Theme } from '~components/theming';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -45,11 +46,12 @@ const createSizeHandler = (setter: (value: string) => void) => {
 };
 
 export default function IconProviderStrokeWidthsPage() {
-  const [strokeSmall, setStrokeSmall] = useState<string>('2');
-  const [strokeNormal, setStrokeNormal] = useState<string>('2');
-  const [strokeMedium, setStrokeMedium] = useState<string>('2');
-  const [strokeBig, setStrokeBig] = useState<string>('3');
-  const [strokeLarge, setStrokeLarge] = useState<string>('4');
+  const [themed, setThemed] = useState<boolean>(false);
+  const [strokeSmall, setStrokeSmall] = useState<string>('');
+  const [strokeNormal, setStrokeNormal] = useState<string>('');
+  const [strokeMedium, setStrokeMedium] = useState<string>('');
+  const [strokeBig, setStrokeBig] = useState<string>('');
+  const [strokeLarge, setStrokeLarge] = useState<string>('');
 
   const [sizeSmall, setSizeSmall] = useState<string>('16');
   const [sizeNormal, setSizeNormal] = useState<string>('16');
@@ -57,20 +59,42 @@ export default function IconProviderStrokeWidthsPage() {
   const [sizeBig, setSizeBig] = useState<string>('32');
   const [sizeLarge, setSizeLarge] = useState<string>('48');
 
+  useLayoutEffect(() => {
+    let reset: () => void = () => {};
+    if (themed) {
+      const theme: Theme = {
+        tokens: {
+          borderWidthIconSmall: '1px',
+          borderWidthIconNormal: '1px',
+          borderWidthIconMedium: '1px',
+          borderWidthIconBig: '1px',
+          borderWidthIconLarge: '1px',
+        },
+      };
+
+      const result = applyTheme({
+        theme,
+        baseThemeId: 'visual-refresh',
+      });
+      reset = result.reset;
+    }
+    return reset;
+  }, [themed, strokeSmall, strokeNormal, strokeMedium, strokeBig, strokeLarge]);
+
   const strokeWidths = {
-    small: strokeSmall ? `${strokeSmall}px` : undefined,
-    normal: strokeNormal ? `${strokeNormal}px` : undefined,
-    medium: strokeMedium ? `${strokeMedium}px` : undefined,
-    big: strokeBig ? `${strokeBig}px` : undefined,
-    large: strokeLarge ? `${strokeLarge}px` : undefined,
+    small: strokeSmall ? parseFloat(strokeSmall) : undefined,
+    normal: strokeNormal ? parseFloat(strokeNormal) : undefined,
+    medium: strokeMedium ? parseFloat(strokeMedium) : undefined,
+    big: strokeBig ? parseFloat(strokeBig) : undefined,
+    large: strokeLarge ? parseFloat(strokeLarge) : undefined,
   };
 
   const sizes = {
-    small: sizeSmall ? `${sizeSmall}px` : undefined,
-    normal: sizeNormal ? `${sizeNormal}px` : undefined,
-    medium: sizeMedium ? `${sizeMedium}px` : undefined,
-    big: sizeBig ? `${sizeBig}px` : undefined,
-    large: sizeLarge ? `${sizeLarge}px` : undefined,
+    small: sizeSmall ? parseFloat(sizeSmall) : undefined,
+    normal: sizeNormal ? parseFloat(sizeNormal) : undefined,
+    medium: sizeMedium ? parseFloat(sizeMedium) : undefined,
+    big: sizeBig ? parseFloat(sizeBig) : undefined,
+    large: sizeLarge ? parseFloat(sizeLarge) : undefined,
   };
 
   // Remove undefined entries so only specified values are passed
@@ -195,6 +219,18 @@ export default function IconProviderStrokeWidthsPage() {
           </FormField>
         </div>
 
+        <label>
+          <input
+            type="checkbox"
+            data-testid="apply-theme"
+            checked={themed}
+            onChange={evt => setThemed(evt.currentTarget.checked)}
+          />
+          <span style={{ marginInlineStart: 5 }}>
+            Apply themed stroke widths (IconProvider strokeWidths prop should win)
+          </span>
+        </label>
+
         <ScreenshotArea>
           <IconProvider icons={null} strokeWidths={cleanStrokeWidths} sizes={cleanSizes}>
             <SpaceBetween size="xl">
@@ -297,7 +333,7 @@ export default function IconProviderStrokeWidthsPage() {
                 When both <code>sizes</code> and <code>strokeWidths</code> are specified, the explicit stroke-width
                 takes precedence over the automatic compensation from size scaling.
               </Box>
-              <IconProvider icons={null} sizes={{ normal: '12px' }} strokeWidths={{ normal: '1.5px' }}>
+              <IconProvider icons={null} sizes={{ normal: 12 }} strokeWidths={{ normal: 1.5 }}>
                 <SpaceBetween size="xs">
                   <Box variant="h3">Normal icons scaled to 12px with 1.5px stroke</Box>
                   <div className={styles.wrapper}>
