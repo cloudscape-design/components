@@ -8,6 +8,17 @@ const suite: TestSuite = {
     {
       description: 'permutations',
       path: 'alert/permutations',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'simple',
+      path: 'alert/simple',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'custom types',
+      path: 'alert/style-custom-types',
+      screenshotType: 'screenshotArea',
     },
   ],
 };
