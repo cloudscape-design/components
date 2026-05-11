@@ -34,7 +34,7 @@ jobs:
       # ── Build PR (test) pages ──────────────────────────────────────────────
       # Install the PR's dependencies and build its pages.
       - name: Install PR dependencies
-        run: npm ci
+        run: npm i
 
       - name: Build PR pages
         run: npx gulp quick-build
@@ -56,7 +56,7 @@ jobs:
         run: git worktree add /tmp/baseline origin/main
 
       - name: Install baseline dependencies
-        run: npm ci
+        run: npm i
         working-directory: /tmp/baseline
 
       - name: Build baseline pages
