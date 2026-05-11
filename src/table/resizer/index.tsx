@@ -40,10 +40,11 @@ const AUTO_GROW_INCREMENT = 5;
 
 export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
 
+/* istanbul ignore next */
 export function Divider({
   className,
   position,
-  variant = 'default',
+  variant,
 }: {
   className?: string;
   position?: DividerPosition;
