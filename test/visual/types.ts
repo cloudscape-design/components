@@ -9,9 +9,14 @@ export interface ScreenshotTestConfiguration {
 
 export type TestCallback = (page: ScreenshotPageObject) => Promise<void>;
 
+// 'screenshotArea' — captures the .screenshot-area element on a focused page.
+// 'permutations'  — captures the entire page and crops permutations out of it.
+export type ScreenshotType = 'screenshotArea' | 'permutations';
+
 export interface TestDefinition {
   description: string;
   path: string;
+  screenshotType: ScreenshotType;
   queryParams?: Record<string, string>;
   configuration?: ScreenshotTestConfiguration;
   setup?: TestCallback;
