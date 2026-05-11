@@ -60,11 +60,60 @@ TZ=UTC npx jest -u -c jest.unit.config.js src/
 ```
 ## Visual Regression Tests
 
-> **Note:** The components repository does not have visual regression tests on GitHub. This section applies to other repositories such as chat-components, code-view, chart-components, and board-components.
+Visual regression tests run automatically when opening a pull request in GitHub (see `.github/workflows/visual-regression.yml`).
 
-Visual regression tests for permutation pages run automatically when opening a pull request in GitHub.
+They compare permutation pages between the PR build and a baseline build of `main`, both served locally in the same CI job. Each side installs from its own `package-lock.json` via a git worktree, so dependency changes in the PR are handled correctly and unpinned updates in sister repositories affect both sides equally.
 
-To check results: look at the "Visual Regression Tests" action in the PR. The "Test for regressions" step logs which pages failed. For a full report, download the `visual-regression-snapshots-results` artifact from the action summary.
+### How it works
 
-If there are unexpected regressions, fix your pull request.
-If the changes are expected, call this out in your pull request comments.
+1. The PR pages are built and served on port 8080.
+2. A git worktree of `origin/main` is created, its dependencies installed, and its pages built and served on port 8081.
+3. The single test runner (`test/visual/visual.test.ts`) iterates over all test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
+
+### Running locally
+
+```
+npm run test:visual
+```
+
+This handles the full build and comparison in one command. If both outputs are already built, skip the build step:
+
+```
+NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
+```
+
+(Requires both servers to be running — start the PR build with `npm run start:integ` on port 8080 and the baseline build on port 8081, or set `NEW_HOST` / `OLD_HOST` env vars to point at different hosts.)
+
+### Adding tests for a new component
+
+Create `test/visual/definitions/<component>.ts`:
+
+```ts
+import { TestSuite } from '../types';
+
+const suite: TestSuite = {
+  description: 'my-component',
+  tests: [
+    {
+      description: 'permutations',
+      path: 'my-component/permutations',
+    },
+  ],
+};
+
+export default suite;
+```
+
+Then import and add it to `test/visual/definitions/index.ts`:
+
+```ts
+import myComponent from './my-component';
+
+export const allSuites: TestSuite[] = [..., myComponent];
+```
+
+### Reviewing failures
+
+If the CI job fails, download the `visual-regression-diffs` artifact from the Actions summary.
+
+If the diff is expected (intentional visual change), note it in your PR description.
