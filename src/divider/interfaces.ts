@@ -16,8 +16,6 @@ export interface DividerProps extends BaseComponentProps {
    * regions that assistive technology needs to be aware of.
    *
    * By default, the divider is not semantic and is therefore hidden from assistive technology.
-   *
-   * @defaultValue `false`
    */
   semantic?: boolean;
 
@@ -30,8 +28,6 @@ export interface DividerProps extends BaseComponentProps {
    *   to separate side-by-side elements.
    *
    * When `semantic` is `true`, `aria-orientation` is set automatically to match this value.
-   *
-   * @defaultValue `"horizontal"`
    */
   orientation?: DividerProps.Orientation;
 
@@ -54,6 +50,7 @@ export interface DividerProps extends BaseComponentProps {
    * or to provide a more descriptive label for assistive technology.
    *
    * Only takes effect when `semantic` is `true`.
+   * When `label` is also set, `ariaLabel` takes precendence.
    */
   ariaLabel?: string;
 

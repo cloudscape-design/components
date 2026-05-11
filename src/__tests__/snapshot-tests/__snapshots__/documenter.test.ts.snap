@@ -11711,7 +11711,8 @@ exports[`Components definition for divider matches the snapshot: divider 1`] = `
 Use when the divider needs an accessible name but you don't want visible label text,
 or to provide a more descriptive label for assistive technology.
 
-Only takes effect when \`semantic\` is \`true\`.",
+Only takes effect when \`semantic\` is \`true\`.
+When \`label\` is also set, \`ariaLabel\` takes precendence.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
