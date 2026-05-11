@@ -164,26 +164,24 @@ export function ColumnWidthsProvider({
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
-    if (columnWidths) {
-      // When col elements exist (grouped columns), apply widths to <col> elements.
-      // With table-layout:fixed, <col> widths control the actual column widths.
-      if (hasColElements.current) {
-        for (const { id } of visibleColumns) {
-          const colElement = colsRef.current.get(id);
-          if (colElement) {
-            setElementWidths(colElement, getColumnStyles(false, id));
-          }
-          const element = cellsRef.current.get(id);
-          if (element) {
-            setElementWidths(element, getColumnStyles(false, id));
-          }
+    // When col elements exist (grouped columns), apply widths to <col> elements.
+    // With table-layout:fixed, <col> widths control the actual column widths.
+    if (hasColElements.current) {
+      for (const { id } of visibleColumns) {
+        const colElement = colsRef.current.get(id);
+        if (colElement) {
+          setElementWidths(colElement, getColumnStyles(false, id));
         }
-      } else {
-        for (const { id } of visibleColumns) {
-          const element = cellsRef.current.get(id);
-          if (element) {
-            setElementWidths(element, getColumnStyles(false, id));
-          }
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
+        }
+      }
+    } else {
+      for (const { id } of visibleColumns) {
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
         }
       }
     }
