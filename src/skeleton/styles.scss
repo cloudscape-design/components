@@ -15,6 +15,18 @@
   }
 }
 
+@keyframes skeleton-wave-rtl {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+$skeleton-wave-duration: 1.25s;
+$skeleton-wave-easing: ease-in-out;
+
 .root {
   inline-size: 100%;
 
@@ -43,7 +55,14 @@
         inset-inline-start: 0;
         background: linear-gradient(90deg, transparent, awsui.$color-background-skeleton-wave, transparent);
         @include styles.with-motion {
-          animation: skeleton-wave 1.25s ease-in-out infinite;
+          animation: skeleton-wave $skeleton-wave-duration $skeleton-wave-easing infinite;
+        }
+      }
+      @include styles.with-direction('rtl') {
+        &::after {
+          @include styles.with-motion {
+            animation: skeleton-wave-rtl $skeleton-wave-duration $skeleton-wave-easing infinite;
+          }
         }
       }
     }
