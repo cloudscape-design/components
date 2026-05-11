@@ -74,6 +74,19 @@ jobs:
           NODE_ENV: production
 
       # ── Run tests ─────────────────────────────────────────────────────────
+      - name: Start test server (port 8080)
+        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8080 --static pages/lib/static-default --no-hot &
+        env:
+          NODE_ENV: development
+
+      - name: Start baseline server (port 8081)
+        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8081 --static pages/lib/static-visual-baseline --no-hot &
+        env:
+          NODE_ENV: development
+
+      - name: Wait for servers to be ready
+        run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
+
       - name: Run visual regression tests
         run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
         env:
