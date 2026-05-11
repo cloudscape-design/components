@@ -89,12 +89,12 @@ test('focus trap is disabled when backdrop is not set', () => {
 });
 
 test('focus trap is enabled when backdrop=true with fixed position', () => {
-  const { container } = render(
+  render(
     <Drawer backdrop={true} position="fixed">
       content
     </Drawer>
   );
-  const traps = getTabTraps(container);
+  const traps = getTabTraps(document.body);
   expect(traps).toHaveLength(2);
   traps.forEach(trap => expect(trap).toHaveAttribute('tabindex', '0'));
 });
@@ -109,12 +109,12 @@ test('focus trap is disabled when backdrop=true with unsupported position', () =
 });
 
 test('focus trap can be disabled explicitly when backdrop is set', () => {
-  const { container } = render(
+  render(
     <Drawer backdrop={true} position="fixed" focusBehavior={{ trapFocus: false }}>
       content
     </Drawer>
   );
-  const drawerContainer = createWrapper(container).findDrawer()!.getElement().parentElement!;
+  const drawerContainer = createWrapper(document.body).findDrawer()!.getElement().parentElement!;
   expect(drawerContainer.querySelectorAll('[tabindex="0"]')).toHaveLength(0);
 });
 

@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { capitalize, range } from 'lodash';
 
-import { Box, Checkbox, Select, SpaceBetween } from '~components';
+import { Box, Button, Checkbox, Select, SpaceBetween } from '~components';
 import Drawer, { DrawerProps } from '~components/drawer';
 import { colorBackgroundCellShaded as contentBackgroundColor } from '~design-tokens';
 
@@ -26,6 +26,7 @@ export default function () {
     urlParams: { offsets = false, backdrop = false, placement = 'bottom' },
     setUrlParams,
   } = useContext(AppContext as PageContext);
+  const [open, setOpen] = useState(true);
   const offset = offsets ? { start: 50, end: 50, top: 50, bottom: 50 } : {};
   return (
     <SimplePage
@@ -34,13 +35,22 @@ export default function () {
       i18n={{}}
       screenshotArea={{}}
     >
+      <Button onClick={() => setOpen(true)}>Open drawer</Button>
+
       <div>
         {range(0, 50).map(i => (
           <div key={i}>Line {i + 1}</div>
         ))}
       </div>
 
-      <FixedDrawer placement={placement} disableContentPaddings={true} offset={offset} backdrop={backdrop}>
+      <FixedDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        placement={placement}
+        disableContentPaddings={true}
+        offset={offset}
+        backdrop={backdrop}
+      >
         <Checkbox checked={offsets} onChange={({ detail }) => setUrlParams({ offsets: detail.checked })}>
           Use offsets
         </Checkbox>
@@ -58,17 +68,10 @@ export default function () {
   );
 }
 
-function FixedDrawer({ placement, offset, zIndex, backdrop, children }: DrawerProps) {
+function FixedDrawer({ placement, offset, children, ...rest }: DrawerProps) {
   const formatOffset = (offset?: DrawerProps.Offset) => JSON.stringify(offset, null, 2).replace(/"/g, '');
   return (
-    <Drawer
-      position="fixed"
-      placement={placement}
-      disableContentPaddings={true}
-      offset={offset}
-      zIndex={zIndex}
-      backdrop={backdrop}
-    >
+    <Drawer position="fixed" placement={placement} offset={offset} disableContentPaddings={true} {...rest}>
       <div
         style={{ boxSizing: 'border-box', padding: 16, width: 300, height: 300, background: contentBackgroundColor }}
       >

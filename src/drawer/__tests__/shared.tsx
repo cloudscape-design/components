@@ -7,6 +7,6 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 export function renderDrawer(jsx: React.ReactElement) {
   const { container } = render(jsx);
-  const drawer = createWrapper(container).findDrawer()!;
+  const drawer = createWrapper(container).findDrawer() ?? createWrapper().findDrawer()!;
   return { drawer };
 }
