@@ -43204,7 +43204,7 @@ For tables with column grouping this excludes group header cells.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the leaf column containing the resizer.",
+              "description": "1-based index of the column containing the resizer.",
               "flags": {
                 "isOptional": false,
               },
@@ -43227,7 +43227,7 @@ For tables with column grouping this excludes group header cells.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
-              "description": "1-based index of the leaf column.",
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -52567,7 +52567,7 @@ For tables with column grouping this excludes group header cells.",
           "name": "findColumnResizer",
           "parameters": [
             {
-              "description": "1-based index of the leaf column containing the resizer.",
+              "description": "1-based index of the column containing the resizer.",
               "flags": {
                 "isOptional": false,
               },
@@ -52585,7 +52585,7 @@ For tables with column grouping this excludes group header cells.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
-              "description": "1-based index of the leaf column.",
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
