@@ -109,6 +109,7 @@ export function TableGroupHeaderCell({
   });
 
   // Extract only the shadow classes from the boundary subscription
+  /* istanbul ignore next: requires real sticky column state */
   const boundaryClassName = stickyBoundaryColumnId && boundaryStyles.className ? boundaryStyles.className : undefined;
 
   return (

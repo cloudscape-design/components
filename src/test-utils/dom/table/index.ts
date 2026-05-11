@@ -71,10 +71,13 @@ export default class TableWrapper extends ComponentWrapper {
   /**
    * Returns the element the user clicks when resizing a column.
    *
-   * @param columnIndex 1-based index of the leaf column containing the resizer.
+   * @param columnIndex 1-based index of the column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`);
+    return (
+      this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`) ??
+      this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`)
+    );
   }
 
   /**
@@ -126,10 +129,13 @@ export default class TableWrapper extends ComponentWrapper {
   /**
    * Returns the clickable sorting area of a column header.
    *
-   * @param colIndex 1-based index of the leaf column.
+   * @param colIndex 1-based index of the column.
    */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th[data-column-index="${colIndex}"] [role=button]`);
+    return (
+      this.findActiveTHead().find(`th[data-column-index="${colIndex}"] [role=button]`) ??
+      this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`)
+    );
   }
 
   /**
