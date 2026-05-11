@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -24,19 +25,23 @@ export function getPositionStyles({ position, zIndex, ...props }: PositionProps)
   }
   switch (position) {
     case 'absolute':
-      return getStyles(position, { position: 'absolute', zIndex, ...computeAbsoluteOffsets(props) });
+      return getStyles(position, { position: 'absolute', zIndex, ...computeAbsoluteOffsets(props) }, props.placement);
     case 'sticky':
-      return getStyles(position, { position: 'sticky', zIndex, ...computeStickyOffsets(props) });
+      return getStyles(position, { position: 'sticky', zIndex, ...computeStickyOffsets(props) }, props.placement);
     case 'fixed':
-      return getStyles(position, { position: 'fixed', zIndex, ...computeAbsoluteOffsets(props) });
+      return getStyles(position, { position: 'fixed', zIndex, ...computeAbsoluteOffsets(props) }, props.placement);
     case 'static':
     default:
       return getStyles(position);
   }
 }
 
-function getStyles(position: DrawerProps.Position = 'static', style: React.CSSProperties = {}) {
-  return { className: styles[`position-${position}`], style };
+function getStyles(
+  position: DrawerProps.Position = 'static',
+  style: React.CSSProperties = {},
+  placement?: DrawerProps.Placement
+) {
+  return { className: clsx(styles[`position-${position}`], placement && styles[`placement-${placement}`]), style };
 }
 
 function computeAbsoluteOffsets({
