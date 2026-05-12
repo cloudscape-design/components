@@ -11707,17 +11707,6 @@ exports[`Components definition for divider matches the snapshot: divider 1`] = `
   "name": "Divider",
   "properties": [
     {
-      "description": "Adds an \`aria-label\` to the separator element.
-Use when the divider needs an accessible name but you don't want visible label text,
-or to provide a more descriptive label for assistive technology.
-
-Only takes effect when \`semantic\` is \`true\`.
-When \`label\` is also set, \`ariaLabel\` takes precendence.",
-      "name": "ariaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -11762,9 +11751,7 @@ We do not support using this attribute to apply custom styling.",
 - \`"horizontal"\` (default) — renders a full-width horizontal line. Use inside block-level
   containers to separate stacked content sections.
 - \`"vertical"\` — renders a full-height vertical line. Use inside flex or inline containers
-  to separate side-by-side elements.
-
-When \`semantic\` is \`true\`, \`aria-orientation\` is set automatically to match this value.",
+  to separate side-by-side elements.",
       "inlineType": {
         "name": "DividerProps.Orientation",
         "type": "union",
@@ -11777,28 +11764,13 @@ When \`semantic\` is \`true\`, \`aria-orientation\` is set automatically to matc
       "optional": true,
       "type": "string",
     },
-    {
-      "defaultValue": "false",
-      "description": "Announces the divider component as a semantic separator to assistive technology
-by adding semantic attributes like \`role="separator"\` and \`aria-orientation\`.
-Only set this to \`true\` when the divider genuinely separates distinct, meaningful content
-regions that assistive technology needs to be aware of.
-
-By default, the divider is not semantic and is therefore hidden from assistive technology.",
-      "name": "semantic",
-      "optional": true,
-      "type": "boolean",
-    },
   ],
   "regions": [
     {
       "description": "Text label rendered at the center of a horizontal divider line.
 Use for labels or short section titles.
 
-Only supported by horizontal dividers.
-
-When a label is provided and \`semantic\` is \`true\`, the separator is automatically
-associated with the label text via \`aria-labelledby\`.",
+Only supported by horizontal dividers.",
       "displayName": "label",
       "isDefault": true,
       "name": "children",

@@ -3,8 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
-
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
@@ -15,10 +13,8 @@ import styles from './styles.css.js';
 type InternalDividerProps = DividerProps & InternalBaseComponentProps;
 
 export default function InternalDivider({
-  semantic,
   orientation,
   children,
-  ariaLabel,
   nativeAttributes,
   __internalRootRef,
   ...rest
@@ -32,11 +28,6 @@ export default function InternalDivider({
     [styles['divider-has-label']]: hasLabel,
   });
 
-  const role = semantic ? 'separator' : 'presentation';
-  const ariaOrientation = semantic ? orientation : undefined;
-
-  const labelId = useUniqueId('divider-label-');
-
   if (hasLabel) {
     return (
       <WithNativeAttributes
@@ -45,17 +36,11 @@ export default function InternalDivider({
         componentName="Divider"
         nativeAttributes={nativeAttributes}
         className={className}
-        role={role}
-        aria-orientation={ariaOrientation}
-        aria-label={semantic ? ariaLabel : undefined}
-        aria-labelledby={semantic && !ariaLabel ? labelId : undefined}
         ref={__internalRootRef}
       >
-        <span className={styles['divider-line']} aria-hidden="true" />
-        <span id={labelId} className={styles['divider-label']}>
-          {children}
-        </span>
-        <span className={styles['divider-line']} aria-hidden="true" />
+        <span className={styles['divider-line']} />
+        <span className={styles['divider-label']}>{children}</span>
+        <span className={styles['divider-line']} />
       </WithNativeAttributes>
     );
   }
@@ -63,13 +48,11 @@ export default function InternalDivider({
   return (
     <WithNativeAttributes
       {...baseProps}
-      tag={isVertical ? 'div' : 'hr'}
+      tag="hr"
       componentName="Divider"
       nativeAttributes={nativeAttributes}
       className={className}
-      role={role}
-      aria-orientation={ariaOrientation}
-      aria-label={semantic ? ariaLabel : undefined}
+      role="presentation"
       ref={__internalRootRef}
     />
   );

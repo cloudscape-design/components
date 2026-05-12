@@ -11,24 +11,15 @@ import InternalDivider from './internal';
 
 export { DividerProps };
 
-export default function Divider({
-  semantic = false,
-  orientation = 'horizontal',
-  children,
-  ariaLabel,
-  nativeAttributes,
-  ...rest
-}: DividerProps) {
-  const baseComponentProps = useBaseComponent('Divider', { props: { semantic, orientation } });
+export default function Divider({ orientation = 'horizontal', children, nativeAttributes, ...rest }: DividerProps) {
+  const baseComponentProps = useBaseComponent('Divider', { props: { orientation } });
   const baseProps = getBaseProps(rest);
 
   return (
     <InternalDivider
       {...baseProps}
       {...baseComponentProps}
-      semantic={semantic}
       orientation={orientation}
-      ariaLabel={ariaLabel}
       nativeAttributes={nativeAttributes}
     >
       {children}

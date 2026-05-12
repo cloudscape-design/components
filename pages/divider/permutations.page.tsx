@@ -9,14 +9,8 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<DividerProps>([
-  // Horizontal — no label
-  { semantic: [false, true] },
-  // Horizontal — with label
-  { children: ['And', 'This is a mucher longer section title'], semantic: [false, true] },
-  // Horizontal — with ariaLabel
-  { ariaLabel: ['Section separator'], semantic: [true] },
-  // Vertical
-  { orientation: ['vertical'], semantic: [false, true] },
+  { orientation: ['horizontal', 'vertical'] },
+  { children: ['And', 'This is a mucher longer section title'] },
 ]);
 
 export default function DividerPermutations() {
