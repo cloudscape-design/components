@@ -208,9 +208,7 @@ function AppLayoutGlobalDrawerImplementation({
                       }}
                     />
                   </div>
-                  <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                    {activeGlobalDrawer?.content}
-                  </div>
+                  <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
                 </div>
               </div>
             </aside>
