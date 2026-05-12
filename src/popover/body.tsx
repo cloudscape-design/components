@@ -18,6 +18,7 @@ import styles from './styles.css.js';
 export interface PopoverBodyProps {
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
+  disableDismissAutoFocus?: boolean;
   onDismiss: ((method?: 'escape' | 'close-button') => void) | undefined;
   onBlur?: (event: React.FocusEvent) => void;
 
@@ -37,6 +38,7 @@ const PopoverBody = React.forwardRef(
     {
       dismissButton: showDismissButton,
       dismissAriaLabel,
+      disableDismissAutoFocus = false,
       header,
       children,
       onDismiss,
@@ -68,11 +70,11 @@ const PopoverBody = React.forwardRef(
     // because we also want to focus the dismiss button when it
     // is added dynamically (e.g. in chart popovers)
     useEffect(() => {
-      if (showDismissButton && !dismissButtonFocused.current) {
+      if (showDismissButton && !disableDismissAutoFocus && !dismissButtonFocused.current) {
         dismissButtonRef.current?.focus({ preventScroll: true });
       }
       dismissButtonFocused.current = showDismissButton;
-    }, [showDismissButton]);
+    }, [showDismissButton, disableDismissAutoFocus]);
 
     const dismissButton = (showDismissButton ?? null) && (
       <div
