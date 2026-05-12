@@ -78,6 +78,7 @@ import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
 import SelectWrapper from './select';
 import SideNavigationWrapper from './side-navigation';
+import SkeletonWrapper from './skeleton';
 import SliderWrapper from './slider';
 import SpaceBetweenWrapper from './space-between';
 import SpinnerWrapper from './spinner';
@@ -172,6 +173,7 @@ export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
 export { SelectWrapper };
 export { SideNavigationWrapper };
+export { SkeletonWrapper };
 export { SliderWrapper };
 export { SpaceBetweenWrapper };
 export { SpinnerWrapper };
@@ -2132,6 +2134,34 @@ findAllSideNavigations(selector?: string): Array<SideNavigationWrapper>;
  */
 findClosestSideNavigation(): SideNavigationWrapper | null;
 /**
+ * Returns the wrapper of the first Skeleton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first Skeleton.
+ * If no matching Skeleton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SkeletonWrapper | null}
+ */
+findSkeleton(selector?: string): SkeletonWrapper | null;
+
+/**
+ * Returns an array of Skeleton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the Skeletons inside the current wrapper.
+ * If no matching Skeleton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<SkeletonWrapper>}
+ */
+findAllSkeletons(selector?: string): Array<SkeletonWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent Skeleton for the current element,
+ * or the element itself if it is an instance of Skeleton.
+ * If no Skeleton is found, returns \`null\`.
+ *
+ * @returns {SkeletonWrapper | null}
+ */
+findClosestSkeleton(): SkeletonWrapper | null;
+/**
  * Returns the wrapper of the first Slider that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Slider.
  * If no matching Slider is found, returns \`null\`.
@@ -3676,6 +3706,19 @@ ElementWrapper.prototype.findSideNavigation = function(selector) {
 ElementWrapper.prototype.findAllSideNavigations = function(selector) {
   return this.findAllComponents(SideNavigationWrapper, selector);
 };
+ElementWrapper.prototype.findSkeleton = function(selector) {
+  let rootSelector = \`.\${SkeletonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SkeletonWrapper && SkeletonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SkeletonWrapper.rootSelector}, .\${SkeletonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SkeletonWrapper);
+};
+
+ElementWrapper.prototype.findAllSkeletons = function(selector) {
+  return this.findAllComponents(SkeletonWrapper, selector);
+};
 ElementWrapper.prototype.findSlider = function(selector) {
   let rootSelector = \`.\${SliderWrapper.rootSelector}\`;
   if("legacyRootSelector" in SliderWrapper && SliderWrapper.legacyRootSelector){
@@ -4321,6 +4364,11 @@ ElementWrapper.prototype.findClosestSideNavigation = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(SideNavigationWrapper);
 };
+ElementWrapper.prototype.findClosestSkeleton = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(SkeletonWrapper);
+};
 ElementWrapper.prototype.findClosestSlider = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4524,6 +4572,7 @@ import S3ResourceSelectorWrapper from './s3-resource-selector';
 import SegmentedControlWrapper from './segmented-control';
 import SelectWrapper from './select';
 import SideNavigationWrapper from './side-navigation';
+import SkeletonWrapper from './skeleton';
 import SliderWrapper from './slider';
 import SpaceBetweenWrapper from './space-between';
 import SpinnerWrapper from './spinner';
@@ -4618,6 +4667,7 @@ export { S3ResourceSelectorWrapper };
 export { SegmentedControlWrapper };
 export { SelectWrapper };
 export { SideNavigationWrapper };
+export { SkeletonWrapper };
 export { SliderWrapper };
 export { SpaceBetweenWrapper };
 export { SpinnerWrapper };
@@ -5818,6 +5868,23 @@ findSideNavigation(selector?: string): SideNavigationWrapper;
  * @returns {MultiElementWrapper<SideNavigationWrapper>}
  */
 findAllSideNavigations(selector?: string): MultiElementWrapper<SideNavigationWrapper>;
+/**
+ * Returns a wrapper that matches the Skeletons with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches Skeletons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {SkeletonWrapper}
+ */
+findSkeleton(selector?: string): SkeletonWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches Skeletons with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches Skeletons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<SkeletonWrapper>}
+ */
+findAllSkeletons(selector?: string): MultiElementWrapper<SkeletonWrapper>;
 /**
  * Returns a wrapper that matches the Sliders with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Sliders.
@@ -7109,6 +7176,19 @@ ElementWrapper.prototype.findSideNavigation = function(selector) {
 
 ElementWrapper.prototype.findAllSideNavigations = function(selector) {
   return this.findAllComponents(SideNavigationWrapper, selector);
+};
+ElementWrapper.prototype.findSkeleton = function(selector) {
+  let rootSelector = \`.\${SkeletonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in SkeletonWrapper && SkeletonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${SkeletonWrapper.rootSelector}, .\${SkeletonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SkeletonWrapper);
+};
+
+ElementWrapper.prototype.findAllSkeletons = function(selector) {
+  return this.findAllComponents(SkeletonWrapper, selector);
 };
 ElementWrapper.prototype.findSlider = function(selector) {
   let rootSelector = \`.\${SliderWrapper.rootSelector}\`;
