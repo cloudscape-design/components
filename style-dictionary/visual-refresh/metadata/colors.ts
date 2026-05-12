@@ -738,7 +738,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorTextFormLabel: { description: 'Component specific: Special because control group is different.' },
+  colorTextFormLabel: {
+    description: 'The color of form field labels.',
+    public: true,
+    themeable: true,
+  },
   colorTextFormSecondary: {
     description:
       'The color of secondary text in form fields and controls. For example: the description and constraint text in form fields, the descriptions in checkboxes, radio buttons, toggles, and any additional info in an attribute editor.',

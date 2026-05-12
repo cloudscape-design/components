@@ -61,4 +61,10 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingM: '22px',
   lineHeightHeadingS: '20px',
   lineHeightHeadingXs: '18px',
+  fontSizeFormLabel: '{fontSizeBodyM}',
+  lineHeightFormLabel: '{lineHeightBodyM}',
+  fontWeightFormLabel: '{fontDisplayLabelWeight}',
+  fontSizeKeyValuePairsLabel: '{fontSizeBodyM}',
+  lineHeightKeyValuePairsLabel: '{lineHeightBodyM}',
+  fontWeightKeyValuePairsLabel: '{fontDisplayLabelWeight}',
 };

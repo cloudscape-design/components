@@ -232,6 +232,36 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontSizeFormLabel: {
+    description: 'The font size for form field labels.',
+    themeable: true,
+    public: true,
+  },
+  lineHeightFormLabel: {
+    description: 'The line height for form field labels.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightFormLabel: {
+    description: 'The font weight for form field labels.',
+    themeable: true,
+    public: true,
+  },
+  fontSizeKeyValuePairsLabel: {
+    description: 'The font size for key-value pairs labels.',
+    themeable: true,
+    public: true,
+  },
+  lineHeightKeyValuePairsLabel: {
+    description: 'The line height for key-value pairs labels.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightKeyValuePairsLabel: {
+    description: 'The font weight for key-value pairs labels.',
+    themeable: true,
+    public: true,
+  },
 };
 
 export default metadata;
