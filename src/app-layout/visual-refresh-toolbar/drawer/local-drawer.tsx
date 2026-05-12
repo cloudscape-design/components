@@ -141,12 +141,11 @@ export function AppLayoutDrawerImplementation({
                 styles['drawer-content'],
                 activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
               )}
-              style={{ blockSize: drawerHeight }}
             >
               {toolsContent}
             </div>
             {activeDrawerId !== TOOLS_DRAWER_ID && (
-              <div key={activeDrawerId} className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+              <div key={activeDrawerId} className={styles['drawer-content']}>
                 {activeDrawer?.content}
               </div>
             )}

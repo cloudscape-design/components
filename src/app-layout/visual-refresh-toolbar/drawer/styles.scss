@@ -126,7 +126,7 @@ $ai-drawer-heider-height: 42px;
     grid-row: 1;
     display: grid;
     grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
-    grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
+    grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 0;
     overflow-y: auto;
     min-inline-size: var(#{custom-props.$drawerSize});
 
