@@ -20,7 +20,7 @@
   // We display label inline to achieve the proper line-wrapping with info links
   display: inline;
   @include styles.font-smoothing;
-  @include styles.font-label;
+  @include styles.font-label(awsui.$font-size-form-label, awsui.$line-height-form-label, awsui.$font-weight-form-label);
   @include styles.info-link-spacing;
 }
 

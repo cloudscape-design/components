@@ -876,7 +876,13 @@ export type TypographyTokenName =
   | 'lineHeightHeadingM'
   | 'lineHeightHeadingS'
   | 'lineHeightHeadingXs'
-  | 'lineHeightTabs';
+  | 'lineHeightTabs'
+  | 'fontSizeFormLabel'
+  | 'lineHeightFormLabel'
+  | 'fontWeightFormLabel'
+  | 'fontSizeKeyValuePairsLabel'
+  | 'lineHeightKeyValuePairsLabel'
+  | 'fontWeightKeyValuePairsLabel';
 export type BordersTokenName =
   | 'borderActiveWidth'
   | 'borderCodeEditorStatusDividerWidth'
