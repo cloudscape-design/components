@@ -212,6 +212,7 @@ describe('File loading', () => {
   test('Spinner added when loading', () => {
     const wrapper = render({ items: [{ file: file1, loading: true }, { file: file2 }] });
 
+    // Reach into the token-box since the file-token now composes InternalToken.
     expect(wrapper.findFileToken(1)?.getElement().querySelector(`.${styles['token-box']}`)).toHaveClass(styles.loading);
     expect(wrapper.findFileToken(2)?.getElement().querySelector(`.${styles['token-box']}`)).not.toHaveClass(
       styles.loading

@@ -32,7 +32,12 @@ type InternalTokenProps = TokenProps &
   InternalBaseComponentProps & {
     role?: string;
     disableInnerPadding?: boolean;
+    /** Additional class applied to the token-box element, for consumer-specific state styling. */
     tokenBoxClassName?: string;
+    /** Extra content rendered inside the option's content column, after description/tags. */
+    additionalContent?: React.ReactNode;
+    /** Extra content rendered inside the token-box but outside the option (e.g. absolute overlays). */
+    tokenBoxContent?: React.ReactNode;
   };
 
 function InternalToken({
@@ -54,6 +59,8 @@ function InternalToken({
   role,
   disableInnerPadding,
   tokenBoxClassName,
+  additionalContent,
+  tokenBoxContent,
 
   // Base
   __internalRootRef,
@@ -67,6 +74,9 @@ function InternalToken({
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
   const isOneTheme = isThemeActive(Theme.OneTheme);
+  // Consumers with their own grouping semantics can pass role="presentation" to treat the root
+  // as a pure styling wrapper (strips ARIA and focus/mouse handlers).
+  const isPresentation = role === 'presentation';
   const ariaLabelledbyId = useUniqueId();
 
   const isLabelOverflowing = () => {
@@ -133,23 +143,15 @@ function InternalToken({
           analyticsSelectors.token,
           baseProps.className
         )}
-        aria-label={role === 'presentation' ? undefined : ariaLabel}
-        aria-labelledby={role === 'presentation' || ariaLabel ? undefined : ariaLabelledbyId}
-        aria-disabled={role === 'presentation' ? undefined : !!disabled}
+        aria-label={isPresentation ? undefined : ariaLabel}
+        aria-labelledby={isPresentation || ariaLabel ? undefined : ariaLabelledbyId}
+        aria-disabled={isPresentation ? undefined : !!disabled}
         role={role ?? 'group'}
-        onFocus={() => {
-          setShowTooltip(true);
-        }}
-        onBlur={() => {
-          setShowTooltip(false);
-        }}
-        onMouseEnter={() => {
-          setShowTooltip(true);
-        }}
-        onMouseLeave={() => {
-          setShowTooltip(false);
-        }}
-        tabIndex={!!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
+        onFocus={isPresentation ? undefined : () => setShowTooltip(true)}
+        onBlur={isPresentation ? undefined : () => setShowTooltip(false)}
+        onMouseEnter={isPresentation ? undefined : () => setShowTooltip(true)}
+        onMouseLeave={isPresentation ? undefined : () => setShowTooltip(false)}
+        tabIndex={!isPresentation && !!tooltipContent && isInline && isEllipsisActive ? 0 : undefined}
       >
         <SpanOrDivTag
           className={clsx(
@@ -162,6 +164,7 @@ function InternalToken({
           )}
           style={tokenRootStyleProps}
         >
+          {tokenBoxContent}
           <Option
             className={clsx(isInline && styles['token-option-inline'])}
             triggerVariant={isInline}
@@ -170,6 +173,7 @@ function InternalToken({
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
             labelId={ariaLabelledbyId}
+            additionalContent={additionalContent}
           />
           {onDismiss && (
             <DismissButton
