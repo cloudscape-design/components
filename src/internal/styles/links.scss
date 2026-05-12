@@ -48,6 +48,7 @@
 @mixin link-font-size-style($font-size) {
   text-underline-offset: map.get($font-size, 'text-underline-offset');
   text-decoration-thickness: map.get($font-size, 'text-decoration-thickness');
+  text-decoration-style: awsui.$font-link-decoration-style;
 }
 
 @mixin link-default($font-size: 'inherit') {

@@ -232,6 +232,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontLinkDecorationThickness: {
+    description: 'The text decoration thickness of links.',
+    themeable: true,
+    public: true,
+  },
+  fontLinkDecorationStyle: {
+    description: 'The text decoration style of links. For example: underline, dashed, dotted.',
+    themeable: true,
+    public: true,
+  },
   fontSizeFormLabel: {
     description: 'The font size for form field labels.',
     themeable: true,
