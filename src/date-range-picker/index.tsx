@@ -334,6 +334,7 @@ const DateRangePicker = React.forwardRef(
       >
         <Dropdown
           stretchHeight={true}
+          scrollable={false}
           open={isDropDownOpen}
           onOutsideClick={() => closeDropdown()}
           trigger={trigger}
