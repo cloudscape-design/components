@@ -953,7 +953,8 @@ export type BordersTokenName =
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
   | 'borderWidthNavigationBarPrimary'
-  | 'borderWidthNavigationBarSecondary';
+  | 'borderWidthNavigationBarSecondary'
+  | 'borderRadiusStatusIndicator';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
