@@ -62,10 +62,10 @@ $_color-overrides: (
 
 .container {
   padding-inline: awsui.$space-status-indicator-padding-inline;
-  border-start-start-radius: awsui.$border-radius-badge;
-  border-start-end-radius: awsui.$border-radius-badge;
-  border-end-start-radius: awsui.$border-radius-badge;
-  border-end-end-radius: awsui.$border-radius-badge;
+  border-start-start-radius: awsui.$border-radius-status-indicator;
+  border-start-end-radius: awsui.$border-radius-status-indicator;
+  border-end-start-radius: awsui.$border-radius-status-indicator;
+  border-end-end-radius: awsui.$border-radius-status-indicator;
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;

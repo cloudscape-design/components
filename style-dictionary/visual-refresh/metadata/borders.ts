@@ -239,6 +239,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusStatusIndicator: {
+    description: 'The border radius of status indicators.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

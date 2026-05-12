@@ -74,4 +74,5 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusSkeleton: '8px',
   borderWidthNavigationBarPrimary: '{borderDividerSectionWidth}',
   borderWidthNavigationBarSecondary: '{borderDividerSectionWidth}',
+  borderRadiusStatusIndicator: '{borderRadiusBadge}',
 };
