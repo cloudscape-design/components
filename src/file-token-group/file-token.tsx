@@ -99,35 +99,33 @@ function InternalFileToken({
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
 
-  const fileMetadata = (
+  // File name wrapped in a keyboard-focusable container that drives the custom Tooltip below.
+  const fileNameLabel = (
     <div
-      className={clsx(styles['file-option-metadata'], {
-        [styles['with-image']]: showFileThumbnail && isImage,
-        [styles['single-row-loading']]: loading && fileIsSingleRow,
-      })}
+      className={styles['file-name-container']}
+      onMouseOver={() => setShowTooltip(true)}
+      onMouseOut={() => setShowTooltip(false)}
+      onFocus={() => setShowTooltip(true)}
+      onBlur={() => setShowTooltip(false)}
+      role={isTruncated ? 'button' : undefined}
+      aria-expanded={isTruncated ? showTooltip : undefined}
+      tabIndex={isTruncated ? 0 : -1}
+      ref={fileNameContainerRef}
     >
-      <InternalSpaceBetween direction="vertical" size="xxxs">
-        <div
-          className={styles['file-name-container']}
-          onMouseOver={() => setShowTooltip(true)}
-          onMouseOut={() => setShowTooltip(false)}
-          onFocus={() => setShowTooltip(true)}
-          onBlur={() => setShowTooltip(false)}
-          role={isTruncated ? 'button' : undefined}
-          aria-expanded={isTruncated ? showTooltip : undefined}
-          tabIndex={isTruncated ? 0 : -1}
-          ref={fileNameContainerRef}
-        >
-          <InternalBox
-            fontWeight="normal"
-            className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
-              [testUtilStyles['ellipsis-active']]: isTruncated,
-            })}
-          >
-            <span ref={fileNameRef}>{file.name}</span>
-          </InternalBox>
-        </div>
+      <InternalBox
+        fontWeight="normal"
+        className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
+          [testUtilStyles['ellipsis-active']]: isTruncated,
+        })}
+      >
+        <span ref={fileNameRef}>{file.name}</span>
+      </InternalBox>
+    </div>
+  );
 
+  const fileMetadataRows =
+    (showFileSize && file.size) || (showFileLastModified && file.lastModified) ? (
+      <InternalSpaceBetween direction="vertical" size="xxxs">
         {showFileSize && file.size ? (
           <InternalBox
             fontSize="body-s"
@@ -148,30 +146,17 @@ function InternalFileToken({
           </InternalBox>
         ) : null}
       </InternalSpaceBetween>
-    </div>
-  );
+    ) : null;
 
-  const fileLabel = (
-    <>
-      {loading && (
-        <div
-          className={clsx(styles['file-loading-overlay'], {
-            [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
-          })}
-        >
-          <InternalSpinner variant="disabled" size="normal" />
-        </div>
-      )}
-      {fileMetadata}
-      {showTooltip && isTruncated && (
-        <Tooltip
-          getTrack={() => containerRef.current}
-          content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
-          onEscape={() => setShowTooltip(false)}
-        />
-      )}
-    </>
-  );
+  const loadingOverlay = loading ? (
+    <div
+      className={clsx(styles['file-loading-overlay'], {
+        [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
+      })}
+    >
+      <InternalSpinner variant="disabled" size="normal" />
+    </div>
+  ) : null;
 
   return (
     <div
@@ -187,11 +172,16 @@ function InternalFileToken({
       data-index={index}
     >
       <InternalToken
+        // Outer div already provides role="group" + aria-label; InternalToken's root is presentation-only.
         role="presentation"
-        label={fileLabel}
+        label={fileNameLabel}
         icon={showFileThumbnail && isImage ? <FileOptionThumbnail file={file} /> : undefined}
-        onDismiss={readOnly ? undefined : onDismiss}
+        additionalContent={fileMetadataRows}
+        tokenBoxContent={loadingOverlay}
+        // Dismiss button always rendered (matches TokenGroup); disabled while loading.
+        onDismiss={onDismiss}
         dismissLabel={getDismissLabel(index)}
+        readOnly={readOnly || loading}
         tokenBoxClassName={clsx(styles['token-box'], {
           [styles.loading]: loading,
           [styles.error]: errorText,
@@ -209,6 +199,13 @@ function InternalFileToken({
         <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
           {warningText}
         </FormFieldWarning>
+      )}
+      {showTooltip && isTruncated && (
+        <Tooltip
+          getTrack={() => containerRef.current}
+          content={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
+          onEscape={() => setShowTooltip(false)}
+        />
       )}
     </div>
   );
