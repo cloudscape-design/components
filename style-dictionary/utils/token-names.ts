@@ -882,7 +882,9 @@ export type TypographyTokenName =
   | 'fontWeightFormLabel'
   | 'fontSizeKeyValuePairsLabel'
   | 'lineHeightKeyValuePairsLabel'
-  | 'fontWeightKeyValuePairsLabel';
+  | 'fontWeightKeyValuePairsLabel'
+  | 'fontLinkDecorationThickness'
+  | 'fontLinkDecorationStyle';
 export type BordersTokenName =
   | 'borderActiveWidth'
   | 'borderCodeEditorStatusDividerWidth'

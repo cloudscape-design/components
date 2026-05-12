@@ -61,6 +61,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingM: '22px',
   lineHeightHeadingS: '20px',
   lineHeightHeadingXs: '18px',
+  fontLinkDecorationThickness: '1px',
+  fontLinkDecorationStyle: 'underline',
   fontSizeFormLabel: '{fontSizeBodyM}',
   lineHeightFormLabel: '{lineHeightBodyM}',
   fontWeightFormLabel: '{fontDisplayLabelWeight}',

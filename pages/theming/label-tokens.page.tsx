@@ -3,6 +3,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 
 import {
+  Badge,
   Box,
   Checkbox,
   ColumnLayout,
@@ -13,6 +14,8 @@ import {
   KeyValuePairs,
   Link,
   SpaceBetween,
+  StatusIndicator,
+  TextContent,
 } from '~components';
 import { applyTheme, Theme } from '~components/theming';
 
@@ -34,6 +37,16 @@ export default function LabelTokensPage() {
           fontSizeKeyValuePairsLabel: '13px',
           lineHeightKeyValuePairsLabel: '22px',
           fontWeightKeyValuePairsLabel: '900',
+          // Status indicator tokens
+          borderRadiusStatusIndicator: '50px',
+          colorBackgroundStatusIndicatorSuccess: { light: '#d5f5d5', dark: '#1a3d1a' },
+          colorBackgroundStatusIndicatorError: { light: '#ffd5d5', dark: '#3d1a1a' },
+          colorBackgroundStatusIndicatorWarning: { light: '#fff3cd', dark: '#3d3000' },
+          colorBackgroundStatusIndicatorInfo: { light: '#d5e8ff', dark: '#0a2040' },
+          colorBackgroundStatusIndicatorNeutral: { light: '#e8e8e8', dark: '#2a2a2a' },
+          // Link decoration tokens
+          fontLinkDecorationThickness: '1px',
+          fontLinkDecorationStyle: 'dashed',
         },
       };
 
@@ -89,6 +102,79 @@ export default function LabelTokensPage() {
               <FormField label="Instance type" errorText="This instance type is not available in this region.">
                 <Input value="t3.micro" readOnly={true} />
               </FormField>
+            </SpaceBetween>
+          </Container>
+
+          <Container header={<Header variant="h2">Status indicators</Header>}>
+            <SpaceBetween size="s">
+              <StatusIndicator type="success">Instance running</StatusIndicator>
+              <StatusIndicator type="error">Deployment failed</StatusIndicator>
+              <StatusIndicator type="warning">High CPU usage</StatusIndicator>
+              <StatusIndicator type="info">Update available</StatusIndicator>
+              <StatusIndicator type="stopped">Instance stopped</StatusIndicator>
+              <StatusIndicator type="pending">Provisioning</StatusIndicator>
+              <StatusIndicator type="in-progress">Deployment in progress</StatusIndicator>
+              <StatusIndicator type="loading">Loading</StatusIndicator>
+            </SpaceBetween>
+          </Container>
+
+          <Container
+            header={
+              <Header
+                variant="h2"
+                description={
+                  themed
+                    ? 'fontLinkDecorationThickness: 3px · fontLinkDecorationStyle: dashed'
+                    : 'fontLinkDecorationThickness: 1px · fontLinkDecorationStyle: underline (defaults)'
+                }
+              >
+                Links
+              </Header>
+            }
+          >
+            <SpaceBetween size="m">
+              <TextContent>
+                <p>
+                  Body M text with a{' '}
+                  <Link href="#" variant="primary">
+                    primary link
+                  </Link>
+                  . When themed, the underline becomes a thick dashed line.
+                </p>
+              </TextContent>
+              <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+                <Link href="#" variant="primary" fontSize="heading-xl">
+                  Heading XL
+                </Link>
+                <Link href="#" variant="primary" fontSize="heading-l">
+                  Heading L
+                </Link>
+                <Link href="#" variant="primary" fontSize="heading-m">
+                  Heading M
+                </Link>
+                <Link href="#" variant="primary" fontSize="heading-s">
+                  Heading S
+                </Link>
+                <Link href="#" variant="primary" fontSize="heading-xs">
+                  Heading XS
+                </Link>
+                <Link href="#" variant="primary" fontSize="body-m">
+                  Body M
+                </Link>
+                <Link href="#" variant="primary" fontSize="body-s">
+                  Body S
+                </Link>
+              </SpaceBetween>
+            </SpaceBetween>
+          </Container>
+
+          <Container header={<Header variant="h2">Badges (uses borderRadiusBadge — unchanged)</Header>}>
+            <SpaceBetween size="s" direction="horizontal">
+              <Badge color="red">Error</Badge>
+              <Badge color="green">Success</Badge>
+              <Badge color="blue">Info</Badge>
+              <Badge color="grey">Inactive</Badge>
+              <Badge>12</Badge>
             </SpaceBetween>
           </Container>
 
