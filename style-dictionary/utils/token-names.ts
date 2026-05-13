@@ -660,6 +660,7 @@ export type ColorsTokenName =
   | 'colorBorderItemPlaceholder'
   | 'colorBorderItemSelected'
   | 'colorBorderLayout'
+  | 'colorBorderToolbar'
   | 'colorBorderNavigationBarPrimary'
   | 'colorBorderNavigationBarPrimaryAccent'
   | 'colorBorderNavigationBarSecondary'

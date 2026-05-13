@@ -1059,6 +1059,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBorderToolbar: {
+    description: "The border color of the app layout's toolbar.",
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

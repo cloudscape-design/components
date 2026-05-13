@@ -84,6 +84,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemFocused: { light: '{colorPrimary600}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
   colorBorderLayout: { light: '{colorNeutral300}', dark: '{colorNeutral700}' },
+  colorBorderToolbar: '{colorBorderLayout}',
   colorBorderNavigationBarPrimary: '{colorBorderDividerDefault}',
   colorBorderNavigationBarPrimaryAccent: '{colorBorderDividerDefault}',
   colorBorderNavigationBarSecondary: '{colorBorderDividerDefault}',
