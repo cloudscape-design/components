@@ -44,7 +44,7 @@ jobs:
           chrome-version: stable
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       # ── PR pages: download the artifact produced by the build workflow ─────
       - name: Download PR pages artifact
@@ -77,7 +77,7 @@ jobs:
         run: git worktree add /tmp/baseline origin/main
 
       - name: Install baseline dependencies
-        run: npm ci
+        run: npm i
         working-directory: /tmp/baseline
 
       - name: Build baseline pages
