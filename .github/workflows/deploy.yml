@@ -65,3 +65,12 @@ jobs:
     with:
       artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
+
+  visual:
+    name: Visual regression
+    needs: quick-build
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/visual-regression.yml
+    secrets: inherit
+    with:
+      pr-artifact-name: dev-pages-react18
