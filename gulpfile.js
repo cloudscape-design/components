@@ -19,6 +19,7 @@ const {
   generateI18nMessages,
   integ,
   motion,
+  visual,
   copyFiles,
   themeableSource,
   bundleVendorFiles,
@@ -41,6 +42,7 @@ exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
 exports['test:motion'] = motion;
+exports['test:visual'] = visual;
 
 exports.watch = () => {
   watch(

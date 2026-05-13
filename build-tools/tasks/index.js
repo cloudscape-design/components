@@ -21,4 +21,5 @@ module.exports = {
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),
   sizeLimit: require('./size-limit'),
+  visual: require('./visual'),
 };
