@@ -1,0 +1,120 @@
+name: Visual Regression Tests
+
+on:
+  workflow_run:
+    workflows:
+      - Build, lint and test
+    types:
+      - completed
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  visual:
+    name: Visual regression
+    # Only run on PRs from the same repo (not forks), and only when the build succeeded.
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Check out the PR head commit, not the merge commit that workflow_run uses.
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── PR pages: download the artifact produced by the build workflow ─────
+      - name: Download PR pages artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: ${{ github.event.workflow_run.id }},
+            });
+            const artifact = artifacts.data.artifacts.find(a => a.name === 'dev-pages-react18');
+            if (!artifact) throw new Error('dev-pages-react18 artifact not found');
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: artifact.id,
+              archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('/tmp/dev-pages.zip', Buffer.from(download.data));
+
+      - name: Extract PR pages artifact
+        run: |
+          mkdir -p pages/lib/static-default
+          unzip /tmp/dev-pages.zip -d pages/lib/static-default
+
+      # ── Baseline (main) pages: build from origin/main ─────────────────────
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm ci
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      # ── Start both servers and run tests ──────────────────────────────────
+      - name: Start PR server (port 8080)
+        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8080 --static pages/lib/static-default --no-hot &
+        env:
+          NODE_ENV: development
+
+      - name: Start baseline server (port 8081)
+        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8081 --static pages/lib/static-visual-baseline --no-hot &
+        env:
+          NODE_ENV: development
+
+      - name: Wait for servers to be ready
+        run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
+
+      - name: Run visual regression tests
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
+        env:
+          TZ: UTC
+
+      - name: Upload diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: visual-regression-output/
+          retention-days: 14

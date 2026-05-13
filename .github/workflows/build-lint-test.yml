@@ -30,23 +30,6 @@ jobs:
       artifact-path: pages/lib/static-default
       artifact-name: dev-pages-react${{ matrix.react }}
       react-version: ${{ matrix.react }}
-
-  # Gate job: waits for all build matrix variants to complete.
-  # Regular (runs-on) jobs cannot depend on matrix+reusable-workflow jobs directly,
-  # so this non-matrix gate job bridges the dependency.
-  build-complete:
-    name: build complete
-    needs: build
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check build result
-        run: |
-          if [[ "${{ needs.build.result }}" != "success" ]]; then
-            echo "Build failed or was cancelled"
-            exit 1
-          fi
-
   deploy:
     needs: build
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
@@ -60,81 +43,3 @@ jobs:
     with:
       artifact-name: dev-pages-react${{ matrix.react }}
       deployment-path: pages/lib/static-default
-
-  visual:
-    name: Visual regression
-    needs: build-complete
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Setup Chrome and ChromeDriver
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
-
-      - name: Install dependencies
-        run: npm ci
-
-      # ── PR pages: reuse the artifact built by the build job ───────────────
-      - name: Download PR pages artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dev-pages-react18
-          path: pages/lib/static-default
-
-      # ── Baseline (main) pages: build from origin/main ─────────────────────
-      - name: Create baseline worktree from origin/main
-        run: git worktree add /tmp/baseline origin/main
-
-      - name: Install baseline dependencies
-        run: npm ci
-        working-directory: /tmp/baseline
-
-      - name: Build baseline pages
-        run: npx gulp quick-build
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
-
-      - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
-
-      # ── Start both servers and run tests ──────────────────────────────────
-      - name: Start PR server (port 8080)
-        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8080 --static pages/lib/static-default --no-hot &
-        env:
-          NODE_ENV: development
-
-      - name: Start baseline server (port 8081)
-        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8081 --static pages/lib/static-visual-baseline --no-hot &
-        env:
-          NODE_ENV: development
-
-      - name: Wait for servers to be ready
-        run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
-
-      - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
-        env:
-          TZ: UTC
-
-      - name: Upload diff artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-regression-diffs
-          path: visual-regression-output/
-          retention-days: 14
