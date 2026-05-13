@@ -3,7 +3,7 @@ name: Visual Regression Tests
 on:
   workflow_run:
     workflows:
-      - Build
+      - Build, lint and test
     types:
       - completed
 
