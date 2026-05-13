@@ -116,7 +116,9 @@ const InternalPromptInput = React.forwardRef(
       ),
     };
 
-    const isTokenMode = !!tokens && supportsTokenMode;
+    // Empty tokens array is valid token-mode state; only fall back to
+    // textarea mode when the prop is absent.
+    const isTokenMode = tokens !== undefined && supportsTokenMode;
 
     if (isDevelopment) {
       if ((menus || tokens) && !supportsTokenMode) {
@@ -173,13 +175,20 @@ const InternalPromptInput = React.forwardRef(
       }
     });
 
+    // Height is adjusted per-mode. `value` must not be a dependency in token
+    // mode — it's unused there, and re-running the effect on `value` changes
+    // resets the contentEditable caret to offset 0.
     useEffect(() => {
       if (isTokenMode) {
         requestAnimationFrame(() => adjustInputHeight());
-      } else {
+      }
+    }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
+
+    useEffect(() => {
+      if (!isTokenMode) {
         adjustInputHeight();
       }
-    }, [isTokenMode, tokens, adjustInputHeight, value, isCompactMode, placeholder]);
+    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder]);
 
     const plainTextValue = isTokenMode
       ? tokensToText

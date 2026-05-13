@@ -7952,3 +7952,82 @@ describe('IME composition handling', () => {
     expect(onChange.mock.calls[0][0].detail.value).toBe('가나');
   });
 });
+
+describe('tokens takes precedence over value', () => {
+  test('empty tokens array still activates token mode, ignoring value', () => {
+    const { wrapper } = renderTokenMode({ props: { value: 'hello' } });
+    expect(wrapper.findContentEditableElement()).not.toBeNull();
+    expect(getValue(wrapper)).toBe('');
+  });
+
+  test('content is derived from tokens, not value, when both are provided', () => {
+    const { wrapper } = renderTokenMode({
+      props: { tokens: [{ type: 'text', value: 'from-tokens' }], value: 'from-value' },
+    });
+    expect(getValue(wrapper)).toBe('from-tokens');
+  });
+
+  test('onAction fires with tokens-derived value, not the value prop', () => {
+    const onAction = jest.fn();
+    const { wrapper } = renderTokenMode({
+      props: {
+        onAction,
+        tokens: [{ type: 'text', value: 'from-tokens' }],
+        value: 'from-value',
+      },
+    });
+    wrapper.findActionButton()!.click();
+    expect(onAction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: expect.objectContaining({ value: 'from-tokens' }),
+      })
+    );
+  });
+
+  test('updating the value prop does not trigger the token-mode height effect', () => {
+    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    try {
+      const tokens: PromptInputProps['tokens'] = [{ type: 'text', value: 'hello' }];
+      const { rerender } = renderTokenMode({ props: { tokens, value: 'initial' } });
+      const callsAfterMount = rafSpy.mock.calls.length;
+      expect(callsAfterMount).toBeGreaterThan(0);
+
+      rerender(
+        <PromptInput
+          tokens={tokens}
+          value="changed"
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+        />
+      );
+
+      expect(rafSpy.mock.calls.length).toBe(callsAfterMount);
+    } finally {
+      rafSpy.mockRestore();
+    }
+  });
+
+  test('updating tokens still triggers the token-mode height effect', () => {
+    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    try {
+      const { rerender } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
+      const callsAfterMount = rafSpy.mock.calls.length;
+
+      rerender(
+        <PromptInput
+          tokens={[{ type: 'text', value: 'hello world' }]}
+          menus={defaultMenus}
+          actionButtonIconName="send"
+          i18nStrings={defaultI18nStrings}
+          ariaLabel="Chat input"
+        />
+      );
+
+      expect(rafSpy.mock.calls.length).toBeGreaterThan(callsAfterMount);
+    } finally {
+      rafSpy.mockRestore();
+    }
+  });
+});
