@@ -33,6 +33,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightTabsDisabled: '{fontWayfindingLinkActiveWeight}',
   lineHeightTabs: '{lineHeightHeadingS}',
   fontWayfindingLinkActiveWeight: '700',
+  fontWeightBreadcrumbCurrent: '{fontWeightBold}',
   fontWeightButton: '700',
   fontWeightAlertHeader: '700',
   fontWeightFlashbarHeader: '700',

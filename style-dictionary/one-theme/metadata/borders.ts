@@ -224,6 +224,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthNavigationBarPrimary: {
+    description: 'The border width of the primary navigation bar.',
+    public: false,
+    themeable: true,
+  },
+  borderWidthNavigationBarSecondary: {
+    description: 'The border width of the secondary navigation bar.',
+    public: false,
+    themeable: true,
+  },
 };
 
 export default metadata;
