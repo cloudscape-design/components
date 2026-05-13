@@ -227,7 +227,6 @@ type DemoContext = React.Context<
 export default function ColumnGroupsPage() {
   const {
     urlParams: {
-      direction = 'ltr' as 'ltr' | 'rtl',
       groupingPreset = 'single-level' as GroupingPreset,
       variant = 'container' as TableProps.Variant,
       selectionType = 'multi',
@@ -265,9 +264,11 @@ export default function ColumnGroupsPage() {
   });
 
   return (
-    <SimplePage title="Column Grouping - Feature Combinations" i18n={{}} screenshotArea={{}}>
-      <SpaceBetween size="l">
-        {/* Control panel */}
+    <SimplePage
+      title="Column Grouping - Feature Combinations"
+      i18n={{}}
+      screenshotArea={{}}
+      settings={
         <SpaceBetween size="xs">
           <Header variant="h2" description="Toggle features to test every combination with column grouping">
             Feature controls
@@ -392,57 +393,50 @@ export default function ColumnGroupsPage() {
             <Toggle checked={empty} onChange={({ detail }) => setUrlParams({ empty: detail.checked })}>
               Empty state
             </Toggle>
-            <Toggle
-              checked={direction === 'rtl'}
-              onChange={({ detail }) => setUrlParams({ direction: detail.checked ? 'rtl' : 'ltr' })}
-            >
-              RTL
-            </Toggle>
           </SpaceBetween>
         </SpaceBetween>
-
-        {/* Table */}
-        <div dir={direction}>
-          <Table
-            {...collectionProps}
-            columnDefinitions={columnDefinitions}
-            groupDefinitions={groupingPreset === 'flat' ? undefined : groupDefinitions}
-            columnDisplay={columnDisplay}
-            items={items}
-            trackBy="id"
-            selectionType={selectionType === 'none' ? undefined : (selectionType as TableProps.SelectionType)}
-            resizableColumns={resizable}
-            stickyHeader={stickyHeader}
-            stickyHeaderVerticalOffset={stickyHeaderOffset}
-            stickyColumns={{ first: +firstSticky, last: +lastSticky }}
-            variant={variant}
-            enableKeyboardNavigation={enableKeyboardNavigation}
-            wrapLines={wrapLines}
-            stripedRows={stripedRows}
-            contentDensity={contentDensity as 'comfortable' | 'compact'}
-            cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
-            sortingDisabled={sortingDisabled}
-            loading={loading}
-            loadingText="Loading..."
-            ariaLabels={{
-              tableLabel: 'Instances',
-              selectionGroupLabel: 'Selection',
-              allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} items selected`,
-              itemSelectionLabel: (_, item) => `Select ${item.name}`,
-            }}
-            header={<Header counter={`(${tableItems.length})`}>Instances</Header>}
-            filter={
-              <TextFilter
-                {...filterProps}
-                countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
-                filteringPlaceholder="Find instances"
-              />
-            }
-            pagination={<Pagination {...paginationProps} />}
-            empty={<Box textAlign="center">No instances</Box>}
+      }
+    >
+      {/* Table */}
+      <Table
+        {...collectionProps}
+        columnDefinitions={columnDefinitions}
+        groupDefinitions={groupingPreset === 'flat' ? undefined : groupDefinitions}
+        columnDisplay={columnDisplay}
+        items={items}
+        trackBy="id"
+        selectionType={selectionType === 'none' ? undefined : (selectionType as TableProps.SelectionType)}
+        resizableColumns={resizable}
+        stickyHeader={stickyHeader}
+        stickyHeaderVerticalOffset={stickyHeaderOffset}
+        stickyColumns={{ first: +firstSticky, last: +lastSticky }}
+        variant={variant}
+        enableKeyboardNavigation={enableKeyboardNavigation}
+        wrapLines={wrapLines}
+        stripedRows={stripedRows}
+        contentDensity={contentDensity as 'comfortable' | 'compact'}
+        cellVerticalAlign={cellVerticalAlign as 'middle' | 'top'}
+        sortingDisabled={sortingDisabled}
+        loading={loading}
+        loadingText="Loading..."
+        ariaLabels={{
+          tableLabel: 'Instances',
+          selectionGroupLabel: 'Selection',
+          allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} items selected`,
+          itemSelectionLabel: (_, item) => `Select ${item.name}`,
+        }}
+        header={<Header counter={`(${tableItems.length})`}>Instances</Header>}
+        filter={
+          <TextFilter
+            {...filterProps}
+            countText={`${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`}
+            filteringPlaceholder="Find instances"
           />
-        </div>
-      </SpaceBetween>
+        }
+        pagination={<Pagination {...paginationProps} />}
+        empty={<Box textAlign="center">No instances</Box>}
+      />
+      {/* Spacer for sticky header scroll testing */}
       <div style={{ height: '2000px' }} />
     </SimplePage>
   );
