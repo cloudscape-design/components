@@ -11,3 +11,35 @@ import { IconProviderProps } from './interfaces';
  * This allows the Icon component to have these icons available in the context even when no IconProvider is used.
  */
 export const InternalIconContext = createContext<IconProviderProps.Icons>(generatedIcons);
+
+/**
+ * A mapping from each icon size variant to an optional target pixel size.
+ * When a key is set, icons that would normally render at that size will instead have their
+ * inline-size (both wrapper span and child SVG) set to the target pixel value.
+ * An empty object means no overrides — icons render at their original size.
+ */
+export type IconSizeOverrideMap = Partial<Record<string, number>>;
+
+/**
+ * Provides per-size-variant icon size overrides (in pixels) to all descendant Icon components.
+ * Each key corresponds to an original icon size variant (e.g. "normal", "inherit");
+ * the value is the target pixel size number (e.g. 12).
+ * An empty object means no overrides.
+ */
+export const InternalIconSizeOverrideContext = createContext<IconSizeOverrideMap>({});
+
+/**
+ * A mapping from each icon size variant to an optional stroke-width value.
+ * When a key is set, icons at that size will use the specified stroke-width
+ * instead of the default token value and automatic compensation.
+ * An empty object means no overrides — icons use their token-defined stroke-widths.
+ */
+export type IconStrokeWidthOverrideMap = Partial<Record<string, number>>;
+
+/**
+ * Provides per-size-variant stroke-width overrides to all descendant Icon components.
+ * Each key corresponds to an icon size variant (e.g. "normal", "small");
+ * the value is the target stroke-width number in pixels (e.g. 1.5).
+ * An empty object means no overrides.
+ */
+export const InternalIconStrokeWidthOverrideContext = createContext<IconStrokeWidthOverrideMap>({});
