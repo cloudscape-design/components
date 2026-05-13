@@ -1030,6 +1030,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundNavigationBarPrimary: {
+    description: 'The background color of the primary navigation bar.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNavigationBarSecondary: {
+    description: 'The background color of the secondary navigation bar.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderNavigationBarPrimary: {
+    description: 'The border color of the primary navigation bar.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderNavigationBarSecondary: {
+    description: 'The border color of the secondary navigation bar.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
