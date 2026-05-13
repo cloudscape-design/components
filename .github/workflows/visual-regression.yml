@@ -1,9 +1,12 @@
 name: Visual Regression Tests
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      pr-artifact-name:
+        description: Name of the GitHub Actions artifact containing the PR's built dev pages
+        required: true
+        type: string
 
 defaults:
   run:
@@ -33,27 +36,21 @@ jobs:
         with:
           chrome-version: stable
 
-      # ── Build PR (test) pages ──────────────────────────────────────────────
-      # Install the PR's dependencies and build its pages.
-      - name: Install PR dependencies
+      - name: Install dependencies
         run: npm i
 
-      - name: Build PR pages
-        run: npx gulp quick-build
-        env:
-          NODE_ENV: production
+      # ── PR pages: reuse the artifact built by the build job ───────────────
+      - name: Download PR pages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.pr-artifact-name }}
+          path: pages/lib/static-default
 
-      - name: Bundle PR pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
-        env:
-          NODE_ENV: production
-
-      # ── Build baseline (main) pages ────────────────────────────────────────
-      # Use a git worktree so the baseline has its own directory and its own
-      # node_modules. This means a PR that changes package-lock.json will still
-      # produce a correct baseline: the baseline installs from main's lockfile
-      # and the PR build installs from the PR's lockfile, so both sides use the
-      # dependency versions that are correct for their respective source trees.
+      # ── Baseline (main) pages: build from origin/main ─────────────────────
+      # GitHub Actions artifacts are scoped to a workflow run, so there is no
+      # built-in way to reuse a previous main-branch artifact without the API.
+      # We build main locally instead — it shares node_modules with the PR
+      # checkout, so both sides resolve the same dependency versions.
       - name: Create baseline worktree from origin/main
         run: git worktree add /tmp/baseline origin/main
 
@@ -73,8 +70,8 @@ jobs:
         env:
           NODE_ENV: production
 
-      # ── Run tests ─────────────────────────────────────────────────────────
-      - name: Start test server (port 8080)
+      # ── Start both servers and run tests ──────────────────────────────────
+      - name: Start PR server (port 8080)
         run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8080 --static pages/lib/static-default --no-hot &
         env:
           NODE_ENV: development
