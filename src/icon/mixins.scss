@@ -66,25 +66,37 @@ $_icon-sizes: (
     $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
 
     &.size-#{$name} {
-      inline-size: $size;
+      /* stylelint-disable-next-line custom-property-pattern */
+      inline-size: var(--icon-size-override, #{$size});
+      /* stylelint-disable-next-line custom-property-pattern */
+      block-size: max(#{$size}, var(--icon-size-override, #{$size}));
       box-sizing: border-box;
       &-mapped-height {
-        block-size: $supportedLineHeight;
+        //block-size: $supportedLineHeight;
+        /* stylelint-disable-next-line custom-property-pattern */
+        block-size: max($supportedLineHeight, var(--icon-size-override, $size));
         padding-block: $padding;
         padding-inline: 0;
       }
 
       > svg,
       > img {
-        inline-size: $size;
-        block-size: $size;
+        /* stylelint-disable-next-line custom-property-pattern */
+        inline-size: var(--icon-size-override, #{$size});
+        /* stylelint-disable-next-line custom-property-pattern */
+        block-size: max(#{$size}, var(--icon-size-override, #{$size}));
         vertical-align: top;
       }
 
       > svg {
         &,
         * {
-          stroke-width: calc(#{$stroke} / #{$scaleFactor});
+          /* stylelint-disable custom-property-pattern */
+          stroke-width: var(
+            --icon-stroke-width-override,
+            calc(#{$stroke} / #{$scaleFactor} * var(--icon-stroke-scale, 1))
+          );
+          /* stylelint-enable custom-property-pattern */
         }
       }
     }
