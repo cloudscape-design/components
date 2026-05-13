@@ -20,6 +20,7 @@ const {
   integ,
   motion,
   visual,
+  visualDefinitions,
   copyFiles,
   themeableSource,
   bundleVendorFiles,
@@ -36,13 +37,14 @@ const quickBuild = series(
 exports.clean = clean;
 exports['quick-build'] = quickBuild;
 exports.i18n = generateI18nMessages;
-exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs, sizeLimit));
+exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs, sizeLimit, visualDefinitions));
 exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
 exports['test:motion'] = motion;
 exports['test:visual'] = visual;
+exports['build:visual-definitions'] = visualDefinitions;
 
 exports.watch = () => {
   watch(

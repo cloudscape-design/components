@@ -22,4 +22,5 @@ module.exports = {
   bundleVendorFiles: require('./bundle-vendor-files'),
   sizeLimit: require('./size-limit'),
   visual: require('./visual'),
+  visualDefinitions: require('./visual-definitions'),
 };
