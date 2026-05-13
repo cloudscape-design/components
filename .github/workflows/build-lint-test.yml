@@ -30,8 +30,23 @@ jobs:
       artifact-path: pages/lib/static-default
       artifact-name: dev-pages-react${{ matrix.react }}
       react-version: ${{ matrix.react }}   
-  deploy:
+  # Gate job: waits for all build matrix variants to complete so that
+  # downstream jobs (visual, deploy) can depend on a single non-matrix job.
+  build-complete:
+    name: build complete
     needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check build result
+        run: |
+          if [[ "${{ needs.build.result }}" != "success" ]]; then
+            echo "Build failed or was cancelled"
+            exit 1
+          fi
+
+  deploy:
+    needs: build-complete
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
     # skip this job for external contributions as they aren't supported and cause the job's failure
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
@@ -46,7 +61,7 @@ jobs:
 
   visual:
     name: Visual regression
-    needs: build
+    needs: build-complete
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
