@@ -180,6 +180,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: '{colorItemSelected}',
   colorBorderLayout: { light: '{colorNeutral350}', dark: '{colorNeutral650}' },
+  colorBorderToolbar: '{colorBorderLayout}',
   colorBorderNavigationBarPrimary: '{colorBorderLayout}',
   colorBorderNavigationBarPrimaryAccent: '{colorBorderLayout}',
   colorBorderNavigationBarSecondary: '{colorBorderLayout}',
