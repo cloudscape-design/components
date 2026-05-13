@@ -5,5 +5,6 @@
 // Import them here manually to form the full test suite.
 import { TestSuite } from '../types';
 import actionCard from './action-card';
+import alert from './alert';
 
-export const allSuites: TestSuite[] = [actionCard];
+export const allSuites: TestSuite[] = [actionCard, alert];
