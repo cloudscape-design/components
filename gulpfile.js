@@ -20,6 +20,7 @@ const {
   integ,
   motion,
   visual,
+  visualDefinitions,
   copyFiles,
   themeableSource,
   bundleVendorFiles,
@@ -45,6 +46,7 @@ exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
 exports['test:motion'] = motion;
 exports['test:visual'] = visual;
+exports['build:visual-definitions'] = visualDefinitions;
 
 exports.watch = () => {
   watch(
