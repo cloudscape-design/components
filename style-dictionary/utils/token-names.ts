@@ -770,6 +770,8 @@ export type ColorsTokenName =
   | 'colorTextLinkButtonUnderlineHover'
   | 'colorTextLinkDefault'
   | 'colorTextLinkHover'
+  | 'colorTextLinkDecorationDefault'
+  | 'colorTextLinkDecorationHover'
   | 'colorTextLinkSecondaryDefault'
   | 'colorTextLinkSecondaryHover'
   | 'colorTextLinkInfoDefault'

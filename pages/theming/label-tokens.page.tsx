@@ -45,8 +45,10 @@ export default function LabelTokensPage() {
           colorBackgroundStatusIndicatorInfo: { light: '#d5e8ff', dark: '#0a2040' },
           colorBackgroundStatusIndicatorNeutral: { light: '#e8e8e8', dark: '#2a2a2a' },
           // Link decoration tokens
-          fontLinkDecorationThickness: '1px',
+          fontLinkDecorationThickness: '3px',
           fontLinkDecorationStyle: 'dashed',
+          colorTextLinkDecorationDefault: { light: '#e65c00', dark: '#ff9a4d' },
+          colorTextLinkDecorationHover: { light: '#b34000', dark: '#ffbe91' },
         },
       };
 

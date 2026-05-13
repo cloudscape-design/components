@@ -870,6 +870,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextLinkDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of links. Defaults to the link text color.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkDecorationHover: {
+    description: 'The hover color of the text decoration (underline) of links. Defaults to the link hover text color.',
+    public: true,
+    themeable: true,
+  },
   colorTextLinkSecondaryDefault: {
     description:
       'The default color for secondary links. For example: links with lower visual emphasis or supplementary content.',

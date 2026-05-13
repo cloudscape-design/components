@@ -286,6 +286,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLayoutToggleSelected: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorTextLinkDefault: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorTextLinkHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
+  colorTextLinkDecorationDefault: '{colorTextLinkDefault}',
+  colorTextLinkDecorationHover: '{colorTextLinkHover}',
   colorTextLinkSecondaryDefault: '{colorTextLinkDefault}',
   colorTextLinkSecondaryHover: '{colorTextLinkHover}',
   colorTextLinkInfoDefault: '{colorTextLinkDefault}',

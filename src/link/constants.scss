@@ -75,8 +75,8 @@ $link-variants: (
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': inherit,
     'decoration-line': underline,
-    'decoration-color': currentColor,
-    'decoration-color-hover': currentColor,
+    'decoration-color': awsui.$color-text-link-decoration-default,
+    'decoration-color-hover': awsui.$color-text-link-decoration-hover,
     'letter-spacing': normal,
   ),
   'info': (
