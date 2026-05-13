@@ -134,6 +134,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  spaceActionCardHorizontalDefault: {
+    description: 'The default horizontal padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalDefault: {
+    description: 'The default vertical padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalEmbedded: {
+    description: 'The vertical padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
   spaceContainerHorizontal: {
     description: 'The horizontal padding inside a container.',
     public: true,
