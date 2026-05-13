@@ -103,3 +103,7 @@ export function isSVGElement(target: unknown): target is SVGElement {
 export function isElement(target: unknown): target is Element {
   return isHTMLElement(target) || isSVGElement(target);
 }
+
+export function getOwnerWindow(element: HTMLElement | SVGElement | null | undefined): Window {
+  return element?.ownerDocument?.defaultView ?? window;
+}

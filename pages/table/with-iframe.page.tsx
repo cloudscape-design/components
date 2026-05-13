@@ -6,7 +6,7 @@ import zipObject from 'lodash/zipObject';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-import { Box, NonCancelableCustomEvent, SpaceBetween, Table, TableProps, TextFilter } from '~components';
+import { Box, Input, NonCancelableCustomEvent, SpaceBetween, Table, TableProps, TextFilter } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { IframeWrapper } from '../utils/iframe-wrapper';
@@ -21,6 +21,21 @@ type PageContext = React.Context<
 
 const allItems = generateItems(10);
 
+const editableColumnsConfig: typeof columnsConfig = [
+  ...columnsConfig,
+  {
+    id: 'type-edit',
+    header: 'Type (disabled edit)',
+    cell: item => item.type,
+    editConfig: {
+      editingCell: (item, { currentValue, setValue }) => (
+        <Input value={currentValue ?? item.type} onChange={event => setValue(event.detail.value)} />
+      ),
+      disabledReason: () => 'Editing is disabled in iframe test',
+    },
+  },
+];
+
 export default function () {
   const {
     urlParams: { iframe = true },
@@ -34,7 +49,7 @@ export default function () {
 }
 
 function DemoTable() {
-  const [columns, setColumns] = useState(columnsConfig);
+  const [columns, setColumns] = useState(editableColumnsConfig);
 
   function handleWidthChange(event: NonCancelableCustomEvent<TableProps.ColumnWidthsChangeDetail>) {
     const widths = zipObject(
@@ -67,13 +82,21 @@ function DemoTable() {
       <Table
         items={items}
         {...collectionProps}
-        ariaLabels={selectionLabels}
+        ariaLabels={{
+          ...selectionLabels,
+          activateEditLabel: (column, item) => `Edit ${item.id} ${column.header}`,
+          cancelEditLabel: column => `Cancel editing ${column.header}`,
+          submitEditLabel: column => `Submit edit ${column.header}`,
+          submittingEditText: () => 'Submitting',
+          successfulEditLabel: () => 'Edit successful',
+        }}
         stickyHeader={true}
         resizableColumns={true}
         enableKeyboardNavigation={true}
         selectionType="multi"
         columnDefinitions={columns}
         onColumnWidthsChange={handleWidthChange}
+        submitEdit={() => {}}
       />
     </SpaceBetween>
   );
