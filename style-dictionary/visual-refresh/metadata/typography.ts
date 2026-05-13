@@ -94,6 +94,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightBreadcrumbCurrent: {
+    description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
+    themeable: true,
+    public: true,
+  },
   fontWeightButton: {
     description: 'The default font weight for button text.',
     themeable: true,

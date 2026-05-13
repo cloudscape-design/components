@@ -853,6 +853,7 @@ export type TypographyTokenName =
   | 'fontWeightTabs'
   | 'fontWeightTabsDisabled'
   | 'fontWayfindingLinkActiveWeight'
+  | 'fontWeightBreadcrumbCurrent'
   | 'fontWeightButton'
   | 'fontWeightAlertHeader'
   | 'fontWeightFlashbarHeader'
