@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021"],
+    "target": "ES2019",
+    "types": [],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "rootDir": "test/visual",
+    "outDir": "lib/visual-test-definitions"
+  },
+  "include": ["test/visual/definitions", "test/visual/types.ts"],
+  "exclude": []
+}
