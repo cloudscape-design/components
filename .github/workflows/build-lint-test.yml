@@ -1,15 +1,11 @@
 name: Build, lint and test
 
 on:
-  pull_request:
-    branches:
-      - main
-  merge_group:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
 
 permissions:
   id-token: write
@@ -19,22 +15,13 @@ permissions:
   deployments: write
 
 jobs:
-  build:
-    name: build${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
-    strategy:
-      matrix:
-        react: [16, 18]
-    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
-    secrets: inherit
-    with:
-      artifact-path: pages/lib/static-default
-      artifact-name: dev-pages-react${{ matrix.react }}
-      react-version: ${{ matrix.react }}
   deploy:
-    needs: build
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
-    # skip this job for external contributions as they aren't supported and cause the job's failure
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    # Only deploy for PRs from the same repo (not forks) when the build succeeded.
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     strategy:
       matrix:
         react: [16, 18]
