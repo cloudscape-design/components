@@ -29,11 +29,9 @@ jobs:
     with:
       artifact-path: pages/lib/static-default
       artifact-name: dev-pages-react${{ matrix.react }}
-      react-version: ${{ matrix.react }}
-
-  # Gate job: waits for all build matrix variants to complete.
-  # Regular (runs-on) jobs cannot depend on matrix+reusable-workflow jobs directly,
-  # so this non-matrix gate job bridges the dependency.
+      react-version: ${{ matrix.react }}   
+  # Gate job: waits for all build matrix variants to complete so that
+  # downstream jobs (visual, deploy) can depend on a single non-matrix job.
   build-complete:
     name: build complete
     needs: build
@@ -48,7 +46,7 @@ jobs:
           fi
 
   deploy:
-    needs: build
+    needs: build-complete
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
     # skip this job for external contributions as they aren't supported and cause the job's failure
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
@@ -83,7 +81,7 @@ jobs:
           chrome-version: stable
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i
 
       # ── PR pages: reuse the artifact built by the build job ───────────────
       - name: Download PR pages artifact
@@ -97,7 +95,7 @@ jobs:
         run: git worktree add /tmp/baseline origin/main
 
       - name: Install baseline dependencies
-        run: npm ci
+        run: npm i
         working-directory: /tmp/baseline
 
       - name: Build baseline pages
