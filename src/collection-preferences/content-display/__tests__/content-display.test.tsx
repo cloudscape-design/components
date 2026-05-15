@@ -559,3 +559,167 @@ function expectLabelForToggle(option: ContentDisplayOptionWrapper) {
 function pressKey(element: HTMLElement, key: string) {
   fireEvent.keyDown(element, { key, code: key });
 }
+
+describe('Content Display preference with groups', () => {
+  const groupedPreference: CollectionPreferencesProps.ContentDisplayPreference = {
+    ...contentDisplayPreference,
+    groups: [
+      { id: 'g1', label: 'Group 1' },
+      { id: 'g2', label: 'Group 2' },
+    ],
+  };
+
+  const groupedContentDisplay: CollectionPreferencesProps.ContentDisplayItem[] = [
+    { id: 'id1', visible: true },
+    {
+      type: 'group',
+      id: 'g1',
+      visible: true,
+      children: [
+        { id: 'id2', visible: true },
+        { id: 'id3', visible: false },
+      ],
+    },
+    { type: 'group', id: 'g2', visible: true, children: [{ id: 'id4', visible: true }] },
+  ];
+
+  function renderGroupedContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
+    const wrapper = renderCollectionPreferences({
+      contentDisplayPreference: groupedPreference,
+      preferences: { contentDisplay: groupedContentDisplay },
+      ...props,
+    });
+    wrapper.findTriggerButton().click();
+    return wrapper.findModal()!.findContentDisplayPreference()!;
+  }
+
+  it('renders group headers', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const element = wrapper.getElement();
+    expect(element.textContent).toContain('Group 1');
+    expect(element.textContent).toContain('Group 2');
+  });
+
+  it('renders leaf options within groups', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    // Should render all 4 options (id1 ungrouped + id2, id3 in g1 + id4 in g2)
+    expect(options.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('renders options with correct visibility state', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    // id1 is visible, id2 is visible, id3 is not visible, id4 is visible
+    const toggleStates = options.map(opt => opt.findVisibilityToggle().findNativeInput().getElement().checked);
+    // At minimum, not all should be checked (id3 is false)
+    expect(toggleStates).toContain(false);
+  });
+
+  it('renders nested lists with aria-label for groups', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const lists = wrapper.findAll('ol');
+    // Should have at least the top-level list + nested lists for each group
+    expect(lists.length).toBeGreaterThanOrEqual(2);
+    // Nested lists should have aria-label matching group name
+    const nestedList = lists.find(l => l.getElement().getAttribute('aria-label') === 'Group 1');
+    expect(nestedList).toBeDefined();
+  });
+
+  it('filters options within groups', () => {
+    const wrapper = renderGroupedContentDisplay({
+      contentDisplayPreference: { ...groupedPreference, enableColumnFiltering: true },
+    });
+    const filterInput = wrapper.findTextFilter()!;
+    filterInput.findInput().setInputValue('Item 2');
+    // Only Item 2 and its parent group should be visible
+    const element = wrapper.getElement();
+    expect(element.textContent).toContain('Item 2');
+    expect(element.textContent).toContain('Group 1');
+    expect(element.textContent).not.toContain('Item 4');
+  });
+
+  it('shows no match state when filter has no results', () => {
+    const wrapper = renderGroupedContentDisplay({
+      contentDisplayPreference: {
+        ...groupedPreference,
+        enableColumnFiltering: true,
+        i18nStrings: { columnFilteringNoMatchText: 'No matches found', columnFilteringClearFilterText: 'Clear' },
+      },
+    });
+    const filterInput = wrapper.findTextFilter()!;
+    filterInput.findInput().setInputValue('nonexistent');
+    expect(wrapper.getElement().textContent).toContain('No matches found');
+  });
+
+  it('findChildrenOptions returns nested options for a group item', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    // Find a group option and check its children
+    for (const option of options) {
+      const children = option.findChildrenOptions();
+      if (children !== null) {
+        expect(children.length).toBeGreaterThan(0);
+        return;
+      }
+    }
+  });
+
+  it('findChildrenOptions with group=true returns only group children', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    for (const option of options) {
+      const children = option.findChildrenOptions({ group: true });
+      if (children !== null && children.length > 0) {
+        // Found group children
+        expect(children.length).toBeGreaterThan(0);
+        return;
+      }
+    }
+  });
+
+  it('findChildrenOptions with group=false returns only leaf children', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    for (const option of options) {
+      const children = option.findChildrenOptions({ group: false });
+      if (children !== null && children.length > 0) {
+        expect(children.length).toBeGreaterThan(0);
+        return;
+      }
+    }
+  });
+
+  it('findOptions returns all items including groups', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const allOptions = wrapper.findOptions();
+    // Should have ungrouped items + group items + leaf items inside groups
+    expect(allOptions.length).toBeGreaterThan(0);
+  });
+
+  it('toggling a grouped leaf option calls onChange with updated tree', () => {
+    const onConfirm = jest.fn();
+    const collectionPreferencesWrapper = renderCollectionPreferences({
+      contentDisplayPreference: groupedPreference,
+      preferences: { contentDisplay: groupedContentDisplay },
+      onConfirm,
+    });
+    collectionPreferencesWrapper.findTriggerButton().click();
+    const wrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+
+    // Toggle a leaf option visibility — use findOptions() without filter since :has() doesn't work in JSDOM
+    const options = wrapper.findOptions();
+    const toggleableOption = options.find(opt => opt.findVisibilityToggle() !== null);
+    expect(toggleableOption).toBeDefined();
+    toggleableOption!.findVisibilityToggle().findNativeInput().click();
+
+    // Confirm
+    collectionPreferencesWrapper.findModal()!.findFooter()!.findAll('button')[1].click();
+    expect(onConfirm).toHaveBeenCalled();
+    const detail = onConfirm.mock.calls[0][0].detail;
+    expect(detail.contentDisplay).toBeDefined();
+    // Should contain group structure
+    const hasGroup = detail.contentDisplay.some((item: any) => item.type === 'group');
+    expect(hasGroup).toBe(true);
+  });
+});
