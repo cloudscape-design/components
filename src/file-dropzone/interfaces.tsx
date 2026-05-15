@@ -13,6 +13,12 @@ export interface FileDropzoneProps extends BaseComponentProps {
    * Children of the Dropzone.
    */
   children: React.ReactNode;
+  /**
+   * Specifies the file types to accept when files or folders are dropped.
+   * Follows the same format as the native input accept attribute.
+   * Examples: ".jpg,.png", "image/*", "application/pdf"
+   */
+  accept?: string;
 }
 
 export namespace FileDropzoneProps {

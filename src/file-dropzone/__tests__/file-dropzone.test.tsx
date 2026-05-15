@@ -30,7 +30,11 @@ function createDragEvent(type: string, files = [file1, file2]) {
   (event as any).dataTransfer = {
     types: ['Files'],
     files: type === 'drop' ? files : [],
-    items: files.map(() => ({ kind: 'file' })),
+    items: files.map(file => ({
+      kind: 'file',
+      getAsFile: () => file,
+      webkitGetAsEntry: () => null, // No folder support in basic tests
+    })),
   };
   return event;
 }
@@ -118,11 +122,13 @@ describe('File upload dropzone', () => {
     expect(dropzone).not.toHaveClass(selectors.hovered);
   });
 
-  test('dropzone fires onChange on drop', () => {
+  test('dropzone fires onChange on drop', async () => {
     const dropzone = renderFileDropzone({ children: 'Drop files here' }).getElement();
 
     fireEvent(dropzone, createDragEvent('drop'));
 
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file2] } }));
+    await waitFor(() => {
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file2] } }));
+    });
   });
 });
