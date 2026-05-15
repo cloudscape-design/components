@@ -27247,7 +27247,18 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
 
 If not set, all columns are displayed and the order is dictated by the \`columnDefinitions\` property.
 
-Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.",
+Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+
+Each entry is one of the following:
+- \`ColumnDisplay\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier. Must match a column \`id\` from \`columnDefinitions\`.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`GroupDisplay\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier. Must match a group \`id\` from \`groupDefinitions\`.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ColumnDisplayProperties>) - The columns or nested groups within this group.",
       "name": "columnDisplay",
       "optional": true,
       "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
@@ -27468,6 +27479,20 @@ table with \`item=null\` and then for each expanded item. The function result is
       "name": "getLoadingStatus",
       "optional": true,
       "type": "TableProps.GetLoadingStatus<T>",
+    },
+    {
+      "description": "Defines the column groups. Each group has an \`id\` and \`header\` used to label the group header cell.
+
+When using grouped columns, you must also provide the \`columnDisplay\` property with \`{ type: 'group', id, children }\` entries
+to assign columns to their respective groups and define the display hierarchy.
+
+Each group definition contains the following:
+- \`id\` (string) - A unique identifier for the group.
+- \`header\` (ReactNode) - The content displayed in the group header cell.
+- \`ariaLabel\` ((LabelData) => string) - (Optional) A function that provides an \`aria-label\` for the group header.",
+      "name": "groupDefinitions",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.GroupDefinition<T>>",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -42521,8 +42546,22 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -42557,9 +42596,11 @@ Returns the current value of the input.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },
@@ -51835,8 +51876,22 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns column header cells from the table's header region.
+
+By default, returns all leaf-column headers (\`scope="col"\`).
+For tables without column grouping this is equivalent to the previous behavior.
+For tables with column grouping this excludes group header cells.",
           "name": "findColumnHeaders",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ groupId?: string | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -51866,9 +51921,11 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the clickable sorting area of a column header.",
           "name": "findColumnSortingArea",
           "parameters": [
             {
+              "description": "1-based index of the column.",
               "flags": {
                 "isOptional": false,
               },

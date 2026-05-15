@@ -29,6 +29,12 @@
   padding-block-start: awsui.$space-xs;
 }
 
+.label-bottom {
+  align-items: end;
+  padding-block-start: awsui.$space-xs;
+  padding-block-end: calc(awsui.$space-xxs + awsui.$space-xxs);
+}
+
 .stud {
   visibility: hidden;
 }

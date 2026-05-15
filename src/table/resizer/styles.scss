@@ -34,7 +34,7 @@ $block-gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
   block-size: 100%;
 }
 
-th:not(:last-child) > .divider,
+th:not([data-rightmost]) > .divider,
 .divider-interactive {
   position: absolute;
   outline: none;
@@ -46,11 +46,30 @@ th:not(:last-child) > .divider,
   max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
-  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
   box-sizing: border-box;
+
+  // Position variants for grouped column headers.
+  // All leaf dividers maintain the same bottom gap ($block-gap / 2) as the default.
+  &.divider-position-top {
+    // Leaf column under a group: extends upward, same bottom gap as default.
+    margin-block-start: 0;
+    margin-block-end: auto;
+    max-block-size: calc(100% - #{$block-gap} / 2);
+  }
+  &.divider-position-bottom {
+    // Group header: extends downward to meet the horizontal border below.
+    margin-block-start: auto;
+    margin-block-end: 0;
+    max-block-size: calc(100% - #{$block-gap} / 2);
+  }
+  &.divider-position-full {
+    margin-block: 0;
+    max-block-size: 100%;
+  }
 }
 
-th:not(:last-child) > .divider-disabled {
+th:not([data-rightmost]) > .divider-disabled {
   border-inline-start-color: awsui.$color-border-divider-default;
 }
 
@@ -58,13 +77,14 @@ th:not(:last-child) > .divider-disabled {
   inset-inline-end: calc(#{$handle-width} / 2);
 }
 
-// stylelint-disable-next-line selector-combinator-disallowed-list
-th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
-  inset-inline-end: 0;
+.divider-active {
+  /* used in test-utils */
 }
 
-.divider-active {
-  border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
+.resizer-wrapper.visual-refresh.is-borderless.is-last {
+  > .divider-interactive {
+    inset-inline-end: 0;
+  }
 }
 
 .resizer {
@@ -83,9 +103,6 @@ th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interacti
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     pointer-events: none;
-  }
-  &:hover + .divider {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
   }
   &.has-focus {
     @include focus-visible.when-visible-unfocused {

@@ -55,7 +55,7 @@ export function getVisibleColumnDefinitions<T>({
   columnDefinitions,
 }: {
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>;
-  visibleColumns?: ReadonlyArray<string>;
+  visibleColumns?: ReadonlyArray<string | number>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
   // columnsDisplay has a precedence over visibleColumns.
@@ -79,17 +79,15 @@ function getVisibleColumnDefinitionsFromColumnDisplay<T>({
     (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
     {}
   );
-  return columnDisplay
-    .filter(item => item.visible)
-    .map(item => columnDefinitionsById[item.id])
-    .filter(Boolean);
+  const visibleIds = flattenVisibleColumnIds(columnDisplay);
+  return visibleIds.map(id => columnDefinitionsById[id]).filter(Boolean);
 }
 
 function getVisibleColumnDefinitionsFromVisibleColumns<T>({
   visibleColumns,
   columnDefinitions,
 }: {
-  visibleColumns: ReadonlyArray<string>;
+  visibleColumns: ReadonlyArray<string | number>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
   const ids = new Set(visibleColumns);
@@ -103,4 +101,18 @@ export function getStickyClassNames(styles: Record<string, string>, props: Stick
     [styles['sticky-cell-last-inline-start']]: !!props?.lastInsetInlineStart,
     [styles['sticky-cell-last-inline-end']]: !!props?.lastInsetInlineEnd,
   };
+}
+
+function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): string[] {
+  const ids: string[] = [];
+  for (const item of items) {
+    if (item.type === 'group') {
+      // ColumnDisplayGroup — recurse into children
+      ids.push(...flattenVisibleColumnIds(item.children));
+    } else if (item.visible) {
+      // ColumnDisplayItem — include if visible
+      ids.push(item.id);
+    }
+  }
+  return ids;
 }

@@ -46,7 +46,25 @@ export default class TableWrapper extends ComponentWrapper {
     return this.containerWrapper.findFooter();
   }
 
-  findColumnHeaders(): Array<ElementWrapper> {
+  /**
+   * Returns column header cells from the table's header region.
+   *
+   * By default, returns all leaf-column headers (`scope="col"`).
+   * For tables without column grouping this is equivalent to the previous behavior.
+   * For tables with column grouping this excludes group header cells.
+   *
+   * @param option.groupId When provided, returns only leaf columns belonging to this group
+   *   (matched via `data-column-group-id` attribute).
+   */
+  findColumnHeaders(
+    option: {
+      groupId?: string;
+    } = {}
+  ): Array<ElementWrapper> {
+    const { groupId } = option;
+    if (groupId !== undefined) {
+      return this.findActiveTHead().findAll(`th[data-column-group-id="${groupId}"]`);
+    }
     return this.findActiveTHead().findAll('tr > *');
   }
 
@@ -56,7 +74,10 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column containing the resizer.
    */
   findColumnResizer(columnIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`);
+    return (
+      this.findActiveTHead().find(`th[data-column-index="${columnIndex}"] .${resizerStyles.resizer}`) ??
+      this.findActiveTHead().find(`th:nth-child(${columnIndex}) .${resizerStyles.resizer}`)
+    );
   }
 
   /**
@@ -105,8 +126,16 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findByClassName(styles.loading);
   }
 
+  /**
+   * Returns the clickable sorting area of a column header.
+   *
+   * @param colIndex 1-based index of the column.
+   */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
-    return this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`);
+    return (
+      this.findActiveTHead().find(`th[data-column-index="${colIndex}"] [role=button]`) ??
+      this.findActiveTHead().find(`tr > *:nth-child(${colIndex}) [role=button]`)
+    );
   }
 
   /**

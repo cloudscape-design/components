@@ -52,11 +52,15 @@ export function TableHeaderSelectionCell({
           focusedComponent={focusedComponent}
           {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
+          spansRows={!!props.rowSpan && props.rowSpan > 1}
         />
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
       )}
-      <Divider className={styles['resize-divider']} />
+      <Divider
+        className={styles['resize-divider']}
+        variant={props.rowSpan && props.rowSpan > 1 ? 'interactive' : 'default'}
+      />
     </TableThElement>
   );
 }
