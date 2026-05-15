@@ -11,54 +11,32 @@ import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
-import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { StickyColumnsModel } from '../sticky-columns';
-import { TableRole } from '../table-role';
+import { BaseHeaderCellProps } from './common-props';
 import { TableThElement } from './th-element';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export interface TableHeaderCellProps<ItemType> {
-  tabIndex: number;
+export interface TableHeaderCellProps<ItemType> extends BaseHeaderCellProps {
   column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
-  wrapLines?: boolean;
   stuck?: boolean;
-  sticky?: boolean;
-  hidden?: boolean;
-  stripedRows?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
-  onResizeFinish: () => void;
-  colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
-  resizableColumns?: boolean;
-  resizableStyle?: ColumnWidthStyle;
   isEditable?: boolean;
   columnId: PropertyKey;
-  stickyState: StickyColumnsModel;
-  cellRef: React.RefCallback<HTMLElement>;
-  focusedComponent?: null | string;
-  tableRole: TableRole;
-  resizerRoleDescription?: string;
-  resizerTooltipText?: string;
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
-  variant: TableProps.Variant;
-  tableVariant?: TableProps.Variant;
   colSpan?: number;
   rowSpan?: number;
-  /** ID of the direct parent group, forwarded to the <th> as data-column-group-id for test-utils. */
   columnGroupId?: string;
-  /** When true, this cell is the rightmost child within its parent group. */
   isLastChildOfGroup?: boolean;
-  /** Determine if the cell is the right most cell of the header */
-  isRightmost?: boolean;
+  isLast?: boolean;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -93,7 +71,7 @@ export function TableHeaderCell<ItemType>({
   rowSpan,
   columnGroupId,
   isLastChildOfGroup,
-  isRightmost,
+  isLast,
   tableVariant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -155,7 +133,7 @@ export function TableHeaderCell<ItemType>({
       colSpan={colSpan}
       rowSpan={rowSpan}
       columnGroupId={columnGroupId}
-      isRightmost={isRightmost}
+      isLast={isLast}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

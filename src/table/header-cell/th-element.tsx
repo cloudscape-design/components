@@ -42,11 +42,11 @@ export interface TableThElementProps {
   rowSpan?: number;
   scope?: 'col' | 'colgroup';
   columnGroupId?: string;
-  isRightmost?: boolean;
+  isLast?: boolean;
   /** Additional className to merge (e.g. boundary shadow classes from a secondary sticky subscription). */
-  extraClassName?: string;
+  className?: string;
   /** Additional ref for boundary sticky subscription (imperatively updates shadow classes). */
-  extraRef?: React.RefCallback<HTMLElement>;
+  boundaryRef?: React.RefCallback<HTMLElement>;
 }
 
 export function TableThElement({
@@ -73,9 +73,9 @@ export function TableThElement({
   rowSpan,
   scope,
   columnGroupId,
-  isRightmost,
-  extraClassName,
-  extraRef,
+  isLast,
+  className,
+  boundaryRef,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -87,7 +87,7 @@ export function TableThElement({
   });
 
   const cellRefObject = useRef<HTMLTableCellElement>(null);
-  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, extraRef);
+  const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject, boundaryRef);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
   return (
@@ -116,7 +116,7 @@ export function TableThElement({
           [styles['header-cell-grouped']]: !!columnGroupId,
         },
         stickyStyles.className,
-        extraClassName
+        className
       )}
       colSpan={colSpan}
       rowSpan={rowSpan}
@@ -127,7 +127,7 @@ export function TableThElement({
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
-      {...(isRightmost ? { 'data-rightmost': true } : {})}
+      {...(isLast ? { 'data-rightmost': true } : {})}
       {...(scope !== 'colgroup' ? { 'data-column-index': colIndex + 1 } : {})}
       {...(columnGroupId ? { 'data-column-group-id': columnGroupId } : {})}
     >

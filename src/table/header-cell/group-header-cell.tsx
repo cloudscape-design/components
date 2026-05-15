@@ -6,54 +6,29 @@ import clsx from 'clsx';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
-import { TableRole } from '../table-role';
+import { useStickyCellStyles } from '../sticky-columns';
 import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from '../use-column-widths';
 import { getStickyClassNames } from '../utils';
+import { BaseHeaderCellProps } from './common-props';
 import { TableThElement } from './th-element';
 
 import styles from './styles.css.js';
 
-export interface TableGroupHeaderCellProps {
+export interface TableGroupHeaderCellProps extends BaseHeaderCellProps {
   group: TableProps.GroupDefinition;
   colspan: number;
   rowspan: number;
-  colIndex: number;
   groupId: string;
-  resizableColumns?: boolean;
-  resizableStyle?: ColumnWidthStyle;
-  onResizeFinish: () => void;
   updateGroupWidth: (groupId: PropertyKey, newWidth: number) => void;
   childColumnIds: PropertyKey[];
   firstChildColumnId?: PropertyKey;
   lastChildColumnId?: PropertyKey;
-  focusedComponent?: null | string;
-  tabIndex: number;
-  sticky?: boolean;
-  hidden?: boolean;
-  stripedRows?: boolean;
-  stickyState: StickyColumnsModel;
-  cellRef: React.RefCallback<HTMLElement>;
-  tableRole: TableRole;
-  resizerRoleDescription?: string;
-  resizerTooltipText?: string;
-  variant: TableProps.Variant;
-  tableVariant?: TableProps.Variant;
-  isLastChildOfGroup?: boolean;
   columnGroupId?: string;
-  /** When set, the <th> uses this column ID for sticky positioning instead of groupId. */
   stickyColumnId?: PropertyKey;
-  /**
-   * When set, subscribes to this column's sticky state to inherit boundary classes
-   * (shadow) without affecting the offset. Used when the positioning column
-   * and the boundary column differ (e.g. sticky-first split groups).
-   */
   stickyBoundaryColumnId?: PropertyKey;
-  isRightmost?: boolean;
-  wrapLines?: boolean;
+  isLast?: boolean;
 }
 
 export function TableGroupHeaderCell({
@@ -82,7 +57,7 @@ export function TableGroupHeaderCell({
   columnGroupId,
   stickyColumnId,
   stickyBoundaryColumnId,
-  isRightmost,
+  isLast,
   wrapLines,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
@@ -108,8 +83,9 @@ export function TableGroupHeaderCell({
     classOnly: true,
   });
 
-  // Extract only the shadow classes from the boundary subscription
-  /* istanbul ignore next: requires real sticky column state */
+  // boundaryStyles.className is populated by scroll/intersection observers in the browser.
+  // In JSDOM these observers don't fire, so this branch is only exercised in integration tests.
+  /* istanbul ignore next */
   const boundaryClassName = stickyBoundaryColumnId && boundaryStyles.className ? boundaryStyles.className : undefined;
 
   return (
@@ -130,10 +106,10 @@ export function TableGroupHeaderCell({
       colSpan={colspan}
       rowSpan={rowspan}
       scope="colgroup"
-      isRightmost={isRightmost}
+      isLast={isLast}
       columnGroupId={columnGroupId}
-      extraClassName={boundaryClassName}
-      extraRef={stickyBoundaryColumnId ? boundaryStyles.ref : undefined}
+      className={boundaryClassName}
+      boundaryRef={stickyBoundaryColumnId ? boundaryStyles.ref : undefined}
     >
       <div
         ref={clickableHeaderRef}
