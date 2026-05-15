@@ -1,13 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useState } from 'react';
 
-import { Button, Container, Header, Link, Multiselect, SpaceBetween, Table } from '~components';
-import { applyTheme, generateThemeStylesheet, Theme } from '~components/theming';
+import React, { useContext, useState } from 'react';
+
+import {
+  Button,
+  Checkbox,
+  Container,
+  FormField,
+  Header,
+  Link,
+  Multiselect,
+  SpaceBetween,
+  Table,
+  Textarea,
+} from '~components';
+import { applyTheme, generateFullThemeStylesheet, generateThemeStylesheet, Theme } from '~components/theming';
 import * as Tokens from '~design-tokens';
 
 import AppContext from '../app/app-context';
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
+import pink from './theme-pink';
 
 const colorGreen900 = '#172211';
 const colorGreen700 = '#1a520f';
@@ -66,69 +79,51 @@ const sharedItems = [
   },
 ];
 
+let resetApplyTheme: null | (() => void) = null;
+let styleNode: null | HTMLStyleElement = null;
+
+function applyCss(css: null | string) {
+  if (styleNode) {
+    styleNode.remove();
+    styleNode = null;
+  }
+  if (css) {
+    styleNode = document.createElement('style');
+    styleNode.appendChild(document.createTextNode(css));
+    document.head.appendChild(styleNode);
+  }
+}
+
 export default function () {
   const { urlParams } = useContext(AppContext);
-  const [themed, setThemed] = useState<boolean>(false);
   const [secondaryTheme, setSecondaryTheme] = useState<boolean>(urlParams.visualRefresh);
-  const [themeMethod, setThemeMethod] = useState<'applyTheme' | 'generateThemeStylesheet'>('applyTheme');
-
-  useEffect(() => {
-    let reset: () => void = () => {};
-    if (themed) {
-      if (themeMethod === 'applyTheme') {
-        const result = applyTheme({ theme, baseThemeId: secondaryTheme ? 'visual-refresh' : undefined });
-        reset = result.reset;
-      } else {
-        const stylesheet = generateThemeStylesheet({
-          theme,
-          baseThemeId: secondaryTheme ? 'visual-refresh' : undefined,
-        });
-
-        const styleNode = document.createElement('style');
-        styleNode.appendChild(document.createTextNode(stylesheet));
-        document.head.appendChild(styleNode);
-
-        reset = () => {
-          styleNode.remove();
-        };
-      }
-    }
-    return reset;
-  }, [themed, secondaryTheme, themeMethod]);
+  const fullThemeStylesheet = generateFullThemeStylesheet({ theme: pink });
+  const baseThemeId = secondaryTheme ? 'visual-refresh' : undefined;
+  const callApplyTheme = () => (resetApplyTheme = applyTheme({ theme, baseThemeId }).reset);
+  const callGenerateThemeStylesheet = () => applyCss(generateThemeStylesheet({ theme, baseThemeId }));
+  const callGenerateFullThemeStylesheet = () => applyCss(fullThemeStylesheet);
+  const reset = () => {
+    applyCss(null);
+    resetApplyTheme?.();
+  };
   return (
-    <div style={{ padding: 15 }}>
-      <h1>Theming Integration Page</h1>
-      <p>Only for internal theme</p>
-      <label>
-        <input
-          type="checkbox"
-          data-testid="change-theme"
-          checked={themed}
-          onChange={evt => setThemed(evt.currentTarget.checked)}
-        />
-        <span style={{ marginInlineStart: 5 }}>Apply theme</span>
-      </label>
-      <label>
-        <input
-          style={{ marginInlineStart: 15 }}
-          type="checkbox"
-          data-testid="set-secondary"
-          checked={secondaryTheme}
-          onChange={evt => setSecondaryTheme(evt.currentTarget.checked)}
-        />
-        <span style={{ marginInlineStart: 5 }}>Secondary theme</span>
-      </label>
-      <label>
-        <input
-          style={{ marginInlineStart: 15 }}
-          type="checkbox"
-          data-testid="change-theme-method"
-          checked={themeMethod === 'applyTheme'}
-          onChange={evt => setThemeMethod(evt.currentTarget.checked ? 'applyTheme' : 'generateThemeStylesheet')}
-        />
-        <span style={{ marginInlineStart: 5 }}>Use applyTheme</span>
-      </label>
-      <ScreenshotArea>
+    <SimplePage
+      title="Theming Integration Page"
+      subtitle="Demonstrates use of theming utils"
+      screenshotArea={{}}
+      settings={
+        <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+          <Checkbox checked={secondaryTheme} onChange={({ detail }) => setSecondaryTheme(detail.checked)}>
+            Use secondary theme
+          </Checkbox>
+          <Button onClick={callApplyTheme}>Use applyTheme</Button>
+          <Button onClick={callGenerateThemeStylesheet}>Use generateThemeStylesheet</Button>
+          <Button onClick={callGenerateFullThemeStylesheet}>Use generateFullThemeStylesheet</Button>
+          <Button onClick={reset}>Reset</Button>
+        </SpaceBetween>
+      }
+    >
+      <SpaceBetween size="m">
         <SpaceBetween size="xl" direction="horizontal">
           <SpaceBetween direction="vertical" size="m">
             <Button variant="primary">Primary button</Button>
@@ -196,7 +191,11 @@ export default function () {
             />
           </Container>
         </SpaceBetween>
-      </ScreenshotArea>
-    </div>
+
+        <FormField label="CSS generated with generateFullThemeStylesheet">
+          <Textarea readOnly={true} rows={20} value={fullThemeStylesheet} />
+        </FormField>
+      </SpaceBetween>
+    </SimplePage>
   );
 }

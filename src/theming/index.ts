@@ -38,3 +38,18 @@ export function generateThemeStylesheet({ theme, baseThemeId }: GenerateThemeSty
     baseThemeId,
   });
 }
+
+export function generateFullThemeStylesheet({ theme }: { theme: Theme }): string {
+  return coreGenerateThemeStylesheet({
+    preset: {
+      ...preset,
+      theme: {
+        id: 'custom',
+        selector: 'body',
+        modes: preset.theme.modes,
+        tokenModeMap: preset.theme.tokenModeMap,
+        ...(theme as any),
+      },
+    },
+  });
+}
