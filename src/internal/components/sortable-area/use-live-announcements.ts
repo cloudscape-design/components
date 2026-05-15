@@ -50,7 +50,10 @@ export default function useLiveAnnouncements<Item>({
     onDragStart({ active }: DragStartEvent) {
       if (active && liveAnnouncementDndStarted) {
         const index = items.findIndex(item => itemDefinition.id(item) === active.id);
-        return liveAnnouncementDndStarted(index + 1, items.length);
+        const item = items.find(item => itemDefinition.id(item) === active.id);
+        const label = item ? itemDefinition.label(item) : '';
+        const announcement = liveAnnouncementDndStarted(index + 1, items.length);
+        return label ? `${label}. ${announcement}` : announcement;
       }
     },
     onDragOver({ active, over }: DragOverEvent) {
@@ -71,7 +74,10 @@ export default function useLiveAnnouncements<Item>({
       if (liveAnnouncementDndItemCommitted) {
         const initialIndex = items.findIndex(item => itemDefinition.id(item) === active.id);
         const finalIndex = over ? items.findIndex(item => itemDefinition.id(item) === over.id) : initialIndex;
-        return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, items.length);
+        const item = items.find(item => itemDefinition.id(item) === active.id);
+        const label = item ? itemDefinition.label(item) : '';
+        const announcement = liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, items.length);
+        return label ? `${label}. ${announcement}` : announcement;
       }
     },
     onDragCancel() {
