@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -303,26 +303,14 @@ const InternalTable = React.forwardRef(
     });
 
     // Build visible column IDs set for grouping
-    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => col.id || `column-${idx}`));
+    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx) as string));
 
-    const hierarchicalStructure = useColumnGroups(columnDefinitions, groupDefinitions, visibleColumnIds, columnDisplay);
-
-    const groupLeafMap = useMemo(() => {
-      if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
-        return undefined;
-      }
-      const map = new Map<string, string[]>();
-      const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
-      for (const row of hierarchicalStructure.rows) {
-        for (const col of row.columns) {
-          if (col.isGroup) {
-            const leafIds = leafRow.columns.filter(l => !l.isGroup && l.parentGroupIds.includes(col.id)).map(l => l.id);
-            map.set(col.id, leafIds);
-          }
-        }
-      }
-      return map;
-    }, [hierarchicalStructure]);
+    const { groupLeafMap, ...columnGroupsLayout } = useColumnGroups(
+      columnDefinitions,
+      groupDefinitions,
+      visibleColumnIds,
+      columnDisplay
+    );
 
     const selectionProps = {
       items: allItems,
@@ -419,7 +407,7 @@ const InternalTable = React.forwardRef(
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       groupDefinitions,
-      hierarchicalStructure,
+      columnGroupsLayout,
       variant: computedVariant,
       tableVariant: computedVariant,
       wrapLines,
@@ -480,7 +468,7 @@ const InternalTable = React.forwardRef(
 
     const colIndexOffset = selectionType ? 1 : 0;
     const totalColumnsCount = visibleColumnDefinitions.length + colIndexOffset;
-    const headerRowCount = hierarchicalStructure?.rows.length || 1;
+    const headerRowCount = columnGroupsLayout?.rows.length || 1;
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
@@ -531,7 +519,7 @@ const InternalTable = React.forwardRef(
                       tableHasHeader={hasHeader}
                       contentDensity={contentDensity}
                       tableRole={tableRole}
-                      hasGroupedColumns={!!hierarchicalStructure && hierarchicalStructure.rows.length > 1}
+                      hasGroupedColumns={!!columnGroupsLayout && columnGroupsLayout.rows.length > 1}
                       columnDefinitions={visibleColumnDefinitions}
                       hasSelection={hasSelection}
                     />
@@ -593,7 +581,7 @@ const InternalTable = React.forwardRef(
                     className={clsx(
                       styles.table,
                       resizableColumns && styles['table-layout-fixed'],
-                      hierarchicalStructure && hierarchicalStructure.rows.length > 1 && styles['has-grouped-header'],
+                      columnGroupsLayout && columnGroupsLayout.rows.length > 1 && styles['has-grouped-header'],
                       contentDensity === 'compact' && getVisualContextClassname('compact-table')
                     )}
                     {...getTableRoleProps({
@@ -605,7 +593,7 @@ const InternalTable = React.forwardRef(
                       ariaLabelledby,
                     })}
                   >
-                    {resizableColumns && hierarchicalStructure && hierarchicalStructure.rows.length > 1 && (
+                    {resizableColumns && columnGroupsLayout && columnGroupsLayout.rows.length > 1 && (
                       <TableColGroup
                         visibleColumnDefinitions={visibleColumnDefinitions}
                         hasSelection={hasSelection}
