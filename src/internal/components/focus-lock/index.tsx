@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
+import { nodeBelongs } from '@cloudscape-design/component-toolkit/dom';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import TabTrap from '../tab-trap/index';
@@ -82,13 +83,14 @@ function FocusLock(
   useImperativeHandle(ref, () => ({ focusFirst }));
   const mergedRef = useMergeRefs(containerRef, restoreFocusHandler);
 
+  const isFocusInside = (event: React.FocusEvent) => nodeBelongs(containerRef.current, event.relatedTarget);
   return (
     <>
-      <TabTrap disabled={disabled} focusNextCallback={focusLast} />
+      <TabTrap disabled={disabled} focusNextCallback={event => (isFocusInside(event) ? focusLast() : focusFirst())} />
       <div className={className} ref={mergedRef}>
         {children}
       </div>
-      <TabTrap disabled={disabled} focusNextCallback={focusFirst} />
+      <TabTrap disabled={disabled} focusNextCallback={event => (isFocusInside(event) ? focusFirst() : focusLast())} />
     </>
   );
 }
