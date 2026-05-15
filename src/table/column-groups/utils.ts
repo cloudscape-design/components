@@ -100,6 +100,9 @@ function buildTreeFromColumnDisplay<T>(
         continue;
       }
       buildTreeFromColumnDisplay(item.children, nodeMap, groupNode);
+      // Only attach group if it has visible descendants. The recursive call above
+      // only adds children that are either visible columns or nested groups with
+      // their own visible descendants, so this check handles all nesting levels.
       if (groupNode.children.length > 0) {
         parent.addChild(groupNode);
       }
@@ -124,7 +127,8 @@ function buildTreeFromVisibleColumns<T>(
   root: TableHeaderNode<T>
 ): void {
   for (const col of visibleColumns) {
-    /* istanbul ignore next */
+    // Columns without IDs cannot participate in grouping, they have no key
+    // to match against columnDisplay entries or groupDefinitions.
     if (!col.id) {
       continue;
     }
@@ -187,7 +191,6 @@ export function calculateHierarchyTree<T>(
     columnDefinitions,
   });
 
-  // Build node map
   const nodeMap = new Map<string, TableHeaderNode<T>>();
 
   for (const col of visibleColumns) {
@@ -200,7 +203,6 @@ export function calculateHierarchyTree<T>(
     nodeMap.set(group.id, new TableHeaderNode<T>(group.id, { groupDefinition: group }));
   }
 
-  // Build tree
   const root = new TableHeaderNode<T>('*', { isRoot: true });
 
   if (columnDisplay && columnDisplay.length > 0) {
@@ -209,7 +211,6 @@ export function calculateHierarchyTree<T>(
     buildTreeFromVisibleColumns(visibleColumns, nodeMap, root);
   }
 
-  // Compute layout
   computeSubTreeHeights(root);
 
   const treeHeight = root.subTreeHeight - 1;
@@ -270,6 +271,8 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): ColumnGroup
     queue.push(...node.children);
   }
 
+  // Sort row indices to ensure rows are ordered top-to-bottom,
+  // then sort columns within each row by their horizontal position.
   const rows: HeaderRow<T>[] = Array.from(rowsMap.keys())
     .sort((a, b) => a - b)
     .map(key => ({ columns: rowsMap.get(key)!.sort((a, b) => a.colIndex - b.colIndex) }));
