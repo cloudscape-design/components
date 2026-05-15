@@ -1,18 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ColumnInRow, HierarchicalStructure } from './utils';
+import { ColumnGroupsLayout, HeaderRowColumn } from './utils';
 
-export interface GroupSplit {
+/**
+ * Describes how a group header is split by a single sticky column boundary.
+ * `stickyColspan` is the number of columns on the sticky side.
+ * `staticColspan` is the number of columns on the scrollable side.
+ * When both are 0, the group is not affected by this boundary.
+ */
+export interface StickyGroupSplit {
   stickyColspan: number;
-  nonStickyColspan: number;
-  side: 'first' | 'last';
+  staticColspan: number;
 }
 
-export function getChildColumnIds(hierarchicalStructure: HierarchicalStructure<any>, groupId: string): string[] {
-  const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+/** Returns all leaf column IDs that are descendants of the given group (including nested subgroups). */
+export function getGroupColumnIds(columnGroupsLayout: ColumnGroupsLayout<any>, groupId: string): string[] {
+  const columnsRow = columnGroupsLayout.rows[columnGroupsLayout.rows.length - 1];
   const childIds: string[] = [];
-  for (const col of leafRow.columns) {
+  for (const col of columnsRow.columns) {
     if (!col.isGroup && col.parentGroupIds.includes(groupId)) {
       childIds.push(col.id);
     }
@@ -21,37 +27,43 @@ export function getChildColumnIds(hierarchicalStructure: HierarchicalStructure<a
 }
 
 /**
- * Determines if a group header cell is split by a sticky column boundary.
- * Returns null if no split, or the split details if the group straddles a boundary.
+ * Computes how a group header cell is split by a sticky boundary.
+ * Call once for sticky-first and once for sticky-last.
+ *
+ * @param stickyCount - number of sticky columns from that side (first or last)
+ * @param side - which boundary to check
  */
-export function getGroupSplit(
-  col: ColumnInRow<any>,
-  stickyColumnsFirst: number,
-  stickyColumnsLast: number,
-  totalLeafColumns: number
-): GroupSplit | null {
-  if (!col.isGroup) {
-    return null;
+export function getGroupSplit({
+  col,
+  stickyCount,
+  side,
+  totalLeafColumns,
+}: {
+  col: HeaderRowColumn<any>;
+  stickyCount: number;
+  side: 'first' | 'last';
+  totalLeafColumns: number;
+}): StickyGroupSplit {
+  if (!col.isGroup || stickyCount === 0) {
+    return { stickyColspan: 0, staticColspan: 0 };
   }
 
   const groupStart = col.colIndex;
   const groupEnd = col.colIndex + col.colSpan - 1;
 
-  if (stickyColumnsFirst > 0) {
-    const lastStickyFirst = stickyColumnsFirst - 1;
+  if (side === 'first') {
+    const lastStickyFirst = stickyCount - 1;
     if (groupStart <= lastStickyFirst && groupEnd > lastStickyFirst) {
       const stickyColspan = lastStickyFirst - groupStart + 1;
-      return { stickyColspan, nonStickyColspan: col.colSpan - stickyColspan, side: 'first' };
+      return { stickyColspan, staticColspan: col.colSpan - stickyColspan };
     }
-  }
-
-  if (stickyColumnsLast > 0) {
-    const firstStickyLast = totalLeafColumns - stickyColumnsLast;
+  } else {
+    const firstStickyLast = totalLeafColumns - stickyCount;
     if (groupStart < firstStickyLast && groupEnd >= firstStickyLast) {
-      const nonStickyColspan = firstStickyLast - groupStart;
-      return { stickyColspan: col.colSpan - nonStickyColspan, nonStickyColspan, side: 'last' };
+      const staticColspan = firstStickyLast - groupStart;
+      return { stickyColspan: col.colSpan - staticColspan, staticColspan };
     }
   }
 
-  return null;
+  return { stickyColspan: 0, staticColspan: 0 };
 }
