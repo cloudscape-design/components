@@ -80,7 +80,6 @@ export function TableGroupHeaderCell({
     stickyColumns: stickyState,
     columnId: stickyBoundaryColumnId ?? stickyColumnId ?? groupId,
     getClassName: props => getStickyClassNames(styles, props),
-    classOnly: true,
   });
 
   // boundaryStyles.className is populated by scroll/intersection observers in the browser.
