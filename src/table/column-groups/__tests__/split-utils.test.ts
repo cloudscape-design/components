@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { TableProps } from '../../interfaces';
-import { getChildColumnIds, getGroupSplit } from '../split-utils';
+import { getGroupColumnIds, getGroupSplit } from '../split-utils';
 import { calculateHierarchyTree } from '../utils';
 
 const COLUMN_DEFS: TableProps.ColumnDefinition<any>[] = [
@@ -47,61 +47,62 @@ function buildStructure() {
   return calculateHierarchyTree(COLUMN_DEFS, ALL_IDS, GROUP_DEFS, DISPLAY);
 }
 
-describe('getChildColumnIds', () => {
+describe('getGroupColumnIds', () => {
   test('returns leaf column IDs for a group', () => {
     const structure = buildStructure();
-    expect(getChildColumnIds(structure, 'config')).toEqual(['type', 'az']);
-    expect(getChildColumnIds(structure, 'perf')).toEqual(['cpu', 'memory']);
+    expect(getGroupColumnIds(structure, 'config')).toEqual(['type', 'az']);
+    expect(getGroupColumnIds(structure, 'perf')).toEqual(['cpu', 'memory']);
   });
 
   test('returns empty array for unknown group', () => {
     const structure = buildStructure();
-    expect(getChildColumnIds(structure, 'nonexistent')).toEqual([]);
+    expect(getGroupColumnIds(structure, 'nonexistent')).toEqual([]);
   });
 });
 
 describe('getGroupSplit', () => {
-  test('returns null when group is fully within sticky-first boundary', () => {
+  test('no split when group is fully within sticky-first boundary', () => {
     const structure = buildStructure();
-    // config group is at colIndex 2-3, stickyFirst=4 means all within boundary
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    expect(getGroupSplit(configGroup, 4, 0, 6)).toBeNull();
+    const split = getGroupSplit({ col: configGroup, stickyCount: 4, side: 'first', totalLeafColumns: 6 });
+    expect(split.stickyColspan).toBe(0);
+    expect(split.staticColspan).toBe(0);
   });
 
-  test('returns null when group is fully outside sticky boundary', () => {
+  test('no split when group is fully outside sticky boundary', () => {
     const structure = buildStructure();
-    // config group is at colIndex 2-3, stickyFirst=1 means only id is sticky
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    expect(getGroupSplit(configGroup, 1, 0, 6)).toBeNull();
+    const split = getGroupSplit({ col: configGroup, stickyCount: 1, side: 'first', totalLeafColumns: 6 });
+    expect(split.stickyColspan).toBe(0);
+    expect(split.staticColspan).toBe(0);
   });
 
   test('detects split by sticky-first boundary', () => {
     const structure = buildStructure();
-    // config group is at colIndex 2-3, stickyFirst=3 means columns 0,1,2 are sticky
-    // type(2) is sticky, az(3) is not — group is split
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    const split = getGroupSplit(configGroup, 3, 0, 6);
-    expect(split).toEqual({ stickyColspan: 1, nonStickyColspan: 1, side: 'first' });
+    const split = getGroupSplit({ col: configGroup, stickyCount: 3, side: 'first', totalLeafColumns: 6 });
+    expect(split).toEqual({ stickyColspan: 1, staticColspan: 1 });
   });
 
   test('detects split by sticky-last boundary', () => {
     const structure = buildStructure();
-    // perf group is at colIndex 4-5, stickyLast=1 means column 5 (memory) is sticky
-    // cpu(4) is not sticky, memory(5) is — group is split
     const perfGroup = structure.rows[0].columns.find(c => c.id === 'perf')!;
-    const split = getGroupSplit(perfGroup, 0, 1, 6);
-    expect(split).toEqual({ stickyColspan: 1, nonStickyColspan: 1, side: 'last' });
+    const split = getGroupSplit({ col: perfGroup, stickyCount: 1, side: 'last', totalLeafColumns: 6 });
+    expect(split).toEqual({ stickyColspan: 1, staticColspan: 1 });
   });
 
-  test('returns null for non-group cells', () => {
+  test('non-group cells return no split', () => {
     const structure = buildStructure();
     const leafCol = structure.rows[1].columns[0];
-    expect(getGroupSplit(leafCol, 3, 0, 6)).toBeNull();
+    const split = getGroupSplit({ col: leafCol, stickyCount: 3, side: 'first', totalLeafColumns: 6 });
+    expect(split.stickyColspan).toBe(0);
   });
 
-  test('returns null when no sticky columns configured', () => {
+  test('no split when stickyCount is 0', () => {
     const structure = buildStructure();
     const configGroup = structure.rows[0].columns.find(c => c.id === 'config')!;
-    expect(getGroupSplit(configGroup, 0, 0, 6)).toBeNull();
+    const split = getGroupSplit({ col: configGroup, stickyCount: 0, side: 'first', totalLeafColumns: 6 });
+    expect(split.stickyColspan).toBe(0);
+    expect(split.staticColspan).toBe(0);
   });
 });
