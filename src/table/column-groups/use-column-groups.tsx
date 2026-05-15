@@ -4,6 +4,7 @@
 import { useMemo } from 'react';
 
 import { TableProps } from '../interfaces';
+import { getColumnKey } from '../utils';
 import { calculateHierarchyTree } from './utils';
 
 export function useColumnGroups<T>(
@@ -15,13 +16,26 @@ export function useColumnGroups<T>(
   return useMemo(() => {
     const visibleIds = visibleColumns
       ? Array.from(visibleColumns)
-      : columnDefinitions.map((col, idx) => col.id || `column-${idx}`);
+      : columnDefinitions.map((col, idx) => getColumnKey(col, idx));
 
-    return calculateHierarchyTree(
-      [...columnDefinitions],
-      visibleIds,
-      [...(groupDefinitions ?? [])],
-      columnDisplay ? [...columnDisplay] : undefined
-    );
+    const layout = calculateHierarchyTree(columnDefinitions, visibleIds, groupDefinitions ?? [], columnDisplay);
+
+    let groupLeafMap: Map<string, string[]> | undefined;
+    if (layout.rows.length > 1) {
+      groupLeafMap = new Map();
+      const columnsRow = layout.rows[layout.rows.length - 1];
+      for (const row of layout.rows) {
+        for (const col of row.columns) {
+          if (col.isGroup) {
+            const leafIds = columnsRow.columns
+              .filter(l => !l.isGroup && l.parentGroupIds.includes(col.id))
+              .map(l => l.id);
+            groupLeafMap.set(col.id, leafIds);
+          }
+        }
+      }
+    }
+
+    return { ...layout, groupLeafMap };
   }, [columnDefinitions, groupDefinitions, visibleColumns, columnDisplay]);
 }

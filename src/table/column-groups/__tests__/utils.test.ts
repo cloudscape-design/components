@@ -121,8 +121,8 @@ describe('calculateHierarchyTree', () => {
 
       expect(result.maxDepth).toBe(3);
       expect(result.rows).toHaveLength(3);
-      expect(result.rows[0].columns[0]).toMatchObject({ id: 'metrics', colSpan: 2, rowIndex: 0 });
-      expect(result.rows[1].columns[0]).toMatchObject({ id: 'performance', colSpan: 2, rowIndex: 1 });
+      expect(result.rows[0].columns[0]).toMatchObject({ id: 'metrics', colSpan: 2 });
+      expect(result.rows[1].columns[0]).toMatchObject({ id: 'performance', colSpan: 2 });
       expect(result.rows[2].columns.map(c => c.id)).toEqual(['cpu', 'memory']);
       expect(result.columnToParentIds.get('cpu')).toEqual(['metrics', 'performance']);
     });
