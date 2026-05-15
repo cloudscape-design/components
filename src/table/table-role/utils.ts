@@ -63,7 +63,6 @@ export function findTableRowByAriaRowIndex(table: null | HTMLTableElement, targe
 /**
  * Finds the closest column to the targetAriaColIndex+delta in the direction of delta.
  */
-/* istanbul ignore next: requires real DOM layout */
 export function findTableRowCellByAriaColIndex(
   tableRow: HTMLTableRowElement,
   targetAriaColIndex: number,
@@ -81,7 +80,7 @@ export function findTableRowCellByAriaColIndex(
  * are only in one <tr> in the DOM but visually occupy multiple rows.
  */
 export function getAllCellsInRow(table: null | HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
-  /* istanbul ignore next */ if (!table) {
+  if (!table) {
     return [];
   }
 
@@ -149,6 +148,54 @@ export function findClosestCellByAriaColIndex(
       break;
     }
   }
+  return targetCell;
+}
+
+/**
+ * Finds the next cell to navigate to, handling colspan and rowspan for grouped columns.
+ * Skips past the current cell when movement lands on it due to span attributes.
+ */
+export function findNextCell(
+  table: HTMLTableElement | null,
+  targetRow: HTMLTableRowElement,
+  targetAriaColIndex: number,
+  delta: { x: number; y: number },
+  currentCell: HTMLTableCellElement | null
+): HTMLTableCellElement | null {
+  const targetRowAriaIndex = parseInt(targetRow.getAttribute('aria-rowindex') ?? '');
+  let allVisibleCells = getAllCellsInRow(table, targetRowAriaIndex);
+  let targetCell = findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x);
+
+  // When vertical movement lands on the same cell (due to rowspan), skip past it.
+  if (targetCell === currentCell && delta.y !== 0 && currentCell) {
+    const cellRow = currentCell.closest('tr');
+    const cellRowIndex = parseInt(cellRow?.getAttribute('aria-rowindex') ?? '0');
+    const cellRowSpan = currentCell.rowSpan || 1;
+    const skipToRowIndex = delta.y > 0 ? cellRowIndex + cellRowSpan : cellRowIndex - 1;
+    const skipRow = findTableRowByAriaRowIndex(table, skipToRowIndex, delta.y);
+    if (!skipRow) {
+      return null;
+    }
+    const skipRowAriaIndex = parseInt(skipRow.getAttribute('aria-rowindex') ?? '');
+    allVisibleCells = getAllCellsInRow(table, skipRowAriaIndex);
+    targetCell = findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x);
+  }
+
+  if (!targetCell) {
+    return null;
+  }
+
+  // When horizontal movement lands on the same cell (due to colspan), skip past it.
+  if (targetCell === currentCell && delta.x !== 0 && currentCell) {
+    const cellColIndex = parseInt(currentCell.getAttribute('aria-colindex') ?? '0');
+    const cellColSpan = currentCell.colSpan || 1;
+    const skipToColIndex = delta.x > 0 ? cellColIndex + cellColSpan : cellColIndex - 1;
+    targetCell = findClosestCellByAriaColIndex(allVisibleCells, skipToColIndex, delta.x);
+    if (!targetCell || targetCell === currentCell) {
+      return null;
+    }
+  }
+
   return targetCell;
 }
 
