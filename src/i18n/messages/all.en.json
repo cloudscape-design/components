@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Column preferences",
     "contentDisplayPreference.description": "Customize the visibility and order of the columns.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",
-    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordering canceled",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter columns",
