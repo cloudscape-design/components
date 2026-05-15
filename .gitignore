@@ -13,5 +13,6 @@ src/internal/generated/custom-css-properties
 vendor/generated-*.txt
 # IDEs
 .vscode
+.kiro
 # System
 .DS_Store

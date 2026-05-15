@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
+import { TableGroupedTypes } from './column-grouping-utils';
 import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
@@ -39,7 +40,7 @@ function updateWidths(
   oldWidths: Map<PropertyKey, number>,
   newWidth: number,
   columnId: PropertyKey
-) {
+): Map<PropertyKey, number> {
   const column = visibleColumns.find(column => column.id === columnId);
   let minWidth = DEFAULT_COLUMN_WIDTH;
   if (typeof column?.width === 'number' && column.width < DEFAULT_COLUMN_WIDTH) {
@@ -61,14 +62,18 @@ interface WidthsContext {
   getColumnStyles(sticky: boolean, columnId: PropertyKey): ColumnWidthStyle;
   columnWidths: Map<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
+  updateGroup: (groupId: PropertyKey, newWidth: number) => void;
   setCell: (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => void;
+  setCol: (columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
   getColumnStyles: () => ({}),
   columnWidths: new Map(),
   updateColumn: () => {},
+  updateGroup: () => {},
   setCell: () => {},
+  setCol: () => {},
 });
 
 interface WidthProviderProps {
@@ -76,15 +81,24 @@ interface WidthProviderProps {
   resizableColumns: boolean | undefined;
   containerRef: React.RefObject<HTMLElement>;
   children: React.ReactNode;
+  hierarchicalStructure: TableGroupedTypes.HierarchicalStructure<any>;
 }
 
-export function ColumnWidthsProvider({ visibleColumns, resizableColumns, containerRef, children }: WidthProviderProps) {
+export function ColumnWidthsProvider({
+  visibleColumns,
+  resizableColumns,
+  containerRef,
+  hierarchicalStructure,
+  children,
+}: WidthProviderProps) {
   const visibleColumnsRef = useRef<PropertyKey[] | null>(null);
   const containerWidthRef = useRef(0);
   const [columnWidths, setColumnWidths] = useState<null | Map<PropertyKey, number>>(null);
 
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const colsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const hasColElements = useRef(false);
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
   const setCell = (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
     const ref = sticky ? stickyCellsRef : cellsRef;
@@ -94,8 +108,60 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       ref.current.delete(columnId);
     }
   };
+  const setCol = (columnId: PropertyKey, node: null | HTMLElement) => {
+    if (node) {
+      colsRef.current.set(columnId, node);
+      hasColElements.current = true;
+    } else {
+      colsRef.current.delete(columnId);
+      hasColElements.current = colsRef.current.size > 0;
+    }
+  };
+
+  // Precompute group → rightmost leaf mapping to avoid hierarchy traversal on every resize.
+  const groupRightmostLeafRef = useRef(new Map<string, string>());
+  const groupLeafIdsRef = useRef(new Map<string, string[]>());
+
+  useEffect(() => {
+    if (!hierarchicalStructure || hierarchicalStructure.rows.length <= 1) {
+      groupRightmostLeafRef.current.clear();
+      groupLeafIdsRef.current.clear();
+      return;
+    }
+    const leafMap = new Map<string, string>();
+    const leafIdsMap = new Map<string, string[]>();
+    const leafRow = hierarchicalStructure.rows[hierarchicalStructure.rows.length - 1];
+
+    for (const row of hierarchicalStructure.rows) {
+      for (const col of row.columns) {
+        if (col.isGroup) {
+          const leafIds: string[] = [];
+          for (const leafCol of leafRow.columns) {
+            if (!leafCol.isGroup && leafCol.parentGroupIds.includes(col.id)) {
+              leafIds.push(leafCol.id);
+            }
+          }
+          leafIdsMap.set(col.id, leafIds);
+          if (leafIds.length > 0) {
+            leafMap.set(col.id, leafIds[leafIds.length - 1]);
+          }
+        }
+      }
+    }
+    groupRightmostLeafRef.current = leafMap;
+    groupLeafIdsRef.current = leafIdsMap;
+  }, [hierarchicalStructure]);
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
+    // Allow sticky lookups for columns that aren't in visibleColumns (e.g. the selection column)
+    // as long as we have a measured cell to read from.
+    if (sticky) {
+      const measured = cellsRef.current.get(columnId)?.getBoundingClientRect().width;
+      if (measured) {
+        return { width: measured };
+      }
+    }
+
     const column = visibleColumns.find(column => column.id === columnId);
     if (!column) {
       return {};
@@ -103,9 +169,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
 
     if (sticky) {
       return {
-        width:
-          cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
-          (columnWidths?.get(column.id) ?? column.width),
+        width: columnWidths?.get(column.id) ?? column.width,
       };
     }
 
@@ -131,12 +195,35 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
-    for (const { id } of visibleColumns) {
-      const element = cellsRef.current.get(id);
-      if (element) {
-        setElementWidths(element, getColumnStyles(false, id));
+    if (!columnWidths) {
+      return;
+    }
+
+    // When col elements exist (grouped columns), apply widths to <col> elements.
+    // With table-layout:fixed, <col> widths control the actual column widths.
+    if (hasColElements.current) {
+      for (const { id } of visibleColumns) {
+        const colElement = colsRef.current.get(id);
+        if (colElement) {
+          const styles = getColumnStyles(false, id);
+          setElementWidths(colElement, styles);
+        }
+        // Still update th cells for non-width styles (but width comes from col)
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
+        }
+      }
+    } else {
+      // No col elements - apply widths directly to th cells (single-row headers)
+      for (const { id } of visibleColumns) {
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
+        }
       }
     }
+
     // Sticky column widths must be synchronized once all real column widths are assigned.
     for (const { id } of visibleColumns) {
       const element = stickyCellsRef.current.get(id);
@@ -195,8 +282,33 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
   }
 
+  function updateGroup(groupId: PropertyKey, newGroupWidth: number) {
+    if (!columnWidths) {
+      return;
+    }
+
+    // Use precomputed rightmost leaf (avoids hierarchy traversal on every drag)
+    const rightmostLeaf = groupRightmostLeafRef.current.get(String(groupId));
+    if (!rightmostLeaf) {
+      return;
+    }
+
+    // Calculate current group width from precomputed leaf IDs
+    const leafIds = groupLeafIdsRef.current.get(String(groupId)) ?? [];
+    let currentGroupWidth = 0;
+    for (const id of leafIds) {
+      currentGroupWidth += columnWidths.get(id) || DEFAULT_COLUMN_WIDTH;
+    }
+
+    const delta = newGroupWidth - currentGroupWidth;
+    const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
+    updateColumn(rightmostLeaf, currentLeafWidth + delta);
+  }
+
   return (
-    <WidthsContext.Provider value={{ getColumnStyles, columnWidths: columnWidths ?? new Map(), updateColumn, setCell }}>
+    <WidthsContext.Provider
+      value={{ getColumnStyles, columnWidths: columnWidths ?? new Map(), updateColumn, updateGroup, setCell, setCol }}
+    >
       {children}
     </WidthsContext.Provider>
   );

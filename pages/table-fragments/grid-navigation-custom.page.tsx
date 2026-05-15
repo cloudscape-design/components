@@ -216,7 +216,7 @@ export default function Page() {
                     onConfirm={({ detail }) =>
                       setUrlParams({
                         visibleColumns: (detail.contentDisplay ?? [])
-                          .filter(column => column.visible)
+                          .filter(column => column.type !== 'group' && column.visible)
                           .map(column => column.id)
                           .join(','),
                       })

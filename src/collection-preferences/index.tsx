@@ -138,9 +138,28 @@ export default function CollectionPreferences({
 
       // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
       if (preferences?.contentDisplay) {
-        tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
-          .filter(column => column.visible)
-          .map(column => column.id);
+        // Walk the tree depth-first, collecting leaf column ids that are visible.
+        // A leaf is only included if all ancestor groups (and the leaf itself) have visible: true.
+        const collectVisibleIds = (
+          items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>,
+          ancestorVisible: boolean
+        ): string[] => {
+          const result: string[] = [];
+          for (const item of items) {
+            if (item.type === 'group') {
+              if (ancestorVisible && item.visible) {
+                result.push(...collectVisibleIds(item.children, true));
+              }
+            } else if (ancestorVisible && item.visible) {
+              result.push(item.id);
+            }
+          }
+          return result;
+        };
+        tableComponentContext.preferencesRef.current.visibleColumns = collectVisibleIds(
+          preferences.contentDisplay,
+          true
+        );
       } else if (preferences?.visibleContent) {
         tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];
       }

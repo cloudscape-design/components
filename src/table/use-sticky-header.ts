@@ -24,7 +24,10 @@ export const useStickyHeader = (
       secondaryTableRef.current &&
       tableWrapperRef.current
     ) {
-      tableWrapperRef.current.style.marginBlockStart = `-${theadRef.current.getBoundingClientRect().height}px`;
+      // theadRef points to the first <tr> inside <thead>. For grouped tables with
+      // multiple header rows, we need the full <thead> height, not just the first row.
+      const theadEl = theadRef.current.closest('thead') ?? theadRef.current;
+      tableWrapperRef.current.style.marginBlockStart = `-${theadEl.getBoundingClientRect().height}px`;
     }
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {

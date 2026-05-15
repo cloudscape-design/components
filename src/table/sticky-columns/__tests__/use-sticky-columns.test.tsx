@@ -240,7 +240,10 @@ test('cell subscriptions are cleaned up on ref change', () => {
   const subscribe = jest.fn(() => unsubscribe);
   const stickyColumns = {
     store: {
-      get: () => ({ cellState: new Map(), wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 } }),
+      get: () => ({
+        cellState: new Map(),
+        wrapperState: { scrollPaddingInlineStart: 0, scrollPaddingInlineEnd: 0 },
+      }),
       subscribe,
       unsubscribe: () => {},
     },
