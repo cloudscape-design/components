@@ -177,7 +177,7 @@ function computeColSpansAndIndices<T>(node: TableHeaderNode<T>, startCol: number
 
 export function calculateHierarchyTree<T>(
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
-  visibleColumnIds: readonly string[],
+  visibleColumnIds: readonly (string | number)[],
   groupDefinitions: ReadonlyArray<TableProps.GroupDefinition>,
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>
 ): ColumnGroupsLayout<T> {
