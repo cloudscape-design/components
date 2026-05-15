@@ -30,6 +30,7 @@ interface ResizerProps {
   roleDescription?: string;
   tooltipText?: string;
   isBorderless: boolean;
+  isLast?: boolean;
   dividerPosition?: DividerPosition;
 }
 
@@ -40,7 +41,6 @@ const AUTO_GROW_INCREMENT = 5;
 
 export type DividerPosition = 'default' | 'top' | 'bottom' | 'full';
 
-/* istanbul ignore next */
 export function Divider({
   className,
   position,
@@ -73,6 +73,7 @@ export function Resizer({
   roleDescription,
   tooltipText,
   isBorderless,
+  isLast,
   dividerPosition,
 }: ResizerProps) {
   onWidthUpdate = useStableCallback(onWidthUpdate);
@@ -352,7 +353,8 @@ export function Resizer({
       className={clsx(
         styles['resizer-wrapper'],
         isVisualRefresh && styles['visual-refresh'],
-        (!isVisualRefresh || isBorderless) && styles['is-borderless']
+        (!isVisualRefresh || isBorderless) && styles['is-borderless'],
+        isLast && styles['is-last']
       )}
       ref={positioningWrapperRef}
     >

@@ -81,12 +81,11 @@ th:not([data-rightmost]) > .divider-disabled {
   /* used in test-utils */
 }
 
-/* stylelint-disable selector-combinator-disallowed-list */
-th:last-child > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive,
-th[data-rightmost] > .resizer-wrapper.visual-refresh.is-borderless .divider-interactive {
-  inset-inline-end: 0;
+.resizer-wrapper.visual-refresh.is-borderless.is-last {
+  > .divider-interactive {
+    inset-inline-end: 0;
+  }
 }
-/* stylelint-enable selector-combinator-disallowed-list */
 
 .resizer {
   @include styles.styles-reset;
