@@ -17,11 +17,9 @@ import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { FocusedCell, GridNavigationProps } from './interfaces';
 import {
   defaultIsSuppressed,
-  findClosestCellByAriaColIndex,
+  findNextCell,
   findTableRowByAriaRowIndex,
-  findTableRowCellByAriaColIndex,
   focusNextElement,
-  getAllCellsInRow,
   getClosestCell,
   isElementDisabled,
   isTableCell,
@@ -333,48 +331,17 @@ export class GridNavigationProcessor {
     }
 
     // Find next cell to focus or move focus into.
-    // Use getAllCellsInRow to include cells from earlier rows that span into the target row via rowspan.
     const targetAriaColIndex = from.colIndex + delta.x;
-    const targetRowAriaIndex = parseInt(targetRow.getAttribute('aria-rowindex') ?? '');
-    let allVisibleCells = getAllCellsInRow(this.table, targetRowAriaIndex);
-    let targetCell =
-      allVisibleCells.length > 0
-        ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
-        : /* istanbul ignore next */ findTableRowCellByAriaColIndex(targetRow, targetAriaColIndex, delta.x);
+    const targetCell = findNextCell(
+      this.table,
+      targetRow,
+      targetAriaColIndex,
+      delta,
+      cellElement as HTMLTableCellElement | null
+    );
 
-    // When vertical movement lands on the same cell (due to rowspan), skip past it.
-    if (targetCell === cellElement && delta.y !== 0 && cellElement) {
-      const cellRow = cellElement.closest('tr');
-      const cellRowIndex = parseInt(cellRow?.getAttribute('aria-rowindex') ?? '0');
-      const cellRowSpan = (cellElement as HTMLTableCellElement).rowSpan || 1;
-      // Jump to the first row after this cell's span (↓) or one row before the cell's start (↑).
-      const skipToRowIndex = delta.y > 0 ? cellRowIndex + cellRowSpan : cellRowIndex - 1;
-      const skipRow = findTableRowByAriaRowIndex(this.table, skipToRowIndex, delta.y);
-      /* istanbul ignore next */ if (!skipRow) {
-        return null;
-      }
-      const skipRowAriaIndex = parseInt(skipRow.getAttribute('aria-rowindex') ?? '');
-      allVisibleCells = getAllCellsInRow(this.table, skipRowAriaIndex);
-      targetCell =
-        allVisibleCells.length > 0
-          ? findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x)
-          : /* istanbul ignore next */ findTableRowCellByAriaColIndex(skipRow, targetAriaColIndex, delta.x);
-    }
-
-    /* istanbul ignore next */
     if (!targetCell) {
       return null;
-    }
-
-    // When horizontal movement lands on the same cell (due to colspan), skip past it.
-    if (targetCell === cellElement && delta.x !== 0 && cellElement) {
-      const cellColIndex = parseInt(cellElement.getAttribute('aria-colindex') ?? '0');
-      const cellColSpan = (cellElement as HTMLTableCellElement).colSpan || 1;
-      const skipToColIndex = delta.x > 0 ? cellColIndex + cellColSpan : cellColIndex - 1;
-      targetCell = findClosestCellByAriaColIndex(allVisibleCells, skipToColIndex, delta.x);
-      if (!targetCell || targetCell === cellElement) {
-        return null;
-      }
     }
 
     const targetCellFocusables = this.getFocusablesFrom(targetCell);
