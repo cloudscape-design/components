@@ -136,6 +136,7 @@ export function TableGroupHeaderCell({
           roleDescription={resizerRoleDescription}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
+          isLast={isLast}
           dividerPosition={columnGroupId ? 'full' : 'bottom'}
         />
       ) : (

@@ -209,6 +209,7 @@ export function TableHeaderCell<ItemType>({
           // tooltipText={i18n('ariaLabels.resizerTooltipText', resizerTooltipText)}
           tooltipText={resizerTooltipText}
           isBorderless={variant === 'full-page' || variant === 'embedded' || variant === 'borderless'}
+          isLast={isLast}
           dividerPosition={isLastChildOfGroup ? 'top' : undefined}
         />
       ) : (
