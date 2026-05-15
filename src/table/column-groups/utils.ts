@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../../internal/is-development';
 import { TableProps } from '../interfaces';
 import { getVisibleColumnDefinitions } from '../utils';
 
-export interface ColumnInRow<T> {
+export interface HeaderRowColumn<T> {
   id: string;
   header?: React.ReactNode;
   colSpan: number;
@@ -15,15 +14,14 @@ export interface ColumnInRow<T> {
   columnDefinition?: TableProps.ColumnDefinition<T>;
   groupDefinition?: TableProps.GroupDefinition;
   parentGroupIds: string[];
-  rowIndex: number;
   colIndex: number;
 }
 
 export interface HeaderRow<T> {
-  columns: ColumnInRow<T>[];
+  columns: HeaderRowColumn<T>[];
 }
 
-export interface HierarchicalStructure<T> {
+export interface ColumnGroupsLayout<T> {
   rows: HeaderRow<T>[];
   maxDepth: number;
   columnToParentIds: Map<string, string[]>;
@@ -85,10 +83,6 @@ export class TableHeaderNode<T> {
   }
 }
 
-// ============================================================================
-// Tree construction
-// ============================================================================
-
 /**
  * Builds the tree from the nested columnDisplay structure.
  * Groups are only attached if they contain at least one visible descendant.
@@ -102,12 +96,7 @@ function buildTreeFromColumnDisplay<T>(
     if (item.type === 'group') {
       const groupNode = nodeMap.get(item.id);
       if (!groupNode) {
-        if (isDevelopment) {
-          warnOnce(
-            '[Table]',
-            `Group "${item.id}" referenced in columnDisplay not found in groupDefinitions. Skipping.`
-          );
-        }
+        warnOnce('[Table]', `Group "${item.id}" referenced in columnDisplay not found in groupDefinitions. Skipping.`);
         continue;
       }
       buildTreeFromColumnDisplay(item.children, nodeMap, groupNode);
@@ -129,7 +118,7 @@ function buildTreeFromColumnDisplay<T>(
 /**
  * Fallback when no columnDisplay is provided: all visible columns attach directly to root.
  */
-function connectFlatColumns<T>(
+function buildTreeFromVisibleColumns<T>(
   visibleColumns: Readonly<TableProps.ColumnDefinition<T>[]>,
   nodeMap: Map<string, TableHeaderNode<T>>,
   root: TableHeaderNode<T>
@@ -145,10 +134,6 @@ function connectFlatColumns<T>(
     }
   }
 }
-
-// ============================================================================
-// Tree traversals
-// ============================================================================
 
 function computeSubTreeHeights<T>(node: TableHeaderNode<T>): number {
   if (node.isLeaf || node.children.length === 0) {
@@ -190,16 +175,12 @@ function computeColSpansAndIndices<T>(node: TableHeaderNode<T>, startCol: number
   return nextCol;
 }
 
-// ============================================================================
-// Main entry point
-// ============================================================================
-
 export function calculateHierarchyTree<T>(
-  columnDefinitions: TableProps.ColumnDefinition<T>[],
-  visibleColumnIds: string[],
-  groupDefinitions: TableProps.GroupDefinition[],
-  columnDisplay?: TableProps.ColumnDisplayProperties[]
-): HierarchicalStructure<T> {
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
+  visibleColumnIds: readonly string[],
+  groupDefinitions: ReadonlyArray<TableProps.GroupDefinition>,
+  columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>
+): ColumnGroupsLayout<T> {
   const visibleColumns = getVisibleColumnDefinitions({
     columnDisplay,
     visibleColumns: visibleColumnIds,
@@ -225,7 +206,7 @@ export function calculateHierarchyTree<T>(
   if (columnDisplay && columnDisplay.length > 0) {
     buildTreeFromColumnDisplay(columnDisplay, nodeMap, root);
   } else {
-    connectFlatColumns(visibleColumns, nodeMap, root);
+    buildTreeFromVisibleColumns(visibleColumns, nodeMap, root);
   }
 
   // Compute layout
@@ -245,10 +226,6 @@ export function calculateHierarchyTree<T>(
   return buildOutput(root, treeHeight);
 }
 
-// ============================================================================
-// Output construction
-// ============================================================================
-
 function getParentChain<T>(node: TableHeaderNode<T>): string[] {
   const chain: string[] = [];
   let current = node.parent;
@@ -259,8 +236,8 @@ function getParentChain<T>(node: TableHeaderNode<T>): string[] {
   return chain;
 }
 
-function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): HierarchicalStructure<T> {
-  const rowsMap = new Map<number, ColumnInRow<T>[]>();
+function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): ColumnGroupsLayout<T> {
+  const rowsMap = new Map<number, HeaderRowColumn<T>[]>();
   const columnToParentIds = new Map<string, string[]>();
 
   const queue: TableHeaderNode<T>[] = [...root.children];
@@ -269,7 +246,7 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): Hierarchica
     const node = queue.shift()!;
     const parentChain = getParentChain(node);
 
-    const entry: ColumnInRow<T> = {
+    const entry: HeaderRowColumn<T> = {
       id: node.id,
       header: node.groupDefinition?.header ?? node.columnDefinition?.header,
       colSpan: node.colSpan,
@@ -278,7 +255,6 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): Hierarchica
       columnDefinition: node.columnDefinition,
       groupDefinition: node.groupDefinition,
       parentGroupIds: parentChain,
-      rowIndex: node.rowIndex,
       colIndex: node.colIndex,
     };
 
@@ -299,4 +275,17 @@ function buildOutput<T>(root: TableHeaderNode<T>, maxDepth: number): Hierarchica
     .map(key => ({ columns: rowsMap.get(key)!.sort((a, b) => a.colIndex - b.colIndex) }));
 
   return { rows, maxDepth, columnToParentIds };
+}
+
+export function getColumnGroupsDepth(columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>): number {
+  if (!columnDisplay) {
+    return 0;
+  }
+  let maxDepth = 0;
+  for (const item of columnDisplay) {
+    if (item.type === 'group') {
+      maxDepth = Math.max(maxDepth, 1 + getColumnGroupsDepth(item.children));
+    }
+  }
+  return maxDepth;
 }
