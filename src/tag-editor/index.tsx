@@ -224,7 +224,7 @@ const TagEditor = React.forwardRef(
             tag.markedForRemoval ? (
               <div role="alert">
                 <InternalBox margin={{ top: 'xxs' }}>
-                  {i18n('i18nStrings.undoPrompt', i18nStrings?.undoPrompt)}{' '}
+                  <span>{`${i18n('i18nStrings.undoPrompt', i18nStrings?.undoPrompt)} `}</span>
                   <UndoButton
                     onClick={() => onUndoRemoval(row)}
                     ref={elem => {

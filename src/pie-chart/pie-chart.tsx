@@ -376,8 +376,8 @@ export default <T extends PieChartProps.Datum>({
           title={
             popoverData.series && (
               <InternalBox className={styles['popover-header']} variant="strong">
-                <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />{' '}
-                {popoverData.series.label}
+                <SeriesMarker color={popoverData.series.color} type={popoverData.series.markerType} />
+                <span>{` ${popoverData.series.label}`}</span>
               </InternalBox>
             )
           }

@@ -172,8 +172,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           {children}
           {counter ? (
             <div className={styles['body-cell-counter']}>
-              {' '}
-              <span className={testUtilStyles['body-cell-counter']}>{counter}</span>
+              <span className={testUtilStyles['body-cell-counter']}>{` ${counter}`}</span>
             </div>
           ) : null}
         </div>

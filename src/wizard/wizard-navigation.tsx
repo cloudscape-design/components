@@ -114,7 +114,7 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
         display="block"
         margin={{ bottom: 'xxs' }}
       >
-        {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
+        <span>{i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}</span>
         {step.isOptional && <i id={optionalDescriptionId}>{` - ${i18nStrings.optional}`}</i>}
       </InternalBox>
       <div>

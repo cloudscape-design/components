@@ -162,7 +162,7 @@ function WizardStepListItem({
       <hr />
 
       <span className={clsx(styles.number, styles['navigation-link-label'])}>
-        {i18nStrings.stepNumberLabel?.(index + 1)}
+        <span>{i18nStrings.stepNumberLabel?.(index + 1)}</span>
         {step.isOptional && <i id={optionalDescriptionId}>{` - ${i18nStrings.optional}`}</i>}
       </span>
 

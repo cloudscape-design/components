@@ -49,18 +49,16 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           >
             {shouldHideText ? null : (
               <>
-                {definition.text}
+                <span>{definition.text}</span>
                 {definition.external && (
-                  <>
+                  <span
+                    className={clsx(styles['utility-button-external-icon'], styles[`offset-right-${offsetRight}`])}
+                    aria-label={definition.externalIconAriaLabel}
+                    role={definition.externalIconAriaLabel ? 'img' : undefined}
+                  >
                     {' '}
-                    <span
-                      className={clsx(styles['utility-button-external-icon'], styles[`offset-right-${offsetRight}`])}
-                      aria-label={definition.externalIconAriaLabel}
-                      role={definition.externalIconAriaLabel ? 'img' : undefined}
-                    >
-                      <InternalIcon name="external" />
-                    </span>
-                  </>
+                    <InternalIcon name="external" />
+                  </span>
                 )}
               </>
             )}
