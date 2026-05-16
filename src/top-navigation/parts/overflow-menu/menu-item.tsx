@@ -197,14 +197,12 @@ function utilityComponentFactory(
 
       const content = (
         <>
-          {label}
+          <span>{label}</span>
           {utility.external && (
-            <>
+            <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
               {' '}
-              <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
-                <InternalIcon name="external" size="normal" />
-              </span>
-            </>
+              <InternalIcon name="external" size="normal" />
+            </span>
           )}
         </>
       );
@@ -277,14 +275,12 @@ function dropdownComponentFactory(
       testId={item.id}
       onClick={event => onItemClick(event, item as ButtonDropdownProps.Item)}
     >
-      {label}
+      <span>{label}</span>
       {isLink && item.external && (
-        <>
+        <span aria-label={item.externalIconAriaLabel} role={item.externalIconAriaLabel ? 'img' : undefined}>
           {' '}
-          <span aria-label={item.externalIconAriaLabel} role={item.externalIconAriaLabel ? 'img' : undefined}>
-            <InternalIcon name="external" size="normal" />
-          </span>
-        </>
+          <InternalIcon name="external" size="normal" />
+        </span>
       )}
     </LinkItem>
   );

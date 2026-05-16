@@ -87,14 +87,14 @@ export const useDropdownStatus: UseDropdownStatus = ({
           iconAriaLabel={errorIconAriaLabel}
         >
           {errorText}
-        </InternalStatusIndicator>{' '}
+        </InternalStatusIndicator>
         {statusResult.hasRecoveryButton && (
           <InternalLink
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"
             className={styles.recovery}
           >
-            {recoveryText}
+            {` ${recoveryText}`}
           </InternalLink>
         )}
       </span>

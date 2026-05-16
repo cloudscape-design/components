@@ -67,10 +67,10 @@ export default function ChartStatusContainer({
       const renderedRecoveryText = i18n('recoveryText', recoveryText);
       return (
         <span>
-          <InternalStatusIndicator type="error">{i18n('errorText', errorText)}</InternalStatusIndicator>{' '}
+          <InternalStatusIndicator type="error">{i18n('errorText', errorText)}</InternalStatusIndicator>
           {!!renderedRecoveryText && !!onRecoveryClick && (
             <InternalLink onFollow={handleRecoveryClick} variant="recovery">
-              {renderedRecoveryText}
+              {` ${renderedRecoveryText}`}
             </InternalLink>
           )}
         </span>

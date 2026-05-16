@@ -98,13 +98,13 @@ export function ObjectsTable({
               : { name: 'file', ariaLabel: i18n('i18nStrings.labelIconObject', i18nStrings?.labelIconObject) };
             return (
               <>
-                <InternalIcon {...iconProps} />{' '}
+                <InternalIcon {...iconProps} />
                 {isClickable ? (
                   <InternalLink onFollow={() => item.Key && onDrilldown(item)} variant="link">
-                    {item.Key}
+                    {` ${item.Key}`}
                   </InternalLink>
                 ) : (
-                  item.Key
+                  <span>{` ${item.Key}`}</span>
                 )}
               </>
             );
