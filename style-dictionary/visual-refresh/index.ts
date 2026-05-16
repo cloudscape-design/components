@@ -10,6 +10,7 @@ import {
   createFlashbarWarningContext,
   createHeaderAlertContext,
   createHeaderContext,
+  createNavigationBarContext,
   createTopNavigationContext,
 } from '../utils/contexts.js';
 import { StyleDictionary } from '../utils/interfaces.js';
@@ -52,6 +53,7 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
   builder.addContext(createHeaderAlertContext((await import('./contexts/header-alert.js')).tokens));
   builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
+  builder.addContext(createNavigationBarContext((await import('./contexts/navigation-bar.js')).tokens));
 
   return builder.build();
 }
