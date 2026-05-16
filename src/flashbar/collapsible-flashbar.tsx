@@ -20,6 +20,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import InternalLiveRegion from '../live-region/internal';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
   GeneratedAnalyticsMetadataFlashbarExpand,
@@ -361,7 +362,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             },
           } as GeneratedAnalyticsMetadataFlashbarExpand | GeneratedAnalyticsMetadataFlashbarCollapse)}
         >
-          <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+          <span className={styles.status} id={itemCountElementId} role="status" aria-live="off">
             {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
             <span className={styles['item-count']}>
               {counterTypes.map(({ type, labelName, iconName }) => (
@@ -374,6 +375,13 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
               ))}
             </span>
           </span>
+          <InternalLiveRegion
+            preventInitialAnnouncement={true}
+            sources={[
+              notificationBarText,
+              ...counterTypes.flatMap(({ type, labelName }) => [iconAriaLabels[labelName], `${countByType[type]}`]),
+            ]}
+          />
           <button
             aria-controls={flashbarElementId}
             aria-describedby={itemCountElementId}
