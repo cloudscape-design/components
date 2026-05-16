@@ -4,6 +4,8 @@
 import {
   applyTheme as coreApplyTheme,
   generateThemeStylesheet as coreGenerateThemeStylesheet,
+  loadThemeRegistry,
+  ThemeTokens,
 } from '@cloudscape-design/theming-runtime';
 
 import { preset, TypedOverride } from '../internal/generated/theming';
@@ -37,4 +39,14 @@ export function generateThemeStylesheet({ theme, baseThemeId }: GenerateThemeSty
     preset,
     baseThemeId,
   });
+}
+
+export { ThemeTokens };
+
+export function setGlobalTheme(tokens: ThemeTokens): void {
+  loadThemeRegistry().setGlobalTheme(tokens);
+}
+
+export function getGlobalTheme(): ThemeTokens | null {
+  return loadThemeRegistry().getGlobalTheme();
 }
