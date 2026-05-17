@@ -207,7 +207,7 @@ settings icon in the pagination slot.
     @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
   }
   &:first-child > .header-cell-content {
-    @include cell-offset(0px);
+    // @include cell-offset(0px);
     @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
