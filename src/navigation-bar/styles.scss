@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}

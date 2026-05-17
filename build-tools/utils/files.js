@@ -9,22 +9,21 @@ function writeFile(filepath, content) {
 }
 
 function listPublicItems(baseDir) {
-  return fs
-    .readdirSync(baseDir)
-    .filter(
-      elem =>
-        !elem.startsWith('__') &&
-        !elem.startsWith('.') &&
-        elem !== 'internal' &&
-        elem !== 'index.tsx' &&
-        elem !== 'index.ts' &&
-        elem !== 'interfaces.ts' &&
-        elem !== 'test-utils' &&
-        elem !== 'i18n' &&
-        elem !== 'theming' &&
-        elem !== 'plugins' &&
-        elem !== 'contexts'
-    );
+  return fs.readdirSync(baseDir).filter(
+    elem =>
+      !elem.startsWith('__') &&
+      !elem.startsWith('.') &&
+      elem !== 'internal' &&
+      elem !== 'navigation-bar' && // in development, not yet public
+      elem !== 'index.tsx' &&
+      elem !== 'index.ts' &&
+      elem !== 'interfaces.ts' &&
+      elem !== 'test-utils' &&
+      elem !== 'i18n' &&
+      elem !== 'theming' &&
+      elem !== 'plugins' &&
+      elem !== 'contexts'
+  );
 }
 
 module.exports = { writeFile, listPublicItems };
