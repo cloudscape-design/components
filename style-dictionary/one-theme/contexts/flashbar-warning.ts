@@ -1,0 +1,66 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
+import { expandColorDictionary, pickState } from '../../utils/index.js';
+import { StyleDictionary } from '../../utils/interfaces.js';
+import { tokens as parentTokens } from '../colors.js';
+import { alertButtonTokens } from './alert.js';
+
+const baseTokens: StyleDictionary.ColorsDictionary = {
+  // Links in flash should be using color="inverted", which makes them underlined by default in flashbars
+  // and changes their color to match the surrounding text.
+  colorTextNotificationDefault: '{colorTextNotificationYellow}',
+  colorTextLinkInvertedHover: '{colorTextNotificationYellow}',
+
+  // Focus outline matches the text color to align with other flashbar types and to ensure color contrast.
+  colorBorderItemFocused: '{colorTextNotificationYellow}',
+
+  // Dismiss button
+  colorTextInteractiveInvertedDefault: '{colorNeutral650}',
+  colorTextInteractiveInvertedHover: '{colorNeutral950}',
+
+  // Progress bars
+  colorBackgroundProgressBarValueDefault: '{colorNeutral950}',
+  colorBackgroundProgressBarDefault: '{colorGreyOpaque10}',
+
+  // Expandable sections
+  colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
+  colorTextExpandableSectionHover: '{colorTextNotificationYellow}',
+  // Bottom border of the header when expanded (default variant)
+  colorBorderDividerDefault: '{colorTextNotificationYellow}',
+  // Description
+  colorTextHeadingSecondary: '{colorTextNotificationYellow}',
+  // Content
+  colorTextBodyDefault: '{colorTextNotificationYellow}',
+  colorTextBodySecondary: '{colorTextNotificationYellow}',
+
+  // Tutorial hotspot
+  colorTextTutorialHotspotDefault: '{colorNeutral600}',
+  colorTextTutorialHotspotHover: '{colorNeutral900}',
+
+  // Inline-code variant background in Box
+  colorBackgroundInlineCode: 'rgba(0, 0, 0, 0.1)',
+
+  // Key-value pairs
+  colorTextLabel: '{colorTextNotificationYellow}',
+
+  // Info links
+  colorTextLinkDefault: '{colorTextNotificationYellow}',
+  colorTextLinkHover: '{colorTextNotificationYellow}',
+};
+
+// Token configuration that is shared between classic and visual refresh
+export const sharedTokens: StyleDictionary.ColorsDictionary = {
+  ...baseTokens,
+
+  // For buttons we use the same tokens as alert. But because the warning flash messages
+  // look the same in light and dark mode, we only pick the light mode colors.
+  ...pickState(expandColorDictionary(alertButtonTokens), 'light'),
+};
+
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
+  merge({}, parentTokens, sharedTokens)
+);
+
+export { expandedTokens as tokens };

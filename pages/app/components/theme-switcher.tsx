@@ -9,31 +9,46 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
 
+type ThemeOption = 'classic' | 'visual-refresh' | 'one-theme';
+
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
-    id: 'visual-refresh-toggle',
-    type: 'checkbox',
+  const currentTheme: ThemeOption = urlParams.oneTheme
+    ? 'one-theme'
+    : urlParams.visualRefresh
+      ? 'visual-refresh'
+      : 'classic';
+
+  const setTheme = (next: ThemeOption) => {
+    setUrlParams({
+      visualRefresh: next === 'visual-refresh' || !!ALWAYS_VISUAL_REFRESH,
+      oneTheme: next === 'one-theme',
+    });
+    window.location.reload();
   };
 
-  if (ALWAYS_VISUAL_REFRESH) {
-    vrSwitchProps.checked = true;
-    vrSwitchProps.readOnly = true;
-  } else {
-    vrSwitchProps.checked = urlParams.visualRefresh;
-    vrSwitchProps.onChange = event => {
-      setUrlParams({ visualRefresh: event.target.checked });
-      window.location.reload();
-    };
-  }
+  const themeOptions: Array<{ value: ThemeOption; label: string; id: string; disabled?: boolean }> = [
+    { value: 'classic', label: 'Classic', id: 'classic-toggle', disabled: !!ALWAYS_VISUAL_REFRESH },
+    { value: 'visual-refresh', label: 'Visual refresh', id: 'visual-refresh-toggle' },
+    { value: 'one-theme', label: 'One theme', id: 'one-theme-toggle' },
+  ];
 
   return (
     <SpaceBetween direction="horizontal" size="xs">
-      <label>
-        <input {...vrSwitchProps} />
-        Visual refresh
-      </label>
+      {themeOptions.map(option => (
+        <label key={option.value}>
+          <input
+            id={option.id}
+            type="radio"
+            name="theme"
+            checked={currentTheme === option.value}
+            disabled={option.disabled}
+            onChange={() => setTheme(option.value)}
+          />
+          {option.label}
+        </label>
+      ))}
       <label>
         <input
           id="mode-toggle"

@@ -13,7 +13,7 @@ const themes = [
     designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic/index.js',
-    secondaryThemePaths: ['./visual-refresh-secondary/index.js'],
+    secondaryThemePaths: ['./visual-refresh-secondary/index.js', './one-theme-secondary/index.js'],
   },
 ];
 
