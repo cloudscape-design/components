@@ -21,8 +21,16 @@ permissions:
 
 jobs:
   visual:
-    name: Visual regression
-    runs-on: ubuntu-latest
+    name: Visual regression (${{ matrix.browser }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - browser: chrome
+            os: ubuntu-latest
+          - browser: safari
+            os: macos-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,16 +43,19 @@ jobs:
           cache: npm
 
       - name: Setup Chrome and ChromeDriver
+        if: matrix.browser == 'chrome'
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
+
+      - name: Enable SafariDriver
+        if: matrix.browser == 'safari'
+        run: sudo safaridriver --enable
 
       - name: Install dependencies
         run: npm i
 
       # ── Build or download PR (test) pages ─────────────────────────────────
-      # When called from deploy.yml with pr-artifact-name, download the artifact.
-      # When run standalone (no pr-artifact-name provided), build the pages locally.
       - name: Build PR pages locally
         if: ${{ !inputs.pr-artifact-name }}
         run: |
@@ -61,11 +72,6 @@ jobs:
           path: pages/lib/static-default
 
       # ── Build baseline (main) pages ────────────────────────────────────────
-      # Use a git worktree so the baseline has its own directory and its own
-      # node_modules. This means a PR that changes package-lock.json will still
-      # produce a correct baseline: the baseline installs from main's lockfile
-      # and the PR build installs from the PR's lockfile, so both sides use the
-      # dependency versions that are correct for their respective source trees.
       - name: Create baseline worktree from origin/main
         run: git worktree add /tmp/baseline origin/main
 
@@ -103,11 +109,12 @@ jobs:
         run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
         env:
           TZ: UTC
+          BROWSER: ${{ matrix.browser }}
 
       - name: Upload diff artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-regression-diffs
+          name: visual-regression-diffs-${{ matrix.browser }}
           path: visual-regression-output/
           retention-days: 14
