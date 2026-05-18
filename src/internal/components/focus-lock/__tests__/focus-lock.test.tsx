@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import FocusLock, { FocusLockProps } from '../../../../../lib/components/internal/components/focus-lock';
 
@@ -9,12 +9,14 @@ type TestFixtureProps = Omit<FocusLockProps, 'children'> & { unmount?: boolean }
 function TestFixture({ unmount = false, ...props }: TestFixtureProps) {
   return (
     <>
-      <button id="initial" />
+      <button id="before" />
       {!unmount && (
         <FocusLock {...props}>
-          <button id="inner" />
+          <button id="first" />
+          <button id="last" />
         </FocusLock>
       )}
+      <button id="after" />
     </>
   );
 }
@@ -23,13 +25,28 @@ function renderFocusLock(props: TestFixtureProps = {}) {
   const { rerender } = render(<TestFixture {...props} />);
   return {
     focusInitial() {
-      document.querySelector<HTMLButtonElement>('#initial')!.focus();
+      document.querySelector<HTMLButtonElement>('#before')!.focus();
     },
     getInitial() {
-      return document.querySelector<HTMLButtonElement>('#initial');
+      return document.querySelector<HTMLButtonElement>('#before');
     },
     getInner() {
-      return document.querySelector<HTMLButtonElement>('#inner');
+      return document.querySelector<HTMLButtonElement>('#first');
+    },
+    getBefore() {
+      return document.querySelector<HTMLButtonElement>('#before')!;
+    },
+    getAfter() {
+      return document.querySelector<HTMLButtonElement>('#after')!;
+    },
+    getFirst() {
+      return document.querySelector<HTMLButtonElement>('#first')!;
+    },
+    getLast() {
+      return document.querySelector<HTMLButtonElement>('#last')!;
+    },
+    getTabTraps() {
+      return document.querySelectorAll<HTMLDivElement>('[tabindex="0"]:not(button)');
     },
     rerender(props: TestFixtureProps = {}) {
       rerender(<TestFixture {...props} />);
@@ -98,5 +115,63 @@ describe('Focus lock', () => {
       rerender({ autoFocus: true, restoreFocus: true, unmount: true });
       expect(getInitial()).toHaveFocus();
     });
+  });
+});
+
+describe('Focus lock — tab trap direction', () => {
+  function focusTrap(trap: HTMLElement, relatedTarget: HTMLElement | null) {
+    fireEvent.focus(trap, { relatedTarget });
+  }
+
+  it('wraps to last element when tabbing backward from first element (hits first trap)', () => {
+    const { getFirst, getLast, getTabTraps } = renderFocusLock();
+    const firstTrap = getTabTraps()[0];
+
+    // Simulate: focus was on first inner element, user tabs backward → hits first trap
+    focusTrap(firstTrap, getFirst());
+
+    expect(getLast()).toHaveFocus();
+  });
+
+  it('wraps to first element when tabbing forward from last element (hits last trap)', () => {
+    const { getFirst, getLast, getTabTraps } = renderFocusLock();
+    const traps = getTabTraps();
+    const lastTrap = traps[traps.length - 1];
+
+    // Simulate: focus was on last inner element, user tabs forward → hits last trap
+    focusTrap(lastTrap, getLast());
+
+    expect(getFirst()).toHaveFocus();
+  });
+
+  it('focuses first element when entering from before (hits first trap from outside)', () => {
+    const { getBefore, getFirst, getTabTraps } = renderFocusLock();
+    const firstTrap = getTabTraps()[0];
+
+    // Simulate: focus was on element before the lock, user tabs forward → hits first trap
+    focusTrap(firstTrap, getBefore());
+
+    expect(getFirst()).toHaveFocus();
+  });
+
+  it('focuses last element when entering from after (hits last trap from outside)', () => {
+    const { getAfter, getLast, getTabTraps } = renderFocusLock();
+    const traps = getTabTraps();
+    const lastTrap = traps[traps.length - 1];
+
+    // Simulate: focus was on element after the lock, user tabs backward → hits last trap
+    focusTrap(lastTrap, getAfter());
+
+    expect(getLast()).toHaveFocus();
+  });
+
+  it('does not trap focus when disabled', () => {
+    const { getFirst, getLast } = renderFocusLock({ disabled: true });
+    // When disabled, tab traps have tabIndex=-1 and won't receive focus naturally.
+    // Verify that inner elements are not affected.
+    getFirst().focus();
+    expect(getFirst()).toHaveFocus();
+    getLast().focus();
+    expect(getLast()).toHaveFocus();
   });
 });

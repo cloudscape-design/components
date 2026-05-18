@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import Header from '~components/header';
+import LiveRegion from '~components/live-region';
 import Steps from '~components/steps';
 
 import {
@@ -124,13 +125,13 @@ export default function StepsPermutationsWithUpdates() {
           <Box id="successfull-execution-description" fontWeight={'light'} margin={{ bottom: 'm' }}>
             Steps Component Description
           </Box>
-          <span aria-live="polite">
+          <LiveRegion>
             <Steps
               steps={stepsExecution1[stepIndex1]}
               ariaLabelledby="successfull-execution-label"
               ariaDescribedby="successfull-execution-description"
             />
-          </span>
+          </LiveRegion>
           <div style={{ display: 'flex' }}>
             <Button onClick={activateTimerStep1}>Start</Button>
             <Button onClick={resetTimeoutStep1}>Reset</Button>
@@ -140,9 +141,9 @@ export default function StepsPermutationsWithUpdates() {
           <Box variant={'div'} fontWeight={'bold'} margin={'s'}>
             Blocked Execution
           </Box>
-          <span aria-live="polite">
+          <LiveRegion>
             <Steps steps={stepsExecution2[stepIndex2]} ariaLabel="Blocked Execution Label" />
-          </span>
+          </LiveRegion>
           <div style={{ display: 'flex' }}>
             <Button onClick={activateTimerStep2}>Start</Button>
             <Button onClick={resetTimeoutStep2}>Reset</Button>
@@ -152,9 +153,9 @@ export default function StepsPermutationsWithUpdates() {
           <Box variant={'div'} fontWeight={'bold'} margin={'s'}>
             Failed Execution
           </Box>
-          <span aria-live="polite">
+          <LiveRegion>
             <Steps steps={stepsExecution3[stepIndex3]} ariaLabel="Failed Execution Label" />
-          </span>
+          </LiveRegion>
           <div style={{ display: 'flex' }}>
             <Button onClick={activateTimerStep3}>Start</Button>
             <Button onClick={resetTimeoutStep3}>Reset</Button>
@@ -164,9 +165,9 @@ export default function StepsPermutationsWithUpdates() {
           <Box variant={'div'} fontWeight={'bold'} margin={'s'}>
             Failed Execution with Retry
           </Box>
-          <span aria-live="polite">
+          <LiveRegion>
             <Steps steps={stepsExecution4[stepIndex4]} ariaLabel="Failed Execution with Retry Label" />
-          </span>
+          </LiveRegion>
           <div style={{ display: 'flex' }}>
             <Button onClick={activateTimerStep4}>Start</Button>
             <Button onClick={resetTimeoutStep4}>Reset</Button>

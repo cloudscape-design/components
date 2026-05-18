@@ -173,6 +173,30 @@ describe('LiveRegion', () => {
     // Note the period to force re-announcement.
     expect(politeRegion).toHaveTextContent('Announcement.');
   });
+
+  it("doesn't announce on the initial message if preventInitialAnnouncement is true", async () => {
+    jest.useFakeTimers();
+    const { politeRegion, rerender } = await renderLiveRegion(
+      <InternalLiveRegion delay={1} hidden={true} preventInitialAnnouncement={true}>
+        Announcement
+      </InternalLiveRegion>
+    );
+    expect(politeRegion).toHaveTextContent('');
+    rerender(
+      <InternalLiveRegion delay={1} hidden={true} preventInitialAnnouncement={true}>
+        Announcement
+      </InternalLiveRegion>
+    );
+    jest.runAllTimers();
+    expect(politeRegion).toHaveTextContent('');
+    rerender(
+      <InternalLiveRegion delay={1} hidden={true} preventInitialAnnouncement={true}>
+        Second announcement
+      </InternalLiveRegion>
+    );
+    jest.runAllTimers();
+    expect(politeRegion).toHaveTextContent('Second announcement');
+  });
 });
 
 describe('text extractor', () => {
