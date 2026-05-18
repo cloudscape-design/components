@@ -121,25 +121,21 @@ export function ColumnWidthsProvider({
   };
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
-    // Allow sticky lookups for columns that aren't in visibleColumns (e.g. the selection column)
-    // as long as we have a measured cell to read from.
+    const column = visibleColumns.find(col => col.id === columnId);
+
     if (sticky) {
+      // For sticky headers, mirror the primary cell's width.
+      // Try DOM measurement first (handles columns not in visibleColumns like selection).
       const measured = cellsRef.current.get(columnId)?.getBoundingClientRect().width;
       /* istanbul ignore next: getBoundingClientRect returns 0 in JSDOM */
       if (measured) {
         return { width: measured };
       }
+      return { width: columnWidths?.get(columnId) ?? column?.width };
     }
 
-    const column = visibleColumns.find(column => column.id === columnId);
     if (!column) {
       return {};
-    }
-
-    if (sticky) {
-      return {
-        width: columnWidths?.get(column.id) ?? column.width,
-      };
     }
 
     if (resizableColumns && columnWidths) {
@@ -149,11 +145,11 @@ export function ColumnWidthsProvider({
         0
       );
       if (isLastColumn && containerWidthRef.current > totalWidth) {
-        return { width: 'auto', minWidth: column?.minWidth };
-      } else {
-        return { width: columnWidths.get(column.id), minWidth: column?.minWidth };
+        return { width: 'auto', minWidth: column.minWidth };
       }
+      return { width: columnWidths.get(column.id), minWidth: column.minWidth };
     }
+
     return {
       width: column.width,
       minWidth: column.minWidth,
@@ -284,16 +280,27 @@ export function ColumnWidthsProvider({
 export function TableColGroup({
   visibleColumnDefinitions,
   hasSelection,
+  sticky = false,
+  selectionColumnId,
 }: {
   visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   hasSelection: boolean;
+  sticky?: boolean;
+  selectionColumnId?: PropertyKey;
 }) {
-  const { setCol } = useColumnWidths();
+  const { getColumnStyles, setCol } = useColumnWidths();
   return (
     <colgroup>
-      {hasSelection && <col />}
+      {hasSelection && (
+        <col
+          style={sticky && selectionColumnId ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+        />
+      )}
       {visibleColumnDefinitions.map((column, colIndex) => {
         const columnId = getColumnKey(column, colIndex);
+        if (sticky) {
+          return <col key={String(columnId)} style={{ width: getColumnStyles(true, columnId).width }} />;
+        }
         return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
       })}
     </colgroup>
