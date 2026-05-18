@@ -793,37 +793,37 @@ interface ActionTreeItem {
 
 const actionTreeItems: ActionTreeItem[] = [
   {
-    id: '1',
+    id: 'action-1',
     label: 'Evaluated',
     type: 'success',
     hasActions: true,
   },
   {
-    id: '2',
+    id: 'action-2',
     label: 'node-20',
     relatedNode: 'eksclu-node-wx456',
     type: 'success',
     hasActions: true,
     children: [
-      { id: '2.1', label: 'node-17', type: 'warning' },
-      { id: '2.2', label: 'node-18', type: 'success' },
+      { id: 'action-2.1', label: 'node-17', type: 'warning' },
+      { id: 'action-2.2', label: 'node-18', type: 'success' },
     ],
   },
   {
-    id: '3',
+    id: 'action-3',
     label: 'node 21',
     relatedNode: 'eksclu-node-wx457',
     hasActions: true,
     children: [
       {
-        id: '3.1',
+        id: 'action-3.1',
         label: 'node 19',
         relatedNode: 'eksclu-node-wx457',
         type: 'success',
         hasActions: true,
         children: [
-          { id: '3.1.1', label: 'node-22', type: 'success' },
-          { id: '3.1.2', label: 'node-23', type: 'success' },
+          { id: 'action-3.1.1', label: 'node-22', type: 'success' },
+          { id: 'action-3.1.2', label: 'node-23', type: 'success' },
         ],
       },
     ],
@@ -831,7 +831,7 @@ const actionTreeItems: ActionTreeItem[] = [
 ];
 
 function TreeViewWithActions() {
-  const [expandedItems, setExpandedItems] = useState(['2', '3', '3.1']);
+  const [expandedItems, setExpandedItems] = useState(['action-2', 'action-3', 'action-3.1']);
 
   return (
     <TreeView
