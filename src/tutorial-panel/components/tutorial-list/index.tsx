@@ -157,65 +157,63 @@ function Tutorial({
         ) : null}
       </InternalSpaceBetween>
 
-      <div aria-live="polite">
-        <CSSTransition
-          in={expanded}
-          timeout={30}
-          classNames={{ enter: styles['content-enter'] }}
-          nodeRef={expandableSectionRef}
+      <CSSTransition
+        in={expanded}
+        timeout={30}
+        classNames={{ enter: styles['content-enter'] }}
+        nodeRef={expandableSectionRef}
+      >
+        <div
+          className={clsx(styles['expandable-section'], expanded && styles.expanded)}
+          id={controlId}
+          ref={expandableSectionRef}
         >
-          <div
-            className={clsx(styles['expandable-section'], expanded && styles.expanded)}
-            id={controlId}
-            ref={expandableSectionRef}
-          >
-            <InternalSpaceBetween size="l">
-              <InternalSpaceBetween size="m">
-                {tutorial.prerequisitesNeeded && tutorial.prerequisitesAlert && (
-                  <InternalAlert type="info" className={styles['prerequisites-alert']}>
-                    {tutorial.prerequisitesAlert}
-                  </InternalAlert>
+          <InternalSpaceBetween size="l">
+            <InternalSpaceBetween size="m">
+              {tutorial.prerequisitesNeeded && tutorial.prerequisitesAlert && (
+                <InternalAlert type="info" className={styles['prerequisites-alert']}>
+                  {tutorial.prerequisitesAlert}
+                </InternalAlert>
+              )}
+              <InternalSpaceBetween size="s">
+                <InternalBox color="text-body-secondary">
+                  <div
+                    className={clsx(
+                      styles['tutorial-description'],
+                      typeof tutorial.description === 'string' && styles['tutorial-description-plaintext']
+                    )}
+                  >
+                    {tutorial.description}
+                  </div>
+                </InternalBox>
+                {tutorial.learnMoreUrl && (
+                  <InternalLink
+                    href={tutorial.learnMoreUrl}
+                    className={styles['learn-more-link']}
+                    externalIconAriaLabel={i18nStrings.labelLearnMoreExternalIcon}
+                    ariaLabel={i18nStrings.labelLearnMoreLink}
+                    external={true}
+                    variant="primary"
+                  >
+                    {i18nStrings.learnMoreLinkText}
+                  </InternalLink>
                 )}
-                <InternalSpaceBetween size="s">
-                  <InternalBox color="text-body-secondary">
-                    <div
-                      className={clsx(
-                        styles['tutorial-description'],
-                        typeof tutorial.description === 'string' && styles['tutorial-description-plaintext']
-                      )}
-                    >
-                      {tutorial.description}
-                    </div>
-                  </InternalBox>
-                  {tutorial.learnMoreUrl && (
-                    <InternalLink
-                      href={tutorial.learnMoreUrl}
-                      className={styles['learn-more-link']}
-                      externalIconAriaLabel={i18nStrings.labelLearnMoreExternalIcon}
-                      ariaLabel={i18nStrings.labelLearnMoreLink}
-                      external={true}
-                      variant="primary"
-                    >
-                      {i18nStrings.learnMoreLinkText}
-                    </InternalLink>
-                  )}
-                </InternalSpaceBetween>
               </InternalSpaceBetween>
-
-              <InternalBox margin={{ bottom: 'xxs' }}>
-                <InternalButton
-                  onClick={onStartTutorial}
-                  disabled={tutorial.prerequisitesNeeded ?? false}
-                  formAction="none"
-                  className={styles.start}
-                >
-                  {tutorial.completed ? i18nStrings.restartTutorialButtonText : i18nStrings.startTutorialButtonText}
-                </InternalButton>
-              </InternalBox>
             </InternalSpaceBetween>
-          </div>
-        </CSSTransition>
-      </div>
+
+            <InternalBox margin={{ bottom: 'xxs' }}>
+              <InternalButton
+                onClick={onStartTutorial}
+                disabled={tutorial.prerequisitesNeeded ?? false}
+                formAction="none"
+                className={styles.start}
+              >
+                {tutorial.completed ? i18nStrings.restartTutorialButtonText : i18nStrings.startTutorialButtonText}
+              </InternalButton>
+            </InternalBox>
+          </InternalSpaceBetween>
+        </div>
+      </CSSTransition>
     </li>
   );
 }
