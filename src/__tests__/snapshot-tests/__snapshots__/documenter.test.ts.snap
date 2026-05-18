@@ -11699,6 +11699,87 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Components definition for divider matches the snapshot: divider 1`] = `
+{
+  "dashCaseName": "divider",
+  "events": [],
+  "functions": [],
+  "name": "Divider",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Attributes to add to the native element.
+Some attributes will be automatically combined with internal attribute values:
+- \`className\` will be appended.
+- Event handlers will be chained, unless the default is prevented.
+
+We do not support using this attribute to apply custom styling.",
+      "inlineType": {
+        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "type": "union",
+        "values": [
+          "Omit<React.HTMLAttributes<HTMLElement>, "children">",
+          "Record<\`data-\${string}\`, string>",
+        ],
+      },
+      "name": "nativeAttributes",
+      "optional": true,
+      "systemTags": [
+        "core",
+      ],
+      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+    },
+    {
+      "defaultValue": "'horizontal'",
+      "description": "Orientation of the divider line.
+
+- \`"horizontal"\` (default) — renders a full-width horizontal line. Use inside block-level
+  containers to separate stacked content sections.
+- \`"vertical"\` — renders a full-height vertical line. Use inside flex or inline containers
+  to separate side-by-side elements.",
+      "inlineType": {
+        "name": "DividerProps.Orientation",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "orientation",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Text label rendered at the center of a horizontal divider line.
+Use for labels or short section titles.
+
+Only supported by horizontal dividers.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for drawer matches the snapshot: drawer 1`] = `
 {
   "dashCaseName": "drawer",
@@ -38799,6 +38880,25 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "DividerWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -49174,6 +49274,20 @@ The mode selector is only rendered as a Select on narrow viewports. On wide view
         },
       ],
       "name": "SelectWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the label element, or \`null\` if no label is set.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "DividerWrapper",
     },
     {
       "methods": [
