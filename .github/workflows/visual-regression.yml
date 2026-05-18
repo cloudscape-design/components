@@ -87,12 +87,12 @@ jobs:
 
       # ── Run tests ─────────────────────────────────────────────────────────
       - name: Start test server (port 8080)
-        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8080 --static pages/lib/static-default --no-hot &
+        run: npx serve --no-clipboard --listen 8080 pages/lib/static-default &
         env:
           NODE_ENV: development
 
       - name: Start baseline server (port 8081)
-        run: node_modules/.bin/webpack serve --config pages/webpack.config.integ.cjs --port 8081 --static pages/lib/static-visual-baseline --no-hot &
+        run: npx serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
         env:
           NODE_ENV: development
 
