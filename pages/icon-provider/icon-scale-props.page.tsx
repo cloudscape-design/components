@@ -138,7 +138,7 @@ function IconSizes() {
       <SpaceBetween size="m">
         <Box>
           <Box padding={{ vertical: 'xs' }} fontWeight="bold">
-            X-Small (New size variant)
+            X-Small (New size variant. Currently this variant is not used in any existing components)
           </Box>
           <SpaceBetween size="xs" direction="horizontal">
             {iconNames.map(name => (
