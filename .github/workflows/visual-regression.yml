@@ -1,9 +1,6 @@
 name: Visual Regression Tests
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_call:
     inputs:
       pr-artifact-name:
