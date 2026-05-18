@@ -1166,47 +1166,35 @@ export default function IconScaleProviderScenario() {
         </SplitPanel>
       }
       content={
-        <>
-          <IconProvider
-            icons={null}
-            sizes={{
-              'x-small': sizeXSmallValue,
-              small: sizeSmallValue,
-              normal: sizeValue,
-              medium: sizeMediumValue,
-              big: sizeBigValue,
-              large: sizeLargeValue,
-            }}
-            strokeWidths={{
-              'x-small': strokeWidthXSmallValue,
-              small: strokeWidthSmallValue,
-              normal: strokeWidthNormalValue,
-              medium: strokeWidthMediumValue,
-              big: strokeWidthBigValue,
-              large: strokeWidthLargeValue,
-            }}
-          >
-            <SpaceBetween size="l">
-              <Header variant="h1">Icon scale overview</Header>
-              <IconSizes />
-              <Typography />
-              <ButtonsInputsDropdowns />
-              <NavigationComponents />
-              <TableAndCards />
-              <StatusComponents />
-            </SpaceBetween>
-          </IconProvider>
-          <IconProvider icons={null} sizes={{ large: 8 }}>
-            <TextContent>
-              <h1 style={{ lineHeight: '100px' }}>
-                <Icon name="settings" size="inherit" /> Heading 1 (icon size big)
-              </h1>
-              <h2>
-                <Icon name="settings" size="inherit" /> Heading 2 (icon size medium)
-              </h2>
-            </TextContent>
-          </IconProvider>
-        </>
+        <IconProvider
+          icons={null}
+          sizes={{
+            'x-small': sizeXSmallValue,
+            small: sizeSmallValue,
+            normal: sizeValue,
+            medium: sizeMediumValue,
+            big: sizeBigValue,
+            large: sizeLargeValue,
+          }}
+          strokeWidths={{
+            'x-small': strokeWidthXSmallValue,
+            small: strokeWidthSmallValue,
+            normal: strokeWidthNormalValue,
+            medium: strokeWidthMediumValue,
+            big: strokeWidthBigValue,
+            large: strokeWidthLargeValue,
+          }}
+        >
+          <SpaceBetween size="l">
+            <Header variant="h1">Icon scale overview</Header>
+            <IconSizes />
+            <Typography />
+            <ButtonsInputsDropdowns />
+            <NavigationComponents />
+            <TableAndCards />
+            <StatusComponents />
+          </SpaceBetween>
+        </IconProvider>
       }
     />
   );
