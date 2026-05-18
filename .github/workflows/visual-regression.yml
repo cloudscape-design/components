@@ -14,7 +14,7 @@ on:
       caller-run-id:
         description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
         required: false
-        type: string
+        type: number
 
 defaults:
   run:
