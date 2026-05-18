@@ -79,11 +79,7 @@ export function findTableRowCellByAriaColIndex(
  * that span into this row via rowspan. This is needed because cells with rowspan > 1
  * are only in one <tr> in the DOM but visually occupy multiple rows.
  */
-export function getAllCellsInRow(table: null | HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
-  if (!table) {
-    return [];
-  }
-
+export function getAllCellsInRow(table: HTMLTableElement, targetAriaRowIndex: number): HTMLTableCellElement[] {
   const cells: HTMLTableCellElement[] = [];
   const rows = table.querySelectorAll<HTMLTableRowElement>('tr[aria-rowindex]');
 
@@ -156,7 +152,7 @@ export function findClosestCellByAriaColIndex(
  * Skips past the current cell when movement lands on it due to span attributes.
  */
 export function findNextCell(
-  table: HTMLTableElement | null,
+  table: HTMLTableElement,
   targetRow: HTMLTableRowElement,
   targetAriaColIndex: number,
   delta: { x: number; y: number },
