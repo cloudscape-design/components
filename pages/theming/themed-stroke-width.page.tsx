@@ -201,7 +201,7 @@ export default function ThemedStrokeWidthPage() {
           </Box>
 
           <SpaceBetween size="xs">
-            <Box variant="h3">Small (12px)</Box>
+            <Box variant="h3">Small (16px with shorter wrapper size)</Box>
             <div className={styles.wrapper}>
               {Object.keys(icons).map(icon => (
                 <Icon key={icon} name={icon as IconProps['name']} variant="normal" size="small" />
