@@ -5885,6 +5885,13 @@ This property only applies when an \`href\` is provided.",
       "type": "string",
     },
     {
+      "description": "The text displayed in a tooltip on hover or focus.
+If \`disabledReason\` is also provided, it takes precedence over \`tooltipText\` when disabled.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button as follows:
 * \`primary\` for primary buttons.
@@ -14817,6 +14824,14 @@ The icon will be vertically centered based on the height.",
       "optional": true,
       "type": "string",
       "visualRefreshTag": "\`medium\` size",
+    },
+    {
+      "description": "Displays a visible label on hover or focus. Only use this property
+if the icon is semantically meaningful or isn't followed by alternative
+text.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Specifies the URL of a custom icon. Use this property if the icon you want isn't available, and your custom icon cannot be an SVG.
@@ -31676,9 +31691,6 @@ Can return null if the element is not yet mounted or available.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -32104,6 +32116,51 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
   ],
   "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Components definition for truncated-text matches the snapshot: truncated-text 1`] = `
+{
+  "dashCaseName": "truncated-text",
+  "events": [],
+  "functions": [],
+  "name": "TruncatedText",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The content of the tooltip shown when the text is truncated. By default, the
+tooltip content is the same as the \`children\` slot. Use only if the \`children\`
+slot may contain interactive elements.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The inline text to display. If there isn't enough space to render the text
+in a single line, it is truncated with an ellipsis and the full content is
+shown on pointer hover or keyboard focus.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -33012,6 +33069,19 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
         {
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -36176,6 +36246,22 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findTextRegion",
           },
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findTooltip",
+          },
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -44622,6 +44708,19 @@ Supported options:
     {
       "methods": [
         {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "TooltipWrapper",
+          },
+        },
+      ],
+      "name": "TruncatedTextWrapper",
+    },
+    {
+      "methods": [
+        {
           "name": "findCompletionScreenDescription",
           "parameters": [],
           "returnType": {
@@ -45127,6 +45226,14 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
         {
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -47398,6 +47505,17 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findTextRegion",
           },
           "name": "findTextRegion",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findTooltip",
+          },
+          "name": "findTooltip",
           "parameters": [],
           "returnType": {
             "isNullable": false,
@@ -53351,6 +53469,19 @@ Supported options:
         },
       ],
       "name": "TreeViewItemWrapper",
+    },
+    {
+      "methods": [
+        {
+          "name": "findTooltip",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "TooltipWrapper",
+          },
+        },
+      ],
+      "name": "TruncatedTextWrapper",
     },
     {
       "methods": [

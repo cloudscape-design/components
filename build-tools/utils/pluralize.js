@@ -92,6 +92,7 @@ const pluralizationMap = {
   Tooltip: 'Tooltips',
   TopNavigation: 'TopNavigations',
   TreeView: 'TreeViews',
+  TruncatedText: 'TruncatedTexts',
   TutorialPanel: 'TutorialPanels',
   Wizard: 'Wizards',
 };

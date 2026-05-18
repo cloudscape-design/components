@@ -99,6 +99,7 @@ import TokenGroupWrapper from './token-group';
 import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
+import TruncatedTextWrapper from './truncated-text';
 import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
 
@@ -193,6 +194,7 @@ export { TokenGroupWrapper };
 export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
+export { TruncatedTextWrapper };
 export { TutorialPanelWrapper };
 export { WizardWrapper };
 
@@ -2720,6 +2722,34 @@ findAllTreeViews(selector?: string): Array<TreeViewWrapper>;
  */
 findClosestTreeView(): TreeViewWrapper | null;
 /**
+ * Returns the wrapper of the first TruncatedText that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TruncatedText.
+ * If no matching TruncatedText is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TruncatedTextWrapper | null}
+ */
+findTruncatedText(selector?: string): TruncatedTextWrapper | null;
+
+/**
+ * Returns an array of TruncatedText wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TruncatedTexts inside the current wrapper.
+ * If no matching TruncatedText is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TruncatedTextWrapper>}
+ */
+findAllTruncatedTexts(selector?: string): Array<TruncatedTextWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TruncatedText for the current element,
+ * or the element itself if it is an instance of TruncatedText.
+ * If no TruncatedText is found, returns \`null\`.
+ *
+ * @returns {TruncatedTextWrapper | null}
+ */
+findClosestTruncatedText(): TruncatedTextWrapper | null;
+/**
  * Returns the wrapper of the first TutorialPanel that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first TutorialPanel.
  * If no matching TutorialPanel is found, returns \`null\`.
@@ -3949,6 +3979,19 @@ ElementWrapper.prototype.findTreeView = function(selector) {
 ElementWrapper.prototype.findAllTreeViews = function(selector) {
   return this.findAllComponents(TreeViewWrapper, selector);
 };
+ElementWrapper.prototype.findTruncatedText = function(selector) {
+  let rootSelector = \`.\${TruncatedTextWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TruncatedTextWrapper && TruncatedTextWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TruncatedTextWrapper.rootSelector}, .\${TruncatedTextWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TruncatedTextWrapper);
+};
+
+ElementWrapper.prototype.findAllTruncatedTexts = function(selector) {
+  return this.findAllComponents(TruncatedTextWrapper, selector);
+};
 ElementWrapper.prototype.findTutorialPanel = function(selector) {
   let rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
   if("legacyRootSelector" in TutorialPanelWrapper && TutorialPanelWrapper.legacyRootSelector){
@@ -4426,6 +4469,11 @@ ElementWrapper.prototype.findClosestTreeView = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(TreeViewWrapper);
 };
+ElementWrapper.prototype.findClosestTruncatedText = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TruncatedTextWrapper);
+};
 ElementWrapper.prototype.findClosestTutorialPanel = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4545,6 +4593,7 @@ import TokenGroupWrapper from './token-group';
 import TooltipWrapper from './tooltip';
 import TopNavigationWrapper from './top-navigation';
 import TreeViewWrapper from './tree-view';
+import TruncatedTextWrapper from './truncated-text';
 import TutorialPanelWrapper from './tutorial-panel';
 import WizardWrapper from './wizard';
 
@@ -4639,6 +4688,7 @@ export { TokenGroupWrapper };
 export { TooltipWrapper };
 export { TopNavigationWrapper };
 export { TreeViewWrapper };
+export { TruncatedTextWrapper };
 export { TutorialPanelWrapper };
 export { WizardWrapper };
 
@@ -6176,6 +6226,23 @@ findTreeView(selector?: string): TreeViewWrapper;
  */
 findAllTreeViews(selector?: string): MultiElementWrapper<TreeViewWrapper>;
 /**
+ * Returns a wrapper that matches the TruncatedTexts with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches TruncatedTexts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TruncatedTextWrapper}
+ */
+findTruncatedText(selector?: string): TruncatedTextWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches TruncatedTexts with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches TruncatedTexts.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<TruncatedTextWrapper>}
+ */
+findAllTruncatedTexts(selector?: string): MultiElementWrapper<TruncatedTextWrapper>;
+/**
  * Returns a wrapper that matches the TutorialPanels with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches TutorialPanels.
  *
@@ -7382,6 +7449,19 @@ ElementWrapper.prototype.findTreeView = function(selector) {
 
 ElementWrapper.prototype.findAllTreeViews = function(selector) {
   return this.findAllComponents(TreeViewWrapper, selector);
+};
+ElementWrapper.prototype.findTruncatedText = function(selector) {
+  let rootSelector = \`.\${TruncatedTextWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TruncatedTextWrapper && TruncatedTextWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TruncatedTextWrapper.rootSelector}, .\${TruncatedTextWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TruncatedTextWrapper);
+};
+
+ElementWrapper.prototype.findAllTruncatedTexts = function(selector) {
+  return this.findAllComponents(TruncatedTextWrapper, selector);
 };
 ElementWrapper.prototype.findTutorialPanel = function(selector) {
   let rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;

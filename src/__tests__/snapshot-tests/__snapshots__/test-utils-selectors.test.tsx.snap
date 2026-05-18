@@ -95,6 +95,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_content_vjswe",
     "awsui_disabled-reason-tooltip_1ueyk",
     "awsui_icon-left_vjswe",
+    "awsui_tooltip_1ueyk",
   ],
   "button-dropdown": [
     "awsui_button-dropdown_sne0l",
@@ -733,6 +734,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_expanded_1js4f",
     "awsui_root_1js4f",
     "awsui_treeitem_1js4f",
+  ],
+  "truncated-text": [
+    "awsui_root_lwmqr",
   ],
   "tutorial-panel": [
     "awsui_collapse-button_ig8mp",

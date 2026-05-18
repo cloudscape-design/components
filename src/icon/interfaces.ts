@@ -53,6 +53,13 @@ export interface IconProps extends BaseComponentProps {
   ariaLabel?: string;
 
   /**
+   * Displays a visible label on hover or focus. Only use this property
+   * if the icon is semantically meaningful or isn't followed by alternative
+   * text.
+   */
+  tooltipText?: string;
+
+  /**
    * Specifies the SVG of a custom icon.
    *
    * Use this property if the icon you want isn't available, and you want your custom icon to inherit colors dictated by variant or hover states.
