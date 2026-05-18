@@ -73,7 +73,7 @@ import headerStyles from '../header/styles.css.js';
 import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
-const SELECTION_COLUMN_WIDTH = 40;
+const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<
@@ -302,7 +302,6 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    // Build visible column IDs set for grouping
     const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx) as string));
 
     const { groupLeafMap, ...columnGroupsLayout } = useColumnGroups(
@@ -594,11 +593,7 @@ const InternalTable = React.forwardRef(
                     })}
                   >
                     {resizableColumns && columnGroupsLayout && columnGroupsLayout.rows.length > 1 && (
-                      <TableColGroup
-                        visibleColumnDefinitions={visibleColumnDefinitions}
-                        hasSelection={hasSelection}
-                        selectionColumnWidth={SELECTION_COLUMN_WIDTH}
-                      />
+                      <TableColGroup visibleColumnDefinitions={visibleColumnDefinitions} hasSelection={hasSelection} />
                     )}
                     <Thead
                       ref={theadRef}
