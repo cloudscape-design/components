@@ -4,6 +4,12 @@ on:
   pull_request:
     branches:
       - main
+  workflow_call:
+    inputs:
+      pr-artifact-name:
+        description: 'Name of the artifact containing PR pages (built by quick-build job). If not provided, pages will be built locally.'
+        required: false
+        type: string
 
 defaults:
   run:
@@ -12,11 +18,6 @@ defaults:
 permissions:
   id-token: write
   contents: read
-
-inputs:
-  pr-artifact-name:
-    description: 'Name of the artifact containing PR pages (built by quick-build job). If not provided, pages will be built locally.'
-    required: false
 
 jobs:
   visual:
