@@ -21,6 +21,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderPanelTopWidth: '1px',
   borderRadiusAlert: '{borderRadiusFlashbar}',
   borderRadiusBadge: '4px',
+  borderRadiusStatusIndicator: '{borderRadiusBadge}',
   borderRadiusButton: '20px',
   borderRadiusCalendarDayFocusRing: '3px',
   borderRadiusCodeEditor: '{borderRadiusInput}',

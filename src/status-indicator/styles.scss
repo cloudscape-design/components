@@ -29,6 +29,18 @@ $_color-overrides: (
   'yellow': awsui.$color-text-status-warning,
 );
 
+$_status-backgrounds: (
+  'error': awsui.$color-background-status-indicator-error,
+  'warning': awsui.$color-background-status-indicator-warning,
+  'success': awsui.$color-background-status-indicator-success,
+  'info': awsui.$color-background-status-indicator-info,
+  'stopped': awsui.$color-background-status-indicator-neutral,
+  'pending': awsui.$color-background-status-indicator-neutral,
+  'in-progress': awsui.$color-background-status-indicator-neutral,
+  'loading': awsui.$color-background-status-indicator-neutral,
+  'not-started': awsui.$color-background-status-indicator-neutral,
+);
+
 .root {
   @include styles.default-text-style;
   @each $status in map.keys($_status-colors) {
@@ -41,9 +53,19 @@ $_color-overrides: (
       color: #{map.get($_color-overrides, $color)};
     }
   }
+  @each $status in map.keys($_status-backgrounds) {
+    &.status-#{$status} > .container {
+      background: #{map.get($_status-backgrounds, $status)};
+    }
+  }
 }
 
 .container {
+  padding-inline: awsui.$space-status-indicator-padding-inline;
+  border-start-start-radius: awsui.$border-radius-status-indicator;
+  border-start-end-radius: awsui.$border-radius-status-indicator;
+  border-end-start-radius: awsui.$border-radius-status-indicator;
+  border-end-end-radius: awsui.$border-radius-status-indicator;
   &.display-inline {
     @include styles.text-wrapping;
     display: inline;

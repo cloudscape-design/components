@@ -27,6 +27,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderRadiusStatusIndicator: {
+    description: 'The border radius of status indicators.',
+    public: false,
+    themeable: true,
+  },
   borderRadiusButton: {
     description: "The border radius of buttons and segmented control's segments.",
     public: true,
