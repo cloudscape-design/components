@@ -39,13 +39,15 @@ jobs:
         with:
           chrome-version: stable
 
+      - name: Install dependencies
+        run: npm i
+
       # ── Build or download PR (test) pages ─────────────────────────────────
       # When called from deploy.yml with pr-artifact-name, download the artifact.
       # When run standalone (no pr-artifact-name provided), build the pages locally.
       - name: Build PR pages locally
         if: ${{ !inputs.pr-artifact-name }}
         run: |
-          npm i
           npx gulp quick-build
           node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
         env:
