@@ -59,7 +59,7 @@ export default function SkeletonComponentsExamples() {
 
   return (
     <Box padding="l">
-      <div style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white' }}>
+      <div style={{ position: 'sticky', top: 0, zIndex: 1000, marginBottom: '2em' }}>
         <Container>
           <SpaceBetween size="m">
             <Header

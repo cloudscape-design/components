@@ -19,6 +19,9 @@ describe('Skeleton Component', () => {
       const wrapper = renderSkeleton();
       expect(wrapper.getElement()).toBeInTheDocument();
       expect(wrapper.getElement().tagName).toBe('DIV');
+    });
+    it('is hidden from accessibility tree', () => {
+      const wrapper = renderSkeleton();
       expect(wrapper.getElement()).toHaveAttribute('aria-hidden', 'true');
     });
   });
