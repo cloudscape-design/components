@@ -14,7 +14,10 @@ import InternalPagination from './internal';
 export { PaginationProps };
 
 const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>((props, ref) => {
-  const baseComponentProps = useBaseComponent('Pagination', { props: { openEnd: props.openEnd } });
+  const baseComponentProps = useBaseComponent('Pagination', {
+    props: { openEnd: props.openEnd },
+    metadata: { hasJumpToPage: !!props.jumpToPage },
+  });
   return (
     <InternalPagination
       {...props}
