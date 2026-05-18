@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2021"],
+    "lib": ["ES2021", "DOM"],
     "target": "ES2019",
     "types": [],
     "module": "CommonJS",
