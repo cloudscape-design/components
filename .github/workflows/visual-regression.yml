@@ -7,6 +7,10 @@ on:
         description: 'Name of the artifact containing PR pages (built by quick-build job). If not provided, pages will be built locally.'
         required: false
         type: string
+      caller-run-id:
+        description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
+        required: false
+        type: string
 
 defaults:
   run:
@@ -15,9 +19,11 @@ defaults:
 permissions:
   id-token: write
   contents: read
+  actions: read
 
 jobs:
   # Build the baseline (main branch) pages once and share them across all browser jobs.
+  # Also stages the PR pages artifact within this run so all jobs use the same run context.
   build-baseline:
     name: Build baseline pages
     runs-on: ubuntu-latest
@@ -35,9 +41,10 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      # ── Build or download PR (test) pages ─────────────────────────────────
-      # When called from deploy.yml with pr-artifact-name, download the artifact.
-      # When run standalone (no pr-artifact-name provided), build the pages locally.
+      # ── Stage PR (test) pages ──────────────────────────────────────────────
+      # Download from the caller's run (deploy.yml) or build locally.
+      # Either way, re-upload as 'visual-pr-pages' within this run so the
+      # matrix jobs can download it without needing cross-run artifact access.
       - name: Build PR pages locally
         if: ${{ !inputs.pr-artifact-name }}
         run: |
@@ -46,12 +53,21 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Download PR pages artifact
+      - name: Download PR pages artifact from caller run
         if: ${{ inputs.pr-artifact-name }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.pr-artifact-name }}
           path: pages/lib/static-default
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Upload PR pages artifact (for matrix jobs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-pr-pages
+          path: pages/lib/static-default
+          retention-days: 1
 
       # ── Build baseline (main) pages ────────────────────────────────────────
       # Use a git worktree so the baseline has its own directory and its own
@@ -83,14 +99,6 @@ jobs:
         with:
           name: visual-baseline-pages
           path: pages/lib/static-visual-baseline
-          retention-days: 1
-
-      - name: Upload PR pages artifact
-        if: ${{ !inputs.pr-artifact-name }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-pr-pages
-          path: pages/lib/static-default
           retention-days: 1
 
   visual:
@@ -130,7 +138,7 @@ jobs:
       - name: Download PR pages artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.pr-artifact-name || 'visual-pr-pages' }}
+          name: visual-pr-pages
           path: pages/lib/static-default
 
       - name: Download baseline artifact
