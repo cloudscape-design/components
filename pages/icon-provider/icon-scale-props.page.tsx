@@ -1126,7 +1126,13 @@ export default function IconScaleProviderScenario() {
         <IconProvider
           icons={{
             'status-positive': (
-              <svg viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                viewBox="0 0 16 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                focusable="false"
+                aria-hidden="true"
+              >
                 <path d="M5 9L7 11L11 7" />
                 <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
               </svg>
