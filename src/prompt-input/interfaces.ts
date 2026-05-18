@@ -173,8 +173,6 @@ export interface PromptInputProps
    * Use this to replace the primary action.
    * If this is provided then any other `actionButton*` properties will be ignored.
    * Note that you should still provide an `onAction` function in order to handle keyboard submission.
-   *
-   * @awsuiSystem core
    */
   customPrimaryAction?: React.ReactNode;
 
