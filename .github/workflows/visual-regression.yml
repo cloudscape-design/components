@@ -17,8 +17,85 @@ permissions:
   contents: read
 
 jobs:
+  # Build the baseline (main branch) pages once and share them across all browser jobs.
+  build-baseline:
+    name: Build baseline pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i
+
+      # ── Build or download PR (test) pages ─────────────────────────────────
+      # When called from deploy.yml with pr-artifact-name, download the artifact.
+      # When run standalone (no pr-artifact-name provided), build the pages locally.
+      - name: Build PR pages locally
+        if: ${{ !inputs.pr-artifact-name }}
+        run: |
+          npx gulp quick-build
+          node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
+        env:
+          NODE_ENV: production
+
+      - name: Download PR pages artifact
+        if: ${{ inputs.pr-artifact-name }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.pr-artifact-name }}
+          path: pages/lib/static-default
+
+      # ── Build baseline (main) pages ────────────────────────────────────────
+      # Use a git worktree so the baseline has its own directory and its own
+      # node_modules. This means a PR that changes package-lock.json will still
+      # produce a correct baseline: the baseline installs from main's lockfile
+      # and the PR build installs from the PR's lockfile, so both sides use the
+      # dependency versions that are correct for their respective source trees.
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm i
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-visual-baseline
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+          retention-days: 1
+
+      - name: Upload PR pages artifact
+        if: ${{ !inputs.pr-artifact-name }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-pr-pages
+          path: pages/lib/static-default
+          retention-days: 1
+
   visual:
     name: Visual regression (${{ matrix.browser }})
+    needs: build-baseline
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -30,8 +107,6 @@ jobs:
             os: macos-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,52 +127,24 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      # ── Build or download PR (test) pages ─────────────────────────────────
-      - name: Build PR pages locally
-        if: ${{ !inputs.pr-artifact-name }}
-        run: |
-          npx gulp quick-build
-          node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
-        env:
-          NODE_ENV: production
-
       - name: Download PR pages artifact
-        if: ${{ inputs.pr-artifact-name }}
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.pr-artifact-name }}
+          name: ${{ inputs.pr-artifact-name || 'visual-pr-pages' }}
           path: pages/lib/static-default
 
-      # ── Build baseline (main) pages ────────────────────────────────────────
-      - name: Create baseline worktree from origin/main
-        run: git worktree add /tmp/baseline origin/main
-
-      - name: Install baseline dependencies
-        run: npm i
-        working-directory: /tmp/baseline
-
-      - name: Build baseline pages
-        run: npx gulp quick-build
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
-
-      - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
+      - name: Download baseline artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
 
       # ── Run tests ─────────────────────────────────────────────────────────
       - name: Start test server (port 8080)
         run: npx serve --no-clipboard --listen 8080 pages/lib/static-default &
-        env:
-          NODE_ENV: development
 
       - name: Start baseline server (port 8081)
         run: npx serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
-        env:
-          NODE_ENV: development
 
       - name: Wait for servers to be ready
         run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
