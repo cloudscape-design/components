@@ -61,9 +61,6 @@ function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProv
     if (sizes.large !== undefined) {
       map.large = sizes.large;
     }
-    if (sizes.inherit !== undefined) {
-      map.inherit = sizes.inherit;
-    }
 
     return map;
   }, [contextSizeOverrides, sizes]);
@@ -93,9 +90,6 @@ function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProv
     }
     if (strokeWidths.large !== undefined) {
       map.large = strokeWidths.large;
-    }
-    if (strokeWidths.inherit !== undefined) {
-      map.inherit = strokeWidths.inherit;
     }
 
     return map;

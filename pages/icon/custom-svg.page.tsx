@@ -7,7 +7,7 @@ import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const sizes = ['small', 'normal', 'big', 'large'] as const;
+const sizes = ['x-small', 'small', 'normal', 'big', 'large'] as const;
 const variants = ['normal', 'disabled', 'error', 'inverted', 'link', 'subtle', 'success', 'warning'] as const;
 
 export default function IconScenario() {

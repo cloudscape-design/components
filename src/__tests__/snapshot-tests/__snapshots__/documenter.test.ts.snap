@@ -15631,11 +15631,6 @@ provider or fall back to their default token-defined values.",
             "type": "number",
           },
           {
-            "name": "inherit",
-            "optional": true,
-            "type": "number",
-          },
-          {
             "name": "large",
             "optional": true,
             "type": "number",
@@ -15680,11 +15675,6 @@ provider or fall back to their default token-defined stroke-widths.",
         "properties": [
           {
             "name": "big",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "inherit",
             "optional": true,
             "type": "number",
           },

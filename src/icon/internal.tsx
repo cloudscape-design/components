@@ -99,15 +99,9 @@ const InternalIcon = ({
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const [parentFontSize, setParentFontSize] = useState<number | null>(null);
 
-  // Check if there's a pixel override for the "inherit" size variant.
-  // If so, we switch from contextual sizing to the "normal" size class and apply inline sizing.
-  const inheritOverride = sizeOverrides.inherit;
-  const hasInheritOverride = size === 'inherit' && inheritOverride !== undefined;
-
   // Determine the effective size class for CSS purposes
-  const effectiveSize = hasInheritOverride ? 'normal' : size;
-  const contextualSize = effectiveSize === 'inherit';
-  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : effectiveSize;
+  const contextualSize = size === 'inherit';
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
 
   // Compute the target pixel size and stroke-width scale from the override.
   // Instead of CSS `scale`, we directly set inline-size on both the span and SVG.
@@ -116,13 +110,7 @@ const InternalIcon = ({
   // By setting --icon-stroke-scale to basePx/targetPx, the visual stroke stays at the themed value.
   let targetSizePx: number | undefined;
   let strokeScale: number | undefined;
-  if (hasInheritOverride) {
-    targetSizePx = inheritOverride;
-    const basePx = BASE_SIZE_PX.normal;
-    if (targetSizePx !== basePx) {
-      strokeScale = basePx / targetSizePx;
-    }
-  } else if (!contextualSize) {
+  if (!contextualSize) {
     const override = sizeOverrides[iconSize];
     if (override !== undefined) {
       const basePx = BASE_SIZE_PX[iconSize];
@@ -141,14 +129,7 @@ const InternalIcon = ({
   //   2. If a size override is also active, multiply by (basePx / targetPx) to convert from
   //      screen pixels to viewBox units.
   let strokeWidthOverride: string | undefined;
-  if (hasInheritOverride) {
-    const rawStroke = strokeWidthOverrides.inherit;
-    if (rawStroke !== undefined) {
-      const scaleFactor = SCALE_FACTOR.normal;
-      const sizeCompensation = targetSizePx !== undefined ? BASE_SIZE_PX.normal / targetSizePx : 1;
-      strokeWidthOverride = `${(rawStroke / scaleFactor) * sizeCompensation}px`;
-    }
-  } else if (!contextualSize) {
+  if (!contextualSize) {
     const rawStroke = strokeWidthOverrides[iconSize];
     if (rawStroke !== undefined) {
       const scaleFactor = SCALE_FACTOR[iconSize] ?? 1;
@@ -244,7 +225,7 @@ const InternalIcon = ({
   const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
 
   function iconMap(name: IconProps.Name) {
-    if (name === 'gen-ai' && iconSize === 'small') {
+    if (name === 'gen-ai' && (iconSize === 'small' || iconSize === 'x-small')) {
       return (
         <svg
           width="12"

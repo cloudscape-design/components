@@ -231,8 +231,6 @@ export namespace IconProviderProps {
     big?: number;
     /** Target pixel size for icons at "large" size (default 48×48). */
     large?: number;
-    /** Target pixel size for icons that use "inherit" (contextual) sizing. */
-    inherit?: number;
   }
 
   export interface StrokeWidths {
@@ -248,7 +246,5 @@ export namespace IconProviderProps {
     big?: number;
     /** Stroke-width for icons at "large" size. E.g. `4` means 4px. */
     large?: number;
-    /** Stroke-width for icons that use "inherit" (contextual) sizing. */
-    inherit?: number;
   }
 }
