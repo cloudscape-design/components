@@ -121,9 +121,14 @@
   @include font-smoothing;
 }
 
-@mixin font-label {
-  @include font-body-m();
-  font-weight: awsui.$font-display-label-weight;
+@mixin font-label(
+  $font-size: awsui.$font-size-body-m,
+  $line-height: awsui.$line-height-body-m,
+  $font-weight: awsui.$font-display-label-weight
+) {
+  font-size: $font-size;
+  line-height: $line-height;
+  font-weight: $font-weight;
 }
 
 @mixin font-panel-header {

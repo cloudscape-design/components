@@ -232,6 +232,41 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontWeightBreadcrumbCurrent: {
+    description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
+    themeable: true,
+    public: false,
+  },
+  fontSizeFormLabel: {
+    description: 'The font size for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightFormLabel: {
+    description: 'The line height for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightFormLabel: {
+    description: 'The font weight for form field labels.',
+    themeable: true,
+    public: false,
+  },
+  fontSizeKeyValuePairsLabel: {
+    description: 'The font size for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  lineHeightKeyValuePairsLabel: {
+    description: 'The line height for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
+  fontWeightKeyValuePairsLabel: {
+    description: 'The font weight for key-value pairs labels.',
+    themeable: true,
+    public: false,
+  },
 };
 
 export default metadata;
