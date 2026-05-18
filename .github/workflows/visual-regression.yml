@@ -7,6 +7,10 @@ on:
         description: 'Name of the artifact containing PR pages (built by quick-build job). If not provided, pages will be built locally.'
         required: false
         type: string
+      baseline-artifact-name:
+        description: 'Name of the artifact containing baseline pages (built by build-baseline job in the caller workflow).'
+        required: true
+        type: string
       caller-run-id:
         description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
         required: false
@@ -22,15 +26,13 @@ permissions:
   actions: read
 
 jobs:
-  # Build the baseline (main branch) pages once and share them across all browser jobs.
-  # Also stages the PR pages artifact within this run so all jobs use the same run context.
-  build-baseline:
-    name: Build baseline pages
+  # Stage the PR pages within this run so matrix jobs can download them without
+  # needing cross-run artifact access. Runs in parallel with stage-baseline.
+  stage-pr-pages:
+    name: Stage PR pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,10 +43,6 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      # ── Stage PR (test) pages ──────────────────────────────────────────────
-      # Download from the caller's run (deploy.yml) or build locally.
-      # Either way, re-upload as 'visual-pr-pages' within this run so the
-      # matrix jobs can download it without needing cross-run artifact access.
       - name: Build PR pages locally
         if: ${{ !inputs.pr-artifact-name }}
         run: |
@@ -69,32 +67,21 @@ jobs:
           path: pages/lib/static-default
           retention-days: 1
 
-      # ── Build baseline (main) pages ────────────────────────────────────────
-      # Use a git worktree so the baseline has its own directory and its own
-      # node_modules. This means a PR that changes package-lock.json will still
-      # produce a correct baseline: the baseline installs from main's lockfile
-      # and the PR build installs from the PR's lockfile, so both sides use the
-      # dependency versions that are correct for their respective source trees.
-      - name: Create baseline worktree from origin/main
-        run: git worktree add /tmp/baseline origin/main
+  # Stage the baseline pages within this run so matrix jobs can download them
+  # without needing cross-run artifact access. Runs in parallel with stage-pr-pages.
+  stage-baseline:
+    name: Stage baseline pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download baseline artifact from caller run
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.baseline-artifact-name }}
+          path: pages/lib/static-visual-baseline
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
 
-      - name: Install baseline dependencies
-        run: npm i
-        working-directory: /tmp/baseline
-
-      - name: Build baseline pages
-        run: npx gulp quick-build
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
-
-      - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-visual-baseline
-        working-directory: /tmp/baseline
-        env:
-          NODE_ENV: production
-
-      - name: Upload baseline artifact
+      - name: Upload baseline artifact (for matrix jobs)
         uses: actions/upload-artifact@v4
         with:
           name: visual-baseline-pages
@@ -103,7 +90,7 @@ jobs:
 
   visual:
     name: Visual regression (${{ matrix.browser }})
-    needs: build-baseline
+    needs: [stage-pr-pages, stage-baseline]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

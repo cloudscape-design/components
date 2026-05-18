@@ -53,6 +53,58 @@ jobs:
           name: dev-pages-react${{ matrix.react }}
           path: pages/lib/static-default
 
+  # Build the baseline (main branch) pages in parallel with quick-build.
+  # The result is passed to the visual regression workflow so it doesn't
+  # need to rebuild the baseline for each browser.
+  build-baseline:
+    name: Build baseline pages
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i
+
+      # Use a git worktree so the baseline has its own directory and its own
+      # node_modules. This means a PR that changes package-lock.json will still
+      # produce a correct baseline: the baseline installs from main's lockfile
+      # and the PR build installs from the PR's lockfile, so both sides use the
+      # dependency versions that are correct for their respective source trees.
+      - name: Create baseline worktree from origin/main
+        run: git worktree add /tmp/baseline origin/main
+
+      - name: Install baseline dependencies
+        run: npm i
+        working-directory: /tmp/baseline
+
+      - name: Build baseline pages
+        run: npx gulp quick-build
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Bundle baseline pages
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-visual-baseline
+        working-directory: /tmp/baseline
+        env:
+          NODE_ENV: production
+
+      - name: Upload baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-pages
+          path: pages/lib/static-visual-baseline
+          retention-days: 1
+
   deploy:
     needs: quick-build
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
@@ -68,10 +120,11 @@ jobs:
 
   visual:
     name: Visual regression
-    needs: quick-build
+    needs: [quick-build, build-baseline]
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     uses: ./.github/workflows/visual-regression.yml
     secrets: inherit
     with:
       pr-artifact-name: dev-pages-react18
+      baseline-artifact-name: visual-baseline-pages
       caller-run-id: ${{ github.run_id }}
