@@ -925,6 +925,7 @@ export type BordersTokenName =
   | 'borderWidthField'
   | 'borderWidthPopover'
   | 'borderWidthToken'
+  | 'borderWidthIconXSmall'
   | 'borderWidthIconSmall'
   | 'borderWidthIconNormal'
   | 'borderWidthIconMedium'
@@ -985,6 +986,7 @@ export type SizesTokenName =
   | 'sizeIconLarge'
   | 'sizeIconMedium'
   | 'sizeIconNormal'
+  | 'sizeIconXSmall'
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
   | 'sizeVerticalPanelIconOffset';

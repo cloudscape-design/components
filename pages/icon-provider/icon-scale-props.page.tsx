@@ -17,7 +17,6 @@ import Container from '~components/container';
 import CopyToClipboard from '~components/copy-to-clipboard';
 import DatePicker from '~components/date-picker';
 import Flashbar, { FlashbarProps } from '~components/flashbar';
-import Form from '~components/form';
 import FormField from '~components/form-field';
 import Header from '~components/header';
 import Icon from '~components/icon';
@@ -37,7 +36,6 @@ import Table from '~components/table';
 import Tabs from '~components/tabs';
 import TextContent from '~components/text-content';
 import TextFilter from '~components/text-filter';
-import Tiles from '~components/tiles';
 import ToggleButton from '~components/toggle-button';
 import TreeView from '~components/tree-view';
 
@@ -61,32 +59,31 @@ const createNumericHandler = (setter: (value: string) => void, min?: number, max
   };
 };
 
-// ─── Typography ───────────────────────────────────────────────────────────────
 function Typography() {
   return (
-    <Container header={<Header variant="h2">Typography &amp; Iconography</Header>}>
+    <Container header={<Header variant="h2">Typography</Header>}>
       <Box padding={{ top: 'm' }}>
         <TextContent>
           <h1>
-            <Icon name="settings" size="big" /> Heading 1
+            <Icon name="settings" size="big" /> Heading 1 (icon size big)
           </h1>
           <h2>
-            <Icon name="settings" size="medium" /> Heading 2
+            <Icon name="settings" size="medium" /> Heading 2 (icon size medium)
           </h2>
           <h3>
-            <Icon name="settings" /> Heading 3
+            <Icon name="settings" /> Heading 3 (icon size normal)
           </h3>
           <h4>
-            <Icon name="settings" /> Heading 4
+            <Icon name="settings" /> Heading 4 (icon size normal)
           </h4>
           <h5>
-            <Icon name="settings" /> Heading 5
+            <Icon name="settings" /> Heading 5 (icon size normal)
           </h5>
           <p>
-            <Icon name="settings" /> Paragraph
+            <Icon name="settings" /> Paragraph (icon size normal)
           </p>
           <small>
-            <Icon name="settings" size="small" /> Small
+            <Icon name="settings" size="small" /> Small (icon size small)
           </small>
         </TextContent>
       </Box>
@@ -112,33 +109,99 @@ function Typography() {
         </Link>
         .
       </Box>
-      <Box padding={{ top: 'm', bottom: 'xxs' }}>
-        <Box padding={{ vertical: 'xs' }}>Icons – Normal size</Box>
-        <SpaceBetween size="xs" direction="horizontal">
-          <Icon name="add-plus" />
-          <Icon name="settings" />
-          <Icon name="close" />
-          <Icon name="check" />
-          <Icon name="star" />
-          <Icon name="send" />
-          <Icon name="refresh" />
-          <Icon name="edit" />
-          <Icon name="remove" />
-          <Icon name="copy" />
-          <Icon name="share" />
-          <Icon name="lock-private" />
-          <Icon name="folder" />
-          <Icon name="file" />
-          <Icon name="notification" />
-          <Icon name="search" />
-          <Icon name="gen-ai" />
-        </SpaceBetween>
-      </Box>
     </Container>
   );
 }
 
-// ─── Buttons, Inputs, Dropdowns ───────────────────────────────────────────────
+const iconNames: Array<React.ComponentProps<typeof Icon>['name']> = [
+  'add-plus',
+  'settings',
+  'close',
+  'check',
+  'star',
+  'send',
+  'refresh',
+  'edit',
+  'remove',
+  'copy',
+  'share',
+  'lock-private',
+  'folder',
+  'file',
+  'notification',
+  'search',
+  'gen-ai',
+];
+
+function IconSizes() {
+  return (
+    <Container header={<Header variant="h2">Icon sizes</Header>}>
+      <SpaceBetween size="m">
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            X-Small
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} size="x-small" />
+            ))}
+          </SpaceBetween>
+        </Box>
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            Small
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} size="small" />
+            ))}
+          </SpaceBetween>
+        </Box>
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            Normal
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} />
+            ))}
+          </SpaceBetween>
+        </Box>
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            Medium
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} size="medium" />
+            ))}
+          </SpaceBetween>
+        </Box>
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            Big
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} size="big" />
+            ))}
+          </SpaceBetween>
+        </Box>
+        <Box>
+          <Box padding={{ vertical: 'xs' }} fontWeight="bold">
+            Large
+          </Box>
+          <SpaceBetween size="xs" direction="horizontal">
+            {iconNames.map(name => (
+              <Icon key={name} name={name} size="large" />
+            ))}
+          </SpaceBetween>
+        </Box>
+      </SpaceBetween>
+    </Container>
+  );
+}
+
 function ButtonsInputsDropdowns() {
   const [selectedSegment, setSelectedSegment] = useState('seg-1');
   const [toggle1, setToggle1] = useState(true);
@@ -434,6 +497,16 @@ function ButtonsInputsDropdowns() {
             },
           ]}
         />
+        <FormField label="Delivery method">
+          <Select
+            selectedOption={{ label: 'Web', value: 'web' }}
+            options={[
+              { label: 'Web', value: 'web' },
+              { label: 'RTMP', value: 'rtmp' },
+            ]}
+            ariaLabel="Delivery method"
+          />
+        </FormField>
         <PromptInput
           onChange={({ detail }) => setValue(detail.value)}
           value={value}
@@ -470,7 +543,6 @@ function ButtonsInputsDropdowns() {
   );
 }
 
-// ─── Navigation Components ────────────────────────────────────────────────────
 function NavigationComponents() {
   const [activeTabId, setActiveTabId] = useState('tab1');
   const [activeHref, setActiveHref] = useState('#/parent-page/child-page1');
@@ -586,7 +658,6 @@ function NavigationComponents() {
   );
 }
 
-// ─── Table and Cards ──────────────────────────────────────────────────────────
 interface TableItem {
   name: string;
   description: string;
@@ -648,7 +719,6 @@ function TableAndCards() {
   );
 }
 
-// ─── Tree View Components ─────────────────────────────────────────────────────
 interface ConnectorLinesItem {
   id: string;
   label: string;
@@ -812,7 +882,6 @@ function TreeViewWithActions() {
   );
 }
 
-// ─── Status Components ────────────────────────────────────────────────────────
 function StatusComponents() {
   const flashbarItems: FlashbarProps.MessageDefinition[] = [
     {
@@ -878,11 +947,31 @@ function StatusComponents() {
               <StatusIndicator type="pending">Pending</StatusIndicator>
               <StatusIndicator type="in-progress">In progress</StatusIndicator>
             </SpaceBetween>
-            <TreeViewWithConnectorLines />
-            <TreeViewWithActions />
             <FormField label="Form field" errorText="This is an error message.">
               <Input value="Invalid" invalid={true} ariaLabel="Invalid input" readOnly={true} />
             </FormField>
+            <TreeViewWithConnectorLines />
+            <IconProvider
+              icons={{
+                'status-positive': (
+                  <svg
+                    viewBox="0 0 16 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    focusable="false"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 9L7 11L11 7" />
+                    <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
+                  </svg>
+                ),
+              }}
+            >
+              <Box padding={{ top: 's' }} fontSize="heading-s" fontWeight="bold">
+                TreeView component with custom icon
+              </Box>
+              <TreeViewWithActions />
+            </IconProvider>
           </SpaceBetween>
         </ColumnLayout>
       </SpaceBetween>
@@ -890,74 +979,9 @@ function StatusComponents() {
   );
 }
 
-// ─── KVP & Form ───────────────────────────────────────────────────────────────
-function KvpForm() {
-  const [tileValue, setTileValue] = useState('standard');
-
-  return (
-    <Container header={<Header variant="h2">Key-value pairs &amp; Form</Header>}>
-      <Box margin={{ top: 'xs' }}>
-        <Form
-          actions={
-            <SpaceBetween direction="horizontal" size="xs">
-              <Button variant="link" iconName="remove">
-                Cancel
-              </Button>
-              <Button variant="primary" iconName="file">
-                Submit
-              </Button>
-            </SpaceBetween>
-          }
-        >
-          <SpaceBetween size="l">
-            <FormField label="Cache policy">
-              <Tiles
-                value={tileValue}
-                onChange={e => setTileValue(e.detail.value)}
-                columns={4}
-                items={[
-                  {
-                    value: 'standard',
-                    label: 'Standard',
-                    description: 'Recommended',
-                    image: <Icon name="settings" size="large" />,
-                  },
-                  {
-                    value: 'optimized',
-                    label: 'Optimized',
-                    description: 'Dynamic content',
-                    image: <Icon name="globe" size="large" />,
-                  },
-                  {
-                    value: 'custom',
-                    label: 'Custom',
-                    description: 'Configure your own',
-                    image: <Icon name="edit" size="large" />,
-                  },
-                ]}
-                ariaLabel="Cache policy"
-              />
-            </FormField>
-            <FormField label="Delivery method">
-              <Select
-                selectedOption={{ label: 'Web', value: 'web' }}
-                options={[
-                  { label: 'Web', value: 'web' },
-                  { label: 'RTMP', value: 'rtmp' },
-                ]}
-                ariaLabel="Delivery method"
-              />
-            </FormField>
-          </SpaceBetween>
-        </Form>
-      </Box>
-    </Container>
-  );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function IconScaleProviderScenario() {
   // Icon size state
+  const [iconSizeXSmall, setIconSizeXSmall] = useState('12');
   const [iconSizeSmall, setIconSizeSmall] = useState('16');
   const [iconSize, setIconSize] = useState('16');
   const [iconSizeMedium, setIconSizeMedium] = useState('20');
@@ -965,6 +989,7 @@ export default function IconScaleProviderScenario() {
   const [iconSizeLarge, setIconSizeLarge] = useState('48');
 
   // Stroke width state (per icon size)
+  const [strokeWidthXSmall, setStrokeWidthXSmall] = useState('1.5');
   const [strokeWidthSmall, setStrokeWidthSmall] = useState('2');
   const [strokeWidthNormal, setStrokeWidthNormal] = useState('2');
   const [strokeWidthMedium, setStrokeWidthMedium] = useState('2');
@@ -974,12 +999,14 @@ export default function IconScaleProviderScenario() {
   // Split panel state
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
 
+  const sizeXSmallValue = parseFloat(iconSizeXSmall);
   const sizeSmallValue = parseFloat(iconSizeSmall);
   const sizeValue = parseFloat(iconSize);
   const sizeMediumValue = parseFloat(iconSizeMedium);
   const sizeBigValue = parseFloat(iconSizeBig);
   const sizeLargeValue = parseFloat(iconSizeLarge);
 
+  const strokeWidthXSmallValue = parseFloat(strokeWidthXSmall);
   const strokeWidthSmallValue = parseFloat(strokeWidthSmall);
   const strokeWidthNormalValue = parseFloat(strokeWidthNormal);
   const strokeWidthMediumValue = parseFloat(strokeWidthMedium);
@@ -991,6 +1018,14 @@ export default function IconScaleProviderScenario() {
       <Box padding={{ bottom: 'l' }}>
         <Box variant="h3">IconProvider size prop configuration</Box>
         <SpaceBetween size="s">
+          <FormField label="Icon size x-small (px)">
+            <Input
+              type="number"
+              value={iconSizeXSmall}
+              onChange={createNumericHandler(setIconSizeXSmall, 4, 64)}
+              inputMode="numeric"
+            />
+          </FormField>
           <FormField label="Icon size small (px)">
             <Input
               type="number"
@@ -1037,6 +1072,15 @@ export default function IconScaleProviderScenario() {
       <Box padding={{ vertical: 'l' }}>
         <Box variant="h3">IconProvider strokeWidths prop configuration</Box>
         <SpaceBetween size="s">
+          <FormField label="Stroke width x-small (px)">
+            <Input
+              type="number"
+              value={strokeWidthXSmall}
+              onChange={createNumericHandler(setStrokeWidthXSmall, 0.5, 10)}
+              step={0.5}
+              inputMode="decimal"
+            />
+          </FormField>
           <FormField label="Stroke width small (px)">
             <Input
               type="number"
@@ -1124,21 +1168,9 @@ export default function IconScaleProviderScenario() {
       }
       content={
         <IconProvider
-          icons={{
-            'status-positive': (
-              <svg
-                viewBox="0 0 16 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                focusable="false"
-                aria-hidden="true"
-              >
-                <path d="M5 9L7 11L11 7" />
-                <path d="M8 2C6.29 3.53 4.13 4.32 2 4.48V7.96C2 10.01 2.76 11.84 3.71 13.1C4.63 14.32 6.03 15.31 8 16C9.97 15.31 11.37 14.32 12.29 13.1C13.3935 11.6128 13.9926 9.81183 14 7.96V4.48C11.87 4.32 9.71 3.52 8 2Z" />
-              </svg>
-            ),
-          }}
+          icons={null}
           sizes={{
+            'x-small': sizeXSmallValue,
             small: sizeSmallValue,
             normal: sizeValue,
             inherit: sizeValue,
@@ -1147,6 +1179,7 @@ export default function IconScaleProviderScenario() {
             large: sizeLargeValue,
           }}
           strokeWidths={{
+            'x-small': strokeWidthXSmallValue,
             small: strokeWidthSmallValue,
             normal: strokeWidthNormalValue,
             inherit: strokeWidthNormalValue,
@@ -1157,12 +1190,12 @@ export default function IconScaleProviderScenario() {
         >
           <SpaceBetween size="l">
             <Header variant="h1">Icon scale overview</Header>
+            <IconSizes />
             <Typography />
             <ButtonsInputsDropdowns />
             <NavigationComponents />
             <TableAndCards />
             <StatusComponents />
-            <KvpForm />
           </SpaceBetween>
         </IconProvider>
       }

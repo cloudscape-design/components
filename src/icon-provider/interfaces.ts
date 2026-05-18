@@ -219,7 +219,9 @@ export namespace IconProviderProps {
   };
 
   export interface Sizes {
-    /** Target pixel size for icons at "small" size (default 12×12). E.g. `10` means 10px. */
+    /** Target pixel size for icons at "x-small" size (default 12×12). E.g. `10` means 10px. */
+    'x-small'?: number;
+    /** Target pixel size for icons at "small" size (default 16×16). E.g. `12` means 12px. */
     small?: number;
     /** Target pixel size for icons at "normal" size (default 16×16). E.g. `12` means 12px. */
     normal?: number;
@@ -234,6 +236,8 @@ export namespace IconProviderProps {
   }
 
   export interface StrokeWidths {
+    /** Stroke-width for icons at "x-small" size. E.g. `1.5` means 1.5px. */
+    'x-small'?: number;
     /** Stroke-width for icons at "small" size. E.g. `1.5` means 1.5px. */
     small?: number;
     /** Stroke-width for icons at "normal" size. E.g. `2` means 2px. */

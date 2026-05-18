@@ -31,6 +31,7 @@ type InternalIconProps = IconProps &
  * Note: "small" uses $size-icon-normal (16px), same as "normal".
  */
 const BASE_SIZE_PX: Record<string, number> = {
+  'x-small': 12,
   small: 16,
   normal: 16,
   medium: 20,
@@ -45,6 +46,7 @@ const BASE_SIZE_PX: Record<string, number> = {
  * The stroke-width must be divided by this factor to render at the intended visual size.
  */
 const SCALE_FACTOR: Record<string, number> = {
+  'x-small': 0.75,
   small: 1,
   normal: 1,
   medium: 1.25,
@@ -66,6 +68,8 @@ function iconSizeMap(height: number | null, fontSize?: number | null) {
     return 'big';
   } else if (height >= 24 && !!fontSize && fontSize >= 20) {
     return 'medium';
+  } else if (height <= 12) {
+    return 'x-small';
   } else if (height <= 16) {
     return 'small';
   } else {

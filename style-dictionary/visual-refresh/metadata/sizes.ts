@@ -3,6 +3,11 @@
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  sizeIconXSmall: {
+    description: 'The size of extra small icons (12×12).',
+    public: true,
+    themeable: true,
+  },
   sizeVerticalInput: {
     description:
       'The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.',

@@ -43,6 +43,9 @@ function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProv
 
     const map: IconSizeOverrideMap = { ...contextSizeOverrides };
 
+    if (sizes['x-small'] !== undefined) {
+      map['x-small'] = sizes['x-small'];
+    }
     if (sizes.small !== undefined) {
       map.small = sizes.small;
     }
@@ -73,6 +76,9 @@ function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProv
 
     const map: IconStrokeWidthOverrideMap = { ...contextStrokeWidthOverrides };
 
+    if (strokeWidths['x-small'] !== undefined) {
+      map['x-small'] = strokeWidths['x-small'];
+    }
     if (strokeWidths.small !== undefined) {
       map.small = strokeWidths.small;
     }

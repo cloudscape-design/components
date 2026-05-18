@@ -174,6 +174,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthIconXSmall: {
+    description: 'The visual stroke width of extra small icons.',
+    public: true,
+    themeable: true,
+  },
   borderWidthIconSmall: {
     description: 'The visual stroke width of small icons.',
     public: true,
