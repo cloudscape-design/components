@@ -92,7 +92,6 @@ const Thead = React.forwardRef(
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
 
-    /* istanbul ignore next: resize requires real DOM measurements */
     const handleSplitGroupResize = (leafIds: string[], newWidth: number) => {
       const lastLeaf = leafIds[leafIds.length - 1];
       if (lastLeaf) {
@@ -293,7 +292,6 @@ const Thead = React.forwardRef(
                         resizableStyle={undefined}
                         onResizeFinish={() => onResizeFinish(columnWidths)}
                         updateGroupWidth={(_, newWidth) => {
-                          /* istanbul ignore next */
                           handleSplitGroupResize(leftChildIds, newWidth);
                         }}
                         childColumnIds={leftChildIds}
@@ -322,7 +320,6 @@ const Thead = React.forwardRef(
                         resizableStyle={getColumnStyles(sticky, col.id)}
                         onResizeFinish={() => onResizeFinish(columnWidths)}
                         updateGroupWidth={(_, newWidth) => {
-                          /* istanbul ignore next */
                           handleSplitGroupResize(rightChildIds, newWidth);
                         }}
                         childColumnIds={rightChildIds}
@@ -379,7 +376,6 @@ const Thead = React.forwardRef(
                     resizableStyle={getColumnStyles(sticky, col.id)}
                     onResizeFinish={() => onResizeFinish(columnWidths)}
                     updateGroupWidth={(groupId, newWidth) => {
-                      /* istanbul ignore next */
                       updateGroup(groupId, newWidth);
                     }}
                     childColumnIds={childIds}
