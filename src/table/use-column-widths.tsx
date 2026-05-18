@@ -284,16 +284,14 @@ export function ColumnWidthsProvider({
 export function TableColGroup({
   visibleColumnDefinitions,
   hasSelection,
-  selectionColumnWidth,
 }: {
   visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   hasSelection: boolean;
-  selectionColumnWidth: number;
 }) {
   const { setCol } = useColumnWidths();
   return (
     <colgroup>
-      {hasSelection && <col style={{ width: selectionColumnWidth }} />}
+      {hasSelection && <col />}
       {visibleColumnDefinitions.map((column, colIndex) => {
         const columnId = getColumnKey(column, colIndex);
         return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;

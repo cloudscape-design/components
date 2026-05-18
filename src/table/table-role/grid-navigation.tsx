@@ -332,14 +332,10 @@ export class GridNavigationProcessor {
 
     // Find next cell to focus or move focus into.
     const targetAriaColIndex = from.colIndex + delta.x;
-    const targetCell = findNextCell(
-      this.table,
-      targetRow,
-      targetAriaColIndex,
-      delta,
-      cellElement as HTMLTableCellElement | null
-    );
 
+    const targetCell = this.table
+      ? findNextCell(this.table, targetRow, targetAriaColIndex, delta, cellElement as HTMLTableCellElement | null)
+      : null;
     if (!targetCell) {
       return null;
     }
