@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* global jest, afterEach */
+/* global jest, beforeEach */
 const { configure } = require('@cloudscape-design/browser-test-tools/use-browser');
 
 const isSafari = process.env.BROWSER === 'safari';
@@ -20,9 +20,9 @@ configure({
 jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
 // Safari's WebDriver needs a moment to fully release a session before a new one
-// can be created. Without this delay, retried tests hit "already paired" errors.
+// can be created. Without this delay, the next test hits "already paired" errors.
 if (isSafari) {
-  afterEach(async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  beforeEach(async () => {
+    await new Promise(resolve => setTimeout(resolve, 5000));
   });
 }
