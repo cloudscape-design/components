@@ -765,6 +765,7 @@ export type ColorsTokenName =
   | 'colorTextInteractiveInvertedHover'
   | 'colorTextInverted'
   | 'colorTextLabel'
+  | 'colorTextKeyValuePairsValue'
   | 'colorTextLabelGenAi'
   | 'colorTextLayoutToggle'
   | 'colorTextLayoutToggleActive'

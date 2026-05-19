@@ -880,6 +880,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorTextKeyValuePairsValue: {
+    description: 'The text color of the value in key-value pairs.',
+    public: true,
+    themeable: true,
+  },
   colorTextLinkDefault: {
     description:
       'The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',

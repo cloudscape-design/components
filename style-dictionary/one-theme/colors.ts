@@ -282,6 +282,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedHover: '{colorNeutral100}',
   colorTextInverted: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorTextLabel: '{colorTextFormLabel}',
+  colorTextKeyValuePairsValue: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
   colorTextLayoutToggle: '{colorWhite}',
   colorTextLayoutToggleActive: { light: '{colorWhite}', dark: '{colorNeutral850}' },
   colorTextLayoutToggleHover: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
