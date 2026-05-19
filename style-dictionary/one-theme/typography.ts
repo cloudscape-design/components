@@ -7,7 +7,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontButtonLetterSpacing: '0.005em',
   fontChartDetailSize: '{fontSizeBodyS}',
   fontDisplayLabelWeight: '700',
-  fontExpandableHeadingSize: '{fontSizeHeadingS}',
+  fontSizeExpandableHeading: '{fontSizeHeadingS}',
   fontFamilyBase: "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
   fontFamilyDisplay: '{fontFamilyBase}',
   fontFamilyHeading: '{fontFamilyBase}',

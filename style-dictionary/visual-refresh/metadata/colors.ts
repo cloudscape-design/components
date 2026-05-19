@@ -457,6 +457,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderExpandableSectionDefault: {
+    description: 'The border color of the expandable section divider shown when the section is expanded.',
+    public: true,
+    themeable: true,
+  },
   colorBorderDropdownContainer: {
     description:
       'The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.',

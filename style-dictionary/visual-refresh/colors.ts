@@ -164,6 +164,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerPanelBottom: '{colorBorderDividerDefault}',
   colorBorderDividerPanelSide: '{colorBorderDividerDefault}',
   colorBorderDividerSecondary: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
+  colorBorderExpandableSectionDefault: '{colorBorderDividerDefault}',
   colorBorderDropdownContainer: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorBorderDropdownGroup: '{colorBorderDropdownItemDefault}',
   colorBorderDropdownItemDefault: '{colorBorderDividerDefault}',

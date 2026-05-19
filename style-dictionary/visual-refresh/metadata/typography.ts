@@ -149,6 +149,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontSizeExpandableHeading: {
+    description: 'The font size for expandable section headings.',
+    themeable: true,
+    public: true,
+  },
   fontWeightTabs: {
     description: 'The default font weight for tabs.',
     themeable: true,
