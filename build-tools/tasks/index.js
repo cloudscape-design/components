@@ -21,10 +21,5 @@ module.exports = {
   themeableSource: require('./themeable-source'),
   bundleVendorFiles: require('./bundle-vendor-files'),
   sizeLimit: require('./size-limit'),
-<<<<<<< HEAD
   testDefinitions: require('./test-definitions'),
-=======
-  visual: require('./visual'),
-  visualDefinitions: require('./visual-definitions'),
->>>>>>> 4213557f5 (chore: Export visual test definitions)
 };
