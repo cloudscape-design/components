@@ -43211,6 +43211,13 @@ For tables with column grouping this excludes group header cells.",
               "name": "columnIndex",
               "typeName": "number",
             },
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "options",
+              "typeName": "{ grouped?: boolean | undefined; }",
+            },
           ],
           "returnType": {
             "isNullable": true,
@@ -43233,6 +43240,13 @@ For tables with column grouping this excludes group header cells.",
               },
               "name": "colIndex",
               "typeName": "number",
+            },
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "options",
+              "typeName": "{ grouped?: boolean | undefined; }",
             },
           ],
           "returnType": {
@@ -52574,6 +52588,13 @@ For tables with column grouping this excludes group header cells.",
               "name": "columnIndex",
               "typeName": "number",
             },
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "options",
+              "typeName": "{ grouped?: boolean | undefined; }",
+            },
           ],
           "returnType": {
             "isNullable": false,
@@ -52591,6 +52612,13 @@ For tables with column grouping this excludes group header cells.",
               },
               "name": "colIndex",
               "typeName": "number",
+            },
+            {
+              "flags": {
+                "isOptional": true,
+              },
+              "name": "options",
+              "typeName": "{ grouped?: boolean | undefined; }",
             },
           ],
           "returnType": {
