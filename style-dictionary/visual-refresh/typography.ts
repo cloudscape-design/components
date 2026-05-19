@@ -68,4 +68,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '18px',
   lineHeightKeyValuePairsLabel: '{lineHeightBodyM}',
   lineHeightTabs: '{lineHeightHeadingS}',
+  fontDecorationThicknessLink: '1px',
+  fontDecorationThicknessLinkDisplayL: '2px',
+  fontDecorationStyleLink: 'solid',
 };
