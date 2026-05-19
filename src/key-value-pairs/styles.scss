@@ -26,7 +26,11 @@
 }
 
 .term {
-  @include styles.font-label;
+  @include styles.font-label(
+    awsui.$font-size-key-value-pairs-label,
+    awsui.$line-height-key-value-pairs-label,
+    awsui.$font-weight-key-value-pairs-label
+  );
   color: awsui.$color-text-label;
   margin-block-end: awsui.$space-key-value-gap;
 }
