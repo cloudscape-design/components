@@ -74,6 +74,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerPanelBottom: '{colorShadowSide}',
   colorBorderDividerPanelSide: 'transparent',
   colorBorderDividerSecondary: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
+  colorBorderExpandableSectionDefault: '{colorBorderDividerDefault}',
   colorBorderDropdownContainer: 'transparent',
   colorBorderDropdownItemHover: { dark: '{colorNeutral500}' },
   colorBorderDropdownItemDimmedHover: `{colorBorderDropdownItemHover}`,

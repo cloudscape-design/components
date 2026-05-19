@@ -26,7 +26,7 @@
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",
     "start:react18:dev": "cross-env NODE_ENV=development REACT_VERSION=18 webpack serve --config pages/webpack.config.cjs",
     "prepare": "husky",
-    "postinstall": "node ./scripts/install-peer-dependency.js theming-core:dev-v3-onetheme && prepare-package-lock"
+    "postinstall": "node ./scripts/install-peer-dependency.js theming-core:main && prepare-package-lock"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",

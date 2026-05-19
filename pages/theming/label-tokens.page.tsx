@@ -45,8 +45,8 @@ export default function LabelTokensPage() {
           colorBackgroundStatusIndicatorInfo: { light: '#d5e8ff', dark: '#0a2040' },
           colorBackgroundStatusIndicatorNeutral: { light: '#e8e8e8', dark: '#2a2a2a' },
           // Link decoration tokens
-          fontLinkDecorationThickness: '3px',
-          fontLinkDecorationStyle: 'dashed',
+          fontDecorationThicknessLink: '3px',
+          fontDecorationStyleLink: 'dashed',
           colorTextLinkDecorationDefault: { light: '#e65c00', dark: '#ff9a4d' },
           colorTextLinkDecorationHover: { light: '#b34000', dark: '#ffbe91' },
         },
@@ -126,8 +126,8 @@ export default function LabelTokensPage() {
                 variant="h2"
                 description={
                   themed
-                    ? 'fontLinkDecorationThickness: 3px · fontLinkDecorationStyle: dashed'
-                    : 'fontLinkDecorationThickness: 1px · fontLinkDecorationStyle: underline (defaults)'
+                    ? 'fontDecorationThicknessLink: 3px · fontDecorationStyleLink: dashed'
+                    : 'fontDecorationThicknessLink: 1px · fontDecorationStyleLink: underline (defaults)'
                 }
               >
                 Links
