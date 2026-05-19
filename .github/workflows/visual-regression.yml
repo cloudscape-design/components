@@ -101,7 +101,7 @@ jobs:
           NODE_ENV: production
 
       - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-visual-baseline
+        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path ${{ github.workspace }}/pages/lib/static-visual-baseline
         working-directory: /tmp/baseline
         env:
           NODE_ENV: production
