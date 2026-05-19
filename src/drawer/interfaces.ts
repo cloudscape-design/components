@@ -247,7 +247,7 @@ export namespace DrawerProps {
 
   export interface Ref {
     /**
-     * Moves focus to the drawer element. Use in controlled mode when `focusBehavior.autoFocus`
+     * Moves focus to the drawer element. Use when `focusBehavior.autoFocus`
      * is disabled and you need to manage focus manually, or to focus a drawer, initially rendered
      * with `open=true`. The drawer with `role="presentation"` cannot be focused.
      */
