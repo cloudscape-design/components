@@ -232,6 +232,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  fontDecorationThicknessLink: {
+    description: 'The text decoration thickness of links.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationThicknessLinkDisplayL: {
+    description: 'The text decoration thickness of links at display-l size.',
+    themeable: true,
+    public: false,
+  },
+  fontDecorationStyleLink: {
+    description: 'The text decoration style of links. For example: underline, dashed, dotted.',
+    themeable: true,
+    public: false,
+  },
   fontWeightBreadcrumbCurrent: {
     description: 'The font weight of the current breadcrumb item (the page the user is currently viewing).',
     themeable: true,
@@ -264,21 +279,6 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   fontWeightKeyValuePairsLabel: {
     description: 'The font weight for key-value pairs labels.',
-    themeable: true,
-    public: false,
-  },
-  fontDecorationThicknessLink: {
-    description: 'The text decoration thickness of links.',
-    themeable: true,
-    public: false,
-  },
-  fontDecorationThicknessLinkDisplayL: {
-    description: 'The text decoration thickness of links at display-l size.',
-    themeable: true,
-    public: false,
-  },
-  fontDecorationStyleLink: {
-    description: 'The text decoration style of links. For example: underline, dashed, dotted.',
     themeable: true,
     public: false,
   },

@@ -6,6 +6,9 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontBoxValueLargeWeight: '700',
   fontButtonLetterSpacing: '0.005em',
   fontChartDetailSize: '{fontSizeBodyS}',
+  fontDecorationStyleLink: 'solid',
+  fontDecorationThicknessLink: '1px',
+  fontDecorationThicknessLinkDisplayL: '2px',
   fontDisplayLabelWeight: '700',
   fontExpandableHeadingSize: '{fontSizeHeadingS}',
   fontFamilyBase: "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
@@ -68,7 +71,4 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '18px',
   lineHeightKeyValuePairsLabel: '{lineHeightBodyM}',
   lineHeightTabs: '{lineHeightHeadingS}',
-  fontDecorationThicknessLink: '1px',
-  fontDecorationThicknessLinkDisplayL: '2px',
-  fontDecorationStyleLink: 'solid',
 };
