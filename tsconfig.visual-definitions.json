@@ -12,7 +12,7 @@
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "test/visual",
-    "outDir": "lib/visual-test-definitions"
+    "outDir": "lib/test-definitions"
   },
   "include": ["test/visual/definitions", "test/visual/types.ts"],
   "exclude": []
