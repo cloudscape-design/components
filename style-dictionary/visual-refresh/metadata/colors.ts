@@ -551,6 +551,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderLayout: {
+    description: 'The border color of layout elements. For example: toolbar, panel dividers.',
+    public: false,
+    themeable: true,
+  },
   colorBorderTutorial: { description: 'The border color of tutorials in the tutorials list in the tutorial panel.' },
   colorForegroundControlDefault: {
     description:
