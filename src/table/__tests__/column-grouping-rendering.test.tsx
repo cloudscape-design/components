@@ -370,7 +370,7 @@ describe('Column grouping with resizable columns', () => {
   test('findColumnResizer works with grouped columns', () => {
     const wrapper = renderTable({ resizableColumns: true });
     // Column index 3 = 'type' (first child of config group)
-    const resizer = wrapper.findColumnResizer(3);
+    const resizer = wrapper.findColumnResizer(3, { grouped: true });
     expect(resizer).not.toBeNull();
   });
 
@@ -532,7 +532,7 @@ describe('Column grouping sorting', () => {
       />
     );
     const tableWrapper = createWrapper(container).findTable()!;
-    const sortArea = tableWrapper.findColumnSortingArea(3);
+    const sortArea = tableWrapper.findColumnSortingArea(3, { grouped: true });
     expect(sortArea).not.toBeNull();
   });
 
@@ -748,7 +748,7 @@ describe('Column grouping with non-resizable columns', () => {
       />
     );
     const wrapper = createWrapper(container).findTable()!;
-    const sortArea = wrapper.findColumnSortingArea(3);
+    const sortArea = wrapper.findColumnSortingArea(3, { grouped: true });
     sortArea!.click();
     expect(onSortingChange).toHaveBeenCalledWith(
       expect.objectContaining({ sortingColumn: expect.objectContaining({ id: 'type' }) })
@@ -994,7 +994,7 @@ describe('Column grouping group resize callbacks', () => {
 
   test('leaf column resize completes pointer lifecycle in grouped table', () => {
     const wrapper = renderResizableGroupedTable();
-    const resizer = wrapper.findColumnResizer(3);
+    const resizer = wrapper.findColumnResizer(3, { grouped: true });
     expect(resizer).not.toBeNull();
 
     resizer!.fireEvent(new PointerEvent('pointerdown', { pointerType: 'mouse', button: 0, bubbles: true }));
