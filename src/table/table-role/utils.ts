@@ -177,10 +177,6 @@ export function findNextCell(
     targetCell = findClosestCellByAriaColIndex(allVisibleCells, targetAriaColIndex, delta.x);
   }
 
-  if (!targetCell) {
-    return null;
-  }
-
   // When horizontal movement lands on the same cell (due to colspan), skip past it.
   if (targetCell === currentCell && delta.x !== 0 && currentCell) {
     const cellColIndex = parseInt(currentCell.getAttribute('aria-colindex') ?? '0');
