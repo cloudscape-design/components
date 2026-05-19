@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* global jest, beforeEach */
-const { spawn } = require('child_process');
-const waitOn = require('wait-on');
+/* global jest */
 const { configure } = require('@cloudscape-design/browser-test-tools/use-browser');
 
 const isSafari = process.env.BROWSER === 'safari';
@@ -19,20 +17,9 @@ configure({
   },
 });
 
-jest.retryTimes(2, { logErrorsBeforeRetry: true });
-
-// Local safaridriver only supports one session at a time and doesn't reliably
-// release the session lock between tests. Restarting the process before each
-// test guarantees a clean state. This is not needed with BrowserStack.
-if (isSafari) {
-  let safariDriverProcess;
-
-  beforeEach(async () => {
-    if (safariDriverProcess) {
-      safariDriverProcess.kill();
-      await new Promise(resolve => setTimeout(resolve, 500));
-    }
-    safariDriverProcess = spawn('safaridriver', ['--port', '4444']);
-    await waitOn({ resources: ['http-get://localhost:4444/status'], timeout: 10000 });
-  });
+// Retries help with flaky tests, but Safari's single-session constraint means
+// a retry can hit "already paired" if the previous attempt's session hasn't
+// fully released. Disable retries for Safari.
+if (!isSafari) {
+  jest.retryTimes(2, { logErrorsBeforeRetry: true });
 }
