@@ -44,8 +44,8 @@ export interface TheadProps {
   resizerTooltipText?: string;
   stripedRows?: boolean;
   stickyState: StickyColumnsModel;
-  stickyColumnsFirst?: number;
-  stickyColumnsLast?: number;
+  stickyColumnsFirst: number;
+  stickyColumnsLast: number;
   selectionColumnId: PropertyKey;
   focusedComponent?: null | string;
   onFocusedComponentChange?: (focusId: null | string) => void;
@@ -77,8 +77,8 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
       stickyState,
-      stickyColumnsFirst = 0,
-      stickyColumnsLast = 0,
+      stickyColumnsFirst,
+      stickyColumnsLast,
       selectionColumnId,
       focusedComponent,
       onFocusedComponentChange,
