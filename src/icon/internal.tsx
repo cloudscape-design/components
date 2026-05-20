@@ -68,10 +68,8 @@ function iconSizeMap(height: number | null, fontSize?: number | null) {
     return 'big';
   } else if (height >= 24 && !!fontSize && fontSize >= 20) {
     return 'medium';
-  } else if (height <= 12) {
-    return 'x-small';
   } else if (height <= 16) {
-    return 'small';
+    return !!fontSize && fontSize <= 12 ? 'x-small' : 'small';
   } else {
     return 'normal';
   }
