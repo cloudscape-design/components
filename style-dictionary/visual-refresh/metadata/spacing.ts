@@ -204,7 +204,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: false,
   },
-  spaceStatusIndicatorPaddingInline: {
+  spaceStatusIndicatorPaddingHorizontal: {
     description:
       'The inline padding inside the status indicator container. Applied when the status indicator background is themed.',
     public: false,

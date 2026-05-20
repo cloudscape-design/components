@@ -61,7 +61,7 @@ $_status-backgrounds: (
 }
 
 .container {
-  padding-inline: awsui.$space-status-indicator-padding-inline;
+  padding-inline: awsui.$space-status-indicator-padding-horizontal;
   border-start-start-radius: awsui.$border-radius-status-indicator;
   border-start-end-radius: awsui.$border-radius-status-indicator;
   border-end-start-radius: awsui.$border-radius-status-indicator;

@@ -1129,7 +1129,7 @@ export type SpacingTokenName =
   | 'spaceActionCardContentPaddingTop'
   | 'spaceOptionPaddingVertical'
   | 'spaceOptionPaddingHorizontal'
-  | 'spaceStatusIndicatorPaddingInline';
+  | 'spaceStatusIndicatorPaddingHorizontal';
 export type ShadowsTokenName =
   | 'shadowCard'
   | 'shadowItemCard'
