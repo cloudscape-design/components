@@ -865,7 +865,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextKeyValuePairsValue: {
     description: 'The text color of the value in key-value pairs.',
-    public: true,
+    public: false,
     themeable: true,
   },
   colorTextLinkDefault: {
