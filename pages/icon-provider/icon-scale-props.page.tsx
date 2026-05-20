@@ -39,6 +39,9 @@ import TextFilter from '~components/text-filter';
 import ToggleButton from '~components/toggle-button';
 import TreeView from '~components/tree-view';
 
+import { generateItems } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
+
 const createNumericHandler = (setter: (value: string) => void, min?: number, max?: number) => {
   return (evt: NonCancelableCustomEvent<InputProps.ChangeDetail>) => {
     const val = evt.detail.value;
@@ -342,47 +345,6 @@ function ButtonsInputsDropdowns() {
           enableTokenGroups={true}
           expandToViewport={true}
           filteringAriaLabel="Find distributions"
-          i18nStrings={{
-            dismissAriaLabel: 'Dismiss',
-            groupValuesText: 'Values',
-            groupPropertiesText: 'Properties',
-            operatorsText: 'Operators',
-            operationAndText: 'and',
-            operationOrText: 'or',
-            operatorLessText: 'Less than',
-            operatorLessOrEqualText: 'Less than or equal',
-            operatorGreaterText: 'Greater than',
-            operatorGreaterOrEqualText: 'Greater than or equal',
-            operatorContainsText: 'Contains',
-            operatorDoesNotContainText: 'Does not contain',
-            operatorEqualsText: 'Equals',
-            operatorDoesNotEqualText: 'Does not equal',
-            operatorStartsWithText: 'Starts with',
-            operatorDoesNotStartWithText: 'Does not start with',
-            editTokenHeader: 'Edit filter',
-            propertyText: 'Property',
-            operatorText: 'Operator',
-            valueText: 'Value',
-            cancelActionText: 'Cancel',
-            applyActionText: 'Apply',
-            allPropertiesLabel: 'All properties',
-            tokenLimitShowMore: 'Show more',
-            tokenLimitShowFewer: 'Show fewer',
-            clearFiltersText: 'Clear filters',
-            tokenOperatorAriaLabel: 'Boolean Operator',
-            clearAriaLabel: 'Clear',
-            enteredTextLabel: (text: string) => `Use: "${text}"`,
-            removeTokenButtonAriaLabel: () => 'Remove filter',
-            groupEditAriaLabel: () => 'Edit filter group',
-            tokenEditorTokenActionsAriaLabel: () => 'Token actions',
-            tokenEditorTokenRemoveAriaLabel: () => 'Remove filter',
-            tokenEditorTokenRemoveLabel: 'Remove filter',
-            tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
-            tokenEditorAddNewTokenLabel: 'Add new filter',
-            tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
-            tokenEditorAddExistingTokenAriaLabel: () => 'Add filter to group',
-            tokenEditorAddExistingTokenLabel: () => 'Add filter to group',
-          }}
           filteringOptions={[
             {
               propertyKey: 'instanceid',
@@ -657,31 +619,10 @@ function NavigationComponents() {
   );
 }
 
-interface TableItem {
-  name: string;
-  description: string;
-  category: string;
-}
-
-const tableItems: TableItem[] = [
-  {
-    name: 'Velit Egestas LLP',
-    description: 'volutpat. Nulla dignissim. Maecenas ornare egestas ligula.',
-    category: 'Serverless',
-  },
-  {
-    name: 'Mattis Velit Company',
-    description: 'vestibulum lorem, sit amet ultricies sem magna nec quam.',
-    category: 'Security',
-  },
-  { name: 'Tempor LLP', description: 'aliquet odio. Etiam ligula tortor, dictum eu, placerat eget.', category: 'AI' },
-  { name: 'Egestas Corp', description: 'ridiculus mus. Donec dignissim magna a tortor.', category: 'Serverless' },
-  { name: 'Aenean Inc', description: 'Vivamus molestie dapibus ligula. Aliquam erat volutpat.', category: 'Security' },
-];
+const allItems = generateItems(5);
 
 function TableAndCards() {
-  const [selectedTableItems, setSelectedTableItems] = useState([tableItems[2]]);
-  const { items, collectionProps } = useCollection(tableItems, { sorting: {} });
+  const { items, collectionProps } = useCollection(allItems, { sorting: {} });
 
   return (
     <SpaceBetween size="l">
@@ -689,42 +630,19 @@ function TableAndCards() {
         {...collectionProps}
         items={items}
         header={<Header description="Description">Table with selection</Header>}
-        columnDefinitions={[
-          { header: 'Name', cell: (item: TableItem) => <Link href="#">{item.name}</Link>, sortingField: 'name' },
-          {
-            header: 'Category',
-            cell: (item: TableItem) => {
-              const typeMap: Record<string, 'success' | 'info' | 'warning'> = {
-                Security: 'success',
-                AI: 'info',
-                Serverless: 'warning',
-              };
-              return <StatusIndicator type={typeMap[item.category] ?? 'info'}>{item.category}</StatusIndicator>;
-            },
-            sortingField: 'category',
-          },
-          { header: 'Description', cell: (item: TableItem) => item.description, sortingField: 'description' },
-        ]}
-        selectionType="single"
-        selectedItems={selectedTableItems}
-        onSelectionChange={({ detail }) => setSelectedTableItems(detail.selectedItems)}
-        ariaLabels={{
-          itemSelectionLabel: (_e, item) => `Select ${item.name}`,
-          allItemsSelectionLabel: () => 'Select all',
-          selectionGroupLabel: 'Item selection',
-        }}
+        columnDefinitions={columnsConfig}
       />
     </SpaceBetween>
   );
 }
 
-interface ConnectorLinesItem {
+interface TreeItem {
   id: string;
   label: string;
-  children?: ConnectorLinesItem[];
+  children?: TreeItem[];
 }
 
-const connectorLinesItems: ConnectorLinesItem[] = [
+const treeItems: TreeItem[] = [
   {
     id: '1',
     label: 'Root',
@@ -751,12 +669,12 @@ const connectorLinesItems: ConnectorLinesItem[] = [
 ];
 
 function TreeViewWithConnectorLines() {
-  const [expandedItems, setExpandedItems] = useState(['1', '1.1', '1.2']);
+  const expandedItems = ['1', '1.1', '1.2'];
 
   return (
     <TreeView
       ariaLabel="Tree view with connector lines"
-      items={connectorLinesItems}
+      items={treeItems}
       expandedItems={expandedItems}
       connectorLines="vertical"
       renderItem={item => ({
@@ -769,11 +687,6 @@ function TreeViewWithConnectorLines() {
       })}
       getItemId={item => item.id}
       getItemChildren={item => item.children}
-      onItemToggle={({ detail }) =>
-        setExpandedItems(prev =>
-          detail.expanded ? [...prev, detail.item.id] : prev.filter(id => id !== detail.item.id)
-        )
-      }
       i18nStrings={{
         expandButtonLabel: () => 'Expand item',
         collapseButtonLabel: () => 'Collapse item',
@@ -998,20 +911,6 @@ export default function IconScaleProviderScenario() {
   // Split panel state
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
 
-  const sizeXSmallValue = parseFloat(iconSizeXSmall);
-  const sizeSmallValue = parseFloat(iconSizeSmall);
-  const sizeValue = parseFloat(iconSize);
-  const sizeMediumValue = parseFloat(iconSizeMedium);
-  const sizeBigValue = parseFloat(iconSizeBig);
-  const sizeLargeValue = parseFloat(iconSizeLarge);
-
-  const strokeWidthXSmallValue = parseFloat(strokeWidthXSmall);
-  const strokeWidthSmallValue = parseFloat(strokeWidthSmall);
-  const strokeWidthNormalValue = parseFloat(strokeWidthNormal);
-  const strokeWidthMediumValue = parseFloat(strokeWidthMedium);
-  const strokeWidthBigValue = parseFloat(strokeWidthBig);
-  const strokeWidthLargeValue = parseFloat(strokeWidthLarge);
-
   const splitPanelContent = (
     <ColumnLayout borders="horizontal">
       <Box padding={{ bottom: 'l' }}>
@@ -1146,43 +1045,25 @@ export default function IconScaleProviderScenario() {
       splitPanelOpen={splitPanelOpen}
       onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
       splitPanelPreferences={{ position: 'side' }}
-      splitPanel={
-        <SplitPanel
-          header="Design configuration"
-          i18nStrings={{
-            preferencesTitle: 'Preferences',
-            preferencesPositionLabel: 'Split panel position',
-            preferencesPositionDescription: 'Choose the default split panel position.',
-            preferencesPositionSide: 'Side',
-            preferencesPositionBottom: 'Bottom',
-            preferencesConfirm: 'Confirm',
-            preferencesCancel: 'Cancel',
-            closeButtonAriaLabel: 'Close panel',
-            openButtonAriaLabel: 'Open panel',
-            resizeHandleAriaLabel: 'Resize split panel',
-          }}
-        >
-          {splitPanelContent}
-        </SplitPanel>
-      }
+      splitPanel={<SplitPanel header="Design configuration">{splitPanelContent}</SplitPanel>}
       content={
         <IconProvider
           icons={null}
           sizes={{
-            'x-small': sizeXSmallValue,
-            small: sizeSmallValue,
-            normal: sizeValue,
-            medium: sizeMediumValue,
-            big: sizeBigValue,
-            large: sizeLargeValue,
+            'x-small': parseFloat(iconSizeXSmall),
+            small: parseFloat(iconSizeSmall),
+            normal: parseFloat(iconSize),
+            medium: parseFloat(iconSizeMedium),
+            big: parseFloat(iconSizeBig),
+            large: parseFloat(iconSizeLarge),
           }}
           strokeWidths={{
-            'x-small': strokeWidthXSmallValue,
-            small: strokeWidthSmallValue,
-            normal: strokeWidthNormalValue,
-            medium: strokeWidthMediumValue,
-            big: strokeWidthBigValue,
-            large: strokeWidthLargeValue,
+            'x-small': parseFloat(strokeWidthXSmall),
+            small: parseFloat(strokeWidthSmall),
+            normal: parseFloat(strokeWidthNormal),
+            medium: parseFloat(strokeWidthMedium),
+            big: parseFloat(strokeWidthBig),
+            large: parseFloat(strokeWidthLarge),
           }}
         >
           <SpaceBetween size="l">

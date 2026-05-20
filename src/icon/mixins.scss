@@ -6,6 +6,7 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties' as custom-props;
 
 $_variant-colors: (
   'normal': currentColor,
@@ -73,37 +74,29 @@ $_icon-sizes: (
     $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
 
     &.size-#{$name} {
-      /* stylelint-disable-next-line custom-property-pattern */
-      inline-size: var(--icon-size-override, #{$size});
-      /* stylelint-disable-next-line custom-property-pattern */
-      block-size: max(#{$size}, var(--icon-size-override, #{$size}));
+      inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
+      block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
       box-sizing: border-box;
       &-mapped-height {
-        //block-size: $supportedLineHeight;
-        /* stylelint-disable-next-line custom-property-pattern */
-        block-size: max($supportedLineHeight, var(--icon-size-override, $size));
+        block-size: max($supportedLineHeight, var(#{custom-props.$iconSizeOverride}, $size));
         padding-block: $padding;
         padding-inline: 0;
       }
 
       > svg,
       > img {
-        /* stylelint-disable-next-line custom-property-pattern */
-        inline-size: var(--icon-size-override, #{$size});
-        /* stylelint-disable-next-line custom-property-pattern */
-        block-size: max(#{$size}, var(--icon-size-override, #{$size}));
+        inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
+        block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
         vertical-align: top;
       }
 
       > svg {
         &,
         * {
-          /* stylelint-disable custom-property-pattern */
           stroke-width: var(
-            --icon-stroke-width-override,
-            calc(#{$stroke} / #{$scaleFactor} * var(--icon-stroke-scale, 1))
+            #{custom-props.$iconStrokeWidthOverride},
+            calc(#{$stroke} / #{$scaleFactor} * var(#{custom-props.$iconStrokeScale}, 1))
           );
-          /* stylelint-enable custom-property-pattern */
         }
       }
     }

@@ -11,6 +11,7 @@ import {
   InternalIconStrokeWidthOverrideContext,
 } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
+import customCSSPropertiesMap from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
@@ -142,11 +143,13 @@ const InternalIcon = ({
   // for both the span's inline-size and the child SVG's inline-size/block-size.
   const inlineStyles: React.CSSProperties = {
     ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
-    ...(targetSizePx !== undefined ? ({ '--icon-size-override': `${targetSizePx}px` } as React.CSSProperties) : {}),
+    ...(targetSizePx !== undefined
+      ? ({ [customCSSPropertiesMap.iconSizeOverride]: `${targetSizePx}px` } as React.CSSProperties)
+      : {}),
     ...(strokeWidthOverride
-      ? ({ '--icon-stroke-width-override': strokeWidthOverride } as React.CSSProperties)
+      ? ({ [customCSSPropertiesMap.iconStrokeWidthOverride]: strokeWidthOverride } as React.CSSProperties)
       : strokeScale
-        ? ({ '--icon-stroke-scale': strokeScale } as React.CSSProperties)
+        ? ({ [customCSSPropertiesMap.iconStrokeScale]: strokeScale } as React.CSSProperties)
         : {}),
   };
 

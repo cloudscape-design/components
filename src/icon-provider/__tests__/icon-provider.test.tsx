@@ -8,6 +8,7 @@ import Icon, { IconProps } from '../../../lib/components/icon';
 import IconProvider, { IconProviderProps } from '../../../lib/components/icon-provider';
 import wrapper from '../../../lib/components/test-utils/dom';
 import generatedIcons from '../../icon/generated/icons';
+import customCSSPropertiesMap from '../../internal/generated/custom-css-properties';
 
 const CUSTOM_SVG = (
   <svg focusable={false}>
@@ -146,7 +147,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-size-override')).toBe('12px');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
     });
 
     it('does not set --icon-size-override for sizes that are not overridden', () => {
@@ -156,7 +157,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-size-override')).toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('');
     });
 
     it('does not set --icon-size-override when sizes prop is not provided', () => {
@@ -166,7 +167,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-size-override')).toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('');
     });
 
     it('child provider merges sizes with parent context', () => {
@@ -179,9 +180,9 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const normalIcon = container.querySelector('[data-testid="normal-icon"]') as HTMLElement;
-      expect(normalIcon.style.getPropertyValue('--icon-size-override')).toBe('12px');
+      expect(normalIcon.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
       const smallIcon = container.querySelector('[data-testid="small-icon"]') as HTMLElement;
-      expect(smallIcon.style.getPropertyValue('--icon-size-override')).toBe('10px');
+      expect(smallIcon.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('10px');
     });
 
     it('child provider overrides parent size for the same variant', () => {
@@ -193,7 +194,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-size-override')).toBe('20px');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('20px');
     });
 
     it('sets --icon-stroke-scale when size override differs from base size', () => {
@@ -204,7 +205,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      const strokeScale = iconEl.style.getPropertyValue('--icon-stroke-scale');
+      const strokeScale = iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale);
       expect(strokeScale).not.toBe('');
       expect(parseFloat(strokeScale)).toBeCloseTo(16 / 12, 5);
     });
@@ -217,7 +218,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-stroke-scale')).toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale)).toBe('');
     });
   });
 
@@ -230,7 +231,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-stroke-width-override')).toBe('2px');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
     });
 
     it('applies scaleFactor when computing --icon-stroke-width-override', () => {
@@ -241,7 +242,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-stroke-width-override')).toBe('1px');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('1px');
     });
 
     it('does not set --icon-stroke-width-override for sizes that are not overridden', () => {
@@ -251,7 +252,7 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
-      expect(iconEl.style.getPropertyValue('--icon-stroke-width-override')).toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('');
     });
 
     it('child provider merges strokeWidths with parent context', () => {
@@ -264,9 +265,9 @@ describe('Icon Provider', () => {
         </IconProvider>
       );
       const normalIcon = container.querySelector('[data-testid="normal-icon"]') as HTMLElement;
-      expect(normalIcon.style.getPropertyValue('--icon-stroke-width-override')).toBe('2px');
+      expect(normalIcon.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
       const smallIcon = container.querySelector('[data-testid="small-icon"]') as HTMLElement;
-      expect(smallIcon.style.getPropertyValue('--icon-stroke-width-override')).toBe('1.5px');
+      expect(smallIcon.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('1.5px');
     });
 
     it('strokeWidths takes precedence over automatic stroke compensation from sizes', () => {
@@ -278,9 +279,9 @@ describe('Icon Provider', () => {
       );
       const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
       // explicit override must be present
-      expect(iconEl.style.getPropertyValue('--icon-stroke-width-override')).not.toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).not.toBe('');
       // automatic scale must not be set when explicit override is active
-      expect(iconEl.style.getPropertyValue('--icon-stroke-scale')).toBe('');
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale)).toBe('');
     });
   });
 
