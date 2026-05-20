@@ -85,7 +85,7 @@ export interface DrawerProps extends BaseComponentProps {
    * * `absolute` - The drawer is positioned relative to its nearest positioned ancestor.
    * * `fixed` - The drawer is positioned relative to the viewport.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   position?: DrawerProps.Position;
 
@@ -96,7 +96,7 @@ export interface DrawerProps extends BaseComponentProps {
    * * `top` - Anchored to the top edge.
    * * `bottom` - Anchored to the bottom edge.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   placement?: DrawerProps.Placement;
 
@@ -109,7 +109,7 @@ export interface DrawerProps extends BaseComponentProps {
    * * `top` - Distance from the top edge. Not applicable when `placement` is `"bottom"`.
    * * `bottom` - Distance from the bottom edge. Not applicable when `placement` is `"top"`.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   offset?: DrawerProps.Offset;
 
@@ -120,7 +120,7 @@ export interface DrawerProps extends BaseComponentProps {
    * * `top` - Distance from the top of the scrolling container.
    * * `bottom` - Distance from the bottom of the scrolling container.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   stickyOffset?: DrawerProps.StickyOffset;
 
@@ -128,9 +128,9 @@ export interface DrawerProps extends BaseComponentProps {
    * Sets the CSS `z-index` of the drawer. Use this to control stacking order when the drawer
    * overlaps other positioned elements on the page.
    *
-   * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`.
+   * Applicable when using `position="sticky"`, `position="absolute"`, or `position="fixed"`. Defaults to 830.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   zIndex?: number;
 
@@ -139,7 +139,7 @@ export interface DrawerProps extends BaseComponentProps {
    * The close button fires the `onClose` event with method `'close-action'` when
    * clicked.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   closeAction?: DrawerProps.CloseActionProps;
 
@@ -148,7 +148,7 @@ export interface DrawerProps extends BaseComponentProps {
    * when close action is not set. Use it when a close action is not needed, or a
    * custom close action implementation is used.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   hideCloseAction?: boolean;
 
@@ -158,7 +158,7 @@ export interface DrawerProps extends BaseComponentProps {
    * * `'backdrop-click'` - The backdrop was clicked (only when `backdrop=true`).
    * * `'escape'` - The Escape key was pressed (only when `backdrop=true`).
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   onClose?: NonCancelableEventHandler<DrawerProps.CloseDetail>;
 
@@ -168,7 +168,7 @@ export interface DrawerProps extends BaseComponentProps {
    *
    * When the property is unset - the drawer is always visible, and the built-in focus in/out behaviors are disabled.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   open?: boolean;
 
@@ -180,7 +180,7 @@ export interface DrawerProps extends BaseComponentProps {
    * to prevent it from moving to elements covered by the backdrop. This can be overridden
    * with `focusBehavior.trapFocus`.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   backdrop?: boolean;
 
@@ -199,7 +199,7 @@ export interface DrawerProps extends BaseComponentProps {
    * If omitted, focus returns to the element that was focused when the drawer opened.
    * If that element is no longer in the DOM, the behavior silently no-ops.
    *
-   * Do not use this property when using drawers inside AppLayout.
+   * Do not use this property when using drawers inside app layout.
    */
   focusBehavior?: DrawerProps.FocusBehavior;
 }
