@@ -26287,6 +26287,7 @@ Links are rendered as \`<a>\` tags.
 - \`externalIconAriaLabel\` (string) - Adds an aria-label to the external icon.
 - \`info\` (ReactNode) - Enables you to display content next to the link. Although it is technically possible to insert any content,
     our UX guidelines allow only to add a Badge and/or a "New" label.
+- \`icon\` (ReactNode) - Optional content rendered before the link text. Accepts any React node (for example, an \`<Icon />\` component or a custom \`<svg>\`).
 
 #### Divider
 Object that represents a horizontal divider between navigation content.
@@ -26300,6 +26301,7 @@ Object that represents a section within the navigation.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the section title. Accepts any React node.
 
 #### Section Group
 Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
@@ -26307,6 +26309,7 @@ You can nest sections, links, link groups and expandable link groups within a se
 - \`type\`: \`'section-group'\`.
 - \`title\` (string) - Specifies the text to display as a title of the section group.
 - \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
+- \`icon\` (ReactNode) - Optional content rendered before the section group title. Accepts any React node.
 
 #### LinkGroup
 Object that represents a group of links.
@@ -26318,6 +26321,7 @@ Object that represents a group of links.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the link group text. Accepts any React node.
 
 #### ExpandableLinkGroup
 
@@ -26329,7 +26333,8 @@ Object that represents an expandable group of links.
    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
-    our UX recommendation is to use only one level.",
+    our UX recommendation is to use only one level.
+- \`icon\` (ReactNode) - Optional content rendered before the expandable link group text. Accepts any React node.",
       "name": "items",
       "optional": true,
       "type": "ReadonlyArray<SideNavigationProps.Item>",

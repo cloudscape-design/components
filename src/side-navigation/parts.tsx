@@ -268,6 +268,13 @@ interface LinkProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Link;
 }
 
+function ItemIcon({ icon }: { icon: React.ReactNode }) {
+  if (!icon) {
+    return null;
+  }
+  return <span className={clsx(styles['item-icon'], testUtilStyles['item-icon'])}>{icon}</span>;
+}
+
 function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
@@ -305,6 +312,7 @@ function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
         onClick={onClick}
         {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
       >
+        <ItemIcon icon={definition.icon} />
         <span className={analyticsSelectors['link-text']}>{definition.text}</span>
         {definition.external && (
           <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
@@ -348,7 +356,16 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         variant === 'section-group' && styles['section--no-ident'],
         isVisualRefresh && styles.refresh
       )}
-      headerText={definition.text}
+      headerText={
+        definition.icon ? (
+          <span className={styles['section-header-text']}>
+            <ItemIcon icon={definition.icon} />
+            {definition.text}
+          </span>
+        ) : (
+          definition.text
+        )
+      }
     >
       <NavigationItemsList
         variant="section"
@@ -370,6 +387,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange, position
   return (
     <div className={styles['section-group']}>
       <InternalBox className={styles['section-group-title']} variant="h3">
+        <ItemIcon icon={definition.icon} />
         {definition.title}
       </InternalBox>
       <NavigationItemsList
@@ -394,7 +412,13 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange, position }:
   return (
     <>
       <Link
-        definition={{ type: 'link', href: definition.href, text: definition.text, info: definition.info }}
+        definition={{
+          type: 'link',
+          href: definition.href,
+          text: definition.text,
+          info: definition.info,
+          icon: definition.icon,
+        }}
         fireFollow={(_, event) => fireFollow(definition, event)}
         fireChange={fireChange}
         activeHref={activeHref}
@@ -479,7 +503,7 @@ function ExpandableLinkGroup({
       onChange={onExpandedChange}
       headerText={
         <Link
-          definition={{ type: 'link', href: definition.href, text: definition.text }}
+          definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
           fireFollow={onHeaderFollow}
           fireChange={fireChange}
           activeHref={activeHref}
