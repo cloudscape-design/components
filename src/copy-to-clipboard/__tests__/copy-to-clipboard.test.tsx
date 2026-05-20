@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
+import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
@@ -508,13 +509,18 @@ describe('CopyToClipboard', () => {
     expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
   });
 
-  test('wraps text when wrapText=undefined', () => {
-    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={undefined} />);
+  test('InternalCopyToClipboard wraps text by default for variant="inline"', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" />);
     expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
   });
 
   test('does not wrap text when wrapText=false', () => {
     const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
+  });
+
+  test('InternalCopyToClipboard does not wrap text when wrapText=false', () => {
+    const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
     expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
   });
 });
