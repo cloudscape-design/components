@@ -14819,6 +14819,14 @@ The icon will be vertically centered based on the height.",
       "visualRefreshTag": "\`medium\` size",
     },
     {
+      "description": "Displays a visible label on hover or focus. Only use this property
+if the icon is semantically meaningful or isn't followed by alternative
+text.",
+      "name": "tooltipText",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the URL of a custom icon. Use this property if the icon you want isn't available, and your custom icon cannot be an SVG.
 For SVG icons, use the \`svg\` slot instead.
 
