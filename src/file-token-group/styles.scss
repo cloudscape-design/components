@@ -114,6 +114,11 @@
   }
 }
 
+// Restore pre-InternalToken truncation position for horizontal layout with a thumbnail.
+.horizontal-thumbnail-overflow {
+  inline-size: calc(100% + #{awsui.$space-xs});
+}
+
 .token-box {
   @include mixins.token-box-styles();
 

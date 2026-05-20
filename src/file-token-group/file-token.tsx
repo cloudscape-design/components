@@ -99,10 +99,16 @@ function InternalFileToken({
   const fileIsSingleRow =
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
 
+  // Restore pre-InternalToken truncation position for horizontal layout with a thumbnail.
+  const isHorizontalWithThumbnail = alignment === 'horizontal' && groupContainsImage && showFileThumbnail;
+  const horizontalThumbnailOverflowClass = isHorizontalWithThumbnail
+    ? styles['horizontal-thumbnail-overflow']
+    : undefined;
+
   // File name wrapped in a keyboard-focusable container that drives the custom Tooltip below.
   const fileNameLabel = (
     <div
-      className={styles['file-name-container']}
+      className={clsx(styles['file-name-container'], horizontalThumbnailOverflowClass)}
       onMouseOver={() => setShowTooltip(true)}
       onMouseOut={() => setShowTooltip(false)}
       onFocus={() => setShowTooltip(true)}
@@ -130,7 +136,11 @@ function InternalFileToken({
           <InternalBox
             fontSize="body-s"
             color={'text-body-secondary'}
-            className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
+            className={clsx(
+              styles['file-option-size'],
+              testUtilStyles['file-option-size'],
+              horizontalThumbnailOverflowClass
+            )}
           >
             {formatFileSize(file.size)}
           </InternalBox>
@@ -140,7 +150,11 @@ function InternalFileToken({
           <InternalBox
             fontSize="body-s"
             color={'text-body-secondary'}
-            className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
+            className={clsx(
+              styles['file-option-last-modified'],
+              testUtilStyles['file-option-last-modified'],
+              horizontalThumbnailOverflowClass
+            )}
           >
             {formatFileLastModified(new Date(file.lastModified))}
           </InternalBox>
