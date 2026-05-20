@@ -1,0 +1,25 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.text-overflow-ellipsis;
+
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    // The border is 2px wide, and since this component is commonly used in scenarios
+    // where the content can be truncated, let's play it safe by pulling in the outline.
+    @include styles.focus-highlight(-2px);
+  }
+}
