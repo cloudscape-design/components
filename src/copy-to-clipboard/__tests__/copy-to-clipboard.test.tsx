@@ -6,6 +6,8 @@ import { act, render, waitFor } from '@testing-library/react';
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
+
 const defaultProps = {
   copyTarget: 'Test content',
   textToCopy: 'Text to copy',
@@ -499,5 +501,20 @@ describe('CopyToClipboard', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       expect(onCopyFailure).not.toHaveBeenCalled();
     });
+  });
+
+  test('wraps text by default for variant="inline"', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('wraps text when wrapText=undefined', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={undefined} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).toBeNull();
+  });
+
+  test('does not wrap text when wrapText=false', () => {
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
+    expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
   });
 });

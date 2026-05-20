@@ -10206,6 +10206,14 @@ Defaults to \`button\`.",
       "optional": true,
       "type": "string",
     },
+    {
+      "defaultValue": "true",
+      "description": "Specifies if the \`textToDisplay\` content should wrap. If you set it to false, it prevents the text
+from wrapping and truncates it with an ellipsis. Only applies to \`variant="inline"\`.",
+      "name": "wrapText",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": [
     {
