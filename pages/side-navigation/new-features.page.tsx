@@ -2,8 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
 
+import { FormField } from '~components';
 import Icon from '~components/icon';
+import RadioGroup from '~components/radio-group';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
+
+import { SimplePage } from '../app/templates';
 
 // A custom inline SVG, demonstrating that the `icon` slot accepts any React node.
 const CustomBoltSvg = (
@@ -44,15 +48,24 @@ const ITEMS: SideNavigationProps.Item[] = [
       { type: 'link', text: 'Billing', href: '#/billing' },
     ],
   },
+  {
+    type: 'link-group',
+    text: 'Navigation Two sans icon',
+    href: '#/settings',
+    items: [
+      { type: 'link', text: 'Account', href: '#/account' },
+      { type: 'link', text: 'Billing', href: '#/billing' },
+    ],
+  },
   { type: 'divider' },
   {
     type: 'section-group',
     title: 'Section Group',
-    icon: <Icon name="grid-view" size="inherit" />,
+    icon: <Icon name="grid-view" />,
     items: [
       {
         type: 'link',
-        icon: <Icon name="file-open" size="inherit" />,
+        icon: <Icon name="file-open" />,
         text: 'Overview',
         href: '#/overview',
       },
@@ -77,6 +90,7 @@ const ITEMS: SideNavigationProps.Item[] = [
 
 export default function SideNavigationIconsPage() {
   const [activeHref, setActiveHref] = useState<string>('#/dashboard');
+  const [expandIconPosition, setExpandIconPosition] = useState<SideNavigationProps.ExpandIconPosition>('start');
 
   const onFollow = useCallback((e: CustomEvent<SideNavigationProps.FollowDetail>) => {
     setActiveHref(e.detail.href);
@@ -84,17 +98,33 @@ export default function SideNavigationIconsPage() {
   }, []);
 
   return (
-    <>
-      <h1>Side navigation with icons</h1>
-      <SideNavigation
-        activeHref={activeHref}
-        header={{
-          href: '#/',
-          text: 'Service name',
-        }}
-        items={ITEMS}
-        onFollow={onFollow}
-      />
-    </>
+    <SimplePage
+      title="Side navigation with new features"
+      settings={
+        <FormField label="Expand icon position" description="Controls the `expandIconPosition` prop">
+          <RadioGroup
+            value={expandIconPosition}
+            onChange={({ detail }) => setExpandIconPosition(detail.value as SideNavigationProps.ExpandIconPosition)}
+            items={[
+              { value: 'start', label: 'Start' },
+              { value: 'end', label: 'End' },
+            ]}
+          />
+        </FormField>
+      }
+    >
+      <div style={{ maxInlineSize: '300px' }}>
+        <SideNavigation
+          activeHref={activeHref}
+          header={{
+            href: '#/',
+            text: 'Service name',
+          }}
+          items={ITEMS}
+          expandIconPosition={expandIconPosition}
+          onFollow={onFollow}
+        />
+      </div>
+    </SimplePage>
   );
 }

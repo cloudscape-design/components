@@ -33,6 +33,7 @@ interface BaseItemComponentProps {
     event: React.SyntheticEvent | Event
   ) => void;
   position?: string;
+  expandIconPosition?: SideNavigationProps.ExpandIconPosition;
 }
 
 interface HeaderProps extends BaseItemComponentProps {
@@ -106,6 +107,7 @@ export function NavigationItemsList({
   fireChange,
   fireFollow,
   position = '',
+  expandIconPosition,
 }: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
@@ -161,6 +163,7 @@ export function NavigationItemsList({
                 fireChange={fireChange}
                 fireFollow={fireFollow}
                 position={itemPosition}
+                expandIconPosition={expandIconPosition}
               />
             </li>
           ),
@@ -177,6 +180,7 @@ export function NavigationItemsList({
                 fireChange={fireChange}
                 fireFollow={fireFollow}
                 position={itemPosition}
+                expandIconPosition={expandIconPosition}
               />
             </li>
           ),
@@ -193,6 +197,7 @@ export function NavigationItemsList({
                 fireChange={fireChange}
                 fireFollow={fireFollow}
                 position={itemPosition}
+                expandIconPosition={expandIconPosition}
               />
             </li>
           ),
@@ -210,6 +215,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 variant={variant}
                 position={itemPosition}
+                expandIconPosition={expandIconPosition}
               />
             </li>
           ),
@@ -228,6 +234,7 @@ export function NavigationItemsList({
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
+                [styles['list--no-start-padding']]: variant === 'section' && expandIconPosition === 'end',
               })}
             >
               {list.element}
@@ -239,6 +246,7 @@ export function NavigationItemsList({
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
+                [styles['list--no-start-padding']]: variant === 'section' && expandIconPosition === 'end',
               })}
             >
               {list.items.map(item => item.element)}
@@ -330,7 +338,15 @@ interface SectionProps extends BaseItemComponentProps {
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function Section({ definition, activeHref, fireFollow, fireChange, variant, position }: SectionProps) {
+function Section({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  variant,
+  position,
+  expandIconPosition,
+}: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
 
@@ -354,6 +370,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
       className={clsx(
         styles.section,
         variant === 'section-group' && styles['section--no-ident'],
+        expandIconPosition === 'end' && styles['section--expand-icon-end'],
         isVisualRefresh && styles.refresh
       )}
       headerText={
@@ -366,6 +383,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
           definition.text
         )
       }
+      __expandIconPosition={expandIconPosition}
     >
       <NavigationItemsList
         variant="section"
@@ -374,6 +392,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        expandIconPosition={expandIconPosition}
       />
     </InternalExpandableSection>
   );
@@ -383,7 +402,14 @@ interface SectionGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionGroup;
 }
 
-function SectionGroup({ definition, activeHref, fireFollow, fireChange, position }: SectionGroupProps) {
+function SectionGroup({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  position,
+  expandIconPosition,
+}: SectionGroupProps) {
   return (
     <div className={styles['section-group']}>
       <InternalBox className={styles['section-group-title']} variant="h3">
@@ -397,6 +423,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange, position
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        expandIconPosition={expandIconPosition}
       />
     </div>
   );
@@ -406,7 +433,7 @@ interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
 }
 
-function LinkGroup({ definition, activeHref, fireFollow, fireChange, position }: LinkGroupProps) {
+function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, expandIconPosition }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
   return (
@@ -431,6 +458,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange, position }:
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        expandIconPosition={expandIconPosition}
       />
     </>
   );
@@ -448,6 +476,7 @@ function ExpandableLinkGroup({
   activeHref,
   variant,
   position,
+  expandIconPosition,
 }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
@@ -496,7 +525,8 @@ function ExpandableLinkGroup({
     <InternalExpandableSection
       className={clsx(
         styles['expandable-link-group'],
-        variant === 'section-group' && styles['expandable-link-group--no-ident']
+        variant === 'section-group' && styles['expandable-link-group--no-ident'],
+        expandIconPosition === 'end' && styles['expandable-link-group--expand-icon-end']
       )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
@@ -510,6 +540,7 @@ function ExpandableLinkGroup({
           position={position}
         />
       }
+      __expandIconPosition={expandIconPosition}
     >
       <NavigationItemsList
         variant="expandable-link-group"
@@ -518,6 +549,7 @@ function ExpandableLinkGroup({
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        expandIconPosition={expandIconPosition}
       />
     </InternalExpandableSection>
   );

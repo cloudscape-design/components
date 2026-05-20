@@ -24,6 +24,12 @@ export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'varia
   InternalBaseComponentProps & {
     variant?: InternalVariant;
     __injectAnalyticsComponentMetadata?: boolean;
+    /**
+     * Controls placement of the expand/collapse icon relative to the header content.
+     * Defaults to 'start'. When set to 'end', the icon is rendered after the header
+     * content and pushed to the inline-end of a full-width header.
+     */
+    __expandIconPosition?: 'start' | 'end';
   };
 
 export default function InternalExpandableSection({
@@ -43,6 +49,7 @@ export default function InternalExpandableSection({
   headerAriaLabel,
   __internalRootRef,
   __injectAnalyticsComponentMetadata,
+  __expandIconPosition = 'start',
   ...props
 }: InternalExpandableSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -121,6 +128,7 @@ export default function InternalExpandableSection({
           headerInfo={headerInfo}
           headerActions={headerActions}
           headingTagOverride={headingTagOverride}
+          expandIconPosition={__expandIconPosition}
           {...triggerProps}
         />
       }

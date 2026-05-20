@@ -39,6 +39,7 @@ interface ExpandableDefaultHeaderProps {
   onClick: MouseEventHandler;
   icon: JSX.Element;
   variant: InternalVariant;
+  expandIconPosition?: 'start' | 'end';
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -124,22 +125,47 @@ const ExpandableNavigationHeader = ({
   expanded,
   children,
   icon,
+  expandIconPosition = 'start',
 }: ExpandableNavigationHeaderProps) => {
+  const iconButton = (
+    <button
+      className={clsx(
+        styles['icon-container'],
+        styles['expand-button'],
+        expandIconPosition === 'end' && styles['icon-container-end']
+      )}
+      aria-labelledby={ariaLabelledBy}
+      aria-label={ariaLabel}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+      type="button"
+      onClick={onClick}
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+    >
+      {icon}
+    </button>
+  );
   return (
-    <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
-      <button
-        className={clsx(styles['icon-container'], styles['expand-button'])}
-        aria-labelledby={ariaLabelledBy}
-        aria-label={ariaLabel}
-        aria-controls={ariaControls}
-        aria-expanded={expanded}
-        type="button"
-        onClick={onClick}
-        {...getExpandActionAnalyticsMetadataAttribute(expanded)}
-      >
-        {icon}
-      </button>
-      {children}
+    <div
+      id={id}
+      className={clsx(
+        className,
+        styles['click-target'],
+        analyticsSelectors['header-label'],
+        expandIconPosition === 'end' && styles['header-icon-end']
+      )}
+    >
+      {expandIconPosition === 'end' ? (
+        <>
+          {children}
+          {iconButton}
+        </>
+      ) : (
+        <>
+          {iconButton}
+          {children}
+        </>
+      )}
     </div>
   );
 };
@@ -162,6 +188,7 @@ const ExpandableHeaderTextWrapper = ({
   headingTagOverride,
   onKeyUp,
   onKeyDown,
+  expandIconPosition = 'start',
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
@@ -174,6 +201,11 @@ const ExpandableHeaderTextWrapper = ({
     </span>
   );
   const listeners = { onClick, onKeyDown, onKeyUp };
+  const iconAtEnd = expandIconPosition === 'end';
+  // For the container variant with end placement, the icon is rendered outside the
+  // InternalHeader so it appears at the inline-end of the wrapper, past any header
+  // actions. Other variants render the icon at the end of the headerButton itself.
+  const renderIconOutsideHeader = isContainer && iconAtEnd;
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
@@ -184,11 +216,28 @@ const ExpandableHeaderTextWrapper = ({
   const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
   // For all other cases, make the entire header clickable for backwards compatibility.
   const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
+  const iconElement = (
+    <span
+      className={clsx(
+        styles['icon-container'],
+        styles[`icon-container-${variant}`],
+        iconAtEnd && styles['icon-container-end']
+      )}
+    >
+      {icon}
+    </span>
+  );
+  const textElement = (
+    <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
+      {children}
+    </span>
+  );
   const headerButton = (
     <span
       className={clsx(
         styles['expand-button'],
         isContainer ? styles['header-container-button'] : styles['header-button'],
+        iconAtEnd && !renderIconOutsideHeader && styles['header-button-icon-end'],
         headerButtonListeners && styles['click-target']
       )}
       role="button"
@@ -201,30 +250,57 @@ const ExpandableHeaderTextWrapper = ({
       {...headerButtonListeners}
       {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
-      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
-        {children}
-      </span>
+      {renderIconOutsideHeader ? (
+        textElement
+      ) : iconAtEnd ? (
+        <>
+          {textElement}
+          {iconElement}
+        </>
+      ) : (
+        <>
+          {iconElement}
+          {textElement}
+        </>
+      )}
     </span>
   );
 
   return (
     <div
-      className={clsx(className, wrapperListeners && styles['click-target'])}
+      className={clsx(className, wrapperListeners && styles['click-target'], iconAtEnd && styles['header-icon-end'])}
       {...wrapperListeners}
       {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       {isContainer ? (
-        <InternalHeader
-          variant="h2"
-          description={description}
-          counter={headerCounter}
-          info={headerInfo}
-          actions={actions}
-          headingTagOverride={headingTagOverride}
-        >
-          {headerButton}
-        </InternalHeader>
+        renderIconOutsideHeader ? (
+          <>
+            <div className={styles['internal-header-flex-grow']}>
+              <InternalHeader
+                variant="h2"
+                description={description}
+                counter={headerCounter}
+                info={headerInfo}
+                actions={actions}
+                headingTagOverride={headingTagOverride}
+              >
+                {headerButton}
+              </InternalHeader>
+            </div>
+            {iconElement}
+          </>
+        ) : (
+          <InternalHeader
+            variant="h2"
+            description={description}
+            counter={headerCounter}
+            info={headerInfo}
+            actions={actions}
+            headingTagOverride={headingTagOverride}
+          >
+            {headerButton}
+          </InternalHeader>
+        )
       ) : (
         <>
           <div className={clsx(actions && styles['header-actions-wrapper'])}>
@@ -263,6 +339,7 @@ export const ExpandableSectionHeader = ({
   onKeyUp,
   onKeyDown,
   onClick,
+  expandIconPosition,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
@@ -280,6 +357,7 @@ export const ExpandableSectionHeader = ({
     ariaLabel: ariaLabel,
     onClick: onClick,
     variant,
+    expandIconPosition,
   };
 
   if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {

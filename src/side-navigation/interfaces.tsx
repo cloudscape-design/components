@@ -129,9 +129,20 @@ export interface SideNavigationProps extends BaseComponentProps {
    * upon changing the `activeHref` property, this event isn't raised.
    */
   onChange?: NonCancelableEventHandler<SideNavigationProps.ChangeDetail>;
+
+  /**
+   * Controls the placement of the expand/collapse icon for `Section` and
+   * `ExpandableLinkGroup` items.
+   * - `start` (default) - The icon is rendered before the section title.
+   * - `end` - The icon is rendered after the section title and pulled to the
+   *    inline-end of a full-width header.
+   */
+  expandIconPosition?: SideNavigationProps.ExpandIconPosition;
 }
 
 export namespace SideNavigationProps {
+  export type ExpandIconPosition = 'start' | 'end';
+
   export interface Logo {
     src: string;
     alt?: string;

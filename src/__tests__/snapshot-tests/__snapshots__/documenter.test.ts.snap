@@ -26209,6 +26209,25 @@ property explicitly set to \`false\`.",
       "type": "string",
     },
     {
+      "defaultValue": "'start'",
+      "description": "Controls the placement of the expand/collapse icon for \`Section\` and
+\`ExpandableLinkGroup\` items.
+- \`start\` (default) - The icon is rendered before the section title.
+- \`end\` - The icon is rendered after the section title and pulled to the
+   inline-end of a full-width header.",
+      "inlineType": {
+        "name": "SideNavigationProps.ExpandIconPosition",
+        "type": "union",
+        "values": [
+          "end",
+          "start",
+        ],
+      },
+      "name": "expandIconPosition",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Controls the header that appears at the top of the navigation component.
 
 It contains the following:

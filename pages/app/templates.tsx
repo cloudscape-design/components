@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { Box, SpaceBetween } from '~components';
+import { Box, Divider, SpaceBetween } from '~components';
 import I18nProvider, { I18nProviderProps } from '~components/i18n';
 import messages from '~components/i18n/messages/all.all';
 
@@ -32,7 +32,9 @@ export function SimplePage({ title, subtitle, settings, children, screenshotArea
         {settings ? (
           <SpaceBetween size="s">
             <div>{settings}</div>
-            <hr />
+            <Box margin={{ vertical: 's' }}>
+              <Divider />
+            </Box>
           </SpaceBetween>
         ) : null}
 

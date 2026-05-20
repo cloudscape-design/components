@@ -287,3 +287,42 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     color: awsui.$color-text-expandable-section-hover;
   }
 }
+
+// When the expand/collapse icon is rendered at the end of the header.
+// For non-container variants the icon is rendered at the end of the headerButton
+// (taking the full width of the header). For the container variant the icon is
+// rendered as a sibling of the InternalHeader so it appears past any actions.
+.header-icon-end {
+  &.wrapper-default,
+  &.wrapper-inline,
+  &.wrapper-footer,
+  &.wrapper-compact {
+    padding-inline-start: 0;
+  }
+
+  &.wrapper-container {
+    display: flex;
+    align-items: flex-start;
+
+    &:not(.header-deprecated) {
+      padding-inline-start: container.$header-padding-horizontal;
+    }
+  }
+}
+
+.header-button-icon-end {
+  display: flex;
+  margin-inline-start: 0;
+  inline-size: 100%;
+  align-items: center;
+}
+
+.icon-container-end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.internal-header-flex-grow {
+  flex: 1;
+  min-inline-size: 0;
+}

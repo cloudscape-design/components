@@ -7,6 +7,17 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+// Each level of nested-list indent is one unit of $nested-list-indent. A
+// link-group's children sit one level in; an expandable-link-group's
+// children sit two levels in (header offset + child offset).
+$nested-list-indent: awsui.$space-l;
+
+// When the parent item has a leading icon, the icon occupies icon-width
+// (16px) + $space-xs margin-end (8px) = 24px of inline-start space, which
+// is $space-xxs (4px) more than $nested-list-indent. We add this offset
+// to nested-list paddings so child items line up with the parent's text.
+$item-icon-text-offset: awsui.$space-xxs;
+
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
@@ -86,8 +97,27 @@
   }
 }
 
+// When the navigation is collapsed or its expand icons are at the end, the
+// "navigation gutter" on the inline-start (where carets sit by default) is
+// no longer needed. Switch the start padding from $space-panel-nav-left to
+// $space-panel-side-left so the root list uses the symmetric
+// `space-panel-side-*` pair on both sides.
+.collapsed > .list-container > .list-variant-root,
+.expand-icon-end > .list-container > .list-variant-root {
+  padding-inline-start: awsui.$space-panel-side-right;
+}
+
 .list-variant-expandable-link-group {
-  padding-inline-start: awsui.$space-xxxl;
+  // 2 levels of nested indent (header + child) + icon/text offset.
+  padding-inline-start: calc(2 * #{$nested-list-indent} + #{$item-icon-text-offset});
+}
+
+// Children of a link-group sit one nested level below the parent link.
+// 1 level of nested indent + icon/text offset keeps them in lockstep with
+// `.list-variant-expandable-link-group` above (which is the same formula
+// at 2 levels deep).
+.list-variant-link-group {
+  padding-inline-start: calc(#{$nested-list-indent} + #{$item-icon-text-offset});
 }
 
 .list-item {
@@ -127,6 +157,20 @@
     padding-block: 0;
     padding-inline: 0;
   }
+}
+
+// When the expand icon is at the end, there's no caret in the gutter, so we
+// don't need the negative-margin / inner-list-padding pair that lets the caret
+// sit outside the section while keeping items aligned with siblings. Removing
+// both leaves the section header at the natural parent-list position (aligned
+// with section-group titles) and the items at the same column as before.
+.section--expand-icon-end,
+.expandable-link-group--expand-icon-end {
+  margin-inline-start: 0;
+}
+
+.list--no-start-padding {
+  padding-inline-start: 0;
 }
 
 .list-variant-section-group {
