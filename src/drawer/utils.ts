@@ -2,14 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { NextDrawerProps } from './interfaces';
+import { DrawerProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type PositionProps = Pick<NextDrawerProps, 'position' | 'placement' | 'offset' | 'stickyOffset' | 'zIndex'>;
+type PositionProps = Pick<DrawerProps, 'position' | 'placement' | 'offset' | 'stickyOffset' | 'zIndex'>;
 
 export function getPositionStyles({ position, zIndex, ...props }: PositionProps): {
   className: string;
@@ -24,25 +25,29 @@ export function getPositionStyles({ position, zIndex, ...props }: PositionProps)
   }
   switch (position) {
     case 'absolute':
-      return getStyles(position, { position: 'absolute', zIndex, ...computeAbsoluteOffsets(props) });
+      return getStyles(position, { position: 'absolute', zIndex, ...computeAbsoluteOffsets(props) }, props.placement);
     case 'sticky':
-      return getStyles(position, { position: 'sticky', zIndex, ...computeStickyOffsets(props) });
+      return getStyles(position, { position: 'sticky', zIndex, ...computeStickyOffsets(props) }, props.placement);
     case 'fixed':
-      return getStyles(position, { position: 'fixed', zIndex, ...computeAbsoluteOffsets(props) });
+      return getStyles(position, { position: 'fixed', zIndex, ...computeAbsoluteOffsets(props) }, props.placement);
     case 'static':
     default:
       return getStyles(position);
   }
 }
 
-function getStyles(position: NextDrawerProps.Position = 'static', style: React.CSSProperties = {}) {
-  return { className: styles[`position-${position}`], style };
+function getStyles(
+  position: DrawerProps.Position = 'static',
+  style: React.CSSProperties = {},
+  placement?: DrawerProps.Placement
+) {
+  return { className: clsx(styles[`position-${position}`], placement && styles[`placement-${placement}`]), style };
 }
 
 function computeAbsoluteOffsets({
   placement,
   offset: { top, bottom, start, end } = {},
-}: Pick<NextDrawerProps, 'placement' | 'offset'>) {
+}: Pick<DrawerProps, 'placement' | 'offset'>) {
   const style: React.CSSProperties = {};
   const offset = { top: top ?? 0, bottom: bottom ?? 0, start: start ?? 0, end: end ?? 0 };
   switch (placement) {
@@ -74,7 +79,7 @@ function computeStickyOffsets({
   placement,
   offset: { top, bottom, start, end } = {},
   stickyOffset: { top: stickyTop, bottom: stickyBottom } = {},
-}: Pick<NextDrawerProps, 'placement' | 'offset' | 'stickyOffset'>) {
+}: Pick<DrawerProps, 'placement' | 'offset' | 'stickyOffset'>) {
   const style: React.CSSProperties = {};
   const offset = { top: top ?? 0, bottom: bottom ?? 0, start: start ?? 0, end: end ?? 0 };
   const stickyOffset = { top: stickyTop ?? 0, bottom: stickyBottom ?? 0 };

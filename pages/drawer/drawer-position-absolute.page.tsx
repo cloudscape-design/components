@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { capitalize, range } from 'lodash';
 
 import { Checkbox, SpaceBetween } from '~components';
-import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next';
+import Drawer, { DrawerProps } from '~components/drawer';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
