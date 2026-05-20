@@ -4,7 +4,7 @@
 import React, { RefObject, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { Portal, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
@@ -20,16 +20,16 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { createWidgetizedComponent } from '../internal/widgets';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
-import { NextDrawerProps } from './interfaces';
+import { DrawerProps } from './interfaces';
 import { useStickyFooter } from './use-sticky-footer';
 import { getPositionStyles } from './utils';
 
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
-type DrawerInternalProps = NextDrawerProps &
+type DrawerInternalProps = DrawerProps &
   InternalBaseComponentProps & {
-    __ref?: React.Ref<NextDrawerProps.Ref>;
+    __ref?: React.Ref<DrawerProps.Ref>;
   };
 
 export function DrawerImplementation({
@@ -153,7 +153,7 @@ export function DrawerImplementation({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [showBackdrop, handleClose]);
 
-  return (
+  const drawer = (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.root, testClasses.root, open === false && styles.hidden)}
@@ -225,6 +225,8 @@ export function DrawerImplementation({
       </FocusLock>
     </div>
   );
+
+  return position === 'fixed' ? <Portal>{drawer}</Portal> : drawer;
 }
 
 export const createWidgetizedDrawer = createWidgetizedComponent(DrawerImplementation);

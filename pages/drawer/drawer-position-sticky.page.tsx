@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { range } from 'lodash';
 
 import { Box, Checkbox, SpaceBetween } from '~components';
-import Drawer from '~components/drawer/next';
+import Drawer from '~components/drawer';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';

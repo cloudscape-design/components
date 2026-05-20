@@ -23,4 +23,12 @@ export default class DrawerWrapper extends ComponentWrapper {
   findContent(): ElementWrapper | null {
     return this.findByClassName(styles['test-utils-drawer-content']);
   }
+
+  findBackdrop(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles.backdrop);
+  }
+
+  findCloseAction(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['close-action']);
+  }
 }

@@ -10,39 +10,39 @@
 $link-font-sizes: (
   'body-s': (
     'text-underline-offset': 0.3em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'body-m': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-xs': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-s': (
     'text-underline-offset': 0.3em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-m': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-l': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'heading-xl': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
   'display-l': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 2px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link-display-l,
   ),
   'inherit': (
     'text-underline-offset': 0.25em,
-    'text-decoration-thickness': 1px,
+    'text-decoration-thickness': awsui.$font-decoration-thickness-link,
   ),
 );
 
@@ -75,8 +75,8 @@ $link-variants: (
     'text-color-active': awsui.$color-text-link-hover,
     'font-weight': inherit,
     'decoration-line': underline,
-    'decoration-color': currentColor,
-    'decoration-color-hover': currentColor,
+    'decoration-color': awsui.$color-text-link-decoration-default,
+    'decoration-color-hover': awsui.$color-text-link-decoration-hover,
     'letter-spacing': normal,
   ),
   'info': (
