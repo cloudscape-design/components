@@ -32256,9 +32256,6 @@ Can return null if the element is not yet mounted or available.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
