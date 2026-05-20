@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Button } from '~components';
-import Drawer, { NextDrawerProps as DrawerProps } from '~components/drawer/next';
+import Drawer, { DrawerProps } from '~components/drawer';
 
 import { SimplePage } from '../app/templates';
 import createPermutations from '../utils/permutations';
