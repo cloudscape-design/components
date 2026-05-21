@@ -3761,9 +3761,6 @@ When returning \`null\`, the default rendering will be applied for that item.",
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "AutosuggestProps.ItemRenderer",
     },
     {
@@ -19428,9 +19425,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "MultiselectProps.MultiselectOptionItemRenderer",
     },
     {
@@ -25676,9 +25670,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "SelectProps.SelectOptionItemRenderer",
     },
     {
