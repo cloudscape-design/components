@@ -86,7 +86,7 @@ NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.con
 
 ### Adding tests for a new component
 
-Create `test/visual/definitions/<component>.ts`:
+Create `test/definitions/visual/<component>.ts`:
 
 ```ts
 import { TestSuite } from '../types';
@@ -104,7 +104,7 @@ const suite: TestSuite = {
 export default suite;
 ```
 
-Then import and add it to `test/visual/definitions/index.ts`:
+Then import and add it to `test/definitions/visual/index.ts`:
 
 ```ts
 import myComponent from './my-component';
