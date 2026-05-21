@@ -7,7 +7,7 @@ import { parsePng } from '@cloudscape-design/browser-test-tools/image-utils';
 import { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { TestDefinition, TestSuite } from './types';
+import { TestDefinition, TestSuite } from '../types';
 
 const screenshotAreaSelector = '.screenshot-area';
 const defaultWindowSize = { width: 1600, height: 800 };
@@ -97,6 +97,8 @@ function runSingleTest(testDef: TestDefinition) {
 
   test(
     testDef.description,
+    // useBrowser is not a React hook, despite the name
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useBrowser(windowSize, async browser => {
       const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
       const newScreenshot = await captureScreenshot(browser, newUrl, testDef, testDef.setup);
