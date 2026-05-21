@@ -78,6 +78,8 @@ export interface MultiselectProps extends BaseSelectProps {
   enableSelectAll?: boolean;
   /**
    * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * @awsuiSystem core
    */
   renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
 }

@@ -86,6 +86,8 @@ export interface AutosuggestProps
    * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
    *
    * When returning `null`, the default rendering will be applied for that item.
+   *
+   * @awsuiSystem core
    */
   renderOption?: AutosuggestProps.ItemRenderer;
 
