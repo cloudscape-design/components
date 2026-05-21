@@ -937,7 +937,26 @@ export default function IconScaleProviderScenario() {
       splitPanelOpen={splitPanelOpen}
       onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
       splitPanelPreferences={{ position: 'side' }}
-      splitPanel={<SplitPanel header="Design configuration">{splitPanelContent}</SplitPanel>}
+      splitPanel={
+        <SplitPanel
+          header="Design configuration"
+          i18nStrings={{
+            closeButtonAriaLabel: 'Close panel',
+            openButtonAriaLabel: 'Open panel',
+            resizeHandleAriaLabel: 'Resize split panel',
+            resizeHandleTooltipText: 'Drag or select to resize',
+            preferencesTitle: 'Preferences',
+            preferencesPositionLabel: 'Split panel position',
+            preferencesPositionDescription: 'Choose the default split panel position for the service.',
+            preferencesPositionSide: 'Side',
+            preferencesPositionBottom: 'Bottom',
+            preferencesConfirm: 'Confirm',
+            preferencesCancel: 'Cancel',
+          }}
+        >
+          {splitPanelContent}
+        </SplitPanel>
+      }
       content={
         <IconProvider
           icons={null}
