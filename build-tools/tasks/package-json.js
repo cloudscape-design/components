@@ -101,6 +101,10 @@ const devPagesPackageJson = generatePackageJson(path.join(workspace.targetPath, 
   name: '@cloudscape-design/dev-pages',
 });
 
+const testDefinitionsPackageJson = generatePackageJson(path.join(workspace.targetPath, 'test-definitions'), {
+  name: '@cloudscape-design/test-definitions',
+});
+
 module.exports = parallel([
   ...themes.flatMap(theme => [
     generatePackageJson(
@@ -130,5 +134,6 @@ module.exports = parallel([
   componentsThemeablePackageJson,
   copyTask('package-lock', ['package-lock.json'], path.join(workspace.targetPath, 'dev-pages', 'internal')),
   devPagesPackageJson,
+  testDefinitionsPackageJson,
 ]);
 module.exports.generatePackageJson = generatePackageJson;
