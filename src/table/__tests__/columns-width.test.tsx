@@ -7,6 +7,17 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
+
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
+  ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),
+  getOverflowParents: jest.fn(() => {
+    const overflowParent = document.createElement('div');
+    overflowParent.style.width = '1000px';
+    overflowParent.getBoundingClientRect = fakeBoundingClientRect;
+    return [overflowParent];
+  }),
+}));
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -269,5 +280,86 @@ describe('with stickyHeader=true', () => {
       { minWidth: '', width: '', maxWidth: '' },
       { minWidth: '', width: '', maxWidth: '' },
     ]);
+  });
+});
+
+describe('with grouped columns', () => {
+  const groupedColumns: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'ID', cell: item => item.id, width: 150 },
+    { id: 'name', header: 'Name', cell: item => item.text, width: 150 },
+    { id: 'type', header: 'Type', cell: () => '-', width: 200 },
+    { id: 'az', header: 'AZ', cell: () => '-', width: 200 },
+  ];
+  const groupDefinitions: TableProps.GroupDefinition<Item>[] = [{ id: 'config', header: 'Configuration' }];
+  const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+    { id: 'id', visible: true },
+    { id: 'name', visible: true },
+    {
+      type: 'group',
+      id: 'config',
+      visible: true,
+      children: [
+        { id: 'type', visible: true },
+        { id: 'az', visible: true },
+      ],
+    },
+  ];
+
+  function renderGroupedTable(props: Partial<TableProps<Item>> = {}) {
+    const { container } = render(
+      <Table
+        columnDefinitions={groupedColumns}
+        items={defaultItems}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={columnDisplay}
+        resizableColumns={true}
+        {...props}
+      />
+    );
+    return createWrapper(container).findTable()!;
+  }
+
+  test('renders colgroup with col elements for grouped resizable table', () => {
+    const wrapper = renderGroupedTable();
+    const cols = wrapper.getElement().querySelectorAll('colgroup col');
+    expect(cols.length).toBe(4);
+  });
+
+  test('assigns widths to leaf columns in grouped table', () => {
+    const wrapper = renderGroupedTable();
+    const leafCells = wrapper.findAll('thead th[scope="col"]');
+    expect(leafCells[0].getElement().style.width).toBe('150px');
+    expect(leafCells[1].getElement().style.width).toBe('150px');
+    expect(leafCells[2].getElement().style.width).toBe('200px');
+    expect(leafCells[3].getElement().style.width).toBe('200px');
+  });
+
+  test('resizing a group applies the width delta to the last column in the group', () => {
+    const onColumnWidthsChange = jest.fn();
+    const wrapper = renderGroupedTable({ onColumnWidthsChange });
+    const groupCell = wrapper.find('thead th[scope="colgroup"]')!;
+    const resizerBtn = new ElementWrapper(groupCell.find('button')!.getElement());
+
+    firePointerdown(resizerBtn);
+    firePointermove(500);
+    firePointerup(500);
+
+    expect(onColumnWidthsChange).toHaveBeenCalledTimes(1);
+    // Group total was 400 (200+200), resized to 500 → delta 100 applied to last leaf 'az'
+    expect(onColumnWidthsChange.mock.calls[0][0].detail).toEqual({ widths: [150, 150, 200, 300] });
+  });
+
+  test('shrinking a group only reduces the last column in the group', () => {
+    const onColumnWidthsChange = jest.fn();
+    const wrapper = renderGroupedTable({ onColumnWidthsChange });
+    const groupCell = wrapper.find('thead th[scope="colgroup"]')!;
+    const resizerBtn = new ElementWrapper(groupCell.find('button')!.getElement());
+
+    firePointerdown(resizerBtn);
+    firePointermove(350);
+    firePointerup(350);
+
+    // Group shrunk from 400 to 350 → delta -50 applied to last leaf 'az' (200→150)
+    expect(onColumnWidthsChange.mock.calls[0][0].detail).toEqual({ widths: [150, 150, 200, 150] });
   });
 });
