@@ -55,7 +55,7 @@ export function getVisibleColumnDefinitions<T>({
   columnDefinitions,
 }: {
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>;
-  visibleColumns?: ReadonlyArray<string | number>;
+  visibleColumns?: ReadonlyArray<string>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
   // columnsDisplay has a precedence over visibleColumns.
@@ -87,7 +87,7 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
   visibleColumns,
   columnDefinitions,
 }: {
-  visibleColumns: ReadonlyArray<string | number>;
+  visibleColumns: ReadonlyArray<string>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
   const ids = new Set(visibleColumns);
