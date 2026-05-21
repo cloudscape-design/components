@@ -6,7 +6,6 @@ import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -113,7 +112,6 @@ export interface BaseButtonProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
@@ -125,7 +123,6 @@ export interface BaseButtonProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }

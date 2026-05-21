@@ -101,9 +101,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeButtonAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -3623,9 +3620,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -4133,9 +4127,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -4901,9 +4892,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -5643,9 +5631,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAnchorAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -5665,9 +5650,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeButtonAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -6534,9 +6516,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeTriggerAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -7765,9 +7744,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -10447,9 +10423,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -11744,9 +11717,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -15278,9 +15248,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -16440,9 +16407,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -16829,9 +16793,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -17791,9 +17752,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -21997,9 +21955,6 @@ When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
       },
       "name": "nativeTextareaAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -26771,9 +26726,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -26848,9 +26800,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -27127,9 +27076,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -30172,9 +30118,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeTextareaAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -30818,9 +30761,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -31013,9 +30953,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeInputAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {
@@ -31518,9 +31455,6 @@ We do not support using this attribute to apply custom styling.",
       },
       "name": "nativeButtonAttributes",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
     },
     {

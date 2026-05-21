@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -37,7 +36,6 @@ export interface StatusIndicatorProps extends BaseComponentProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
 }

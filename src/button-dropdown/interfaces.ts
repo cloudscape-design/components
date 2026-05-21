@@ -11,7 +11,6 @@ import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -181,7 +180,6 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeTriggerAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 

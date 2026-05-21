@@ -11,7 +11,6 @@ import { OptionDefinition, OptionGroup } from '../internal/components/option/int
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { BaseKeyDetail, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -305,7 +304,6 @@ export interface PromptInputProps
    * We do not support using this attribute to apply custom styling.
    * When `tokens` is defined, nativeTextareaAttributes will be ignored.
    *
-   * @awsuiSystem core
    */
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 

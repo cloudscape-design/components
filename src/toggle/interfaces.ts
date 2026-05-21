@@ -5,7 +5,6 @@ import React from 'react';
 import { BaseCheckboxProps } from '../checkbox/base-checkbox';
 import { NonCancelableEventHandler } from '../internal/events';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -37,7 +36,6 @@ export interface ToggleProps extends BaseCheckboxProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
 }

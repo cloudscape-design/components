@@ -10,7 +10,6 @@ import {
   NonCancelableEventHandler,
 } from '../internal/events';
 /**
- * @awsuiSystem core
  */
 import { NativeAttributes } from '../internal/utils/with-native-attributes';
 
@@ -126,7 +125,6 @@ export interface LinkProps extends BaseComponentProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
-   * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
 }
