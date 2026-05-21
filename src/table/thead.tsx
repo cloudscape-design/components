@@ -92,13 +92,16 @@ const Thead = React.forwardRef(
   ) => {
     const { getColumnStyles, columnWidths, updateColumn, updateGroup, setCell } = useColumnWidths();
 
-    const handleSplitGroupResize = (leafIds: string[], newWidth: number) => {
-      const lastLeaf = leafIds[leafIds.length - 1];
-      if (lastLeaf) {
-        const currentGroupWidth = leafIds.reduce((sum, id) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH), 0);
+    const handleSplitGroupResize = (columnIds: string[], newWidth: number) => {
+      const lastColumn = columnIds[columnIds.length - 1];
+      if (lastColumn) {
+        const currentGroupWidth = columnIds.reduce(
+          (sum, id) => sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH),
+          0
+        );
         const delta = newWidth - currentGroupWidth;
-        const currentLeafWidth = columnWidths.get(lastLeaf) || DEFAULT_COLUMN_WIDTH;
-        updateColumn(lastLeaf, currentLeafWidth + delta);
+        const currentLeafWidth = columnWidths.get(lastColumn) || DEFAULT_COLUMN_WIDTH;
+        updateColumn(lastColumn, currentLeafWidth + delta);
       }
     };
 
