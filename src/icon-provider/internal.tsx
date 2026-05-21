@@ -36,64 +36,16 @@ function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProv
   }
 
   // Build the size override map by merging parent context with this provider's sizes prop.
-  const sizeOverridesToProvide = useMemo<IconSizeOverrideMap>(() => {
-    if (!sizes) {
-      return contextSizeOverrides;
-    }
-
-    const map: IconSizeOverrideMap = { ...contextSizeOverrides };
-
-    if (sizes['x-small'] !== undefined) {
-      map['x-small'] = sizes['x-small'];
-    }
-    if (sizes.small !== undefined) {
-      map.small = sizes.small;
-    }
-    if (sizes.normal !== undefined) {
-      map.normal = sizes.normal;
-    }
-    if (sizes.medium !== undefined) {
-      map.medium = sizes.medium;
-    }
-    if (sizes.big !== undefined) {
-      map.big = sizes.big;
-    }
-    if (sizes.large !== undefined) {
-      map.large = sizes.large;
-    }
-
-    return map;
-  }, [contextSizeOverrides, sizes]);
+  const sizeOverridesToProvide = useMemo<IconSizeOverrideMap>(
+    () => (sizes ? { ...contextSizeOverrides, ...sizes } : contextSizeOverrides),
+    [contextSizeOverrides, sizes]
+  );
 
   // Build the stroke-width override map by merging parent context with this provider's strokeWidths prop.
-  const strokeWidthOverridesToProvide = useMemo<IconStrokeWidthOverrideMap>(() => {
-    if (!strokeWidths) {
-      return contextStrokeWidthOverrides;
-    }
-
-    const map: IconStrokeWidthOverrideMap = { ...contextStrokeWidthOverrides };
-
-    if (strokeWidths['x-small'] !== undefined) {
-      map['x-small'] = strokeWidths['x-small'];
-    }
-    if (strokeWidths.small !== undefined) {
-      map.small = strokeWidths.small;
-    }
-    if (strokeWidths.normal !== undefined) {
-      map.normal = strokeWidths.normal;
-    }
-    if (strokeWidths.medium !== undefined) {
-      map.medium = strokeWidths.medium;
-    }
-    if (strokeWidths.big !== undefined) {
-      map.big = strokeWidths.big;
-    }
-    if (strokeWidths.large !== undefined) {
-      map.large = strokeWidths.large;
-    }
-
-    return map;
-  }, [contextStrokeWidthOverrides, strokeWidths]);
+  const strokeWidthOverridesToProvide = useMemo<IconStrokeWidthOverrideMap>(
+    () => (strokeWidths ? { ...contextStrokeWidthOverrides, ...strokeWidths } : contextStrokeWidthOverrides),
+    [contextStrokeWidthOverrides, strokeWidths]
+  );
 
   return (
     <InternalIconContext.Provider value={iconsToProvide}>

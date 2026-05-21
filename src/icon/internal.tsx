@@ -141,17 +141,18 @@ const InternalIcon = ({
   // Build inline styles for the wrapper span.
   // When a size override is active, we set --icon-size-override which the CSS uses
   // for both the span's inline-size and the child SVG's inline-size/block-size.
-  const inlineStyles: React.CSSProperties = {
-    ...(contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {}),
-    ...(targetSizePx !== undefined
-      ? ({ [customCSSPropertiesMap.iconSizeOverride]: `${targetSizePx}px` } as React.CSSProperties)
-      : {}),
-    ...(strokeWidthOverride
-      ? ({ [customCSSPropertiesMap.iconStrokeWidthOverride]: strokeWidthOverride } as React.CSSProperties)
-      : strokeScale
-        ? ({ [customCSSPropertiesMap.iconStrokeScale]: strokeScale } as React.CSSProperties)
-        : {}),
-  };
+  const inlineStyles: React.CSSProperties = {};
+  if (contextualSize && parentHeight !== null) {
+    inlineStyles.height = `${parentHeight}px`;
+  }
+  if (targetSizePx !== undefined) {
+    (inlineStyles as Record<string, unknown>)[customCSSPropertiesMap.iconSizeOverride] = `${targetSizePx}px`;
+  }
+  if (strokeWidthOverride) {
+    (inlineStyles as Record<string, unknown>)[customCSSPropertiesMap.iconStrokeWidthOverride] = strokeWidthOverride;
+  } else if (strokeScale) {
+    (inlineStyles as Record<string, unknown>)[customCSSPropertiesMap.iconStrokeScale] = strokeScale;
+  }
 
   const baseProps = getBaseProps(props);
 
