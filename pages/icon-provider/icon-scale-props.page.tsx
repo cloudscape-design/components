@@ -87,7 +87,7 @@ function Typography() {
             <Icon name="settings" /> Paragraph (icon size normal)
           </p>
           <small>
-            <Icon name="settings" size="small" /> Small (icon size small)
+            <Icon name="settings" size="x-small" /> Small (icon size x-small)
           </small>
         </TextContent>
       </Box>
@@ -103,7 +103,7 @@ function Typography() {
         .
       </Box>
       <Box variant="small" color="text-body-secondary" padding={{ top: 's' }}>
-        Paragraph –{' '}
+        Small text with external icon with inherit size –{' '}
         <Link variant="primary" href="#" external={true} fontSize="inherit">
           Amazon EC2
         </Link>{' '}

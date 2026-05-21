@@ -5,11 +5,7 @@ import clsx from 'clsx';
 
 import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import {
-  InternalIconContext,
-  InternalIconSizeOverrideContext,
-  InternalIconStrokeWidthOverrideContext,
-} from '../icon-provider/context';
+import { InternalIconContext } from '../icon-provider/context';
 import { getBaseProps } from '../internal/base-component';
 import customCSSPropertiesMap from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -89,9 +85,7 @@ const InternalIcon = ({
   __internalRootRef,
   ...props
 }: InternalIconProps) => {
-  const icons = useContext(InternalIconContext);
-  const sizeOverrides = useContext(InternalIconSizeOverrideContext);
-  const strokeWidthOverrides = useContext(InternalIconStrokeWidthOverrideContext);
+  const { icons, sizeOverrides, strokeWidthOverrides } = useContext(InternalIconContext);
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh();
