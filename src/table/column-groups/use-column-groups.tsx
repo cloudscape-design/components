@@ -16,7 +16,7 @@ export function useColumnGroups<T>(
   return useMemo(() => {
     const visibleIds = visibleColumns
       ? Array.from(visibleColumns)
-      : columnDefinitions.map((col, idx) => getColumnKey(col, idx));
+      : columnDefinitions.map((col, idx) => getColumnKey(col, idx).toString());
 
     const layout = calculateHierarchyTree(columnDefinitions, visibleIds, groupDefinitions ?? [], columnDisplay);
 
