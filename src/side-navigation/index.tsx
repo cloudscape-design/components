@@ -15,9 +15,14 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { SideNavigationProps };
 
-export default function SideNavigation({ items = [], expandIconPosition = 'start', ...props }: SideNavigationProps) {
+export default function SideNavigation({
+  items = [],
+  expandIconPosition = 'start',
+  collapsed = false,
+  ...props
+}: SideNavigationProps) {
   const internalProps = useBaseComponent('SideNavigation', {
-    props: { expandIconPosition },
+    props: { expandIconPosition, collapsed },
   });
 
   const componentAnalyticMetadata: GeneratedAnalyticsMetadataSideNavigationComponent = {
@@ -33,6 +38,7 @@ export default function SideNavigation({ items = [], expandIconPosition = 'start
       {...internalProps}
       items={items}
       expandIconPosition={expandIconPosition}
+      collapsed={collapsed}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticMetadata })}
     />
   );

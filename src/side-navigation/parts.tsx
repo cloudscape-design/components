@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -13,6 +13,7 @@ import InternalIcon from '../icon/internal';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import Tooltip from '../tooltip/internal';
 import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces';
 import { SideNavigationProps } from './interfaces';
 import { hasActiveLink } from './util';
@@ -34,13 +35,14 @@ interface BaseItemComponentProps {
   ) => void;
   position?: string;
   expandIconPosition?: SideNavigationProps.ExpandIconPosition;
+  collapsed?: boolean;
 }
 
 interface HeaderProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Header;
 }
 
-export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
+export function Header({ definition, activeHref, fireFollow, collapsed }: HeaderProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -68,20 +70,23 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           href={definition.href}
           className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
           aria-current={definition.href === activeHref ? 'page' : undefined}
+          aria-label={collapsed ? definition.text : undefined}
           onClick={onClick}
           {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
         >
           {definition.logo && (
             <img
               className={clsx(styles['header-logo'], {
-                [styles['header-logo--stretched']]: !definition.text,
+                [styles['header-logo--stretched']]: !definition.text || collapsed,
               })}
               {...definition.logo}
             />
           )}
-          <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
-            {definition.text}
-          </span>
+          {!collapsed && (
+            <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
+              {definition.text}
+            </span>
+          )}
         </a>
       </h2>
       <Divider isPresentational={true} variant="header" />
@@ -108,6 +113,7 @@ export function NavigationItemsList({
   fireFollow,
   position = '',
   expandIconPosition,
+  collapsed,
 }: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
@@ -119,6 +125,11 @@ export function NavigationItemsList({
   items.forEach((item, index) => {
     const itemid = index + 1;
     const itemPosition = `${position ? `${position},` : ''}${itemid}`;
+    // In collapsed mode, items without an icon have nothing to render, so we
+    // skip them. Dividers always render to keep visual grouping.
+    if (collapsed && item.type !== 'divider' && !item.icon) {
+      return;
+    }
     switch (item.type) {
       case 'divider': {
         const dividerIndex = lists.length;
@@ -146,6 +157,7 @@ export function NavigationItemsList({
                 fireChange={fireChange}
                 fireFollow={fireFollow}
                 position={itemPosition}
+                collapsed={collapsed}
               />
             </li>
           ),
@@ -164,6 +176,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
+                collapsed={collapsed}
               />
             </li>
           ),
@@ -181,6 +194,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
+                collapsed={collapsed}
               />
             </li>
           ),
@@ -198,6 +212,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
+                collapsed={collapsed}
               />
             </li>
           ),
@@ -216,6 +231,7 @@ export function NavigationItemsList({
                 variant={variant}
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
+                collapsed={collapsed}
               />
             </li>
           ),
@@ -276,17 +292,61 @@ interface LinkProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Link;
 }
 
-function ItemIcon({ icon }: { icon: React.ReactNode }) {
+interface ItemIconProps extends React.HTMLAttributes<HTMLSpanElement> {
+  icon: React.ReactNode;
+  collapsed?: boolean;
+}
+
+const ItemIcon = React.forwardRef<HTMLSpanElement, ItemIconProps>(function ItemIcon(
+  { icon, collapsed, className, ...rest },
+  ref
+) {
   if (!icon) {
     return null;
   }
-  return <span className={clsx(styles['item-icon'], testUtilStyles['item-icon'])}>{icon}</span>;
+  return (
+    <span
+      ref={ref}
+      className={clsx(
+        styles['item-icon'],
+        testUtilStyles['item-icon'],
+        collapsed && styles['item-icon-collapsed'],
+        className
+      )}
+      {...rest}
+    >
+      {icon}
+    </span>
+  );
+});
+
+// Manages a tooltip that shows the item's text label on focus or hover.
+// Used in the collapsed state, where the visible labels are hidden, to give
+// pointer and keyboard users a way to identify each item without relying on
+// their browser's native title popup.
+function useCollapsedTooltip<T extends HTMLElement>(label: React.ReactNode) {
+  const [show, setShow] = useState(false);
+  const triggerRef = useRef<T | null>(null);
+
+  const triggerProps = {
+    onFocus: () => setShow(true),
+    onBlur: () => setShow(false),
+    onMouseEnter: () => setShow(true),
+    onMouseLeave: () => setShow(false),
+  };
+
+  const tooltip = show ? (
+    <Tooltip getTrack={() => triggerRef.current} content={label} position="right" onEscape={() => setShow(false)} />
+  ) : null;
+
+  return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
+  const collapsedTooltip = useCollapsedTooltip<HTMLAnchorElement>(definition.text);
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -312,23 +372,29 @@ function Link({ definition, activeHref, fireFollow, position }: LinkProps) {
   return (
     <>
       <a
+        ref={collapsed ? collapsedTooltip.triggerRef : undefined}
         href={definition.href}
         className={clsx(styles.link, { [styles['link-active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-current={definition.href === activeHref ? 'page' : undefined}
+        aria-label={collapsed ? definition.text : undefined}
         onClick={onClick}
+        {...(collapsed ? collapsedTooltip.triggerProps : {})}
         {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
       >
-        <ItemIcon icon={definition.icon} />
-        <span className={analyticsSelectors['link-text']}>{definition.text}</span>
-        {definition.external && (
+        <ItemIcon icon={definition.icon} collapsed={collapsed} />
+        {!collapsed && <span className={analyticsSelectors['link-text']}>{definition.text}</span>}
+        {!collapsed && definition.external && (
           <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
             <InternalIcon name="external" className={styles['external-icon']} />
           </span>
         )}
       </a>
-      {definition.info && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
+      {!collapsed && definition.info && (
+        <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+      )}
+      {collapsed && collapsedTooltip.tooltip}
     </>
   );
 }
@@ -346,9 +412,11 @@ function Section({
   variant,
   position,
   expandIconPosition,
+  collapsed,
 }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
+  const collapsedTooltip = useCollapsedTooltip<HTMLSpanElement>(definition.text);
 
   const onExpandedChange = useCallback(
     (e: NonCancelableCustomEvent<ExpandableSectionProps.ChangeDetail>) => {
@@ -361,6 +429,21 @@ function Section({
   useEffect(() => {
     setExpanded(definition.defaultExpanded ?? true);
   }, [definition]);
+
+  if (collapsed) {
+    return (
+      <>
+        <ItemIcon
+          ref={collapsedTooltip.triggerRef}
+          icon={definition.icon}
+          collapsed={collapsed}
+          aria-label={definition.text}
+          {...collapsedTooltip.triggerProps}
+        />
+        {collapsedTooltip.tooltip}
+      </>
+    );
+  }
 
   return (
     <InternalExpandableSection
@@ -409,7 +492,24 @@ function SectionGroup({
   fireChange,
   position,
   expandIconPosition,
+  collapsed,
 }: SectionGroupProps) {
+  const collapsedTooltip = useCollapsedTooltip<HTMLSpanElement>(definition.title);
+
+  if (collapsed) {
+    return (
+      <>
+        <ItemIcon
+          ref={collapsedTooltip.triggerRef}
+          icon={definition.icon}
+          collapsed={collapsed}
+          aria-label={definition.title}
+          {...collapsedTooltip.triggerProps}
+        />
+        {collapsedTooltip.tooltip}
+      </>
+    );
+  }
   return (
     <div className={styles['section-group']}>
       <InternalBox className={styles['section-group-title']} variant="h3">
@@ -433,7 +533,15 @@ interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
 }
 
-function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, expandIconPosition }: LinkGroupProps) {
+function LinkGroup({
+  definition,
+  activeHref,
+  fireFollow,
+  fireChange,
+  position,
+  expandIconPosition,
+  collapsed,
+}: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
   return (
@@ -450,16 +558,19 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange, position, e
         fireChange={fireChange}
         activeHref={activeHref}
         position={position}
+        collapsed={collapsed}
       />
-      <NavigationItemsList
-        variant="link-group"
-        items={definition.items}
-        fireFollow={fireFollow}
-        fireChange={fireChange}
-        activeHref={activeHref}
-        position={position}
-        expandIconPosition={expandIconPosition}
-      />
+      {!collapsed && (
+        <NavigationItemsList
+          variant="link-group"
+          items={definition.items}
+          fireFollow={fireFollow}
+          fireChange={fireChange}
+          activeHref={activeHref}
+          position={position}
+          expandIconPosition={expandIconPosition}
+        />
+      )}
     </>
   );
 }
@@ -477,6 +588,7 @@ function ExpandableLinkGroup({
   variant,
   position,
   expandIconPosition,
+  collapsed,
 }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
@@ -520,6 +632,19 @@ function ExpandableLinkGroup({
       fireChange(definition, true);
     }
   };
+
+  if (collapsed) {
+    return (
+      <Link
+        definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
+        fireFollow={onHeaderFollow}
+        fireChange={fireChange}
+        activeHref={activeHref}
+        position={position}
+        collapsed={collapsed}
+      />
+    );
+  }
 
   return (
     <InternalExpandableSection

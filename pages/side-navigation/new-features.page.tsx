@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
 
-import { FormField } from '~components';
+import { FormField, SpaceBetween } from '~components';
 import Icon from '~components/icon';
 import RadioGroup from '~components/radio-group';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
+import Toggle from '~components/toggle';
 
 import { SimplePage } from '../app/templates';
 
@@ -91,6 +92,7 @@ const ITEMS: SideNavigationProps.Item[] = [
 export default function SideNavigationIconsPage() {
   const [activeHref, setActiveHref] = useState<string>('#/dashboard');
   const [expandIconPosition, setExpandIconPosition] = useState<SideNavigationProps.ExpandIconPosition>('start');
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   const onFollow = useCallback((e: CustomEvent<SideNavigationProps.FollowDetail>) => {
     setActiveHref(e.detail.href);
@@ -101,19 +103,26 @@ export default function SideNavigationIconsPage() {
     <SimplePage
       title="Side navigation with new features"
       settings={
-        <FormField label="Expand icon position" description="Controls the `expandIconPosition` prop">
-          <RadioGroup
-            value={expandIconPosition}
-            onChange={({ detail }) => setExpandIconPosition(detail.value as SideNavigationProps.ExpandIconPosition)}
-            items={[
-              { value: 'start', label: 'Start' },
-              { value: 'end', label: 'End' },
-            ]}
-          />
-        </FormField>
+        <SpaceBetween direction="horizontal" size="l">
+          <FormField label="Expand icon position" description="Controls the `expandIconPosition` prop">
+            <RadioGroup
+              value={expandIconPosition}
+              onChange={({ detail }) => setExpandIconPosition(detail.value as SideNavigationProps.ExpandIconPosition)}
+              items={[
+                { value: 'start', label: 'Start' },
+                { value: 'end', label: 'End' },
+              ]}
+            />
+          </FormField>
+          <FormField label="Collapsed" description="Renders only icons; hides text labels and child items.">
+            <Toggle checked={collapsed} onChange={({ detail }) => setCollapsed(detail.checked)}>
+              {collapsed ? 'On' : 'Off'}
+            </Toggle>
+          </FormField>
+        </SpaceBetween>
       }
     >
-      <div style={{ maxInlineSize: '300px' }}>
+      <div style={{ maxInlineSize: collapsed ? '64px' : '300px' }}>
         <SideNavigation
           activeHref={activeHref}
           header={{
@@ -122,6 +131,7 @@ export default function SideNavigationIconsPage() {
           }}
           items={ITEMS}
           expandIconPosition={expandIconPosition}
+          collapsed={collapsed}
           onFollow={onFollow}
         />
       </div>

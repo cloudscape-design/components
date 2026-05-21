@@ -238,7 +238,9 @@ $item-icon-text-offset: awsui.$space-xxs;
 .item-icon {
   display: inline-flex;
   flex-shrink: 0;
-  margin-inline-end: awsui.$space-xs;
+  &:not(.item-icon-collapsed) {
+    margin-inline-end: awsui.$space-xs;
+  }
 }
 
 .external-icon {

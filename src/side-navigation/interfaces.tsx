@@ -138,6 +138,19 @@ export interface SideNavigationProps extends BaseComponentProps {
    *    inline-end of a full-width header.
    */
   expandIconPosition?: SideNavigationProps.ExpandIconPosition;
+
+  /**
+   * If true, the navigation is rendered in a compact, icon-only state:
+   * - Item text labels and the header title are hidden.
+   * - Section, `Section group`, `Link group`, and `Expandable link group`
+   *   children are not rendered.
+   * - `Items control` is not rendered.
+   * - Items without an `icon` are not rendered. Provide an icon for any
+   *   item that should remain visible while collapsed.
+   *
+   * @defaultValue false
+   */
+  collapsed?: boolean;
 }
 
 export namespace SideNavigationProps {

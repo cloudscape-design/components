@@ -25,6 +25,7 @@ export function SideNavigationImplementation({
   onFollow,
   onChange,
   expandIconPosition = 'start',
+  collapsed = false,
   __internalRootRef,
   ...props
 }: SideNavigationInternalProps) {
@@ -67,14 +68,21 @@ export function SideNavigationImplementation({
         styles.root,
         baseProps.className,
         isToolbar && styles['with-toolbar'],
-        expandIconPosition === 'end' && styles['expand-icon-end']
+        expandIconPosition === 'end' && styles['expand-icon-end'],
+        collapsed && styles.collapsed
       )}
       ref={__internalRootRef}
     >
       {header && (
-        <Header definition={header} activeHref={activeHref} fireChange={onChangeHandler} fireFollow={onFollowHandler} />
+        <Header
+          definition={header}
+          activeHref={activeHref}
+          fireChange={onChangeHandler}
+          fireFollow={onFollowHandler}
+          collapsed={collapsed}
+        />
       )}
-      {itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
+      {!collapsed && itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
       {items && (
         <div className={styles['list-container']}>
           <NavigationItemsList
@@ -84,6 +92,7 @@ export function SideNavigationImplementation({
             fireChange={onChangeHandler}
             activeHref={activeHref}
             expandIconPosition={expandIconPosition}
+            collapsed={collapsed}
           />
         </div>
       )}
