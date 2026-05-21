@@ -302,7 +302,7 @@ const InternalTable = React.forwardRef(
       visibleColumns,
     });
 
-    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx) as string));
+    const visibleColumnIds = new Set(visibleColumnDefinitions.map((col, idx) => getColumnKey(col, idx).toString()));
 
     const { groupLeafMap, ...columnGroupsLayout } = useColumnGroups(
       columnDefinitions,
