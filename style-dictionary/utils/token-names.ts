@@ -741,6 +741,11 @@ export type ColorsTokenName =
   | 'colorTextHomeHeaderSecondary'
   | 'colorTextIconCaret'
   | 'colorTextIconSubtle'
+  | 'colorBackgroundStatusIndicatorError'
+  | 'colorBackgroundStatusIndicatorWarning'
+  | 'colorBackgroundStatusIndicatorSuccess'
+  | 'colorBackgroundStatusIndicatorInfo'
+  | 'colorBackgroundStatusIndicatorNeutral'
   | 'colorTextInputDisabled'
   | 'colorTextInputPlaceholder'
   | 'colorTextInputPlaceholderDisabled'
@@ -901,6 +906,7 @@ export type BordersTokenName =
   | 'borderPanelTopWidth'
   | 'borderRadiusAlert'
   | 'borderRadiusBadge'
+  | 'borderRadiusStatusIndicator'
   | 'borderRadiusButton'
   | 'borderRadiusCalendarDayFocusRing'
   | 'borderRadiusCardDefault'
@@ -1124,7 +1130,8 @@ export type SpacingTokenName =
   | 'spaceActionCardDescriptionPaddingTop'
   | 'spaceActionCardContentPaddingTop'
   | 'spaceOptionPaddingVertical'
-  | 'spaceOptionPaddingHorizontal';
+  | 'spaceOptionPaddingHorizontal'
+  | 'spaceStatusIndicatorPaddingHorizontal';
 export type ShadowsTokenName =
   | 'shadowCard'
   | 'shadowItemCard'
