@@ -6,7 +6,7 @@ const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');
 
 const ALWAYS_VISUAL_REFRESH = process.env.ALWAYS_VISUAL_REFRESH === 'true';
-const INCLUDE_ONE_THEME = process.env.NODE_ENV !== 'production';
+const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
 
 function writeEnvironmentFile(theme) {
   const filepath = 'internal/environment';

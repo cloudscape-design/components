@@ -8,7 +8,7 @@
   "homepage": "https://cloudscape.design",
   "files": [],
   "scripts": {
-    "quick-build": "gulp quick-build",
+    "quick-build": "cross-env INCLUDE_ONE_THEME=true gulp quick-build",
     "build": "cross-env NODE_ENV=production gulp build",
     "test": "TZ=UTC gulp test",
     "test:unit": "TZ=UTC gulp test:unit",
@@ -20,7 +20,7 @@
     "lint:stylelint": "stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
     "build:react18": "cross-env NODE_ENV=production REACT_VERSION=18 gulp build",
     "start": "npm-run-all --parallel start:watch start:dev",
-    "start:watch": "gulp watch",
+    "start:watch": "cross-env INCLUDE_ONE_THEME=true gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.cjs",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.cjs",
     "start:react18": "npm-run-all --parallel start:watch start:react18:dev",

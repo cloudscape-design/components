@@ -3,8 +3,8 @@
 const path = require('path');
 const workspace = require('./workspace');
 
-// One Theme is gated on NODE_ENV so it does not ship in published packages yet.
-const INCLUDE_ONE_THEME = process.env.NODE_ENV !== 'production';
+// One Theme is gated on this env var so it does not ship in published packages.
+const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
 
 const themes = [
   // This is the default Cloudscape theme, which is best used with Visual Refresh enabled (by default)
