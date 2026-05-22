@@ -1068,6 +1068,32 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundStatusIndicatorError: {
+    description: 'The background color of the status indicator in error state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorWarning: {
+    description: 'The background color of the status indicator in warning state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorSuccess: {
+    description: 'The background color of the status indicator in success state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorInfo: {
+    description: 'The background color of the status indicator in info state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorNeutral: {
+    description:
+      'The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.',
+    public: false,
+    themeable: true,
+  },
 };
 
 export default metadata;

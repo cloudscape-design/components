@@ -84,6 +84,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
 
   spaceOptionPaddingVertical: '{spaceXxs}',
   spaceOptionPaddingHorizontal: '{spaceL}',
+  spaceStatusIndicatorPaddingHorizontal: '{spaceNone}',
 
   spaceScaled2xNone: '{spaceNone}',
   spaceScaled2xXxxs: { comfortable: '{spaceXxxs}', compact: '{spaceNone}' },
