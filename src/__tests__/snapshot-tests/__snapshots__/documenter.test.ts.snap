@@ -3761,9 +3761,6 @@ When returning \`null\`, the default rendering will be applied for that item.",
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "AutosuggestProps.ItemRenderer",
     },
     {
@@ -19525,9 +19522,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "MultiselectProps.MultiselectOptionItemRenderer",
     },
     {
@@ -22472,9 +22466,6 @@ If this is provided then any other \`actionButton*\` properties will be ignored.
 Note that you should still provide an \`onAction\` function in order to handle keyboard submission.",
       "isDefault": false,
       "name": "customPrimaryAction",
-      "systemTags": [
-        "core",
-      ],
     },
     {
       "description": "Use this slot to add secondary actions to the prompt input.",
@@ -25773,9 +25764,6 @@ For more information, see the
       },
       "name": "renderOption",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "SelectProps.SelectOptionItemRenderer",
     },
     {
@@ -33487,9 +33475,6 @@ Use this if you need to wait for a response from the server before the user can 
       "description": "Specifies right-aligned custom primary actions for the wizard. Overwrites existing buttons (e.g. Cancel, Next, Finish).",
       "isDefault": false,
       "name": "customPrimaryActions",
-      "systemTags": [
-        "core",
-      ],
     },
     {
       "description": "Specifies left-aligned secondary actions for the wizard. Use a button dropdown if multiple actions are required.",

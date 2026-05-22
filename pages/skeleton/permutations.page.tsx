@@ -4,9 +4,9 @@ import React from 'react';
 
 import Skeleton, { SkeletonProps } from '~components/skeleton';
 
+import { SimplePage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 const permutations = createPermutations<SkeletonProps>([
   // Test all variants with default display and reasonable width
@@ -46,18 +46,15 @@ const permutations = createPermutations<SkeletonProps>([
 
 export default function SkeletonPermutations() {
   return (
-    <>
-      <h1>Skeleton permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => (
-            <div style={{ marginBottom: '16px' }}>
-              <Skeleton {...permutation} />
-            </div>
-          )}
-        />
-      </ScreenshotArea>
-    </>
+    <SimplePage title="Skeleton permutations" screenshotArea={{ disableAnimations: true }}>
+      <PermutationsView
+        permutations={permutations}
+        render={permutation => (
+          <div style={{ marginBottom: '16px' }}>
+            <Skeleton {...permutation} />
+          </div>
+        )}
+      />
+    </SimplePage>
   );
 }

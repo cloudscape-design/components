@@ -15,6 +15,8 @@ import List from '~components/list';
 import Skeleton from '~components/skeleton';
 import SpaceBetween from '~components/space-between';
 
+import { SimplePage } from '../app/templates';
+
 interface DataItem {
   id: string;
   name: string;
@@ -58,22 +60,16 @@ export default function SkeletonComponentsExamples() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <Box padding="l">
-      <div style={{ position: 'sticky', top: 0, zIndex: 1000, marginBottom: '2em' }}>
-        <Container>
-          <SpaceBetween size="m">
-            <Header
-              variant="h1"
-              description="Demonstrates skeleton loading patterns across different components to minimize layout shift"
-            >
-              Skeleton Component Examples
-            </Header>
-            <Checkbox checked={isLoading} onChange={({ detail }) => setIsLoading(detail.checked)}>
-              Show loading state (Skeleton)
-            </Checkbox>
-          </SpaceBetween>
-        </Container>
-      </div>
+    <SimplePage
+      title="Skeleton Component Examples"
+      subtitle="Demonstrates skeleton loading patterns across different components to minimize layout shift"
+      settings={
+        <Checkbox checked={isLoading} onChange={({ detail }) => setIsLoading(detail.checked)}>
+          Show loading state (Skeleton)
+        </Checkbox>
+      }
+      screenshotArea={{ disableAnimations: true }}
+    >
       <SpaceBetween size="l">
         {/* Cards Example */}
         <Container header={<Header variant="h2">Cards with Skeleton</Header>}>
@@ -333,6 +329,6 @@ export default function SkeletonComponentsExamples() {
           </>
         </Container>
       </SpaceBetween>
-    </Box>
+    </SimplePage>
   );
 }
