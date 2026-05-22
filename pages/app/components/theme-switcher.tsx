@@ -21,7 +21,7 @@ export default function ThemeSwitcher() {
     vrSwitchProps.checked = true;
     vrSwitchProps.readOnly = true;
   } else {
-    vrSwitchProps.checked = urlParams.visualRefresh;
+    vrSwitchProps.checked = urlParams.visualRefresh && !urlParams.oneTheme;
     vrSwitchProps.onChange = event => {
       setUrlParams(event.target.checked ? { visualRefresh: true, oneTheme: false } : { visualRefresh: false });
       window.location.reload();
