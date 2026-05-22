@@ -151,19 +151,23 @@ const InternalIcon = ({
   const setVar = (key: string, value: string | number) => ((inlineStyles as Record<string, unknown>)[key] = value);
 
   if (contextualSize && parentHeight !== null) {
+    // Keep the wrapper at line-height so the inline-flex container stays tall enough
+    // for correct text alignment. align-items: center will center the icon within it,
+    // even when a size override makes the icon smaller than the line-height.
     inlineStyles.height = `${parentHeight}px`;
   }
 
-  if (!contextualSize) {
-    const override = computeSizeOverrides({ sizeOverrides, strokeWidthOverrides, iconSize });
-    if (override.size) {
-      setVar(customCSSPropertiesMap.iconSizeOverride, `${override.size}px`);
-    }
-    if (override.strokeWidth) {
-      setVar(customCSSPropertiesMap.iconStrokeWidthOverride, override.strokeWidth);
-    } else if (override.strokeScale) {
-      setVar(customCSSPropertiesMap.iconStrokeScale, override.strokeScale);
-    }
+  // Apply size and stroke-width overrides from IconProvider for the resolved size variant.
+  // For size="inherit", iconSize is the variant resolved from the measured line-height
+  // (e.g. "small"), so provider overrides for that variant are respected.
+  const override = computeSizeOverrides({ sizeOverrides, strokeWidthOverrides, iconSize });
+  if (override.size) {
+    setVar(customCSSPropertiesMap.iconSizeOverride, `${override.size}px`);
+  }
+  if (override.strokeWidth) {
+    setVar(customCSSPropertiesMap.iconStrokeWidthOverride, override.strokeWidth);
+  } else if (override.strokeScale) {
+    setVar(customCSSPropertiesMap.iconStrokeScale, override.strokeScale);
   }
 
   const baseProps = getBaseProps(props);

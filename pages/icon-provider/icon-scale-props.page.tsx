@@ -89,6 +89,9 @@ function Typography() {
           <small>
             <Icon name="settings" size="x-small" /> Small (icon size x-small)
           </small>
+          <small style={{ display: 'block', paddingBlockStart: '6px' }}>
+            <Icon name="settings" size="inherit" /> Inherit (icon size: x-small to match the wrapped text size)
+          </small>
         </TextContent>
       </Box>
       <Box variant="p" padding={{ top: 'm' }}>
@@ -97,7 +100,7 @@ function Typography() {
           Amazon EC2
         </Link>{' '}
         provides each instance with a consistent and predictable amount of CPU capacity, regardless of its{' '}
-        <Link variant="primary" href="#">
+        <Link variant="primary" external={true} href="#">
           underlying hardware
         </Link>
         .
@@ -108,7 +111,7 @@ function Typography() {
           Amazon EC2
         </Link>{' '}
         provides each instance with a consistent and predictable amount of CPU capacity, regardless of its{' '}
-        <Link variant="primary" href="#" fontSize="inherit">
+        <Link variant="primary" href="#" external={true} fontSize="inherit">
           underlying hardware
         </Link>
         .
