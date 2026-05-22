@@ -3,7 +3,6 @@
 const path = require('path');
 const workspace = require('./workspace');
 
-// One Theme is gated on this env var so it does not ship in published packages.
 const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
 
 const themes = [
