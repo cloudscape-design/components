@@ -74,6 +74,4 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderWidthItemCard: '{borderWidthCard}',
   borderWidthItemCardHighlighted: '{borderWidthCardSelected}',
   borderWidthItemSelected: '2px',
-  borderWidthPopover: '2px',
-  borderWidthToken: '2px',
 };
