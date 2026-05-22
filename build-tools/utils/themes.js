@@ -3,6 +3,9 @@
 const path = require('path');
 const workspace = require('./workspace');
 
+// One Theme is gated on NODE_ENV so it does not ship in published packages yet.
+const INCLUDE_ONE_THEME = process.env.NODE_ENV !== 'production';
+
 const themes = [
   // This is the default Cloudscape theme, which is best used with Visual Refresh enabled (by default)
   {
@@ -13,7 +16,10 @@ const themes = [
     designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic/index.js',
-    secondaryThemePaths: ['./visual-refresh-secondary/index.js', './one-theme/index.js'],
+    secondaryThemePaths: [
+      './visual-refresh-secondary/index.js',
+      ...(INCLUDE_ONE_THEME ? ['./one-theme/index.js'] : []),
+    ],
   },
 ];
 

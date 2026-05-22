@@ -95,7 +95,7 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
   history.location.search
 );
 
@@ -110,6 +110,14 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
+
+// Removes .awsui-visual-refresh when one theme is active and vice verca
+if (oneTheme) {
+  document.body.classList.add('awsui-one-theme');
+  document.body.classList.remove('awsui-visual-refresh');
+} else {
+  document.body.classList.remove('awsui-one-theme');
+}
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);

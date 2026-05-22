@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH, INCLUDE_ONE_THEME } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
@@ -23,7 +23,7 @@ export default function ThemeSwitcher() {
   } else {
     vrSwitchProps.checked = urlParams.visualRefresh;
     vrSwitchProps.onChange = event => {
-      setUrlParams({ visualRefresh: event.target.checked });
+      setUrlParams(event.target.checked ? { visualRefresh: true, oneTheme: false } : { visualRefresh: false });
       window.location.reload();
     };
   }
@@ -34,6 +34,20 @@ export default function ThemeSwitcher() {
         <input {...vrSwitchProps} />
         Visual refresh
       </label>
+      {INCLUDE_ONE_THEME && (
+        <label>
+          <input
+            id="one-theme-toggle"
+            type="checkbox"
+            checked={urlParams.oneTheme}
+            onChange={event => {
+              setUrlParams(event.target.checked ? { oneTheme: true, visualRefresh: false } : { oneTheme: false });
+              window.location.reload();
+            }}
+          />
+          One theme
+        </label>
+      )}
       <label>
         <input
           id="mode-toggle"
