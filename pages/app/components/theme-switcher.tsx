@@ -12,7 +12,6 @@ import AppContext from '../app-context';
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
-  // Three mutually-exclusive themes drive both URL params at once.
   function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
     setUrlParams({
       visualRefresh: theme === 'visualRefresh',
