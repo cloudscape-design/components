@@ -12,6 +12,15 @@ import AppContext from '../app-context';
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
+  // Three mutually-exclusive themes drive both URL params at once.
+  function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
+    setUrlParams({
+      visualRefresh: theme === 'visualRefresh',
+      oneTheme: theme === 'oneTheme',
+    });
+    window.location.reload();
+  }
+
   const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
     id: 'visual-refresh-toggle',
     type: 'checkbox',
@@ -22,10 +31,7 @@ export default function ThemeSwitcher() {
     vrSwitchProps.readOnly = true;
   } else {
     vrSwitchProps.checked = urlParams.visualRefresh && !urlParams.oneTheme;
-    vrSwitchProps.onChange = event => {
-      setUrlParams(event.target.checked ? { visualRefresh: true, oneTheme: false } : { visualRefresh: false });
-      window.location.reload();
-    };
+    vrSwitchProps.onChange = event => activateTheme(event.target.checked ? 'visualRefresh' : 'classic');
   }
 
   return (
@@ -40,10 +46,7 @@ export default function ThemeSwitcher() {
             id="one-theme-toggle"
             type="checkbox"
             checked={urlParams.oneTheme}
-            onChange={event => {
-              setUrlParams(event.target.checked ? { oneTheme: true, visualRefresh: false } : { oneTheme: false });
-              window.location.reload();
-            }}
+            onChange={event => activateTheme(event.target.checked ? 'oneTheme' : 'classic')}
           />
           One theme
         </label>
