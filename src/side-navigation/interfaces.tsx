@@ -151,10 +151,20 @@ export interface SideNavigationProps extends BaseComponentProps {
    * @defaultValue false
    */
   collapsed?: boolean;
+
+  /**
+   * Visual variant of the navigation:
+   * - `default` (default) - The active item uses a text-highlight style.
+   * - `highlighted` - The active item uses a background fill with rounded
+   *   corners. Each item is padded so the background fills a comfortable area
+   *   around the label and icon.
+   */
+  variant?: SideNavigationProps.Variant;
 }
 
 export namespace SideNavigationProps {
   export type ExpandIconPosition = 'start' | 'end';
+  export type Variant = 'default' | 'highlighted';
 
   export interface Logo {
     src: string;

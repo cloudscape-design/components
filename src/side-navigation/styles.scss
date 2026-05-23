@@ -7,22 +7,30 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-// Each level of nested-list indent is one unit of $nested-list-indent. A
-// link-group's children sit one level in; an expandable-link-group's
-// children sit two levels in (header offset + child offset).
-$nested-list-indent: awsui.$space-l;
-
-// When the parent item has a leading icon, the icon occupies icon-width
-// (16px) + $space-xs margin-end (8px) = 24px of inline-start space, which
-// is $space-xxs (4px) more than $nested-list-indent. We add this offset
-// to nested-list paddings so child items line up with the parent's text.
-$item-icon-text-offset: awsui.$space-xxs;
+// ==========================================================================
+// Item sizing — single source of truth for navigation density.
+// Adjust $item-height to scale all items uniformly.
+// ==========================================================================
+$item-icon-text-gap: awsui.$space-xs;
+$item-height: 28px;
+$item-margin-block: awsui.$space-scaled-xxxs;
+$item-padding-inline: awsui.$space-xs;
+$item-border-radius: awsui.$border-radius-item;
+$item-indent: calc(16px + #{$item-icon-text-gap} - #{$item-padding-inline});
+$expandable-icon-negative-margin: 19px;
 
 .root {
   @include styles.styles-reset;
   @include styles.text-wrapping;
 }
 
+.with-toolbar {
+  /* Structural class — parent context for toolbar margin resets. */
+}
+
+// ==========================================================================
+// Header
+// ==========================================================================
 .header {
   @include styles.font-panel-header;
   margin-block: 0;
@@ -37,7 +45,6 @@ $item-icon-text-offset: awsui.$space-xxs;
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
   min-block-size: awsui.$font-panel-header-line-height;
-
   display: flex;
 
   &--has-logo {
@@ -60,6 +67,9 @@ $item-icon-text-offset: awsui.$space-xxs;
   }
 }
 
+// ==========================================================================
+// List structure
+// ==========================================================================
 .items-control {
   padding-inline: awsui.$space-l;
 }
@@ -82,15 +92,15 @@ $item-icon-text-offset: awsui.$space-xxs;
   margin-inline: 0;
   padding-block: 0;
   padding-inline-end: 0;
-  padding-inline-start: awsui.$space-l;
+  padding-inline-start: $item-indent;
 }
 
 .list-variant-root {
   margin-block: 0;
   margin-inline: 0;
   padding-block: 0;
-  padding-inline-start: awsui.$space-panel-nav-left;
-  padding-inline-end: awsui.$space-panel-side-right;
+  padding-inline-start: calc(#{awsui.$space-panel-nav-left} - #{$item-padding-inline});
+  padding-inline-end: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
 
   &--first {
     margin-block-start: 0;
@@ -104,58 +114,90 @@ $item-icon-text-offset: awsui.$space-xxs;
 // `space-panel-side-*` pair on both sides.
 .collapsed > .list-container > .list-variant-root,
 .expand-icon-end > .list-container > .list-variant-root {
-  padding-inline-start: awsui.$space-panel-side-right;
+  padding-inline-start: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
 }
 
 .list-variant-expandable-link-group {
   // 2 levels of nested indent (header + child) + icon/text offset.
-  padding-inline-start: calc(2 * #{$nested-list-indent} + #{$item-icon-text-offset});
+  padding-inline-start: calc(#{$item-indent} + #{$expandable-icon-negative-margin});
+  &.expand-icon-end {
+    padding-inline-start: $item-indent;
+  }
 }
 
-// Children of a link-group sit one nested level below the parent link.
-// 1 level of nested indent + icon/text offset keeps them in lockstep with
-// `.list-variant-expandable-link-group` above (which is the same formula
-// at 2 levels deep).
+.list-variant-section {
+  padding-inline-start: calc(#{$expandable-icon-negative-margin} - #{$item-padding-inline});
+  &.expand-icon-end {
+    padding-inline-start: 0;
+    margin-inline-start: calc(-1 * #{$item-padding-inline});
+  }
+}
+
 .list-variant-link-group {
-  padding-inline-start: calc(#{$nested-list-indent} + #{$item-icon-text-offset});
+  padding-inline-start: $item-indent;
 }
 
-.list-item {
-  margin-block: awsui.$space-scaled-xs;
-  margin-inline: 0;
+.list-variant-section-group {
+  margin-block: 0;
+  margin-inline-start: calc(-1 * #{$item-padding-inline});
+  margin-inline-end: 0;
   padding-block: 0;
   padding-inline: 0;
-  list-style: none;
+}
 
+// ==========================================================================
+// List items
+// ==========================================================================
+.list-item {
+  margin-inline: 0;
+  margin-block: $item-margin-block;
+  padding-block: 0;
+  padding-inline: $item-padding-inline;
+  list-style: none;
+  border-start-start-radius: $item-border-radius;
+  border-start-end-radius: $item-border-radius;
+  border-end-start-radius: $item-border-radius;
+  border-end-end-radius: $item-border-radius;
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
   }
 }
 
+// ==========================================================================
+// Sections and expandable link groups
+// ==========================================================================
 .section,
 .expandable-link-group {
-  margin-inline-start: calc(-1 * #{awsui.$space-l});
+  margin-inline-start: calc(-1 * #{$expandable-icon-negative-margin});
+  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
+  /* stylelint-disable-next-line selector-max-type */
+  & > div {
+    padding-block: 0;
+    padding-inline: 0;
+    &:first-child {
+      align-items: center;
+    }
+  }
 
   &--no-ident {
     margin-inline-start: 0;
   }
 }
 
+.expandable-link-group > div:first-child {
+  padding-inline: $item-padding-inline;
+  margin-inline: calc(-1 * #{$item-padding-inline});
+}
+
 .section {
   margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
   &.refresh {
-    margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+    margin-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
   }
   // Remove margin from section if it is the first item in side nav to prevent double margin stacking
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
-  }
-  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
-  /* stylelint-disable-next-line selector-max-type */
-  > div {
-    padding-block: 0;
-    padding-inline: 0;
   }
 }
 
@@ -169,17 +211,9 @@ $item-icon-text-offset: awsui.$space-xxs;
   margin-inline-start: 0;
 }
 
-.list--no-start-padding {
-  padding-inline-start: 0;
-}
-
-.list-variant-section-group {
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
-}
-
+// ==========================================================================
+// Section groups
+// ==========================================================================
 .section-group {
   @include styles.font-heading-m;
   margin-block: 0;
@@ -188,16 +222,23 @@ $item-icon-text-offset: awsui.$space-xxs;
 
 .section-group-title {
   display: flex;
+  min-block-size: $item-height;
+  align-items: center;
 }
 
 .section-header-text {
   display: inline-flex;
 }
 
+// ==========================================================================
+// Links — all links use $item-height for consistent row sizing.
+// ==========================================================================
 .link {
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
   display: inline-flex;
+  min-block-size: $item-height;
+  align-items: center;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -231,6 +272,9 @@ $item-icon-text-offset: awsui.$space-xxs;
   }
 }
 
+// ==========================================================================
+// Misc
+// ==========================================================================
 .info {
   margin-inline-start: awsui.$space-xs;
 }
@@ -239,7 +283,7 @@ $item-icon-text-offset: awsui.$space-xxs;
   display: inline-flex;
   flex-shrink: 0;
   &:not(.item-icon-collapsed) {
-    margin-inline-end: awsui.$space-xs;
+    margin-inline-end: $item-icon-text-gap;
   }
 }
 
@@ -264,4 +308,30 @@ $item-icon-text-offset: awsui.$space-xxs;
   .with-toolbar > & {
     border-color: transparent;
   }
+}
+
+// ==========================================================================
+// Highlighted variant
+// ==========================================================================
+
+.list-item-variant-highlighted:has(.link-active) {
+  background-color: awsui.$color-background-item-selected;
+}
+
+.link-variant-highlighted {
+  padding-inline: $item-padding-inline;
+  margin-inline: calc(-1 * #{$item-padding-inline});
+  display: flex;
+  &.link-active {
+    color: awsui.$color-item-selected;
+  }
+}
+
+.link-variant-highlighted.link-active,
+.expandable-link-group-active > div:first-child {
+  background-color: awsui.$color-background-item-selected;
+  border-start-start-radius: $item-border-radius;
+  border-start-end-radius: $item-border-radius;
+  border-end-start-radius: $item-border-radius;
+  border-end-end-radius: $item-border-radius;
 }

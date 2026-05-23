@@ -44,18 +44,21 @@ const ITEMS: SideNavigationProps.Item[] = [
     text: 'Navigation Two',
     icon: <Icon name="settings" />,
     href: '#/settings',
-    items: [
-      { type: 'link', text: 'Account', href: '#/account' },
-      { type: 'link', text: 'Billing', href: '#/billing' },
-    ],
+    items: [{ type: 'link', text: 'Billing', href: '#/billing' }],
   },
   {
     type: 'link-group',
     text: 'Navigation Two sans icon',
-    href: '#/settings',
+    href: '#/two',
+    items: [{ type: 'link', text: 'Account', href: '#/account' }],
+  },
+  {
+    type: 'expandable-link-group',
+    text: 'Expandable link group',
+    href: '#/exp-link-group-1',
     items: [
-      { type: 'link', text: 'Account', href: '#/account' },
-      { type: 'link', text: 'Billing', href: '#/billing' },
+      { type: 'link', icon: <Icon name="file" />, text: 'Page 7', href: '#/page7' },
+      { type: 'link', icon: <Icon name="file" />, text: 'Page 8', href: '#/page8' },
     ],
   },
   { type: 'divider' },
@@ -93,6 +96,7 @@ export default function SideNavigationIconsPage() {
   const [activeHref, setActiveHref] = useState<string>('#/dashboard');
   const [expandIconPosition, setExpandIconPosition] = useState<SideNavigationProps.ExpandIconPosition>('start');
   const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [variant, setVariant] = useState<SideNavigationProps.Variant>('default');
 
   const onFollow = useCallback((e: CustomEvent<SideNavigationProps.FollowDetail>) => {
     setActiveHref(e.detail.href);
@@ -119,6 +123,16 @@ export default function SideNavigationIconsPage() {
               {collapsed ? 'On' : 'Off'}
             </Toggle>
           </FormField>
+          <FormField label="Highlight variant" description="Controls the `variant` prop">
+            <RadioGroup
+              value={variant}
+              onChange={({ detail }) => setVariant(detail.value as SideNavigationProps.Variant)}
+              items={[
+                { value: 'default', label: 'Default (text highlight)' },
+                { value: 'highlighted', label: 'Highlighted (background fill)' },
+              ]}
+            />
+          </FormField>
         </SpaceBetween>
       }
     >
@@ -132,6 +146,7 @@ export default function SideNavigationIconsPage() {
           items={ITEMS}
           expandIconPosition={expandIconPosition}
           collapsed={collapsed}
+          variant={variant}
           onFollow={onFollow}
         />
       </div>

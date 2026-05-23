@@ -26,6 +26,7 @@ export function SideNavigationImplementation({
   onChange,
   expandIconPosition = 'start',
   collapsed = false,
+  variant = 'default',
   __internalRootRef,
   ...props
 }: SideNavigationInternalProps) {
@@ -93,6 +94,7 @@ export function SideNavigationImplementation({
             activeHref={activeHref}
             expandIconPosition={expandIconPosition}
             collapsed={collapsed}
+            highlightVariant={variant}
           />
         </div>
       )}

@@ -36,6 +36,9 @@ interface BaseItemComponentProps {
   position?: string;
   expandIconPosition?: SideNavigationProps.ExpandIconPosition;
   collapsed?: boolean;
+  // Renamed from `variant` (which is already used for the list variant) so we
+  // can plumb the SideNavigation public `variant` prop down to each link.
+  highlightVariant?: SideNavigationProps.Variant;
 }
 
 interface HeaderProps extends BaseItemComponentProps {
@@ -114,6 +117,7 @@ export function NavigationItemsList({
   position = '',
   expandIconPosition,
   collapsed,
+  highlightVariant,
 }: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
@@ -150,7 +154,14 @@ export function NavigationItemsList({
       case 'link': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(
+                styles['list-item'],
+                highlightVariant === 'highlighted' && styles['list-item-variant-highlighted']
+              )}
+            >
               <Link
                 definition={item}
                 activeHref={activeHref}
@@ -158,6 +169,7 @@ export function NavigationItemsList({
                 fireFollow={fireFollow}
                 position={itemPosition}
                 collapsed={collapsed}
+                highlightVariant={highlightVariant}
               />
             </li>
           ),
@@ -177,6 +189,7 @@ export function NavigationItemsList({
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
                 collapsed={collapsed}
+                highlightVariant={highlightVariant}
               />
             </li>
           ),
@@ -195,6 +208,7 @@ export function NavigationItemsList({
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
                 collapsed={collapsed}
+                highlightVariant={highlightVariant}
               />
             </li>
           ),
@@ -213,6 +227,7 @@ export function NavigationItemsList({
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
                 collapsed={collapsed}
+                highlightVariant={highlightVariant}
               />
             </li>
           ),
@@ -232,6 +247,7 @@ export function NavigationItemsList({
                 position={itemPosition}
                 expandIconPosition={expandIconPosition}
                 collapsed={collapsed}
+                highlightVariant={highlightVariant}
               />
             </li>
           ),
@@ -250,7 +266,6 @@ export function NavigationItemsList({
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list--no-start-padding']]: variant === 'section' && expandIconPosition === 'end',
               })}
             >
               {list.element}
@@ -262,7 +277,7 @@ export function NavigationItemsList({
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list--no-start-padding']]: variant === 'section' && expandIconPosition === 'end',
+                [styles[`expand-icon-end`]]: expandIconPosition === 'end',
               })}
             >
               {list.items.map(item => item.element)}
@@ -342,7 +357,7 @@ function useCollapsedTooltip<T extends HTMLElement>(label: React.ReactNode) {
   return { triggerRef, triggerProps, tooltip };
 }
 
-function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkProps) {
+function Link({ definition, activeHref, fireFollow, position, collapsed, highlightVariant }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
   const i18n = useInternalI18n('link');
@@ -374,7 +389,10 @@ function Link({ definition, activeHref, fireFollow, position, collapsed }: LinkP
       <a
         ref={collapsed ? collapsedTooltip.triggerRef : undefined}
         href={definition.href}
-        className={clsx(styles.link, { [styles['link-active']]: isActive })}
+        className={clsx(styles.link, {
+          [styles['link-active']]: isActive,
+          [styles['link-variant-highlighted']]: highlightVariant === 'highlighted',
+        })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
         aria-current={definition.href === activeHref ? 'page' : undefined}
@@ -413,6 +431,7 @@ function Section({
   position,
   expandIconPosition,
   collapsed,
+  highlightVariant,
 }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
@@ -445,6 +464,8 @@ function Section({
     );
   }
 
+  const isNestedInSectionGroup = variant === 'section-group';
+
   return (
     <InternalExpandableSection
       variant="footer"
@@ -452,7 +473,7 @@ function Section({
       onChange={onExpandedChange}
       className={clsx(
         styles.section,
-        variant === 'section-group' && styles['section--no-ident'],
+        isNestedInSectionGroup && styles['section--no-ident'],
         expandIconPosition === 'end' && styles['section--expand-icon-end'],
         isVisualRefresh && styles.refresh
       )}
@@ -476,6 +497,7 @@ function Section({
         activeHref={activeHref}
         position={position}
         expandIconPosition={expandIconPosition}
+        highlightVariant={highlightVariant}
       />
     </InternalExpandableSection>
   );
@@ -493,6 +515,7 @@ function SectionGroup({
   position,
   expandIconPosition,
   collapsed,
+  highlightVariant,
 }: SectionGroupProps) {
   const collapsedTooltip = useCollapsedTooltip<HTMLSpanElement>(definition.title);
 
@@ -524,6 +547,7 @@ function SectionGroup({
         activeHref={activeHref}
         position={position}
         expandIconPosition={expandIconPosition}
+        highlightVariant={highlightVariant}
       />
     </div>
   );
@@ -541,6 +565,7 @@ function LinkGroup({
   position,
   expandIconPosition,
   collapsed,
+  highlightVariant,
 }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
@@ -559,6 +584,7 @@ function LinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        highlightVariant={highlightVariant}
       />
       {!collapsed && (
         <NavigationItemsList
@@ -569,6 +595,7 @@ function LinkGroup({
           activeHref={activeHref}
           position={position}
           expandIconPosition={expandIconPosition}
+          highlightVariant={highlightVariant}
         />
       )}
     </>
@@ -589,6 +616,7 @@ function ExpandableLinkGroup({
   position,
   expandIconPosition,
   collapsed,
+  highlightVariant,
 }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
@@ -642,6 +670,7 @@ function ExpandableLinkGroup({
         activeHref={activeHref}
         position={position}
         collapsed={collapsed}
+        highlightVariant={highlightVariant}
       />
     );
   }
@@ -651,12 +680,15 @@ function ExpandableLinkGroup({
       className={clsx(
         styles['expandable-link-group'],
         variant === 'section-group' && styles['expandable-link-group--no-ident'],
-        expandIconPosition === 'end' && styles['expandable-link-group--expand-icon-end']
+        expandIconPosition === 'end' && styles['expandable-link-group--expand-icon-end'],
+        highlightVariant === 'highlighted' && definition.href === activeHref && styles['expandable-link-group-active']
       )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}
       headerText={
+        // The ELG header link doesn't carry highlightVariant — the ELG
+        // wrapper handles the active background via expandable-link-group-active.
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
           fireFollow={onHeaderFollow}
@@ -675,6 +707,7 @@ function ExpandableLinkGroup({
         activeHref={activeHref}
         position={position}
         expandIconPosition={expandIconPosition}
+        highlightVariant={highlightVariant}
       />
     </InternalExpandableSection>
   );

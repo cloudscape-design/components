@@ -19,10 +19,11 @@ export default function SideNavigation({
   items = [],
   expandIconPosition = 'start',
   collapsed = false,
+  variant = 'default',
   ...props
 }: SideNavigationProps) {
   const internalProps = useBaseComponent('SideNavigation', {
-    props: { expandIconPosition, collapsed },
+    props: { expandIconPosition, collapsed, variant },
   });
 
   const componentAnalyticMetadata: GeneratedAnalyticsMetadataSideNavigationComponent = {
@@ -39,6 +40,7 @@ export default function SideNavigation({
       items={items}
       expandIconPosition={expandIconPosition}
       collapsed={collapsed}
+      variant={variant}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticMetadata })}
     />
   );
