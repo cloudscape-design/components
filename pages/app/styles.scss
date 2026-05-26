@@ -8,7 +8,7 @@ body {
   margin-block: 0;
   margin-inline: 0;
   color: tokens.$color-text-body-default;
-  background: tokens.$color-background-container-content;
+  background: tokens.$color-background-layout-main;
 }
 
 /* stylelint-disable-next-line selector-class-pattern */
@@ -37,5 +37,5 @@ body {
  to reveal the effects of negative z-index.
 */
 :global(#app) {
-  background-color: tokens.$color-background-container-content;
+  background-color: tokens.$color-background-layout-main;
 }
