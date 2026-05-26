@@ -9,8 +9,6 @@ import SpaceBetween from '~components/space-between';
 import StatusIndicator from '~components/status-indicator';
 import TruncatedText from '~components/truncated-text';
 
-import ScreenshotArea from '../utils/screenshot-area';
-
 const containerStyle: React.CSSProperties = {
   maxWidth: '320px',
   padding: '8px 12px',
@@ -20,7 +18,7 @@ const containerStyle: React.CSSProperties = {
 
 export default function TruncatedTextSimple() {
   return (
-    <ScreenshotArea>
+    <>
       <h1>TruncatedText examples</h1>
       <SpaceBetween size="m">
         <Box>
@@ -68,6 +66,17 @@ export default function TruncatedTextSimple() {
         </Box>
 
         <Box>
+          <Box variant="awsui-key-label">With StatusIndicator (wrapText=false)</Box>
+          <div style={containerStyle}>
+            <TruncatedText>
+              <StatusIndicator type="success" wrapText={false}>
+                The instance has been running for an extended period of time
+              </StatusIndicator>
+            </TruncatedText>
+          </div>
+        </Box>
+
+        <Box>
           <Box variant="awsui-key-label">With CopyToClipboard (variant=inline)</Box>
           <div style={containerStyle}>
             <TruncatedText tooltipText="arn:aws:iam::123456789012:role/my-very-long-role-name">
@@ -96,6 +105,6 @@ export default function TruncatedTextSimple() {
           </div>
         </Box>
       </SpaceBetween>
-    </ScreenshotArea>
+    </>
   );
 }

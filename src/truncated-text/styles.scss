@@ -4,6 +4,7 @@
 */
 
 @use '../internal/styles' as styles;
+@use '../internal/styles/foundation' as foundation;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
@@ -18,8 +19,8 @@
     outline: none;
   }
   @include focus-visible.when-visible {
-    // The border is 2px wide, and since this component is commonly used in scenarios
-    // where the content can be truncated, let's play it safe by pulling in the outline.
-    @include styles.focus-highlight(-2px);
+    // Since this component is commonly used in scenarios where the content can be truncated,
+    // let's play it safe by pulling in the outline.
+    @include styles.focus-highlight(calc(-1 * #{foundation.$box-shadow-focused-width}));
   }
 }

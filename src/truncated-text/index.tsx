@@ -12,7 +12,10 @@ import InternalTruncatedText from './internal';
 export { TruncatedTextProps };
 
 export default function TruncatedText({ children, tooltipText, ...rest }: TruncatedTextProps) {
-  const baseComponentProps = useBaseComponent('TruncatedText');
+  const baseComponentProps = useBaseComponent('TruncatedText', {
+    props: {},
+    metadata: { hasTooltipText: !!tooltipText },
+  });
   const externalProps = getExternalProps(rest);
   return (
     <InternalTruncatedText {...externalProps} {...baseComponentProps} tooltipText={tooltipText}>
