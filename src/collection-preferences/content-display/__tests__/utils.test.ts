@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   buildOptionTree,
-  flattenOptionTree,
   getFilteredOptions,
   getFilteredTree,
   getSortedOptions,
   OptionGroupNode,
+  toContentDisplayItems,
   walkLeaves,
 } from '../utils';
 
@@ -173,13 +173,13 @@ describe('buildOptionTree', () => {
   });
 });
 
-describe('flattenOptionTree', () => {
+describe('toContentDisplayItems', () => {
   it('converts leaf nodes back to ContentDisplayItem', () => {
     const tree = [
       { type: 'leaf' as const, id: 'a', label: 'A', visible: true },
       { type: 'leaf' as const, id: 'b', label: 'B', visible: false },
     ];
-    const result = flattenOptionTree(tree);
+    const result = toContentDisplayItems(tree);
     expect(result).toEqual([
       { id: 'a', visible: true },
       { id: 'b', visible: false },
@@ -200,7 +200,7 @@ describe('flattenOptionTree', () => {
         ],
       },
     ];
-    const result = flattenOptionTree(tree);
+    const result = toContentDisplayItems(tree);
     expect(result).toEqual([
       { id: 'a', visible: true },
       {
