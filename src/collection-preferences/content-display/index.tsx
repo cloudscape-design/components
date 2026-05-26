@@ -7,6 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
+import { SortableAreaProps } from '../../internal/components/sortable-area/interfaces';
 import {
   formatDndItemCommitted,
   formatDndItemReordered,
@@ -24,6 +25,7 @@ import {
   getFilteredOptions,
   getFilteredTree,
   getSortedOptions,
+  OptionGroupNode,
   OptionTreeNode,
 } from './utils';
 
@@ -84,7 +86,7 @@ interface HierarchicalContentDisplayProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
-  i18nStrings: React.ComponentProps<typeof InternalList>['i18nStrings'];
+  i18nStrings: SortableAreaProps.DndAreaI18nStrings;
   sortDisabled?: boolean;
   parentGroupLabel?: string;
 }
@@ -96,10 +98,10 @@ function GroupItem({
   i18nStrings,
   sortDisabled,
 }: {
-  node: OptionTreeNode & { type: 'group' };
+  node: OptionGroupNode;
   onToggle: (id: string) => void;
   onChildrenChange: (children: OptionTreeNode[]) => void;
-  i18nStrings: React.ComponentProps<typeof InternalList>['i18nStrings'];
+  i18nStrings: SortableAreaProps.DndAreaI18nStrings;
   sortDisabled: boolean;
 }) {
   return (
@@ -147,10 +149,7 @@ function HierarchicalContentDisplay({
       ariaLabelledby={ariaLabelledby}
       ariaDescribedby={ariaDescribedby}
       i18nStrings={i18nStrings}
-      onSortingChange={
-        // istanbul ignore next: requires DnD interaction
-        ({ detail: { items } }) => onTreeChange([...items])
-      }
+      onSortingChange={({ detail: { items } }) => onTreeChange([...items])}
       renderItem={node => ({
         id: node.id,
         announcementLabel:
@@ -164,12 +163,10 @@ function HierarchicalContentDisplay({
             <GroupItem
               node={node}
               onToggle={onToggle}
-              onChildrenChange={
-                // istanbul ignore next: requires DnD interaction
-                newChildren =>
-                  onTreeChange(
-                    tree.map(n => (n.id === node.id && n.type === 'group' ? { ...n, children: newChildren } : n))
-                  )
+              onChildrenChange={newChildren =>
+                onTreeChange(
+                  tree.map(n => (n.id === node.id && n.type === 'group' ? { ...n, children: newChildren } : n))
+                )
               }
               i18nStrings={i18nStrings}
               sortDisabled={sortDisabled}
@@ -228,7 +225,6 @@ export default function ContentDisplayPreference({
       return;
     }
     // For grouped mode, walk the tree and flip the matching item
-    // istanbul ignore next: covered by integration tests
     const toggle = (
       items: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>
     ): CollectionPreferencesProps.ContentDisplayItem[] =>
@@ -307,10 +303,7 @@ export default function ContentDisplayPreference({
             <HierarchicalContentDisplay
               tree={isFiltering ? filteredTree : optionTree}
               onToggle={handleToggle}
-              onTreeChange={
-                // istanbul ignore next: requires DnD interaction
-                newTree => onChange(flattenOptionTree(newTree))
-              }
+              onTreeChange={newTree => onChange(flattenOptionTree(newTree))}
               ariaLabelledby={titleId}
               ariaDescribedby={descriptionId}
               i18nStrings={listI18nStrings}
