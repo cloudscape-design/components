@@ -21,12 +21,12 @@ import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
 import {
   buildOptionTree,
-  flattenOptionTree,
   getFilteredOptions,
   getFilteredTree,
   getSortedOptions,
   OptionGroupNode,
   OptionTreeNode,
+  toContentDisplayItems,
 } from './utils';
 
 import styles from '../styles.css.js';
@@ -303,7 +303,7 @@ export default function ContentDisplayPreference({
             <HierarchicalContentDisplay
               tree={isFiltering ? filteredTree : optionTree}
               onToggle={handleToggle}
-              onTreeChange={newTree => onChange(flattenOptionTree(newTree))}
+              onTreeChange={newTree => onChange(toContentDisplayItems(newTree))}
               ariaLabelledby={titleId}
               ariaDescribedby={descriptionId}
               i18nStrings={listI18nStrings}

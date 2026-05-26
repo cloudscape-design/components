@@ -114,10 +114,15 @@ export function buildOptionTree(
 /**
  * Converts OptionTreeNode[] back to ContentDisplayItem[].
  */
-export function flattenOptionTree(tree: OptionTreeNode[]): ContentDisplayItem[] {
+export function toContentDisplayItems(tree: OptionTreeNode[]): ContentDisplayItem[] {
   return tree.map(node => {
     if (node.type === 'group') {
-      return { type: 'group' as const, id: node.id, visible: node.visible, children: flattenOptionTree(node.children) };
+      return {
+        type: 'group' as const,
+        id: node.id,
+        visible: node.visible,
+        children: toContentDisplayItems(node.children),
+      };
     }
     return { id: node.id, visible: node.visible };
   });
