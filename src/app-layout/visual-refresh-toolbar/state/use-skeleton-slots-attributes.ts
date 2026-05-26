@@ -46,6 +46,8 @@ export const useSkeletonSlotsAttributes = (
       [styles['drawer-expanded-mode']]: drawerExpandedMode,
       [styles['ai-drawer-expanded-mode']]: aiDrawerExpandedMode,
       [styles['bottom-drawer-expanded-mode']]: bottomDrawerExpandedMode,
+      [styles['has-no-toolbar']]: !hasToolbar && !isNested,
+      [styles['has-open-left-panel']]: !!activeAiDrawer,
     }),
     style: {
       minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,

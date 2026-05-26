@@ -46,74 +46,81 @@ export default function WithDrawers() {
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         ref={pageLayoutRef}
         content={
-          <ContentLayout
-            disableOverlap={true}
-            header={
-              <SpaceBetween size="m">
+          <AppLayoutToolbar
+            toolsHide={true}
+            navigationHide={true}
+            navigationTriggerHide={true}
+            content={
+              <ContentLayout
+                disableOverlap={true}
+                header={
+                  <SpaceBetween size="m">
+                    <Header
+                      variant="h1"
+                      description="Sometimes you need custom triggers for drawers and navigation to get the job done."
+                      info={
+                        <Link
+                          data-testid="info-link-header"
+                          variant="info"
+                          onFollow={() => {
+                            setHelpPathSlug('header');
+                            setIsToolsOpen(true);
+                            pageLayoutRef.current?.focusToolsClose();
+                          }}
+                        >
+                          Info
+                        </Link>
+                      }
+                    >
+                      Page layout without the toolbar
+                    </Header>
+
+                    <SpaceBetween size="xs">
+                      <Button
+                        onClick={() => {
+                          setIsNavigationOpen(current => !current);
+                          pageLayoutRef.current?.focusNavigation();
+                        }}
+                      >
+                        Toggle navigation
+                      </Button>
+
+                      <Button
+                        onClick={() => {
+                          setActiveDrawerId('pro-help');
+                          pageLayoutRef.current?.focusActiveDrawer();
+                        }}
+                      >
+                        Open a drawer without trigger
+                      </Button>
+                      <Button onClick={() => setActiveDrawerId(null)}>Close a drawer without trigger</Button>
+                      <Button onClick={() => updateDrawer({ type: 'openDrawer', payload: { id: 'ai-panel' } })}>
+                        Open the left panel
+                      </Button>
+                    </SpaceBetween>
+                  </SpaceBetween>
+                }
+              >
                 <Header
-                  variant="h1"
-                  description="Sometimes you need custom triggers for drawers and navigation to get the job done."
                   info={
                     <Link
-                      data-testid="info-link-header"
+                      data-testid="info-link-content"
                       variant="info"
                       onFollow={() => {
-                        setHelpPathSlug('header');
+                        setHelpPathSlug('content');
                         setIsToolsOpen(true);
-                        pageLayoutRef.current?.focusToolsClose();
                       }}
                     >
                       Info
                     </Link>
                   }
                 >
-                  Page layout without the toolbar
+                  Content
                 </Header>
-
-                <SpaceBetween size="xs">
-                  <Button
-                    onClick={() => {
-                      setIsNavigationOpen(current => !current);
-                      pageLayoutRef.current?.focusNavigation();
-                    }}
-                  >
-                    Toggle navigation
-                  </Button>
-
-                  <Button
-                    onClick={() => {
-                      setActiveDrawerId('pro-help');
-                      pageLayoutRef.current?.focusActiveDrawer();
-                    }}
-                  >
-                    Open a drawer without trigger
-                  </Button>
-                  <Button onClick={() => setActiveDrawerId(null)}>Close a drawer without trigger</Button>
-                  <Button onClick={() => updateDrawer({ type: 'openDrawer', payload: { id: 'ai-panel' } })}>
-                    Open the left panel
-                  </Button>
-                </SpaceBetween>
-              </SpaceBetween>
+                <Containers />
+              </ContentLayout>
             }
-          >
-            <Header
-              info={
-                <Link
-                  data-testid="info-link-content"
-                  variant="info"
-                  onFollow={() => {
-                    setHelpPathSlug('content');
-                    setIsToolsOpen(true);
-                  }}
-                >
-                  Info
-                </Link>
-              }
-            >
-              Content
-            </Header>
-            <Containers />
-          </ContentLayout>
+          ></AppLayoutToolbar>
         }
         onToolsChange={event => {
           setIsToolsOpen(event.detail.open);

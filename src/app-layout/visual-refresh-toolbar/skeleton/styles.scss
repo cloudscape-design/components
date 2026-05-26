@@ -65,6 +65,48 @@
       min-content;
     grid-template-rows: min-content min-content 1fr min-content min-content;
 
+    &.has-no-toolbar {
+      &::before {
+        @include theming.dark-mode-only {
+          content: '';
+          grid-row: 1 / -1;
+          grid-column: 2 / -2;
+          pointer-events: none;
+          z-index: constants.$drawer-z-index + 1;
+          border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        }
+      }
+
+      &.has-open-left-panel::before {
+        @include theming.dark-mode-only {
+          border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          border-start-start-radius: awsui.$space-xxs;
+        }
+      }
+
+      &.has-open-left-panel::after {
+        content: '';
+        grid-row: 2;
+        grid-column: 2;
+        inline-size: 5px;
+        block-size: 5px;
+        margin-block-end: -5px;
+        align-self: start;
+        justify-self: start;
+        background: radial-gradient(
+          circle at 100% 100%,
+          awsui.$color-background-layout-main 70%,
+          constants.$ai-drawer-background 70%
+        );
+        z-index: constants.$drawer-z-index + 1;
+        pointer-events: none;
+
+        @include theming.dark-mode-only {
+          display: none;
+        }
+      }
+    }
+
     &.has-adaptive-widths-default {
       #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
     }
