@@ -302,6 +302,52 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     }
   });
 
+  describe('left drawer without toolbar', () => {
+    test('should render left drawer when toolbar is not present', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { globalDrawersWrapper, wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    });
+
+    test('should open left drawer via API when toolbar is not present', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined });
+      const { globalDrawersWrapper, wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: drawerDefaults.id } }));
+
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    });
+
+    test('should render left drawer when toolbar is not present and has a nested app layout', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { container } = render(
+        <AppLayout
+          data-testid="outer"
+          navigationHide={true}
+          toolsHide={true}
+          content={<AppLayout data-testid="inner" navigationHide={true} toolsHide={true} />}
+        />
+      );
+
+      const outerWrapper = createWrapper(container).find('[data-testid="outer"]')!.findAppLayout()!;
+      const innerWrapper = createWrapper(container).find('[data-testid="inner"]')!.findAppLayout()!;
+      const outerDrawersUtils = getGlobalDrawersTestUtils(outerWrapper);
+      const innerDrawersUtils = getGlobalDrawersTestUtils(innerWrapper);
+
+      expect(outerWrapper.findToolbar()).toBeFalsy();
+      expect(innerWrapper.findToolbar()).toBeFalsy();
+      expect(outerDrawersUtils.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+      expect(outerDrawersUtils.findActiveDrawers().length).toBe(1);
+      expect(innerDrawersUtils.findDrawerById(drawerDefaults.id)).toBeFalsy();
+      expect(innerDrawersUtils.findActiveDrawers().length).toBe(0);
+    });
+  });
+
   describe('metrics', () => {
     let sendPanoramaMetricSpy: jest.SpyInstance;
     beforeEach(() => {
