@@ -96,12 +96,12 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
   history.location.search
 );
 
 // The VR class needs to be set before any React rendering occurs.
-window[awsuiVisualRefreshFlag] = () => visualRefresh;
+window[awsuiVisualRefreshFlag] = () => visualRefresh && !oneTheme;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
@@ -111,6 +111,11 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
+
+// Visual Refresh and One Theme are mutually exclusive — manage both classes here so they never coexist.
+// useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
+document.body.classList.toggle('awsui-one-theme', oneTheme);
+document.body.classList.toggle('awsui-visual-refresh', visualRefresh && !oneTheme);
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
