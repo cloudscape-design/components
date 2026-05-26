@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Préférences de colonne",
     "contentDisplayPreference.description": "Personnalisez la visibilité et l’ordre des colonnes.",
     "contentDisplayPreference.dragHandleAriaLabel": "Faire glisser",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilisez la touche Espace ou Entrée pour activer le déplacement d’un élément, puis utilisez les touches fléchées pour en modifier la position. Afin de valider le déplacement, utilisez Espace ou Entrée, pour l’annuler, utilisez Échap. Selon votre lecteur d’écran, vous devrez peut-être changer de mode de navigation.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Réorganisation annulée",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrer les colonnes",

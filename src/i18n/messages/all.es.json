@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferencias de columnas",
     "contentDisplayPreference.description": "Personalice la visibilidad y el orden de las columnas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Arrastrar controlador",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape. Es posible que necesite cambiar el modo de navegación en el lector de pantalla.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenación cancelada",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrar columnas",

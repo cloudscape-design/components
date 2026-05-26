@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferências de coluna",
     "contentDisplayPreference.description": "Personalize a visibilidade e a ordem das colunas.",
     "contentDisplayPreference.dragHandleAriaLabel": "Ícone de arrastar",
-    "contentDisplayPreference.dragHandleAriaDescription": "Use Space ou Enter para ativar a função de arrastar para um item e, em seguida, use as teclas de setas para movimentar o posicionamento do item. Para completar o movimento de posicionamento, use Space ou Enter, ou para descartar o movimento, use Escape.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Use a barra de espaço ou a tecla Enter para ativar o arrastar de um item e, em seguida, use as setas do teclado para ajustar a posição do item. Para confirmar o ajuste de posição, use a barra de espaço ou a tecla Enter; para cancelar o ajuste, use a tecla Escape. Talvez seja necessário alternar o modo de navegação no seu leitor de tela.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Item selecionado na posição {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenação cancelada",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrar colunas",

@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "Preferenze di colonna",
     "contentDisplayPreference.description": "Personalizza la visibilità e l'ordine delle colonne.",
     "contentDisplayPreference.dragHandleAriaLabel": "Punto di trascinamento",
-    "contentDisplayPreference.dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, usa Esc.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Utilizza Spazio o Invio per attivare il trascinamento di un elemento, quindi usa i tasti freccia per spostare la posizione dell'elemento. Per completare lo spostamento della posizione, utilizza Spazio o Invio oppure per annullare lo spostamento, premi Esc. Potrebbe essere necessario attivare la modalità di navigazione sullo screen reader.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Elemento raccolto nella posizione {position} di {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Riordinamento annullato",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtra le colonne",
