@@ -174,6 +174,7 @@ export namespace SideNavigationProps {
     text?: string;
     href: string;
     logo?: Logo;
+    icon?: React.ReactNode;
   }
 
   export interface Divider {

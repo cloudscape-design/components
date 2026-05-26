@@ -85,6 +85,7 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
               {...definition.logo}
             />
           )}
+          {!definition.logo && <ItemIcon icon={definition.icon} collapsed={collapsed} />}
           {!collapsed && (
             <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
               {definition.text}
@@ -129,8 +130,12 @@ export function NavigationItemsList({
   items.forEach((item, index) => {
     const itemid = index + 1;
     const itemPosition = `${position ? `${position},` : ''}${itemid}`;
-    // In collapsed mode, items without an icon have nothing to render, so we
-    // skip them. Dividers always render to keep visual grouping.
+    // In collapsed mode, only selectable items are visible (links, link-groups, ELGs).
+    // Sections and section-groups are non-selectable containers — skip them.
+    // Items without icons have nothing to render in collapsed mode.
+    if (collapsed && (item.type === 'section' || item.type === 'section-group')) {
+      return;
+    }
     if (collapsed && item.type !== 'divider' && !item.icon) {
       return;
     }
@@ -257,9 +262,28 @@ export function NavigationItemsList({
     }
   });
 
+  // In collapsed mode, skip empty item segments and deduplicate consecutive dividers.
+  const filteredLists = collapsed
+    ? lists.filter((list, index) => {
+        if (list.items) {
+          return list.items.length > 0;
+        }
+        // Divider — keep only if previous kept entry was not also a divider.
+        for (let i = index - 1; i >= 0; i--) {
+          if (lists[i].items && lists[i].items!.length > 0) {
+            return true;
+          }
+          if (!lists[i].items) {
+            return false;
+          }
+        }
+        return true;
+      })
+    : lists;
+
   return (
     <>
-      {lists.map((list, index) => {
+      {filteredLists.map((list, index) => {
         if (!list.items || list.items.length === 0) {
           return (
             <div
