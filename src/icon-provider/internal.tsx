@@ -1,14 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
-import { InternalIconContext } from './context';
+import { InternalIconContext, InternalIconContextValue } from './context';
 import { IconProviderProps } from './interfaces';
 
-function InternalIconProvider({ children, icons }: IconProviderProps) {
-  const contextIcons = useContext(InternalIconContext);
+function InternalIconProvider({ children, icons, sizes, strokeWidths }: IconProviderProps) {
+  const {
+    icons: contextIcons,
+    sizeOverrides: contextSizeOverrides,
+    strokeWidthOverrides: contextStrokeWidthOverrides,
+  } = useContext(InternalIconContext);
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
@@ -27,7 +31,21 @@ function InternalIconProvider({ children, icons }: IconProviderProps) {
     iconsToProvide = { ...contextIcons, ...clonedIcons };
   }
 
-  return <InternalIconContext.Provider value={iconsToProvide}>{children}</InternalIconContext.Provider>;
+  const contextValue = useMemo<InternalIconContextValue>(
+    () => ({
+      icons: iconsToProvide,
+      // Build the size override map by merging parent context with this provider's sizes prop.
+      sizeOverrides: sizes ? { ...contextSizeOverrides, ...sizes } : contextSizeOverrides,
+      // Build the stroke-width override map by merging parent context with this provider's strokeWidths prop.
+      strokeWidthOverrides: strokeWidths
+        ? { ...contextStrokeWidthOverrides, ...strokeWidths }
+        : contextStrokeWidthOverrides,
+    }),
+
+    [iconsToProvide, contextSizeOverrides, sizes, contextStrokeWidthOverrides, strokeWidths]
+  );
+
+  return <InternalIconContext.Provider value={contextValue}>{children}</InternalIconContext.Provider>;
 }
 
 export default InternalIconProvider;

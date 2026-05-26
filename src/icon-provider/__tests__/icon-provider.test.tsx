@@ -8,6 +8,7 @@ import Icon, { IconProps } from '../../../lib/components/icon';
 import IconProvider, { IconProviderProps } from '../../../lib/components/icon-provider';
 import wrapper from '../../../lib/components/test-utils/dom';
 import generatedIcons from '../../icon/generated/icons';
+import customCSSPropertiesMap from '../../internal/generated/custom-css-properties';
 
 const CUSTOM_SVG = (
   <svg focusable={false}>
@@ -136,6 +137,152 @@ describe('Icon Provider', () => {
 
     expect(secondAddPlus).toStrictEqual(expectedAddPlusSvg);
     expect(secondSettings).toStrictEqual(customSvg);
+  });
+
+  describe('sizes prop', () => {
+    it('sets --icon-size-override on the icon wrapper when a size override is provided', () => {
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
+    });
+
+    it('does not set --icon-size-override for sizes that are not overridden', () => {
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <Icon name="calendar" size="small" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('');
+    });
+
+    it('does not set --icon-size-override when sizes prop is not provided', () => {
+      const { container } = render(
+        <IconProvider icons={{}}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('');
+    });
+
+    it('child provider merges sizes with parent context', () => {
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <IconProvider icons={{}} sizes={{ small: 10 }}>
+            <Icon data-testid="normal-icon" name="calendar" size="normal" />
+            <Icon data-testid="small-icon" name="calendar" size="small" />
+          </IconProvider>
+        </IconProvider>
+      );
+      const normalIcon = container.querySelector('[data-testid="normal-icon"]') as HTMLElement;
+      expect(normalIcon.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
+      const smallIcon = container.querySelector('[data-testid="small-icon"]') as HTMLElement;
+      expect(smallIcon.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('10px');
+    });
+
+    it('child provider overrides parent size for the same variant', () => {
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <IconProvider icons={{}} sizes={{ normal: 20 }}>
+            <Icon name="calendar" size="normal" />
+          </IconProvider>
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('20px');
+    });
+
+    it('sets --icon-stroke-scale when size override differs from base size', () => {
+      // normal base is 16px; override to 12px → strokeScale = 16/12 ≈ 1.333...
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      const strokeScale = iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale);
+      expect(strokeScale).not.toBe('');
+      expect(parseFloat(strokeScale)).toBeCloseTo(16 / 12, 5);
+    });
+
+    it('does not set --icon-stroke-scale when size override equals base size', () => {
+      // normal base is 16px; override to 16px → no compensation needed
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 16 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale)).toBe('');
+    });
+  });
+
+  describe('strokeWidths prop', () => {
+    it('sets --icon-stroke-width-override on the icon wrapper', () => {
+      // normal scaleFactor=1, no size override → 2/1*1 = "2px"
+      const { container } = render(
+        <IconProvider icons={{}} strokeWidths={{ normal: 2 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
+    });
+
+    it('applies scaleFactor when computing --icon-stroke-width-override', () => {
+      // large scaleFactor=3 → 3/3*1 = "1px"
+      const { container } = render(
+        <IconProvider icons={{}} strokeWidths={{ large: 3 }}>
+          <Icon name="calendar" size="large" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('1px');
+    });
+
+    it('does not set --icon-stroke-width-override for sizes that are not overridden', () => {
+      const { container } = render(
+        <IconProvider icons={{}} strokeWidths={{ normal: 2 }}>
+          <Icon name="calendar" size="small" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('');
+    });
+
+    it('child provider merges strokeWidths with parent context', () => {
+      const { container } = render(
+        <IconProvider icons={{}} strokeWidths={{ normal: 2 }}>
+          <IconProvider icons={{}} strokeWidths={{ small: 1.5 }}>
+            <Icon data-testid="normal-icon" name="calendar" size="normal" />
+            <Icon data-testid="small-icon" name="calendar" size="small" />
+          </IconProvider>
+        </IconProvider>
+      );
+      const normalIcon = container.querySelector('[data-testid="normal-icon"]') as HTMLElement;
+      expect(normalIcon.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
+      const smallIcon = container.querySelector('[data-testid="small-icon"]') as HTMLElement;
+      expect(smallIcon.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('1.5px');
+    });
+
+    it('strokeWidths takes precedence over automatic stroke compensation from sizes', () => {
+      // sizes sets --icon-stroke-scale; strokeWidths should override with --icon-stroke-width-override instead
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }} strokeWidths={{ normal: 2 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      // explicit override must be present
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).not.toBe('');
+      // automatic scale must not be set when explicit override is active
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeScale)).toBe('');
+    });
   });
 
   describe('custom icons', () => {

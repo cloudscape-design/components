@@ -40,6 +40,9 @@ export default function IconScenario() {
           <small>
             <Icon name="settings" size="small" /> Small <Icon name="external" size="inherit" />
           </small>
+          <small style={{ display: 'block', paddingBlockStart: '4px' }}>
+            <Icon name="settings" size="x-small" /> X-Small <Icon name="external" size="inherit" />
+          </small>
         </TextContent>
       </ScreenshotArea>
     </article>
