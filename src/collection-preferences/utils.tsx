@@ -237,7 +237,6 @@ export const collectVisibleIds = (
   const result: string[] = [];
   for (const item of items) {
     if (item.type === 'group') {
-      // istanbul ignore next: covered by integration tests
       if (ancestorVisible && item.visible) {
         result.push(...collectVisibleIds(item.children, true));
       }
