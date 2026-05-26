@@ -238,8 +238,7 @@ describe('getFilteredTree', () => {
       { type: 'leaf' as const, id: 'b', label: 'Beta', visible: true },
     ];
     const result = getFilteredTree(tree, 'alp');
-    expect(result).toHaveLength(1);
-    expect(result[0].id).toBe('a');
+    expect(result).toEqual([{ type: 'leaf', id: 'a', label: 'Alpha', visible: true }]);
   });
 
   it('keeps groups with matching descendants', () => {
@@ -256,9 +255,15 @@ describe('getFilteredTree', () => {
       },
     ];
     const result = getFilteredTree(tree, 'alpha');
-    expect(result).toHaveLength(1);
-    expect((result[0] as OptionGroupNode).children).toHaveLength(1);
-    expect((result[0] as OptionGroupNode).children[0].id).toBe('a');
+    expect(result).toEqual([
+      {
+        type: 'group',
+        id: 'g',
+        label: 'Group',
+        visible: true,
+        children: [{ type: 'leaf', id: 'a', label: 'Alpha', visible: true }],
+      },
+    ]);
   });
 
   it('removes groups with no matching descendants', () => {
@@ -291,7 +296,6 @@ describe('getFilteredOptions', () => {
       { id: 'b', label: 'Beta', visible: true },
     ];
     const result = getFilteredOptions(options, 'bet');
-    expect(result).toHaveLength(1);
-    expect(result[0].id).toBe('b');
+    expect(result).toEqual([{ id: 'b', label: 'Beta', visible: true }]);
   });
 });
