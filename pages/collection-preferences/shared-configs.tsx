@@ -96,3 +96,56 @@ export const customPreference = (customState: boolean) => (
     View as
   </Checkbox>
 );
+
+export const groupedContentDisplayOptions: CollectionPreferencesProps.ContentDisplayOption[] = [
+  { id: 'id', label: 'Instance ID', alwaysVisible: true },
+  { id: 'name', label: 'Name' },
+  { id: 'type', label: 'Instance type' },
+  { id: 'az', label: 'Availability zone' },
+  { id: 'state', label: 'State' },
+  { id: 'cpu', label: 'CPU (%)' },
+  { id: 'memory', label: 'Memory (%)' },
+  { id: 'netIn', label: 'Network in (MB/s)' },
+  { id: 'netOut', label: 'Network out (MB/s)' },
+  { id: 'cost', label: 'Monthly cost ($)' },
+];
+
+export const contentDisplayGroups: CollectionPreferencesProps.ContentDisplayOptionGroup[] = [
+  { id: 'config', label: 'Configuration' },
+  { id: 'performance', label: 'Performance' },
+  { id: 'network', label: 'Network' },
+];
+
+export const groupedContentDisplay: CollectionPreferencesProps.ContentDisplayItem[] = [
+  { id: 'id', visible: true },
+  { id: 'name', visible: true },
+  {
+    type: 'group',
+    id: 'config',
+    visible: true,
+    children: [
+      { id: 'type', visible: true },
+      { id: 'az', visible: true },
+      { id: 'state', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'performance',
+    visible: true,
+    children: [
+      { id: 'cpu', visible: true },
+      { id: 'memory', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'network',
+    visible: true,
+    children: [
+      { id: 'netIn', visible: true },
+      { id: 'netOut', visible: true },
+    ],
+  },
+  { id: 'cost', visible: true },
+];

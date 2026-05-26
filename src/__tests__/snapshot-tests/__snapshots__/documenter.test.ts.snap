@@ -8916,6 +8916,9 @@ It contains the following:
 - \`title\` (string) - Specifies the text displayed at the top of the preference.
 - \`description\` (string) - Specifies the description displayed below the title.
 - \`options\` - Specifies an array of options for reordering and visible content selection.
+- \`groups\` - (Optional) Specifies an array of column group definitions for multi-level content display. Each group contains:
+  - \`id\` (string) - A unique identifier for the group.
+  - \`label\` (string) - The text displayed as the group label.
 - \`enableColumnFiltering\` (boolean) - Adds a columns filter.
 - \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
 - \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
@@ -8929,7 +8932,17 @@ Each option contains the following:
 - \`label\` (string) - Specifies a short description of the content.
 - \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
 
-You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.",
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
+Each content display item is one of the following:
+- \`ContentDisplayColumn\` - Represents a single column.
+  - \`type\` ('column') - (Optional) Identifies the entry as a column. Defaults to \`'column'\` when omitted.
+  - \`id\` (string) - The column identifier.
+  - \`visible\` (boolean) - Whether the column is visible.
+- \`ContentDisplayGroup\` - Represents a column group.
+  - \`type\` ('group') - Identifies the entry as a group.
+  - \`id\` (string) - The group identifier.
+  - \`visible\` (boolean) - Whether the group is visible.
+  - \`children\` (ReadonlyArray<ContentDisplayItem>) - The columns or nested groups within this group.",
       "i18nTag": true,
       "inlineType": {
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
@@ -8953,6 +8966,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "enableColumnFiltering",
             "optional": true,
             "type": "boolean",
+          },
+          {
+            "name": "groups",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>",
           },
           {
             "inlineType": {
@@ -38098,9 +38116,23 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "Array",
@@ -38140,6 +38172,33 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -38168,7 +38227,8 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
@@ -49020,9 +49080,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns options that the user can reorder.",
+          "description": "Returns the top-level items in the preference list.
+
+For tables **without** column grouping this returns all column options.
+For tables **with** column grouping this returns the top-level entries only
+(which are group items). Use \`.findChildrenOptions()\` on a group item to
+access the leaf columns nested within it.",
           "name": "findOptions",
-          "parameters": [],
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "MultiElementWrapper",
@@ -49057,6 +49131,33 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
     {
       "methods": [
         {
+          "description": "Returns all child option items nested under this item when it is a group.
+Returns \`null\` when this item is a leaf column (has no nested children).
+
+The children are the leaf-level \`ContentDisplayOptionWrapper\`s inside the group's
+nested \`InternalList\` — i.e. they already carry a drag handle and visibility toggle.",
+          "name": "findChildrenOptions",
+          "parameters": [
+            {
+              "defaultValue": "{}",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "option",
+              "typeName": "{ group?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ContentDisplayOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
           "description": "Returns the drag handle for the option item.",
           "name": "findDragHandle",
           "parameters": [],
@@ -49075,7 +49176,8 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
           },
         },
         {
-          "description": "Returns the visibility toggle for the option item.",
+          "description": "Returns the visibility toggle for the option item.
+Note that, despite its typings, this may return null for group items since groups do not have a visibility toggle.",
           "name": "findVisibilityToggle",
           "parameters": [],
           "returnType": {
