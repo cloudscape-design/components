@@ -699,74 +699,57 @@ describe('Content Display preference with groups', () => {
     expect(id2Option!.findDragHandle().getElement().getAttribute('aria-disabled')).toBe('false');
   });
 
-  it('findChildrenOptions returns nested options for a group item', () => {
+  it('renders correct nested leaf options within a group', () => {
     const wrapper = renderGroupedContentDisplay();
-    const options = wrapper.findOptions();
-    // Find a group option and check its children
-    for (const option of options) {
-      const children = option.findChildrenOptions();
-      if (children !== null) {
-        expect(children.length).toBeGreaterThan(0);
-        return;
-      }
-    }
+    // Group 1 contains Item 2 and Item 3
+    const element = wrapper.getElement();
+    expect(element.textContent).toContain('Group 1');
+    expect(element.textContent).toContain('Item 2');
+    expect(element.textContent).toContain('Item 3');
+    // Group 2 contains Item 4
+    expect(element.textContent).toContain('Group 2');
+    expect(element.textContent).toContain('Item 4');
   });
 
-  it('findChildrenOptions with group=true returns only group children', () => {
-    const wrapper = renderGroupedContentDisplay();
-    const options = wrapper.findOptions();
-    for (const option of options) {
-      const children = option.findChildrenOptions({ group: true });
-      if (children !== null && children.length > 0) {
-        // Found group children
-        expect(children.length).toBeGreaterThan(0);
-        return;
-      }
-    }
-  });
-
-  it('findChildrenOptions with group=false returns only leaf children', () => {
-    const wrapper = renderGroupedContentDisplay();
-    const options = wrapper.findOptions();
-    for (const option of options) {
-      const children = option.findChildrenOptions({ group: false });
-      if (children !== null && children.length > 0) {
-        expect(children.length).toBeGreaterThan(0);
-        return;
-      }
-    }
-  });
-
-  it('findOptions returns all items including groups', () => {
-    const wrapper = renderGroupedContentDisplay();
-    const allOptions = wrapper.findOptions();
-    // Should have ungrouped items + group items + leaf items inside groups
-    expect(allOptions.length).toBeGreaterThan(0);
-  });
-
-  it('toggling a grouped leaf option calls onChange with updated tree', () => {
+  it('toggling a grouped leaf option calls onConfirm with the updated tree structure', () => {
     const onConfirm = jest.fn();
-    const collectionPreferencesWrapper = renderCollectionPreferences({
-      contentDisplayPreference: groupedPreference,
-      preferences: { contentDisplay: groupedContentDisplay },
-      onConfirm,
-    });
+    const collectionPreferencesWrapper = renderCollectionPreferences(
+      {
+        contentDisplayPreference: groupedPreference,
+        preferences: { contentDisplay: groupedContentDisplay },
+        onConfirm,
+      },
+      true
+    );
     collectionPreferencesWrapper.findTriggerButton().click();
     const wrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 
-    // Toggle a leaf option visibility — use findOptions() without filter since :has() doesn't work in JSDOM
+    // Find id3 (Item 3, currently visible: false) and toggle it to visible
     const options = wrapper.findOptions();
-    const toggleableOption = options.find(opt => opt.findVisibilityToggle() !== null);
-    expect(toggleableOption).toBeDefined();
-    toggleableOption!.findVisibilityToggle().findNativeInput().click();
+    const id3Option = options.find(opt => opt.findLabel()?.getElement().textContent === 'Item 3');
+    expect(id3Option).toBeDefined();
+    id3Option!.findVisibilityToggle().findNativeInput().click();
 
     // Confirm
-    collectionPreferencesWrapper.findModal()!.findFooter()!.findAll('button')[1].click();
-    expect(onConfirm).toHaveBeenCalled();
-    const detail = onConfirm.mock.calls[0][0].detail;
-    expect(detail.contentDisplay).toBeDefined();
-    // Should contain group structure
-    const hasGroup = detail.contentDisplay.some((item: any) => item.type === 'group');
-    expect(hasGroup).toBe(true);
+    collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+    expect(onConfirm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          contentDisplay: [
+            { id: 'id1', visible: true },
+            {
+              type: 'group',
+              id: 'g1',
+              visible: true,
+              children: [
+                { id: 'id2', visible: true },
+                { id: 'id3', visible: true },
+              ],
+            },
+            { type: 'group', id: 'g2', visible: true, children: [{ id: 'id4', visible: true }] },
+          ],
+        },
+      })
+    );
   });
 });
