@@ -10,9 +10,6 @@ import InternalDropdown from './internal';
 
 export { DropdownProps };
 
-/**
- * @awsuiSystem core
- */
 export default function Dropdown({ style, ...props }: DropdownProps) {
   const baseComponentProps = useBaseComponent('Dropdown');
   return <InternalDropdown {...props} style={style} {...baseComponentProps} />;
