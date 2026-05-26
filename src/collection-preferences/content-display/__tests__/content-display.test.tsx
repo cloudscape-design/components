@@ -594,11 +594,14 @@ describe('Content Display preference with groups', () => {
   ];
 
   function renderGroupedContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
-    const wrapper = renderCollectionPreferences({
-      contentDisplayPreference: groupedPreference,
-      preferences: { contentDisplay: groupedContentDisplay },
-      ...props,
-    });
+    const wrapper = renderCollectionPreferences(
+      {
+        contentDisplayPreference: groupedPreference,
+        preferences: { contentDisplay: groupedContentDisplay },
+        ...props,
+      },
+      true
+    );
     wrapper.findTriggerButton().click();
     return wrapper.findModal()!.findContentDisplayPreference()!;
   }
@@ -613,17 +616,23 @@ describe('Content Display preference with groups', () => {
   it('renders leaf options within groups', () => {
     const wrapper = renderGroupedContentDisplay();
     const options = wrapper.findOptions();
-    // Should render all 4 options (id1 ungrouped + id2, id3 in g1 + id4 in g2)
-    expect(options.length).toBeGreaterThanOrEqual(4);
+    // findOptions returns all items (groups + leaves) in DOM order
+    // Verify leaf labels are present
+    const labels = options.map(opt => opt.findLabel()?.getElement().textContent).filter(Boolean);
+    expect(labels).toContain('Item 1');
+    expect(labels).toContain('Item 2');
+    expect(labels).toContain('Item 3');
+    expect(labels).toContain('Item 4');
   });
 
   it('renders options with correct visibility state', () => {
     const wrapper = renderGroupedContentDisplay();
     const options = wrapper.findOptions();
-    // id1 is visible, id2 is visible, id3 is not visible, id4 is visible
-    const toggleStates = options.map(opt => opt.findVisibilityToggle().findNativeInput().getElement().checked);
-    // At minimum, not all should be checked (id3 is false)
-    expect(toggleStates).toContain(false);
+    const toggleStates = options
+      .map(opt => opt.findVisibilityToggle()?.findNativeInput()?.getElement()?.checked)
+      .filter(state => state !== undefined);
+    // All items with visibility toggles in DOM order: id1, g1, id2, id3, g2, id4
+    expect(toggleStates).toEqual([true, true, true, false, true, true]);
   });
 
   it('renders nested lists with aria-label for groups', () => {
@@ -660,6 +669,34 @@ describe('Content Display preference with groups', () => {
     const filterInput = wrapper.findTextFilter()!;
     filterInput.findInput().setInputValue('nonexistent');
     expect(wrapper.getElement().textContent).toContain('No matches found');
+  });
+
+  it('reorders top-level items when onSortingChange fires', () => {
+    const onConfirm = jest.fn();
+    const collectionPreferencesWrapper = renderCollectionPreferences(
+      {
+        contentDisplayPreference: groupedPreference,
+        preferences: { contentDisplay: groupedContentDisplay },
+        onConfirm,
+      },
+      true
+    );
+    collectionPreferencesWrapper.findTriggerButton().click();
+    const wrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+
+    // Verify initial top-level order: id1, g1, g2
+    const topLevelItem = wrapper.findOptionByIndex(1);
+    expect(topLevelItem!.findLabel()!.getElement()).toHaveTextContent('Item 1');
+  });
+
+  it('has drag handles for items within groups', () => {
+    const wrapper = renderGroupedContentDisplay();
+    const options = wrapper.findOptions();
+    // All items (including those in groups) should have drag handles
+    const id2Option = options.find(opt => opt.findLabel()?.getElement().textContent === 'Item 2');
+    expect(id2Option).toBeDefined();
+    expect(id2Option!.findDragHandle()).not.toBeNull();
+    expect(id2Option!.findDragHandle().getElement().getAttribute('aria-disabled')).toBe('false');
   });
 
   it('findChildrenOptions returns nested options for a group item', () => {

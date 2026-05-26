@@ -23,80 +23,44 @@ const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>) =>
 
 describe('Collection preferences - Grouped Content Display', () => {
   test(
-    'renders group headers and leaf options',
+    'reorders a top-level item with drag and drop',
     setupTest(async page => {
-      const modal = page.wrapper.findModal().findContentDisplayPreference();
-      const options = modal.findOptions();
+      // Initial top-level order: Instance ID, Name, Configuration (group), Performance (group), Network (group), Monthly cost ($)
+      await page.containsOptionsInOrder(['Instance ID', 'Name', 'Configuration', 'Performance', 'Network']);
 
-      // Should have options rendered
-      const texts = await page.getElementsText(options.toSelector());
-      expect(texts.length).toBeGreaterThan(0);
-
-      // Should contain group labels
-      const content = await page.getText(modal.toSelector());
-      expect(content).toContain('Configuration');
-      expect(content).toContain('Performance');
-      expect(content).toContain('Network');
-    })
-  );
-
-  test(
-    'toggles visibility of a leaf option within a group',
-    setupTest(async page => {
-      const modal = page.wrapper.findModal().findContentDisplayPreference();
-      const options = modal.findOptions();
-      const firstOption = options.get(1);
-      const toggle = firstOption.findVisibilityToggle().findNativeInput();
-
-      // Toggle visibility
-      await page.click(toggle.toSelector());
-    })
-  );
-
-  test(
-    'reorders a group item with drag and drop',
-    setupTest(async page => {
-      const modal = page.wrapper.findModal().findContentDisplayPreference();
-      const options = modal.findOptions();
-
-      // Get initial order
-      const initialTexts = await page.getElementsText(options.toSelector());
-      expect(initialTexts.length).toBeGreaterThan(0);
-
-      // Drag first item down
-      const activeDragHandle = options.get(1).findDragHandle();
-      const targetDragHandle = options.get(3).findDragHandle();
+      // Drag first item (Instance ID) past the second (Name)
+      const activeDragHandle = page.findDragHandle(0);
+      const targetDragHandle = page.findDragHandle(1);
       await page.dragAndDropTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
 
-      // Order should have changed
-      const newTexts = await page.getElementsText(options.toSelector());
-      expect(newTexts).not.toEqual(initialTexts);
+      // Instance ID should now be after Name
+      await page.containsOptionsInOrder(['Name', 'Instance ID', 'Configuration', 'Performance', 'Network']);
     })
   );
 
   test(
-    'filters options within groups',
+    'reorders an individual item within a group with drag and drop',
     setupTest(async page => {
       const modal = page.wrapper.findModal().findContentDisplayPreference();
-      const filterInput = modal.findTextFilter().findInput().findNativeInput();
 
-      // Type a filter
-      await page.click(filterInput.toSelector());
-      await page.keys('Network');
+      // Configuration group is at top-level index 3 (1-based). Its children are: Instance type, Availability zone, State
+      const configGroup = modal.findOptions().get(3);
+      const children = configGroup.findChildrenOptions()!;
 
-      // Should show filtered results
-      const content = await page.getText(modal.toSelector());
-      expect(content).toContain('Network');
-    })
-  );
+      // Verify initial order within the group
+      const firstChildLabel = children.get(1).findLabel();
+      const secondChildLabel = children.get(2).findLabel();
+      expect(await page.getText(firstChildLabel.toSelector())).toBe('Instance type');
+      expect(await page.getText(secondChildLabel.toSelector())).toBe('Availability zone');
 
-  test(
-    'nested list has aria-label matching group name',
-    setupTest(async page => {
-      const modal = page.wrapper.findModal().findContentDisplayPreference();
-      // Verify nested lists exist by checking content
-      const content = await page.getText(modal.toSelector());
-      expect(content).toContain('Configuration');
+      // Drag first child (Instance type) past second child (Availability zone)
+      const activeDragHandle = children.get(1).findDragHandle();
+      const targetDragHandle = children.get(2).findDragHandle();
+      await page.dragAndDropTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
+
+      // Verify: Availability zone should now be first, Instance type second
+      expect(await page.getText(firstChildLabel.toSelector())).toBe('Availability zone');
+      expect(await page.getText(secondChildLabel.toSelector())).toBe('Instance type');
     })
   );
 });
