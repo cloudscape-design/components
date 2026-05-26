@@ -105,26 +105,28 @@ function GroupItem({
   sortDisabled: boolean;
 }) {
   return (
-    <InternalSpaceBetween size="xxs">
-      <div className={styles['content-display-group-header']}>
-        <InternalBox fontWeight="bold" display="inline">
-          {node.label}
-        </InternalBox>
-      </div>
-      {node.children.length > 0 && (
-        <div className={styles['content-display-group-children']}>
-          <HierarchicalContentDisplay
-            tree={node.children}
-            onToggle={onToggle}
-            onTreeChange={onChildrenChange}
-            i18nStrings={i18nStrings}
-            sortDisabled={sortDisabled}
-            ariaLabel={node.label}
-            parentGroupLabel={node.label}
-          />
+    <div data-item-type="group">
+      <InternalSpaceBetween size="xxs">
+        <div className={styles['content-display-group-header']}>
+          <InternalBox fontWeight="bold" display="inline">
+            {node.label}
+          </InternalBox>
         </div>
-      )}
-    </InternalSpaceBetween>
+        {node.children.length > 0 && (
+          <div className={styles['content-display-group-children']}>
+            <HierarchicalContentDisplay
+              tree={node.children}
+              onToggle={onToggle}
+              onTreeChange={onChildrenChange}
+              i18nStrings={i18nStrings}
+              sortDisabled={sortDisabled}
+              ariaLabel={node.label}
+              parentGroupLabel={node.label}
+            />
+          </div>
+        )}
+      </InternalSpaceBetween>
+    </div>
   );
 }
 
