@@ -12,9 +12,6 @@ export { IconProviderProps } from './interfaces';
 export { defineIcons } from './define-icons';
 export type { IconRegistry, IconMap } from './interfaces';
 
-/**
- * @awsuiSystem core
- */
 export default function IconProvider(props: IconProviderProps) {
   useBaseComponent('IconProvider');
   return <InternalIconProvider {...props} />;
