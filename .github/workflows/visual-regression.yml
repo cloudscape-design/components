@@ -142,9 +142,7 @@ jobs:
 
       - name: Enable SafariDriver
         if: matrix.browser == 'safari'
-        run: |
-          sudo safaridriver --enable
-          safaridriver --port 4444 &
+        run: sudo safaridriver --enable
 
       - name: Install dependencies
         run: npm i
@@ -163,10 +161,10 @@ jobs:
 
       # ── Run tests ─────────────────────────────────────────────────────────
       - name: Start test server (port 8080)
-        run: npx serve --no-clipboard --listen 8080 pages/lib/static-default &
+        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
 
       - name: Start baseline server (port 8081)
-        run: npx serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
+        run: npx --yes serve --no-clipboard --listen 8081 pages/lib/static-visual-baseline &
 
       - name: Wait for servers to be ready
         run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
