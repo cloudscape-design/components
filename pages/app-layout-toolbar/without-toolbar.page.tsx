@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { AppLayout, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween } from '~components';
+import { AppLayoutToolbar, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween } from '~components';
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
+import { Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';
+import { drawerLabels } from '../app-layout/utils/drawers';
+import { leftDrawerPayload } from '../app-layout/utils/external-global-left-panel-widget';
+import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
-import { drawerLabels } from './utils/drawers';
-import { leftDrawerPayload } from './utils/external-global-left-panel-widget';
-import appLayoutLabels from './utils/labels';
 
 registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
 
@@ -42,7 +42,7 @@ export default function WithDrawers() {
 
   return (
     <ScreenshotArea gutters={false}>
-      <AppLayout
+      <AppLayoutToolbar
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         ref={pageLayoutRef}
         content={
