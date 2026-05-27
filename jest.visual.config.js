@@ -23,5 +23,5 @@ module.exports = {
   globalTeardown: '<rootDir>/build-tools/visual/global-teardown.js',
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'visual', 'setup.js')],
   moduleFileExtensions: ['js', 'ts'],
-  testMatch: ['<rootDir>/test/visual/visual.test.ts'],
+  testMatch: ['<rootDir>/test/visual.test.ts'],
 };
