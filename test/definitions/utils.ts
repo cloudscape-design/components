@@ -40,8 +40,6 @@ function runSingleTest(testDef: TestDefinition) {
 
   test(
     testDef.description,
-    // useBrowser is not a React hook, despite the name
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useBrowser(windowSize, async browser => {
       const page = new ScreenshotPageObject(browser);
 
