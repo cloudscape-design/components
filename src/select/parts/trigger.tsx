@@ -30,6 +30,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   inFilteringToken?: 'root' | 'nested';
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
+  variant?: 'group-start' | 'group-middle' | 'group-end';
 }
 
 const Trigger = React.forwardRef(
@@ -51,6 +52,7 @@ const Trigger = React.forwardRef(
       disabled,
       readOnly,
       renderOption,
+      variant,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -145,6 +147,7 @@ const Trigger = React.forwardRef(
         hasCustomContent={hasCustomContent}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={ariaLabelledbyIds}
+        variant={variant}
       >
         {triggerContent}
       </ButtonTrigger>

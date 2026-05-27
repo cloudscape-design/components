@@ -223,4 +223,11 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: AttributeEditorProps.I18nStrings<T>;
+
+  variant?: 'condensed';
+
+  /**
+   * Vertical by default.
+   */
+  direction?: 'vertical' | 'horizontal';
 }

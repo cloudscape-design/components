@@ -191,6 +191,8 @@ export interface SelectProps extends BaseSelectProps {
    * Specifies a render function to render custom options in the dropdown menu or trigger.
    */
   renderOption?: SelectProps.SelectOptionItemRenderer;
+
+  variant?: 'group-start' | 'group-middle' | 'group-end';
 }
 
 export namespace SelectProps {
