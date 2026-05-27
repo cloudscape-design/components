@@ -65,13 +65,7 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(
-        styles.root,
-        baseProps.className,
-        isToolbar && styles['with-toolbar'],
-        expandIconPosition === 'end' && styles['expand-icon-end'],
-        collapsed && styles.collapsed
-      )}
+      className={clsx(styles.root, baseProps.className, isToolbar && styles['with-toolbar'])}
       ref={__internalRootRef}
     >
       {header && (

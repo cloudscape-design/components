@@ -16,9 +16,15 @@ $item-height: 28px;
 $item-margin-block: awsui.$space-scaled-xxs;
 $item-collapsed-gap: awsui.$space-xs;
 $item-padding-inline: awsui.$space-xs;
-$item-border-radius: awsui.$border-radius-item;
 $item-indent: calc(16px + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: 19px;
+
+@mixin item-radius {
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+}
 
 .root {
   @include styles.styles-reset;
@@ -40,6 +46,13 @@ $expandable-icon-negative-margin: 19px;
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+
+  &--collapsed {
+    padding-inline: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .header-link {
@@ -106,16 +119,10 @@ $expandable-icon-negative-margin: 19px;
   &--first {
     margin-block-start: 0;
   }
-}
 
-// When the navigation is collapsed or its expand icons are at the end, the
-// "navigation gutter" on the inline-start (where carets sit by default) is
-// no longer needed. Switch the start padding from $space-panel-nav-left to
-// $space-panel-side-left so the root list uses the symmetric
-// `space-panel-side-*` pair on both sides.
-.collapsed > .list-container > .list-variant-root,
-.expand-icon-end > .list-container > .list-variant-root {
-  padding-inline-start: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
+  &--symmetric {
+    padding-inline-start: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
+  }
 }
 
 .list-variant-expandable-link-group {
@@ -140,8 +147,7 @@ $expandable-icon-negative-margin: 19px;
 
 .list-variant-section-group {
   margin-block: 0;
-  margin-inline-start: calc(-1 * #{$item-padding-inline});
-  margin-inline-end: 0;
+  margin-inline: calc(-1 * #{$item-padding-inline});
   padding-block: 0;
   padding-inline: 0;
 }
@@ -155,45 +161,62 @@ $expandable-icon-negative-margin: 19px;
   padding-block: 0;
   padding-inline: $item-padding-inline;
   list-style: none;
-  border-start-start-radius: $item-border-radius;
-  border-start-end-radius: $item-border-radius;
-  border-end-start-radius: $item-border-radius;
-  border-end-end-radius: $item-border-radius;
   @include styles.with-motion {
-    transition:
-      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
-      margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
   }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
   }
+
+  &--collapsed {
+    margin-block: $item-collapsed-gap;
+    display: flex;
+    justify-content: center;
+    padding-block: 0;
+    padding-inline: 0;
+    @include styles.with-motion {
+      transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+    }
+  }
 }
 
 // ==========================================================================
-// Sections and expandable link groups
+// Sections and expandable link groups (InternalExpandableSection)
 // ==========================================================================
 .section,
 .expandable-link-group {
   margin-inline-start: calc(-1 * #{$expandable-icon-negative-margin});
-  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
   & > div {
     padding-block: 0;
     padding-inline: 0;
     &:first-child {
+      display: grid;
       align-items: center;
+      min-block-size: $item-height;
     }
   }
 
-  &--no-ident {
+  &--no-ident,
+  &--expand-icon-end {
     margin-inline-start: 0;
   }
 }
 
 .expandable-link-group > div:first-child {
+  @include item-radius;
+  display: flex;
   padding-inline: $item-padding-inline;
   margin-inline: calc(-1 * #{$item-padding-inline});
+}
+
+.expandable-link-group--expand-icon-end {
+  margin-inline-end: calc(-2 * #{$item-padding-inline});
+}
+
+.expandable-link-group-active > div:first-child {
+  background-color: color-mix(in srgb, #{awsui.$color-background-item-selected} 50%, transparent);
 }
 
 .section {
@@ -205,16 +228,6 @@ $expandable-icon-negative-margin: 19px;
   .list-variant-root--first > .list-item:first-child > & {
     margin-block-start: 0px;
   }
-}
-
-// When the expand icon is at the end, there's no caret in the gutter, so we
-// don't need the negative-margin / inner-list-padding pair that lets the caret
-// sit outside the section while keeping items aligned with siblings. Removing
-// both leaves the section header at the natural parent-list position (aligned
-// with section-group titles) and the items at the same column as before.
-.section--expand-icon-end,
-.expandable-link-group--expand-icon-end {
-  margin-inline-start: 0;
 }
 
 // ==========================================================================
@@ -237,14 +250,18 @@ $expandable-icon-negative-margin: 19px;
 }
 
 // ==========================================================================
-// Links — all links use $item-height for consistent row sizing.
+// Links — all links use $item-height for consistent row sizing and collapse icon size.
 // ==========================================================================
 .link {
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
   display: inline-flex;
   min-block-size: $item-height;
+  min-inline-size: $item-height;
+  padding-inline: $item-padding-inline;
+  margin-inline: calc(-1 * #{$item-padding-inline});
   align-items: center;
+  @include item-radius;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -253,12 +270,28 @@ $expandable-icon-negative-margin: 19px;
       background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
       color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
   }
-}
 
-.link-active {
-  font-weight: awsui.$font-wayfinding-link-active-weight;
-  @include styles.font-smoothing;
-  color: awsui.$color-text-accent;
+  &--active {
+    font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
+    color: awsui.$color-text-accent;
+    &.link--pill {
+      background-color: color-mix(in srgb, #{awsui.$color-background-item-selected} 50%, transparent);
+      color: awsui.$color-item-selected;
+    }
+  }
+
+  &--collapsed {
+    padding-block: 0;
+    padding-inline: 0;
+    margin-inline: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &--pill {
+    display: flex;
+  }
 }
 
 .header-link,
@@ -305,68 +338,19 @@ $expandable-icon-negative-margin: 19px;
 .divider {
   border-block: none;
   border-inline: none;
-}
-
-.divider-default {
-  margin-block: awsui.$space-scaled-2x-xl;
-  margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-}
-
-.divider-header {
-  margin-block: 0;
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
-  .with-toolbar > & {
-    border-color: transparent;
+  &-default {
+    margin-block: awsui.$space-scaled-2x-xl;
+    margin-inline: calc(-1 * #{awsui.$space-panel-divider-margin-horizontal});
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    &.divider-collapsed {
+      margin-block: awsui.$space-scaled-2x-m;
+    }
   }
-}
-
-// ==========================================================================
-// Highlighted variant
-// ==========================================================================
-
-.link-variant-highlighted {
-  padding-inline: $item-padding-inline;
-  margin-inline: calc(-1 * #{$item-padding-inline});
-  display: flex;
-  min-inline-size: $item-height;
-  &.link-active {
-    color: awsui.$color-item-selected;
+  &-header {
+    margin-block: 0;
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
+    .with-toolbar > & {
+      border-color: transparent;
+    }
   }
-}
-
-.link-variant-highlighted.link-active,
-.expandable-link-group-active > div:first-child {
-  background-color: color-mix(in srgb, #{awsui.$color-background-item-selected} 50%, transparent);
-  border-start-start-radius: $item-border-radius;
-  border-start-end-radius: $item-border-radius;
-  border-end-start-radius: $item-border-radius;
-  border-end-end-radius: $item-border-radius;
-}
-
-// Collapsed state: center icons with uniform padding, reset link padding.
-.collapsed > .list-container > .list-variant-root > .list-item {
-  margin-block: $item-collapsed-gap;
-  display: flex;
-  justify-content: center;
-  padding-block: 0;
-  padding-inline: 0;
-  @include styles.with-motion {
-    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
-  }
-
-  > .link {
-    padding-block: 0;
-    padding-inline: 0;
-    margin-inline: 0;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.collapsed > .header {
-  padding-inline: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

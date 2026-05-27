@@ -68,7 +68,7 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
 
   return (
     <>
-      <h2 className={styles.header}>
+      <h2 className={clsx(styles.header, collapsed && styles['header--collapsed'])}>
         <a
           href={definition.href}
           className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
@@ -153,7 +153,7 @@ export function NavigationItemsList({
         lists[dividerIndex] = {
           element: (
             <div data-itemid={`item-${itemid}`}>
-              <Divider variant="default" />
+              <Divider variant="default" collapsed={collapsed} />
             </div>
           ),
         };
@@ -170,10 +170,7 @@ export function NavigationItemsList({
             <li
               key={index}
               data-itemid={`item-${itemid}`}
-              className={clsx(
-                styles['list-item'],
-                highlightVariant === 'highlighted' && styles['list-item-variant-highlighted']
-              )}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
             >
               <Link
                 definition={item}
@@ -192,7 +189,11 @@ export function NavigationItemsList({
       case 'section': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+            >
               <Section
                 definition={item}
                 activeHref={activeHref}
@@ -212,7 +213,11 @@ export function NavigationItemsList({
       case 'section-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+            >
               <SectionGroup
                 definition={item}
                 activeHref={activeHref}
@@ -231,7 +236,11 @@ export function NavigationItemsList({
       case 'link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+            >
               <LinkGroup
                 definition={item}
                 activeHref={activeHref}
@@ -250,7 +259,11 @@ export function NavigationItemsList({
       case 'expandable-link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li
+              key={index}
+              data-itemid={`item-${itemid}`}
+              className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}
+            >
               <ExpandableLinkGroup
                 definition={item}
                 activeHref={activeHref}
@@ -276,16 +289,12 @@ export function NavigationItemsList({
         if (list.items) {
           return list.items.length > 0;
         }
-        // Divider — keep only if previous kept entry was not also a divider.
-        for (let i = index - 1; i >= 0; i--) {
-          if (lists[i].items && lists[i].items!.length > 0) {
-            return true;
-          }
-          if (!lists[i].items) {
-            return false;
-          }
-        }
-        return true;
+        // Divider — skip if preceded by another divider or empty segment.
+        const prevVisible = lists
+          .slice(0, index)
+          .reverse()
+          .find(l => !l.items || l.items.length > 0);
+        return !prevVisible || (prevVisible.items !== undefined && prevVisible.items.length > 0);
       })
     : lists;
 
@@ -298,6 +307,8 @@ export function NavigationItemsList({
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
+                [styles['list-variant-root--symmetric']]:
+                  list.listVariant === 'root' && (collapsed || expandIconPosition === 'end'),
               })}
             >
               {list.element}
@@ -309,6 +320,8 @@ export function NavigationItemsList({
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
+                [styles['list-variant-root--symmetric']]:
+                  list.listVariant === 'root' && (collapsed || expandIconPosition === 'end'),
                 [styles[`expand-icon-end`]]: expandIconPosition === 'end',
               })}
             >
@@ -324,12 +337,13 @@ export function NavigationItemsList({
 interface DividerProps {
   variant: 'default' | 'header';
   isPresentational?: boolean;
+  collapsed?: boolean;
 }
 
-function Divider({ variant = 'default', isPresentational = false }: DividerProps) {
+function Divider({ variant = 'default', isPresentational = false, collapsed }: DividerProps) {
   return (
     <hr
-      className={clsx(styles.divider, styles[`divider-${variant}`])}
+      className={clsx(styles.divider, styles[`divider-${variant}`], collapsed && styles['divider-collapsed'])}
       role={isPresentational ? 'presentation' : undefined}
     />
   );
@@ -422,8 +436,9 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, highlig
         ref={collapsed ? collapsedTooltip.triggerRef : undefined}
         href={definition.href}
         className={clsx(styles.link, {
-          [styles['link-active']]: isActive,
-          [styles['link-variant-highlighted']]: highlightVariant === 'highlighted',
+          [styles['link--active']]: isActive,
+          [styles['link--collapsed']]: collapsed,
+          [styles['link--pill']]: highlightVariant === 'highlighted',
         })}
         target={definition.external ? '_blank' : undefined}
         rel={definition.external ? 'noopener noreferrer' : undefined}
