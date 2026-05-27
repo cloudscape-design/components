@@ -67,9 +67,6 @@ export function setGlobalTheme(theme: Theme): void {
 }
 
 function getGlobalTheme(): Theme | undefined {
-  if (typeof window === 'undefined') {
-    return undefined;
-  }
   const topWindow = getTopWindow();
   return topWindow[themeStorageKey];
 }
