@@ -45,6 +45,12 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
+  selectionControllerItems?: ReadonlyArray<
+    TableProps.SelectionControllerItem | TableProps.SelectionControllerItemGroup
+  >;
+  onSelectionControllerItemClick?: (detail: TableProps.SelectionControllerItemClickDetail) => void;
+  selectionControllerAriaLabel?: string;
+  loading?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -77,6 +83,10 @@ const Thead = React.forwardRef(
       resizerTooltipText,
       isExpandable,
       setLastUserAction,
+      selectionControllerItems,
+      onSelectionControllerItemClick,
+      selectionControllerAriaLabel,
+      loading,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -112,9 +122,14 @@ const Thead = React.forwardRef(
               {...commonCellProps}
               focusedComponent={focusedComponent}
               columnId={selectionColumnId}
+              resizableStyle={getColumnStyles(sticky, selectionColumnId)}
               getSelectAllProps={getSelectAllProps}
               onFocusMove={onFocusMove}
               singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+              selectionControllerItems={selectionControllerItems}
+              onSelectionControllerItemClick={onSelectionControllerItemClick}
+              selectionControllerAriaLabel={selectionControllerAriaLabel}
+              loading={loading}
             />
           ) : null}
 
