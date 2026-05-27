@@ -671,12 +671,21 @@ describe('Content Display preference with groups', () => {
     expect(wrapper.getElement().textContent).toContain('No matches found');
   });
 
-  it('reorders top-level items when onSortingChange fires', () => {
+  it('reorders top-level items via keyboard drag and drop', async () => {
     const onConfirm = jest.fn();
     const collectionPreferencesWrapper = renderCollectionPreferences(
       {
-        contentDisplayPreference: groupedPreference,
-        preferences: { contentDisplay: groupedContentDisplay },
+        contentDisplayPreference: {
+          ...groupedPreference,
+          groups: [{ id: 'g1', label: 'Group 1' }],
+        },
+        preferences: {
+          contentDisplay: [
+            { id: 'id1', visible: true },
+            { type: 'group', id: 'g1', visible: true, children: [] },
+            { id: 'id2', visible: true },
+          ],
+        },
         onConfirm,
       },
       true
@@ -684,9 +693,27 @@ describe('Content Display preference with groups', () => {
     collectionPreferencesWrapper.findTriggerButton().click();
     const wrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 
-    // Verify initial top-level order: id1, g1, g2
-    const topLevelItem = wrapper.findOptionByIndex(1);
-    expect(topLevelItem!.findLabel()!.getElement()).toHaveTextContent('Item 1');
+    const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+    pressKey(dragHandle, 'Space');
+    await expectAnnouncement('Picked up item at position 1 of 3');
+    pressKey(dragHandle, 'ArrowDown');
+    await expectAnnouncement('Moving item to position 2 of 3');
+    pressKey(dragHandle, 'Space');
+    await expectAnnouncement('Item moved from position 1 to position 2 of 3');
+
+    // Confirm and verify reorder
+    collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+    expect(onConfirm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          contentDisplay: [
+            { type: 'group', id: 'g1', visible: true, children: [] },
+            { id: 'id1', visible: true },
+            { id: 'id2', visible: true },
+          ],
+        },
+      })
+    );
   });
 
   it('has drag handles for items within groups', () => {
