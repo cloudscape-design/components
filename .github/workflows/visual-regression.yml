@@ -142,7 +142,9 @@ jobs:
 
       - name: Enable SafariDriver
         if: matrix.browser == 'safari'
-        run: sudo safaridriver --enable
+        run: |
+          sudo safaridriver --enable
+          safaridriver --port 4444 &
 
       - name: Install dependencies
         run: npm i
