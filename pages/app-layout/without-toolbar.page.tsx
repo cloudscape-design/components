@@ -6,18 +6,19 @@ import { AppLayout, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
-import { Containers, CustomDrawerContent } from '../app-layout/utils/content-blocks';
-import { drawerLabels } from '../app-layout/utils/drawers';
-import { leftDrawerPayload } from '../app-layout/utils/external-global-left-panel-widget';
-import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
+import { drawerLabels } from './utils/drawers';
+import { leftDrawerPayload } from './utils/external-global-left-panel-widget';
+import appLayoutLabels from './utils/labels';
 
-registerLeftDrawer(leftDrawerPayload);
+registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
 
-export default function WithoutToolbarPage() {
+export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(true);
   const pageLayoutRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
   const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
@@ -72,6 +73,15 @@ export default function WithoutToolbarPage() {
                 <SpaceBetween size="xs">
                   <Button
                     onClick={() => {
+                      setIsNavigationOpen(current => !current);
+                      pageLayoutRef.current?.focusNavigation();
+                    }}
+                  >
+                    Toggle navigation
+                  </Button>
+
+                  <Button
+                    onClick={() => {
                       setActiveDrawerId('pro-help');
                       pageLayoutRef.current?.focusActiveDrawer();
                     }}
@@ -111,6 +121,9 @@ export default function WithoutToolbarPage() {
         tools={<Info helpPathSlug={helpPathSlug} />}
         toolsOpen={isToolsOpen}
         navigationHide={true}
+        navigationOpen={isNavigationOpen}
+        navigation={<Navigation />}
+        onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
         {...drawersProps}
       />
     </ScreenshotArea>

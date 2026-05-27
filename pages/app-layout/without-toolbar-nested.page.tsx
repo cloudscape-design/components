@@ -6,13 +6,13 @@ import { AppLayoutToolbar, Button, ContentLayout, Header, HelpPanel, Link, Space
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
-import { Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';
-import { drawerLabels } from '../app-layout/utils/drawers';
-import { leftDrawerPayload } from '../app-layout/utils/external-global-left-panel-widget';
-import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
+import { drawerLabels } from './utils/drawers';
+import { leftDrawerPayload } from './utils/external-global-left-panel-widget';
+import appLayoutLabels from './utils/labels';
 
-registerLeftDrawer(leftDrawerPayload);
+registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
