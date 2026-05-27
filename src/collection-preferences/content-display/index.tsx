@@ -87,7 +87,7 @@ interface HierarchicalContentDisplayProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   i18nStrings: SortableAreaProps.DndAreaI18nStrings;
-  sortDisabled?: boolean;
+  sortDisabled: boolean;
   parentGroupLabel?: string;
 }
 
@@ -138,7 +138,7 @@ function HierarchicalContentDisplay({
   ariaLabelledby,
   ariaDescribedby,
   i18nStrings,
-  sortDisabled = false,
+  sortDisabled,
   parentGroupLabel,
 }: HierarchicalContentDisplayProps) {
   return (

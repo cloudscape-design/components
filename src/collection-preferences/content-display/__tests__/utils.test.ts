@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { collectVisibleIds } from '../../../../lib/components/collection-preferences/utils';
 import {
   buildOptionTree,
   getFilteredOptions,
@@ -297,5 +298,36 @@ describe('getFilteredOptions', () => {
     ];
     const result = getFilteredOptions(options, 'bet');
     expect(result).toEqual([{ id: 'b', label: 'Beta', visible: true }]);
+  });
+});
+
+describe('collectVisibleIds', () => {
+  it('collects visible leaf ids from grouped content display', () => {
+    const items = [
+      { id: 'id1', visible: true },
+      {
+        type: 'group' as const,
+        id: 'g1',
+        visible: true,
+        children: [
+          { id: 'id2', visible: true },
+          { id: 'id3', visible: false },
+        ],
+      },
+      { type: 'group' as const, id: 'g2', visible: true, children: [{ id: 'id4', visible: true }] },
+    ];
+    expect(collectVisibleIds(items, true)).toEqual(['id1', 'id2', 'id4']);
+  });
+
+  it('excludes children of non-visible groups', () => {
+    const items = [
+      {
+        type: 'group' as const,
+        id: 'g1',
+        visible: false,
+        children: [{ id: 'id1', visible: true }],
+      },
+    ];
+    expect(collectVisibleIds(items, true)).toEqual([]);
   });
 });
