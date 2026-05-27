@@ -2,6 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
+import {
+  createAlertContext,
+  createAppLayoutToolbarContext,
+  createFlashbarContext,
+  createHeaderContext,
+  createTopNavigationContext,
+} from '../utils/contexts.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
 import { buildVisualRefresh } from '../visual-refresh/index.js';
@@ -13,7 +20,14 @@ const modes = [
 ];
 
 // One Theme starts from the full visual-refresh token set and layers overrides on top.
-const overrides: Array<StyleDictionary.CategoryModule> = [await import('./colors.js')];
+const overrides: Array<StyleDictionary.CategoryModule> = [
+  await import('./color-palette.js'),
+  await import('./colors.js'),
+  await import('./borders.js'),
+  await import('./typography.js'),
+  await import('./spacing.js'),
+  await import('./sizes.js'),
+];
 
 const builder = new ThemeBuilder('one-theme', '.awsui-one-theme', modes);
 
@@ -28,6 +42,13 @@ overrides.forEach(({ tokens, mode: modeId, referenceTokens }) => {
   }
   builder.addTokens(tokens, mode);
 });
+
+// Layer 3: One Theme context overrides.
+builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
+builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
+builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
+builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
+builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
 
 const theme = builder.build();
 export default theme;
