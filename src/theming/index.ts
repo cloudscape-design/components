@@ -49,12 +49,12 @@ interface WindowWithTheme extends Window {
 function getTopWindow(): WindowWithTheme {
   try {
     if (window.top) {
-      return window.top as unknown as WindowWithTheme;
+      return window.top as WindowWithTheme;
     }
   } catch {
     // Cross-origin access error — fall back to current window.
   }
-  return window as unknown as WindowWithTheme;
+  return window as WindowWithTheme;
 }
 
 export function setGlobalTheme(theme: Theme): void {
