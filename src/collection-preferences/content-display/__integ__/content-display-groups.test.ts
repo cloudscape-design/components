@@ -28,12 +28,13 @@ describe('Collection preferences - Grouped Content Display', () => {
       const modal = page.wrapper.findModal().findContentDisplayPreference();
       const options = modal.findOptions();
 
+      // findLabel() on group items returns the first nested child's label
       expect(await page.getOptionLabels(options, 6)).toEqual([
         'Instance ID',
         'Name',
-        'Configuration',
-        'Performance',
-        'Network',
+        'Instance type',
+        'CPU (%)',
+        'Network in (MB/s)',
         'Monthly cost ($)',
       ]);
 
@@ -45,9 +46,9 @@ describe('Collection preferences - Grouped Content Display', () => {
       expect(await page.getOptionLabels(options, 6)).toEqual([
         'Name',
         'Instance ID',
-        'Configuration',
-        'Performance',
-        'Network',
+        'Instance type',
+        'CPU (%)',
+        'Network in (MB/s)',
         'Monthly cost ($)',
       ]);
     })
