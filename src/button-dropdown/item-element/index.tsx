@@ -233,7 +233,7 @@ const MenuItemContent = ({
       <div className={styles['content-wrapper']}>
         <div className={styles['main-row']}>
           <div>
-            <span>{item.text}</span>
+            {item.text}
             {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
           </div>
           {item.labelTag && (

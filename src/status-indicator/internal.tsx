@@ -118,7 +118,7 @@ export default function StatusIndicator({
           display={__display}
           size={__size}
         />
-        <span>{children}</span>
+        {children}
       </span>
     </WithNativeAttributes>
   );

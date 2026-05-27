@@ -61,7 +61,7 @@ const CategoryElement = ({
                   <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
                 </span>
               )}
-              <span>{item.text}</span>
+              {item.text}
             </span>
           )}
         </p>

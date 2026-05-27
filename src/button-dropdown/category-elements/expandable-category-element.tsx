@@ -115,7 +115,7 @@ const ExpandableCategoryElement = ({
               <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
             </span>
           )}
-          <span>{item.text}</span>
+          {item.text}
           <span className={clsx(styles['expand-icon'], styles['expand-icon-right'])}>
             <InternalIcon name="caret-down-filled" />
           </span>
