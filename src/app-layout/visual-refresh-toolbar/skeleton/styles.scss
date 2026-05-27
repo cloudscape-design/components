@@ -65,48 +65,6 @@
       min-content;
     grid-template-rows: min-content min-content 1fr min-content min-content;
 
-    &.has-no-toolbar {
-      &::before {
-        @include theming.dark-mode-only {
-          content: '';
-          grid-row: 1 / -1;
-          grid-column: 2 / -2;
-          pointer-events: none;
-          z-index: constants.$drawer-z-index + 1;
-          border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-        }
-      }
-
-      &.has-open-left-panel::before {
-        @include theming.dark-mode-only {
-          border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-          border-start-start-radius: awsui.$space-xxs;
-        }
-      }
-
-      &.has-open-left-panel::after {
-        content: '';
-        grid-row: 2;
-        grid-column: 2;
-        inline-size: 5px;
-        block-size: 5px;
-        margin-block-end: -5px;
-        align-self: start;
-        justify-self: start;
-        background: radial-gradient(
-          circle at 100% 100%,
-          awsui.$color-background-layout-main 70%,
-          constants.$ai-drawer-background 70%
-        );
-        z-index: constants.$drawer-z-index + 1;
-        pointer-events: none;
-
-        @include theming.dark-mode-only {
-          display: none;
-        }
-      }
-    }
-
     &.has-adaptive-widths-default {
       #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
     }
@@ -254,6 +212,64 @@
   block-size: 42px;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   box-sizing: border-box;
+}
+
+/**
+ * A zero-height sticky element placed in the toolbar grid area when the toolbar is absent
+ * and the left panel (AI drawer) is open. It reuses the toolbar's pseudo-element technique
+ * to render the border-radius corner between the AI drawer and the content area.
+ * In light mode: inverse radius trick (dark square + white square with radius).
+ * In dark mode: a vertical border line with a rounded top corner + top border on the element itself.
+ */
+.pseudo-toolbar {
+  grid-area: toolbar;
+  position: sticky;
+  z-index: constants.$toolbar-z-index;
+
+  &:before {
+    @include theming.dark-mode-only {
+      content: '';
+      position: absolute;
+      inline-size: awsui.$border-divider-section-width;
+      block-size: 100vh;
+      background: awsui.$color-border-layout;
+    }
+  }
+}
+
+.pseudo-toolbar-content {
+  position: relative;
+
+  @include theming.dark-mode-only {
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    border-start-start-radius: awsui.$space-xxs;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 5px;
+    block-size: 5px;
+    background: constants.$ai-drawer-background;
+
+    @include theming.dark-mode-only {
+      inset-block-start: -1px;
+    }
+  }
+
+  &::after {
+    background-color: awsui.$color-background-layout-toolbar;
+    border-start-start-radius: awsui.$space-xxs;
+
+    @include theming.dark-mode-only {
+      background-color: transparent;
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+  }
 }
 
 .notifications-container {
