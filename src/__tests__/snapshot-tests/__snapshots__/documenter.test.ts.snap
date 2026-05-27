@@ -9640,9 +9640,6 @@ exports[`Components definition for container matches the snapshot: container 1`]
       "description": "Determines whether the container footer has padding. If \`true\`, removes the default padding from the footer.",
       "name": "disableFooterPaddings",
       "optional": true,
-      "systemTags": [
-        "core",
-      ],
       "type": "boolean",
     },
     {
