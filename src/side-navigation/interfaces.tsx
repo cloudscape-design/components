@@ -167,14 +167,14 @@ export namespace SideNavigationProps {
   export type Variant = 'default' | 'highlighted';
 
   export interface Logo {
-    src: string;
+    src?: string;
     alt?: string;
+    svg?: React.ReactNode;
   }
   export interface Header {
     text?: string;
     href: string;
     logo?: Logo;
-    icon?: React.ReactNode;
   }
 
   export interface Divider {

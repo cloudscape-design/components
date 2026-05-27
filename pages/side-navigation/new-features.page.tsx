@@ -292,6 +292,7 @@ const ITEMS: SideNavigationProps.Item[] = [
     type: 'expandable-link-group',
     text: 'Expandable link group',
     href: '#/exp-link-group-1',
+    icon: <Icon name="folder-open" />,
     items: [
       { type: 'link', icon: <Icon name="file" />, text: 'Page 7', href: '#/page7' },
       { type: 'link', icon: <Icon name="file" />, text: 'Page 8', href: '#/page8' },
@@ -312,7 +313,6 @@ const ITEMS: SideNavigationProps.Item[] = [
       {
         type: 'expandable-link-group',
         text: 'Expandable link group',
-        icon: <Icon name="folder-open" />,
         href: '#/exp-link-group',
         items: [
           { type: 'link', icon: <Icon name="file" />, text: 'Page 9', href: '#/page9' },
@@ -417,7 +417,9 @@ export default function SideNavigationIconsPage() {
     >
       <style>{`
         [class*="list-item"] { margin-block: ${itemGap}px !important; }
-        [class*="list-item"] > a { min-block-size: ${itemHeight}px !important; }
+        [class*="list-item"] > a { min-block-size: ${itemHeight}px !important; min-inline-size: ${itemHeight}px !important; }
+        [class*="expandable-link-group"] > div:first-child {min-block-size: ${itemHeight}px !important; }
+        [class*="section"] > div:first-child {min-block-size: ${itemHeight}px !important; }
         [class*="section-group-title"] { block-size: ${itemHeight}px !important; line-height: ${itemHeight}px !important; }
       `}</style>
       <SpaceBetween direction="horizontal" size="l">

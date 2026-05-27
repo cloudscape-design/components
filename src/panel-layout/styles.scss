@@ -30,6 +30,17 @@
 .panel {
   display: flex;
   flex-shrink: 0;
+  @include styles.with-motion {
+    transition: inline-size awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+  }
+  &-resizing {
+    @include styles.with-motion {
+      transition: none;
+    }
+    > .panel-content {
+      pointer-events: none;
+    }
+  }
   > .handle {
     display: flex;
     align-items: center;
@@ -58,6 +69,9 @@
   flex-shrink: 1;
   .display-panel-only > & {
     display: none;
+  }
+  .panel-resizing ~ & {
+    pointer-events: none;
   }
   @include focus-visible.when-visible {
     @include container-inner-focus-ring;

@@ -50,6 +50,13 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
     const resizeHandleRef = React.useRef<HTMLDivElement>(null);
     const panelRef = React.useRef<HTMLDivElement>(null);
     const [containerWidth, rootRef] = useContainerWidth();
+    const [isResizing, setIsResizing] = React.useState(false);
+    const [hasMounted, setHasMounted] = React.useState(false);
+
+    React.useEffect(() => {
+      const frame = requestAnimationFrame(() => setHasMounted(true));
+      return () => cancelAnimationFrame(frame);
+    }, []);
 
     React.useImperativeHandle(
       ref,
@@ -92,10 +99,20 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       handleRef: resizeHandleRef,
       position: resizeHandlePosition,
       onResize: size => {
+        setIsResizing(true);
         setPanelSize(size);
         fireNonCancelableEvent(onPanelResize, { totalSize: containerWidth, panelSize: size });
       },
     });
+
+    React.useEffect(() => {
+      if (!isResizing) {
+        return;
+      }
+      const onPointerUp = () => setIsResizing(false);
+      document.addEventListener('pointerup', onPointerUp);
+      return () => document.removeEventListener('pointerup', onPointerUp);
+    }, [isResizing]);
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef, ref);
 
@@ -145,7 +162,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       >
         {panelPosition === 'side-end' && wrappedMainContent}
         <div
-          className={clsx(styles.panel)}
+          className={clsx(styles.panel, (isResizing || !hasMounted) && styles['panel-resizing'])}
           ref={panelRef}
           style={display === 'all' ? { inlineSize: `${actualPanelSize}px` } : undefined}
         >

@@ -77,15 +77,24 @@ export function Header({ definition, activeHref, fireFollow, collapsed }: Header
           onClick={onClick}
           {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
         >
-          {definition.logo && (
-            <img
-              className={clsx(styles['header-logo'], {
-                [styles['header-logo--stretched']]: !definition.text || collapsed,
-              })}
-              {...definition.logo}
-            />
-          )}
-          {!definition.logo && <ItemIcon icon={definition.icon} collapsed={collapsed} />}
+          {definition.logo &&
+            (definition.logo.svg ? (
+              <span
+                className={clsx(styles['header-logo'], {
+                  [styles['header-logo--stretched']]: !definition.text || collapsed,
+                })}
+              >
+                {definition.logo.svg}
+              </span>
+            ) : (
+              <img
+                className={clsx(styles['header-logo'], {
+                  [styles['header-logo--stretched']]: !definition.text || collapsed,
+                })}
+                src={definition.logo.src}
+                alt={definition.logo.alt}
+              />
+            ))}
           {!collapsed && (
             <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
               {definition.text}
@@ -132,7 +141,6 @@ export function NavigationItemsList({
     const itemPosition = `${position ? `${position},` : ''}${itemid}`;
     // In collapsed mode, only selectable items are visible (links, link-groups, ELGs).
     // Sections and section-groups are non-selectable containers — skip them.
-    // Items without icons have nothing to render in collapsed mode.
     if (collapsed && (item.type === 'section' || item.type === 'section-group')) {
       return;
     }

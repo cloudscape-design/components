@@ -13,7 +13,8 @@
 // ==========================================================================
 $item-icon-text-gap: awsui.$space-xs;
 $item-height: 28px;
-$item-margin-block: awsui.$space-scaled-xxxs;
+$item-margin-block: awsui.$space-scaled-xxs;
+$item-collapsed-gap: awsui.$space-xs;
 $item-padding-inline: awsui.$space-xs;
 $item-border-radius: awsui.$border-radius-item;
 $item-indent: calc(16px + #{$item-icon-text-gap} - #{$item-padding-inline});
@@ -158,6 +159,11 @@ $expandable-icon-negative-margin: 19px;
   border-start-end-radius: $item-border-radius;
   border-end-start-radius: $item-border-radius;
   border-end-end-radius: $item-border-radius;
+  @include styles.with-motion {
+    transition:
+      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
+      margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+  }
   // Remove margin from first item in side nav, outer block margins are covered by list-container
   .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
@@ -242,6 +248,11 @@ $expandable-icon-negative-margin: 19px;
   font-weight: styles.$font-weight-normal;
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
+  @include styles.with-motion {
+    transition:
+      background-color awsui.$motion-duration-expressive awsui.$motion-easing-responsive,
+      color awsui.$motion-duration-expressive awsui.$motion-easing-expressive;
+  }
 }
 
 .link-active {
@@ -314,14 +325,11 @@ $expandable-icon-negative-margin: 19px;
 // Highlighted variant
 // ==========================================================================
 
-.list-item-variant-highlighted:has(.link-active) {
-  background-color: awsui.$color-background-item-selected;
-}
-
 .link-variant-highlighted {
   padding-inline: $item-padding-inline;
   margin-inline: calc(-1 * #{$item-padding-inline});
   display: flex;
+  min-inline-size: $item-height;
   &.link-active {
     color: awsui.$color-item-selected;
   }
@@ -329,9 +337,36 @@ $expandable-icon-negative-margin: 19px;
 
 .link-variant-highlighted.link-active,
 .expandable-link-group-active > div:first-child {
-  background-color: awsui.$color-background-item-selected;
+  background-color: color-mix(in srgb, #{awsui.$color-background-item-selected} 50%, transparent);
   border-start-start-radius: $item-border-radius;
   border-start-end-radius: $item-border-radius;
   border-end-start-radius: $item-border-radius;
   border-end-end-radius: $item-border-radius;
+}
+
+// Collapsed state: center icons with uniform padding, reset link padding.
+.collapsed > .list-container > .list-variant-root > .list-item {
+  margin-block: $item-collapsed-gap;
+  display: flex;
+  justify-content: center;
+  padding-block: 0;
+  padding-inline: 0;
+  @include styles.with-motion {
+    transition: margin awsui.$motion-duration-expressive awsui.$motion-easing-responsive;
+  }
+
+  > .link {
+    padding-block: 0;
+    padding-inline: 0;
+    margin-inline: 0;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.collapsed > .header {
+  padding-inline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
