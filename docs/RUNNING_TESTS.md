@@ -68,7 +68,7 @@ They compare permutation pages between the PR build and a baseline build of `mai
 
 1. The PR pages are built and served on port 8080.
 2. A git worktree of `origin/main` is created, its dependencies installed, and its pages built and served on port 8081.
-3. The single test runner (`test/visual/visual.test.ts`) iterates over all test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
+3. The single test runner (`test/visual.test.ts`) iterates over all test definitions, captures the `.screenshot-area` element from both servers for each test, and fails if any pixels differ.
 
 ### Running locally
 
