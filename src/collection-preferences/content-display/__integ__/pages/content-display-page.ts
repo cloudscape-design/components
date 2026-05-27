@@ -15,6 +15,24 @@ export default class ContentDisplayPageObject extends CollectionPreferencesPageO
     return true;
   }
 
+  async getOptionLabels(
+    options: { get(index: number): { findLabel(): { toSelector(): string } } },
+    count: number
+  ): Promise<string[]> {
+    const labels: string[] = [];
+    for (let i = 0; i < count; i++) {
+      labels.push(
+        await this.getText(
+          options
+            .get(i + 1)
+            .findLabel()
+            .toSelector()
+        )
+      );
+    }
+    return labels;
+  }
+
   async expectAnnouncement(announcement: string) {
     const liveRegion = await this.browser.$('[aria-live="assertive"]');
     // Using getHTML because getText returns an empty string if the live region is outside the viewport.
