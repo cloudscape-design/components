@@ -21,6 +21,7 @@ const modes = [
 
 // One Theme starts from the full visual-refresh token set and layers overrides on top.
 const overrides = [
+  await import('./color-palette.js'),
   await import('./colors.js'),
   await import('./typography.js'),
   await import('./borders.js'),
