@@ -45,8 +45,8 @@ export default function GlobalThemeIframesPage() {
         Set Theme B
       </button>
 
-      <iframe id="iframe-1" src={iframeHref} name="iframe-1" />
-      <iframe id="iframe-2" src={iframeHref} name="iframe-2" />
+      <iframe id="iframe-1" src={iframeHref} title="iframe-1" />
+      <iframe id="iframe-2" src={iframeHref} title="iframe-2" />
     </div>
   );
 }
