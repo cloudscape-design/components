@@ -69,7 +69,13 @@ export default function ContentDisplayPreference({
   };
 
   return (
-    <div className={styles[componentPrefix]} {...getAnalyticsInnerContextAttribute('contentDisplay')}>
+    <div
+      role="group"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      className={styles[componentPrefix]}
+      {...getAnalyticsInnerContextAttribute('contentDisplay')}
+    >
       <h3 className={getClassName('title')} id={titleId}>
         {i18n('contentDisplayPreference.title', title)}
       </h3>

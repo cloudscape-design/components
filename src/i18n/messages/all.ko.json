@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "열 기본 설정",
     "contentDisplayPreference.description": "열 표시 여부 및 순서를 사용자 지정합니다.",
     "contentDisplayPreference.dragHandleAriaLabel": "핸들 끌기",
-    "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하거나 이동을 취소하려면 Escape를 사용합니다.",
+    "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하고 이동을 취소하려면 Escape를 사용합니다. 스크린 리더에서 탐색 모드를 토글해야 할 수 있습니다.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total}개 위치에서 선택한 항목",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "재정렬 취소됨",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "열 필터링",

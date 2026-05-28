@@ -58,7 +58,7 @@ const DragHandleButton = forwardRef(
       // when it is being dragged.
       <div
         ref={useMergeRefs(ref, dragHandleRefObject)}
-        role={ariaValue ? 'slider' : 'application'}
+        role={ariaValue ? 'slider' : 'button'}
         tabIndex={0}
         className={clsx(
           className,
@@ -73,6 +73,7 @@ const DragHandleButton = forwardRef(
         aria-labelledby={ariaLabelledBy}
         aria-describedby={ariaDescribedby}
         aria-disabled={disabled}
+        aria-pressed={ariaValue ? undefined : active}
         aria-valuemax={ariaValue?.valueMax}
         aria-valuemin={ariaValue?.valueMin}
         aria-valuenow={ariaValue?.valueNow}

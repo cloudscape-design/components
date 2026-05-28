@@ -38,6 +38,16 @@ describe('Content Display preference', () => {
       expect(list.getAttribute('aria-describedby')).toBe(descriptionId);
     });
 
+    it('wraps content in a group role with aria-labelledby and aria-describedby', () => {
+      const wrapper = renderContentDisplay();
+      const titleId = wrapper.findTitle().getElement().id;
+      const descriptionId = wrapper.findDescription().getElement().id;
+      const group = wrapper.getElement().closest('[role="group"]')!;
+      expect(group).not.toBeNull();
+      expect(group.getAttribute('aria-labelledby')).toBe(titleId);
+      expect(group.getAttribute('aria-describedby')).toBe(descriptionId);
+    });
+
     it('displays list of options with correct semantics', () => {
       const wrapper = renderContentDisplay(undefined, true);
       const options = wrapper.findOptions();
