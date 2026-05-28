@@ -7,7 +7,7 @@ export const createTopNavigationContext = (tokens: TokenCategory<string, GlobalV
     id: 'top-navigation',
     selector: '.awsui-context-top-navigation',
     tokens,
-    defaultMode: 'dark',
+    inheritsMode: 'dark',
   };
 };
 
@@ -16,6 +16,7 @@ export const createCompactTableContext = (tokens: TokenCategory<string, GlobalVa
     id: 'compact-table',
     selector: '.awsui-context-compact-table',
     tokens,
+    inheritsMode: 'compact',
   };
 };
 
@@ -24,7 +25,7 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
     id: 'header',
     selector: '.awsui-context-content-header',
     tokens,
-    defaultMode: 'dark',
+    inheritsMode: 'dark',
   };
 };
 
