@@ -12,7 +12,6 @@ const EXCLUDED_PAGES = [
   'app-layout/multi-layout-global-drawer-child-layout',
   'app-layout/with-error-boundaries',
   'app-layout-toolbar/without-toolbar-nested',
-  'app-layout-toolbar/without-toolbar-nested-iframe',
 ];
 
 describe('A11y checks for app layout toolbar', () => {
