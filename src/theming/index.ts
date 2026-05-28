@@ -48,7 +48,7 @@ interface WindowWithTheme extends Window {
 
 function getTopWindow(): WindowWithTheme {
   try {
-    if (window.top) {
+    if (window.top && window.top.document) {
       return window.top as WindowWithTheme;
     }
   } catch {
