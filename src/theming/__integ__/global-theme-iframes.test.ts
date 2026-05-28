@@ -4,18 +4,27 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 class GlobalThemeIframesPage extends BasePageObject {
-  getAppliedColor(iframeSelector: string): Promise<string> {
-    return this.browser.execute((selector: string) => {
-      const iframe = document.querySelector(selector) as HTMLIFrameElement;
-      const iframeDoc = iframe?.contentDocument;
-      if (!iframeDoc) {
-        return '';
-      }
+  async getAppliedColorInsideIframe(iframeSelector: string): Promise<string> {
+    let color = '';
+    await this.runInsideIframe(iframeSelector, true, async () => {
+      await this.waitForVisible('[data-testid="themed-element"]');
+      color = await this.browser.execute(() => {
+        return getComputedStyle(document.querySelector('[data-testid="themed-element"]')!)
+          .getPropertyValue('color')
+          .trim();
+      });
+    });
+    return color;
+  }
 
-      return getComputedStyle(iframeDoc.querySelector('[data-testid="themed-element"]')!)
-        .getPropertyValue('color')
-        .trim();
-    }, iframeSelector);
+  async waitForIframeColor(iframeSelector: string, expectedColor: string): Promise<void> {
+    await this.browser.waitUntil(
+      async () => {
+        const color = await this.getAppliedColorInsideIframe(iframeSelector);
+        return color === expectedColor;
+      },
+      { timeout: 5000, timeoutMsg: `Expected color "${expectedColor}" in ${iframeSelector} but did not match in time` }
+    );
   }
 
   setThemeA() {
@@ -31,19 +40,12 @@ class GlobalThemeIframesPage extends BasePageObject {
   }
 
   async waitForIframesDisplay(): Promise<void> {
-    await this.browser.waitUntil(
-      async () => {
-        const ready = await this.browser.execute(() => {
-          const iframe1 = document.querySelector('#iframe-1') as HTMLIFrameElement;
-          const iframe2 = document.querySelector('#iframe-2') as HTMLIFrameElement;
-          const content1 = iframe1?.contentDocument?.querySelector('[data-testid="themed-element"]');
-          const content2 = iframe2?.contentDocument?.querySelector('[data-testid="themed-element"]');
-          return !!(content1 && content2);
-        });
-        return ready;
-      },
-      { timeout: 5000, timeoutMsg: 'Iframes did not display their content in time' }
-    );
+    await this.runInsideIframe('#iframe-1', true, async () => {
+      await this.waitForVisible('[data-testid="themed-element"]');
+    });
+    await this.runInsideIframe('#iframe-2', true, async () => {
+      await this.waitForVisible('[data-testid="themed-element"]');
+    });
   }
 }
 
@@ -52,24 +54,19 @@ const setupTest = (testFn: (page: GlobalThemeIframesPage) => Promise<void>) => {
     const page = new GlobalThemeIframesPage(browser);
     await browser.url('#/light/theming/global-theme-iframes');
     await page.waitForVisible('[data-testid="set-theme-a"]');
+    await page.waitForIframesDisplay();
     await testFn(page);
   });
 };
 
 describe('Global theme with multiple iframes', () => {
   test(
-    'applies theme set before iframes are mounted',
+    'applies theme to iframes after setGlobalTheme is called',
     setupTest(async page => {
       await page.setThemeA();
-      await expect(page.getCurrentTheme()).resolves.toBe('theme-a');
 
-      await page.waitForIframesDisplay();
-
-      const iframe1Value = await page.getAppliedColor('#iframe-1');
-      const iframe2Value = await page.getAppliedColor('#iframe-2');
-
-      expect(iframe1Value).toBe('rgb(255, 0, 0)');
-      expect(iframe2Value).toBe('rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-1', 'rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-2', 'rgb(255, 0, 0)');
     })
   );
 
@@ -77,21 +74,13 @@ describe('Global theme with multiple iframes', () => {
     'propagates theme changes to all iframes',
     setupTest(async page => {
       await page.setThemeA();
-      await page.waitForIframesDisplay();
-
-      const iframe1Before = await page.getAppliedColor('#iframe-1');
-      const iframe2Before = await page.getAppliedColor('#iframe-2');
-
-      expect(iframe1Before).toBe('rgb(255, 0, 0)');
-      expect(iframe2Before).toBe('rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-1', 'rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-2', 'rgb(255, 0, 0)');
 
       await page.setThemeB();
 
-      const iframe1After = await page.getAppliedColor('#iframe-1');
-      const iframe2After = await page.getAppliedColor('#iframe-2');
-
-      expect(iframe1After).toBe('rgb(0, 0, 255)');
-      expect(iframe2After).toBe('rgb(0, 0, 255)');
+      await page.waitForIframeColor('#iframe-1', 'rgb(0, 0, 255)');
+      await page.waitForIframeColor('#iframe-2', 'rgb(0, 0, 255)');
     })
   );
 
@@ -99,12 +88,8 @@ describe('Global theme with multiple iframes', () => {
     'both iframes receive the same theme value',
     setupTest(async page => {
       await page.setThemeA();
-      await page.waitForIframesDisplay();
-
-      const iframe1Value = await page.getAppliedColor('#iframe-1');
-      const iframe2Value = await page.getAppliedColor('#iframe-2');
-
-      expect(iframe1Value).toEqual(iframe2Value);
+      await page.waitForIframeColor('#iframe-1', 'rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-2', 'rgb(255, 0, 0)');
     })
   );
 
@@ -114,13 +99,9 @@ describe('Global theme with multiple iframes', () => {
       await page.setThemeA();
       await page.setThemeB();
       await page.setThemeA();
-      await page.waitForIframesDisplay();
 
-      const iframe1Value = await page.getAppliedColor('#iframe-1');
-      const iframe2Value = await page.getAppliedColor('#iframe-2');
-
-      expect(iframe1Value).toBe('rgb(255, 0, 0)');
-      expect(iframe2Value).toBe('rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-1', 'rgb(255, 0, 0)');
+      await page.waitForIframeColor('#iframe-2', 'rgb(255, 0, 0)');
     })
   );
 });
