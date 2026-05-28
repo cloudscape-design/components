@@ -9,6 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { SomeRequired } from '../internal/types';
 import { NavigationBarProps } from './interfaces';
 
+import '../visual-contexts/navigation-bar.scoped.css';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
