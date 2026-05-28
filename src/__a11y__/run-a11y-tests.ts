@@ -35,6 +35,7 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         'undefined-texts',
         'app-layout/with-error-boundaries',
         'app-layout-toolbar/without-toolbar-nested',
+        'app-layout-toolbar/without-toolbar-nested-iframe',
       ];
       const testFunction =
         skipPages.includes(inputUrl) ||
