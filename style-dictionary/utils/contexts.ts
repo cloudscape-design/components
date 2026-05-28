@@ -81,5 +81,7 @@ export const createNavigationBarContext = (tokens: TokenCategory<string, GlobalV
     id: 'navigation-bar',
     selector: '.awsui-context-navigation-bar',
     tokens,
+    defaultMode: 'dark',
+    destination: 'visual-contexts/navigation-bar.scoped.css',
   };
 };

@@ -4,6 +4,10 @@ declare module '*.css.js' {
   const styles: Record<string, string>;
   export default styles;
 }
+declare module '*.css' {
+  const content: string;
+  export default content;
+}
 declare module '*.selectors.js' {
   const styles: Record<string, string>;
   export default styles;
