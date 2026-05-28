@@ -7,7 +7,6 @@ import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useOneTheme } from '../internal/hooks/use-visual-mode';
 import { SomeRequired } from '../internal/types';
 /**
  * @awsuiSystem core
@@ -64,7 +63,7 @@ export function InternalStatusIcon({
 }: InternalStatusIconProps) {
   return (
     <span
-      className={clsx(styles.icon, animate && styles['icon-shake'], size === 'x-small' && styles['icon-x-small'])}
+      className={clsx(styles.icon, animate && styles['icon-shake'])}
       aria-label={iconAriaLabel}
       role={iconAriaLabel ? 'img' : undefined}
     >
@@ -88,8 +87,6 @@ export default function StatusIndicator({
   ...rest
 }: InternalStatusIndicatorProps) {
   const baseProps = getBaseProps(rest);
-  const isOneTheme = useOneTheme();
-  const resolvedSize = __size === 'normal' && isOneTheme ? 'x-small' : __size;
   return (
     <WithNativeAttributes
       {...baseProps}
@@ -119,7 +116,7 @@ export default function StatusIndicator({
           iconAriaLabel={iconAriaLabel}
           animate={__animate}
           display={__display}
-          size={resolvedSize}
+          size={__size}
         />
         <span>{children}</span>
       </span>
