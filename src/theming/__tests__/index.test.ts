@@ -153,3 +153,57 @@ describe('applyGlobalTheme', () => {
     expect(findStyleNode()).toBeNull();
   });
 });
+
+describe('cross-origin iframe fallback', () => {
+  let originalTop: typeof window.top;
+
+  beforeEach(() => {
+    originalTop = window.top;
+    // Simulate cross-origin restriction: accessing window.top throws a SecurityError.
+    Object.defineProperty(window, 'top', {
+      get() {
+        throw new DOMException('Blocked a frame with origin from accessing a cross-origin frame.', 'SecurityError');
+      },
+      configurable: true,
+    });
+  });
+
+  afterEach(() => {
+    Object.defineProperty(window, 'top', {
+      value: originalTop,
+      configurable: true,
+      writable: true,
+    });
+    delete (window as any)[themeStorageKey];
+    document.head.querySelectorAll('style').forEach(node => node.remove());
+  });
+
+  test('setGlobalTheme falls back to current window when top is cross-origin', () => {
+    expect(() => setGlobalTheme(theme)).not.toThrow();
+    expect((window as any)[themeStorageKey]).toBe(theme);
+  });
+
+  test('applyGlobalTheme falls back to current window when top is cross-origin', () => {
+    const { reset } = applyGlobalTheme();
+
+    setGlobalTheme(theme);
+
+    expect(findStyleNode()).not.toBeNull();
+
+    reset();
+  });
+
+  test('theme changes propagate via current window events when top is cross-origin', () => {
+    const { reset } = applyGlobalTheme();
+
+    expect(findStyleNode()).toBeNull();
+
+    setGlobalTheme(theme);
+    expect(findStyleNode()).not.toBeNull();
+
+    setGlobalTheme(anotherTheme);
+    expect(findAllStyleNodes()).toHaveLength(1);
+
+    reset();
+  });
+});
