@@ -68,6 +68,16 @@ export const BeforeMainSlotImplementationInternal = ({
           featureNotificationsProps={featureNotificationsProps}
         />
       )}
+      {!toolbarProps && !!activeAiDrawerId && (
+        <div
+          className={styles['pseudo-toolbar']}
+          style={{
+            insetBlockStart: appLayoutState.appLayoutInternals?.verticalOffsets?.toolbar,
+          }}
+        >
+          <div className={styles['pseudo-toolbar-content']} />
+        </div>
+      )}
       {aiDrawer && (
         <div
           className={clsx(

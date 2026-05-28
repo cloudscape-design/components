@@ -11,6 +11,7 @@ const EXCLUDED_PAGES = [
   // Not a use case that's encouraged.
   'app-layout/multi-layout-global-drawer-child-layout',
   'app-layout/with-error-boundaries',
+  'app-layout-toolbar/without-toolbar-nested',
 ];
 
 describe('A11y checks for app layout toolbar', () => {

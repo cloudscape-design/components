@@ -42,7 +42,7 @@ export const mergeProps: MergeProps = (ownProps, additionalProps) => {
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
     if (
-      props.aiDrawer &&
+      props.aiDrawer?.trigger &&
       props.aiDrawerFocusRef &&
       !checkAlreadyExists(!!toolbar.aiDrawerFocusRef, 'aiDrawerFocusRef')
     ) {

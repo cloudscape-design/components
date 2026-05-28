@@ -79,6 +79,7 @@ export const useAppLayout = (
   const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
   }, []);
+  const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -239,7 +240,7 @@ export const useAppLayout = (
     }
   };
 
-  useWidgetMessages(hasToolbar, message => {
+  useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;
