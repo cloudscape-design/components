@@ -120,6 +120,7 @@ const referenceTokens: ReferenceTokens = {
     },
     error: {
       50: brand.colorRed50,
+      300: brand.colorRed300,
       400: brand.colorRed400,
       600: brand.colorRed600,
       900: brand.colorRed900,

@@ -11,20 +11,22 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBodySecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey450}' },
 
   // ── Container / layout ────────────────────────────────────────────────────
+  colorBackgroundLayoutMain: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorBorderDividerDefault: { light: '{colorNeutralGrey350}', dark: '{colorNeutralGrey750}' },
+  colorBorderDividerSecondary: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
   colorBorderLayout: { light: '{colorNeutralGrey350}', dark: '{colorNeutralGrey750}' },
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey700}' },
-  colorBorderButtonNormalHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
+  colorBorderButtonNormalHover: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey650}' },
   colorBorderButtonNormalActive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey600}' },
   colorBackgroundButtonNormalDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
-  colorBackgroundButtonNormalHover: { light: '{colorNeutralGrey150}', dark: '{colorNeutralGrey750}' },
-  colorBackgroundButtonNormalActive: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey700}' },
-  colorTextButtonNormalDefault: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey300}' },
-  colorTextButtonNormalHover: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey300}' },
+  colorBackgroundButtonNormalHover: { light: '{colorNeutralGrey150}', dark: '{colorNeutralGrey800}' },
+  colorBackgroundButtonNormalActive: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey850}' },
+  colorTextButtonNormalDefault: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey350}' },
+  colorTextButtonNormalHover: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey250}' },
   colorTextButtonNormalActive: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey300}' },
 
   // ── Primary button ────────────────────────────────────────────────────────
@@ -90,20 +92,22 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextNotificationDefault: { light: '{colorWhite}', dark: '{colorWhite}' },
 
   // ── Status text ───────────────────────────────────────────────────────────
-  colorTextStatusInfo: { light: '{colorIndigo800}', dark: '{colorIndigo300}' },
+  colorTextStatusInfo: { light: '{colorIndigo600}', dark: '{colorIndigo300}' },
   colorTextStatusSuccess: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
   colorTextStatusWarning: { light: '{colorWarning800}', dark: '{colorWarning300}' },
+  colorTextStatusError: { light: '{colorError600}', dark: '{colorError300}' },
+  colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
   // ── Dropdown filter match ─────────────────────────────────────────────────
   colorTextDropdownItemFilterMatch: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey1000}' },
 
   // ── Status indicator backgrounds (alpha values — no palette token available) ──
-  colorBackgroundStatusIndicatorInfo: { light: '#5c7fff20', dark: '#5c7fff20' },
-  colorBackgroundStatusIndicatorWarning: { light: '#fbd33220', dark: '#fbd33220' },
-  colorBackgroundStatusIndicatorSuccess: { light: '#2bb53420', dark: '#2bb53420' },
+  colorBackgroundStatusIndicatorInfo: { light: '#5c7fff10', dark: '#5c7fff20' },
+  colorBackgroundStatusIndicatorWarning: { light: '#fbd33210', dark: '#fbd33220' },
+  colorBackgroundStatusIndicatorSuccess: { light: '#2bb53410', dark: '#2bb53420' },
   colorBackgroundStatusIndicatorError: { light: '#ff7a7a10', dark: '#ff7a7a20' },
-  colorBackgroundStatusIndicatorNeutral: { light: '#ff7a7a10', dark: '{colorNeutralGrey800}' },
+  colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   colorTextBreadcrumbCurrent: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
