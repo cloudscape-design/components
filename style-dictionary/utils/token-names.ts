@@ -823,7 +823,7 @@ export type TypographyTokenName =
   | 'fontButtonLetterSpacing'
   | 'fontChartDetailSize'
   | 'fontDisplayLabelWeight'
-  | 'fontExpandableHeadingSize'
+  | 'fontSizeExpandableHeading'
   | 'fontFamilyBase'
   | 'fontFamilyDisplay'
   | 'fontFamilyHeading'
