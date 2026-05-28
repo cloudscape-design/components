@@ -29,6 +29,22 @@ class GlobalThemeIframesPage extends BasePageObject {
   getCurrentTheme(): Promise<string> {
     return this.getText('[data-testid="current-theme"]');
   }
+
+  async waitForIframesDisplay(): Promise<void> {
+    await this.browser.waitUntil(
+      async () => {
+        const ready = await this.browser.execute(() => {
+          const iframe1 = document.querySelector('#iframe-1') as HTMLIFrameElement;
+          const iframe2 = document.querySelector('#iframe-2') as HTMLIFrameElement;
+          const content1 = iframe1?.contentDocument?.querySelector('[data-testid="themed-element"]');
+          const content2 = iframe2?.contentDocument?.querySelector('[data-testid="themed-element"]');
+          return !!(content1 && content2);
+        });
+        return ready;
+      },
+      { timeout: 5000, timeoutMsg: 'Iframes did not display their content in time' }
+    );
+  }
 }
 
 const setupTest = (testFn: (page: GlobalThemeIframesPage) => Promise<void>) => {
@@ -47,6 +63,8 @@ describe('Global theme with multiple iframes', () => {
       await page.setThemeA();
       await expect(page.getCurrentTheme()).resolves.toBe('theme-a');
 
+      await page.waitForIframesDisplay();
+
       const iframe1Value = await page.getAppliedColor('#iframe-1');
       const iframe2Value = await page.getAppliedColor('#iframe-2');
 
@@ -59,6 +77,7 @@ describe('Global theme with multiple iframes', () => {
     'propagates theme changes to all iframes',
     setupTest(async page => {
       await page.setThemeA();
+      await page.waitForIframesDisplay();
 
       const iframe1Before = await page.getAppliedColor('#iframe-1');
       const iframe2Before = await page.getAppliedColor('#iframe-2');
@@ -80,6 +99,7 @@ describe('Global theme with multiple iframes', () => {
     'both iframes receive the same theme value',
     setupTest(async page => {
       await page.setThemeA();
+      await page.waitForIframesDisplay();
 
       const iframe1Value = await page.getAppliedColor('#iframe-1');
       const iframe2Value = await page.getAppliedColor('#iframe-2');
@@ -94,6 +114,7 @@ describe('Global theme with multiple iframes', () => {
       await page.setThemeA();
       await page.setThemeB();
       await page.setThemeA();
+      await page.waitForIframesDisplay();
 
       const iframe1Value = await page.getAppliedColor('#iframe-1');
       const iframe2Value = await page.getAppliedColor('#iframe-2');

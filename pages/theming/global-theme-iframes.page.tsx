@@ -18,6 +18,7 @@ const themeB: Theme = {
 
 export default function GlobalThemeIframesPage() {
   const [themeApplied, setThemeApplied] = useState<string | null>(null);
+  const iframeHref = window.location.href.replace('global-theme-iframes', 'global-theme-iframes-inner');
 
   return (
     <div>
@@ -44,8 +45,8 @@ export default function GlobalThemeIframesPage() {
         Set Theme B
       </button>
 
-      <iframe id="iframe-1" src={`${window.location}-inner`} />
-      <iframe id="iframe-2" src={`${window.location}-inner`} />
+      <iframe id="iframe-1" src={iframeHref} name="iframe-1" />
+      <iframe id="iframe-2" src={iframeHref} name="iframe-2" />
     </div>
   );
 }
