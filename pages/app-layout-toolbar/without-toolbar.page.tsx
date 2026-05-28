@@ -4,11 +4,15 @@ import React, { useRef, useState } from 'react';
 
 import { AppLayoutToolbar, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween } from '~components';
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
+import { registerLeftDrawer, updateDrawer } from '~components/internal/plugins/widget';
 
 import { Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';
 import { drawerLabels } from '../app-layout/utils/drawers';
+import { leftDrawerPayload } from '../app-layout/utils/external-global-left-panel-widget';
 import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
+
+registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
@@ -39,6 +43,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayoutToolbar
+        {...{ __forceEnableRuntimeMessages: true }}
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         ref={pageLayoutRef}
         content={
@@ -85,6 +90,9 @@ export default function WithDrawers() {
                     Open a drawer without trigger
                   </Button>
                   <Button onClick={() => setActiveDrawerId(null)}>Close a drawer without trigger</Button>
+                  <Button onClick={() => updateDrawer({ type: 'openDrawer', payload: { id: 'ai-panel' } })}>
+                    Open the left panel
+                  </Button>
                 </SpaceBetween>
               </SpaceBetween>
             }

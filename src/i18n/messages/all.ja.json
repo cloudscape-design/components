@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "列の詳細設定",
     "contentDisplayPreference.description": "列の表示設定と順序をカスタマイズします。",
     "contentDisplayPreference.dragHandleAriaLabel": "ドラッグハンドル",
-    "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
+    "contentDisplayPreference.dragHandleAriaDescription": "Space キーまたは Enter キーを使用して項目のドラッグを有効にし、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには Space キーまたは Enter キーを使用し、移動を取り消すには Esc キーを使用します。スクリーンリーダーでブラウジングモードを切り替える必要がある場合があります。画面読み上げソフトの閲覧モードを切り替える必要がある場合があります。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "フィルター列",

@@ -116,7 +116,7 @@
     "contentDisplayPreference.title": "تفضيلات الأعمدة",
     "contentDisplayPreference.description": "تخصيص رؤية الأعمدة وترتيبها.",
     "contentDisplayPreference.dragHandleAriaLabel": "مؤشر السحب للتعبئة التلقائية",
-    "contentDisplayPreference.dragHandleAriaDescription": "استخدم زر Space أو Enter لتنشيط السحب لأحد العناصر، ثم استخدم مفاتيح الأسهم لتحريك موضع العنصر. لإكمال تحريك الموضع، استخدم زر Space أو Enter، أو استخدم Escape لتجاهل الحركة.",
+    "contentDisplayPreference.dragHandleAriaDescription": "استخدم زر المسافة (Space) أو زر الإدخال (Enter) لتنشيط سحب العنصر، ثم استخدم مفاتيح الأسهم في تحريك موضع العنصر. لإكمال نقل الموضع، استخدم زر المسافة (Space) أو زر الإدخال (Enter)، أو استخدم زر Escape لتجاهل الحركة. قد تحتاج إلى تبديل وضع التصفح على قارئ الشاشة.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "العنصر المسحوب في الموضع {position} من أصل {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "تم إلغاء إعادة الترتيب",
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "أعمدة التصفية",
