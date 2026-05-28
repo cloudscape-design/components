@@ -12584,9 +12584,6 @@ scrolling dropdown content.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -23641,9 +23638,6 @@ For more details, see the [MDN documentation](https://developer.mozilla.org/en-U
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
