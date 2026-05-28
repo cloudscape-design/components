@@ -74,13 +74,12 @@ export const useAppLayout = (
   const [isNested, setIsNested] = useState(false);
   const [expandedDrawerId, setInternalExpandedDrawerId] = useState<string | null>(null);
   const rootRefInternal = useRef<HTMLDivElement>(null);
-  const isNestedInitiated = useRef(false);
   // This workaround ensures the ref is defined before checking if the app layout is nested.
   // On initial render, the ref might be undefined because this component loads asynchronously via the widget API.
   const onMountRootRef = useCallback(node => {
     setIsNested(getIsNestedInAppLayout(node));
-    isNestedInitiated.current = true;
   }, []);
+  const { __forceEnableRuntimeMessages: forceEnableRuntimeMessages } = rest as any;
 
   const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
     componentName: 'AppLayout',
@@ -241,9 +240,7 @@ export const useAppLayout = (
     }
   };
 
-  // listen widget messages only on outermost AppLayout in case they are nested
-  const isOutermost = !isNested && isNestedInitiated.current;
-  useWidgetMessages(isOutermost, message => {
+  useWidgetMessages(hasToolbar || forceEnableRuntimeMessages, message => {
     if (message.type === 'expandDrawer' || message.type === 'exitExpandedMode') {
       drawerGenericMessageHandler(message);
       return;

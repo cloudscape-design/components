@@ -29,9 +29,9 @@ export function useMultiAppLayout(
       setRegistration({ type: 'primary', discoveredProps: [] });
       return;
     }
-    const unregister = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
-      setRegistration(props as RegistrationState<SharedProps>)
-    );
+    const unregister = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props => {
+      setRegistration(props as RegistrationState<SharedProps>);
+    });
     return () => {
       unregister();
       setRegistration({ type: 'suspended' });

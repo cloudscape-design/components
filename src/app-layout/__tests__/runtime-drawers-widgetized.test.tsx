@@ -303,17 +303,29 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
   });
 
   describe('left drawer without toolbar', () => {
-    test('should render left drawer when toolbar is not present', () => {
+    test('should not render left drawer when toolbar is not present', () => {
       awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
       const { globalDrawersWrapper, wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+    });
+
+    test('should render left drawer when toolbar is not present (__forceEnableRuntimeMessages is provided)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { globalDrawersWrapper, wrapper } = renderComponent(
+        <AppLayout {...{ __forceEnableRuntimeMessages: true }} navigationHide={true} toolsHide={true} />
+      );
 
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
     });
 
-    test('should open left drawer via API when toolbar is not present', () => {
+    test('should open left drawer via API when toolbar is not present (__forceEnableRuntimeMessages is provided)', () => {
       awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined });
-      const { globalDrawersWrapper, wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+      const { globalDrawersWrapper, wrapper } = renderComponent(
+        <AppLayout {...{ __forceEnableRuntimeMessages: true }} navigationHide={true} toolsHide={true} />
+      );
 
       expect(wrapper.findToolbar()).toBeFalsy();
       expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
@@ -323,10 +335,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
       expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
     });
 
-    test('should render left drawer when toolbar is not present and has a nested app layout', () => {
+    test('should render left drawer when toolbar is not present and has a nested app layout (__forceEnableRuntimeMessages is provided)', () => {
       awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
       const { container } = render(
         <AppLayout
+          {...{ __forceEnableRuntimeMessages: true }}
           data-testid="outer"
           navigationHide={true}
           toolsHide={true}

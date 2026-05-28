@@ -44,6 +44,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayoutToolbar
+        {...{ __forceEnableRuntimeMessages: true }}
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
         ref={pageLayoutRef}
         content={
