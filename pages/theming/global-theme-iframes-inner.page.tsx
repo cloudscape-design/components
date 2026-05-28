@@ -14,6 +14,7 @@ export default function GlobalThemeIframesContentPage() {
 
   return (
     <div data-testid="iframe-content">
+      <h1>Inner iframe</h1>
       <span data-testid="themed-element" style={{ color: `var(${colorProperty})` }}>
         Themed text
       </span>
