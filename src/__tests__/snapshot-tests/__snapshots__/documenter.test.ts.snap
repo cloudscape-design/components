@@ -16201,9 +16201,6 @@ provider or fall back to their default token-defined stroke-widths.",
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
@@ -19703,9 +19700,6 @@ need to be direct children of the group:
     },
   ],
   "releaseStatus": "stable",
-  "systemTags": [
-    "core",
-  ],
 }
 `;
 
