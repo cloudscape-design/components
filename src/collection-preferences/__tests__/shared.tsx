@@ -18,7 +18,7 @@ const i18nMessages = {
       '{count, select, zero {0 matches} one {1 match} other {{count} matches}}',
     'contentDisplayPreference.dragHandleAriaLabel': 'Drag handle',
     'contentDisplayPreference.dragHandleAriaDescription':
-      "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position.To complete the position move, use Space or Enter, or to discard the move, use Escape.You may need to toggle your browsing mode on your screen reader.",
+      "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
     'contentDisplayPreference.liveAnnouncementDndStarted': 'Picked up item at position {position} of {total}',
     'contentDisplayPreference.liveAnnouncementDndDiscarded': 'Reordering canceled',
     'contentDisplayPreference.liveAnnouncementDndItemReordered':
