@@ -1030,7 +1030,8 @@ export type SizesTokenName =
   | 'sizeIconXSmall'
   | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
-  | 'sizeVerticalPanelIconOffset';
+  | 'sizeVerticalPanelIconOffset'
+  | 'sizeSideNavigationItemHeight';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
   | 'spaceAlertHorizontal'
@@ -1103,6 +1104,8 @@ export type SpacingTokenName =
   | 'spaceTableHorizontal'
   | 'spaceTileGutter'
   | 'spaceTreeViewIndentation'
+  | 'spaceSideNavigationItemGap'
+  | 'spaceSideNavigationItemCollapsedGap'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'

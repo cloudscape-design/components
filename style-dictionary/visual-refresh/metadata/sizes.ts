@@ -14,6 +14,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  sizeSideNavigationItemHeight: {
+    description: 'The minimum height of side navigation items.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

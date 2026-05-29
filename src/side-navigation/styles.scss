@@ -12,9 +12,9 @@
 // Adjust $item-height to scale all items uniformly.
 // ==========================================================================
 $item-icon-text-gap: awsui.$space-xs;
-$item-height: 28px;
-$item-margin-block: awsui.$space-scaled-xxs;
-$item-collapsed-gap: awsui.$space-xs;
+$item-height: awsui.$size-side-navigation-item-height;
+$item-margin-block: awsui.$space-side-navigation-item-gap;
+$item-collapsed-gap: awsui.$space-side-navigation-item-collapsed-gap;
 $item-padding-inline: awsui.$space-xs;
 $item-indent: calc(16px + #{$item-icon-text-gap} - #{$item-padding-inline});
 $expandable-icon-negative-margin: 19px;
@@ -216,7 +216,7 @@ $expandable-icon-negative-margin: 19px;
 }
 
 .expandable-link-group-active > div:first-child {
-  background-color: color-mix(in srgb, #{awsui.$color-background-item-selected} 50%, transparent);
+  background-color: color-mix(in srgb, #{awsui.$color-item-selected} 10%, transparent);
 }
 
 .section {
