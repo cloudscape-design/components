@@ -123,8 +123,6 @@ jobs:
         include:
           - browser: chrome
             os: ubuntu-latest
-          - browser: safari
-            os: macos-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -135,14 +133,9 @@ jobs:
           cache: npm
 
       - name: Setup Chrome and ChromeDriver
-        if: matrix.browser == 'chrome'
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
-
-      - name: Enable SafariDriver
-        if: matrix.browser == 'safari'
-        run: sudo safaridriver --enable
 
       - name: Install dependencies
         run: npm i
