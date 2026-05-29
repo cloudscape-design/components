@@ -41,6 +41,25 @@ const MAX_SIZE = 400;
 const COLLAPSE_THRESHOLD = 185;
 const SNAP_BUFFER = 30;
 
+const DEFAULTS = {
+  itemHeight: '28',
+  itemGap: '4',
+  alignment: 'center',
+  layout: 'top-full',
+  theme: 'true',
+  resizable: 'true',
+  dark: 'false',
+  compact: 'false',
+  topNavBg: 'container',
+  sideNavBg: 'container',
+  topNavBorder: 'true',
+  sideNavBorder: 'true',
+  handleBg: 'panel',
+  toggleIcon: 'arrows',
+  togglePosition: 'bottom',
+  toggleAlign: 'center',
+} as const;
+
 // =============================================================================
 // Layout Tile Images (inline SVG thumbnails)
 // =============================================================================
@@ -252,7 +271,6 @@ function ConfigDrawer({
   setItemHeight: (v: number) => void;
   itemGap: number;
   setItemGap: (v: number) => void;
-  variant: SideNavigationProps.Variant;
   alignment: string;
   setAlignment: (v: string) => void;
   layout: string;
@@ -290,22 +308,22 @@ function ConfigDrawer({
             variant="link"
             iconName="undo"
             onClick={() => {
-              setItemHeight(28);
-              setItemGap(4);
-              setAlignment('center');
-              setLayout('top-full');
+              setItemHeight(Number(DEFAULTS.itemHeight));
+              setItemGap(Number(DEFAULTS.itemGap));
+              setAlignment(DEFAULTS.alignment);
+              setLayout(DEFAULTS.layout);
               setThemeEnabled(true);
               setResizable(true);
               setDarkMode(false);
               setCompact(false);
-              setTopNavBg('container');
-              setSideNavBg('container');
+              setTopNavBg(DEFAULTS.topNavBg as any);
+              setSideNavBg(DEFAULTS.sideNavBg as any);
               setTopNavBorder(true);
               setSideNavBorder(true);
-              setHandleBg('panel');
-              setToggleIcon('arrows');
-              setTogglePosition('bottom');
-              setToggleAlign('center');
+              setHandleBg(DEFAULTS.handleBg as any);
+              setToggleIcon(DEFAULTS.toggleIcon as any);
+              setTogglePosition(DEFAULTS.togglePosition as any);
+              setToggleAlign(DEFAULTS.toggleAlign as any);
             }}
           >
             Reset to defaults
@@ -444,81 +462,56 @@ function ConfigDrawer({
 // =============================================================================
 export default function SideNavigationLayoutPage() {
   const params = new URLSearchParams(window.location.hash.split('?')[1] || '');
-  const p = (key: string, fallback: string) => params.get(key) ?? fallback;
+  const p = (key: keyof typeof DEFAULTS) => params.get(key) ?? DEFAULTS[key];
 
   const [activeHref, setActiveHref] = useState('#/overview');
   const [panelSize, setPanelSize] = useState(EXPANDED_SIZE);
   const expandIconPosition: SideNavigationProps.ExpandIconPosition = 'end';
-  const [itemHeight, setItemHeight] = useState(Number(p('itemHeight', '28')));
-  const [itemGap, setItemGap] = useState(Number(p('itemGap', '4')));
-  const [alignment, setAlignment] = useState(p('alignment', 'center'));
-  const [layout, setLayout] = useState(p('layout', 'top-full'));
-  const [themeEnabled, setThemeEnabled] = useState(p('theme', 'true') === 'true');
-  const [resizable, setResizable] = useState(p('resizable', 'true') === 'true');
+  const [itemHeight, setItemHeight] = useState(Number(p('itemHeight')));
+  const [itemGap, setItemGap] = useState(Number(p('itemGap')));
+  const [alignment, setAlignment] = useState(p('alignment'));
+  const [layout, setLayout] = useState(p('layout'));
+  const [themeEnabled, setThemeEnabled] = useState(p('theme') === 'true');
+  const [resizable, setResizable] = useState(p('resizable') === 'true');
   const [drawerOpen, setDrawerOpen] = useState(true);
-  const [darkMode, setDarkMode] = useState(p('dark', 'false') === 'true');
-  const [compact, setCompact] = useState(p('compact', 'false') === 'true');
-  const [topNavBg, setTopNavBg] = useState<'container' | 'layout'>(p('topNavBg', 'container') as any);
-  const [sideNavBg, setSideNavBg] = useState<'container' | 'layout'>(p('sideNavBg', 'container') as any);
-  const [topNavBorder, setTopNavBorder] = useState(p('topNavBorder', 'true') === 'true');
-  const [sideNavBorder, setSideNavBorder] = useState(p('sideNavBorder', 'true') === 'true');
-  const [handleBg, setHandleBg] = useState<'panel' | 'content'>(p('handleBg', 'panel') as any);
-  const [toggleIcon, setToggleIcon] = useState<'arrows' | 'panel'>(p('toggleIcon', 'arrows') as any);
+  const [darkMode, setDarkMode] = useState(p('dark') === 'true');
+  const [compact, setCompact] = useState(p('compact') === 'true');
+  const [topNavBg, setTopNavBg] = useState<'container' | 'layout'>(p('topNavBg') as any);
+  const [sideNavBg, setSideNavBg] = useState<'container' | 'layout'>(p('sideNavBg') as any);
+  const [topNavBorder, setTopNavBorder] = useState(p('topNavBorder') === 'true');
+  const [sideNavBorder, setSideNavBorder] = useState(p('sideNavBorder') === 'true');
+  const [handleBg, setHandleBg] = useState<'panel' | 'content'>(p('handleBg') as any);
+  const [toggleIcon, setToggleIcon] = useState<'arrows' | 'panel'>(p('toggleIcon') as any);
   const [togglePosition, setTogglePosition] = useState<'top' | 'above-list' | 'below-list' | 'bottom'>(
-    p('togglePosition', 'bottom') as any
+    p('togglePosition') as any
   );
-  const [toggleAlign, setToggleAlign] = useState<'start' | 'center' | 'end'>(p('toggleAlign', 'center') as any);
+  const [toggleAlign, setToggleAlign] = useState<'start' | 'center' | 'end'>(p('toggleAlign') as any);
 
   // Sync config to URL
   useEffect(() => {
+    const current: Record<string, string> = {
+      itemHeight: String(itemHeight),
+      itemGap: String(itemGap),
+      alignment,
+      layout,
+      theme: String(themeEnabled),
+      resizable: String(resizable),
+      dark: String(darkMode),
+      compact: String(compact),
+      topNavBg,
+      sideNavBg,
+      topNavBorder: String(topNavBorder),
+      sideNavBorder: String(sideNavBorder),
+      handleBg,
+      toggleIcon,
+      togglePosition,
+      toggleAlign,
+    };
     const q = new URLSearchParams();
-    if (itemHeight !== 28) {
-      q.set('itemHeight', String(itemHeight));
-    }
-    if (itemGap !== 4) {
-      q.set('itemGap', String(itemGap));
-    }
-    if (alignment !== 'center') {
-      q.set('alignment', alignment);
-    }
-    if (layout !== 'top-full') {
-      q.set('layout', layout);
-    }
-    if (!themeEnabled) {
-      q.set('theme', 'false');
-    }
-    if (!resizable) {
-      q.set('resizable', 'false');
-    }
-    if (darkMode) {
-      q.set('dark', 'true');
-    }
-    if (compact) {
-      q.set('compact', 'true');
-    }
-    if (topNavBg !== 'container') {
-      q.set('topNavBg', topNavBg);
-    }
-    if (sideNavBg !== 'container') {
-      q.set('sideNavBg', sideNavBg);
-    }
-    if (!topNavBorder) {
-      q.set('topNavBorder', 'false');
-    }
-    if (!sideNavBorder) {
-      q.set('sideNavBorder', 'false');
-    }
-    if (handleBg !== 'panel') {
-      q.set('handleBg', handleBg);
-    }
-    if (toggleIcon !== 'arrows') {
-      q.set('toggleIcon', toggleIcon);
-    }
-    if (togglePosition !== 'bottom') {
-      q.set('togglePosition', togglePosition);
-    }
-    if (toggleAlign !== 'center') {
-      q.set('toggleAlign', toggleAlign);
+    for (const [key, value] of Object.entries(current)) {
+      if (value !== DEFAULTS[key as keyof typeof DEFAULTS]) {
+        q.set(key, value);
+      }
     }
     const qs = q.toString();
     const hash = window.location.hash.split('?')[0];
@@ -546,6 +539,10 @@ export default function SideNavigationLayoutPage() {
   const handleWidth = handleBg === 'content' ? HANDLE_WIDTH_CONTENT : 16;
   const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + handleWidth : COLLAPSED_SIZE;
   const collapsed = panelSize < COLLAPSE_THRESHOLD && panelSize <= effectiveCollapsedSize + SNAP_BUFFER;
+
+  // Grid column width for side-full top nav (accounts for handle and border)
+  const topNavColumnWidth =
+    handleBg === 'content' ? (collapsed ? COLLAPSED_SIZE - 1 : panelSize - HANDLE_WIDTH_CONTENT - 1) : panelSize;
 
   // Snap panel size when collapsed size changes (e.g. switching handle mode while collapsed)
   useEffect(() => {
@@ -797,7 +794,7 @@ export default function SideNavigationLayoutPage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: `${handleBg === 'content' ? (collapsed ? COLLAPSED_SIZE - 1 : panelSize - HANDLE_WIDTH_CONTENT - 1) : panelSize}px 1fr`,
+              gridTemplateColumns: `${topNavColumnWidth}px 1fr`,
               transition: `grid-template-columns ${motionDurationComplex} ${motionEasingResponsive}`,
               backgroundColor: topNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
             }}
@@ -862,7 +859,6 @@ export default function SideNavigationLayoutPage() {
             setItemHeight={setItemHeight}
             itemGap={itemGap}
             setItemGap={setItemGap}
-            variant="highlighted"
             alignment={alignment}
             setAlignment={setAlignment}
             layout={layout}
