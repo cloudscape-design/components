@@ -30,6 +30,7 @@
 .panel {
   display: flex;
   flex-shrink: 0;
+  background-color: awsui.$color-background-layout-panel-content;
   @include styles.with-motion {
     transition: inline-size awsui.$motion-duration-complex awsui.$motion-easing-responsive;
   }

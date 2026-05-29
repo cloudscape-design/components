@@ -307,8 +307,8 @@ export function NavigationItemsList({
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list-variant-root--symmetric']]:
-                  list.listVariant === 'root' && (collapsed || expandIconPosition === 'end'),
+                [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles['list-variant-root--symmetric']]: list.listVariant === 'root' && expandIconPosition === 'end',
               })}
             >
               {list.element}
@@ -320,8 +320,8 @@ export function NavigationItemsList({
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
-                [styles['list-variant-root--symmetric']]:
-                  list.listVariant === 'root' && (collapsed || expandIconPosition === 'end'),
+                [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles['list-variant-root--symmetric']]: list.listVariant === 'root' && expandIconPosition === 'end',
                 [styles[`expand-icon-end`]]: expandIconPosition === 'end',
               })}
             >

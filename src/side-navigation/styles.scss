@@ -123,6 +123,11 @@ $expandable-icon-negative-margin: 19px;
   &--symmetric {
     padding-inline-start: calc(#{awsui.$space-panel-side-right} - #{$item-padding-inline});
   }
+
+  &--collapsed {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+  }
 }
 
 .list-variant-expandable-link-group {
