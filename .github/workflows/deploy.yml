@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-utils-selectors
-          path: lib/components/test-utils
+          path: lib/components
 
   deploy:
     needs: quick-build

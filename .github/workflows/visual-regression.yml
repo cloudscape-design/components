@@ -138,7 +138,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.test-utils-artifact-name }}
-          path: lib/components/test-utils
+          path: lib/components
           github-token: ${{ github.token }}
           run-id: ${{ inputs.caller-run-id }}
 
