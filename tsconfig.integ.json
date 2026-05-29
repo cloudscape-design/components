@@ -5,6 +5,7 @@
     "types": ["jest"],
     "noEmit": true,
     "strict": true,
+    "isolatedModules": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
