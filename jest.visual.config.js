@@ -15,7 +15,7 @@ module.exports = {
     ],
   },
   reporters: ['default', 'github-actions'],
-  testTimeout: 120_000, // 2min — pages can be tall and slow to capture
+  testTimeout: 240_000, // 4min — pages can be tall and slow to capture
   maxWorkers: os.cpus().length * (process.env.GITHUB_ACTION ? 3 : 1),
   globalSetup: '<rootDir>/build-tools/visual/global-setup.js',
   globalTeardown: '<rootDir>/build-tools/visual/global-teardown.js',
