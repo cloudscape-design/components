@@ -232,3 +232,9 @@ filter search icon.
 .row-selected {
   /* used in test-utils */
 }
+
+.skeleton-loading-cell {
+  padding-block: 0;
+  padding-inline: 0;
+  border-block-end: none;
+}
