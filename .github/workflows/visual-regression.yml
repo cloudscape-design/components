@@ -26,29 +26,7 @@ permissions:
   actions: read
 
 jobs:
-  # Stage the PR pages and build test utils for the visual regression shards.
-  # Runs in parallel with build-baseline.
-  stage-pr-pages:
-    name: Stage PR pages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download PR pages artifact from caller run
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.pr-artifact-name }}
-          path: pages/lib/static-default
-          github-token: ${{ github.token }}
-          run-id: ${{ inputs.caller-run-id }}
-
-      - name: Upload PR pages artifact (for matrix jobs)
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-pr-pages
-          path: pages/lib/static-default
-          retention-days: 1
-
   # Build the baseline (main branch) pages once and share them across all browser jobs.
-  # Runs in parallel with stage-pr-pages.
   build-baseline:
     name: Build baseline pages
     runs-on: ubuntu-latest
@@ -99,7 +77,7 @@ jobs:
 
   visual:
     name: Visual regression (shard ${{ matrix.shard }})
-    needs: [stage-pr-pages, build-baseline]
+    needs: [build-baseline]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -125,8 +103,10 @@ jobs:
       - name: Download PR pages artifact
         uses: actions/download-artifact@v4
         with:
-          name: visual-pr-pages
+          name: ${{ inputs.pr-artifact-name }}
           path: pages/lib/static-default
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
 
       - name: Download baseline artifact
         uses: actions/download-artifact@v4
