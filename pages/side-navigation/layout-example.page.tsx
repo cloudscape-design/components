@@ -485,6 +485,47 @@ function ConfigDrawer({
 }
 
 // =============================================================================
+// Toggle Button Wrapper
+// =============================================================================
+function ToggleWrapper({
+  children,
+  position,
+  collapsed,
+  align,
+}: {
+  children: React.ReactNode;
+  position: 'top' | 'above-list' | 'below-list' | 'bottom';
+  collapsed: boolean;
+  align: 'start' | 'center' | 'end';
+}) {
+  const isAbsolute = position === 'top' || position === 'bottom';
+  const justifyContent = collapsed
+    ? 'center'
+    : align === 'start'
+      ? 'flex-start'
+      : align === 'end'
+        ? 'flex-end'
+        : 'center';
+  return (
+    <div
+      style={{
+        ...(isAbsolute && {
+          position: 'absolute',
+          insetInline: 0,
+          zIndex: 1,
+          ...(position === 'top' ? { insetBlockStart: 0 } : { insetBlockEnd: 0 }),
+        }),
+        padding: `8px ${collapsed ? '0px' : '20px'}`,
+        display: 'flex',
+        justifyContent,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// =============================================================================
 // Main Page
 // =============================================================================
 export default function SideNavigationLayoutPage() {
@@ -567,9 +608,13 @@ export default function SideNavigationLayoutPage() {
   const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + handleWidth : COLLAPSED_SIZE;
   const collapsed = panelSize < COLLAPSE_THRESHOLD && panelSize <= effectiveCollapsedSize + SNAP_BUFFER;
 
-  // Grid column width for side-full top nav (accounts for handle and border)
+  // Grid column width for side-full top nav (accounts for handle and border).
+  // When handleBg='content', the border is between the nav and handle, so subtract 1px + handle width.
+  // When handleBg='side-nav', the border is on the content side, so column = full panelSize.
   const topNavColumnWidth =
-    handleBg === 'content' ? (collapsed ? COLLAPSED_SIZE - 1 : panelSize - HANDLE_WIDTH_CONTENT - 1) : panelSize;
+    handleBg === 'content' && resizable
+      ? (collapsed ? COLLAPSED_SIZE : panelSize - HANDLE_WIDTH_CONTENT) - 1
+      : panelSize;
 
   // Snap panel size when collapsed size changes (e.g. switching handle mode while collapsed)
   useEffect(() => {
@@ -669,12 +714,6 @@ export default function SideNavigationLayoutPage() {
     />
   );
 
-  const toggleAlignMap = {
-    start: collapsed ? 'center' : 'flex-start',
-    center: 'center',
-    end: collapsed ? 'center' : 'flex-end',
-  };
-
   const sideNavPanel = (
     <div
       style={{
@@ -692,19 +731,9 @@ export default function SideNavigationLayoutPage() {
       }}
     >
       {togglePosition === 'top' && layout !== 'side-full' && (
-        <div
-          style={{
-            position: 'absolute',
-            insetBlockStart: 0,
-            insetInline: 0,
-            zIndex: 1,
-            padding: `8px ${collapsed ? '0px' : '20px'}`,
-            display: 'flex',
-            justifyContent: toggleAlignMap[toggleAlign],
-          }}
-        >
+        <ToggleWrapper position="top" collapsed={collapsed} align={toggleAlign}>
           {toggleButton}
-        </div>
+        </ToggleWrapper>
       )}
       <div
         style={{
@@ -719,15 +748,9 @@ export default function SideNavigationLayoutPage() {
         }}
       >
         {togglePosition === 'above-list' && (
-          <div
-            style={{
-              padding: `8px ${collapsed ? '0px' : '20px'}`,
-              display: 'flex',
-              justifyContent: toggleAlignMap[toggleAlign],
-            }}
-          >
+          <ToggleWrapper position="above-list" collapsed={collapsed} align={toggleAlign}>
             {toggleButton}
-          </div>
+          </ToggleWrapper>
         )}
         <div style={{ minInlineSize: 'max-content' }}>
           <SideNavigation
@@ -740,31 +763,15 @@ export default function SideNavigationLayoutPage() {
           />
         </div>
         {togglePosition === 'below-list' && (
-          <div
-            style={{
-              padding: `8px ${collapsed ? '0px' : '20px'}`,
-              display: 'flex',
-              justifyContent: toggleAlignMap[toggleAlign],
-            }}
-          >
+          <ToggleWrapper position="below-list" collapsed={collapsed} align={toggleAlign}>
             {toggleButton}
-          </div>
+          </ToggleWrapper>
         )}
       </div>
       {togglePosition === 'bottom' && (
-        <div
-          style={{
-            position: 'absolute',
-            insetBlockEnd: 0,
-            insetInline: 0,
-            zIndex: 1,
-            padding: `8px ${collapsed ? '0px' : '20px'}`,
-            display: 'flex',
-            justifyContent: toggleAlignMap[toggleAlign],
-          }}
-        >
+        <ToggleWrapper position="bottom" collapsed={collapsed} align={toggleAlign}>
           {toggleButton}
-        </div>
+        </ToggleWrapper>
       )}
     </div>
   );
@@ -830,13 +837,23 @@ export default function SideNavigationLayoutPage() {
               style={{
                 backgroundColor:
                   sideNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
-                display: 'flex',
+                display: 'grid',
+                gridTemplateColumns: handleBg === 'side-nav' && resizable ? `1fr ${handleWidth}px` : '1fr',
                 alignItems: 'center',
-                justifyContent: toggleAlignMap[toggleAlign],
-                paddingInline: togglePosition === 'top' ? '16px' : undefined,
               }}
             >
-              {togglePosition === 'top' && toggleButton}
+              <div
+                style={{
+                  display: 'flex',
+                  paddingInlineStart: `${collapsed ? '0px' : '20px'}`,
+                  paddingInlineEnd: `${collapsed ? '0px' : '16px'}`,
+                  justifyContent: collapsed
+                    ? 'center'
+                    : { start: 'flex-start', center: 'center', end: 'flex-end' }[toggleAlign],
+                }}
+              >
+                {togglePosition === 'top' && toggleButton}
+              </div>
             </div>
             <div
               style={{
