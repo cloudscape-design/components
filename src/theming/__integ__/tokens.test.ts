@@ -44,17 +44,15 @@ class ColorTokensMosaikPage extends BasePageObject {
 
 type ThemeMethod = 'applyTheme' | 'generateThemeStylesheet';
 
-const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>, vr: boolean, themeMethod: ThemeMethod) => {
+const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>, themeMethod: ThemeMethod) => {
   return useBrowser(async browser => {
     const page = new ColorTokensMosaikPage(browser);
-    await browser.url(`#/light/theming/tokens${!vr ? '?visualRefresh=false' : ''}`);
+    await browser.url('#/light/theming/tokens');
     await page.switchTheme();
     if (themeMethod === 'generateThemeStylesheet') {
       await page.switchThemeMethod();
     }
-    if (vr) {
-      await page.setSecondaryTheme();
-    }
+    await page.setSecondaryTheme();
     await testFn(page);
   });
 };
@@ -82,112 +80,62 @@ const darkMap = colorTokens.reduce(
 describe.each<[ThemeMethod]>([['applyTheme'], ['generateThemeStylesheet']])('using %s', (themeMethod: ThemeMethod) => {
   test(
     'applies theming in default',
-    setupTest(
-      async page => {
-        const actual = await page.getCustomPropertyMap();
+    setupTest(async page => {
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(defaultMap);
-      },
-      false,
-      themeMethod
-    )
+      expect(actual).toMatchObject(defaultMap);
+    }, themeMethod)
   );
   test(
     'applies theming in compact density',
-    setupTest(
-      async page => {
-        await page.toggleCompactDensity();
+    setupTest(async page => {
+      await page.toggleCompactDensity();
 
-        const actual = await page.getCustomPropertyMap();
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(defaultMap);
-      },
-      false,
-      themeMethod
-    )
+      expect(actual).toMatchObject(defaultMap);
+    }, themeMethod)
   );
   test(
     'applies theming in disabled motion',
-    setupTest(
-      async page => {
-        await page.toggleDisabledMotion();
+    setupTest(async page => {
+      await page.toggleDisabledMotion();
 
-        const actual = await page.getCustomPropertyMap();
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(defaultMap);
-      },
-      false,
-      themeMethod
-    )
+      expect(actual).toMatchObject(defaultMap);
+    }, themeMethod)
   );
   test(
     'applies theming in dark mode',
-    setupTest(
-      async page => {
-        await page.toggleDarkMode();
+    setupTest(async page => {
+      await page.toggleDarkMode();
 
-        const actual = await page.getCustomPropertyMap();
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(darkMap);
-      },
-      false,
-      themeMethod
-    )
+      expect(actual).toMatchObject(darkMap);
+    }, themeMethod)
   );
   test(
     'applies theming in dark mode + compact mode',
-    setupTest(
-      async page => {
-        await page.toggleDarkMode();
-        await page.toggleCompactDensity();
+    setupTest(async page => {
+      await page.toggleDarkMode();
+      await page.toggleCompactDensity();
 
-        const actual = await page.getCustomPropertyMap();
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(darkMap);
-      },
-      false,
-      themeMethod
-    )
+      expect(actual).toMatchObject(darkMap);
+    }, themeMethod)
   );
   test(
     'applies theming in dark mode + reduced motion',
-    setupTest(
-      async page => {
-        await page.toggleDarkMode();
-        await page.toggleDisabledMotion();
+    setupTest(async page => {
+      await page.toggleDarkMode();
+      await page.toggleDisabledMotion();
 
-        const actual = await page.getCustomPropertyMap();
+      const actual = await page.getCustomPropertyMap();
 
-        expect(actual).toMatchObject(darkMap);
-      },
-      false,
-      themeMethod
-    )
-  );
-  test(
-    'applies theming in visual refresh',
-    setupTest(
-      async page => {
-        const actual = await page.getCustomPropertyMap();
-
-        expect(actual).toMatchObject(defaultMap);
-      },
-      true,
-      themeMethod
-    )
-  );
-  test(
-    'applies theming in dark mode + visual refresh',
-    setupTest(
-      async page => {
-        await page.toggleDarkMode();
-
-        const actual = await page.getCustomPropertyMap();
-
-        expect(actual).toMatchObject(darkMap);
-      },
-      true,
-      themeMethod
-    )
+      expect(actual).toMatchObject(darkMap);
+    }, themeMethod)
   );
 });

@@ -9,7 +9,7 @@ import { getUrlParams } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);

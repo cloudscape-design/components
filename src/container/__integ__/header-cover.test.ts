@@ -23,13 +23,13 @@ class ContainerStickyPage extends BasePageObject {
 }
 
 function setupTest(
-  { viewport = viewports.desktop, search = '', visualRefresh = true },
+  { viewport = viewports.desktop, search = '' },
   testFn: (page: ContainerStickyPage) => Promise<void>
 ) {
   return useBrowser(async browser => {
     const page = new ContainerStickyPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url(`#/light/container/sticky-permutations?visualRefresh=${visualRefresh}&${search}`);
+    await browser.url(`#/light/container/sticky-permutations?${search}`);
     await page.waitForVisible(tableWrapper.findBodyCell(1, 1).toSelector());
     await testFn(page);
   });
@@ -64,14 +64,6 @@ test(
   setupTest({}, async page => {
     await page.windowScrollTo({ top: 300 });
     await page.windowScrollTo({ top: 0 });
-    await expect(page.hasHeaderCover()).resolves.toBe(false);
-  })
-);
-
-test(
-  'Header cover is not displayed in classic',
-  setupTest({ visualRefresh: false }, async page => {
-    await page.windowScrollTo({ top: 300 });
     await expect(page.hasHeaderCover()).resolves.toBe(false);
   })
 );
