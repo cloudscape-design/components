@@ -4,12 +4,12 @@ on:
   workflow_call:
     inputs:
       pr-artifact-name:
-        description: 'Name of the artifact containing PR pages (built by quick-build job). If not provided, pages will be built locally.'
-        required: false
+        description: 'Name of the artifact containing PR pages (built by the caller workflow).'
+        required: true
         type: string
       caller-run-id:
         description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
-        required: false
+        required: true
         type: string
 
 defaults:
@@ -22,8 +22,8 @@ permissions:
   actions: read
 
 jobs:
-  # Stage the PR pages within this run so matrix jobs can download them without
-  # needing cross-run artifact access. Runs in parallel with build-baseline.
+  # Stage the PR pages and build test utils for the visual regression shards.
+  # Runs in parallel with build-baseline.
   stage-pr-pages:
     name: Stage PR pages
     runs-on: ubuntu-latest
@@ -39,16 +39,7 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Build PR pages locally
-        if: ${{ !inputs.pr-artifact-name }}
-        run: |
-          npx gulp quick-build
-          node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
-        env:
-          NODE_ENV: production
-
       - name: Download PR pages artifact from caller run
-        if: ${{ inputs.pr-artifact-name }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.pr-artifact-name }}
@@ -56,11 +47,23 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.caller-run-id }}
 
+      - name: Build (test utils selectors)
+        run: npx gulp quick-build
+        env:
+          NODE_ENV: production
+
       - name: Upload PR pages artifact (for matrix jobs)
         uses: actions/upload-artifact@v4
         with:
           name: visual-pr-pages
           path: pages/lib/static-default
+          retention-days: 1
+
+      - name: Upload test utils artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-utils
+          path: lib/components/test-utils
           retention-days: 1
 
   # Build the baseline (main branch) pages once and share them across all browser jobs.
@@ -150,7 +153,14 @@ jobs:
           name: visual-baseline-pages
           path: pages/lib/static-visual-baseline
 
+      - name: Download test utils artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: visual-test-utils
+          path: lib/components/test-utils
+
       # ── Run tests ─────────────────────────────────────────────────────────
+
       - name: Start test server (port 8080)
         run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-default &
 
