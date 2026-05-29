@@ -731,6 +731,7 @@ export type ColorsTokenName =
   | 'colorTextExpandableSectionDefault'
   | 'colorTextExpandableSectionHover'
   | 'colorTextExpandableSectionNavigationIconDefault'
+  | 'colorBorderExpandableSectionDefault'
   | 'colorTextFormDefault'
   | 'colorTextFormLabel'
   | 'colorTextFormSecondary'

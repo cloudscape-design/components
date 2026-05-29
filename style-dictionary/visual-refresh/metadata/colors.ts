@@ -1094,6 +1094,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBorderExpandableSectionDefault: {
+    description: 'The border color of the expandable section divider shown when the section is expanded.',
+    themeable: true,
+    public: false,
+  },
 };
 
 export default metadata;

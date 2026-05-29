@@ -113,7 +113,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     }
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
-      border-block-end-color: awsui.$color-border-divider-default;
+      border-block-end-color: awsui.$color-border-expandable-section-default;
     }
   }
 

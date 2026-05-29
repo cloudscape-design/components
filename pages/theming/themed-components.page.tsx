@@ -11,14 +11,18 @@ import {
   ButtonGroup,
   Cards,
   Container,
+  CopyToClipboard,
   DatePicker,
+  ExpandableSection,
   FileTokenGroup,
   Grid,
   Header,
   Icon,
   Input,
+  KeyValuePairs,
   Link,
   Multiselect,
+  ProgressBar,
   PromptInput,
   SegmentedControl,
   Select,
@@ -570,6 +574,10 @@ export default function ThemedComponentsPage() {
           fontWeightDisplayL: '900',
           spaceFieldVertical: { comfortable: '4px', compact: '2px' },
           sizeVerticalInput: { comfortable: '30px', compact: '28px' },
+          fontSizeExpandableHeading: '12px',
+          fontWeightBreadcrumbCurrent: '400',
+          colorTextKeyValuePairsValue: { light: '#bb00ae', dark: '#ee7ee8' },
+          colorBorderExpandableSectionDefault: { light: '#00bb5d', dark: '#caee7e' },
         },
       };
 
@@ -683,6 +691,81 @@ export default function ThemedComponentsPage() {
         </SpaceBetween>
 
         <TableCardsAndTiles />
+
+        <SpaceBetween size="l">
+          <Box variant="h2">New themeable tokens</Box>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">fontSizeExpandableHeading — ExpandableSection</Box>
+            <ExpandableSection headerText="Default variant" defaultExpanded={true}>
+              Content inside the expandable section.
+            </ExpandableSection>
+            <ExpandableSection headerText="Navigation variant" variant="navigation" defaultExpanded={true}>
+              Navigation expandable section content.
+            </ExpandableSection>
+            <ExpandableSection headerText="Footer variant" variant="footer" defaultExpanded={true}>
+              Footer expandable section content.
+            </ExpandableSection>
+          </SpaceBetween>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">colorTextKeyValuePairsValue — KeyValuePairs</Box>
+            <KeyValuePairs
+              columns={3}
+              items={[
+                {
+                  label: 'Distribution ID',
+                  value: 'E1WG1ZNPRXT0D4',
+                  info: (
+                    <Link variant="info" href="#">
+                      Info
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'ARN',
+                  value: (
+                    <CopyToClipboard
+                      copyButtonAriaLabel="Copy ARN"
+                      copyErrorText="ARN failed to copy"
+                      copySuccessText="ARN copied"
+                      textToCopy="arn:service23G24::111122223333:distribution/23E1WG1ZNPRXT0D4"
+                      variant="inline"
+                    />
+                  ),
+                },
+                {
+                  label: 'Status',
+                  value: <StatusIndicator>Available</StatusIndicator>,
+                },
+                {
+                  label: 'SSL Certificate',
+                  id: 'ssl-certificate-id',
+                  value: (
+                    <ProgressBar
+                      value={30}
+                      additionalInfo="Additional information"
+                      description="Progress bar description"
+                      ariaLabelledby="ssl-certificate-id"
+                    />
+                  ),
+                },
+                {
+                  label: 'Price class',
+                  value: 'Use only US, Canada, Europe',
+                },
+                {
+                  label: 'CNAMEs',
+                  value: (
+                    <Link external={true} href="#">
+                      abc.service23G24.xyz
+                    </Link>
+                  ),
+                },
+              ]}
+            />
+          </SpaceBetween>
+        </SpaceBetween>
 
         <AppLayoutToolbarWithDrawers />
       </SpaceBetween>

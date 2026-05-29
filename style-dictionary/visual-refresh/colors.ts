@@ -252,6 +252,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionDefault: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
   colorTextExpandableSectionHover: '{colorTextAccent}',
   colorTextExpandableSectionNavigationIconDefault: '{colorTextInteractiveDefault}',
+  colorBorderExpandableSectionDefault: '{colorBorderDividerDefault}',
   colorTextFormDefault: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
   colorTextFormLabel: '{colorTextFormDefault}',
   colorTextFormSecondary: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
