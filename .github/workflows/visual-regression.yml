@@ -120,7 +120,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3]
     steps:
       - uses: actions/checkout@v4
 
@@ -161,7 +161,7 @@ jobs:
         run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/4
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/3
         env:
           TZ: UTC
 
