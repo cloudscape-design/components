@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["**/__integ__/**/*.ts", "**/__a11y__/**/*.ts", "**/__motion__/**/*.ts", "test/definitions/utils.ts", "test/visual.test.ts", "types"]
+  "include": ["**/__integ__/**/*.ts", "**/__a11y__/**/*.ts", "**/__motion__/**/*.ts", "test/definitions/utils.ts", "test/visual/**/*.test.ts", "types"]
 }

@@ -114,15 +114,13 @@ jobs:
           retention-days: 1
 
   visual:
-    name: Visual regression (${{ matrix.browser }})
+    name: Visual regression (shard ${{ matrix.shard }})
     needs: [stage-pr-pages, build-baseline]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - browser: chrome
-            os: ubuntu-latest
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
 
@@ -163,15 +161,14 @@ jobs:
         run: node_modules/.bin/wait-on http://localhost:8080 http://localhost:8081
 
       - name: Run visual regression tests
-        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js
+        run: NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard=${{ matrix.shard }}/4
         env:
           TZ: UTC
-          BROWSER: ${{ matrix.browser }}
 
       - name: Upload diff artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-regression-diffs-${{ matrix.browser }}
+          name: visual-regression-diffs-shard-${{ matrix.shard }}
           path: visual-regression-output/
           retention-days: 14
