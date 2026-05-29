@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import createWrapper from '../../../lib/components/test-utils/selectors';
 import { TestDefinition, TestSuite } from '../types';
+
+const wrapper = createWrapper();
 
 function responsiveTests(width: number): TestSuite {
   return {
@@ -257,7 +260,7 @@ const suite: TestSuite = {
           path: 'app-layout/with-drawers',
           screenshotType: 'screenshotArea',
           setup: async page => {
-            await page.click('[aria-label="Pro help trigger button"]');
+            await page.click(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
           },
         },
         {
@@ -265,7 +268,7 @@ const suite: TestSuite = {
           path: 'app-layout/with-drawers',
           screenshotType: 'screenshotArea',
           setup: async page => {
-            await page.hoverElement('[aria-label="Pro help trigger button"]');
+            await page.hoverElement(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
           },
         },
         {
@@ -274,7 +277,7 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           queryParams: { sideNavFill: 'false' },
           setup: async page => {
-            await page.click('[aria-label="Chat trigger button"]');
+            await page.click(wrapper.findAppLayout().findDrawerTriggerById('chat').toSelector());
           },
         },
       ],
