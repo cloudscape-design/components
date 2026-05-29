@@ -1,7 +1,4 @@
 {
   "extends": "./tsconfig.integ.json",
-  "compilerOptions": {
-    "isolatedModules": true
-  },
   "include": ["test/definitions/utils.ts", "test/visual/**/*.test.ts", "types"]
 }
