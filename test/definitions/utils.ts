@@ -63,8 +63,12 @@ async function captureScreenshotArea(
   browser: WebdriverIO.Browser,
   page: ScreenshotPageObject,
   url: string,
+  windowSize: { width: number; height: number } | undefined,
   setup?: (page: ScreenshotPageObject) => Promise<void>
 ): Promise<ScreenshotWithOffset> {
+  if (windowSize) {
+    await browser.setWindowSize(windowSize.width, windowSize.height);
+  }
   await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
   if (setup) {
@@ -76,18 +80,15 @@ async function captureScreenshotArea(
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
     const browser = getBrowser();
-    if (testDef.configuration) {
-      const windowSize = { ...defaultWindowSize, ...testDef.configuration };
-      await browser.setWindowSize(windowSize.width, windowSize.height);
-    }
+    const windowSize = testDef.configuration ? { ...defaultWindowSize, ...testDef.configuration } : undefined;
     const page = new ScreenshotPageObject(browser);
 
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
     // Fast path: compare the screenshot area (viewport-only, no scroll-and-merge).
-    const newScreenshot = await captureScreenshotArea(browser, page, newUrl, testDef.setup);
-    const oldScreenshot = await captureScreenshotArea(browser, page, oldUrl, testDef.setup);
+    const newScreenshot = await captureScreenshotArea(browser, page, newUrl, windowSize, testDef.setup);
+    const oldScreenshot = await captureScreenshotArea(browser, page, oldUrl, windowSize, testDef.setup);
     const { diffPixels } = await cropAndCompare(newScreenshot, oldScreenshot);
 
     if (diffPixels === 0) {
