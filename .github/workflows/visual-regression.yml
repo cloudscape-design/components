@@ -7,6 +7,10 @@ on:
         description: 'Name of the artifact containing PR pages (built by the caller workflow).'
         required: true
         type: string
+      test-utils-artifact-name:
+        description: 'Name of the artifact containing test-utils selectors.'
+        required: true
+        type: string
       caller-run-id:
         description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
         required: true
@@ -28,17 +32,6 @@ jobs:
     name: Stage PR pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm i
-
       - name: Download PR pages artifact from caller run
         uses: actions/download-artifact@v4
         with:
@@ -47,23 +40,11 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.caller-run-id }}
 
-      - name: Build (test utils selectors)
-        run: npx gulp quick-build
-        env:
-          NODE_ENV: production
-
       - name: Upload PR pages artifact (for matrix jobs)
         uses: actions/upload-artifact@v4
         with:
           name: visual-pr-pages
           path: pages/lib/static-default
-          retention-days: 1
-
-      - name: Upload test utils artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-test-utils
-          path: lib/components/test-utils
           retention-days: 1
 
   # Build the baseline (main branch) pages once and share them across all browser jobs.
@@ -156,8 +137,10 @@ jobs:
       - name: Download test utils artifact
         uses: actions/download-artifact@v4
         with:
-          name: visual-test-utils
+          name: ${{ inputs.test-utils-artifact-name }}
           path: lib/components/test-utils
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
 
       # ── Run tests ─────────────────────────────────────────────────────────
 

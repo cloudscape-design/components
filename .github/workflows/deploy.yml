@@ -53,6 +53,13 @@ jobs:
           name: dev-pages-react${{ matrix.react }}
           path: pages/lib/static-default
 
+      - name: Upload test utils selectors artifact
+        if: matrix.react == 18
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-utils-selectors
+          path: lib/components/test-utils
+
   deploy:
     needs: quick-build
     name: deploy${{ matrix.react != 16 && format(' (React {0})', matrix.react) || '' }}
@@ -74,4 +81,5 @@ jobs:
     secrets: inherit
     with:
       pr-artifact-name: dev-pages-react18
+      test-utils-artifact-name: test-utils-selectors
       caller-run-id: ${{ github.run_id }}
