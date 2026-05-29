@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { cropAndCompare } from '@cloudscape-design/browser-test-tools/image-utils';
-import { ScreenshotPageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import { ScreenshotPageObject, ScreenshotWithOffset } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import { TestDefinition, TestSuite } from './types';
 
@@ -56,33 +56,72 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
   }
 }
 
+/**
+ * Captures the .screenshot-area element using a viewport-only screenshot (fast).
+ */
+async function captureScreenshotArea(
+  browser: WebdriverIO.Browser,
+  page: ScreenshotPageObject,
+  url: string,
+  setup?: (page: ScreenshotPageObject) => Promise<void>
+): Promise<ScreenshotWithOffset> {
+  await browser.url(url);
+  await page.waitForVisible(screenshotAreaSelector);
+  if (setup) {
+    await setup(page);
+  }
+  return page.captureBySelector(screenshotAreaSelector, { viewportOnly: true });
+}
+
 function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Browser) {
   test(testDef.description, async () => {
     const browser = getBrowser();
-    // Only resize if the test needs a non-default window size.
     if (testDef.configuration) {
       const windowSize = { ...defaultWindowSize, ...testDef.configuration };
       await browser.setWindowSize(windowSize.width, windowSize.height);
     }
     const page = new ScreenshotPageObject(browser);
 
-    const capture = async (host: string) => {
-      await browser.url(buildUrl(host, testDef.path, testDef.queryParams));
+    const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
+    const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
+
+    // Fast path: compare the screenshot area (viewport-only, no scroll-and-merge).
+    const newScreenshot = await captureScreenshotArea(browser, page, newUrl, testDef.setup);
+    const oldScreenshot = await captureScreenshotArea(browser, page, oldUrl, testDef.setup);
+    const { diffPixels } = await cropAndCompare(newScreenshot, oldScreenshot);
+
+    if (diffPixels === 0) {
+      return;
+    }
+
+    // For permutations pages, a screenshot-area diff might be a false positive
+    // caused by content extending beyond the viewport. Re-capture using the
+    // full capturePermutations strategy which resizes the window to fit all
+    // content and returns individual permutation crops for precise comparison.
+    if (testDef.screenshotType === 'permutations') {
+      await browser.url(newUrl);
       await page.waitForVisible(screenshotAreaSelector);
       if (testDef.setup) {
         await testDef.setup(page);
       }
-      // For screenshotArea pages the element fits in the viewport, so we use
-      // viewportOnly to avoid the expensive scroll-and-merge full-page capture.
-      // Permutations pages can be taller than the viewport and need the full strategy.
-      const viewportOnly = testDef.screenshotType !== 'permutations';
-      return page.captureBySelector(screenshotAreaSelector, { viewportOnly });
-    };
+      const newPermutations = await page.capturePermutations();
 
-    const newScreenshot = await capture(newHost);
-    const oldScreenshot = await capture(oldHost);
+      await browser.url(oldUrl);
+      await page.waitForVisible(screenshotAreaSelector);
+      if (testDef.setup) {
+        await testDef.setup(page);
+      }
+      const oldPermutations = await page.capturePermutations();
 
-    const { diffPixels } = await cropAndCompare(newScreenshot, oldScreenshot);
+      expect(newPermutations.length).toBe(oldPermutations.length);
+      for (let i = 0; i < newPermutations.length; i++) {
+        const { diffPixels: permDiff } = await cropAndCompare(newPermutations[i], oldPermutations[i]);
+        expect(permDiff).toBe(0);
+      }
+      return;
+    }
+
+    // For screenshotArea type, the diff is a real failure.
     expect(diffPixels).toBe(0);
   });
 }
