@@ -54,10 +54,10 @@ const DEFAULTS = {
   sideNavBg: 'container',
   topNavBorder: 'true',
   sideNavBorder: 'true',
-  handleBg: 'panel',
+  handleBg: 'side-nav',
   toggleIcon: 'arrows',
-  togglePosition: 'bottom',
-  toggleAlign: 'center',
+  togglePosition: 'above-list',
+  toggleAlign: 'start',
 } as const;
 
 // =============================================================================
@@ -75,6 +75,23 @@ function LayoutSvg({ type }: { type: string }) {
           y="10"
           width="48"
           height="34"
+          rx="1"
+          fill={colorBackgroundLayoutMain}
+          stroke={colorBorderDividerDefault}
+          strokeWidth="0.5"
+        />
+      </svg>
+    );
+  }
+  if (type === 'side-only') {
+    return (
+      <svg viewBox="0 0 64 44" fill="none" style={{ inlineSize: '100%', blockSize: '40px' }}>
+        <rect x="0" y="0" width="14" height="44" rx="1" fill={colorTextBodySecondary} opacity="0.25" />
+        <rect
+          x="16"
+          y="0"
+          width="48"
+          height="44"
           rx="1"
           fill={colorBackgroundLayoutMain}
           stroke={colorBorderDividerDefault}
@@ -291,8 +308,8 @@ function ConfigDrawer({
   setTopNavBorder: (v: boolean) => void;
   sideNavBorder: boolean;
   setSideNavBorder: (v: boolean) => void;
-  handleBg: 'panel' | 'content';
-  setHandleBg: (v: 'panel' | 'content') => void;
+  handleBg: 'side-nav' | 'content';
+  setHandleBg: (v: 'side-nav' | 'content') => void;
   toggleIcon: 'arrows' | 'panel';
   setToggleIcon: (v: 'arrows' | 'panel') => void;
   togglePosition: 'top' | 'above-list' | 'below-list' | 'bottom';
@@ -302,7 +319,7 @@ function ConfigDrawer({
 }) {
   return (
     <div style={{ padding: '16px' }}>
-      <SpaceBetween size="xl">
+      <SpaceBetween size="xxl">
         <SpaceBetween size="s">
           <Button
             variant="link"
@@ -338,6 +355,7 @@ function ConfigDrawer({
               items={[
                 { value: 'top-full', label: 'Top nav full', image: <LayoutSvg type="top-full" /> },
                 { value: 'side-full', label: 'Side nav full', image: <LayoutSvg type="side-full" /> },
+                { value: 'side-only', label: 'Side nav only', image: <LayoutSvg type="side-only" /> },
               ]}
             />
           </FormField>
@@ -367,20 +385,38 @@ function ConfigDrawer({
           <Toggle checked={sideNavBorder} onChange={({ detail }) => setSideNavBorder(detail.checked)}>
             Side nav border
           </Toggle>
-          <FormField label="Resize handle background color">
-            <RadioGroup
-              value={handleBg}
-              onChange={({ detail }) => setHandleBg(detail.value as 'panel' | 'content')}
-              items={[
-                { value: 'panel', label: 'Container' },
-                { value: 'content', label: 'Layout' },
-              ]}
-            />
-          </FormField>
         </SpaceBetween>
 
         <SpaceBetween size="s">
-          <Box variant="h4">Side Nav Items</Box>
+          <Box variant="h4">Side Nav Panel</Box>
+          <Toggle checked={resizable} onChange={({ detail }) => setResizable(detail.checked)}>
+            Resizable
+          </Toggle>
+          {resizable && (
+            <FormField label="Resize handle background color" description="Where does resize handle appear?">
+              <RadioGroup
+                value={handleBg}
+                onChange={({ detail }) => setHandleBg(detail.value as 'side-nav' | 'content')}
+                items={[
+                  { value: 'side-nav', label: 'Side nav' },
+                  { value: 'content', label: 'Main content' },
+                ]}
+              />
+            </FormField>
+          )}
+        </SpaceBetween>
+
+        {/* No SpaceBetween here because sliders come with their own padding that provide enough gap */}
+        <div>
+          <Box variant="h4" margin={{ bottom: 's' }}>
+            Side Nav Items
+          </Box>
+          <FormField label={`Item height: ${itemHeight}px`}>
+            <Slider value={itemHeight} min={20} max={44} onChange={({ detail }) => setItemHeight(detail.value)} />
+          </FormField>
+          <FormField label={`Item gap: ${itemGap}px`}>
+            <Slider value={itemGap} min={0} max={12} onChange={({ detail }) => setItemGap(detail.value)} />
+          </FormField>
           <FormField label="Items alignment">
             <RadioGroup
               value={alignment}
@@ -392,20 +428,11 @@ function ConfigDrawer({
               ]}
             />
           </FormField>
-          <FormField label={`Item height: ${itemHeight}px`}>
-            <Slider value={itemHeight} min={20} max={44} onChange={({ detail }) => setItemHeight(detail.value)} />
-          </FormField>
-          <FormField label={`Item gap: ${itemGap}px`}>
-            <Slider value={itemGap} min={0} max={12} onChange={({ detail }) => setItemGap(detail.value)} />
-          </FormField>
-        </SpaceBetween>
+        </div>
 
         <SpaceBetween size="s">
-          <Box variant="h4">Side Nav Panel</Box>
-          <Toggle checked={resizable} onChange={({ detail }) => setResizable(detail.checked)}>
-            Resizable
-          </Toggle>
-          <FormField label="Panel toggle icon">
+          <Box variant="h4">Side Nav Toggle</Box>
+          <FormField label="Toggle icon">
             <RadioGroup
               value={toggleIcon}
               onChange={({ detail }) => setToggleIcon(detail.value as 'arrows' | 'panel')}
@@ -480,7 +507,7 @@ export default function SideNavigationLayoutPage() {
   const [sideNavBg, setSideNavBg] = useState<'container' | 'layout'>(p('sideNavBg') as any);
   const [topNavBorder, setTopNavBorder] = useState(p('topNavBorder') === 'true');
   const [sideNavBorder, setSideNavBorder] = useState(p('sideNavBorder') === 'true');
-  const [handleBg, setHandleBg] = useState<'panel' | 'content'>(p('handleBg') as any);
+  const [handleBg, setHandleBg] = useState<'side-nav' | 'content'>(p('handleBg') as any);
   const [toggleIcon, setToggleIcon] = useState<'arrows' | 'panel'>(p('toggleIcon') as any);
   const [togglePosition, setTogglePosition] = useState<'top' | 'above-list' | 'below-list' | 'bottom'>(
     p('togglePosition') as any
@@ -751,7 +778,7 @@ export default function SideNavigationLayoutPage() {
         gap: '16px',
         padding: '24px',
         paddingInlineStart: handleBg === 'content' && resizable ? '16px' : '24px',
-        borderInlineStart: sideNavBorder && handleBg === 'panel' ? `1px solid ${colorBorderDividerDefault}` : 'none',
+        borderInlineStart: sideNavBorder && handleBg === 'side-nav' ? `1px solid ${colorBorderDividerDefault}` : 'none',
         blockSize: '100%',
       }}
     >
