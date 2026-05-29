@@ -336,6 +336,15 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorBackgroundSkeleton: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
   colorBackgroundSkeletonWave: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
+  colorBorderBadge: 'transparent',
+  colorBorderBadgeGrey: 'transparent',
+  colorBorderBadgeGreen: 'transparent',
+  colorBorderBadgeBlue: 'transparent',
+  colorBorderBadgeRed: 'transparent',
+  colorTextBadgeGrey: '{colorTextNotificationDefault}',
+  colorTextBadgeGreen: '{colorTextNotificationDefault}',
+  colorTextBadgeBlue: '{colorTextNotificationDefault}',
+  colorTextBadgeRed: '{colorTextNotificationDefault}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

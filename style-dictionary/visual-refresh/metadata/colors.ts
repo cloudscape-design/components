@@ -1099,6 +1099,51 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: false,
   },
+  colorBorderBadge: {
+    description: 'The default border color of badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGrey: {
+    description: 'The border color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGreen: {
+    description: 'The border color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeBlue: {
+    description: 'The border color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeRed: {
+    description: 'The border color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGrey: {
+    description: 'The text color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGreen: {
+    description: 'The text color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeBlue: {
+    description: 'The text color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeRed: {
+    description: 'The text color of red badges.',
+    themeable: true,
+    public: true,
+  },
 };
 
 export default metadata;

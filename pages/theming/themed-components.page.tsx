@@ -5,6 +5,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import {
   AppLayoutToolbar,
   Autosuggest,
+  Badge,
   Box,
   Button,
   ButtonDropdown,
@@ -578,6 +579,37 @@ export default function ThemedComponentsPage() {
           fontWeightBreadcrumbCurrent: '400',
           colorTextKeyValuePairsValue: { light: '#bb00ae', dark: '#ee7ee8' },
           colorBorderExpandableSectionDefault: { light: '#00bb5d', dark: '#caee7e' },
+          colorBorderBadgeGrey: { light: '#656871', dark: '#a4a4ad' },
+          colorBorderBadgeGreen: { light: '#008a00', dark: '#2bb534' },
+          colorBorderBadgeBlue: { light: '#006ce0', dark: '#42b4ff' },
+          colorBorderBadgeRed: { light: '#db0000', dark: '#ff7a7a' },
+          colorBorderBadgeSeverityCritical: { light: '#c20000', dark: '#ff3d3d' },
+          colorBorderBadgeSeverityHigh: { light: '#db3300', dark: '#ff6a3d' },
+          colorBorderBadgeSeverityMedium: { light: '#9e3700', dark: '#ffbb45' },
+          colorBorderBadgeSeverityLow: { light: '#007070', dark: '#3defff' },
+          colorBorderBadgeSeverityNeutral: { light: '#656871', dark: '#a4a4ad' },
+          borderWidthBadge: '1px',
+          borderRadiusBadge: '16px',
+
+          colorTextBadgeGrey: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeGreen: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeBlue: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeRed: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityCritical: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityHigh: { light: '#1b232d', dark: '#f9f9fa' },
+          colorTextBadgeSeverityMedium: { light: '#131920', dark: '#f9f9fa' },
+          colorTextBadgeSeverityLow: { light: '#131920', dark: '#f9f9fa' },
+          colorTextBadgeSeverityNeutral: { light: '#1b232d', dark: '#f9f9fa' },
+
+          colorBackgroundNotificationGrey: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationGreen: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationBlue: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationRed: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityCritical: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityHigh: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityMedium: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityLow: { light: '#transparent', dark: '#transparent' },
+          colorBackgroundNotificationSeverityNeutral: { light: '#transparent', dark: '#transparent' },
         },
       };
 
@@ -694,6 +726,21 @@ export default function ThemedComponentsPage() {
 
         <SpaceBetween size="l">
           <Box variant="h2">New themeable tokens</Box>
+
+          <SpaceBetween size="s">
+            <Box variant="h3">colorBorderBadge — Badge</Box>
+            <SpaceBetween direction="horizontal" size="xs">
+              <Badge>Grey</Badge>
+              <Badge color="green">Green</Badge>
+              <Badge color="blue">Blue</Badge>
+              <Badge color="red">Red</Badge>
+              <Badge color="severity-critical">Critical</Badge>
+              <Badge color="severity-high">High</Badge>
+              <Badge color="severity-medium">Medium</Badge>
+              <Badge color="severity-low">Low</Badge>
+              <Badge color="severity-neutral">Neutral</Badge>
+            </SpaceBetween>
+          </SpaceBetween>
 
           <SpaceBetween size="s">
             <Box variant="h3">fontSizeExpandableHeading — ExpandableSection</Box>
