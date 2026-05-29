@@ -6,5 +6,6 @@
 import { TestSuite } from './types';
 import actionCard from './visual/action-card';
 import alert from './visual/alert';
+import appLayout from './visual/app-layout';
 
-export const allSuites: TestSuite[] = [actionCard, alert];
+export const allSuites: TestSuite[] = [actionCard, alert, appLayout];
