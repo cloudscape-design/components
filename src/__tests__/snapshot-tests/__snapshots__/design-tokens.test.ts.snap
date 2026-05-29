@@ -689,6 +689,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -701,6 +708,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -2296,6 +2310,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
@@ -3922,6 +3943,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -3934,6 +3962,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -5529,6 +5564,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
@@ -7155,6 +7197,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -7167,6 +7216,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -8762,6 +8818,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
@@ -10388,6 +10451,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -10400,6 +10470,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -11995,6 +12072,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
@@ -13621,6 +13705,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -13633,6 +13724,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -15228,6 +15326,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#16191f",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
             "light": "#ffffff",
           },
         },
@@ -16854,6 +16959,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -16866,6 +16978,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-board-placeholder-active": {
@@ -18462,6 +18581,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -20087,6 +20213,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#fffef0",
       },
     },
+    "color-background-toggle-button-normal-default": {
+      "$description": "The default background color of normal toggle buttons.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
     "color-background-toggle-button-normal-pressed": {
       "$description": "The background color of normal toggle buttons in pressed state.",
       "$value": {
@@ -20099,6 +20232,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#0a4a74",
         "light": "#99cbe4",
+      },
+    },
+    "color-background-toggle-default": {
+      "$description": "The default background color of the toggle track in its unchecked state.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-board-placeholder-active": {
@@ -21694,6 +21834,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The hover text color of primary buttons.",
       "$value": {
         "dark": "#16191f",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-calendar-date-selected": {
+      "$description": "The text color of selected dates in the calendar.",
+      "$value": {
+        "dark": "#1a2029",
         "light": "#ffffff",
       },
     },
@@ -23325,6 +23472,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -23337,6 +23491,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -24932,6 +25093,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -26558,6 +26726,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -26570,6 +26745,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -28166,6 +28348,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -29791,6 +29980,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -29803,6 +29999,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -31398,6 +31601,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -33024,6 +33234,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -33036,6 +33253,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -34631,6 +34855,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -36257,6 +36488,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -36269,6 +36507,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -37864,6 +38109,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -39490,6 +39742,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -39502,6 +39761,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -41097,6 +41363,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The hover text color of primary buttons.",
           "$value": {
             "dark": "#0f141a",
+            "light": "#ffffff",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
             "light": "#ffffff",
           },
         },
@@ -42723,6 +42996,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -42735,6 +43015,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -44328,6 +44615,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-button-primary-hover": {
           "$description": "The hover text color of primary buttons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
@@ -45956,6 +46250,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -45968,6 +46269,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -47564,6 +47872,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -49189,6 +49504,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#fffef0",
       },
     },
+    "color-background-toggle-button-normal-default": {
+      "$description": "The default background color of normal toggle buttons.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
     "color-background-toggle-button-normal-pressed": {
       "$description": "The background color of normal toggle buttons in pressed state.",
       "$value": {
@@ -49201,6 +49523,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#002b66",
         "light": "#b8e7ff",
+      },
+    },
+    "color-background-toggle-default": {
+      "$description": "The default background color of the toggle track in its unchecked state.",
+      "$value": {
+        "dark": "#8c8c94",
+        "light": "#424650",
       },
     },
     "color-board-placeholder-active": {
@@ -50796,6 +51125,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The hover text color of primary buttons.",
       "$value": {
         "dark": "#0f141a",
+        "light": "#ffffff",
+      },
+    },
+    "color-text-calendar-date-selected": {
+      "$description": "The text color of selected dates in the calendar.",
+      "$value": {
+        "dark": "#161d26",
         "light": "#ffffff",
       },
     },
