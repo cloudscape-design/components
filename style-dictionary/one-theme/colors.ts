@@ -98,15 +98,17 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError300}' },
   colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
-  // ── Dropdown filter match ─────────────────────────────────────────────────
+  // ── Dropdown ─────────────────────────────────────────────────
   colorTextDropdownItemFilterMatch: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey1000}' },
+  colorBackgroundDropdownItemDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey800}' },
+  colorBackgroundDropdownItemHover: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey900}' },
 
   // ── Status indicator backgrounds (alpha values — no palette token available) ──
-  colorBackgroundStatusIndicatorInfo: { light: '#5c7fff10', dark: '#5c7fff20' },
-  colorBackgroundStatusIndicatorWarning: { light: '#fbd33210', dark: '#fbd33220' },
-  colorBackgroundStatusIndicatorSuccess: { light: '#2bb53410', dark: '#2bb53420' },
-  colorBackgroundStatusIndicatorError: { light: '#ff7a7a10', dark: '#ff7a7a20' },
+  colorBackgroundStatusIndicatorInfo: { light: '{colorIndigo50}', dark: '#5c7fff20' },
+  colorBackgroundStatusIndicatorWarning: { light: '{colorWarning50}', dark: '#fbd33220' },
+  colorBackgroundStatusIndicatorSuccess: { light: '{colorSuccess50}', dark: '#2bb53420' },
+  colorBackgroundStatusIndicatorError: { light: '{colorError50}', dark: '#ff7a7a20' },
   colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey800}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
