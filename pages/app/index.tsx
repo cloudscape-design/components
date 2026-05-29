@@ -28,12 +28,10 @@ interface GlobalFlags {
 interface CustomFlags {
   appLayoutDelayedWidget?: boolean;
 }
-const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
 const awsuiCustomFlagsSymbol = Symbol.for('awsui-custom-flags');
 
 interface ExtendedWindow extends Window {
-  [awsuiVisualRefreshFlag]?: () => boolean;
   [awsuiGlobalFlagsSymbol]?: GlobalFlags;
   [awsuiCustomFlagsSymbol]?: CustomFlags;
 }
@@ -96,12 +94,10 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, oneTheme, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+const { direction, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
   history.location.search
 );
 
-// The VR class needs to be set before any React rendering occurs.
-window[awsuiVisualRefreshFlag] = () => visualRefresh && !oneTheme;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
@@ -111,11 +107,6 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
-
-// Visual Refresh and One Theme are mutually exclusive — manage both classes here so they never coexist.
-// useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
-document.body.classList.toggle('awsui-one-theme', oneTheme);
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh && !oneTheme);
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);

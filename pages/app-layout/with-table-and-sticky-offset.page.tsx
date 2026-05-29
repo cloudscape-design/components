@@ -29,7 +29,7 @@ export default function () {
           <Table<Instance>
             header={<Header variant="awsui-h1-sticky">Sticky Scrollbar Example</Header>}
             // manually set vertical offset to test this feature
-            stickyHeaderVerticalOffset={urlParams.visualRefresh ? 57 : 45}
+            stickyHeaderVerticalOffset={57}
             stickyHeader={true}
             variant="full-page"
             columnDefinitions={columnsConfig}

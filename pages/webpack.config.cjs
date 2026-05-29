@@ -8,8 +8,7 @@ const workspace = require('../build-tools/utils/workspace');
 
 module.exports = () => {
   const react18 = process.env.REACT_VERSION === '18';
-  const theme = process.env.THEME || 'default';
-  const themeDefinition = themes.find(t => t.name === theme);
+  const themeDefinition = themes[0];
   return baseConfig({
     componentsPath: path.resolve(themeDefinition.outputPath),
     designTokensPath: path.resolve(
@@ -18,7 +17,7 @@ module.exports = () => {
       themeDefinition.designTokensOutput
     ),
     globalStylesPath: themeDefinition.globalStylesPath,
-    outputPath: `pages/lib/static-${theme}`,
+    outputPath: `pages/lib/static-${themeDefinition.name}`,
     react18,
   });
 };

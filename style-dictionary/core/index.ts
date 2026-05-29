@@ -34,11 +34,16 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
   await import('../visual-refresh/shadows.js'),
 ];
 
-async function buildCoreOpenSource(builder: ThemeBuilder) {
-  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens }) => {
+export async function buildCoreOpenSource(builder: ThemeBuilder) {
+  // Reference tokens come from visual-refresh (semantic color mapping: primary=blue, neutral=grey, etc.)
+  const { referenceTokens } = await import('../visual-refresh/color-palette.js');
+  const colorMode = modes.find(mode => mode.id === 'color');
+  builder.addReferenceTokens(referenceTokens, colorMode);
+
+  tokenCategories.forEach(({ tokens, mode: modeId, referenceTokens: catRefTokens }) => {
     const mode = modes.find(mode => mode.id === modeId);
-    if (referenceTokens) {
-      builder.addReferenceTokens(referenceTokens, mode);
+    if (catRefTokens) {
+      builder.addReferenceTokens(catRefTokens, mode);
     }
     builder.addTokens(tokens, mode);
   });

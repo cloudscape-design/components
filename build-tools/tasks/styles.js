@@ -46,8 +46,9 @@ function stylesTask(theme) {
       theme.secondaryThemePaths?.map(async path => (await import(join(styleDictionaryRoot, path))).default) ?? []
     );
 
+    const metadataPath = theme.metadataPath || join(theme.primaryThemePath, '../metadata.js');
     // eslint-disable-next-line no-unsanitized/method
-    const { default: metadata } = await import(join(styleDictionaryRoot, theme.primaryThemePath, '../metadata.js'));
+    const { default: metadata } = await import(join(styleDictionaryRoot, metadataPath));
     const exposed = [];
     const themeable = [];
     const variablesMap = {};

@@ -69,7 +69,7 @@ const sharedItems = [
 export default function () {
   const { urlParams } = useContext(AppContext);
   const [themed, setThemed] = useState<boolean>(false);
-  const [secondaryTheme, setSecondaryTheme] = useState<boolean>(urlParams.visualRefresh);
+  const [secondaryTheme, setSecondaryTheme] = useState<boolean>(false);
   const [themeMethod, setThemeMethod] = useState<'applyTheme' | 'generateThemeStylesheet'>('applyTheme');
 
   useEffect(() => {

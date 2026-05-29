@@ -17,7 +17,7 @@ const componentsTemplateDir = 'internal/template';
 const designTokensTemplateDir = 'internal/template-tokens';
 const stylesDir = 'internal/scss';
 
-const theme = themes.find(theme => theme.name === 'default');
+const theme = themes[0];
 const themeable = {
   name: 'components-themeable',
   sourceDir: theme.outputPath,
