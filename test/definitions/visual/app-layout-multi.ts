@@ -10,13 +10,13 @@ const suite: TestSuite = {
     {
       description: `simple (${width}px)`,
       path: 'app-layout/multi-layout-simple',
-      screenshotType: 'screenshotArea' as const,
+      screenshotType: 'viewport' as const,
       configuration: { width },
     },
     {
       description: `iframe (${width}px)`,
       path: 'app-layout/multi-layout-iframe',
-      screenshotType: 'screenshotArea' as const,
+      screenshotType: 'viewport' as const,
       configuration: { width },
     },
   ]),
