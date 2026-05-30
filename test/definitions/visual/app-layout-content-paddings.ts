@@ -12,7 +12,7 @@ const suite: TestSuite = {
         (['bottom', 'side'] as const).map(splitPanelPosition => ({
           description: `toolsEnabled=${toolsEnabled} splitPanelEnabled=${splitPanelEnabled} splitPanelPosition=${splitPanelPosition}`,
           path: 'app-layout/with-split-panel',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'viewport' as const,
           queryParams: { toolsEnabled, splitPanelEnabled, splitPanelPosition },
         }))
       )
@@ -20,7 +20,7 @@ const suite: TestSuite = {
     ...[1500, 600].map(width => ({
       description: `with split panel and disabled content paddings - width=${width}`,
       path: 'app-layout/disable-paddings-with-split-panel',
-      screenshotType: 'screenshotArea' as const,
+      screenshotType: 'viewport' as const,
       configuration: { width },
       queryParams: { splitPanelOpen: 'true', splitPanelPosition: 'side' },
     })),

@@ -57,22 +57,25 @@ function registerSuites(suites: Array<TestDefinition | TestSuite>, getBrowser: (
 }
 
 /**
- * Captures the .screenshot-area element using a viewport-only screenshot (fast).
+ * Captures a screenshot based on the test's screenshotType.
  */
-async function captureScreenshotArea(
+async function capture(
   browser: WebdriverIO.Browser,
   page: ScreenshotPageObject,
   url: string,
-  windowSize: { width: number; height: number } | undefined,
-  setup?: (page: ScreenshotPageObject) => Promise<void>
+  testDef: TestDefinition,
+  windowSize: { width: number; height: number } | undefined
 ): Promise<ScreenshotWithOffset> {
   if (windowSize) {
     await browser.setWindowSize(windowSize.width, windowSize.height);
   }
   await browser.url(url);
   await page.waitForVisible(screenshotAreaSelector);
-  if (setup) {
-    await setup(page);
+  if (testDef.setup) {
+    await testDef.setup(page);
+  }
+  if (testDef.screenshotType === 'viewport') {
+    return page.captureViewport();
   }
   return page.captureBySelector(screenshotAreaSelector, { viewportOnly: true });
 }
@@ -86,9 +89,8 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     const newUrl = buildUrl(newHost, testDef.path, testDef.queryParams);
     const oldUrl = buildUrl(oldHost, testDef.path, testDef.queryParams);
 
-    // Fast path: compare the screenshot area (viewport-only, no scroll-and-merge).
-    const newScreenshot = await captureScreenshotArea(browser, page, newUrl, windowSize, testDef.setup);
-    const oldScreenshot = await captureScreenshotArea(browser, page, oldUrl, windowSize, testDef.setup);
+    const newScreenshot = await capture(browser, page, newUrl, testDef, windowSize);
+    const oldScreenshot = await capture(browser, page, oldUrl, testDef, windowSize);
     const { diffPixels } = await cropAndCompare(newScreenshot, oldScreenshot);
 
     if (diffPixels === 0) {
@@ -100,6 +102,9 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
     // full capturePermutations strategy which resizes the window to fit all
     // content and returns individual permutation crops for precise comparison.
     if (testDef.screenshotType === 'permutations') {
+      if (windowSize) {
+        await browser.setWindowSize(windowSize.width, windowSize.height);
+      }
       await browser.url(newUrl);
       await page.waitForVisible(screenshotAreaSelector);
       if (testDef.setup) {
@@ -107,6 +112,9 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       }
       const newPermutations = await page.capturePermutations();
 
+      if (windowSize) {
+        await browser.setWindowSize(windowSize.width, windowSize.height);
+      }
       await browser.url(oldUrl);
       await page.waitForVisible(screenshotAreaSelector);
       if (testDef.setup) {
@@ -122,7 +130,7 @@ function registerTest(testDef: TestDefinition, getBrowser: () => WebdriverIO.Bro
       return;
     }
 
-    // For screenshotArea type, the diff is a real failure.
+    // For screenshotArea and viewport types, the diff is a real failure.
     expect(diffPixels).toBe(0);
   });
 }

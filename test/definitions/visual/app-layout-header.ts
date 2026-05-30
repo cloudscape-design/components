@@ -14,13 +14,13 @@ const suite: TestSuite = {
         {
           description: `alignment with full-page table (${width}px)`,
           path: 'app-layout/with-table',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'viewport' as const,
           configuration: { width },
         },
         {
           description: `alignment with full-page table in sticky state (${width}px)`,
           path: 'app-layout/with-table',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'viewport' as const,
           configuration: { width },
           setup: async page => {
             await page.windowScrollTo({ top: 200 });
@@ -29,7 +29,7 @@ const suite: TestSuite = {
         {
           description: `alignment with full-page table in sticky state with sticky notifications (${width}px)`,
           path: 'app-layout/with-table',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'viewport' as const,
           configuration: { width },
           queryParams: { stickyNotifications: 'true' },
           setup: async page => {
@@ -39,7 +39,7 @@ const suite: TestSuite = {
         {
           description: `high contrast header variant in landing page (${width}px)`,
           path: 'app-layout/landing-page',
-          screenshotType: 'screenshotArea' as const,
+          screenshotType: 'viewport' as const,
           configuration: { width },
         },
       ]),
