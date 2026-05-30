@@ -13,7 +13,7 @@ const suite: TestSuite = {
     {
       description: 'with split panel',
       path: 'app-layout/with-drawers',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       setup: async page => {
         await page.click(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
       },
@@ -21,7 +21,7 @@ const suite: TestSuite = {
     {
       description: 'with tooltip on hover',
       path: 'app-layout/with-drawers',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       setup: async page => {
         await page.hoverElement(wrapper.findAppLayout().findDrawerTriggerById('pro-help').toSelector());
       },
@@ -29,7 +29,7 @@ const suite: TestSuite = {
     {
       description: 'with custom scrollable drawer content',
       path: 'app-layout/with-drawers-scrollable',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       queryParams: { sideNavFill: 'false' },
       setup: async page => {
         await page.click(wrapper.findAppLayout().findDrawerTriggerById('chat').toSelector());

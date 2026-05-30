@@ -10,13 +10,13 @@ const suite: TestSuite = {
     {
       description: 'no scrollbars at 320px',
       path: 'app-layout/default',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 320 },
     },
     {
       description: 'drawer buttons alignment',
       path: 'app-layout/default',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800 },
       setup: async page => {
         await page.click('[aria-label="Open tools"]');
@@ -25,7 +25,7 @@ const suite: TestSuite = {
     {
       description: 'disable paddings - navigation closed',
       path: 'app-layout/disable-paddings',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280 },
       setup: async page => {
         await page.click('[aria-label="Close navigation"]');
@@ -34,29 +34,29 @@ const suite: TestSuite = {
     {
       description: 'panels stacking on mobile',
       path: 'app-layout/all-panels-open',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 600 },
     },
     {
       description: 'wrapping long words',
       path: 'app-layout/text-wrap',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
     },
     {
       description: 'fill content area',
       path: 'app-layout/fill-content-area',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
     },
     {
       description: 'with tools and drawers',
       path: 'app-layout/with-drawers',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       queryParams: { hasTools: 'true' },
     },
     {
       description: 'with open drawer and open side split panel',
       path: 'app-layout/with-drawers',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1400 },
       queryParams: { splitPanelPosition: 'side' },
       setup: async page => {
@@ -69,7 +69,7 @@ const suite: TestSuite = {
     {
       description: 'with open drawer and open side split panel after resize',
       path: 'app-layout/with-drawers',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1500 },
       queryParams: { splitPanelPosition: 'side' },
       setup: async page => {
@@ -83,7 +83,7 @@ const suite: TestSuite = {
     {
       description: 'transition from 400px to 1800px',
       path: 'app-layout/default',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 400, height: 400 },
       setup: async page => {
         await page.setWindowSize({ width: 1800, height: 400 });
@@ -92,7 +92,7 @@ const suite: TestSuite = {
     {
       description: 'transition from 1800px to 400px',
       path: 'app-layout/default',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1800, height: 400 },
       setup: async page => {
         await page.setWindowSize({ width: 400, height: 400 });

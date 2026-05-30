@@ -35,7 +35,7 @@ const suite: TestSuite = {
     {
       description: 'chart plot has a focus outline',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -46,7 +46,7 @@ const suite: TestSuite = {
     {
       description: 'can navigate along X axis highlighting all series with keyboard',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -59,7 +59,7 @@ const suite: TestSuite = {
     {
       description: 'can navigate a specific series with keyboard',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -74,7 +74,7 @@ const suite: TestSuite = {
     {
       description: 'selects correct series when navigated back from legend',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -90,7 +90,7 @@ const suite: TestSuite = {
     {
       description: 'can pin popover for all data points at a given X coordinate with keyboard',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -106,7 +106,7 @@ const suite: TestSuite = {
     {
       description: 'can pin popover for a point in a specific series with keyboard',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.click(TEST_CHART_FILTER_TRIGGER);
@@ -123,7 +123,7 @@ const suite: TestSuite = {
     {
       description: 'shows popover on hover',
       path: 'area-chart/test',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 800, height: 800 },
       setup: async page => {
         await page.hoverElement('[aria-label="Linear latency chart"]', 200, 50);

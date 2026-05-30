@@ -10,12 +10,12 @@ const suite: TestSuite = {
     {
       description: 'multiple nested instances (no breadcrumbs dedup)',
       path: 'app-layout-toolbar/multi-layout-with-hidden-instances',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
     },
     {
       description: 'no toolbar',
       path: 'app-layout-toolbar/without-toolbar',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
     },
   ],
 };

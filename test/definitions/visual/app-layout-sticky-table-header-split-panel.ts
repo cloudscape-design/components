@@ -10,7 +10,7 @@ const suite: TestSuite = {
     {
       description: 'scrolling to bottom with closed split panel (1 table row)',
       path: 'app-layout/with-sticky-table-and-split-panel',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
       setup: async page => {
         await page.click('[data-testid="set-item-count-to-1"]');
@@ -20,7 +20,7 @@ const suite: TestSuite = {
     {
       description: 'scrolling to bottom with closed split panel (30 table rows)',
       path: 'app-layout/with-sticky-table-and-split-panel',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
       setup: async page => {
         await page.click('[data-testid="set-item-count-to-30"]');
@@ -30,7 +30,7 @@ const suite: TestSuite = {
     {
       description: 'header stays sticky with open split panel (1 table row)',
       path: 'app-layout/with-sticky-table-and-split-panel',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
       setup: async page => {
         await page.click('[data-testid="set-item-count-to-1"]');
@@ -41,7 +41,7 @@ const suite: TestSuite = {
     {
       description: 'header stays sticky with open split panel (30 table rows)',
       path: 'app-layout/with-sticky-table-and-split-panel',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
       setup: async page => {
         await page.click('[data-testid="set-item-count-to-30"]');
@@ -52,7 +52,7 @@ const suite: TestSuite = {
     {
       description: 'header stays sticky when mounting and unmounting a second table',
       path: 'app-layout/with-sticky-table-and-split-panel',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 900 },
       setup: async page => {
         await page.click('[data-testid="set-item-count-to-30"]');
@@ -66,7 +66,7 @@ const suite: TestSuite = {
     {
       description: 'maxContentWidth set to Number.MAX_VALUE',
       path: 'app-layout/refresh-content-width',
-      screenshotType: 'screenshotArea',
+      screenshotType: 'viewport',
       configuration: { width: 1280, height: 700 },
       setup: async page => {
         await page.click('[data-test-id="button_width-number-max_value"]');
