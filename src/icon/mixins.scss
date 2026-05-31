@@ -4,6 +4,7 @@
 */
 
 @use 'sass:map';
+@use 'sass:string';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties' as custom-props;
@@ -75,10 +76,10 @@ $_icon-sizes: (
 
     &.size-#{$name} {
       inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
-      block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
+      block-size: string.unquote('max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}))');
       box-sizing: border-box;
       &-mapped-height {
-        block-size: max($supportedLineHeight, var(#{custom-props.$iconSizeOverride}, $size));
+        block-size: string.unquote('max(#{$supportedLineHeight}, var(#{custom-props.$iconSizeOverride}, #{$size}))');
         padding-block: $padding;
         padding-inline: 0;
       }
@@ -86,7 +87,7 @@ $_icon-sizes: (
       > svg,
       > img {
         inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
-        block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
+        block-size: string.unquote('max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}))');
         vertical-align: top;
       }
 
