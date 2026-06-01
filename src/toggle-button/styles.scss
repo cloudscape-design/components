@@ -5,6 +5,10 @@
 
 @use '../internal/styles/tokens' as awsui;
 
+.variant-normal {
+  background: awsui.$color-background-toggle-button-normal-default;
+}
+
 .variant-normal.pressed {
   background: awsui.$color-background-toggle-button-normal-pressed;
   border-color: awsui.$color-border-toggle-button-normal-pressed;
