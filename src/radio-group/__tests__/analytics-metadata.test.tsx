@@ -30,6 +30,11 @@ const items: RadioGroupProps['items'] = [
   { value: 'second', label: 'Second choice' },
   { value: 'third', label: 'Third choice' },
 ];
+const metadataOptions = items.map(item => ({
+  value: item.value,
+  label: item.label,
+  description: item.description,
+})) as any;
 
 const componentLabel = 'radio group example';
 
@@ -64,6 +69,7 @@ const getMetadata = (
           properties: {
             value: `${currentValue}`,
             valueLabel: currentValue ? items.find(item => item.value === currentValue)?.label : '',
+            options: metadataOptions,
           },
         },
       },
@@ -123,6 +129,7 @@ describe('Checkbox renders correct analytics metadata', () => {
               properties: {
                 value: 'second',
                 valueLabel: 'Second choice',
+                options: metadataOptions,
               },
             },
           },
@@ -153,6 +160,7 @@ describe('Checkbox renders correct analytics metadata', () => {
               properties: {
                 value: '2',
                 valueLabel: '',
+                options: metadataOptions,
               },
             },
           },
