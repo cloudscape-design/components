@@ -73,8 +73,8 @@ function computeSizeOverrides({
   strokeWidthOverrides,
   iconSize,
 }: {
-  sizeOverrides: Partial<Record<string, number>>;
-  strokeWidthOverrides: Partial<Record<string, number>>;
+  sizeOverrides: Partial<Record<string, number>> | undefined;
+  strokeWidthOverrides: Partial<Record<string, number>> | undefined;
   iconSize: string;
 }): SizeOverrideResult {
   const result: SizeOverrideResult = {};
