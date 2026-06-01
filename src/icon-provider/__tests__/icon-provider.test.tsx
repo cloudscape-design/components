@@ -421,7 +421,7 @@ describe('Icon Provider', () => {
   describe('missing context fields (null guard)', () => {
     it('renders without crashing when no IconProvider is present', () => {
       const { container } = render(<Icon name="calendar" size="normal" />);
-      expect(container.querySelector('[class*="icon"]')).not.toBeNull();
+      expect(wrapper(container).findIcon()).not.toBeNull();
     });
 
     it('still applies strokeWidths when sizeOverrides is an empty map', () => {
@@ -430,7 +430,7 @@ describe('Icon Provider', () => {
           <Icon name="calendar" size="normal" />
         </IconProvider>
       );
-      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      const iconEl = wrapper(container).findIcon()!.getElement();
       expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
     });
 
@@ -440,7 +440,7 @@ describe('Icon Provider', () => {
           <Icon name="calendar" size="normal" />
         </IconProvider>
       );
-      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      const iconEl = wrapper(container).findIcon()!.getElement();
       expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
     });
   });
