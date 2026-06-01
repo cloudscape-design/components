@@ -47,7 +47,7 @@ export default class CodeEditorWrapper extends ComponentWrapper {
   }
 
   /**
-   * Sets the value of the component and calls the `onChange` handler
+   * Sets the value of the component and calls the `onDelayedChange` handler
    *
    * @param value The value the input is set to.
    */
