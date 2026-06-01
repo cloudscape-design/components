@@ -79,7 +79,6 @@ function computeSizeOverrides({
 }): SizeOverrideResult {
   const result: SizeOverrideResult = {};
 
-  // Guard against stale context consumers that don't provide these maps yet.
   if (!sizeOverrides || !strokeWidthOverrides) {
     return result;
   }
