@@ -79,10 +79,15 @@ function computeSizeOverrides({
 }): SizeOverrideResult {
   const result: SizeOverrideResult = {};
 
-  const sizes = sizeOverrides ?? {};
-  const strokes = strokeWidthOverrides ?? {};
+  // Fall back to empty maps if either is undefined (e.g. older context versions).
+  if (!sizeOverrides) {
+    sizeOverrides = {};
+  }
+  if (!strokeWidthOverrides) {
+    strokeWidthOverrides = {};
+  }
 
-  const targetSizePx = sizes[iconSize];
+  const targetSizePx = sizeOverrides[iconSize];
   if (targetSizePx !== undefined) {
     result.size = targetSizePx;
     const basePx = BASE_SIZE_PX[iconSize];
@@ -91,7 +96,7 @@ function computeSizeOverrides({
     }
   }
 
-  const rawStroke = strokes[iconSize];
+  const rawStroke = strokeWidthOverrides[iconSize];
   if (rawStroke !== undefined) {
     const scaleFactor = SCALE_FACTOR[iconSize] ?? 1;
     const basePx = BASE_SIZE_PX[iconSize];
