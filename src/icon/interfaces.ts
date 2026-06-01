@@ -93,5 +93,5 @@ export namespace IconProps {
 
   export type Variant = 'normal' | 'disabled' | 'error' | 'inverted' | 'link' | 'subtle' | 'success' | 'warning';
 
-  export type Size = 'x-small' | 'small' | 'normal' | 'medium' | 'big' | 'large' | 'inherit';
+  export type Size = 'small' | 'normal' | 'medium' | 'big' | 'large' | 'inherit';
 }
