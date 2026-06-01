@@ -134,9 +134,6 @@ export function findClosestCellByAriaColIndex(
     const columnIndex = parseInt(element.getAttribute('aria-colindex') ?? '');
     targetCell = element;
 
-    if (columnIndex === targetAriaColIndex) {
-      break;
-    }
     if (delta >= 0 && columnIndex > targetAriaColIndex) {
       break;
     }
