@@ -72,6 +72,14 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   style?: RadioGroupProps.Style;
 
   /**
+   * An object that maps the radio group's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The radio group's root element.
+   * @awsuiSystem core
+   */
+  classNames?: RadioGroupProps.ClassNames;
+
+  /**
    * Defines the direction in which the radio buttons are laid out.
    */
   direction?: 'horizontal' | 'vertical';
@@ -84,6 +92,10 @@ export namespace RadioGroupProps {
     description?: React.ReactNode;
     disabled?: boolean;
     controlId?: string;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface ChangeDetail {

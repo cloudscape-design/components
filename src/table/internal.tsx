@@ -113,6 +113,8 @@ const InternalTable = React.forwardRef(
       selectionType: externalSelectionType,
       selectedItems,
       isItemDisabled,
+      selectionClassName: selectionClassNameProp,
+      classNames,
       ariaLabels,
       onSelectionChange,
       onSortingChange,
@@ -158,6 +160,9 @@ const InternalTable = React.forwardRef(
     }
 
     const baseProps = getBaseProps(rest);
+
+    // `classNames.selection` supersedes the deprecated `selectionClassName` prop.
+    const selectionClassName = classNames?.selection ?? selectionClassNameProp;
 
     const prevStickyHeader = usePrevious(stickyHeader);
     if (prevStickyHeader !== undefined && !!stickyHeader !== !!prevStickyHeader) {
@@ -393,6 +398,8 @@ const InternalTable = React.forwardRef(
     const theadProps: TheadProps = {
       selectionType,
       getSelectAllProps: selection.getSelectAllProps,
+      selectionClassName:
+        typeof selectionClassName === 'function' ? selectionClassName({ item: undefined }) : selectionClassName,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       tableVariant: computedVariant,
@@ -465,7 +472,7 @@ const InternalTable = React.forwardRef(
               {...baseProps}
               {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
-              className={clsx(baseProps.className, styles.root)}
+              className={clsx(baseProps.className, classNames?.root, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
               header={
@@ -647,6 +654,10 @@ const InternalTable = React.forwardRef(
                                       onFocusUp: moveFocusUp,
                                       rowIndex,
                                       itemKey: rowId,
+                                      selectionClassName:
+                                        typeof selectionClassName === 'function'
+                                          ? selectionClassName({ item: row.item })
+                                          : selectionClassName,
                                     }}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
@@ -744,7 +755,17 @@ const InternalTable = React.forwardRef(
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
-                                    selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
+                                    selectionControlProps={
+                                      selectionType === 'group' && loaderSelectionProps
+                                        ? {
+                                            ...loaderSelectionProps,
+                                            selectionClassName:
+                                              typeof selectionClassName === 'function'
+                                                ? selectionClassName({ item: row.item ?? undefined })
+                                                : selectionClassName,
+                                          }
+                                        : undefined
+                                    }
                                     isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                   />
                                 ) : null}

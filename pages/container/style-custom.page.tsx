@@ -234,6 +234,31 @@ export default function CustomContainer() {
             <Box color="inherit">{`<Box color="inherit" />`}</Box> Plain text
           </>
         </Container>
+
+        <Container
+          style={{
+            root: {
+              background,
+              borderColor: 'green',
+              borderRadius: '8px',
+              borderWidth: '4px',
+              boxShadow: '0px 5px 5px red',
+            },
+          }}
+        >
+          <SpaceBetween size="m">
+            <Box>Outer container</Box>
+            <Container
+              style={{
+                root: {
+                  background: 'light-dark(#eaeaea, #444)',
+                },
+              }}
+            >
+              Inner container
+            </Container>
+          </SpaceBetween>
+        </Container>
       </SpaceBetween>
     </ScreenshotArea>
   );

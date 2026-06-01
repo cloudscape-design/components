@@ -65,10 +65,22 @@ export interface TokenGroupProps extends BaseComponentProps {
    * user from modifying the value. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  /**
+   * An object that maps the token group's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The token group's root element.
+   * @awsuiSystem core
+   */
+  classNames?: TokenGroupProps.ClassNames;
 }
 
 export namespace TokenGroupProps {
   export type Alignment = 'horizontal' | 'vertical';
+
+  export interface ClassNames {
+    root?: string;
+  }
   export interface Item {
     label?: string;
     disabled?: boolean;

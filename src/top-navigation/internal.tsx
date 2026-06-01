@@ -27,6 +27,7 @@ export default function InternalTopNavigation({
   i18nStrings,
   utilities,
   search,
+  classNames,
   ...restProps
 }: InternalTopNavigationProps) {
   checkSafeUrl('TopNavigation', identity.href);
@@ -46,6 +47,14 @@ export default function InternalTopNavigation({
       fireCancelableEvent(identity.onFollow, {}, event);
     }
   };
+
+  const resolvedUtilities = utilities.map(utility => ({
+    ...utility,
+    className:
+      typeof classNames?.utility === 'function'
+        ? classNames.utility({ utility })
+        : (classNames?.utility ?? utility.className),
+  }));
 
   const toggleOverflowMenu = () => {
     setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
@@ -142,14 +151,14 @@ export default function InternalTopNavigation({
             )}
 
             {showUtilities &&
-              utilities
+              resolvedUtilities
                 .filter(
                   (_utility, i) =>
                     isVirtual || !responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) === -1
                 )
                 .map((utility, i) => {
                   const hideText = !!responsiveState.hideUtilityText;
-                  const isLast = (isVirtual || !showMenuTrigger) && i === utilities.length - 1;
+                  const isLast = (isVirtual || !showMenuTrigger) && i === resolvedUtilities.length - 1;
                   const offsetRight = isLast && isLargeViewport ? 'xxl' : isLast ? 'l' : undefined;
 
                   return (
@@ -173,9 +182,9 @@ export default function InternalTopNavigation({
                 })}
 
             {isVirtual &&
-              utilities.map((utility, i) => {
+              resolvedUtilities.map((utility, i) => {
                 const hideText = !responsiveState.hideUtilityText;
-                const isLast = !showMenuTrigger && i === utilities.length - 1;
+                const isLast = !showMenuTrigger && i === resolvedUtilities.length - 1;
                 const offsetRight = isLast && isLargeViewport ? 'xxl' : isLast ? 'l' : undefined;
 
                 return (
@@ -223,7 +232,7 @@ export default function InternalTopNavigation({
   };
 
   return (
-    <div {...baseProps} ref={__internalRootRef}>
+    <div {...baseProps} className={clsx(baseProps.className, classNames?.root)} ref={__internalRootRef}>
       <VisualContext contextName="top-navigation">
         {/* Render virtual content first to ensure React refs for content will be assigned on the actual nodes. */}
         {content(true)}
@@ -236,7 +245,7 @@ export default function InternalTopNavigation({
               headerText={i18nStrings?.overflowMenuTitleText}
               dismissIconAriaLabel={i18nStrings?.overflowMenuDismissIconAriaLabel}
               backIconAriaLabel={i18nStrings?.overflowMenuBackIconAriaLabel}
-              items={utilities.filter(
+              items={resolvedUtilities.filter(
                 (utility, i) =>
                   (!responsiveState.hideUtilities || responsiveState.hideUtilities.indexOf(i) !== -1) &&
                   !utility.disableUtilityCollapse

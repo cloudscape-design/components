@@ -23,6 +23,7 @@ export default function InternalSegmentedControl({
   onChange,
   __internalRootRef,
   style,
+  classNames,
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
@@ -45,7 +46,7 @@ export default function InternalSegmentedControl({
   };
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div {...baseProps} className={clsx(baseProps.className, classNames?.root, styles.root)} ref={__internalRootRef}>
       <InternalSegmentedControlComponent
         selectedId={selectedId}
         options={options}

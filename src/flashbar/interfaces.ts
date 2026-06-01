@@ -24,6 +24,14 @@ export namespace FlashbarProps {
     onDismiss?: ButtonProps['onClick'];
     analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
     persistenceConfig?: FlashbarProps.PersistenceConfig;
+    /**
+     * @deprecated Use `classNames.item` instead.
+     */
+    className?: string;
+    /**
+     * @deprecated Use `classNames.dismissButton` instead.
+     */
+    dismissButtonClassName?: string;
   }
 
   export interface ItemAnalyticsMetadata {
@@ -153,6 +161,12 @@ export namespace FlashbarProps {
 
   export type Type = 'success' | 'warning' | 'info' | 'error' | 'in-progress';
   export type AriaRole = 'alert' | 'status';
+
+  export interface ClassNames {
+    root?: string;
+    item?: string | ((args: { item: FlashbarProps.MessageDefinition }) => string);
+    dismissButton?: string | ((args: { item: FlashbarProps.MessageDefinition }) => string);
+  }
 }
 
 export interface FlashbarProps extends BaseComponentProps {
@@ -222,6 +236,16 @@ export interface FlashbarProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: FlashbarProps.Style;
+
+  /**
+   * An object that maps the flashbar's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The flashbar's root element.
+   * * `item` - Applied to each flash item. Can be a string or a function `(args: { item }) => string`.
+   * * `dismissButton` - Applied to each dismiss button wrapper. Can be a string or a function `(args: { item }) => string`.
+   * @awsuiSystem core
+   */
+  classNames?: FlashbarProps.ClassNames;
 }
 
 export type InternalFlashbarProps = FlashbarProps & InternalBaseComponentProps;

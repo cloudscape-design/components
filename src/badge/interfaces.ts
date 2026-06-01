@@ -36,6 +36,14 @@ export interface BadgeProps extends BaseComponentProps {
   style?: BadgeProps.Style;
 
   /**
+   * An object that maps the badge's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The badge's root element.
+   * @awsuiSystem core
+   */
+  classNames?: BadgeProps.ClassNames;
+
+  /**
    * Attributes to add to the native element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -49,6 +57,10 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 export namespace BadgeProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   export interface Style {
     root?: {
       background?: string;

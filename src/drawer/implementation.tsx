@@ -56,6 +56,7 @@ export function DrawerImplementation({
   ariaLabelledby,
   focusBehavior,
   role,
+  classNames,
   ...restProps
 }: DrawerInternalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -156,7 +157,13 @@ export function DrawerImplementation({
   const drawer = (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, testClasses.root, open === false && styles.hidden)}
+      className={clsx(
+        baseProps.className,
+        classNames?.root,
+        styles.root,
+        testClasses.root,
+        open === false && styles.hidden
+      )}
       ref={__internalRootRef}
     >
       {showBackdrop && (
@@ -190,11 +197,11 @@ export function DrawerImplementation({
                 </div>
               )}
               {closeAction && !hideCloseAction && (
-                <div className={styles['close-action']}>
+                <div className={clsx(styles['close-action'], classNames?.closeButton ?? closeAction.className)}>
                   <InternalButton
                     variant="icon"
                     iconName="close"
-                    {...closeAction}
+                    {...{ ...closeAction, className: undefined }}
                     className={testClasses['close-action']}
                     onClick={() => handleClose('close-action')}
                   />

@@ -25,6 +25,10 @@ interface BaseOption {
 
 export interface OptionDefinition extends BaseOption {
   __labelPrefix?: string;
+  /**
+   * @deprecated Use the consuming component's `classNames.options` instead.
+   */
+  className?: string;
 }
 
 interface InternalOptionDefinition extends OptionDefinition {

@@ -8,6 +8,8 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   /* used for test-utils */
 }
@@ -21,80 +23,132 @@
   // Allow multi-line placeholders
   white-space: pre-wrap;
 
-  padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
+  padding-block: var(--awsui-style-input-padding-block, #{styles.$control-padding-vertical});
+  padding-inline: var(--awsui-style-input-padding-inline, #{styles.$control-padding-horizontal});
 
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
+  color: var(--awsui-style-input-color, var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default));
   max-inline-size: 100%;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
-  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
+  background-color: var(
+    --awsui-style-input-background,
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+  border-start-start-radius: var(--awsui-style-input-border-radius, #{styles.$control-border-radius});
+  border-start-end-radius: var(--awsui-style-input-border-radius, #{styles.$control-border-radius});
+  border-end-start-radius: var(--awsui-style-input-border-radius, #{styles.$control-border-radius});
+  border-end-end-radius: var(--awsui-style-input-border-radius, #{styles.$control-border-radius});
 
-  border-block: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-  border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-block: var(--awsui-style-input-border-width, #{awsui.$border-width-field}) solid
+    var(
+      --awsui-style-input-border-color,
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+  border-inline: var(--awsui-style-input-border-width, #{awsui.$border-width-field}) solid
+    var(
+      --awsui-style-input-border-color,
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
 
-  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+  box-shadow: var(--awsui-style-input-box-shadow-default, var(#{custom-props.$styleBoxShadowDefault}));
 
   @include styles.font-body-m;
+  font-size: var(--awsui-style-input-font-size, #{awsui.$font-size-body-m});
+  font-weight: var(--awsui-style-input-font-weight, inherit);
 
   &:hover {
     border-color: var(
-      #{custom-props.$styleBorderColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+      --awsui-style-input-border-color-hover,
+      var(
+        --awsui-style-input-border-color,
+        var(
+          #{custom-props.$styleBorderColorHover},
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+        )
+      )
     );
     color: var(
-      #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+      --awsui-style-input-color-hover,
+      var(
+        #{custom-props.$styleColorHover},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+      )
     );
     background-color: var(
-      #{custom-props.$styleBackgroundHover},
-      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      --awsui-style-input-background-hover,
+      var(
+        --awsui-style-input-background,
+        var(
+          #{custom-props.$styleBackgroundHover},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        )
+      )
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+    box-shadow: var(
+      --awsui-style-input-box-shadow-hover,
+      var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault})
+    );
   }
 
   &.textarea-readonly {
     @include styles.form-readonly-element(
       $background-color: var(
-          #{custom-props.$styleBackgroundReadonly},
-          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+          --awsui-style-input-background-readonly,
+          var(
+            #{custom-props.$styleBackgroundReadonly},
+            var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+          )
         ),
       $border-color: var(
-          #{custom-props.$styleBorderColorReadonly},
-          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+          --awsui-style-input-border-color-readonly,
+          var(
+            #{custom-props.$styleBorderColorReadonly},
+            var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+          )
         )
     );
     color: var(
-      #{custom-props.$styleColorReadonly},
-      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+      --awsui-style-input-color-readonly,
+      var(#{custom-props.$styleColorReadonly}, var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default))
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+    box-shadow: var(--awsui-style-input-box-shadow-readonly, var(#{custom-props.$styleBoxShadowReadonly}));
   }
 
   &::placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$stylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$stylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$stylePlaceholderFontWeight})
+      $color: var(
+          --awsui-style-input-placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder)
+        ),
+      $font-size: var(--awsui-style-input-placeholder-font-size, var(#{custom-props.$stylePlaceholderFontSize})),
+      $font-style: var(
+          --awsui-style-input-placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: var(--awsui-style-input-placeholder-font-weight, var(#{custom-props.$stylePlaceholderFontWeight}))
     );
     opacity: 1;
   }
 
   &:focus {
     @include styles.form-focus-element(
-      $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      $border-radius: var(--awsui-style-input-border-radius, #{styles.$control-border-radius}),
+      $border-width: var(--awsui-style-input-border-width, #{awsui.$border-width-field}),
+      $border-color: var(
+          --awsui-style-input-border-color-focus,
+          var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused)
+        ),
+      $box-shadow: var(
+          --awsui-style-input-focus-ring-shadow,
+          var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+        )
     );
-    color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
-    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    color: var(--awsui-style-input-color-focus, var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default));
+    background-color: var(
+      --awsui-style-input-background-focus,
+      var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default)
+    );
   }
 
   &:invalid {
@@ -104,12 +158,21 @@
 
   &:disabled {
     @include styles.form-disabled-element(
-      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
-      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $background-color: var(
+          --awsui-style-input-background-disabled,
+          var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled)
+        ),
+      $border-color: var(
+          --awsui-style-input-border-color-disabled,
+          var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled)
+        ),
+      $color: var(
+          --awsui-style-input-color-disabled,
+          var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled)
+        ),
       $cursor: default
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+    box-shadow: var(--awsui-style-input-box-shadow-disabled, var(#{custom-props.$styleBoxShadowDisabled}));
     &::placeholder {
       @include styles.form-placeholder-disabled;
       opacity: 1;

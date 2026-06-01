@@ -66,11 +66,23 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
    * @awsuiSystem core
    */
   style?: TextFilterProps.Style;
+
+  /**
+   * An object that maps the text filter's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The text filter's root element.
+   * @awsuiSystem core
+   */
+  classNames?: TextFilterProps.ClassNames;
 }
 
 export namespace TextFilterProps {
   export interface ChangeDetail {
     filteringText: string;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface Ref {

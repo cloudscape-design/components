@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { SpaceBetween } from '~components';
+import { Box, SpaceBetween } from '~components';
 import ItemCard from '~components/item-card';
 
 import { SimplePage } from '../app/templates';
@@ -150,6 +150,23 @@ export default function CustomCard() {
           }}
         >
           Card content
+        </ItemCard>
+
+        <ItemCard
+          style={{
+            root: {
+              background,
+              borderColor: 'green',
+              borderRadius: '8px',
+              borderWidth: '4px',
+              boxShadow: '0px 5px 5px red',
+            },
+          }}
+        >
+          <SpaceBetween size="s">
+            <Box>Outer card</Box>
+            <ItemCard>Inner card</ItemCard>
+          </SpaceBetween>
         </ItemCard>
       </SpaceBetween>
     </SimplePage>

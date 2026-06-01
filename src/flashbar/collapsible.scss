@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable custom-property-pattern */
 @use 'sass:map';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
@@ -199,16 +200,25 @@ the grid layout will be:
 
 .stack > .notification-bar {
   @include styles.text-wrapping;
-  background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar);
-  border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar);
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  background: var(
+    --awsui-style-notification-bar-background-default,
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar)
+  );
+  border-color: var(
+    --awsui-style-notification-bar-border-color-default,
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar)
+  );
+  border-start-start-radius: var(--awsui-style-notification-bar-border-radius, #{awsui.$border-radius-button});
+  border-start-end-radius: var(--awsui-style-notification-bar-border-radius, #{awsui.$border-radius-button});
+  border-end-start-radius: var(--awsui-style-notification-bar-border-radius, #{awsui.$border-radius-button});
+  border-end-end-radius: var(--awsui-style-notification-bar-border-radius, #{awsui.$border-radius-button});
   border-block-style: solid;
   border-inline-style: solid;
   box-shadow: awsui.$shadow-panel-toggle;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar);
+  color: var(
+    --awsui-style-notification-bar-color-default,
+    var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar)
+  );
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -262,28 +272,46 @@ the grid layout will be:
   }
 
   &:hover {
-    background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover);
-    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover);
-    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar);
+    background: var(
+      --awsui-style-notification-bar-background-hover,
+      var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover)
+    );
+    border-color: var(
+      --awsui-style-notification-bar-border-color-hover,
+      var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover)
+    );
+    color: var(
+      --awsui-style-notification-bar-color-hover,
+      var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar)
+    );
   }
 
   &:active {
-    background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active);
-    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar);
-    color: var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar);
+    background: var(
+      --awsui-style-notification-bar-background-active,
+      var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active)
+    );
+    border-color: var(
+      --awsui-style-notification-bar-border-color-active,
+      var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar)
+    );
+    color: var(
+      --awsui-style-notification-bar-color-active,
+      var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar)
+    );
   }
 
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
-    border-block-width: $border-width;
-    border-inline-width: $border-width;
+    border-block-width: var(--awsui-style-notification-bar-border-width, $border-width);
+    border-inline-width: var(--awsui-style-notification-bar-border-width, $border-width);
     padding-inline: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
-    border-block-width: $border-width;
-    border-inline-width: $border-width;
+    border-block-width: var(--awsui-style-notification-bar-border-width, $border-width);
+    border-inline-width: var(--awsui-style-notification-bar-border-width, $border-width);
     padding-inline: awsui.$space-s;
 
     &:focus {
@@ -303,8 +331,14 @@ the grid layout will be:
     border-inline: none;
     padding-block: 0;
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+      var(
+        --awsui-style-notification-bar-focus-ring-border-width,
+        var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+      )
+      var(
+        --awsui-style-notification-bar-focus-ring-border-color,
+        var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+      );
 
     > .icon {
       @include styles.with-motion {
@@ -323,8 +357,8 @@ the grid layout will be:
       @include styles.focus-highlight(
         $gutter: 0px,
         $border-radius: var(
-            #{custom-props.$styleFocusRingBorderRadius},
-            awsui.$border-radius-control-default-focus-ring
+            --awsui-style-notification-bar-focus-ring-border-radius,
+            var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
           ),
         $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
       );

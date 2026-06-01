@@ -49,6 +49,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       showOutline,
       ariaControls,
       style,
+      classNames,
       nativeInputAttributes,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
@@ -86,7 +87,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
+        className={clsx(styles.root, baseProps.className, classNames?.root)}
         controlClassName={styles['checkbox-control']}
         outlineClassName={styles.outline}
         controlId={controlId}

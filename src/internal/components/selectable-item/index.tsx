@@ -129,6 +129,7 @@ const SelectableItem = (
     <div
       className={classNames}
       style={style}
+      data-highlighted={highlighted || undefined}
       {...a11yProperties}
       {...rest}
       {...(isParent || disabled

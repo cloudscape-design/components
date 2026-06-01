@@ -76,10 +76,22 @@ export interface TokenProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: TokenProps.Style;
+
+  /**
+   * An object that maps the token's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The token's root element.
+   * @awsuiSystem core
+   */
+  classNames?: TokenProps.ClassNames;
 }
 
 export namespace TokenProps {
   export type Variant = 'normal' | 'inline';
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export interface Style {
     root?: {

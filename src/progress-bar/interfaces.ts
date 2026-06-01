@@ -89,11 +89,23 @@ export interface ProgressBarProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: ProgressBarProps.Style;
+
+  /**
+   * An object that maps the progress bar's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The progress bar's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ProgressBarProps.ClassNames;
 }
 
 export namespace ProgressBarProps {
   export type Status = 'in-progress' | 'success' | 'error';
   export type Variant = 'standalone' | 'flash' | 'key-value';
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export interface Style {
     progressBar?: {

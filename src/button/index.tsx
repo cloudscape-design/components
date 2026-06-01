@@ -45,6 +45,7 @@ const Button = React.forwardRef(
       style,
       nativeButtonAttributes,
       nativeAnchorAttributes,
+      classNames,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -89,6 +90,7 @@ const Button = React.forwardRef(
         style={style}
         nativeButtonAttributes={nativeButtonAttributes}
         nativeAnchorAttributes={nativeAnchorAttributes}
+        classNames={classNames}
         __injectAnalyticsComponentMetadata={true}
       >
         {children}

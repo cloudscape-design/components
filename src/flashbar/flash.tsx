@@ -54,11 +54,12 @@ function dismissButton(
   ref?: React.Ref<ButtonProps.Ref>,
   id?: string,
   onDismissed?: (id?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => void,
-  persistenceConfig?: FlashbarProps.PersistenceConfig
+  persistenceConfig?: FlashbarProps.PersistenceConfig,
+  dismissButtonClassName?: string
 ) {
   return (
     <div
-      className={styles['dismiss-button-wrapper']}
+      className={clsx(styles['dismiss-button-wrapper'], dismissButtonClassName)}
       {...getAnalyticsMetadataAttribute({ action: 'dismiss' } as Partial<GeneratedAnalyticsMetadataFlashbarDismiss>)}
     >
       <InternalButton
@@ -132,6 +133,7 @@ export const Flash = React.forwardRef(
       onButtonClick,
       onDismiss,
       className,
+      dismissButtonClassName,
       transitionState,
       ariaRole,
       i18nStrings,
@@ -290,7 +292,8 @@ export const Flash = React.forwardRef(
             dismissButtonRefObject,
             id,
             onDismissed,
-            persistenceConfig
+            persistenceConfig,
+            dismissButtonClassName
           )}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />

@@ -76,6 +76,14 @@ export interface ItemCardProps extends BaseComponentProps {
   style?: ItemCardProps.Style;
 
   /**
+   * An object that maps the item card's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The item card's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ItemCardProps.ClassNames;
+
+  /**
    * Attributes to add to the native root element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -90,6 +98,10 @@ export interface ItemCardProps extends BaseComponentProps {
 
 export namespace ItemCardProps {
   export type Variant = 'embedded' | 'default';
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export interface Style {
     root?: {

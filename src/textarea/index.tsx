@@ -45,6 +45,7 @@ const Textarea = React.forwardRef(
       ariaLabel,
       nativeTextareaAttributes,
       style,
+      classNames,
       ...rest
     }: TextareaProps,
     ref: Ref<TextareaProps.Ref>
@@ -107,7 +108,7 @@ const Textarea = React.forwardRef(
     return (
       <span
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
+        className={clsx(styles.root, baseProps.className, classNames?.root)}
         ref={__internalRootRef}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       >

@@ -145,6 +145,24 @@ export interface TableProps<T = any> extends BaseComponentProps {
   selectedItems?: ReadonlyArray<T>;
 
   /**
+   * Specifies a class name applied to each selection cell.
+   * Can be a string (applied to all) or a function receiving `{ item }` for row-level
+   * customization. When called for the header "select all" control, `item` is `undefined`.
+   * @deprecated Use `classNames.selection` instead.
+   */
+  selectionClassName?: string | ((props: { item: T | undefined }) => string);
+
+  /**
+   * An object that maps the table's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The table's root element.
+   * * `selection` - Each selection cell. A string is applied to all; a function receiving
+   *   `{ item }` enables row-level customization (`item` is `undefined` for the header "select all" control).
+   * @awsuiSystem core
+   */
+  classNames?: TableProps.ClassNames<T>;
+
+  /**
    * Use this slot to add filtering controls to the table.
    */
   filter?: React.ReactNode;
@@ -432,6 +450,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
 }
 
 export namespace TableProps {
+  export interface ClassNames<T = any> {
+    root?: string;
+    selection?: string | ((props: { item: T | undefined }) => string);
+  }
+
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     flowType?: 'view-resource';

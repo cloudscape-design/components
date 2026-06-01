@@ -105,6 +105,14 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;
+
+  /**
+   * An object that maps the button group's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The button group's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ButtonGroupProps.ClassNames;
 }
 
 export interface InternalIconButton extends ButtonGroupProps.IconButton {
@@ -228,6 +236,11 @@ export namespace ButtonGroupProps {
      */
     focus(itemId: string): void;
   }
+
+  export interface ClassNames {
+    root?: string;
+  }
+
   export interface Style {
     root?: {
       background?: string;

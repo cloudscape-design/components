@@ -6,20 +6,40 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable custom-property-pattern */
+
 $thumb-size: awsui.$space-m;
 $thumb-readonly-size: awsui.$space-s;
 $border-radius-slider-thumb: 50%;
 
 @mixin base-thumb-styles {
   appearance: none;
-  background: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default);
+  background: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default)
+  );
+  border-color: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default)
+  );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-start-start-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-start-end-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-end-start-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-end-end-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
+  border-start-start-radius: var(
+    --awsui-style-slider-handle-border-radius,
+    var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb)
+  );
+  border-start-end-radius: var(
+    --awsui-style-slider-handle-border-radius,
+    var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb)
+  );
+  border-end-start-radius: var(
+    --awsui-style-slider-handle-border-radius,
+    var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb)
+  );
+  border-end-end-radius: var(
+    --awsui-style-slider-handle-border-radius,
+    var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb)
+  );
   box-shadow: none;
 
   cursor: pointer;
@@ -30,10 +50,17 @@ $border-radius-slider-thumb: 50%;
 }
 
 @mixin base-thumb-hover-styles {
-  background: var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default);
+  background: var(
+    --awsui-style-slider-handle-background-hover,
+    var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default)
+  );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default);
+    0 0 0 4px
+      var(
+        --awsui-style-slider-handle-background-hover,
+        var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default)
+      );
 }
 
 @mixin base-thumb-focus-styles {
@@ -41,10 +68,20 @@ $border-radius-slider-thumb: 50%;
   inline-size: 20px;
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
-  background: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
+    0 0 0 4px
+      var(
+        --awsui-style-slider-handle-background-active,
+        var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active)
+      );
+  background: var(
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active)
+  );
 
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
+  border-color: var(
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active)
+  );
   border-block-width: 2px;
   border-inline-width: 2px;
 }
@@ -65,8 +102,14 @@ $border-radius-slider-thumb: 50%;
 @mixin base-thumb-disabled-styles {
   block-size: $thumb-size;
   inline-size: $thumb-size;
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled);
+  background-color: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled)
+  );
+  border-color: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled)
+  );
   box-shadow: none;
   pointer-events: none;
 }
@@ -74,66 +117,84 @@ $border-radius-slider-thumb: 50%;
 @mixin base-thumb-readonly-styles {
   block-size: $thumb-readonly-size;
   inline-size: $thumb-readonly-size;
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only);
+  background-color: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only)
+  );
+  border-color: var(
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only)
+  );
   box-shadow: none;
   pointer-events: none;
 }
 
 @mixin error-thumb-focus-styles {
   background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-error-active
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
   );
   border-block-width: 2px;
   border-inline-width: 2px;
   border-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-error-active
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
   );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active);
+      var(
+        --awsui-style-slider-handle-background-active,
+        var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
+      );
 }
 
 @mixin warning-thumb-focus-styles {
   background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-warning-active
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
   );
   border-block-width: 2px;
   border-inline-width: 2px;
   border-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-warning-active
+    --awsui-style-slider-handle-background-active,
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
   );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active);
+      var(
+        --awsui-style-slider-handle-background-active,
+        var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
+      );
 }
 
 @mixin error-thumb-hover-styles {
   background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundDefault},
-    awsui.$color-background-slider-handle-error-active
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active)
   );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active);
+      var(
+        --awsui-style-slider-handle-background-default,
+        var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active)
+      );
 }
 
 @mixin warning-thumb-hover-styles {
   background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundDefault},
-    awsui.$color-background-slider-handle-warning-active
+    --awsui-style-slider-handle-background-default,
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active)
   );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active);
+      var(
+        --awsui-style-slider-handle-background-default,
+        var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active)
+      );
 }

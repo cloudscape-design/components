@@ -17,7 +17,7 @@ export { ButtonGroupProps };
 
 const ButtonGroup = React.forwardRef(
   (
-    { variant, dropdownExpandToViewport = false, style, ...rest }: ButtonGroupProps,
+    { variant, dropdownExpandToViewport = false, style, classNames, ...rest }: ButtonGroupProps,
     ref: React.Ref<ButtonGroupProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
@@ -52,6 +52,7 @@ const ButtonGroup = React.forwardRef(
         variant={variant}
         dropdownExpandToViewport={dropdownExpandToViewport}
         style={style}
+        classNames={classNames}
         {...getAnalyticsMetadataAttribute({ component: componentMetadata })}
       />
     );

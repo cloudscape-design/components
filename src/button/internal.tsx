@@ -100,6 +100,7 @@ export const InternalButton = React.forwardRef(
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
       analyticsAction = 'click',
+      classNames,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -179,7 +180,7 @@ export const InternalButton = React.forwardRef(
       buttonContext.onClick({ variant });
     };
 
-    const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
+    const buttonClass = clsx(props.className, classNames?.root, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
       [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,

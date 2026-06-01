@@ -13,10 +13,22 @@ export interface FileDropzoneProps extends BaseComponentProps {
    * Children of the Dropzone.
    */
   children: React.ReactNode;
+
+  /**
+   * An object that maps the file dropzone's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The file dropzone's root element.
+   * @awsuiSystem core
+   */
+  classNames?: FileDropzoneProps.ClassNames;
 }
 
 export namespace FileDropzoneProps {
   export interface ChangeDetail {
     value: File[];
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 }

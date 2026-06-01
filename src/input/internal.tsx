@@ -98,6 +98,7 @@ function InternalInput(
     __inlineLabelText,
     __fullWidth,
     style,
+    classNames,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -215,7 +216,7 @@ function InternalInput(
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles['input-container'])}
+      className={clsx(baseProps.className, classNames?.root, styles['input-container'])}
       ref={__internalRootRef}
       dir={type === 'email' ? 'ltr' : undefined}
       {...(__injectAnalyticsComponentMetadata

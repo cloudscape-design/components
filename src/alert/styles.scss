@@ -12,6 +12,8 @@
 
 @use './motion';
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
@@ -29,19 +31,26 @@
   flex-direction: row;
   border-block-start: awsui.$border-width-alert-block-start solid;
   border-block-end: awsui.$border-width-alert-block-end solid;
-  border-inline-start: awsui.$border-width-alert-inline-start solid;
+  border-inline-start: var(--awsui-style-alert-border-width, #{awsui.$border-width-alert-inline-start}) solid;
   border-inline-end: awsui.$border-width-alert-inline-end solid;
-  border-start-start-radius: awsui.$border-radius-alert;
-  border-start-end-radius: awsui.$border-radius-alert;
-  border-end-start-radius: awsui.$border-radius-alert;
-  border-end-end-radius: awsui.$border-radius-alert;
+  border-start-start-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
+  border-start-end-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
+  border-end-start-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
+  border-end-end-radius: var(--awsui-style-alert-border-radius, #{awsui.$border-radius-alert});
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
   background-color: awsui.$color-background-container-content;
+  color: var(--awsui-style-alert-color, inherit);
 
   #{custom-props.$alertFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused);
+    var(
+      --awsui-style-alert-focus-ring-border-width,
+      var(#{custom-props.$alertFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    )
+    var(
+      --awsui-style-alert-focus-ring-border-color,
+      var(#{custom-props.$alertFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
 }
 
 .alert-wrapper {
@@ -87,7 +96,10 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $border-radius: var(
+          --awsui-style-alert-focus-ring-border-radius,
+          var(#{custom-props.$alertFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
       $box-shadow: var(#{custom-props.$alertFocusRingBoxShadow})
     );
   }
@@ -159,10 +171,13 @@ $_text-colors: (
 
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
-    border-color: #{map.get($_border-colors, $type)};
-    background-color: #{map.get($_background-colors, $type)};
+    border-color: var(--awsui-style-alert-border-color, #{map.get($_border-colors, $type)});
+    background-color: var(--awsui-style-alert-background, #{map.get($_background-colors, $type)});
     > .alert-wrapper > .alert-focus-wrapper > .icon {
-      color: var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)});
+      color: var(
+        --awsui-style-alert-icon-color,
+        var(#{custom-props.$alertIconColor}, #{map.get($_text-colors, $type)})
+      );
     }
   }
 }

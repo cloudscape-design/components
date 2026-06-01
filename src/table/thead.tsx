@@ -19,6 +19,8 @@ import styles from './styles.css.js';
 
 export interface TheadProps {
   selectionType: undefined | InternalSelectionType;
+  getSelectAllProps?: () => ItemSelectionProps;
+  selectionClassName?: string;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   sortingColumn: TableProps.SortingColumn<any> | undefined;
   sortingDescending: boolean | undefined;
@@ -27,7 +29,6 @@ export interface TheadProps {
   tableVariant?: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Map<PropertyKey, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
@@ -52,6 +53,7 @@ const Thead = React.forwardRef(
     {
       selectionType,
       getSelectAllProps,
+      selectionClassName,
       columnDefinitions,
       sortingColumn,
       sortingDisabled,
@@ -115,6 +117,7 @@ const Thead = React.forwardRef(
               getSelectAllProps={getSelectAllProps}
               onFocusMove={onFocusMove}
               singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+              selectionClassName={selectionClassName}
             />
           ) : null}
 

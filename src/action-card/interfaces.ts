@@ -81,9 +81,21 @@ export interface ActionCardProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+
+  /**
+   * An object that maps the action card's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The action card's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ActionCardProps.ClassNames;
 }
 
 export namespace ActionCardProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface ClickDetail {}
 

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { useMergeRefs, useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -84,6 +85,7 @@ export function useFlashbar({
   // eslint-disable-next-line no-restricted-syntax -- Optional property existence check
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
+  baseProps.className = clsx(baseProps.className, restProps.classNames?.root) || undefined;
   const ref = useRef<HTMLDivElement | null>(null);
   const flashRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
   const mergedRef = useMergeRefs(ref, __internalRootRef);

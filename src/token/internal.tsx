@@ -41,6 +41,7 @@ function InternalToken({
   dismissLabel,
   onDismiss,
   tooltipContent,
+  classNames,
 
   // Internal
   role,
@@ -114,7 +115,8 @@ function InternalToken({
           testUtilStyles.root,
           !isInline ? styles['token-normal'] : styles['token-inline'],
           analyticsSelectors.token,
-          baseProps.className
+          baseProps.className,
+          classNames?.root
         )}
         aria-label={ariaLabel}
         aria-labelledby={!ariaLabel ? ariaLabelledbyId : undefined}

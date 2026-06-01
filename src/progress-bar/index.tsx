@@ -36,6 +36,7 @@ export default function ProgressBar({
   resultText,
   onResultButtonClick,
   style,
+  classNames,
   ...rest
 }: ProgressBarProps) {
   const { __internalRootRef } = useBaseComponent('ProgressBar', {
@@ -74,7 +75,7 @@ export default function ProgressBar({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, variant && styles[variant])}
+      className={clsx(baseProps.className, classNames?.root, styles.root, variant && styles[variant])}
       ref={__internalRootRef}
     >
       <div className={isInFlash ? styles['flash-container'] : undefined}>

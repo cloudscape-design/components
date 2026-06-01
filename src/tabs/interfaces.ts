@@ -109,8 +109,20 @@ export interface TabsProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: TabsProps.Style;
+
+  /**
+   * An object that maps the tabs' slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The tabs' root element.
+   * @awsuiSystem core
+   */
+  classNames?: TabsProps.ClassNames;
 }
 export namespace TabsProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   export type Variant = 'default' | 'container' | 'stacked';
 
   export interface Tab {

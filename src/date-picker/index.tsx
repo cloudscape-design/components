@@ -64,6 +64,7 @@ const DatePicker = React.forwardRef(
       granularity = 'day',
       format = 'slashed',
       inputFormat = 'slashed',
+      classNames,
       ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
@@ -178,7 +179,7 @@ const DatePicker = React.forwardRef(
       </div>
     );
 
-    baseProps.className = clsx(baseProps.className, styles.root, styles['date-picker-container']);
+    baseProps.className = clsx(baseProps.className, classNames?.root, styles.root, styles['date-picker-container']);
 
     const referrerId = useUniqueId();
 

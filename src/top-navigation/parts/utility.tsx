@@ -34,7 +34,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     checkSafeUrl('TopNavigation', definition.href);
     if (definition.variant === 'primary-button') {
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span className={clsx(styles[`offset-right-${offsetRight}`], definition.className)}>
           <InternalButton
             variant="primary"
             href={definition.href}
@@ -70,7 +70,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     } else {
       // Link
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span className={clsx(styles[`offset-right-${offsetRight}`], definition.className)}>
           <InternalLink
             variant="top-navigation"
             href={definition.href}
@@ -114,14 +114,16 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     checkSafeUrlRecursively(definition.items);
 
     return (
-      <MenuDropdown
-        {...definition}
-        title={shouldShowTitle ? title : ''}
-        ariaLabel={ariaLabel}
-        offsetRight={offsetRight}
-      >
-        {!shouldHideText && definition.text}
-      </MenuDropdown>
+      <span className={definition.className} style={{ display: 'contents' }}>
+        <MenuDropdown
+          {...{ ...definition, className: undefined }}
+          title={shouldShowTitle ? title : ''}
+          ariaLabel={ariaLabel}
+          offsetRight={offsetRight}
+        >
+          {!shouldHideText && definition.text}
+        </MenuDropdown>
+      </span>
     );
   }
 

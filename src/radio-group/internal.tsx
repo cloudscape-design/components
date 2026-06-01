@@ -34,6 +34,7 @@ const InternalRadioGroup = React.forwardRef(
       readOnly,
       __internalRootRef,
       style,
+      classNames,
       direction,
       ...props
     }: InternalRadioGroupProps,
@@ -57,6 +58,7 @@ const InternalRadioGroup = React.forwardRef(
         {...baseProps}
         className={clsx(
           baseProps.className,
+          classNames?.root,
           testUtilStyles.root,
           styles['radio-group'],
           direction === 'horizontal' && styles['horizontal-group']

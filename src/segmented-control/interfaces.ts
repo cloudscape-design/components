@@ -51,9 +51,21 @@ export interface SegmentedControlProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: SegmentedControlProps.Style;
+
+  /**
+   * An object that maps the segmented control's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The segmented control's root element.
+   * @awsuiSystem core
+   */
+  classNames?: SegmentedControlProps.ClassNames;
 }
 
 export namespace SegmentedControlProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   export interface Option {
     id: string;
     disabled?: boolean;

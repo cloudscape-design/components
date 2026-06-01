@@ -12,11 +12,16 @@
 @use '../../link/constants.scss' as constants;
 @use '../generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable custom-property-pattern */
+
 @mixin link-variant-style($variant) {
-  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'));
-  font-weight: map.get($variant, 'font-weight');
+  color: var(
+    --awsui-style-link-color-default,
+    var(#{custom-props.$styleColorDefault}, #{map.get($variant, 'text-color-default')})
+  );
+  font-weight: var(--awsui-style-link-font-weight, #{map.get($variant, 'font-weight')});
   letter-spacing: map.get($variant, 'letter-spacing');
-  text-decoration-line: map.get($variant, 'decoration-line');
+  text-decoration-line: var(--awsui-style-link-text-decoration, #{map.get($variant, 'decoration-line')});
   text-decoration-color: map.get($variant, 'decoration-color');
 
   @include styles.with-motion {
@@ -26,7 +31,10 @@
 
   &:hover {
     cursor: pointer;
-    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'));
+    color: var(
+      --awsui-style-link-color-hover,
+      var(#{custom-props.$styleColorHover}, #{map.get($variant, 'text-color-hover')})
+    );
   }
 
   &:focus {
@@ -34,7 +42,10 @@
   }
 
   &:active {
-    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'));
+    color: var(
+      --awsui-style-link-color-active,
+      var(#{custom-props.$styleColorActive}, #{map.get($variant, 'text-color-active')})
+    );
   }
 
   &:active,

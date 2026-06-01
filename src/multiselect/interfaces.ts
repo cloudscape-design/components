@@ -80,6 +80,16 @@ export interface MultiselectProps extends BaseSelectProps {
    * Specifies a render function to render custom options in the dropdown menu.
    */
   renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
+
+  /**
+   * An object that maps the multiselect's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The multiselect's root element.
+   * * `options` - Each option item. A string is applied to all; a function receiving
+   *   `{ option }` enables per-option customization.
+   * @awsuiSystem core
+   */
+  classNames?: MultiselectProps.ClassNames;
 }
 
 export namespace MultiselectProps {
@@ -120,6 +130,11 @@ export namespace MultiselectProps {
     item: MultiselectItem;
     filterText?: string;
   }) => ReactNode | null;
+
+  export interface ClassNames {
+    root?: string;
+    options?: string | ((args: { option: MultiselectProps.Option }) => string | undefined);
+  }
 
   export type DeselectAriaLabelFunction = (option: Option) => string;
   export type TriggerVariant = 'placeholder' | 'tokens';

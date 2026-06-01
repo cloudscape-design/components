@@ -43,6 +43,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       nativeInputAttributes,
       __internalRootRef,
       style,
+      classNames,
       __injectAnalyticsComponentMetadata,
       ...rest
     },
@@ -73,7 +74,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     return (
       <AbstractSwitch
         {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
+        className={clsx(styles.root, baseProps.className, classNames?.root)}
         controlClassName={clsx(styles['toggle-control'], {
           [styles['toggle-control-checked']]: checked,
           [styles['toggle-control-disabled']]: disabled,

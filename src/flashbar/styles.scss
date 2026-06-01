@@ -25,6 +25,7 @@
   @include styles.styles-reset;
 }
 
+/* stylelint-disable custom-property-pattern */
 .flash {
   position: relative;
   display: flex;
@@ -32,18 +33,26 @@
   align-items: flex-start;
   padding-block: awsui.$space-flashbar-vertical;
   padding-inline: awsui.$space-flashbar-horizontal;
-  border-start-start-radius: awsui.$border-radius-flashbar;
-  border-start-end-radius: awsui.$border-radius-flashbar;
-  border-end-start-radius: awsui.$border-radius-flashbar;
-  border-end-end-radius: awsui.$border-radius-flashbar;
-  color: awsui.$color-text-notification-default;
+  border-start-start-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
+  border-start-end-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
+  border-end-start-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
+  border-end-end-radius: var(--awsui-style-flash-border-radius, #{awsui.$border-radius-flashbar});
+  border-block: var(--awsui-style-flash-border-width, 0) solid var(--awsui-style-flash-border-color, transparent);
+  border-inline: var(--awsui-style-flash-border-width, 0) solid var(--awsui-style-flash-border-color, transparent);
+  color: var(--awsui-style-flash-color, #{awsui.$color-text-notification-default});
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+    var(
+      --awsui-style-flash-focus-ring-border-width,
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    )
+    var(
+      --awsui-style-flash-focus-ring-border-color,
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
 }
 
 .initial-hidden {
@@ -84,7 +93,10 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $border-radius: var(
+          --awsui-style-flash-focus-ring-border-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
     );
   }
@@ -146,19 +158,20 @@
 }
 
 .flash-type-success {
-  background-color: awsui.$color-background-notification-green;
+  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-green});
 }
 
 .flash-type-error {
-  background-color: awsui.$color-background-notification-red;
+  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-red});
 }
 
 .flash-type-info,
 .flash-type-in-progress {
-  background-color: awsui.$color-background-notification-blue;
+  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-blue});
 }
 
 .flash-type-warning {
-  color: awsui.$color-text-notification-yellow;
-  background-color: awsui.$color-background-notification-yellow;
+  color: var(--awsui-style-flash-color, #{awsui.$color-text-notification-yellow});
+  background-color: var(--awsui-style-flash-background, #{awsui.$color-background-notification-yellow});
 }
+/* stylelint-enable custom-property-pattern */

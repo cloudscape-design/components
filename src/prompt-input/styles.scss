@@ -17,57 +17,85 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 .root {
   @include styles.styles-reset;
   @include styles.control-border-radius-full();
+  border-start-start-radius: var(--awsui-style-prompt-input-border-radius, #{constants.$control-border-radius});
+  border-start-end-radius: var(--awsui-style-prompt-input-border-radius, #{constants.$control-border-radius});
+  border-end-start-radius: var(--awsui-style-prompt-input-border-radius, #{constants.$control-border-radius});
+  border-end-end-radius: var(--awsui-style-prompt-input-border-radius, #{constants.$control-border-radius});
   cursor: text;
 
-  background-color: var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default);
+  background-color: var(--awsui-style-prompt-input-background-default, var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default));
 
-  border-block: awsui.$border-width-field solid
-    var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default);
-  border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default);
+  border-block: var(--awsui-style-prompt-input-border-width, #{awsui.$border-width-field}) solid
+    var(--awsui-style-prompt-input-border-color-default, var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default));
+  border-inline: var(--awsui-style-prompt-input-border-width, #{awsui.$border-width-field}) solid
+    var(--awsui-style-prompt-input-border-color-default, var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default));
 
-  box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDefault});
+  box-shadow: var(--awsui-style-prompt-input-box-shadow-default, var(#{custom-props.$promptInputStyleBoxShadowDefault}));
 
   &:hover {
     background-color: var(
-      #{custom-props.$promptInputStyleBackgroundHover},
-      var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+      --awsui-style-prompt-input-background-hover,
+      var(
+        --awsui-style-prompt-input-background-default,
+        var(
+          #{custom-props.$promptInputStyleBackgroundHover},
+          var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+        )
+      )
     );
     border-color: var(
-      #{custom-props.$promptInputStyleBorderColorHover},
-      var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default)
+      --awsui-style-prompt-input-border-color-hover,
+      var(
+        --awsui-style-prompt-input-border-color-default,
+        var(
+          #{custom-props.$promptInputStyleBorderColorHover},
+          var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default)
+        )
+      )
     );
     box-shadow: var(
-      #{custom-props.$promptInputStyleBoxShadowHover},
-      var(#{custom-props.$promptInputStyleBoxShadowDefault})
+      --awsui-style-prompt-input-box-shadow-hover,
+      var(
+        #{custom-props.$promptInputStyleBoxShadowHover},
+        var(#{custom-props.$promptInputStyleBoxShadowDefault})
+      )
     );
   }
 
   &.textarea-readonly {
     @include styles.form-readonly-element(
       $background-color: var(
-          #{custom-props.$promptInputStyleBackgroundReadonly},
-          var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+          --awsui-style-prompt-input-background-readonly,
+          var(
+            #{custom-props.$promptInputStyleBackgroundReadonly},
+            var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+          )
         ),
       $border-color: var(
-          #{custom-props.$promptInputStyleBorderColorReadonly},
-          var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-disabled)
+          --awsui-style-prompt-input-border-color-readonly,
+          var(
+            #{custom-props.$promptInputStyleBorderColorReadonly},
+            var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-disabled)
+          )
         )
     );
-    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowReadonly});
+    box-shadow: var(--awsui-style-prompt-input-box-shadow-readonly, var(#{custom-props.$promptInputStyleBoxShadowReadonly}));
   }
 
   &.disabled {
     @include styles.form-disabled-element(
       $background-color: var(
-          #{custom-props.$promptInputStyleBackgroundDisabled},
-          awsui.$color-background-input-disabled
+          --awsui-style-prompt-input-background-disabled,
+          var(
+            #{custom-props.$promptInputStyleBackgroundDisabled},
+            awsui.$color-background-input-disabled
+          )
         ),
-      $border-color: var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled),
+      $border-color: var(--awsui-style-prompt-input-border-color-disabled, var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled)),
+      $color: var(--awsui-style-prompt-input-color-disabled, var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled)),
       $cursor: default
     );
-    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    box-shadow: var(--awsui-style-prompt-input-box-shadow-disabled, var(#{custom-props.$promptInputStyleBoxShadowDisabled}));
   }
 
   &.textarea-invalid {
@@ -130,10 +158,12 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   &:focus-within:not(.textarea-invalid):not(.textarea-warning),
   &:focus:not(.textarea-invalid):not(.textarea-warning) {
     @include styles.form-focus-element(
-      $border-color: var(#{custom-props.$promptInputStyleBorderColorFocus}, awsui.$color-border-input-focused),
-      $box-shadow: var(#{custom-props.$promptInputStyleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      $border-radius: var(--awsui-style-prompt-input-border-radius, #{constants.$control-border-radius}),
+      $border-width: var(--awsui-style-prompt-input-border-width, #{awsui.$border-width-field}),
+      $border-color: var(--awsui-style-prompt-input-border-color-focus, var(#{custom-props.$promptInputStyleBorderColorFocus}, awsui.$color-border-input-focused)),
+      $box-shadow: var(--awsui-style-prompt-input-box-shadow-focus, var(#{custom-props.$promptInputStyleBoxShadowFocus}, foundation.$box-shadow-focused-light))
     );
-    background-color: var(#{custom-props.$promptInputStyleBackgroundFocus}, awsui.$color-background-input-default);
+    background-color: var(--awsui-style-prompt-input-background-focus, var(#{custom-props.$promptInputStyleBackgroundFocus}, awsui.$color-background-input-default));
   }
 
   // Prevent general focus styles when disabled
@@ -141,14 +171,17 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   &.disabled:focus:not(.textarea-invalid):not(.textarea-warning) {
     @include styles.form-disabled-element(
       $background-color: var(
-          #{custom-props.$promptInputStyleBackgroundDisabled},
-          awsui.$color-background-input-disabled
+          --awsui-style-prompt-input-background-disabled,
+          var(
+            #{custom-props.$promptInputStyleBackgroundDisabled},
+            awsui.$color-background-input-disabled
+          )
         ),
-      $border-color: var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled),
+      $border-color: var(--awsui-style-prompt-input-border-color-disabled, var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled)),
+      $color: var(--awsui-style-prompt-input-color-disabled, var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled)),
       $cursor: default
     );
-    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    box-shadow: var(--awsui-style-prompt-input-box-shadow-disabled, var(#{custom-props.$promptInputStyleBoxShadowDisabled}));
   }
 }
 
@@ -167,7 +200,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
 
-  color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
+  color: var(--awsui-style-prompt-input-color-default, var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default));
   max-inline-size: 100%;
   inline-size: 100%;
   display: block;
@@ -195,10 +228,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   &.placeholder-visible::before {
     content: attr(data-placeholder);
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+      $color: var(--awsui-style-prompt-input-placeholder-color, var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder)),
+      $font-size: var(--awsui-style-prompt-input-placeholder-font-size, var(#{custom-props.$promptInputStylePlaceholderFontSize})),
+      $font-style: var(--awsui-style-prompt-input-placeholder-font-style, var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)),
+      $font-weight: var(--awsui-style-prompt-input-placeholder-font-weight, var(#{custom-props.$promptInputStylePlaceholderFontWeight}))
     );
     opacity: 1;
     pointer-events: none;
@@ -210,16 +243,22 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   &:hover {
     color: var(
-      #{custom-props.$promptInputStyleColorHover},
-      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      --awsui-style-prompt-input-color-hover,
+      var(
+        #{custom-props.$promptInputStyleColorHover},
+        var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      )
     );
   }
 
   &:focus {
     outline: none;
     color: var(
-      #{custom-props.$promptInputStyleColorFocus},
-      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      --awsui-style-prompt-input-color-focus,
+      var(
+        #{custom-props.$promptInputStyleColorFocus},
+        var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      )
     );
   }
 
@@ -231,10 +270,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   // Native placeholder for textarea element
   &::placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+      $color: var(--awsui-style-prompt-input-placeholder-color, var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder)),
+      $font-size: var(--awsui-style-prompt-input-placeholder-font-size, var(#{custom-props.$promptInputStylePlaceholderFontSize})),
+      $font-style: var(--awsui-style-prompt-input-placeholder-font-style, var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)),
+      $font-weight: var(--awsui-style-prompt-input-placeholder-font-weight, var(#{custom-props.$promptInputStylePlaceholderFontWeight}))
     );
     opacity: 1;
   }
@@ -246,7 +285,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   &:disabled,
   &.textarea-disabled {
-    color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled);
+    color: var(--awsui-style-prompt-input-color-disabled, var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled));
     cursor: default;
     overflow-y: hidden;
 
@@ -258,8 +297,11 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   &-readonly {
     color: var(
-      #{custom-props.$promptInputStyleColorReadonly},
-      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      --awsui-style-prompt-input-color-readonly,
+      var(
+        #{custom-props.$promptInputStyleColorReadonly},
+        var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+      )
     );
   }
   

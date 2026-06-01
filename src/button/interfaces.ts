@@ -219,6 +219,14 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * @awsuiSystem core
    */
   style?: ButtonProps.Style;
+
+  /**
+   * An object that maps the button's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The button's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ButtonProps.ClassNames;
 }
 
 export namespace ButtonProps {
@@ -242,6 +250,10 @@ export namespace ButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface Style {

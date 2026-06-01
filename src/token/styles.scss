@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable custom-property-pattern */
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
@@ -23,7 +24,10 @@
   border-inline: awsui.$border-width-field solid transparent;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
-  color: var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default);
+  color: var(
+    --awsui-style-token-dismiss-color-default,
+    var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default)
+  );
   background-color: transparent;
   cursor: pointer;
 
@@ -45,7 +49,10 @@
   }
 
   &:hover {
-    color: var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover);
+    color: var(
+      --awsui-style-token-dismiss-color-hover,
+      var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover)
+    );
   }
 
   &-inline {
@@ -116,22 +123,40 @@
 }
 
 .token-box-readonly {
-  border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
+  border-color: var(
+    --awsui-style-token-border-color-readonly,
+    var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled)
+  );
+  background: var(
+    --awsui-style-token-background-readonly,
+    var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content)
+  );
 
   > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
+    color: var(
+      --awsui-style-token-dismiss-color-readonly,
+      var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled)
+    );
   }
 }
 
 .token-box-disabled {
   pointer-events: none;
-  border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
+  border-color: var(
+    --awsui-style-token-border-color-disabled,
+    var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled)
+  );
+  background: var(
+    --awsui-style-token-background-disabled,
+    var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content)
+  );
   color: awsui.$color-text-disabled;
 
   // stylelint-disable-next-line no-descending-specificity
   > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
+    color: var(
+      --awsui-style-token-dismiss-color-disabled,
+      var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled)
+    );
   }
 }

@@ -1,0 +1,56 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Shared color palette for style API v2 demos.
+// Uses light-dark() for accessible contrast in both color schemes.
+// Light mode: dark text on light backgrounds. Dark mode: light text on dark backgrounds.
+
+// Brand accent
+$accent: light-dark(hsl(330, 75%, 42%), hsl(330, 75%, 68%));
+$accent-hover: light-dark(hsl(330, 75%, 34%), hsl(330, 75%, 78%));
+$accent-active: light-dark(hsl(330, 75%, 26%), hsl(330, 75%, 88%));
+
+// Surfaces
+$surface: light-dark(hsl(220, 30%, 97%), hsl(220, 30%, 15%));
+$surface-alt: light-dark(hsl(220, 30%, 93%), hsl(220, 30%, 20%));
+
+// Text
+$text: light-dark(hsl(220, 30%, 15%), hsl(220, 30%, 95%));
+$text-muted: light-dark(hsl(220, 10%, 45%), hsl(220, 10%, 65%));
+$text-disabled: light-dark(hsl(220, 5%, 65%), hsl(220, 5%, 40%));
+$text-on-accent: light-dark(hsl(0, 0%, 100%), hsl(220, 30%, 10%));
+
+// Borders
+$border: light-dark(hsl(220, 20%, 80%), hsl(220, 20%, 35%));
+$border-accent: light-dark(hsl(330, 75%, 42%), hsl(330, 75%, 68%));
+$border-disabled: light-dark(hsl(220, 5%, 85%), hsl(220, 5%, 30%));
+
+// Status colors
+$success: light-dark(hsl(145, 60%, 40%), hsl(145, 60%, 65%));
+$success-surface: light-dark(hsl(145, 40%, 95%), hsl(145, 40%, 15%));
+$error: light-dark(hsl(0, 65%, 50%), hsl(0, 65%, 70%));
+$error-surface: light-dark(hsl(0, 50%, 95%), hsl(0, 50%, 15%));
+$warning: light-dark(hsl(35, 80%, 45%), hsl(35, 80%, 65%));
+$warning-surface: light-dark(hsl(35, 60%, 95%), hsl(35, 60%, 15%));
+$info: light-dark(hsl(200, 70%, 45%), hsl(200, 70%, 65%));
+$info-surface: light-dark(hsl(200, 50%, 95%), hsl(200, 50%, 15%));
+
+// Controls
+$control-bg: light-dark(hsl(0, 0%, 100%), hsl(220, 20%, 20%));
+$control-bg-checked: light-dark(hsl(330, 75%, 42%), hsl(330, 75%, 68%));
+$control-bg-disabled: light-dark(hsl(220, 5%, 92%), hsl(220, 5%, 25%));
+$control-border: light-dark(hsl(220, 20%, 70%), hsl(220, 20%, 45%));
+$control-border-checked: light-dark(hsl(330, 75%, 42%), hsl(330, 75%, 68%));
+$control-foreground: light-dark(hsl(0, 0%, 100%), hsl(220, 30%, 10%));
+$control-foreground-disabled: light-dark(hsl(220, 5%, 70%), hsl(220, 5%, 40%));
+
+// Focus ring
+$focus-ring: light-dark(hsl(330, 90%, 50%), hsl(330, 90%, 70%));
+$focus-ring-radius: 4px;
+$focus-ring-width: 2px;
+
+// Transition
+$transition-duration: 150ms;
+$transition-easing: ease-in-out;

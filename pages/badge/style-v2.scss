@@ -1,0 +1,35 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.badge-pill {
+  --awsui-style-badge-background: #{palette.$accent};
+  --awsui-style-badge-color: #{palette.$text-on-accent};
+  --awsui-style-badge-border-color: transparent;
+  --awsui-style-badge-border-radius: 99px;
+  --awsui-style-badge-padding-block: 4px;
+  --awsui-style-badge-padding-inline: 12px;
+}
+
+.badge-square {
+  --awsui-style-badge-background: #{palette.$error-surface};
+  --awsui-style-badge-color: #{palette.$error};
+  --awsui-style-badge-border-color: #{palette.$error};
+  --awsui-style-badge-border-radius: 2px;
+  --awsui-style-badge-border-width: 2px;
+  --awsui-style-badge-padding-block: 2px;
+  --awsui-style-badge-padding-inline: 6px;
+}
+
+.badge-outline {
+  --awsui-style-badge-background: transparent;
+  --awsui-style-badge-color: #{palette.$accent};
+  --awsui-style-badge-border-color: #{palette.$accent};
+  --awsui-style-badge-border-radius: 4px;
+  --awsui-style-badge-border-width: 2px;
+  --awsui-style-badge-padding-block: 3px;
+  --awsui-style-badge-padding-inline: 10px;
+}

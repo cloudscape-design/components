@@ -1,0 +1,53 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+@mixin alert-theme($bg, $border, $icon) {
+  --awsui-style-alert-background: #{$bg};
+  --awsui-style-alert-border-color: #{$border};
+  --awsui-style-alert-border-width: 4px;
+  --awsui-style-alert-border-radius: 8px;
+  --awsui-style-alert-color: #{palette.$text};
+  --awsui-style-alert-icon-color: #{$icon};
+}
+
+@mixin dismiss-theme($color) {
+  --awsui-style-button-color-default: #{$color};
+  --awsui-style-button-color-hover: #{$color};
+  --awsui-style-button-color-active: #{palette.$accent-active};
+}
+
+.custom-alert {
+  @include alert-theme(palette.$info-surface, palette.$info, palette.$info);
+}
+
+.custom-dismiss {
+  @include dismiss-theme(palette.$info);
+}
+
+.custom-alert-success {
+  @include alert-theme(palette.$success-surface, palette.$success, palette.$success);
+}
+
+.custom-dismiss-success {
+  @include dismiss-theme(palette.$success);
+}
+
+.custom-alert-warning {
+  @include alert-theme(palette.$warning-surface, palette.$warning, palette.$warning);
+}
+
+.custom-dismiss-warning {
+  @include dismiss-theme(palette.$warning);
+}
+
+.custom-alert-error {
+  @include alert-theme(palette.$error-surface, palette.$error, palette.$error);
+}
+
+.custom-dismiss-error {
+  @include dismiss-theme(palette.$error);
+}

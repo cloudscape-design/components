@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+/* stylelint-disable custom-property-pattern */
+
+.styled-segmented-control {
+  --awsui-style-segmented-control-background-default: #{palette.$surface};
+  --awsui-style-segmented-control-color-default: #{palette.$text-muted};
+  --awsui-style-segmented-control-background-active: #{palette.$accent};
+  --awsui-style-segmented-control-color-active: #{palette.$text-on-accent};
+  --awsui-style-segmented-control-background-hover: #{palette.$surface-alt};
+  --awsui-style-segmented-control-color-hover: #{palette.$accent};
+  --awsui-style-segmented-control-border-radius: 999px;
+  --awsui-style-transition-duration: 200ms;
+}
+
+.square-segmented-control {
+  --awsui-style-segmented-control-background-default: #{palette.$surface};
+  --awsui-style-segmented-control-color-default: #{palette.$text-muted};
+  --awsui-style-segmented-control-background-active: #{palette.$success};
+  --awsui-style-segmented-control-color-active: #{palette.$text-on-accent};
+  --awsui-style-segmented-control-background-hover: #{palette.$success-surface};
+  --awsui-style-segmented-control-color-hover: #{palette.$success};
+  --awsui-style-segmented-control-border-radius: 0;
+  --awsui-style-transition-duration: 150ms;
+}

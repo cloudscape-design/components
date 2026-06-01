@@ -89,9 +89,21 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
    * @awsuiSystem core
    */
   style?: SliderProps.Style;
+
+  /**
+   * An object that maps the slider's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The slider's root element.
+   * @awsuiSystem core
+   */
+  classNames?: SliderProps.ClassNames;
 }
 
 export namespace SliderProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   export interface ChangeDetail {
     value: number;
   }

@@ -55,6 +55,7 @@ const InternalLink = React.forwardRef(
       nativeAttributes,
       __internalRootRef,
       style,
+      classNames,
       ...props
     }: InternalLinkProps,
     ref: React.Ref<LinkProps.Ref>
@@ -172,6 +173,7 @@ const InternalLink = React.forwardRef(
       className: clsx(
         styles.link,
         baseProps.className,
+        classNames?.root,
         applyButtonStyles ? styles.button : null,
         styles[getVariantStyle(variant)],
         styles[getFontSizeStyle(variant, fontSize)],

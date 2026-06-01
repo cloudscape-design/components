@@ -47,6 +47,7 @@ export default function InternalSlider({
   valueFormatter,
   i18nStrings,
   style,
+  classNames,
   __internalRootRef,
   ...rest
 }: InternalSliderProps) {
@@ -132,7 +133,7 @@ export default function InternalSlider({
     <div
       {...baseProps}
       ref={__internalRootRef}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, classNames?.root, styles.root)}
       style={getSliderStyles(style)}
     >
       <div

@@ -108,6 +108,7 @@ function PortaledModal({
   __subStepRef,
   __subStepFunnelProps,
   referrerId,
+  classNames,
   ...rest
 }: PortaledModalProps) {
   const instanceUniqueId = useUniqueId();
@@ -246,6 +247,7 @@ function PortaledModal({
               styles.root,
               { [styles.hidden]: !visible },
               baseProps.className,
+              classNames?.root,
               isRefresh && styles.refresh
             )}
             role="dialog"

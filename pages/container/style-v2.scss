@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+/* stylelint-disable custom-property-pattern */
+
+.container-outer {
+  --awsui-style-container-border-radius: 8px;
+  --awsui-style-container-header-background: #{palette.$info-surface};
+}
+
+.container-inner {
+  --awsui-style-container-header-background: #{palette.$success-surface};
+}
+
+.container-inner-reset {
+  --awsui-style-container-border-radius: initial;
+  --awsui-style-container-header-background: initial;
+}

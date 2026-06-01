@@ -7,6 +7,8 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
+/* stylelint-disable custom-property-pattern */
+
 $variant-border-radius: (
   'embedded': awsui.$border-radius-action-card-embedded,
   'default': awsui.$border-radius-action-card-default,
@@ -31,7 +33,7 @@ $variant-padding-inline: (
 
 @mixin state-border-radius($variant: 'default', $state: 'default') {
   $token: map.get($variant-border-radius, $variant);
-  @include border-radius-all($token);
+  @include border-radius-all(var(--awsui-style-action-card-border-radius, #{$token}));
 }
 
 @mixin state-border-radius-all-variants($state: 'default') {
@@ -48,7 +50,10 @@ $variant-padding-inline: (
 @mixin apply-state-styles($state) {
   $s: map.get(constants.$states, $state);
 
-  background-color: map.get($s, 'background');
+  background-color: var(
+    --awsui-style-action-card-background-#{$state},
+    var(--awsui-style-action-card-background, #{map.get($s, 'background')})
+  );
   box-shadow: map.get($s, 'box-shadow');
   color: map.get($s, 'text-color');
 
@@ -57,13 +62,19 @@ $variant-padding-inline: (
   }
 
   &:after {
-    border-color: map.get($s, 'border-color');
+    border-color: var(
+      --awsui-style-action-card-border-color-#{$state},
+      var(--awsui-style-action-card-border-color, #{map.get($s, 'border-color')})
+    );
     border-block-width: map.get($s, 'border-width');
     border-inline-width: map.get($s, 'border-width');
   }
 
   > .icon,
   > .inner-card > .header-row > .icon {
-    color: map.get($s, 'icon-color');
+    color: var(
+      --awsui-style-action-card-icon-color-#{$state},
+      var(--awsui-style-action-card-icon-color, #{map.get($s, 'icon-color')})
+    );
   }
 }

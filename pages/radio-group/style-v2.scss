@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+@mixin radio-theme($accent, $accent-hover) {
+  --awsui-style-color-background-control-checked: #{$accent};
+  --awsui-style-color-border-control-default: #{$accent};
+  --awsui-style-color-border-control-checked: #{$accent};
+  --awsui-style-color-foreground-control-default: #{palette.$control-foreground};
+  --awsui-style-color-text-label: #{palette.$text};
+  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
+  --awsui-style-color-border-control-disabled: #{palette.$border-disabled};
+  --awsui-style-color-background-control-disabled: #{palette.$control-bg-disabled};
+  --awsui-style-transition-duration: #{palette.$transition-duration};
+
+  &:hover {
+    --awsui-style-color-border-control-default: #{$accent-hover};
+  }
+}
+
+.radio-accent {
+  @include radio-theme($accent: palette.$accent, $accent-hover: palette.$accent-hover);
+}
+
+.radio-success {
+  @include radio-theme($accent: palette.$success, $accent-hover: palette.$accent-hover);
+}

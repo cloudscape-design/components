@@ -76,6 +76,7 @@ export default function InternalContainer({
   fitHeight,
   media,
   style,
+  classNames,
   __stickyOffset,
   __mobileStickyOffset,
   __stickyHeader = false,
@@ -124,6 +125,7 @@ export default function InternalContainer({
       {...__funnelSubStepProps}
       className={clsx(
         baseProps.className,
+        classNames?.root,
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],

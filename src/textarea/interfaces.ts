@@ -57,10 +57,22 @@ export interface TextareaProps
    * @awsuiSystem core
    */
   style?: TextareaProps.Style;
+
+  /**
+   * An object that maps the textarea's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The textarea's root element.
+   * @awsuiSystem core
+   */
+  classNames?: TextareaProps.ClassNames;
 }
 
 export namespace TextareaProps {
   export type KeyDetail = BaseKeyDetail;
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export interface ChangeDetail {
     /**

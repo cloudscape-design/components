@@ -87,11 +87,23 @@ export interface ContainerProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;
+
+  /**
+   * An object that maps the container's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The container's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ContainerProps.ClassNames;
 }
 
 export namespace ContainerProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
   export interface Media {
     /**

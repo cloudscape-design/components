@@ -30,6 +30,14 @@ export interface ToggleProps extends BaseCheckboxProps {
   style?: ToggleProps.Style;
 
   /**
+   * An object that maps the toggle's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The toggle's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ToggleProps.ClassNames;
+
+  /**
    * Attributes to add to the native `input` element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -48,6 +56,10 @@ export namespace ToggleProps {
      * Sets input focus onto the UI control.
      */
     focus(): void;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface ChangeDetail {

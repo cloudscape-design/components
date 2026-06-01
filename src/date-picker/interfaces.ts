@@ -106,6 +106,14 @@ export interface DatePickerProps
    * @i18n
    */
   i18nStrings?: DatePickerProps.I18nStrings;
+
+  /**
+   * An object that maps the date picker's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The date picker's root element.
+   * @awsuiSystem core
+   */
+  classNames?: DatePickerProps.ClassNames;
 }
 
 export namespace DatePickerProps {
@@ -114,6 +122,10 @@ export namespace DatePickerProps {
      * The new value of this date-picker.
      */
     value: string;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface IsDateEnabledFunction {

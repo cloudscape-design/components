@@ -2,21 +2,28 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+/* stylelint-disable custom-property-pattern */
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './motion';
 
-$progress-height: var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size);
-$progress-border-radius: var(#{custom-props.$progressBarBorderRadius}, 10px);
+$progress-height: var(
+  --awsui-style-progress-bar-height,
+  var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
+);
+$progress-border-radius: var(
+  --awsui-style-progress-bar-border-radius,
+  var(#{custom-props.$progressBarBorderRadius}, 10px)
+);
 $progress-background-color: var(
-  #{custom-props.$progressBarBackgroundColor},
-  awsui.$color-background-progress-bar-default
+  --awsui-style-progress-bar-track-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
 );
 $progress-value-background-color: var(
-  #{custom-props.$progressValueBackgroundColor},
-  awsui.$color-background-progress-bar-value-default
+  --awsui-style-progress-bar-value-color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
 );
 
 .root {
@@ -80,6 +87,9 @@ $progress-value-background-color: var(
 
 .percentage {
   /* used in test-utils */
+  color: var(--awsui-style-progress-bar-percentage-color, inherit);
+  font-size: var(--awsui-style-progress-bar-percentage-font-size, inherit);
+  font-weight: var(--awsui-style-progress-bar-percentage-font-weight, inherit);
 }
 
 @mixin general-progress-background-style {

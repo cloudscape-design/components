@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.image-placeholder {
+  block-size: 80px;
+  margin-block-start: 8px;
+  border-start-start-radius: 6px;
+  border-start-end-radius: 6px;
+  border-end-start-radius: 6px;
+  border-end-end-radius: 6px;
+  background: #{palette.$surface-alt};
+}
+
+@mixin item-card-theme($border, $border-hover, $bg, $bg-hover) {
+  --awsui-style-item-card-background-default: #{$bg};
+  --awsui-style-item-card-border-color-default: #{$border};
+  --awsui-style-item-card-border-radius: 12px;
+  --awsui-style-item-card-border-width-default: 2px;
+  --awsui-style-transition-duration: 200ms;
+
+  &:hover {
+    --awsui-style-item-card-border-color-default: #{$border-hover};
+    --awsui-style-item-card-background-default: #{$bg-hover};
+  }
+}
+
+.card-one {
+  @include item-card-theme(palette.$accent, palette.$accent-hover, palette.$surface, palette.$surface-alt);
+}
+
+.card-two {
+  @include item-card-theme(palette.$success, palette.$success, palette.$success-surface, palette.$surface-alt);
+}
+
+.card-three {
+  @include item-card-theme(palette.$warning, palette.$warning, palette.$warning-surface, palette.$surface-alt);
+}

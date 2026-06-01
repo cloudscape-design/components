@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -10,6 +10,7 @@ import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import { isGroup } from '../internal/components/option/utils/filter-options';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
@@ -63,6 +64,7 @@ const InternalMultiselect = React.forwardRef(
       autoFocus,
       enableSelectAll,
       renderOption,
+      classNames,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -71,6 +73,19 @@ const InternalMultiselect = React.forwardRef(
     const formFieldContext = useFormFieldContext(restProps);
     const i18n = useInternalI18n('multiselect');
 
+    const resolvedOptions = useMemo(() => {
+      if (!classNames?.options) {
+        return options;
+      }
+      const resolve = (option: MultiselectProps.Option): string | undefined =>
+        typeof classNames.options === 'function' ? classNames.options({ option }) : classNames.options;
+      return options.map(entry =>
+        isGroup(entry)
+          ? { ...entry, options: entry.options.map(opt => ({ ...opt, className: resolve(opt) ?? opt.className })) }
+          : { ...entry, className: resolve(entry) ?? entry.className }
+      );
+    }, [options, classNames]);
+
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
     const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
@@ -78,7 +93,7 @@ const InternalMultiselect = React.forwardRef(
 
     const [filteringValue, setFilteringValue] = useState('');
     const multiselectProps = useMultiselect({
-      options,
+      options: resolvedOptions,
       selectedOptions,
       filteringType,
       disabled,
@@ -167,7 +182,7 @@ const InternalMultiselect = React.forwardRef(
       <div
         {...baseProps}
         ref={__internalRootRef}
-        className={clsx(styles.root, baseProps.className)}
+        className={clsx(styles.root, baseProps.className, classNames?.root)}
         {...multiselectProps.getWrapperProps()}
       >
         <Dropdown

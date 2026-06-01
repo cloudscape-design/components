@@ -188,12 +188,24 @@ export interface InputProps
    * @awsuiSystem core
    */
   style?: InputProps.Style;
+
+  /**
+   * An object that maps the input's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The input's root element.
+   * @awsuiSystem core
+   */
+  classNames?: InputProps.ClassNames;
 }
 
 export namespace InputProps {
   export type Type = 'text' | 'password' | 'search' | 'number' | 'email' | 'url';
   export type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   export type Step = number | 'any';
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export type ChangeDetail = BaseChangeDetail;
   export type KeyDetail = BaseKeyDetail;

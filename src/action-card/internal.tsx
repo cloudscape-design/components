@@ -35,6 +35,7 @@ const InternalActionCard = React.forwardRef(
       variant,
       nativeButtonAttributes,
       __internalRootRef,
+      classNames,
       ...rest
     }: InternalActionCardProps,
     ref: React.Ref<ActionCardProps.Ref>
@@ -198,7 +199,8 @@ const InternalActionCard = React.forwardRef(
           !!icon && styles['has-icon'],
           !!icon && styles['icon-align-end'],
           !!icon && styles[`icon-vertical-align-${iconVerticalAlignment}`],
-          baseProps.className
+          baseProps.className,
+          classNames?.root
         )}
         aria-disabled={disabled || undefined}
       >

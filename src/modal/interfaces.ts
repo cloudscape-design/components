@@ -104,11 +104,23 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    * @analytics
    */
   analyticsMetadata?: ModalProps.AnalyticsMetadata;
+
+  /**
+   * An object that maps the modal's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The modal's root element.
+   * @awsuiSystem core
+   */
+  classNames?: ModalProps.ClassNames;
 }
 
 export namespace ModalProps {
   export type Size = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'max';
   export type Position = 'center' | 'top';
+
+  export interface ClassNames {
+    root?: string;
+  }
 
   export interface DismissDetail {
     reason: string;

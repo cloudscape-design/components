@@ -18,6 +18,7 @@ export default function InternalItemCard({
   highlighted,
   children,
   className,
+  classNames,
   header,
   description,
   footer,
@@ -43,6 +44,7 @@ export default function InternalItemCard({
     {
       className: clsx(
         className,
+        classNames?.root,
         styles.root,
         highlighted && styles.highlighted,
         fullHeight && styles['full-height'],

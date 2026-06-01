@@ -41,6 +41,14 @@ export interface CheckboxProps extends BaseCheckboxProps {
   style?: CheckboxProps.Style;
 
   /**
+   * An object that maps the checkbox's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The checkbox's root element.
+   * @awsuiSystem core
+   */
+  classNames?: CheckboxProps.ClassNames;
+
+  /**
    * Attributes to add to the native `input` element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -59,6 +67,10 @@ export namespace CheckboxProps {
      * Sets input focus onto the UI control.
      */
     focus(): void;
+  }
+
+  export interface ClassNames {
+    root?: string;
   }
 
   export interface ChangeDetail {

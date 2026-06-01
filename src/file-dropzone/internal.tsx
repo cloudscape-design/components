@@ -14,6 +14,7 @@ import styles from './styles.css.js';
 export default function InternalFileDropzone({
   onChange,
   children,
+  classNames,
   __internalRootRef,
   ...restProps
 }: FileDropzoneProps & InternalBaseComponentProps) {
@@ -48,7 +49,7 @@ export default function InternalFileDropzone({
     <div
       {...baseProps}
       ref={__internalRootRef}
-      className={clsx(baseProps.className, styles.root, {
+      className={clsx(baseProps.className, classNames?.root, styles.root, {
         [styles.hovered]: isDropzoneHovered,
       })}
       onDragOver={onDragOver}

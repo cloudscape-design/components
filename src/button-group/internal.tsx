@@ -24,6 +24,7 @@ const InternalButtonGroup = forwardRef(
       ariaLabel,
       dropdownExpandToViewport,
       style,
+      classNames,
       __internalRootRef,
       ...props
     }: InternalButtonGroupProps,
@@ -44,7 +45,7 @@ const InternalButtonGroup = forwardRef(
       <div
         {...baseProps}
         ref={__internalRootRef}
-        className={clsx(styles.root, testUtilStyles['button-group'], baseProps.className)}
+        className={clsx(styles.root, testUtilStyles['button-group'], baseProps.className, classNames?.root)}
         role="toolbar"
         aria-label={ariaLabel}
         style={stylePropertiesAndVariables}

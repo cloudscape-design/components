@@ -165,6 +165,16 @@ export interface AutosuggestProps
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
+
+  /**
+   * An object that maps the autosuggest's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The autosuggest's root element.
+   * * `options` - Each option item. A string is applied to all; a function receiving
+   *   `{ option }` enables per-option customization.
+   * @awsuiSystem core
+   */
+  classNames?: AutosuggestProps.ClassNames;
 }
 
 export namespace AutosuggestProps {
@@ -174,6 +184,15 @@ export namespace AutosuggestProps {
   export type Option = OptionDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;
   export type EnteredTextLabel = (value: string) => string;
+
+  export interface ClassNames {
+    root?: string;
+    /**
+     * Each option item. A string is applied to all; a function receiving
+     * `{ option }` enables per-option customization.
+     */
+    options?: string | ((args: { option: AutosuggestProps.Option }) => string | undefined);
+  }
   export interface OptionGroup extends Option {
     label?: string;
     options: ReadonlyArray<Option>;

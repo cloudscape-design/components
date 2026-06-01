@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.progress-thick {
+  --awsui-style-progress-bar-track-color: #{palette.$surface-alt};
+  --awsui-style-progress-bar-value-color: #{palette.$accent};
+  --awsui-style-progress-bar-border-radius: 12px;
+  --awsui-style-progress-bar-height: 16px;
+}
+
+.progress-thin {
+  --awsui-style-progress-bar-track-color: #{palette.$border};
+  --awsui-style-progress-bar-value-color: #{palette.$success};
+  --awsui-style-progress-bar-border-radius: 0;
+  --awsui-style-progress-bar-height: 4px;
+}
+
+.progress-accent {
+  --awsui-style-progress-bar-track-color: #{palette.$error-surface};
+  --awsui-style-progress-bar-value-color: #{palette.$error};
+  --awsui-style-progress-bar-border-radius: 4px;
+  --awsui-style-progress-bar-height: 8px;
+}

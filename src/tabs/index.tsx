@@ -56,6 +56,7 @@ export default function Tabs({
   keyboardActivationMode = 'automatic',
   actions,
   style,
+  classNames,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -165,7 +166,7 @@ export default function Tabs({
         header={header}
         disableHeaderPaddings={true}
         {...baseProps}
-        className={clsx(baseProps.className, styles.root)}
+        className={clsx(baseProps.className, classNames?.root, styles.root)}
         __internalRootRef={__internalRootRef}
         __contentKey={activeTabId}
         disableContentPaddings={true}
@@ -182,7 +183,9 @@ export default function Tabs({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles.tabs, { [styles['fit-height']]: fitHeight })}
+      className={clsx(baseProps.className, classNames?.root, styles.root, styles.tabs, {
+        [styles['fit-height']]: fitHeight,
+      })}
       ref={__internalRootRef}
       {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
     >

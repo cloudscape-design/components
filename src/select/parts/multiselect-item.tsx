@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
@@ -158,6 +159,8 @@ const MultiSelectItem = (
 
   return (
     <SelectableItem
+      {...baseProps}
+      className={clsx(baseProps.className, wrappedOption.className)}
       disableContentStyling={!!renderResult}
       ariaSelected={isParent && indeterminate ? undefined : Boolean(selected)}
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
@@ -182,7 +185,6 @@ const MultiSelectItem = (
       afterHeader={option.afterHeader}
       withScrollbar={withScrollbar}
       sticky={sticky}
-      {...baseProps}
     >
       <div className={className}>
         {!renderResult && hasCheckbox && (

@@ -4,6 +4,7 @@
 */
 
 /* stylelint-disable selector-max-type */
+/* stylelint-disable custom-property-pattern */
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles//foundation' as foundation;
@@ -135,24 +136,30 @@ $label-horizontal-spacing: awsui.$space-xs;
     inset-inline-start: 0;
     inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width);
+    block-size: var(
+      --awsui-style-tab-active-indicator-width,
+      var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width)
+    );
     border-start-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+      --awsui-style-tab-active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
     border-start-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+      --awsui-style-tab-active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
     border-end-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+      --awsui-style-tab-active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
     border-end-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+      --awsui-style-tab-active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
-    background: var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline);
+    background: var(
+      --awsui-style-tab-active-indicator-color,
+      var(#{custom-props.$styleTabsActiveIndicatorColor}, #{awsui.$color-border-tabs-underline})
+    );
     opacity: 0;
   }
 
@@ -172,8 +179,11 @@ $label-horizontal-spacing: awsui.$space-xs;
     &:before {
       content: '';
       position: absolute;
-      border-inline-end: var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width) solid
-        var(#{custom-props.$styleTabsSeparatorColor}, $separator-color);
+      border-inline-end: var(
+          --awsui-style-tab-separator-width,
+          var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width)
+        )
+        solid var(--awsui-style-tab-separator-color, var(#{custom-props.$styleTabsSeparatorColor}, $separator-color));
       inset: awsui.$space-scaled-s 0;
       opacity: 1;
     }
@@ -195,14 +205,22 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   padding-inline: 0;
   margin-block-start: 1px;
-  border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
-  border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+  border-block: awsui.$border-divider-section-width solid
+    var(--awsui-style-tab-border-color-default, var(#{custom-props.$styleBorderColorDefault}, transparent));
+  border-inline: awsui.$border-divider-section-width solid
+    var(--awsui-style-tab-border-color-default, var(#{custom-props.$styleBorderColorDefault}, transparent));
 
   font-size: awsui.$font-size-tabs;
   line-height: awsui.$line-height-tabs;
   font-weight: awsui.$font-weight-tabs;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
-  background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
+  color: var(
+    --awsui-style-tab-color-default,
+    var(#{custom-props.$styleColorDefault}, #{awsui.$color-text-interactive-default})
+  );
+  background-color: var(
+    --awsui-style-tab-background-default,
+    var(#{custom-props.$styleBackgroundDefault}, transparent)
+  );
 
   padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
   padding-inline-end: awsui.$space-xxs;
@@ -216,14 +234,14 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 
   &:hover {
-    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
+    color: var(--awsui-style-tab-color-hover, var(#{custom-props.$styleColorHover}, #{awsui.$color-text-accent}));
     border-color: var(
-      #{custom-props.$styleBorderColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, transparent)
+      --awsui-style-tab-border-color-hover,
+      var(#{custom-props.$styleBorderColorHover}, var(#{custom-props.$styleBorderColorDefault}, transparent))
     );
     background-color: var(
-      #{custom-props.$styleBackgroundHover},
-      var(#{custom-props.$styleBackgroundDefault}, transparent)
+      --awsui-style-tab-background-hover,
+      var(#{custom-props.$styleBackgroundHover}, var(#{custom-props.$styleBackgroundDefault}, transparent))
     );
   }
 
@@ -269,17 +287,26 @@ $label-horizontal-spacing: awsui.$space-xs;
   &,
   &:hover {
     cursor: default;
-    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
-    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
-    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
+    color: var(
+      --awsui-style-tab-color-disabled,
+      var(#{custom-props.$styleColorDisabled}, #{awsui.$color-text-interactive-disabled})
+    );
+    border-color: var(
+      --awsui-style-tab-border-color-disabled,
+      var(#{custom-props.$styleBorderColorDisabled}, transparent)
+    );
+    background-color: var(
+      --awsui-style-tab-background-disabled,
+      var(#{custom-props.$styleBackgroundDisabled}, transparent)
+    );
     font-weight: awsui.$font-weight-tabs-disabled;
   }
 }
 
 .tabs-tab-active:not(.tabs-tab-disabled) {
-  color: var(#{custom-props.$styleColorActive}, awsui.$color-text-accent);
-  border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
-  background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
+  color: var(--awsui-style-tab-color-active, var(#{custom-props.$styleColorActive}, #{awsui.$color-text-accent}));
+  border-color: var(--awsui-style-tab-border-color-active, var(#{custom-props.$styleBorderColorActive}, transparent));
+  background-color: var(--awsui-style-tab-background-active, var(#{custom-props.$styleBackgroundActive}, transparent));
   &:after {
     opacity: 1;
   }
@@ -292,3 +319,4 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-focusable {
   /* used to manage focusable logic */
 }
+/* stylelint-enable custom-property-pattern */

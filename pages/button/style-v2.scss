@@ -1,0 +1,44 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+/* stylelint-disable custom-property-pattern */
+
+.button-danger {
+  --awsui-style-button-background-default: #{palette.$error};
+  --awsui-style-button-background-hover: hsl(0, 65%, 40%);
+  --awsui-style-button-background-active: hsl(0, 65%, 30%);
+  --awsui-style-button-color-default: #{palette.$text-on-accent};
+  --awsui-style-button-color-hover: #{palette.$text-on-accent};
+  --awsui-style-button-color-active: #{palette.$text-on-accent};
+  --awsui-style-button-border-color-default: #{palette.$error};
+  --awsui-style-button-border-color-hover: hsl(0, 65%, 40%);
+  --awsui-style-button-border-color-active: hsl(0, 65%, 30%);
+  --awsui-style-button-border-radius: 8px;
+}
+
+.button-icon-circle {
+  --awsui-style-button-background-default: #{palette.$surface-alt};
+  --awsui-style-button-background-hover: #{palette.$accent};
+  --awsui-style-button-background-active: #{palette.$accent-active};
+  --awsui-style-button-color-default: #{palette.$text-muted};
+  --awsui-style-button-color-hover: #{palette.$text-on-accent};
+  --awsui-style-button-color-active: #{palette.$text-on-accent};
+  --awsui-style-button-border-color-default: #{palette.$border};
+  --awsui-style-button-border-color-hover: #{palette.$accent};
+  --awsui-style-button-border-color-active: #{palette.$accent-active};
+  --awsui-style-button-border-radius: 50%;
+  --awsui-style-button-icon-padding: 6px;
+}
+
+.button-link-custom {
+  --awsui-style-button-color-default: #{palette.$success};
+  --awsui-style-button-color-hover: hsl(145, 60%, 30%);
+  --awsui-style-button-color-active: hsl(145, 60%, 20%);
+  --awsui-style-button-border-color-default: transparent;
+  --awsui-style-button-border-color-hover: transparent;
+  --awsui-style-button-font-family: 'Arial', sans-serif;
+}

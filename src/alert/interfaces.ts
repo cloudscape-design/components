@@ -77,6 +77,12 @@ export namespace AlertProps {
       };
     };
   }
+
+  export interface ClassNames {
+    root?: string;
+    dismissButton?: string;
+  }
+
   export interface PersistenceConfig {
     uniqueKey: string;
     crossServicePersistence?: boolean;
@@ -107,6 +113,12 @@ export interface AlertProps extends BaseComponentProps {
    * An `onDismiss` event is fired when a user clicks the button.
    */
   dismissible?: boolean;
+  /**
+   * Specifies a class name applied to the dismiss button wrapper.
+   * Use to scope CSS custom properties for styling the dismiss button.
+   * @deprecated Use `classNames.dismissButton` instead.
+   */
+  dismissClassName?: string;
   /**
    * Adds an aria-label to the dismiss button.
    * @i18n
@@ -162,6 +174,14 @@ export interface AlertProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   style?: AlertProps.Style;
+  /**
+   * An object that maps the alert's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The alert's root element.
+   * * `dismissButton` - The dismiss button wrapper.
+   * @awsuiSystem core
+   */
+  classNames?: AlertProps.ClassNames;
   /**
    * Config to persist dismiss state for dismissable Alert
    * persistenceConfig contains:

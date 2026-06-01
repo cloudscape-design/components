@@ -202,6 +202,15 @@ export interface DrawerProps extends BaseComponentProps {
    * Do not use this property when using drawers inside app layout.
    */
   focusBehavior?: DrawerProps.FocusBehavior;
+
+  /**
+   * An object that maps the drawer's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The drawer's root element.
+   * * `closeButton` - The drawer's close action element.
+   * @awsuiSystem core
+   */
+  classNames?: DrawerProps.ClassNames;
 }
 
 export namespace DrawerProps {
@@ -233,6 +242,10 @@ export namespace DrawerProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     iconAlt?: string;
+    /**
+     * @deprecated Use `classNames.closeButton` instead.
+     */
+    className?: string;
   }
 
   export interface CloseDetail {
@@ -243,6 +256,11 @@ export namespace DrawerProps {
     autoFocus?: boolean;
     trapFocus?: boolean;
     returnFocus?: () => void;
+  }
+
+  export interface ClassNames {
+    root?: string;
+    closeButton?: string;
   }
 
   export interface Ref {

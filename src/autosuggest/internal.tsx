@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -61,12 +61,33 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderHighlightedAriaLive,
     style,
     renderOption,
+    classNames,
     __internalRootRef,
     ...restProps
   } = props;
 
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
+
+  const resolvedOptions = useMemo(() => {
+    if (!classNames?.options) {
+      return options || [];
+    }
+    const resolve = (option: AutosuggestProps.Option): string | undefined =>
+      typeof classNames.options === 'function' ? classNames.options({ option }) : classNames.options;
+    const key: keyof AutosuggestProps.OptionGroup = 'options';
+    return (options || []).map(entry =>
+      key in entry
+        ? {
+            ...entry,
+            options: (entry as AutosuggestProps.OptionGroup).options.map(opt => ({
+              ...opt,
+              className: resolve(opt) ?? opt.className,
+            })),
+          }
+        : { ...entry, className: resolve(entry) ?? entry.className }
+    );
+  }, [options, classNames]);
 
   const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
   useImperativeHandle(
@@ -88,7 +109,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   }
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
-    options: options || [],
+    options: resolvedOptions,
     filterValue: value,
     filterText: value,
     filteringType,
@@ -205,7 +226,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   return (
     <AutosuggestInput
       {...restProps}
-      className={clsx(styles.root, restProps.className)}
+      className={clsx(styles.root, restProps.className, classNames?.root)}
       ref={autosuggestInputRef}
       __internalRootRef={__internalRootRef}
       value={value}

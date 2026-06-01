@@ -11,25 +11,61 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-$default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
-$default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
-$hover-background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover);
-$hover-color: var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover);
-$disabled-background: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled);
-$disabled-color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
-$selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active);
-$selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
+/* stylelint-disable custom-property-pattern */
+
+$default-background: var(
+  --awsui-style-segmented-control-background-default,
+  var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default)
+);
+$default-color: var(
+  --awsui-style-segmented-control-color-default,
+  var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default)
+);
+$hover-background: var(
+  --awsui-style-segmented-control-background-hover,
+  var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover)
+);
+$hover-color: var(
+  --awsui-style-segmented-control-color-hover,
+  var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover)
+);
+$disabled-background: var(
+  --awsui-style-segmented-control-background-disabled,
+  var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled)
+);
+$disabled-color: var(
+  --awsui-style-segmented-control-color-disabled,
+  var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled)
+);
+$selected-background: var(
+  --awsui-style-segmented-control-background-active,
+  var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active)
+);
+$selected-color: var(
+  --awsui-style-segmented-control-color-active,
+  var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active)
+);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
-$segment-radius: calc(awsui.$border-radius-button - 3px);
+$segment-radius: var(
+  --awsui-style-segmented-control-segment-border-radius,
+  calc(var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button}) - 3px)
+);
 
 .segment {
   @include styles.font-body-m;
   @include styles.text-flex-wrapping;
   @include styles.font-button;
   letter-spacing: 0.25px;
-  padding-block: calc(awsui.$space-field-vertical - awsui.$border-width-field);
-  padding-inline: calc(awsui.$space-button-horizontal - $segment-gap);
+  font-size: var(--awsui-style-segmented-control-segment-font-size, inherit);
+  padding-block: var(
+    --awsui-style-segmented-control-segment-padding-block,
+    calc(awsui.$space-field-vertical - awsui.$border-width-field)
+  );
+  padding-inline: var(
+    --awsui-style-segmented-control-segment-padding-inline,
+    calc(awsui.$space-button-horizontal - $segment-gap)
+  );
 
   background: $default-background;
   color: $default-color;
@@ -62,13 +98,22 @@ $segment-radius: calc(awsui.$border-radius-button - 3px);
   }
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+    var(
+      --awsui-style-segmented-control-focus-ring-border-width,
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    )
+    var(
+      --awsui-style-segmented-control-focus-ring-border-color,
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-segmented-control-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $border-radius: var(
+          --awsui-style-segmented-control-focus-ring-border-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
       $z-index: 1 // Prevents adjacent segments from overlapping the focus ring
     );

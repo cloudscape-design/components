@@ -311,9 +311,21 @@ export interface PromptInputProps
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;
+
+  /**
+   * An object that maps the prompt input's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The prompt input's root element.
+   * @awsuiSystem core
+   */
+  classNames?: PromptInputProps.ClassNames;
 }
 
 export namespace PromptInputProps {
+  export interface ClassNames {
+    root?: string;
+  }
+
   export type KeyDetail = BaseKeyDetail;
 
   export interface I18nStrings {

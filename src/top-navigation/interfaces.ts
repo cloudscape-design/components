@@ -66,9 +66,23 @@ export interface TopNavigationProps extends BaseComponentProps {
    * @i18n
    */
   i18nStrings?: TopNavigationProps.I18nStrings;
+
+  /**
+   * An object that maps the top navigation's slots to CSS class names for custom styling.
+   * Use these classes to scope `--awsui-style-*` custom properties.
+   * * `root` - The top navigation's root element.
+   * * `utility` - Applied to each utility wrapper. Accepts a string or a function receiving `{ utility }` and returning a string.
+   * @awsuiSystem core
+   */
+  classNames?: TopNavigationProps.ClassNames;
 }
 
 export namespace TopNavigationProps {
+  export interface ClassNames {
+    root?: string;
+    utility?: string | ((args: { utility: TopNavigationProps.Utility }) => string);
+  }
+
   export interface Identity {
     title?: string;
     logo?: Logo;
@@ -93,6 +107,10 @@ export namespace TopNavigationProps {
     badge?: boolean;
     disableUtilityCollapse?: boolean;
     disableTextCollapse?: boolean;
+    /**
+     * @deprecated Use `classNames.utility` instead.
+     */
+    className?: string;
   }
 
   export interface MenuDropdownUtility extends BaseUtility {

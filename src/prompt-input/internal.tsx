@@ -80,6 +80,7 @@ const InternalPromptInput = React.forwardRef(
       onTriggerDetected,
       i18nStrings,
       __internalRootRef,
+      classNames,
       ...rest
     }: InternalPromptInputProps,
     ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
@@ -384,7 +385,7 @@ const InternalPromptInput = React.forwardRef(
       <div
         {...baseProps}
         aria-label={ariaLabel}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+        className={clsx(styles.root, testutilStyles.root, baseProps.className, classNames?.root, {
           [styles['textarea-readonly']]: readOnly,
           [styles['textarea-invalid']]: invalid,
           [styles['textarea-warning']]: warning && !invalid,

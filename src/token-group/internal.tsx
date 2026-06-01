@@ -36,6 +36,7 @@ export default function InternalTokenGroup({
   limitShowMoreAriaLabel,
   readOnly,
   isItemReadOnly,
+  classNames,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -60,6 +61,7 @@ export default function InternalTokenGroup({
       {...baseProps}
       className={clsx(
         baseProps.className,
+        classNames?.root,
         styles.root,
         hasItems && styles['has-items'],
         disableOuterPadding && styles['no-padding']
