@@ -8,42 +8,42 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   // ── Headings ──────────────────────────────────────────────────────────────
   fontSizeHeadingXl: '24px',
   lineHeightHeadingXl: '30px',
-  fontWeightHeadingXl: '700',
+  fontWeightHeadingXl: '500',
 
   fontSizeHeadingL: '20px',
   lineHeightHeadingL: '24px',
-  fontWeightHeadingL: '700',
+  fontWeightHeadingL: '500',
 
   fontSizeHeadingM: '18px',
   lineHeightHeadingM: '22px',
-  fontWeightHeadingM: '700',
+  fontWeightHeadingM: '500',
 
   fontSizeHeadingS: '16px',
   lineHeightHeadingS: '20px',
-  fontWeightHeadingS: '700',
+  fontWeightHeadingS: '500',
 
   fontSizeHeadingXs: '14px',
   lineHeightHeadingXs: '20px',
-  fontWeightHeadingXs: '700',
+  fontWeightHeadingXs: '500',
 
   // ── Interactive elements ──────────────────────────────────────────────────
-  fontWeightButton: '700',
-  fontWeightTabs: '700',
+  fontWeightButton: '500',
+  fontWeightTabs: '500',
   fontSizeTabs: '14px',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
-  fontWeightAlertHeader: '700',
-  fontWeightFlashbarHeader: '700',
+  fontWeightAlertHeader: '500',
+  fontWeightFlashbarHeader: '500',
 
   // ── Form labels ───────────────────────────────────────────────────────────
   fontSizeFormLabel: '14px',
   lineHeightFormLabel: '20px',
-  fontWeightFormLabel: '700',
+  fontWeightFormLabel: '500',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontSizeKeyValuePairsLabel: '14px',
   lineHeightKeyValuePairsLabel: '20px',
-  fontWeightKeyValuePairsLabel: '700',
+  fontWeightKeyValuePairsLabel: '500',
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   fontWeightBreadcrumbCurrent: '400',
