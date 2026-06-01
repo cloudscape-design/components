@@ -417,4 +417,31 @@ describe('Icon Provider', () => {
       expect(secondIcon).toStrictEqual(expectedSvg);
     });
   });
+
+  describe('missing context fields (null guard)', () => {
+    it('renders without crashing when no IconProvider is present', () => {
+      const { container } = render(<Icon name="calendar" size="normal" />);
+      expect(container.querySelector('[class*="icon"]')).not.toBeNull();
+    });
+
+    it('still applies strokeWidths when sizeOverrides is an empty map', () => {
+      const { container } = render(
+        <IconProvider icons={{}} strokeWidths={{ normal: 2 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconStrokeWidthOverride)).toBe('2px');
+    });
+
+    it('still applies sizes when strokeWidthOverrides is an empty map', () => {
+      const { container } = render(
+        <IconProvider icons={{}} sizes={{ normal: 12 }}>
+          <Icon name="calendar" size="normal" />
+        </IconProvider>
+      );
+      const iconEl = container.querySelector('[class*="icon"]') as HTMLElement;
+      expect(iconEl.style.getPropertyValue(customCSSPropertiesMap.iconSizeOverride)).toBe('12px');
+    });
+  });
 });
