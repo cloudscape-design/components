@@ -41,6 +41,15 @@ describe('Icon Component', () => {
       const { container } = render(<Icon size="inherit" name="settings" />);
       expect(container.firstElementChild).toHaveClass(styles['icon-flex-height']);
     });
+
+    test('resolves to small when line-height <= 16 and font-size > 12', () => {
+      jest
+        .spyOn(window, 'getComputedStyle')
+        .mockReturnValue({ lineHeight: '16px', fontSize: '14px' } as CSSStyleDeclaration);
+      const { container } = render(<Icon size="inherit" name="settings" />);
+      expect(container.firstElementChild).toHaveClass(styles['size-small']);
+      jest.restoreAllMocks();
+    });
   });
 
   describe('gen ai icon', () => {
