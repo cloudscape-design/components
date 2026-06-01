@@ -48,6 +48,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundToggleButtonNormalDefault: {
+    description: 'The default background color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
@@ -317,6 +322,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundToggleCheckedDisabled: {
     description: 'The background color of checked toggles in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleDefault: {
+    description: 'The default background color of the toggle track in its unchecked state.',
     themeable: true,
     public: true,
   },
@@ -600,6 +610,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorTextBreadcrumbIcon: {
     description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
+  },
+  colorTextCalendarDateSelected: {
+    description: 'The text color of selected dates in the calendar.',
     themeable: true,
     public: true,
   },
