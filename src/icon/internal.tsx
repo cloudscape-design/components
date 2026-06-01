@@ -79,11 +79,10 @@ function computeSizeOverrides({
 }): SizeOverrideResult {
   const result: SizeOverrideResult = {};
 
-  if (!sizeOverrides || !strokeWidthOverrides) {
-    return result;
-  }
+  const sizes = sizeOverrides ?? {};
+  const strokes = strokeWidthOverrides ?? {};
 
-  const targetSizePx = sizeOverrides[iconSize];
+  const targetSizePx = sizes[iconSize];
   if (targetSizePx !== undefined) {
     result.size = targetSizePx;
     const basePx = BASE_SIZE_PX[iconSize];
@@ -92,7 +91,7 @@ function computeSizeOverrides({
     }
   }
 
-  const rawStroke = strokeWidthOverrides[iconSize];
+  const rawStroke = strokes[iconSize];
   if (rawStroke !== undefined) {
     const scaleFactor = SCALE_FACTOR[iconSize] ?? 1;
     const basePx = BASE_SIZE_PX[iconSize];
