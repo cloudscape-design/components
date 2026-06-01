@@ -8,6 +8,7 @@ import Icon, { IconProps } from '../../../lib/components/icon';
 import IconProvider, { IconProviderProps } from '../../../lib/components/icon-provider';
 import wrapper from '../../../lib/components/test-utils/dom';
 import generatedIcons from '../../icon/generated/icons';
+import { InternalIconContext, InternalIconContextValue } from '../../icon-provider/context';
 import customCSSPropertiesMap from '../../internal/generated/custom-css-properties';
 
 const CUSTOM_SVG = (
@@ -421,6 +422,26 @@ describe('Icon Provider', () => {
   describe('missing context fields (null guard)', () => {
     it('renders without crashing when no IconProvider is present', () => {
       const { container } = render(<Icon name="calendar" size="normal" />);
+      expect(wrapper(container).findIcon()).not.toBeNull();
+    });
+
+    it('renders without crashing when sizeOverrides is undefined in context', () => {
+      const staleContext = { icons: generatedIcons, strokeWidthOverrides: {} } as InternalIconContextValue;
+      const { container } = render(
+        <InternalIconContext.Provider value={staleContext}>
+          <Icon name="calendar" size="normal" />
+        </InternalIconContext.Provider>
+      );
+      expect(wrapper(container).findIcon()).not.toBeNull();
+    });
+
+    it('renders without crashing when strokeWidthOverrides is undefined in context', () => {
+      const staleContext = { icons: generatedIcons, sizeOverrides: {} } as InternalIconContextValue;
+      const { container } = render(
+        <InternalIconContext.Provider value={staleContext}>
+          <Icon name="calendar" size="normal" />
+        </InternalIconContext.Provider>
+      );
       expect(wrapper(container).findIcon()).not.toBeNull();
     });
 
