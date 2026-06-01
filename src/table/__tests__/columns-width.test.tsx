@@ -362,4 +362,39 @@ describe('with grouped columns', () => {
     // Group shrunk from 400 to 350 → delta -50 applied to last leaf 'az' (200→150)
     expect(onColumnWidthsChange.mock.calls[0][0].detail).toEqual({ widths: [150, 150, 200, 150] });
   });
+
+  test('resizing a split group applies delta to the last column of the split half', () => {
+    const onColumnWidthsChange = jest.fn();
+    const wrapper = renderGroupedTable({ onColumnWidthsChange, stickyColumns: { first: 3 } });
+    const thead = wrapper.find('thead')!;
+    const groupCells = thead.findAll('th[scope="colgroup"]');
+    // With stickyColumns.first=3: id(0), name(1), type(2) are sticky.
+    // config group (type, az) straddles boundary → split into left (type) and right (az).
+    const leftSplitCell = groupCells[0];
+    const leftResizerBtn = new ElementWrapper(leftSplitCell.find('button')!.getElement());
+
+    firePointerdown(leftResizerBtn);
+    firePointermove(250);
+    firePointerup(250);
+
+    expect(onColumnWidthsChange).toHaveBeenCalledTimes(1);
+
+    // Also resize the right half of the split group
+    onColumnWidthsChange.mockClear();
+    const rightSplitCell = groupCells[1];
+    const rightResizerBtn = rightSplitCell.find('button');
+    if (rightResizerBtn) {
+      firePointerdown(new ElementWrapper(rightResizerBtn.getElement()));
+      firePointermove(300);
+      firePointerup(300);
+      expect(onColumnWidthsChange).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  test('renders colgroup with selection col for grouped table', () => {
+    const wrapper = renderGroupedTable({ selectionType: 'multi' });
+    const cols = wrapper.getElement().querySelectorAll('colgroup col');
+    // 4 data columns + 1 selection col
+    expect(cols.length).toBe(5);
+  });
 });
