@@ -445,6 +445,16 @@ describe('Icon Provider', () => {
       expect(wrapper(container).findIcon()).not.toBeNull();
     });
 
+    it('renders without crashing when both sizeOverrides and strokeWidthOverrides are undefined in context', () => {
+      const staleContext = { icons: generatedIcons } as InternalIconContextValue;
+      const { container } = render(
+        <InternalIconContext.Provider value={staleContext}>
+          <Icon name="calendar" size="normal" />
+        </InternalIconContext.Provider>
+      );
+      expect(wrapper(container).findIcon()).not.toBeNull();
+    });
+
     it('still applies strokeWidths when sizeOverrides is an empty map', () => {
       const { container } = render(
         <IconProvider icons={{}} strokeWidths={{ normal: 2 }}>
