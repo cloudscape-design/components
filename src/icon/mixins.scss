@@ -6,7 +6,6 @@
 @use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties' as custom-props;
 
 $_variant-colors: (
   'normal': currentColor,
@@ -20,13 +19,6 @@ $_variant-colors: (
 );
 
 $_icon-sizes: (
-  (
-    name: 'x-small',
-    size: awsui.$size-icon-x-small,
-    supportedLineHeight: awsui.$line-height-body-s,
-    stroke: awsui.$border-width-icon-x-small,
-    scaleFactor: 0.75,
-  ),
   (
     name: 'small',
     size: awsui.$size-icon-normal,
@@ -74,29 +66,25 @@ $_icon-sizes: (
     $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
 
     &.size-#{$name} {
-      inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
-      block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
+      inline-size: $size;
       box-sizing: border-box;
       &-mapped-height {
-        block-size: max($supportedLineHeight, var(#{custom-props.$iconSizeOverride}, $size));
+        block-size: $supportedLineHeight;
         padding-block: $padding;
         padding-inline: 0;
       }
 
       > svg,
       > img {
-        inline-size: var(#{custom-props.$iconSizeOverride}, #{$size});
-        block-size: max(#{$size}, var(#{custom-props.$iconSizeOverride}, #{$size}));
+        inline-size: $size;
+        block-size: $size;
         vertical-align: top;
       }
 
       > svg {
         &,
         * {
-          stroke-width: var(
-            #{custom-props.$iconStrokeWidthOverride},
-            calc(#{$stroke} / #{$scaleFactor} * var(#{custom-props.$iconStrokeScale}, 1))
-          );
+          stroke-width: calc(#{$stroke} / #{$scaleFactor});
         }
       }
     }
