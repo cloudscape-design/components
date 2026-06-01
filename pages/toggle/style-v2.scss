@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+@mixin toggle-theme($checked-bg, $hover-bg) {
+  --awsui-style-toggle-background-default: #{palette.$border};
+  --awsui-style-toggle-background-checked: #{$checked-bg};
+  --awsui-style-toggle-background-disabled: #{palette.$control-bg-disabled};
+  --awsui-style-toggle-handle-default: #{palette.$control-bg};
+  --awsui-style-toggle-handle-checked: #{palette.$control-bg};
+  --awsui-style-toggle-handle-disabled: #{palette.$control-foreground-disabled};
+  --awsui-style-color-text-label: #{palette.$text};
+  --awsui-style-color-text-label-disabled: #{palette.$text-disabled};
+  --awsui-style-toggle-border-radius: 4px;
+  --awsui-style-transition-duration: 200ms;
+
+  &:hover {
+    --awsui-style-toggle-background-default: #{$hover-bg};
+  }
+}
+
+.toggle-success {
+  @include toggle-theme($checked-bg: palette.$success, $hover-bg: palette.$text-muted);
+}

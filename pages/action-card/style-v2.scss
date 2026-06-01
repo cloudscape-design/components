@@ -1,0 +1,44 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+@mixin card-theme($border, $border-hover, $bg, $bg-hover, $icon-color: null) {
+  --awsui-style-action-card-background: #{$bg};
+  --awsui-style-action-card-background-hover: #{$bg-hover};
+  --awsui-style-action-card-border-color: #{$border};
+  --awsui-style-action-card-border-color-hover: #{$border-hover};
+  --awsui-style-action-card-border-radius: 12px;
+  --awsui-style-action-card-icon-color-disabled: #{palette.$text-disabled};
+  --awsui-style-transition-duration: 200ms;
+
+  @if $icon-color {
+    --awsui-style-action-card-icon-color: #{$icon-color};
+  }
+}
+
+.card-accent {
+  @include card-theme(palette.$border-accent, palette.$accent-hover, palette.$surface, palette.$surface-alt);
+}
+
+.card-success {
+  @include card-theme(
+    palette.$success,
+    palette.$success,
+    palette.$success-surface,
+    palette.$surface-alt,
+    palette.$success
+  );
+}
+
+.card-warning {
+  @include card-theme(
+    palette.$warning,
+    palette.$warning,
+    palette.$warning-surface,
+    palette.$surface-alt,
+    palette.$warning
+  );
+}

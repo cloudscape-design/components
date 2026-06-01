@@ -11,6 +11,8 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/foundation' as foundation;
 
+/* stylelint-disable custom-property-pattern */
+
 .link {
   @include styles.styles-reset;
   display: inline;

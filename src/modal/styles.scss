@@ -9,11 +9,13 @@
 @use './motion';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable custom-property-pattern */
+
 $modal-z-index: 5000;
 
 .root {
   @include styles.styles-reset;
-  background-color: awsui.$color-background-modal-overlay;
+  background-color: var(--awsui-style-modal-overlay-background, #{awsui.$color-background-modal-overlay});
 
   display: flex;
   align-items: center;
@@ -102,13 +104,13 @@ $modal-z-index: 5000;
 .container {
   @include styles.styles-reset;
   display: block;
-  background-color: awsui.$color-background-container-content;
+  background-color: var(--awsui-style-modal-background, #{awsui.$color-background-container-content});
   word-wrap: break-word;
   border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
+  border-start-end-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
+  border-end-start-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
+  border-end-end-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
   box-shadow: awsui.$shadow-modal;
 
   &.custom-height-container {
@@ -139,10 +141,10 @@ $modal-z-index: 5000;
   padding-block-start: awsui.$space-container-header-top;
   padding-block-end: awsui.$space-container-header-bottom;
   padding-inline: awsui.$space-modal-horizontal;
-  background-color: awsui.$color-background-container-header;
+  background-color: var(--awsui-style-modal-header-background, #{awsui.$color-background-container-header});
   border-block-end: 1px solid awsui.$color-border-container-divider;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
+  border-start-end-radius: var(--awsui-style-modal-border-radius, #{awsui.$border-radius-container});
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }

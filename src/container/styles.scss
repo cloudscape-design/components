@@ -7,6 +7,8 @@
 @use '../internal/styles' as styles;
 @use './shared' as shared;
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   @include styles.styles-reset;
   word-wrap: break-word;
@@ -24,7 +26,7 @@
   &.variant {
     &-default,
     &-stacked {
-      background-color: awsui.$color-background-container-content;
+      background-color: var(--awsui-style-container-background, #{awsui.$color-background-container-content});
       // Border and shadows are applied with ::before and ::after elements (respectively)
       @include styles.container-style;
     }
@@ -125,9 +127,9 @@
 }
 
 .header {
-  background-color: awsui.$color-background-container-header;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
+  background-color: var(--awsui-style-container-header-background, #{awsui.$color-background-container-header});
+  border-start-start-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
+  border-start-end-radius: var(--awsui-style-container-border-radius, #{awsui.$border-radius-container});
   &.header-full-page {
     background-color: awsui.$color-background-layout-main;
   }

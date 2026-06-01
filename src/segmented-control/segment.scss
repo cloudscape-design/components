@@ -11,6 +11,8 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
 $default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
 $default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
 $hover-background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover);
@@ -21,7 +23,7 @@ $selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-b
 $selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
-$segment-radius: calc(awsui.$border-radius-button - 3px);
+$segment-radius: calc(var(--awsui-style-segmented-control-border-radius, #{awsui.$border-radius-button}) - 3px);
 
 .segment {
   @include styles.font-body-m;

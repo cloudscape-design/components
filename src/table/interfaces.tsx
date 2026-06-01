@@ -145,6 +145,13 @@ export interface TableProps<T = any> extends BaseComponentProps {
   selectedItems?: ReadonlyArray<T>;
 
   /**
+   * Specifies a class name applied to each selection cell.
+   * Can be a string (applied to all) or a function receiving `{ item }` for row-level
+   * customization. When called for the header "select all" control, `item` is `undefined`.
+   */
+  selectionClassName?: string | ((props: { item: T | undefined }) => string);
+
+  /**
    * Use this slot to add filtering controls to the table.
    */
   filter?: React.ReactNode;

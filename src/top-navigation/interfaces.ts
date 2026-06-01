@@ -93,6 +93,7 @@ export namespace TopNavigationProps {
     badge?: boolean;
     disableUtilityCollapse?: boolean;
     disableTextCollapse?: boolean;
+    className?: string;
   }
 
   export interface MenuDropdownUtility extends BaseUtility {

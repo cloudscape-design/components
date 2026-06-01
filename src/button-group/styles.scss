@@ -5,6 +5,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+/* stylelint-disable custom-property-pattern */
 .root {
   @include styles.styles-reset;
 
@@ -12,7 +13,18 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: awsui.$space-scaled-xs;
+  inline-size: var(--awsui-style-button-group-inline-size, auto);
+  padding-block: var(--awsui-style-button-group-padding-block, 0);
+  padding-inline: var(--awsui-style-button-group-padding-inline, 0);
+  background-color: var(--awsui-style-button-group-background, transparent);
+  border-block: 1px solid var(--awsui-style-button-group-border-color, transparent);
+  border-inline: 1px solid var(--awsui-style-button-group-border-color, transparent);
+  border-start-start-radius: var(--awsui-style-button-group-border-radius, 0);
+  border-start-end-radius: var(--awsui-style-button-group-border-radius, 0);
+  border-end-start-radius: var(--awsui-style-button-group-border-radius, 0);
+  border-end-end-radius: var(--awsui-style-button-group-border-radius, 0);
 }
+/* stylelint-enable custom-property-pattern */
 
 .item-wrapper {
   display: inline-block;

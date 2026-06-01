@@ -146,7 +146,10 @@ export default function AbstractSwitch({
           {label && (
             <span
               id={labelId}
-              className={clsx(styles.label, analyticsSelectors.label, { [styles['label-disabled']]: disabled })}
+              className={clsx(styles.label, analyticsSelectors.label, {
+                [styles['label-disabled']]: disabled,
+                [styles['label-readonly']]: readOnly && !disabled,
+              })}
               style={{ color: style?.label?.color }}
             >
               {label}

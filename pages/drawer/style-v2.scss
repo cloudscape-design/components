@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.styled-drawer {
+  // Content keeps the default background; only header and footer are tinted.
+  --awsui-style-drawer-header-background: #{palette.$info-surface};
+  --awsui-style-drawer-footer-background: #{palette.$info-surface};
+  --awsui-style-drawer-backdrop-background: hsl(120 120% 15% / 30%);
+}
+
+.styled-close-action {
+  --awsui-style-button-color-default: #{palette.$accent};
+  --awsui-style-button-focus-ring-color: #{palette.$accent};
+}

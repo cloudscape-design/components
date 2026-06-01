@@ -108,6 +108,11 @@ export interface AlertProps extends BaseComponentProps {
    */
   dismissible?: boolean;
   /**
+   * Specifies a class name applied to the dismiss button wrapper.
+   * Use to scope CSS custom properties for styling the dismiss button.
+   */
+  dismissClassName?: string;
+  /**
    * Adds an aria-label to the dismiss button.
    * @i18n
    *

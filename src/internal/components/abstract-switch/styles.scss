@@ -13,8 +13,13 @@
   display: block;
 }
 
+/* stylelint-disable custom-property-pattern */
+
 .label {
-  color: awsui.$color-text-form-default;
+  color: var(--awsui-style-color-text-label, #{awsui.$color-text-form-default});
+  @include styles.with-motion {
+    transition: color var(--awsui-style-transition-duration, 0s) var(--awsui-style-transition-easing, ease);
+  }
 }
 
 .outline {
@@ -59,9 +64,12 @@
 
 .label,
 .description {
-  padding-inline-start: awsui.$space-xs;
+  padding-inline-start: var(--awsui-style-space-control-label, #{awsui.$space-xs});
   &-disabled {
-    color: awsui.$color-text-control-disabled;
+    color: var(--awsui-style-color-text-label-disabled, #{awsui.$color-text-control-disabled});
+  }
+  &-readonly {
+    color: var(--awsui-style-color-text-label-readonly, #{awsui.$color-text-form-default});
   }
 }
 

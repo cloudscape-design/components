@@ -53,6 +53,7 @@ const InternalAlert = React.forwardRef(
       i18nStrings,
       visible = true,
       dismissible,
+      dismissClassName,
       children,
       header,
       buttonText,
@@ -240,7 +241,7 @@ const InternalAlert = React.forwardRef(
               </div>
               {dismissible && (
                 <div
-                  className={styles.dismiss}
+                  className={clsx(styles.dismiss, dismissClassName)}
                   {...getAnalyticsMetadataAttribute({
                     action: 'dismiss',
                   } as Partial<GeneratedAnalyticsMetadataAlertDismiss>)}

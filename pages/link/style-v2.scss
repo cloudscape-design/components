@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.styled-link {
+  --awsui-style-link-color-default: #{palette.$accent};
+  --awsui-style-link-color-hover: #{palette.$error};
+  --awsui-style-link-color-active: #{palette.$accent-active};
+  --awsui-style-link-font-weight: 700;
+  --awsui-style-link-text-decoration: underline;
+  --awsui-style-transition-duration: #{palette.$transition-duration};
+}

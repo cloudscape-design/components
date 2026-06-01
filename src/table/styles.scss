@@ -8,6 +8,8 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 
+/* stylelint-disable custom-property-pattern */
+
 .root {
   @include styles.default-text-style;
   inline-size: 100%;
@@ -153,7 +155,7 @@ filter search icon.
   border-start-end-radius: 0;
   border-end-start-radius: 0;
   border-end-end-radius: 0;
-  background: awsui.$color-background-table-header;
+  background: var(--awsui-style-table-header-background, #{awsui.$color-background-table-header});
   &.variant-full-page {
     background: awsui.$color-background-layout-main;
   }

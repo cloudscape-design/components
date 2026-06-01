@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+$dp-accent: #{palette.$success};
+$dp-accent-hover: hsl(145, 60%, 30%);
+$dp-surface: #{palette.$success-surface};
+
+.styled-date-picker {
+  // Input
+  --awsui-style-input-background: #{$dp-surface};
+  --awsui-style-input-background-focus: #{$dp-surface};
+  --awsui-style-input-border-color: #{$dp-accent};
+  --awsui-style-input-border-color-focus: #{$dp-accent-hover};
+  --awsui-style-input-color: #{palette.$text};
+  --awsui-style-input-placeholder-color: #{$dp-accent};
+  --awsui-style-input-border-radius: 12px;
+  --awsui-style-input-border-width: 2px;
+
+  // Calendar icon button
+  --awsui-style-button-color-default: #{$dp-accent};
+  --awsui-style-button-color-hover: #{palette.$text-on-accent};
+  --awsui-style-button-background-hover: #{$dp-accent};
+  --awsui-style-button-background-active: #{$dp-accent-hover};
+  --awsui-style-button-border-color-default: #{$dp-accent};
+  --awsui-style-button-border-color-hover: #{$dp-accent-hover};
+  --awsui-style-button-border-color-active: #{$dp-accent-hover};
+  --awsui-style-button-border-radius: 50%;
+  --awsui-style-button-focus-ring-color: #{$dp-accent};
+
+  // Calendar dates
+  --awsui-style-calendar-selected-background: #{$dp-accent};
+  --awsui-style-calendar-selected-color: #{palette.$text-on-accent};
+  --awsui-style-calendar-hover-background: #{$dp-surface};
+  --awsui-style-calendar-hover-border-color: #{$dp-accent};
+  --awsui-style-calendar-current-background: #{$dp-surface};
+}

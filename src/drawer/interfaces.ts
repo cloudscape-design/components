@@ -233,6 +233,7 @@ export namespace DrawerProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     iconAlt?: string;
+    className?: string;
   }
 
   export interface CloseDetail {

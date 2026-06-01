@@ -7,9 +7,11 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+/* stylelint-disable custom-property-pattern */
+
 .top-navigation {
   @include styles.styles-reset;
-  background: awsui.$color-background-container-content;
+  background: var(--awsui-style-top-navigation-background, #{awsui.$color-background-container-content});
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   > .padding-box {
@@ -62,10 +64,10 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: awsui.$color-text-top-navigation-title;
+    color: var(--awsui-style-top-navigation-title-color, #{awsui.$color-text-top-navigation-title});
 
     &:hover {
-      color: awsui.$color-text-accent;
+      color: var(--awsui-style-top-navigation-title-color-hover, #{awsui.$color-text-accent});
     }
 
     @include focus-visible.when-visible {
@@ -217,7 +219,7 @@
 
 .overflow-menu {
   @include styles.styles-reset;
-  background: awsui.$color-background-container-content;
+  background: var(--awsui-style-top-navigation-background, #{awsui.$color-background-container-content});
   block-size: 100%;
 }
 

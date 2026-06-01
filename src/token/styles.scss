@@ -23,7 +23,7 @@
   border-inline: awsui.$border-width-field solid transparent;
   padding-block: 0;
   padding-inline: awsui.$space-xxs;
-  color: var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default);
+  color: var(--awsui-style-token-dismiss-color-default, var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default));
   background-color: transparent;
   cursor: pointer;
 
@@ -45,7 +45,7 @@
   }
 
   &:hover {
-    color: var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover);
+    color: var(--awsui-style-token-dismiss-color-hover, var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover));
   }
 
   &-inline {

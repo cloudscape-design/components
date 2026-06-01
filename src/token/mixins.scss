@@ -11,21 +11,21 @@
   position: relative;
   block-size: 100%;
   border-block: awsui.$border-width-token solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
+    var(--awsui-style-token-border-color-default, var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color));
   border-inline: awsui.$border-width-token solid
-    var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color);
+    var(--awsui-style-token-border-color-default, var(#{custom-props.$tokenStyleBorderColorDefault}, constants.$token-border-color));
   padding-block-start: awsui.$space-token-vertical;
   padding-block-end: awsui.$space-token-vertical;
   padding-inline-start: styles.$control-padding-horizontal;
   padding-inline-end: awsui.$space-xxs;
   display: flex;
   align-items: flex-start;
-  background: var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background);
-  border-start-start-radius: awsui.$border-radius-token;
-  border-start-end-radius: awsui.$border-radius-token;
-  border-end-start-radius: awsui.$border-radius-token;
-  border-end-end-radius: awsui.$border-radius-token;
-  color: awsui.$color-text-body-default;
+  background: var(--awsui-style-token-background-default, var(#{custom-props.$tokenStyleBackgroundDefault}, constants.$token-background));
+  border-start-start-radius: var(--awsui-style-token-border-radius, #{awsui.$border-radius-token});
+  border-start-end-radius: var(--awsui-style-token-border-radius, #{awsui.$border-radius-token});
+  border-end-start-radius: var(--awsui-style-token-border-radius, #{awsui.$border-radius-token});
+  border-end-end-radius: var(--awsui-style-token-border-radius, #{awsui.$border-radius-token});
+  color: var(--awsui-style-token-color-default, #{awsui.$color-text-body-default});
   box-sizing: border-box;
 }
 

@@ -7,6 +7,8 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+/* stylelint-disable custom-property-pattern */
+
 $cell-horizontal-padding: awsui.$space-scaled-l;
 
 @mixin when-focus-visible-or-fake {
@@ -53,9 +55,10 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  background: awsui.$color-background-table-header;
-  color: awsui.$color-text-column-header;
+  border-block-end: awsui.$border-divider-section-width solid
+    var(--awsui-style-table-border-color, #{awsui.$color-border-divider-default});
+  background: var(--awsui-style-table-header-background, #{awsui.$color-background-table-header});
+  color: var(--awsui-style-table-header-color, #{awsui.$color-text-column-header});
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding-block: awsui.$space-scaled-xxs;
@@ -86,7 +89,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
   &.sticky-cell {
     position: sticky;
-    background: awsui.$color-background-table-header;
+    background: var(--awsui-style-table-header-background, #{awsui.$color-background-table-header});
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
     @include styles.with-motion {
       transition-property: padding;
@@ -128,7 +131,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   inset-block-start: 50%;
   transform: translateY(-50%);
   inset-inline-end: awsui.$space-xxs;
-  color: awsui.$color-text-column-sorting-icon;
+  color: var(--awsui-style-table-sorting-icon-color, #{awsui.$color-text-column-sorting-icon});
 }
 
 .edit-icon {
@@ -166,9 +169,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
   & > .header-cell-content:hover,
   &.header-cell-sorted > .header-cell-content {
-    color: awsui.$color-text-interactive-active;
+    color: var(--awsui-style-table-header-color, #{awsui.$color-text-interactive-active});
     & > .sorting-icon {
-      color: awsui.$color-text-interactive-active;
+      color: var(--awsui-style-table-sorting-icon-color, #{awsui.$color-text-interactive-active});
     }
   }
 }

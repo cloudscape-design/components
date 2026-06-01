@@ -12,6 +12,8 @@
 @use './mixins' as mixins;
 @use './motion';
 
+/* stylelint-disable custom-property-pattern */
+
 .header {
   &-inner {
     @include styles.font-heading-s;
@@ -51,7 +53,7 @@
 .icon {
   flex-shrink: 0;
   display: flex;
-  color: map.get(constants.$states, 'default', 'icon-color');
+  color: var(--awsui-style-action-card-icon-color, #{map.get(constants.$states, 'default', 'icon-color')});
   pointer-events: none;
 }
 
@@ -108,7 +110,7 @@
   text-align: start;
   display: flex;
   $default-state: map.get(constants.$states, 'default');
-  background: map.get($default-state, 'background');
+  background: var(--awsui-style-action-card-background, #{map.get($default-state, 'background')});
   box-shadow: map.get($default-state, 'box-shadow');
   color: map.get($default-state, 'text-color');
   padding-inline: 0;
@@ -120,8 +122,10 @@
     @include styles.base-pseudo-element;
 
     box-shadow: none;
-    border-block: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
-    border-inline: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
+    border-block: solid map.get($default-state, 'border-width')
+      var(--awsui-style-action-card-border-color, #{map.get($default-state, 'border-color')});
+    border-inline: solid map.get($default-state, 'border-width')
+      var(--awsui-style-action-card-border-color, #{map.get($default-state, 'border-color')});
   }
 
   &.variant-default,

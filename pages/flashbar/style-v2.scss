@@ -1,0 +1,46 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+// Base theme on the flashbar wrapper. Cascades to all items and to the
+// peeking "stacked" cards (which are rendered without the per-item class).
+.styled-flashbar {
+  --awsui-style-flash-background: #{palette.$surface-alt};
+  --awsui-style-flash-color: #{palette.$text};
+  --awsui-style-flash-border-radius: 12px;
+}
+
+// Per-type item overrides for the flat / expanded view.
+// Text always uses $text for guaranteed contrast in light and dark modes.
+@mixin flash-theme($bg) {
+  --awsui-style-flash-background: #{$bg};
+  --awsui-style-flash-color: #{palette.$text};
+  --awsui-style-flash-border-radius: 12px;
+}
+
+.flash-success {
+  @include flash-theme(palette.$success-surface);
+}
+
+.flash-error {
+  @include flash-theme(palette.$error-surface);
+}
+
+.flash-info {
+  @include flash-theme(palette.$info-surface);
+}
+
+.flash-warning {
+  @include flash-theme(palette.$warning-surface);
+}
+
+// Scoped to the dismiss button wrapper only — does not affect action buttons.
+// $text keeps the icon readable on the tinted surfaces in both color modes.
+.dismiss {
+  --awsui-style-button-color-default: #{palette.$text};
+  --awsui-style-button-color-hover: #{palette.$error};
+  --awsui-style-transition-duration: 200ms;
+}

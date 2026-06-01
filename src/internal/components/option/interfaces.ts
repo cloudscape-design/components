@@ -25,6 +25,7 @@ interface BaseOption {
 
 export interface OptionDefinition extends BaseOption {
   __labelPrefix?: string;
+  className?: string;
 }
 
 interface InternalOptionDefinition extends OptionDefinition {

@@ -190,11 +190,11 @@ export function DrawerImplementation({
                 </div>
               )}
               {closeAction && !hideCloseAction && (
-                <div className={styles['close-action']}>
+                <div className={clsx(styles['close-action'], closeAction.className)}>
                   <InternalButton
                     variant="icon"
                     iconName="close"
-                    {...closeAction}
+                    {...{ ...closeAction, className: undefined }}
                     className={testClasses['close-action']}
                     onClick={() => handleClose('close-action')}
                   />

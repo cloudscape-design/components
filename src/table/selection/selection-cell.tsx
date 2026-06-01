@@ -18,6 +18,7 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   singleSelectionHeaderAriaLabel?: string;
   getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
+  selectionClassName?: string;
 }
 
 interface TableBodySelectionCellProps
@@ -30,6 +31,7 @@ export function TableHeaderSelectionCell({
   singleSelectionHeaderAriaLabel,
   getSelectAllProps,
   onFocusMove,
+  selectionClassName,
   ...props
 }: TableHeaderSelectionCellProps) {
   const selectAllProps = getSelectAllProps ? getSelectAllProps() : undefined;
@@ -50,6 +52,7 @@ export function TableHeaderSelectionCell({
             onFocusMove!(event.target as HTMLElement, -1, +1);
           }}
           focusedComponent={focusedComponent}
+          selectionClassName={selectionClassName}
           {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
         />

@@ -1,0 +1,17 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../app/themes/style-v2-palette' as palette;
+
+.styled-tabs {
+  --awsui-style-tab-color-default: #{palette.$success};
+  --awsui-style-tab-color-active: #{palette.$error};
+  --awsui-style-tab-color-hover: #{palette.$warning};
+  --awsui-style-tab-color-disabled: #{palette.$text-disabled};
+  --awsui-style-tab-border-color-active: #{palette.$error};
+  // Header background for the "container" variant.
+  --awsui-style-container-header-background: #{palette.$success-surface};
+  --awsui-style-transition-duration: 150ms;
+}
