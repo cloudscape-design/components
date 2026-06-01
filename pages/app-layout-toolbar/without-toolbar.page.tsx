@@ -12,7 +12,7 @@ import { leftDrawerPayload } from '../app-layout/utils/external-global-left-pane
 import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
 
-registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
+registerLeftDrawer(leftDrawerPayload);
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);

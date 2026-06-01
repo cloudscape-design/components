@@ -14,7 +14,7 @@ import appLayoutLabels from '../app-layout/utils/labels';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 
-registerLeftDrawer({ ...leftDrawerPayload, defaultActive: true });
+registerLeftDrawer(leftDrawerPayload);
 
 type DemoContext = React.Context<
   AppContextType<{
