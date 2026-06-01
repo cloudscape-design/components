@@ -21,10 +21,21 @@
 .drawer {
   @include styles.styles-reset;
   word-wrap: break-word;
-  background-color: awsui.$color-background-drawer;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+
+  > .content {
+    flex: 1;
+  }
 
   &.has-close-action {
     position: relative;
+  }
+
+  &.resizable {
+    flex: 1;
+    overflow: hidden;
   }
 
   &.position-absolute,
@@ -45,14 +56,8 @@
   }
 
   &.with-footer {
-    display: flex;
-    flex-direction: column;
     &.position-static {
       min-block-size: 100%;
-    }
-
-    > .content {
-      flex: 1;
     }
   }
 
@@ -157,6 +162,30 @@
 
 .focus-trap {
   display: contents;
+}
+
+.panel-wrapper {
+  display: contents;
+  background-color: awsui.$color-background-drawer;
+
+  &-resizable {
+    display: flex;
+    flex-shrink: 0;
+    @include styles.with-motion {
+      transition: inline-size awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+
+  &-resizing {
+    @include styles.with-motion {
+      transition: none;
+    }
+  }
+}
+
+.handle {
+  display: flex;
+  align-items: center;
 }
 
 .backdrop {

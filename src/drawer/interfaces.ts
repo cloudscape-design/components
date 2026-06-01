@@ -202,6 +202,42 @@ export interface DrawerProps extends BaseComponentProps {
    * Do not use this property when using drawers inside app layout.
    */
   focusBehavior?: DrawerProps.FocusBehavior;
+
+  /**
+   * Makes the drawer resizable by showing a resize handle on the edge opposite to the placement.
+   *
+   * Do not use this property when using drawers inside app layout.
+   */
+  resizable?: boolean;
+
+  /**
+   * Current size in pixels (controlled). For `start`/`end` placements this controls width;
+   * for `top`/`bottom` placements this controls height.
+   *
+   * Do not use this property when using drawers inside app layout.
+   */
+  size?: number;
+
+  /**
+   * Minimum size in pixels when resizing.
+   *
+   * Do not use this property when using drawers inside app layout.
+   */
+  minSize?: number;
+
+  /**
+   * Maximum size in pixels when resizing.
+   *
+   * Do not use this property when using drawers inside app layout.
+   */
+  maxSize?: number;
+
+  /**
+   * Called when the drawer is resized. Use this to update the `size` prop.
+   *
+   * Do not use this property when using drawers inside app layout.
+   */
+  onResize?: NonCancelableEventHandler<DrawerProps.ResizeDetail>;
 }
 
 export namespace DrawerProps {
@@ -237,6 +273,10 @@ export namespace DrawerProps {
 
   export interface CloseDetail {
     method: 'close-action' | 'backdrop-click' | 'escape';
+  }
+
+  export interface ResizeDetail {
+    size: number;
   }
 
   export interface FocusBehavior {

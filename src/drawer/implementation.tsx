@@ -8,12 +8,14 @@ import { Portal, useStableCallback, useUniqueId } from '@cloudscape-design/compo
 
 import { useRuntimeDrawerContext } from '../app-layout/runtime-drawer/use-runtime-drawer-context';
 import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import { useResize } from '../app-layout/visual-refresh-toolbar/drawer/use-resize';
 import InternalButton from '../button/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
 import { getAllFocusables, isFocusable } from '../internal/components/focus-lock/utils';
+import PanelResizeHandle from '../internal/components/panel-resize-handle';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
@@ -56,11 +58,18 @@ export function DrawerImplementation({
   ariaLabelledby,
   focusBehavior,
   role,
+  resizable = false,
+  size,
+  minSize = 0,
+  maxSize = 9999,
+  onResize,
   ...restProps
 }: DrawerInternalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const returnFocusTargetRef = useRef<HTMLElement | null>(null);
+  const resizeHandleRef = useRef<HTMLDivElement>(null);
 
   const baseProps = getBaseProps(restProps);
   const isToolbar = useAppLayoutToolbarDesignEnabled();
@@ -74,16 +83,49 @@ export function DrawerImplementation({
     role === 'region'
       ? { role: 'region', tabIndex: -1, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby }
       : {};
+
+  const isHorizontal = placement === 'start' || placement === 'end';
+  const resizeHandlePosition = placement === 'start' ? 'side-start' : placement === 'end' ? 'side' : 'bottom';
+  const [isResizing, setIsResizing] = React.useState(false);
+  const resizeProps = useResize({
+    currentWidth: size ?? 0,
+    minWidth: minSize,
+    maxWidth: maxSize,
+    panelRef: drawerRef,
+    handleRef: resizeHandleRef,
+    onResize: newSize => {
+      setIsResizing(true);
+      fireNonCancelableEvent(onResize, { size: newSize });
+    },
+    position: resizeHandlePosition,
+  });
+
+  useEffect(() => {
+    if (!isResizing) {
+      return;
+    }
+    const onPointerUp = () => setIsResizing(false);
+    document.addEventListener('pointerup', onPointerUp);
+    return () => document.removeEventListener('pointerup', onPointerUp);
+  }, [isResizing]);
+
+  const sizeStyle: React.CSSProperties = size
+    ? isHorizontal
+      ? { inlineSize: `${size}px` }
+      : { blockSize: `${size}px` }
+    : {};
+
   const containerProps = {
     ref: containerRef,
     ...roleProps,
-    style: positionStyles.style,
+    style: { ...positionStyles.style },
     className: clsx(
       styles.drawer,
       loading && styles['content-with-paddings'],
       isToolbar && styles['with-toolbar'],
       !!footer && styles['with-footer'],
       closeAction && !hideCloseAction && styles['has-close-action'],
+      resizable && styles.resizable,
       positionStyles.className
     ),
   };
@@ -167,59 +209,95 @@ export function DrawerImplementation({
         />
       )}
       <FocusLock disabled={!trapFocus} className={styles['focus-trap']}>
-        <div {...containerProps}>
-          {loading ? (
-            <InternalStatusIndicator type="loading">
-              <InternalLiveRegion tagName="span">
-                {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
-              </InternalLiveRegion>
-            </InternalStatusIndicator>
-          ) : (
-            <>
-              {header && (
+        <div
+          ref={drawerRef}
+          className={clsx(
+            styles['panel-wrapper'],
+            resizable && styles['panel-wrapper-resizable'],
+            isResizing && styles['panel-wrapper-resizing']
+          )}
+          style={sizeStyle}
+        >
+          {resizable && placement === 'end' && (
+            <div className={styles.handle}>
+              <PanelResizeHandle
+                ref={resizeHandleRef}
+                position={resizeHandlePosition}
+                ariaLabel="Resize drawer"
+                ariaValuenow={resizeProps.relativeSize}
+                onKeyDown={resizeProps.onKeyDown}
+                onDirectionClick={resizeProps.onDirectionClick}
+                onPointerDown={resizeProps.onPointerDown}
+              />
+            </div>
+          )}
+          <div {...containerProps}>
+            {loading ? (
+              <InternalStatusIndicator type="loading">
+                <InternalLiveRegion tagName="span">
+                  {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
+                </InternalLiveRegion>
+              </InternalStatusIndicator>
+            ) : (
+              <>
+                {header && (
+                  <div
+                    className={clsx(
+                      styles.header,
+                      runtimeDrawerContext && styles['with-runtime-context'],
+                      hasAdditionalDrawerAction && styles['with-additional-action'],
+                      hideCloseAction && styles['hide-close-action']
+                    )}
+                  >
+                    <span id={headerId}>{header}</span>
+                    {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+                  </div>
+                )}
+                {closeAction && !hideCloseAction && (
+                  <div className={styles['close-action']}>
+                    <InternalButton
+                      variant="icon"
+                      iconName="close"
+                      {...closeAction}
+                      className={testClasses['close-action']}
+                      onClick={() => handleClose('close-action')}
+                    />
+                  </div>
+                )}
                 <div
                   className={clsx(
-                    styles.header,
-                    runtimeDrawerContext && styles['with-runtime-context'],
-                    hasAdditionalDrawerAction && styles['with-additional-action'],
-                    hideCloseAction && styles['hide-close-action']
+                    styles['test-utils-drawer-content'],
+                    styles.content,
+                    !disableContentPaddings && styles['content-with-paddings']
                   )}
                 >
-                  <span id={headerId}>{header}</span>
-                  {headerActions && <div className={styles['header-actions']}>{headerActions}</div>}
+                  <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
                 </div>
-              )}
-              {closeAction && !hideCloseAction && (
-                <div className={styles['close-action']}>
-                  <InternalButton
-                    variant="icon"
-                    iconName="close"
-                    {...closeAction}
-                    className={testClasses['close-action']}
-                    onClick={() => handleClose('close-action')}
-                  />
-                </div>
-              )}
-              <div
-                className={clsx(
-                  styles['test-utils-drawer-content'],
-                  styles.content,
-                  !disableContentPaddings && styles['content-with-paddings']
+                {footer && (
+                  <div
+                    ref={footerRef}
+                    className={clsx(styles.footer, {
+                      [styles['is-sticky']]: isFooterSticky,
+                    })}
+                  >
+                    {footer}
+                  </div>
                 )}
-              >
-                <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
-              </div>
-              {footer && (
-                <div
-                  ref={footerRef}
-                  className={clsx(styles.footer, {
-                    [styles['is-sticky']]: isFooterSticky,
-                  })}
-                >
-                  {footer}
-                </div>
-              )}
-            </>
+              </>
+            )}
+          </div>
+          {resizable && placement === 'start' && (
+            <div className={styles.handle}>
+              <PanelResizeHandle
+                ref={resizeHandleRef}
+                position={resizeHandlePosition}
+                ariaLabel="Resize drawer"
+                ariaValuenow={resizeProps.relativeSize}
+                onKeyDown={resizeProps.onKeyDown}
+                onDirectionClick={resizeProps.onDirectionClick}
+                onPointerDown={resizeProps.onPointerDown}
+              />
+            </div>
           )}
         </div>
       </FocusLock>

@@ -36,6 +36,11 @@ const Drawer = forwardRef(function Drawer(
     onClose,
     focusBehavior,
     role,
+    resizable = false,
+    size,
+    minSize,
+    maxSize,
+    onResize,
     ...props
   }: DrawerProps,
   ref: React.Ref<DrawerProps.Ref>
@@ -87,6 +92,11 @@ const Drawer = forwardRef(function Drawer(
       onClose={onClose}
       focusBehavior={focusBehavior}
       role={role}
+      resizable={resizable}
+      size={size}
+      minSize={minSize}
+      maxSize={maxSize}
+      onResize={onResize}
     />
   );
 });
