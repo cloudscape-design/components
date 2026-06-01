@@ -52,7 +52,6 @@ export function TableHeaderSelectionCell({
           focusedComponent={focusedComponent}
           {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
-          spansRows={!!props.rowSpan && props.rowSpan > 1}
         />
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>

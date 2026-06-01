@@ -23,8 +23,6 @@ export interface SelectionControlProps extends ItemSelectionProps {
   rowIndex?: number;
   itemKey?: string;
   verticalAlign?: 'middle' | 'top';
-  /** Whether this control spans multiple header rows (grouped column header). */
-  spansRows?: boolean;
 }
 
 export function SelectionControl({
@@ -40,7 +38,6 @@ export function SelectionControl({
   rowIndex,
   itemKey,
   verticalAlign = 'middle',
-  spansRows,
   onChange,
   ...sharedProps
 }: SelectionControlProps) {
@@ -126,12 +123,7 @@ export function SelectionControl({
         onMouseUp={setShiftState}
         onClick={handleClick}
         htmlFor={controlId}
-        className={clsx(
-          styles.label,
-          styles.root,
-          verticalAlign === 'top' && !spansRows && styles['label-top'],
-          spansRows && styles['label-bottom']
-        )}
+        className={clsx(styles.label, styles.root, verticalAlign === 'top' && styles['label-top'])}
         aria-label={ariaLabel}
         title={ariaLabel}
         {...(rowIndex !== undefined && !sharedProps.disabled
