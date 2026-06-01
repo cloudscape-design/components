@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Table, { TableProps } from '../../../lib/components/table';
+import { ColumnWidthsProvider, useColumnWidths } from '../../../lib/components/table/use-column-widths';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
 
@@ -47,6 +48,57 @@ interface Item {
 }
 
 const defaultItems = [{ id: 0, text: 'test' }];
+
+test('useColumnWidths returns safe defaults without provider', () => {
+  function Bare() {
+    const ctx = useColumnWidths();
+    expect(ctx.getColumnStyles(false, 'x')).toEqual({});
+    expect(ctx.columnWidths).toEqual(new Map());
+    expect(() => ctx.updateColumn('x', 100)).not.toThrow();
+    expect(() => ctx.updateGroup('x', 100)).not.toThrow();
+    expect(() => ctx.setCell(false, 'x', null)).not.toThrow();
+    expect(() => ctx.setCol('x', null)).not.toThrow();
+    return null;
+  }
+  render(<Bare />);
+});
+
+test('updateGroup does not crash without groupLeafMap', () => {
+  let updateGroup: (groupId: PropertyKey, width: number) => void;
+  function Consumer() {
+    ({ updateGroup } = useColumnWidths());
+    return null;
+  }
+  const containerRef = { current: document.createElement('div') } as React.RefObject<HTMLElement>;
+  render(
+    <ColumnWidthsProvider visibleColumns={[]} resizableColumns={true} containerRef={containerRef}>
+      <Consumer />
+    </ColumnWidthsProvider>
+  );
+  // No groupLeafMap passed → guard returns early
+  expect(() => updateGroup!('any', 200)).not.toThrow();
+});
+
+test('updateGroup does not crash for unknown groupId', () => {
+  let updateGroup: (groupId: PropertyKey, width: number) => void;
+  function Consumer() {
+    ({ updateGroup } = useColumnWidths());
+    return null;
+  }
+  const containerRef = { current: document.createElement('div') } as React.RefObject<HTMLElement>;
+  render(
+    <ColumnWidthsProvider
+      visibleColumns={[]}
+      resizableColumns={true}
+      containerRef={containerRef}
+      groupLeafMap={new Map([['g1', ['a', 'b']]])}
+    >
+      <Consumer />
+    </ColumnWidthsProvider>
+  );
+  // groupLeafMap exists but 'unknown' not in it → leafIds=[], rightmostLeaf undefined → guard returns
+  expect(() => updateGroup!('unknown', 200)).not.toThrow();
+});
 
 test('assigns width configuration to columns', () => {
   const columns: TableProps.ColumnDefinition<Item>[] = [
