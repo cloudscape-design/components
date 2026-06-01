@@ -79,7 +79,6 @@ function computeSizeOverrides({
 }): SizeOverrideResult {
   const result: SizeOverrideResult = {};
 
-  // Fall back to empty maps if either is undefined (e.g. older context versions).
   if (!sizeOverrides) {
     sizeOverrides = {};
   }
