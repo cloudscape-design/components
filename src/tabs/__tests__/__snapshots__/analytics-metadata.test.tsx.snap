@@ -1,0 +1,290 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs renders correct analytics metadata on content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible active tab with actions 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "first",
+          "tabLabel": "First tab label",
+          "tabPosition": "1",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible active tab with actions 2`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "first",
+          "tabLabel": "First tab label",
+          "tabPosition": "1",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "first",
+    "label": "Dismiss first tab",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible active tab with actions 3`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Query actions for first tab",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "icon",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "first",
+          "tabLabel": "First tab label",
+          "tabPosition": "1",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Query actions for first tab",
+  },
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible disabled tab with actions 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible disabled tab with actions 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "second",
+          "tabLabel": "Second tab label",
+          "tabPosition": "2",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible disabled tab with actions 3`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "second",
+          "tabLabel": "Second tab label",
+          "tabPosition": "2",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "second",
+    "label": "Dismiss second tab",
+    "position": "2",
+  },
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on dismissible disabled tab with actions 4`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Query actions for second tab",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "icon",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "second",
+          "tabLabel": "Second tab label",
+          "tabPosition": "2",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Query actions for second tab",
+  },
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on non-active disabled tab with explicit activeTabId 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "fourth",
+          "tabLabel": "Fourth tab label",
+          "tabPosition": "4",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "third",
+          "activeTabLabel": "Third tab label",
+          "activeTabPosition": "3",
+          "tabsCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tabs renders correct analytics metadata on non-active tab 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "tabId": "third",
+          "tabLabel": "Third tab label",
+          "tabPosition": "3",
+        },
+        "label": "tabs component",
+        "name": "awsui.Tabs",
+        "properties": {
+          "activeTabId": "first",
+          "activeTabLabel": "First tab label",
+          "activeTabPosition": "1",
+          "tabsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "third",
+    "label": "Third tab label",
+    "originTabId": "first",
+    "position": "3",
+  },
+}
+`;

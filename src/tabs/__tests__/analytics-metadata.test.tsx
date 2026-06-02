@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import ButtonDropdown from '../../../lib/components/button-dropdown';
@@ -79,36 +76,6 @@ function renderTabs(props: Partial<TabsProps> = {}) {
   return createWrapper(renderResult.container).findTabs()!;
 }
 
-const getTabsComponentContexts = (activeTabIndex: number, tabIndex?: number, tabsCount = '4') => {
-  const { id, label } = tabs[activeTabIndex];
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Tabs',
-          label: ariaLabel,
-          properties: {
-            activeTabId: id,
-            activeTabLabel: label as string,
-            activeTabPosition: `${activeTabIndex + 1}`,
-            tabsCount,
-          },
-        },
-      },
-    ],
-  };
-  if (tabIndex !== undefined) {
-    const tab = tabs[tabIndex];
-    metadata.contexts![0].detail.innerContext = {
-      tabId: tab.id,
-      tabLabel: tab.label as string,
-      tabPosition: `${tabIndex + 1}`,
-    };
-  }
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -118,7 +85,7 @@ describe('Tabs renders correct analytics metadata', () => {
 
     const content = wrapper.findTabContent()!.getElement();
     validateComponentNameAndLabels(content, labels);
-    expect(getGeneratedAnalyticsMetadata(content)).toEqual({ ...getTabsComponentContexts(0) });
+    expect(getGeneratedAnalyticsMetadata(content)).toMatchSnapshot();
   });
 
   test('on non-active tab', () => {
@@ -126,16 +93,7 @@ describe('Tabs renders correct analytics metadata', () => {
 
     const third = wrapper.findTabLinkById('third')!.getElement();
     validateComponentNameAndLabels(third, labels);
-    expect(getGeneratedAnalyticsMetadata(third)).toEqual({
-      action: 'select',
-      detail: {
-        id: 'third',
-        label: 'Third tab label',
-        position: '3',
-        originTabId: 'first',
-      },
-      ...getTabsComponentContexts(0, 2, '3'),
-    });
+    expect(getGeneratedAnalyticsMetadata(third)).toMatchSnapshot();
   });
 
   test('on non-active disabled tab with explicit activeTabId', () => {
@@ -143,7 +101,7 @@ describe('Tabs renders correct analytics metadata', () => {
 
     const fourth = wrapper.findTabLinkById('fourth')!.getElement();
     validateComponentNameAndLabels(fourth, labels);
-    expect(getGeneratedAnalyticsMetadata(fourth)).toEqual({ ...getTabsComponentContexts(2, 3) });
+    expect(getGeneratedAnalyticsMetadata(fourth)).toMatchSnapshot();
   });
 
   test('on dismissible active tab with actions', () => {
@@ -151,40 +109,13 @@ describe('Tabs renders correct analytics metadata', () => {
 
     const first = wrapper.findTabLinkById('first')!.getElement();
     validateComponentNameAndLabels(first, labels);
-    expect(getGeneratedAnalyticsMetadata(first)).toEqual({ ...getTabsComponentContexts(0, 0) });
+    expect(getGeneratedAnalyticsMetadata(first)).toMatchSnapshot();
     const firstDismiss = wrapper.findDismissibleButtonByTabId('first')!.getElement();
     validateComponentNameAndLabels(firstDismiss, labels);
-    expect(getGeneratedAnalyticsMetadata(firstDismiss)).toEqual({
-      action: 'dismiss',
-      detail: {
-        id: 'first',
-        label: 'Dismiss first tab',
-        position: '1',
-      },
-      ...getTabsComponentContexts(0, 0),
-    });
+    expect(getGeneratedAnalyticsMetadata(firstDismiss)).toMatchSnapshot();
     const firstActions = wrapper.findActionByTabId('first')!.findButtonDropdown()!.findNativeButton()!.getElement();
     validateComponentNameAndLabels(firstActions, labels);
-    expect(getGeneratedAnalyticsMetadata(firstActions)).toEqual({
-      action: 'expand',
-      detail: {
-        label: 'Query actions for first tab',
-      },
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.ButtonDropdown',
-            label: 'Query actions for first tab',
-            properties: {
-              variant: 'icon',
-              disabled: 'false',
-            },
-          },
-        },
-        ...(getTabsComponentContexts(0, 0).contexts as []),
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(firstActions)).toMatchSnapshot();
   });
 
   test('on dismissible disabled tab with actions', () => {
@@ -192,43 +123,16 @@ describe('Tabs renders correct analytics metadata', () => {
 
     const content = wrapper.findTabContent()!.getElement();
     validateComponentNameAndLabels(content, labels);
-    expect(getGeneratedAnalyticsMetadata(content)).toEqual({ ...getTabsComponentContexts(0) });
+    expect(getGeneratedAnalyticsMetadata(content)).toMatchSnapshot();
 
     const second = wrapper.findTabLinkById('second')!.getElement();
     validateComponentNameAndLabels(second, labels);
-    expect(getGeneratedAnalyticsMetadata(second)).toEqual({ ...getTabsComponentContexts(0, 1) });
+    expect(getGeneratedAnalyticsMetadata(second)).toMatchSnapshot();
     const secondDismiss = wrapper.findDismissibleButtonByTabId('second')!.getElement();
     validateComponentNameAndLabels(secondDismiss, labels);
-    expect(getGeneratedAnalyticsMetadata(secondDismiss)).toEqual({
-      action: 'dismiss',
-      detail: {
-        id: 'second',
-        label: 'Dismiss second tab',
-        position: '2',
-      },
-      ...getTabsComponentContexts(0, 1),
-    });
+    expect(getGeneratedAnalyticsMetadata(secondDismiss)).toMatchSnapshot();
     const secondActions = wrapper.findActionByTabId('second')!.findButtonDropdown()!.findNativeButton()!.getElement();
     validateComponentNameAndLabels(secondActions, labels);
-    expect(getGeneratedAnalyticsMetadata(secondActions)).toEqual({
-      action: 'expand',
-      detail: {
-        label: 'Query actions for second tab',
-      },
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.ButtonDropdown',
-            label: 'Query actions for second tab',
-            properties: {
-              variant: 'icon',
-              disabled: 'false',
-            },
-          },
-        },
-        ...(getTabsComponentContexts(0, 1).contexts as []),
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(secondActions)).toMatchSnapshot();
   });
 });

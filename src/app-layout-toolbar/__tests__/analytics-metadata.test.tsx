@@ -3,10 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
@@ -28,21 +25,6 @@ function renderToolbar(props: AppLayoutToolbarProps = {}) {
 }
 
 const delay = () => act(() => new Promise(resolve => setTimeout(resolve)));
-
-const getMetadata = (label = 'Label') => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.AppLayoutToolbar',
-          label,
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 const globalWithFlags = globalThis as any;
 
@@ -69,12 +51,12 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       ),
     });
     validateComponentNameAndLabels(wrapper.getElement(), {});
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('H1 Header'));
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
   });
   test('with a simple h1 tag inside the content', () => {
     const wrapper = renderToolbar();
     validateComponentNameAndLabels(wrapper.getElement(), {});
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata());
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
   });
   describe('with navigation', () => {
     test('closed', () => {
@@ -88,13 +70,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const navigationTrigger = wrapper.findNavigationToggle().getElement();
       validateComponentNameAndLabels(navigationTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(navigationTrigger)).toEqual({
-        action: 'open',
-        detail: {
-          label: 'toggle navigation',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(navigationTrigger)).toMatchSnapshot();
     });
     test('open', () => {
       const wrapper = renderToolbar({
@@ -108,20 +84,8 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const navigationTrigger = wrapper.findNavigationToggle().getElement();
       validateComponentNameAndLabels(navigationTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(navigationTrigger)).toEqual({
-        action: 'close',
-        detail: {
-          label: 'toggle navigation',
-        },
-        ...getMetadata(),
-      });
-      expect(getGeneratedAnalyticsMetadata(wrapper.findNavigationClose().getElement())).toEqual({
-        action: 'close',
-        detail: {
-          label: 'close navigation',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(navigationTrigger)).toMatchSnapshot();
+      expect(getGeneratedAnalyticsMetadata(wrapper.findNavigationClose().getElement())).toMatchSnapshot();
     });
   });
   describe('with tools', () => {
@@ -136,13 +100,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const toolsTrigger = wrapper.findToolsToggle().getElement();
       validateComponentNameAndLabels(toolsTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(toolsTrigger)).toEqual({
-        action: 'open',
-        detail: {
-          label: 'toggle tools',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(toolsTrigger)).toMatchSnapshot();
     });
     test('open', () => {
       const wrapper = renderToolbar({
@@ -156,20 +114,8 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const toolsTrigger = wrapper.findToolsToggle().getElement();
       validateComponentNameAndLabels(toolsTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(toolsTrigger)).toEqual({
-        action: 'close',
-        detail: {
-          label: 'toggle tools',
-        },
-        ...getMetadata(),
-      });
-      expect(getGeneratedAnalyticsMetadata(wrapper.findToolsClose().getElement())).toEqual({
-        action: 'close',
-        detail: {
-          label: 'close tools',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(toolsTrigger)).toMatchSnapshot();
+      expect(getGeneratedAnalyticsMetadata(wrapper.findToolsClose().getElement())).toMatchSnapshot();
     });
   });
 
@@ -193,13 +139,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const drawerTrigger = wrapper.findDrawerTriggerById('test-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toEqual({
-        action: 'open',
-        detail: {
-          label: 'toggle test drawer',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toMatchSnapshot();
     });
     test('open', () => {
       const wrapper = renderToolbar({
@@ -234,27 +174,11 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const drawerTrigger = wrapper.findDrawerTriggerById('test-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toEqual({
-        action: 'close',
-        detail: {
-          label: 'toggle test drawer',
-        },
-        ...getMetadata(),
-      });
-      expect(getGeneratedAnalyticsMetadata(wrapper.findDrawerTriggerById('another-drawer')!.getElement())).toEqual({
-        action: 'open',
-        detail: {
-          label: 'toggle another test drawer',
-        },
-        ...getMetadata(),
-      });
-      expect(getGeneratedAnalyticsMetadata(wrapper.findActiveDrawerCloseButton()!.getElement())).toEqual({
-        action: 'close',
-        detail: {
-          label: 'close test drawer',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toMatchSnapshot();
+      expect(
+        getGeneratedAnalyticsMetadata(wrapper.findDrawerTriggerById('another-drawer')!.getElement())
+      ).toMatchSnapshot();
+      expect(getGeneratedAnalyticsMetadata(wrapper.findActiveDrawerCloseButton()!.getElement())).toMatchSnapshot();
     });
   });
   describe('with global drawer', () => {
@@ -275,13 +199,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       await delay();
       const drawerTrigger = wrapper.findDrawerTriggerById('global-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toEqual({
-        action: 'open',
-        detail: {
-          label: 'toggle global drawer',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toMatchSnapshot();
     });
     test('open', async () => {
       awsuiPlugins.appLayout.registerDrawer({
@@ -301,20 +219,8 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       await delay();
       const drawerTrigger = wrapper.findDrawerTriggerById('global-drawer')!.getElement();
       validateComponentNameAndLabels(drawerTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toEqual({
-        action: 'close',
-        detail: {
-          label: 'toggle global drawer',
-        },
-        ...getMetadata(),
-      });
-      expect(getGeneratedAnalyticsMetadata(wrapper.findActiveDrawerCloseButton()!.getElement())).toEqual({
-        action: 'close',
-        detail: {
-          label: 'close global drawer',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(drawerTrigger)).toMatchSnapshot();
+      expect(getGeneratedAnalyticsMetadata(wrapper.findActiveDrawerCloseButton()!.getElement())).toMatchSnapshot();
     });
   });
 
@@ -331,13 +237,7 @@ describe('AppLayoutToolbar renders correct analytics metadata', () => {
       });
       const splitPanelTrigger = wrapper.findSplitPanelOpenButton()!.getElement();
       validateComponentNameAndLabels(splitPanelTrigger, {});
-      expect(getGeneratedAnalyticsMetadata(splitPanelTrigger)).toEqual({
-        action,
-        detail: {
-          label: 'open split panel',
-        },
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(splitPanelTrigger)).toMatchSnapshot();
     });
   });
 });

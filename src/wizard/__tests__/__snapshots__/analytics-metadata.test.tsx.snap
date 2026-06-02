@@ -1,0 +1,367 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on cancel button 1`] = `
+{
+  "action": "cancel",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Cancel",
+  },
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on navigation links 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "1",
+          "activeStepLabel": "Step 2",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Step 1",
+    "reason": "step",
+    "targetStepIndex": "0",
+  },
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on navigation links 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "1",
+          "activeStepLabel": "Step 2",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on next button 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Next",
+    "reason": "next",
+    "targetStepIndex": "1",
+  },
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on skip button 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Skip to Step 3(3)",
+    "reason": "skip",
+    "targetStepIndex": "2",
+  },
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata on submit button 1`] = `
+{
+  "action": "submit",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "2",
+          "activeStepLabel": "Step 3",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Create record",
+  },
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata with analyticsMetadata 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "flowType": "create",
+          "instanceIdentifier": "a",
+          "resourceType": "record",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=false Wizard renders correct analytics metadata with breadcrumbs 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "wizard label",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=false does not render "component" metadata 1`] = `{}`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on cancel button 1`] = `
+{
+  "action": "cancel",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Cancel",
+  },
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on navigation links 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "1",
+          "activeStepLabel": "Step 2",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Step 1",
+    "reason": "step",
+    "targetStepIndex": "0",
+  },
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on navigation links 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "1",
+          "activeStepLabel": "Step 2",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on next button 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Next",
+    "reason": "next",
+    "targetStepIndex": "1",
+  },
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on skip button 1`] = `
+{
+  "action": "navigate",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Skip to Step 3(3)",
+    "reason": "skip",
+    "targetStepIndex": "2",
+  },
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata on submit button 1`] = `
+{
+  "action": "submit",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "2",
+          "activeStepLabel": "Step 3",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Create record",
+  },
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata with analyticsMetadata 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "flowType": "create",
+          "instanceIdentifier": "a",
+          "resourceType": "record",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=true Wizard renders correct analytics metadata with breadcrumbs 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "wizard label",
+        "name": "awsui.Wizard",
+        "properties": {
+          "activeStepIndex": "0",
+          "activeStepLabel": "Step 1",
+          "stepsCount": "3",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`with visualrefresh=true does not render "component" metadata 1`] = `{}`;

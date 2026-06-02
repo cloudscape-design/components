@@ -15,15 +15,6 @@ import { validateComponentNameAndLabels } from '../../internal/__tests__/analyti
 import labels from '../../../lib/components/modal/analytics-metadata/styles.css.js';
 
 const modalHeader = 'Modal title';
-const contexts = [
-  {
-    type: 'component',
-    detail: {
-      name: 'awsui.Modal',
-      label: modalHeader,
-    },
-  },
-];
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -47,34 +38,9 @@ test('Modal renders correct analytics metadata', () => {
   );
   const wrapper = createWrapper(container).findModal()!;
   validateComponentNameAndLabels(wrapper.findDismissButton()!.getElement(), labels);
-  expect(getGeneratedAnalyticsMetadata(wrapper.findDismissButton()!.getElement())).toEqual({
-    action: 'dismiss',
-    detail: {
-      label: 'Close modal',
-    },
-    contexts,
-  });
+  expect(getGeneratedAnalyticsMetadata(wrapper.findDismissButton()!.getElement())).toMatchSnapshot();
 
-  expect(getGeneratedAnalyticsMetadata(wrapper.findFooter()!.findButton()!.getElement())).toEqual({
-    action: 'click',
-    detail: {
-      label: 'Confirm',
-    },
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Button',
-          label: 'Confirm',
-          properties: {
-            variant: 'primary',
-            disabled: 'false',
-          },
-        },
-      },
-      ...contexts,
-    ],
-  });
+  expect(getGeneratedAnalyticsMetadata(wrapper.findFooter()!.findButton()!.getElement())).toMatchSnapshot();
 });
 
 test('Internal Modal does not render "component" metadata', () => {
@@ -90,10 +56,5 @@ test('Internal Modal does not render "component" metadata', () => {
   );
   const wrapper = createWrapper(container).findModal()!;
   validateComponentNameAndLabels(wrapper.findDismissButton()!.getElement(), labels);
-  expect(getGeneratedAnalyticsMetadata(wrapper.findDismissButton()!.getElement())).toEqual({
-    action: 'dismiss',
-    detail: {
-      label: 'Close modal',
-    },
-  });
+  expect(getGeneratedAnalyticsMetadata(wrapper.findDismissButton()!.getElement())).toMatchSnapshot();
 });

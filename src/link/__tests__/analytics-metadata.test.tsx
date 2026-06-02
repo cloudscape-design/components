@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Link, { LinkProps } from '../../../lib/components/link';
@@ -18,32 +15,6 @@ function renderLink(props: LinkProps) {
   const renderResult = render(<Link {...props} />);
   return createWrapper(renderResult.container).findLink()!.getElement()!;
 }
-
-const getMetadata = (label: string, { external = false, href, variant = 'secondary' }: LinkProps) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    action: 'click',
-    detail: {
-      label,
-      external: `${external}`,
-    },
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Link',
-          label,
-          properties: {
-            variant,
-          },
-        },
-      },
-    ],
-  };
-  if (href && metadata.detail) {
-    metadata.detail.href = href;
-  }
-  return metadata;
-};
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -57,7 +28,7 @@ describe('Link renders correct analytics metadata', () => {
     };
     const element = renderLink(props);
     validateComponentNameAndLabels(element, {});
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata(label, props));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with secondary variant', () => {
     const label = 'Link text';
@@ -67,7 +38,7 @@ describe('Link renders correct analytics metadata', () => {
     };
     const element = renderLink(props);
     validateComponentNameAndLabels(element, {});
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata(label, props));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('external', () => {
     const label = 'Link text';
@@ -78,7 +49,7 @@ describe('Link renders correct analytics metadata', () => {
     };
     const element = renderLink(props);
     validateComponentNameAndLabels(element, {});
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata(label, props));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with info variant', () => {
     const label = 'Link text';
@@ -88,12 +59,12 @@ describe('Link renders correct analytics metadata', () => {
     };
     const element = renderLink(props);
     validateComponentNameAndLabels(element, {});
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata(`${label}:`, props));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
 });
 
 test('Internal Link does not render  metadata', () => {
   const renderResult = render(<InternalLink>Link text</InternalLink>);
   const wrapper = createWrapper(renderResult.container).findLink()!;
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
 });

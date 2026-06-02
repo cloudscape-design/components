@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input renders correct analytics metadata on the component with aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.Input",
+        "properties": {
+          "value": "a",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Input renders correct analytics metadata on the component with empty value 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.Input",
+        "properties": {
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Input renders correct analytics metadata on the component within a form field 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.Input",
+        "properties": {
+          "value": "a",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Input renders correct analytics metadata on the right button when it is not the clear button 1`] = `{}`;
+
+exports[`Input renders correct analytics metadata on the right button when it is the clear button 1`] = `
+{
+  "action": "clearInput",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Input",
+        "properties": {
+          "value": "value",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "clear",
+  },
+}
+`;

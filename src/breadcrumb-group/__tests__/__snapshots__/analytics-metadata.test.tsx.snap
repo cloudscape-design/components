@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BreadcrumbGroup renders correct analytics metadata in desktop view 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#",
+    "label": "Long breacrumb long breacrumb long breacrumb",
+    "position": "1",
+  },
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in desktop view 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#two",
+    "label": "System",
+    "position": "3",
+  },
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in desktop view 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in mobile view 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#",
+    "label": "Long breacrumb long breacrumb long breacrumb",
+    "position": "1",
+  },
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in mobile view 2`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "...",
+  },
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in mobile view 3`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "...",
+  },
+}
+`;
+
+exports[`BreadcrumbGroup renders correct analytics metadata in mobile view 4`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "bcg",
+        "name": "awsui.BreadcrumbGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#two",
+    "label": "System",
+    "position": "3",
+  },
+}
+`;

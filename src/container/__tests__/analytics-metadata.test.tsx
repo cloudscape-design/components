@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Container, { ContainerProps } from '../../../lib/components/container';
@@ -26,21 +23,6 @@ function renderContainer(props: ContainerProps) {
   return createWrapper(renderResult.container).findContainer()!.find('.test-content')!.getElement();
 }
 
-const getMetadataContexts = (label: string) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Container',
-          label,
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -58,7 +40,7 @@ describe('Container renders correct analytics metadata', () => {
         ),
       });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadataContexts(label));
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with a Header component', () => {
       const label = 'Container header';
@@ -70,7 +52,7 @@ describe('Container renders correct analytics metadata', () => {
         ),
       });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadataContexts(label));
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
 });
@@ -82,5 +64,5 @@ test('Internal Container does not render "component" metadata', () => {
     </InternalContainer>
   );
   const element = createWrapper(renderResult.container).findContainer()!.find('.test-content')!.getElement();
-  expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
 });

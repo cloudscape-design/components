@@ -1,0 +1,528 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table renders correct analytics metadata innerContext with selectionType=multi 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "columnId": "valueColumn",
+          "columnLabel": "Value",
+          "item": "first",
+          "position": "1,1",
+        },
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            [
+              "first",
+              "First choice.",
+            ],
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata innerContext with selectionType=multi 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "columnId": "descriptionColumn",
+          "columnLabel": "Description",
+          "item": "third",
+          "position": "3,2",
+        },
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            [
+              "first",
+              "First choice.",
+            ],
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata innerContext with selectionType=none 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "columnId": "valueColumn",
+          "columnLabel": "Value",
+          "item": "first",
+          "position": "1,1",
+        },
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "2",
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata innerContext with selectionType=none 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "columnId": "descriptionColumn",
+          "columnLabel": "Description",
+          "item": "third",
+          "position": "3,2",
+        },
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "2",
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata selection multiple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata selection multiple 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata selection multiple 3`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata selection multiple 4`] = `
+{
+  "action": "selectAll",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata selection multiple with all items selected 1`] = `
+{
+  "action": "deselectAll",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "3",
+          "selectedItemsLabels": [
+            [
+              "first",
+              "First choice.",
+            ],
+            [
+              "second",
+              "Second choice",
+            ],
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "multi",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata selection single 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata selection single 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            [
+              "third",
+              "Third choice",
+            ],
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata sorting with sortingComparator 1`] = `
+{
+  "action": "sort",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "0",
+          "selectionType": "none",
+          "sortingColumnId": "descriptionColumn",
+          "sortingDescending": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "columnId": "valueColumn",
+    "label": "Value",
+    "position": "1",
+    "sortingDescending": "true",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata sorting with sortingDisabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "0",
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Table renders correct analytics metadata sorting with sortingField 1`] = `
+{
+  "action": "sort",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Header for table",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "0",
+          "selectionType": "none",
+          "sortingColumnId": "valueColumn",
+          "sortingDescending": "true",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "columnId": "valueColumn",
+    "label": "Value",
+    "position": "1",
+    "sortingDescending": "false",
+  },
+}
+`;
+
+exports[`Table renders correct analytics metadata table without header parses table label as an empty string 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Control instance",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "inline-icon",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "innerContext": {
+          "columnId": "actions",
+          "columnLabel": "Actions",
+          "item": "first",
+          "position": "1,3",
+        },
+        "label": "",
+        "name": "awsui.Table",
+        "properties": {
+          "columnLabels": [
+            "Value",
+            "Description",
+            "Actions",
+          ],
+          "itemsCount": "3",
+          "selectedItemsCount": "0",
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

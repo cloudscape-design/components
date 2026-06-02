@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Link does not render  metadata 1`] = `{}`;
+
+exports[`Link renders correct analytics metadata external 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Link text",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "secondary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "true",
+    "label": "Link text",
+  },
+}
+`;
+
+exports[`Link renders correct analytics metadata with href 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Link text",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "secondary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#",
+    "label": "Link text",
+  },
+}
+`;
+
+exports[`Link renders correct analytics metadata with info variant 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Link text:",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "info",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "label": "Link text:",
+  },
+}
+`;
+
+exports[`Link renders correct analytics metadata with secondary variant 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Link text",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "secondary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "label": "Link text",
+  },
+}
+`;

@@ -3,17 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
-import {
-  GeneratedAnalyticsMetadataAutosuggestClearInput,
-  GeneratedAnalyticsMetadataAutosuggestSelect,
-} from '../../../lib/components/autosuggest/analytics-metadata/interfaces';
 import InternalAutosuggest from '../../../lib/components/autosuggest/internal';
 import FormField from '../../../lib/components/form-field';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -38,25 +31,6 @@ function renderAutosuggest(props: Partial<AutosuggestProps>) {
   );
   return createWrapper(renderResult.container).findAutosuggest()!;
 }
-
-const getMetadataContexts = (label = 'autosuggest with metadatada', disabled = false, value = '') => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Autosuggest',
-          label,
-          properties: {
-            disabled: disabled ? 'true' : 'false',
-            value,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 const options: AutosuggestProps['options'] = [
   { value: 'value1' },
@@ -101,20 +75,11 @@ describe('Autosuggest renders correct analytics metadata', () => {
     const wrapper = renderAutosuggest({ value: 'something' });
     const clearButton = wrapper.findClearButton()!.getElement();
     validateComponentNameAndLabels(clearButton, labels);
-    const clearInputMetadata: GeneratedAnalyticsMetadataAutosuggestClearInput = {
-      action: 'clearInput',
-      detail: { label: 'clear content' },
-    };
-    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
-      ...clearInputMetadata,
-      ...getMetadataContexts(undefined, undefined, 'something'),
-    });
+    expect(getGeneratedAnalyticsMetadata(clearButton)).toMatchSnapshot();
   });
   test('when disabled', () => {
     const wrapper = renderAutosuggest({ disabled: true });
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-      ...getMetadataContexts(undefined, true),
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
   });
   test('with simple items', () => {
     const wrapper = renderAutosuggest({ value: 'something' });
@@ -122,36 +87,15 @@ describe('Autosuggest renders correct analytics metadata', () => {
 
     const simpleEnabledItemWithoutLabel = wrapper.findDropdown().findOptionByValue('value1')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithoutLabel, labels);
-    const selectAction: GeneratedAnalyticsMetadataAutosuggestSelect = {
-      action: 'select',
-      detail: {
-        label: 'value1',
-        position: '1',
-        value: 'value1',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
-      ...selectAction,
-      ...getMetadataContexts(undefined, undefined, 'something'),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toMatchSnapshot();
 
     const simpleEnabledItemWithLabel = wrapper.findDropdown().findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label2',
-        position: '2',
-        value: 'value2',
-      },
-      ...getMetadataContexts(undefined, undefined, 'something'),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown().findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(undefined, undefined, 'something'),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test.each([false, true])('with groups and expandToViewport=%s', expandToViewport => {
     const wrapper = renderAutosuggest({ options: optionsWithGroups, expandToViewport });
@@ -162,41 +106,19 @@ describe('Autosuggest renders correct analytics metadata', () => {
       .findOptionByValue('value1repeated')!
       .getElement();
     validateComponentNameAndLabels(enabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'value1repeated',
-        position: '1,2',
-        value: 'value1repeated',
-        groupLabel: 'group1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toMatchSnapshot();
 
     const enabledItemWithLabel = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value3')!.getElement();
     validateComponentNameAndLabels(enabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label3',
-        position: '3,1',
-        value: 'value3',
-        groupLabel: 'group3',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toMatchSnapshot();
 
     const inDisabledGroup = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(inDisabledGroup, labels);
-    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test('within a formfield', () => {
     const renderResult = render(
@@ -211,18 +133,7 @@ describe('Autosuggest renders correct analytics metadata', () => {
       </FormField>
     );
     const element = createWrapper(renderResult.container).findAutosuggest()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      contexts: [
-        ...getMetadataContexts('formfield label').contexts!,
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.FormField',
-            label: 'formfield label',
-          },
-        },
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
 });
 
@@ -238,5 +149,5 @@ test('Internal Autosuggest does not render "component" metadata', () => {
     />
   );
   const wrapper = createWrapper(renderResult.container).findAutosuggest()!;
-  expect(getGeneratedAnalyticsMetadata(wrapper.findNativeInput()!.getElement())).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(wrapper.findNativeInput()!.getElement())).toMatchSnapshot();
 });

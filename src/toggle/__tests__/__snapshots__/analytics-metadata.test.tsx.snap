@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Toggle does not render "component" metadata 1`] = `
+{
+  "action": "deselect",
+  "detail": {
+    "label": "toggle label",
+  },
+}
+`;
+
+exports[`Toggle renders correct analytics metadata disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Toggle",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Toggle renders correct analytics metadata readonly 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Toggle",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Toggle renders correct analytics metadata simple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Toggle",
+        "properties": {
+          "checked": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "cb label",
+  },
+}
+`;
+
+exports[`Toggle renders correct analytics metadata with aria-label 1`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "label": "aria label",
+        "name": "awsui.Toggle",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "aria label",
+  },
+}
+`;

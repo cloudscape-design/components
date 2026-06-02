@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert renders correct analytics metadata on action button 1`] = `
+{
+  "action": "buttonClick",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Alert",
+        "properties": {
+          "type": "info",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "click me",
+  },
+}
+`;
+
+exports[`Alert renders correct analytics metadata on dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Alert",
+        "properties": {
+          "type": "info",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "dismiss label",
+  },
+}
+`;
+
+exports[`Alert renders correct analytics metadata with buttons in actions slot 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "another button",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Alert",
+        "properties": {
+          "type": "info",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "another button",
+  },
+}
+`;
+
+exports[`Alert renders correct analytics metadata with header 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "alert header",
+        "name": "awsui.Alert",
+        "properties": {
+          "type": "info",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Alert renders correct analytics metadata with type 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Alert",
+        "properties": {
+          "type": "error",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Internal Alert does not render "component" metadata 1`] = `{}`;

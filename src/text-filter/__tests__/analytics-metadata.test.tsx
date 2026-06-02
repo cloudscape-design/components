@@ -3,15 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
-import { GeneratedAnalyticsMetadataTextFilterClearInput } from '../../../lib/components/text-filter/analytics-metadata/interfaces';
 import InternalTextFilter from '../../../lib/components/text-filter/internal';
 
 const label = 'text filter label';
@@ -27,25 +23,6 @@ function renderTextFilter(disabled = false, filteringText = 'whatever') {
   return createWrapper(renderResult.container).findTextFilter()!;
 }
 
-const getMetadata = (disabled = false, filteringText = 'whatever') => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.TextFilter',
-          label,
-          properties: {
-            disabled: disabled ? 'true' : 'false',
-            filteringText,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -53,25 +30,16 @@ describe('TextFilter renders correct analytics metadata', () => {
   test('on clearInput', () => {
     const wrapper = renderTextFilter();
     const clearButton = wrapper.findInput().findClearButton()!.getElement();
-    const clearInputMetadata: GeneratedAnalyticsMetadataTextFilterClearInput = {
-      action: 'clearInput',
-      detail: {
-        label: 'clear',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(clearButton)).toEqual({
-      ...clearInputMetadata,
-      ...getMetadata(),
-    });
+    expect(getGeneratedAnalyticsMetadata(clearButton)).toMatchSnapshot();
   });
   test('when disabled', () => {
     const wrapper = renderTextFilter(true, '');
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata(true, ''));
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
   });
 });
 
 test('Internal TextFilter does not render "component" metadata', () => {
   const renderResult = render(<InternalTextFilter {...props} filteringText="whatever" />);
   const wrapper = createWrapper(renderResult.container).findTextFilter()!;
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
 });

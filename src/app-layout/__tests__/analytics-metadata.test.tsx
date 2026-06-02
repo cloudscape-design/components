@@ -2,30 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import AppLayout from '../../../lib/components/app-layout';
 import Header from '../../../lib/components/header';
 import { describeEachAppLayout, renderComponent } from './utils';
-
-const getMetadata = (label = 'Label') => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.AppLayoutToolbar',
-          label,
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -43,17 +25,17 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         />
       );
       if (theme === 'refresh-toolbar') {
-        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('H1 Header'));
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
       } else {
-        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
       }
     });
     test('with a simple h1 tag inside the content', () => {
       const { wrapper } = renderComponent(<AppLayout content={<h1>Label</h1>} />);
       if (theme === 'refresh-toolbar') {
-        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata());
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
       } else {
-        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+        expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
       }
     });
   });

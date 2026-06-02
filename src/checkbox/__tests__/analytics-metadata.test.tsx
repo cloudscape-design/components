@@ -3,17 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
-import {
-  GeneratedAnalyticsMetadataCheckboxDeselect,
-  GeneratedAnalyticsMetadataCheckboxSelect,
-} from '../../../lib/components/checkbox/analytics-metadata/interfaces';
 import InternalCheckbox from '../../../lib/components/checkbox/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -25,34 +18,6 @@ function renderCheckbox(props: CheckboxProps) {
   return createWrapper(renderResult.container).findCheckbox()!.findNativeInput()!.getElement();
 }
 
-const getMetadata = (label: string, checked: boolean, disabled?: boolean) => {
-  const eventMetadata: GeneratedAnalyticsMetadataCheckboxSelect | GeneratedAnalyticsMetadataCheckboxDeselect = {
-    action: checked ? 'deselect' : 'select',
-    detail: {
-      label,
-    },
-  };
-
-  let metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Checkbox',
-          label,
-          properties: {
-            checked: `${!!checked}`,
-          },
-        },
-      },
-    ],
-  };
-  if (!disabled) {
-    metadata = { ...metadata, ...eventMetadata };
-  }
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -60,22 +25,22 @@ describe('Checkbox renders correct analytics metadata', () => {
   test('simple', () => {
     const element = renderCheckbox({ children: 'cb label', checked: false });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata('cb label', false));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with aria-label', () => {
     const element = renderCheckbox({ ariaLabel: 'aria label', checked: true });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata('aria label', true));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('disabled', () => {
     const element = renderCheckbox({ children: 'cb label', checked: true, disabled: true });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata('cb label', true, true));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('readonly', () => {
     const element = renderCheckbox({ children: 'cb label', checked: true, readOnly: true });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadata('cb label', true, true));
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
 });
 
@@ -83,10 +48,5 @@ test('Internal Checkbox does not render "component" metadata', () => {
   const renderResult = render(<InternalCheckbox checked={true} />);
   const element = createWrapper(renderResult.container).findCheckbox()!.findNativeInput()!.getElement();
   validateComponentNameAndLabels(element, labels);
-  expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-    action: 'deselect',
-    detail: {
-      label: '',
-    },
-  });
+  expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
 });

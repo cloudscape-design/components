@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Group renders correct analytics metadata for file-input type 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "file-input",
+    "label": "Choose files",
+    "position": "5",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for group type 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "send-in-group",
+    "label": "Send",
+    "position": "8,1",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for group type 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "single-like-in-group",
+    "label": "Like",
+    "position": "8,2",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for group type 3`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "More actions",
+    "position": "8,3",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for group type 4`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "More actions",
+    "position": "8,3",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for group type 5`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "",
+    "id": "cut-in-group",
+    "label": "Cut",
+    "position": "8,3,1",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for icon-button type 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "send",
+    "label": "Send",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for icon-button type 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for icon-toggle-button type 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "single-like",
+    "label": "Like",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Button Group renders correct analytics metadata for icon-toggle-button type 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Button group label",
+        "name": "awsui.ButtonGroup",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Internal Button Group does not render "component" metadata 1`] = `
+{
+  "action": "click",
+  "detail": {
+    "id": "send",
+    "label": "Send",
+    "position": "1",
+  },
+}
+`;

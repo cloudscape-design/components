@@ -3,18 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Badge from '../../../lib/components/badge';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
-import {
-  GeneratedAnalyticsMetadataSideNavigationCollapse,
-  GeneratedAnalyticsMetadataSideNavigationExpand,
-} from '../../../lib/components/side-navigation/analytics-metadata/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
@@ -69,51 +62,6 @@ function renderSideNavigation(props?: SideNavigationProps) {
   return createWrapper(renderResult.container).findSideNavigation()!;
 }
 
-const getMetadataContexts = () => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.SideNavigation',
-          label: 'Service name',
-          properties: {
-            activeHref: '#',
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
-const getClickGeneratedMetadata = (label: string, position: string, href: string, external = 'false') => ({
-  action: 'click',
-  detail: {
-    position,
-    href,
-    external,
-    label,
-  },
-  ...getMetadataContexts(),
-});
-
-const getExpandGeneratedMetadata = (label: string, expanded = false) => {
-  const partialMetadata:
-    | GeneratedAnalyticsMetadataSideNavigationExpand
-    | GeneratedAnalyticsMetadataSideNavigationCollapse = {
-    action: !expanded ? 'expand' : 'collapse',
-    detail: {
-      label,
-    },
-  };
-
-  return {
-    ...partialMetadata,
-    ...getMetadataContexts(),
-  };
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -123,62 +71,52 @@ describe('Side Navigation renders correct analytics metadata', () => {
       const wrapper = renderSideNavigation();
       const headerLink = wrapper.findHeaderLink()!.getElement();
       validateComponentNameAndLabels(headerLink, labels);
-      expect(getGeneratedAnalyticsMetadata(headerLink)).toEqual(
-        getClickGeneratedMetadata('Service name', 'header', '#')
-      );
+      expect(getGeneratedAnalyticsMetadata(headerLink)).toMatchSnapshot();
     });
     test('in simple items', () => {
       const wrapper = renderSideNavigation();
 
       const simpleLink = wrapper.findLinkByHref('#/page1')!.getElement();
       validateComponentNameAndLabels(simpleLink, labels);
-      expect(getGeneratedAnalyticsMetadata(simpleLink)).toEqual(getClickGeneratedMetadata('Page 1', '1', '#/page1'));
+      expect(getGeneratedAnalyticsMetadata(simpleLink)).toMatchSnapshot();
 
       const externalLink = wrapper.findLinkByHref('https://example.com')!.getElement();
       validateComponentNameAndLabels(externalLink, labels);
-      expect(getGeneratedAnalyticsMetadata(externalLink)).toEqual(
-        getClickGeneratedMetadata('Documentation', '3', 'https://example.com', 'true')
-      );
+      expect(getGeneratedAnalyticsMetadata(externalLink)).toMatchSnapshot();
     });
     test('in section', () => {
       const wrapper = renderSideNavigation();
       const link = wrapper.findLinkByHref('#/page2')!.getElement();
       validateComponentNameAndLabels(link, labels);
-      expect(getGeneratedAnalyticsMetadata(link)).toEqual(getClickGeneratedMetadata('Page 2', '4,1', '#/page2'));
+      expect(getGeneratedAnalyticsMetadata(link)).toMatchSnapshot();
     });
     test('in section group', () => {
       const wrapper = renderSideNavigation();
       const link = wrapper.findLinkByHref('#/page4')!.getElement();
       validateComponentNameAndLabels(link, labels);
-      expect(getGeneratedAnalyticsMetadata(link)).toEqual(
-        getClickGeneratedMetadata('Page 4', '5,1', '#/page4', 'true')
-      );
+      expect(getGeneratedAnalyticsMetadata(link)).toMatchSnapshot();
     });
     test('in expandable link group', () => {
       const wrapper = renderSideNavigation();
 
       const parentLink = wrapper.findLinkByHref('#/parent-page')!.getElement();
       validateComponentNameAndLabels(parentLink, labels);
-      expect(getGeneratedAnalyticsMetadata(parentLink)).toEqual(
-        getClickGeneratedMetadata('Parent page', '6', '#/parent-page')
-      );
+      expect(getGeneratedAnalyticsMetadata(parentLink)).toMatchSnapshot();
 
       const link = wrapper.findLinkByHref('#/page6')!.getElement();
       validateComponentNameAndLabels(link, labels);
-      expect(getGeneratedAnalyticsMetadata(link)).toEqual(getClickGeneratedMetadata('Page 6', '6,1', '#/page6'));
+      expect(getGeneratedAnalyticsMetadata(link)).toMatchSnapshot();
     });
     test('in link group', () => {
       const wrapper = renderSideNavigation();
 
       const parentLink = wrapper.findLinkByHref('#/resources-page')!.getElement();
       validateComponentNameAndLabels(parentLink, labels);
-      expect(getGeneratedAnalyticsMetadata(parentLink)).toEqual(
-        getClickGeneratedMetadata('View resources page', '7', '#/resources-page')
-      );
+      expect(getGeneratedAnalyticsMetadata(parentLink)).toMatchSnapshot();
 
       const link = wrapper.findLinkByHref('#/page8')!.getElement();
       validateComponentNameAndLabels(link, labels);
-      expect(getGeneratedAnalyticsMetadata(link)).toEqual(getClickGeneratedMetadata('Page 8', '7,1', '#/page8'));
+      expect(getGeneratedAnalyticsMetadata(link)).toMatchSnapshot();
     });
   });
   describe('for expand events', () => {
@@ -187,14 +125,14 @@ describe('Side Navigation renders correct analytics metadata', () => {
 
       const expandButton = wrapper.findItemByIndex(4)!.findSection()!.findExpandButton()!.getElement();
       validateComponentNameAndLabels(expandButton, labels);
-      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Section heading', true));
+      expect(getGeneratedAnalyticsMetadata(expandButton)).toMatchSnapshot();
     });
     test('in expandable link group', () => {
       const wrapper = renderSideNavigation();
 
       const expandButton = wrapper.findItemByIndex(6)!.findExpandableLinkGroup()!.findExpandButton()!.getElement();
       validateComponentNameAndLabels(expandButton, labels);
-      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Parent page'));
+      expect(getGeneratedAnalyticsMetadata(expandButton)).toMatchSnapshot();
     });
   });
 });

@@ -3,22 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import Header from '../../../lib/components/header';
 import Table, { TableProps } from '../../../lib/components/table';
-import {
-  GeneratedAnalyticsMetadataTableDeselect,
-  GeneratedAnalyticsMetadataTableDeselectAll,
-  GeneratedAnalyticsMetadataTableSelect,
-  GeneratedAnalyticsMetadataTableSelectAll,
-} from '../../../lib/components/table/analytics-metadata/interfaces';
 import InternalTable from '../../../lib/components/table/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -95,33 +85,6 @@ function renderTable(props: Partial<TableProps>) {
   return createWrapper(renderResult.container).findTable()!;
 }
 
-const getMetadata = (
-  additionalProperties: Record<string, string | string[] | string[][]>,
-  innerContext?: Record<string, string>,
-  event: GeneratedAnalyticsMetadataFragment = {}
-) => {
-  const metadata: Partial<GeneratedAnalyticsMetadata> = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Table',
-          label: componentLabel,
-          properties: {
-            columnLabels: ['Value', 'Description', 'Actions'],
-            itemsCount: '3',
-            ...additionalProperties,
-          },
-        },
-      },
-    ],
-  };
-  if (innerContext) {
-    metadata.contexts![0].detail.innerContext = innerContext;
-  }
-  return { ...event, ...metadata };
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -132,129 +95,37 @@ describe('Table renders correct analytics metadata', () => {
 
       const firstSelectionArea = wrapper.findRowSelectionArea(1)!.find('input')!.getElement();
       validateComponentNameAndLabels(firstSelectionArea, labels);
-      const selectEvent: GeneratedAnalyticsMetadataTableSelect = {
-        action: 'select',
-        detail: { position: '1', item: 'first' },
-      };
-      expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '1',
-            selectedItemsLabels: [['third', 'Third choice']],
-            selectionType: 'multi',
-            variant: 'full-page',
-          },
-          undefined,
-          selectEvent
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toMatchSnapshot();
 
       const disabledSelectionArea = wrapper.findRowSelectionArea(2)!.find('input')!.getElement();
       validateComponentNameAndLabels(disabledSelectionArea, labels);
-      expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(
-        getMetadata({
-          selectedItemsCount: '1',
-          selectedItemsLabels: [['third', 'Third choice']],
-          selectionType: 'multi',
-          variant: 'full-page',
-        })
-      );
+      expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toMatchSnapshot();
 
       const thirdSelectionArea = wrapper.findRowSelectionArea(3)!.find('input')!.getElement();
       validateComponentNameAndLabels(thirdSelectionArea, labels);
-      const deselectEvent: GeneratedAnalyticsMetadataTableDeselect = {
-        action: 'deselect',
-        detail: { position: '3', item: 'third' },
-      };
-      expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '1',
-            selectedItemsLabels: [['third', 'Third choice']],
-            selectionType: 'multi',
-            variant: 'full-page',
-          },
-          undefined,
-          deselectEvent
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(thirdSelectionArea)).toMatchSnapshot();
 
       const selectAllArea = wrapper.findSelectAllTrigger()!.find('input')!.getElement();
       validateComponentNameAndLabels(selectAllArea, labels);
-      const selectAllEvent: GeneratedAnalyticsMetadataTableSelectAll = {
-        action: 'selectAll',
-        detail: { label: '' },
-      };
-      expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '1',
-            selectedItemsLabels: [['third', 'Third choice']],
-            selectionType: 'multi',
-            variant: 'full-page',
-          },
-          undefined,
-          selectAllEvent
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(selectAllArea)).toMatchSnapshot();
     });
     test('multiple with all items selected', () => {
       const wrapper = renderTable({ selectionType: 'multi', selectedItems: items });
 
       const selectAllArea = wrapper.findSelectAllTrigger()!.find('input')!.getElement();
       validateComponentNameAndLabels(selectAllArea, labels);
-      const deselectAllEvent: GeneratedAnalyticsMetadataTableDeselectAll = {
-        action: 'deselectAll',
-        detail: { label: '' },
-      };
-      expect(getGeneratedAnalyticsMetadata(selectAllArea)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '3',
-            selectedItemsLabels: [
-              ['first', 'First choice.'],
-              ['second', 'Second choice'],
-              ['third', 'Third choice'],
-            ],
-            selectionType: 'multi',
-            variant: 'container',
-          },
-          undefined,
-          deselectAllEvent
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(selectAllArea)).toMatchSnapshot();
     });
     test('single', () => {
       const wrapper = renderTable({ selectionType: 'single', selectedItems: [items[2]] });
 
       const firstSelectionArea = wrapper.findRowSelectionArea(1)!.find('input')!.getElement();
       validateComponentNameAndLabels(firstSelectionArea, labels);
-      expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '1',
-            selectedItemsLabels: [['third', 'Third choice']],
-            selectionType: 'single',
-            variant: 'container',
-          },
-          undefined,
-          {
-            action: 'select',
-            detail: { position: '1', item: 'first' },
-          }
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(firstSelectionArea)).toMatchSnapshot();
 
       const disabledSelectionArea = wrapper.findRowSelectionArea(2)!.find('input')!.getElement();
       validateComponentNameAndLabels(disabledSelectionArea, labels);
-      expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toEqual(
-        getMetadata({
-          selectedItemsCount: '1',
-          selectedItemsLabels: [['third', 'Third choice']],
-          selectionType: 'single',
-          variant: 'container',
-        })
-      );
+      expect(getGeneratedAnalyticsMetadata(disabledSelectionArea)).toMatchSnapshot();
     });
   });
   describe('innerContext', () => {
@@ -269,27 +140,7 @@ describe('Table renders correct analytics metadata', () => {
       ].forEach(([row, column]) => {
         const element = wrapper.findBodyCell(row, selectionType === 'multi' ? column + 1 : column)!.getElement();
         validateComponentNameAndLabels(element, labels);
-        expect(getGeneratedAnalyticsMetadata(element)).toEqual(
-          getMetadata(
-            {
-              selectedItemsCount: '2',
-              ...(selectionType === 'multi' && {
-                selectedItemsLabels: [
-                  ['first', 'First choice.'],
-                  ['third', 'Third choice'],
-                ],
-              }),
-              selectionType,
-              variant: 'container',
-            },
-            {
-              columnId: columnDefinitions[column - 1].id as string,
-              columnLabel: columnDefinitions[column - 1].header as string,
-              item: items[row - 1].value,
-              position: `${row},${column}`,
-            }
-          )
-        );
+        expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
       });
     });
   });
@@ -299,108 +150,28 @@ describe('Table renders correct analytics metadata', () => {
       const columnHeaders = wrapper.findColumnHeaders();
       const element = columnHeaders[0]!.getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '0',
-            selectionType: 'none',
-            sortingColumnId: 'descriptionColumn',
-            sortingDescending: 'false',
-            variant: 'container',
-          },
-          undefined,
-          {
-            action: 'sort',
-            detail: {
-              columnId: 'valueColumn',
-              label: 'Value',
-              position: '1',
-              sortingDescending: 'true',
-            },
-          }
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with sortingField', () => {
       const wrapper = renderTable({ sortingColumn: { sortingField: 'value' }, sortingDescending: true });
       const columnHeaders = wrapper.findColumnHeaders();
       const element = columnHeaders[0]!.getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual(
-        getMetadata(
-          {
-            selectedItemsCount: '0',
-            selectionType: 'none',
-            sortingColumnId: 'valueColumn',
-            sortingDescending: 'true',
-            variant: 'container',
-          },
-          undefined,
-          {
-            action: 'sort',
-            detail: {
-              columnId: 'valueColumn',
-              label: 'Value',
-              position: '1',
-              sortingDescending: 'false',
-            },
-          }
-        )
-      );
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with sortingDisabled', () => {
       const wrapper = renderTable({ sortingDisabled: true });
       const columnHeaders = wrapper.findColumnHeaders();
       const element = columnHeaders[0]!.getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual(
-        getMetadata({
-          selectedItemsCount: '0',
-          selectionType: 'none',
-          variant: 'container',
-        })
-      );
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
   describe('table without header', () => {
     test('parses table label as an empty string', () => {
       const wrapper = renderTable({ header: null });
       const actionButton = wrapper.findBodyCell(1, 3)!.findButtonDropdown()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(actionButton)).toEqual({
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              label: 'Control instance',
-              name: 'awsui.ButtonDropdown',
-              properties: {
-                disabled: 'false',
-                variant: 'inline-icon',
-              },
-            },
-          },
-          {
-            type: 'component',
-            detail: {
-              innerContext: {
-                columnId: 'actions',
-                columnLabel: 'Actions',
-                item: 'first',
-                position: '1,3',
-              },
-              name: 'awsui.Table',
-              label: '',
-              properties: {
-                columnLabels: ['Value', 'Description', 'Actions'],
-                itemsCount: '3',
-                selectedItemsCount: '0',
-                selectionType: 'none',
-                variant: 'container',
-              },
-            },
-          },
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(actionButton)).toMatchSnapshot();
     });
   });
 });

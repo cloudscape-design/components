@@ -1,0 +1,299 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppLayoutToolbar renders correct analytics metadata with a simple h1 tag inside the content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with global drawer closed 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle global drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with global drawer open 1`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle global drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with global drawer open 2`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "close global drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with local drawer closed 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle test drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with local drawer open 1`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle test drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with local drawer open 2`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle another test drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with local drawer open 3`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "close test drawer",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with navigation closed 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle navigation",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with navigation open 1`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle navigation",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with navigation open 2`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "close navigation",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with split panel close 1`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "open split panel",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with split panel open 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "open split panel",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with the header component inside the content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "H1 Header",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with tools closed 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle tools",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with tools open 1`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "toggle tools",
+  },
+}
+`;
+
+exports[`AppLayoutToolbar renders correct analytics metadata with tools open 2`] = `
+{
+  "action": "close",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "close tools",
+  },
+}
+`;

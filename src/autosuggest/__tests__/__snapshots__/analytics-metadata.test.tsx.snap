@@ -1,0 +1,306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Autosuggest renders correct analytics metadata on the clear input button 1`] = `
+{
+  "action": "clearInput",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "something",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "clear content",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata when disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "true",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=false 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group1",
+    "label": "value1repeated",
+    "position": "1,2",
+    "value": "value1repeated",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=false 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group3",
+    "label": "label3",
+    "position": "3,1",
+    "value": "value3",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=false 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=false 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=true 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group1",
+    "label": "value1repeated",
+    "position": "1,2",
+    "value": "value1repeated",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=true 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group3",
+    "label": "label3",
+    "position": "3,1",
+    "value": "value3",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=true 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with groups and expandToViewport=true 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with simple items 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "something",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "value1",
+    "position": "1",
+    "value": "value1",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with simple items 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "something",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "label2",
+    "position": "2",
+    "value": "value2",
+  },
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata with simple items 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "autosuggest with metadatada",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "something",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Autosuggest renders correct analytics metadata within a formfield 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "formfield label",
+        "name": "awsui.Autosuggest",
+        "properties": {
+          "disabled": "false",
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "formfield label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Internal Autosuggest does not render "component" metadata 1`] = `{}`;

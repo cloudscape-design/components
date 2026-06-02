@@ -1,0 +1,259 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Side Navigation renders correct analytics metadata for click events in expandable link group 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/parent-page",
+    "label": "Parent page",
+    "position": "6",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in expandable link group 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/page6",
+    "label": "Page 6",
+    "position": "6,1",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in link group 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/resources-page",
+    "label": "View resources page",
+    "position": "7",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in link group 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/page8",
+    "label": "Page 8",
+    "position": "7,1",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in section 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/page2",
+    "label": "Page 2",
+    "position": "4,1",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in section group 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "true",
+    "href": "#/page4",
+    "label": "Page 4",
+    "position": "5,1",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in simple items 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#/page1",
+    "label": "Page 1",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in simple items 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "true",
+    "href": "https://example.com",
+    "label": "Documentation",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for click events in the header 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "href": "#",
+    "label": "Service name",
+    "position": "header",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for expand events in expandable link group 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Parent page",
+  },
+}
+`;
+
+exports[`Side Navigation renders correct analytics metadata for expand events in section 1`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Service name",
+        "name": "awsui.SideNavigation",
+        "properties": {
+          "activeHref": "#",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Section heading",
+  },
+}
+`;

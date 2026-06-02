@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Pagination, { PaginationProps } from '../../../lib/components/pagination';
@@ -26,62 +23,20 @@ function renderPagination(props: PaginationProps) {
   return createWrapper(renderResult.container).findPagination()!;
 }
 
-const getMetadata = (label: string, props: PaginationProps, eventDetail?: Record<string, string>) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Pagination',
-          label,
-          properties: {
-            openEnd: `${!!props.openEnd}`,
-            pagesCount: `${props.pagesCount || ''}`,
-            currentPageIndex: `${props.currentPageIndex}`,
-          },
-        },
-      },
-    ],
-  };
-  if (eventDetail) {
-    metadata.action = 'click';
-    metadata.detail = eventDetail;
-  }
-  return metadata;
-};
-
-const testNext = (wrapper: PaginationWrapper, props: PaginationProps, disabled?: boolean) => {
+const testNext = (wrapper: PaginationWrapper) => {
   const nextButton = wrapper.findNextPageButton()!.getElement();
   validateComponentNameAndLabels(nextButton, {});
-  expect(getGeneratedAnalyticsMetadata(nextButton)).toEqual(
-    getMetadata(
-      ariaLabels.paginationLabel,
-      props,
-      disabled ? undefined : { label: ariaLabels.nextPageLabel, position: 'next' }
-    )
-  );
+  expect(getGeneratedAnalyticsMetadata(nextButton)).toMatchSnapshot();
 };
-const testPrevious = (wrapper: PaginationWrapper, props: PaginationProps, disabled?: boolean) => {
+const testPrevious = (wrapper: PaginationWrapper) => {
   const previousButton = wrapper.findPreviousPageButton()!.getElement();
   validateComponentNameAndLabels(previousButton, {});
-  expect(getGeneratedAnalyticsMetadata(previousButton)).toEqual(
-    getMetadata(
-      ariaLabels.paginationLabel,
-      props,
-      disabled ? undefined : { label: ariaLabels.previousPageLabel, position: 'prev' }
-    )
-  );
+  expect(getGeneratedAnalyticsMetadata(previousButton)).toMatchSnapshot();
 };
-const testButton = (wrapper: PaginationWrapper, props: PaginationProps, page: number, disabled?: boolean) => {
+const testButton = (wrapper: PaginationWrapper) => {
   const pageButton = wrapper.findPageNumbers()![2]!.getElement();
   validateComponentNameAndLabels(pageButton, {});
-  expect(getGeneratedAnalyticsMetadata(pageButton)).toEqual(
-    getMetadata(
-      ariaLabels.paginationLabel,
-      props,
-      disabled ? undefined : { label: ariaLabels.pageLabel(page), position: `${page}` }
-    )
-  );
+  expect(getGeneratedAnalyticsMetadata(pageButton)).toMatchSnapshot();
 };
 
 beforeAll(() => {
@@ -95,9 +50,9 @@ describe('Pagination renders correct analytics metadata', () => {
     };
     const wrapper = renderPagination(paginationProps);
 
-    testNext(wrapper, paginationProps);
-    testPrevious(wrapper, paginationProps);
-    testButton(wrapper, paginationProps, 19);
+    testNext(wrapper);
+    testPrevious(wrapper);
+    testButton(wrapper);
   });
   test('disabled', () => {
     const paginationProps: PaginationProps = {
@@ -107,9 +62,9 @@ describe('Pagination renders correct analytics metadata', () => {
     };
     const wrapper = renderPagination(paginationProps);
 
-    testNext(wrapper, paginationProps, true);
-    testPrevious(wrapper, paginationProps, true);
-    testButton(wrapper, paginationProps, 19, true);
+    testNext(wrapper);
+    testPrevious(wrapper);
+    testButton(wrapper);
   });
 
   test('first page', () => {
@@ -119,9 +74,9 @@ describe('Pagination renders correct analytics metadata', () => {
     };
     const wrapper = renderPagination(paginationProps);
 
-    testNext(wrapper, paginationProps);
-    testPrevious(wrapper, paginationProps, true);
-    testButton(wrapper, paginationProps, 3);
+    testNext(wrapper);
+    testPrevious(wrapper);
+    testButton(wrapper);
   });
 
   test('last page', () => {
@@ -131,9 +86,9 @@ describe('Pagination renders correct analytics metadata', () => {
     };
     const wrapper = renderPagination(paginationProps);
 
-    testNext(wrapper, paginationProps, true);
-    testPrevious(wrapper, paginationProps);
-    testButton(wrapper, paginationProps, 295);
+    testNext(wrapper);
+    testPrevious(wrapper);
+    testButton(wrapper);
   });
 
   test('last page and openEnd', () => {
@@ -144,9 +99,9 @@ describe('Pagination renders correct analytics metadata', () => {
     };
     const wrapper = renderPagination(paginationProps);
 
-    testNext(wrapper, paginationProps);
-    testPrevious(wrapper, paginationProps);
-    testButton(wrapper, paginationProps, 296);
+    testNext(wrapper);
+    testPrevious(wrapper);
+    testButton(wrapper);
   });
 });
 
@@ -154,5 +109,5 @@ test('Internal Pagination does not render "component" metadata', () => {
   const renderResult = render(<InternalPagination pagesCount={300} currentPageIndex={2} />);
   const wrapper = createWrapper(renderResult.container).findPagination()!;
   validateComponentNameAndLabels(wrapper.getElement(), {});
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
 });

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form field does not render metadata when internal version is used 1`] = `{}`;
+
+exports[`Form field renders correct component metadata 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "form field label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

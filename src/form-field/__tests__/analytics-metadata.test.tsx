@@ -21,22 +21,12 @@ describe('Form field', () => {
     const renderResult = render(<FormField label="form field label" />);
     const element = createWrapper(renderResult.container).findFormField()!.getElement()!;
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.FormField',
-            label: 'form field label',
-          },
-        },
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('does not render metadata when internal version is used', () => {
     const renderResult = render(<InternalFormField label="form field label" />);
     const element = createWrapper(renderResult.container).findFormField()!.getElement()!;
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
 });

@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileInput renders correct analytics metadata with button variant and aria-label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Upload files",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Upload files",
+  },
+}
+`;
+
+exports[`FileInput renders correct analytics metadata with button variant and both children and aria-label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Upload files",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Upload files",
+  },
+}
+`;
+
+exports[`FileInput renders correct analytics metadata with button variant and children 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Upload files",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Upload files",
+  },
+}
+`;
+
+exports[`FileInput renders correct analytics metadata with icon variant and aria-label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Upload files",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Upload files",
+  },
+}
+`;
+
+exports[`FileInput renders correct analytics metadata with icon variant and both children and aria-label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Another label",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Another label",
+  },
+}
+`;
+
+exports[`FileInput renders correct analytics metadata with icon variant and children 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Upload files",
+        "name": "awsui.FileInput",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Upload files",
+  },
+}
+`;
+
+exports[`Internal FileInput does not render "component" metadata 1`] = `
+{
+  "action": "click",
+  "detail": {
+    "label": "inline button text",
+  },
+}
+`;

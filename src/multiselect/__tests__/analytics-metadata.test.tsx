@@ -3,20 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import FormField from '../../../lib/components/form-field';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
-import {
-  GeneratedAnalyticsMetadataMultiselectCollapse,
-  GeneratedAnalyticsMetadataMultiselectExpand,
-  GeneratedAnalyticsMetadataMultiselectShowLess,
-  GeneratedAnalyticsMetadataMultiselectShowMore,
-} from '../../../lib/components/multiselect/analytics-metadata/interfaces';
 import InternalMultiselect from '../../../lib/components/multiselect/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -53,32 +44,6 @@ function renderMultiselectWithSelectedOptions(props: Partial<MultiselectProps>) 
   );
   return createWrapper(renderResult.container).findMultiselect()!;
 }
-
-const getMetadataContexts = (
-  selectedOptionsCount = 0,
-  label = 'multiselect with metadata',
-  disabled: boolean = false,
-  selectedOptions: MultiselectProps['selectedOptions'] = []
-) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Multiselect',
-          label,
-          properties: {
-            disabled: disabled ? 'true' : 'false',
-            selectedOptionsCount: `${selectedOptionsCount}`,
-            selectedOptionsValues: selectedOptions.map(option => option.value) as Array<string>,
-            selectedOptions: selectedOptions.map(option => option.label ?? option.value) as Array<string>,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 const options: MultiselectProps['options'] = [
   { value: 'value1' },
@@ -131,36 +96,16 @@ describe('Multiselect renders correct analytics metadata', () => {
     const wrapper = renderMultiselect({});
     let trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    const expandMetadata: GeneratedAnalyticsMetadataMultiselectExpand = {
-      action: 'expand',
-      detail: {
-        label: 'multiselect with metadata',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      ...expandMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(trigger)).toMatchSnapshot();
 
     wrapper.openDropdown();
     trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    const collapseMetadata: GeneratedAnalyticsMetadataMultiselectCollapse = {
-      action: 'collapse',
-      detail: {
-        label: 'multiselect with metadata',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      ...collapseMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(trigger)).toMatchSnapshot();
   });
   test('when disabled', () => {
     const wrapper = renderMultiselect({ disabled: true });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toEqual({
-      ...getMetadataContexts(0, undefined, true),
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toMatchSnapshot();
   });
 
   test('with simple items', () => {
@@ -169,33 +114,15 @@ describe('Multiselect renders correct analytics metadata', () => {
 
     const simpleEnabledItemWithoutLabel = wrapper.findDropdown().findOptionByValue('value1')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'value1',
-        position: '1',
-        value: 'value1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toMatchSnapshot();
 
     const simpleEnabledItemWithLabel = wrapper.findDropdown().findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label2',
-        position: '2',
-        value: 'value2',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown().findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test.each([false, true])('with groups and expandToViewport=%s', expandToViewport => {
     const wrapper = renderMultiselect({ options: optionsWithGroups, expandToViewport });
@@ -206,41 +133,19 @@ describe('Multiselect renders correct analytics metadata', () => {
       .findOptionByValue('value1repeated')!
       .getElement();
     validateComponentNameAndLabels(enabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'value1repeated',
-        position: '1,2',
-        value: 'value1repeated',
-        groupLabel: 'group1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toMatchSnapshot();
 
     const enabledItemWithLabel = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value3')!.getElement();
     validateComponentNameAndLabels(enabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label3',
-        position: '3,1',
-        value: 'value3',
-        groupLabel: 'group3',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toMatchSnapshot();
 
     const inDisabledGroup = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(inDisabledGroup, labels);
-    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test('within a formfield', () => {
     const renderResult = render(
@@ -249,57 +154,32 @@ describe('Multiselect renders correct analytics metadata', () => {
       </FormField>
     );
     const element = createWrapper(renderResult.container).findMultiselect()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      contexts: [
-        ...getMetadataContexts(0, 'formfield label').contexts!,
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.FormField',
-            label: 'formfield label',
-          },
-        },
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   describe('with selected options', () => {
     test('with one selected option', () => {
       const wrapper = renderMultiselectWithSelectedOptions({ selectedOptions: [selectedOptions[0]] });
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(
-        getMetadataContexts(1, undefined, false, [selectedOptions[0]])
-      );
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
     });
     test('with selected options without value', () => {
       const wrapper = renderMultiselectWithSelectedOptions({ selectedOptions: [{ label: 'label1' }] });
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadataContexts(1));
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
     });
 
     test('when readonly', () => {
       const wrapper = renderMultiselectWithSelectedOptions({ readOnly: true });
       const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-      expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(
-        getMetadataContexts(5, undefined, false, selectedOptions)
-      );
+      expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
     });
 
     test('in dismiss button', () => {
       const wrapper = renderMultiselectWithSelectedOptions({});
 
       const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-      expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual({
-        action: 'dismiss',
-        detail: {
-          label: 'Dismiss label1',
-          position: '1',
-        },
-        ...getMetadataContexts(5, undefined, false, selectedOptions),
-      });
+      expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
 
       const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
-      expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual({
-        detail: { position: '3' },
-        ...getMetadataContexts(5, undefined, false, selectedOptions),
-      });
+      expect(getGeneratedAnalyticsMetadata(disabledToken)).toMatchSnapshot();
     });
 
     test('in show more', () => {
@@ -310,28 +190,10 @@ describe('Multiselect renders correct analytics metadata', () => {
       });
 
       const tokenToggle = wrapper.findTokenToggle()!.getElement();
-      const showMoreMetadata: GeneratedAnalyticsMetadataMultiselectShowMore = {
-        action: 'showMore',
-        detail: {
-          label: 'show more',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
-        ...showMoreMetadata,
-        ...getMetadataContexts(5, undefined, false, selectedOptions),
-      });
+      expect(getGeneratedAnalyticsMetadata(tokenToggle)).toMatchSnapshot();
 
       wrapper.findTokenToggle()!.click();
-      const showLessMetadata: GeneratedAnalyticsMetadataMultiselectShowLess = {
-        action: 'showLess',
-        detail: {
-          label: 'show less',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
-        ...showLessMetadata,
-        ...getMetadataContexts(5, undefined, false, selectedOptions),
-      });
+      expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toMatchSnapshot();
     });
   });
 });

@@ -33,43 +33,26 @@ beforeAll(() => {
 describe('SelectableItem renders correct analytics metadata', () => {
   test('when isParent=true', () => {
     const element = renderSelectableItem({ isParent: true });
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('when disabled', () => {
     const element = renderSelectableItem({ disabled: true });
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with simple content', () => {
     const element = renderSelectableItem({ children: 'content label' });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'content label',
-      },
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with value', () => {
     const element = renderSelectableItem({ value: 'item-value' });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'content',
-        value: 'item-value',
-      },
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   test('with data-test-index', () => {
     const element = renderSelectableItem({ 'data-test-index': '50' });
     validateComponentNameAndLabels(element, labels);
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'content',
-        position: '50',
-      },
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
   describe('with Option component', () => {
     test('simple option', () => {
@@ -80,12 +63,7 @@ describe('SelectableItem renders correct analytics metadata', () => {
       );
       const element = createWrapper(renderResult.container).find(`.${styles['selectable-item']}`)!.getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'test value',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('complex option', () => {
       const renderResult = render(
@@ -103,84 +81,39 @@ describe('SelectableItem renders correct analytics metadata', () => {
       );
       const element = createWrapper(renderResult.container).find(`.${styles['selectable-item']}`)!.getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'label',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
   describe('with isChild=true', () => {
     test('with simple content', () => {
       const element = renderSelectableItem({ isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with value', () => {
       const element = renderSelectableItem({ value: 'item-value', isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          value: 'item-value',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with data-test-index', () => {
       const element = renderSelectableItem({ 'data-test-index': '50', isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          position: '50',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with data-group-index', () => {
       const element = renderSelectableItem({ 'data-group-index': '5', isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with data-group-index and data-in-group-index', () => {
       const element = renderSelectableItem({ 'data-group-index': '5', 'data-in-group-index': '1', isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          position: '5,1',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with data-group-index and data-child-index', () => {
       const element = renderSelectableItem({ 'data-group-index': '5', 'data-child-index': '2', isChild: true });
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'content',
-          position: '5,2',
-          groupLabel: '',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with parent element', () => {
       const renderResult = render(
@@ -200,14 +133,7 @@ describe('SelectableItem renders correct analytics metadata', () => {
         .find(`.${styles['selectable-item']}`)!
         .getElement();
       validateComponentNameAndLabels(element, labels);
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'item label',
-          position: '6,1',
-          groupLabel: 'Parent label',
-        },
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
 });

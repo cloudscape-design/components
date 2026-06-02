@@ -1,0 +1,359 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollectionPreferences renders correct analytics metadata buttons on cancel button 1`] = `
+{
+  "action": "cancel",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Cancel",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata buttons on confirm button 1`] = `
+{
+  "action": "confirm",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Confirm",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata buttons on dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Cancel",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata buttons on trigger button 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Preferences title",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with contentDensity preference 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "contentDensity",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Compact mode",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with contentDisplay preference 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "contentDisplay",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with custom preference 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "custom",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with pageSize preference 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "pageSize",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "10 items",
+    "position": "1",
+    "value": "10",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with stickyColumns preference 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "stickyColumns",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "First column",
+    "position": "2",
+    "value": "1",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with stripedRows preference 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "stripedRows",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Striped rows label",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with visibleContent preference 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "visibleContent",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component innerContexts with wrapLines preference 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "preference": "wrapLines",
+        },
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Wrap lines label",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component properties disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component properties with preferences 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "contentDensity": "compact",
+          "contentDisplayVisibleCount": "2",
+          "disabled": "false",
+          "pageSize": "30",
+          "stickyColumnsFirst": "1",
+          "stickyColumnsLast": "2",
+          "stripedRows": "false",
+          "visibleContentCount": "3",
+          "wrapLines": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Preferences title",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component properties with undefined first sticky columns 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+          "stickyColumnsLast": "2",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Preferences title",
+  },
+}
+`;
+
+exports[`CollectionPreferences renders correct analytics metadata component properties with undefined last sticky columns 1`] = `
+{
+  "action": "open",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Preferences title",
+        "name": "awsui.CollectionPreferences",
+        "properties": {
+          "disabled": "false",
+          "stickyColumnsFirst": "1",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Preferences title",
+  },
+}
+`;

@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flashbar renders correct analytics metadata on toggle when stackItems=true 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "false",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Notifications bar",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata on toggle when stackItems=true 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "true",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Notifications bar",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=false on button in action slot 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Another action",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "innerContext": {
+          "itemId": "message_4",
+          "itemLabel": "Success with action slot 3",
+          "itemPosition": "4",
+          "itemType": "success",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "itemsCount": "4",
+          "stackItems": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Another action",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=false on dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "itemId": "message_1",
+          "itemLabel": "Failed to update 4 instances",
+          "itemPosition": "1",
+          "itemType": "error",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "itemsCount": "4",
+          "stackItems": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss message 1",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=false on dismiss button 2`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "itemId": "message_2",
+          "itemLabel": "",
+          "itemPosition": "2",
+          "itemType": "info",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "itemsCount": "4",
+          "stackItems": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss message 2",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=false on embedded button 1`] = `
+{
+  "action": "buttonClick",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "itemLabel": "Warning with button",
+          "itemPosition": "3",
+          "itemType": "warning",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "itemsCount": "4",
+          "stackItems": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "click me",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=false without items 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "itemsCount": "0",
+          "stackItems": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=true on button in action slot 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Another action",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "innerContext": {
+          "itemId": "message_4",
+          "itemLabel": "Success with action slot 3",
+          "itemPosition": "4",
+          "itemType": "success",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "true",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Another action",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=true on dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "innerContext": {
+          "itemId": "message_1",
+          "itemLabel": "Failed to update 4 instances",
+          "itemPosition": "1",
+          "itemType": "error",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "true",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss message 1",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=true on dismiss button 2`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "innerContext": {
+          "itemId": "message_2",
+          "itemLabel": "",
+          "itemPosition": "2",
+          "itemType": "info",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "true",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss message 2",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=true on embedded button 1`] = `
+{
+  "action": "buttonClick",
+  "contexts": [
+    {
+      "detail": {
+        "description": "Notifications bar11110",
+        "innerContext": {
+          "itemLabel": "Warning with button",
+          "itemPosition": "3",
+          "itemType": "warning",
+        },
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "true",
+          "itemsCount": "4",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "click me",
+  },
+}
+`;
+
+exports[`Flashbar renders correct analytics metadata with stackItems=true without items 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Notifications",
+        "name": "awsui.Flashbar",
+        "properties": {
+          "expanded": "false",
+          "itemsCount": "0",
+          "stackItems": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

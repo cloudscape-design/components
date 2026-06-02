@@ -3,20 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
-import {
-  GeneratedAnalyticsMetadataCollectionPreferencesCancel,
-  GeneratedAnalyticsMetadataCollectionPreferencesConfirm,
-  GeneratedAnalyticsMetadataCollectionPreferencesDismiss,
-  GeneratedAnalyticsMetadataCollectionPreferencesOpen,
-} from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
-import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from '../../../lib/components/collection-preferences/analytics-metadata/interfaces';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 import {
@@ -45,31 +35,6 @@ function renderCollectionPreferences(props: CollectionPreferencesProps = {}) {
   return createWrapper(renderResult.container).findCollectionPreferences()!;
 }
 
-const getMetadata = (
-  properties: Partial<GeneratedAnalyticsMetadataCollectionPreferencesComponent['properties']> = {},
-  innerContextArea?: string
-) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.CollectionPreferences',
-          label: 'Preferences title',
-          properties: {
-            disabled: 'false',
-            ...properties,
-          },
-        },
-      },
-    ],
-  };
-  if (innerContextArea) {
-    metadata.contexts![0].detail.innerContext = { preference: innerContextArea };
-  }
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -79,32 +44,14 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       const wrapper = renderCollectionPreferences();
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      const openMetadata: GeneratedAnalyticsMetadataCollectionPreferencesOpen = {
-        action: 'open',
-        detail: {
-          label: 'Preferences title',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
-        ...openMetadata,
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toMatchSnapshot();
     });
     test('on dismiss button', () => {
       const wrapper = renderCollectionPreferences();
       wrapper.findTriggerButton().click();
       const dismissButton = wrapper.findModal()!.findDismissButton().getElement();
       validateComponentNameAndLabels(dismissButton, labels);
-      const dismissMetadata: GeneratedAnalyticsMetadataCollectionPreferencesDismiss = {
-        action: 'dismiss',
-        detail: {
-          label: 'Cancel',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
-        ...dismissMetadata,
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(dismissButton)).toMatchSnapshot();
     });
 
     test('on cancel button', () => {
@@ -112,16 +59,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
       const cancelButton = wrapper.findModal()!.findCancelButton()!.getElement();
       validateComponentNameAndLabels(cancelButton, labels);
-      const cancelMetadata: GeneratedAnalyticsMetadataCollectionPreferencesCancel = {
-        action: 'cancel',
-        detail: {
-          label: 'Cancel',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(cancelButton)).toEqual({
-        ...cancelMetadata,
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(cancelButton)).toMatchSnapshot();
     });
 
     test('on confirm button', () => {
@@ -129,30 +67,15 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
       const confirmButton = wrapper.findModal()!.findConfirmButton()!.getElement();
       validateComponentNameAndLabels(confirmButton, labels);
-      const confirmMetadata: GeneratedAnalyticsMetadataCollectionPreferencesConfirm = {
-        action: 'confirm',
-        detail: {
-          label: 'Confirm',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(confirmButton)).toEqual({
-        ...confirmMetadata,
-        ...getMetadata(),
-      });
+      expect(getGeneratedAnalyticsMetadata(confirmButton)).toMatchSnapshot();
     });
   });
   describe('component properties', () => {
-    const actionMetadata = {
-      action: 'open',
-      detail: {
-        label: 'Preferences title',
-      },
-    };
     test('disabled', () => {
       const wrapper = renderCollectionPreferences({ disabled: true });
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual(getMetadata({ disabled: 'true' }));
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toMatchSnapshot();
     });
     test('with preferences', () => {
       const wrapper = renderCollectionPreferences({
@@ -175,19 +98,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       });
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
-        ...actionMetadata,
-        ...getMetadata({
-          pageSize: '30',
-          wrapLines: 'true',
-          stripedRows: 'false',
-          contentDensity: 'compact',
-          visibleContentCount: '3',
-          stickyColumnsFirst: '1',
-          stickyColumnsLast: '2',
-          contentDisplayVisibleCount: '2',
-        }),
-      });
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toMatchSnapshot();
     });
     test('with undefined first sticky columns', () => {
       const wrapper = renderCollectionPreferences({
@@ -199,12 +110,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       });
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
-        ...actionMetadata,
-        ...getMetadata({
-          stickyColumnsLast: '2',
-        }),
-      });
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toMatchSnapshot();
     });
     test('with undefined last sticky columns', () => {
       const wrapper = renderCollectionPreferences({
@@ -216,12 +122,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       });
       const triggerButton = wrapper.findTriggerButton().getElement();
       validateComponentNameAndLabels(triggerButton, labels);
-      expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
-        ...actionMetadata,
-        ...getMetadata({
-          stickyColumnsFirst: '1',
-        }),
-      });
+      expect(getGeneratedAnalyticsMetadata(triggerButton)).toMatchSnapshot();
     });
   });
   describe('component innerContexts', () => {
@@ -233,15 +134,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findPageSizePreference()!.findOptions()![0].findNativeInput().getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
-        action: 'select',
-        detail: {
-          label: '10 items',
-          position: '1',
-          value: '10',
-        },
-        ...getMetadata({}, 'pageSize'),
-      });
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
     test('with wrapLines preference', () => {
       const wrapper = renderCollectionPreferences({
@@ -251,13 +144,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findWrapLinesPreference()!.findNativeInput().getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'Wrap lines label',
-        },
-        ...getMetadata({}, 'wrapLines'),
-      });
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
     test('with stripedRows preference', () => {
       const wrapper = renderCollectionPreferences({
@@ -267,13 +154,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findStripedRowsPreference()!.findNativeInput().getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'Striped rows label',
-        },
-        ...getMetadata({}, 'stripedRows'),
-      });
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
     test('with contentDensity preference', () => {
       const wrapper = renderCollectionPreferences({
@@ -283,13 +164,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findContentDensityPreference()!.findNativeInput().getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'Compact mode',
-        },
-        ...getMetadata({}, 'contentDensity'),
-      });
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
     test('with stickyColumns preference', () => {
       const wrapper = renderCollectionPreferences({
@@ -304,15 +179,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
         .findRadioGroup()
         .findInputByValue('1')!
         .getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual({
-        action: 'select',
-        detail: {
-          label: 'First column',
-          position: '2',
-          value: '1',
-        },
-        ...getMetadata({}, 'stickyColumns'),
-      });
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
 
     test('with visibleContent preference', () => {
@@ -323,7 +190,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findVisibleContentPreference()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual(getMetadata({}, 'visibleContent'));
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
 
     test('with contentDisplay preference', () => {
@@ -334,7 +201,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findContentDisplayPreference()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual(getMetadata({}, 'contentDisplay'));
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
 
     test('with custom preference', () => {
@@ -345,7 +212,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       wrapper.findTriggerButton().click();
 
       const area = wrapper.findModal()!.findCustomPreference()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(area)).toEqual(getMetadata({}, 'custom'));
+      expect(getGeneratedAnalyticsMetadata(area)).toMatchSnapshot();
     });
   });
 });

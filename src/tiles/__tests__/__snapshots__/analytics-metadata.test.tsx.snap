@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Tiles does not render "component" metadata 1`] = `{}`;
+
+exports[`Tiles renders correct analytics metadata readonly 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "radio group example",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "second",
+          "valueLabel": "Second choice",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tiles renders correct analytics metadata when rendered in a form field with aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "aria label",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "2",
+          "valueLabel": "",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "form field label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tiles renders correct analytics metadata when rendered in a form field without aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "form field label",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "2",
+          "valueLabel": "",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "form field label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tiles renders correct analytics metadata with disabled element 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "radio group example",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "second",
+          "valueLabel": "Second choice",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Second choice",
+    "position": "2",
+    "value": "second",
+  },
+}
+`;
+
+exports[`Tiles renders correct analytics metadata with disabled element 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "radio group example",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "second",
+          "valueLabel": "Second choice",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Tiles renders correct analytics metadata with null value 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "radio group example",
+        "name": "awsui.Tiles",
+        "properties": {
+          "options": [
+            {
+              "description": "This option is disabled.",
+              "label": "First choice",
+              "value": "first",
+            },
+            {
+              "label": "Second choice",
+              "value": "second",
+            },
+            {
+              "label": "Third choice",
+              "value": "third",
+            },
+          ],
+          "value": "null",
+          "valueLabel": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Second choice",
+    "position": "2",
+    "value": "second",
+  },
+}
+`;

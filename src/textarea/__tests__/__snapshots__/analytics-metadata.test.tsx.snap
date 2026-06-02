@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input renders correct analytics metadata with aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.Textarea",
+        "properties": {
+          "value": "a",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Input renders correct analytics metadata with empty value 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.Textarea",
+        "properties": {
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Input renders correct analytics metadata within a form field 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.Textarea",
+        "properties": {
+          "value": "a",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container renders correct analytics metadata With h1 with a Header component 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Container renders correct analytics metadata With h1 with a native heading 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Container renders correct analytics metadata With h2 with a Header component 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Container renders correct analytics metadata With h2 with a native heading 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Container renders correct analytics metadata With h3 with a Header component 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Container renders correct analytics metadata With h3 with a native heading 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Container header",
+        "name": "awsui.Container",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Internal Container does not render "component" metadata 1`] = `{}`;

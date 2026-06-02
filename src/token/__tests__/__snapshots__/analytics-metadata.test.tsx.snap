@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token analytics metadata Internal Token does not render "component" metadata 1`] = `{}`;
+
+exports[`Token analytics metadata Token renders correct analytics metadata 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Token",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

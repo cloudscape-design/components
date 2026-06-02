@@ -3,15 +3,11 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { GeneratedAnalyticsMetadataFlashbarButtonClick } from '../../../lib/components/flashbar/analytics-metadata/interfaces';
 import {
   DATA_ATTR_ANALYTICS_FLASHBAR,
   DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
@@ -69,36 +65,6 @@ function renderFlashbar(props: Partial<FlashbarProps> = {}) {
   return createWrapper(renderResult.container).findFlashbar()!;
 }
 
-const getMetadata = (itemPosition?: number, stackItems = false, expanded?: boolean, itemsCount = items.length) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Flashbar',
-          label: 'Notifications',
-          properties: {
-            stackItems: `${!!stackItems}`,
-            itemsCount: `${itemsCount}`,
-            ...(stackItems && expanded !== undefined ? { expanded: `${expanded}` } : {}),
-          },
-          ...(itemPosition
-            ? {
-                innerContext: {
-                  itemPosition: `${itemPosition}`,
-                  itemLabel: `${items[itemPosition - 1].header || ''}`,
-                  itemType: `${items[itemPosition - 1].type || 'info'}`,
-                  ...(items[itemPosition - 1].id ? { itemId: items[itemPosition - 1].id } : {}),
-                },
-              }
-            : {}),
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -112,23 +78,11 @@ describe('Flashbar renders correct analytics metadata', () => {
 
       const firstDismissButton = wrapper.findItems()[0].findDismissButton()!.getElement();
       validateComponentNameAndLabels(firstDismissButton, labels);
-      expect(getGeneratedAnalyticsMetadata(firstDismissButton)).toEqual({
-        action: 'dismiss',
-        detail: {
-          label: 'Dismiss message 1',
-        },
-        ...getMetadata(1, stackItems, true),
-      });
+      expect(getGeneratedAnalyticsMetadata(firstDismissButton)).toMatchSnapshot();
 
       const secondDismissButton = wrapper.findItems()[1].findDismissButton()!.getElement();
       validateComponentNameAndLabels(secondDismissButton, labels);
-      expect(getGeneratedAnalyticsMetadata(secondDismissButton)).toEqual({
-        action: 'dismiss',
-        detail: {
-          label: 'Dismiss message 2',
-        },
-        ...getMetadata(2, stackItems, true),
-      });
+      expect(getGeneratedAnalyticsMetadata(secondDismissButton)).toMatchSnapshot();
     });
     test('on embedded button', () => {
       const wrapper = renderFlashbar({ stackItems });
@@ -139,16 +93,7 @@ describe('Flashbar renders correct analytics metadata', () => {
       const embeddedButton = wrapper.findItems()[2].findActionButton()!.getElement();
       validateComponentNameAndLabels(embeddedButton, labels);
 
-      const buttonClickMetadata: GeneratedAnalyticsMetadataFlashbarButtonClick = {
-        action: 'buttonClick',
-        detail: {
-          label: 'click me',
-        },
-      };
-      expect(getGeneratedAnalyticsMetadata(embeddedButton)).toEqual({
-        ...buttonClickMetadata,
-        ...getMetadata(3, stackItems, true),
-      });
+      expect(getGeneratedAnalyticsMetadata(embeddedButton)).toMatchSnapshot();
     });
     test('on button in action slot', () => {
       const wrapper = renderFlashbar({ stackItems });
@@ -157,34 +102,13 @@ describe('Flashbar renders correct analytics metadata', () => {
       }
 
       const buttonInActionSlot = wrapper.findItems()[3].findAction()!.findButton()!.getElement();
-      expect(getGeneratedAnalyticsMetadata(buttonInActionSlot)).toEqual({
-        action: 'click',
-        detail: {
-          label: 'Another action',
-        },
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.Button',
-              label: 'Another action',
-              properties: {
-                disabled: 'false',
-                variant: 'normal',
-              },
-            },
-          },
-          ...getMetadata(4, stackItems, true).contexts!,
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(buttonInActionSlot)).toMatchSnapshot();
     });
     test('without items', () => {
       const wrapper = renderFlashbar({ stackItems, items: [] });
       const list = wrapper.find('ul')!.getElement();
       validateComponentNameAndLabels(list, labels);
-      expect(getGeneratedAnalyticsMetadata(list)).toEqual({
-        ...getMetadata(undefined, stackItems, false, 0),
-      });
+      expect(getGeneratedAnalyticsMetadata(list)).toMatchSnapshot();
     });
   });
 
@@ -193,23 +117,11 @@ describe('Flashbar renders correct analytics metadata', () => {
     const toggleButtonWrapper = wrapper.findToggleButton()!;
 
     validateComponentNameAndLabels(toggleButtonWrapper.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(toggleButtonWrapper.getElement())).toEqual({
-      action: 'expand',
-      detail: {
-        label: 'Notifications bar',
-      },
-      ...getMetadata(undefined, true, false),
-    });
+    expect(getGeneratedAnalyticsMetadata(toggleButtonWrapper.getElement())).toMatchSnapshot();
 
     act(() => toggleButtonWrapper.click());
 
-    expect(getGeneratedAnalyticsMetadata(toggleButtonWrapper.getElement())).toEqual({
-      action: 'collapse',
-      detail: {
-        label: 'Notifications bar',
-      },
-      ...getMetadata(undefined, true, true),
-    });
+    expect(getGeneratedAnalyticsMetadata(toggleButtonWrapper.getElement())).toMatchSnapshot();
   });
 
   describe('analytics attributes', () => {

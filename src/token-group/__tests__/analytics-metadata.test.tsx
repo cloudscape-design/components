@@ -3,18 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
-import {
-  GeneratedAnalyticsMetadataTokenGroupShowLess,
-  GeneratedAnalyticsMetadataTokenGroupShowMore,
-} from '../../../lib/components/token-group/analytics-metadata/interfaces';
 import InternalTokenGroup from '../../../lib/components/token-group/internal';
 
 function renderTokenGroup(props: TokenGroupProps) {
@@ -39,24 +32,6 @@ const items: TokenGroupProps['items'] = [
   { label: 'Item 8' },
 ].map(item => ({ ...item, dismissLabel: `Dismiss ${item.label}` }) as TokenGroupProps.Item);
 
-const getMetadataContexts = (itemsCount = items.length) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.TokenGroup',
-          label: '',
-          properties: {
-            itemsCount: `${itemsCount}`,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
 beforeAll(() => {
   activateAnalyticsMetadata(true);
 });
@@ -65,41 +40,27 @@ describe('Token Group renders correct analytics metadata', () => {
     const wrapper = renderTokenGroup({ readOnly: true });
 
     const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-    expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(getMetadataContexts());
+    expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
   });
 
   test('with different items count', () => {
     const wrapper = renderTokenGroup({ readOnly: true, items: [items[0]] });
 
     const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-    expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(getMetadataContexts(1));
+    expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
   });
 
   test('in dismiss button', () => {
     const wrapper = renderTokenGroup({});
 
     const simpleToken = wrapper.findToken(1)!.findDismiss().getElement();
-    expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual({
-      action: 'dismiss',
-      detail: {
-        label: 'Dismiss Item 1',
-        position: '1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
 
     const complexToken = wrapper.findToken(2)!.findDismiss().getElement();
-    expect(getGeneratedAnalyticsMetadata(complexToken)).toEqual({
-      action: 'dismiss',
-      detail: {
-        label: 'Dismiss Item 2',
-        position: '2',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(complexToken)).toMatchSnapshot();
 
     const disabledToken = wrapper.findToken(3)!.findDismiss().getElement();
-    expect(getGeneratedAnalyticsMetadata(disabledToken)).toEqual(getMetadataContexts());
+    expect(getGeneratedAnalyticsMetadata(disabledToken)).toMatchSnapshot();
   });
 
   test('in show more', () => {
@@ -110,33 +71,15 @@ describe('Token Group renders correct analytics metadata', () => {
     });
 
     const tokenToggle = wrapper.findTokenToggle()!.getElement();
-    const showMoreMetadata: GeneratedAnalyticsMetadataTokenGroupShowMore = {
-      action: 'showMore',
-      detail: {
-        label: 'show more',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(tokenToggle)).toEqual({
-      ...showMoreMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(tokenToggle)).toMatchSnapshot();
 
     wrapper.findTokenToggle()!.click();
-    const showLessMetadata: GeneratedAnalyticsMetadataTokenGroupShowLess = {
-      action: 'showLess',
-      detail: {
-        label: 'show less',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toEqual({
-      ...showLessMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTokenToggle()!.getElement())).toMatchSnapshot();
   });
 });
 
 test('Internal Token Group does not render "component" metadata', () => {
   const renderResult = render(<InternalTokenGroup items={items} alignment="horizontal" onDismiss={() => {}} />);
   const wrapper = createWrapper(renderResult.container).findTokenGroup();
-  expect(getGeneratedAnalyticsMetadata(wrapper!.getElement())).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(wrapper!.getElement())).toMatchSnapshot();
 });

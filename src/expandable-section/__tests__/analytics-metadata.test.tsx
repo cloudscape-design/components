@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import Button from '../../../lib/components/button';
@@ -22,33 +19,6 @@ function renderExpandableSection(props: ExpandableSectionProps) {
   const renderResult = render(<ExpandableSection {...props} />);
   return createWrapper(renderResult.container).findExpandableSection()!;
 }
-
-const getContextsMetadata = (label: string, variant: string, expanded: boolean) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.ExpandableSection',
-          label,
-          properties: {
-            variant,
-            expanded: `${!!expanded}`,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
-
-const getExpandMetadata = (label: string, variant: string, expanded: boolean) => ({
-  ...getContextsMetadata(label, variant, expanded),
-  action: !expanded ? 'expand' : 'collapse',
-  detail: {
-    label,
-  },
-});
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -71,14 +41,10 @@ describe('Expandable section renders correct analytics metadata', () => {
             }
       );
       validateComponentNameAndLabels(wrapper.findExpandButton()!.getElement(), labels);
-      expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toEqual(
-        getExpandMetadata('header', variant, false)
-      );
+      expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toMatchSnapshot();
 
       wrapper.findExpandButton().click();
-      expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toEqual(
-        getExpandMetadata('header', variant, true)
-      );
+      expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toMatchSnapshot();
     });
   });
   test.each(['container', 'stacked'])('%s variant with additional properties', variant => {
@@ -92,40 +58,10 @@ describe('Expandable section renders correct analytics metadata', () => {
       headerDescription: 'description',
     });
     validateComponentNameAndLabels(wrapper.findExpandButton()!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toEqual(
-      getExpandMetadata('header', variant, false)
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toMatchSnapshot();
 
-    expect(getGeneratedAnalyticsMetadata(wrapper.findHeader().findButton()!.getElement())).toEqual({
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.Button',
-            label: 'Edit',
-            properties: { disabled: 'false', variant: 'normal' },
-          },
-        },
-        ...getContextsMetadata('header', variant, false).contexts!,
-      ],
-      action: 'click',
-      detail: { label: 'Edit' },
-    });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findHeader().findLink()!.getElement())).toEqual({
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.Link',
-            label: 'Info:',
-            properties: { variant: 'info' },
-          },
-        },
-        ...getContextsMetadata('header', variant, false).contexts!,
-      ],
-      action: 'click',
-      detail: { label: 'Info:', external: 'false' },
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findHeader().findButton()!.getElement())).toMatchSnapshot();
+    expect(getGeneratedAnalyticsMetadata(wrapper.findHeader().findLink()!.getElement())).toMatchSnapshot();
   });
 });
 
@@ -134,10 +70,5 @@ test('Internal ExpandableSection does not render "component" metadata', () => {
     <InternalExpandableSection headerText="whatever">inline button text</InternalExpandableSection>
   );
   const button = createWrapper(renderResult.container).findExpandableSection()!.findExpandButton()!.getElement();
-  expect(getGeneratedAnalyticsMetadata(button)).toEqual({
-    action: 'expand',
-    detail: {
-      label: 'whatever',
-    },
-  });
+  expect(getGeneratedAnalyticsMetadata(button)).toMatchSnapshot();
 });

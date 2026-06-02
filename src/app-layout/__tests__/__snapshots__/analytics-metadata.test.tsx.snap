@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Theme=classic, Size=desktop AppLayoutToolbar renders correct analytics metadata with a simple h1 tag inside the content 1`] = `{}`;
+
+exports[`Theme=classic, Size=desktop AppLayoutToolbar renders correct analytics metadata with the header component inside the content 1`] = `{}`;
+
+exports[`Theme=refresh, Size=desktop AppLayoutToolbar renders correct analytics metadata with a simple h1 tag inside the content 1`] = `{}`;
+
+exports[`Theme=refresh, Size=desktop AppLayoutToolbar renders correct analytics metadata with the header component inside the content 1`] = `{}`;
+
+exports[`Theme=refresh-toolbar, Size=desktop AppLayoutToolbar renders correct analytics metadata with a simple h1 tag inside the content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Label",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Theme=refresh-toolbar, Size=desktop AppLayoutToolbar renders correct analytics metadata with the header component inside the content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "H1 Header",
+        "name": "awsui.AppLayoutToolbar",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

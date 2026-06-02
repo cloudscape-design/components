@@ -3,33 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import FormField from '../../../lib/components/form-field';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Textarea, { TextareaProps } from '../../../lib/components/textarea';
-
-const getComponentMetadata = (label: string, value: string) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Textarea',
-          label,
-          properties: {
-            value,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 function renderTextarea(props: Partial<TextareaProps>) {
   const renderResult = render(<Textarea value="a" onChange={() => {}} {...props} />);
@@ -42,11 +21,11 @@ beforeAll(() => {
 describe('Input renders correct analytics metadata', () => {
   test('with aria label', () => {
     const componentElement = renderTextarea({ ariaLabel: 'label' }).getElement();
-    expect(getGeneratedAnalyticsMetadata(componentElement)).toEqual(getComponentMetadata('label', 'a'));
+    expect(getGeneratedAnalyticsMetadata(componentElement)).toMatchSnapshot();
   });
   test('with empty value', () => {
     const componentElement = renderTextarea({ ariaLabel: 'label', value: '' }).getElement();
-    expect(getGeneratedAnalyticsMetadata(componentElement)).toEqual(getComponentMetadata('label', ''));
+    expect(getGeneratedAnalyticsMetadata(componentElement)).toMatchSnapshot();
   });
   test('within a form field', () => {
     const formFieldLabel = 'form-field-label';
@@ -56,26 +35,6 @@ describe('Input renders correct analytics metadata', () => {
       </FormField>
     );
     const componentElement = createWrapper(renderResult.container).findTextarea()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(componentElement)).toEqual({
-      contexts: [
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.Textarea',
-            label: formFieldLabel,
-            properties: {
-              value: 'a',
-            },
-          },
-        },
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.FormField',
-            label: formFieldLabel,
-          },
-        },
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(componentElement)).toMatchSnapshot();
   });
 });

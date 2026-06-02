@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Modal does not render "component" metadata 1`] = `
+{
+  "action": "dismiss",
+  "detail": {
+    "label": "Close modal",
+  },
+}
+`;
+
+exports[`Modal renders correct analytics metadata 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Modal title",
+        "name": "awsui.Modal",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Close modal",
+  },
+}
+`;
+
+exports[`Modal renders correct analytics metadata 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Confirm",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "primary",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "Modal title",
+        "name": "awsui.Modal",
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Confirm",
+  },
+}
+`;

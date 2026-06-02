@@ -30,11 +30,6 @@ const items: RadioGroupProps['items'] = [
   { value: 'second', label: 'Second choice' },
   { value: 'third', label: 'Third choice' },
 ];
-const metadataOptions = items.map(item => ({
-  value: item.value,
-  label: item.label,
-  description: item.description,
-})) as any;
 
 const componentLabel = 'radio group example';
 
@@ -42,44 +37,6 @@ function renderRadioGroup(props: RadioGroupProps) {
   const renderResult = render(<RadioGroup {...props} items={items} ariaLabel={componentLabel} />);
   return createWrapper(renderResult.container).findRadioGroup()!;
 }
-
-const getMetadata = (
-  label: string,
-  position: string,
-  value: string,
-  disabled: boolean = false,
-  currentValue: string | null
-) => {
-  const eventMetadata = {
-    action: 'select',
-    detail: {
-      label,
-      position,
-      value,
-    },
-  };
-
-  let metadata = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.RadioGroup',
-          label: componentLabel,
-          properties: {
-            value: `${currentValue}`,
-            valueLabel: currentValue ? items.find(item => item.value === currentValue)?.label : '',
-            options: metadataOptions,
-          },
-        },
-      },
-    ],
-  };
-  if (!disabled) {
-    metadata = { ...metadata, ...eventMetadata };
-  }
-  return metadata;
-};
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -89,27 +46,19 @@ describe('Checkbox renders correct analytics metadata', () => {
     const wrapper = renderRadioGroup({ value: 'second' });
 
     validateComponentNameAndLabels(wrapper.findInputByValue('second')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, 'second')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toMatchSnapshot();
     validateComponentNameAndLabels(wrapper.findInputByValue('first')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toEqual(
-      getMetadata('First choice', '2', 'first', true, 'second')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toMatchSnapshot();
   });
   test('with null value', () => {
     const wrapper = renderRadioGroup({ value: null });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, null)
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toMatchSnapshot();
   });
   test('readonly', () => {
     const wrapper = renderRadioGroup({ value: 'second', readOnly: true });
 
     validateComponentNameAndLabels(wrapper.findInputByValue('second')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', true, 'second')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toMatchSnapshot();
   });
   describe('when rendered in a form field', () => {
     test('without aria label', () => {
@@ -119,29 +68,7 @@ describe('Checkbox renders correct analytics metadata', () => {
         </FormField>
       );
       const element = createWrapper(renderResult.container).findRadioGroup()!.getElement()!;
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.RadioGroup',
-              label: 'form field label',
-              properties: {
-                value: 'second',
-                valueLabel: 'Second choice',
-                options: metadataOptions,
-              },
-            },
-          },
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.FormField',
-              label: 'form field label',
-            },
-          },
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with aria label', () => {
       const renderResult = render(
@@ -150,29 +77,7 @@ describe('Checkbox renders correct analytics metadata', () => {
         </FormField>
       );
       const element = createWrapper(renderResult.container).findRadioGroup()!.getElement()!;
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.RadioGroup',
-              label: 'aria label',
-              properties: {
-                value: '2',
-                valueLabel: '',
-                options: metadataOptions,
-              },
-            },
-          },
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.FormField',
-              label: 'form field label',
-            },
-          },
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
 });
@@ -181,5 +86,5 @@ test('Internal RadioGroup does not render "component" metadata', () => {
   const renderResult = render(<InternalRadioGroup items={items} value="second" />);
   const element = createWrapper(renderResult.container).findRadioGroup()!.findInputByValue('first')!.getElement();
   validateComponentNameAndLabels(element, labels);
-  expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
 });

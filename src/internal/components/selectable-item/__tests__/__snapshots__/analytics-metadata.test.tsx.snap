@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectableItem renders correct analytics metadata when disabled 1`] = `{}`;
+
+exports[`SelectableItem renders correct analytics metadata when isParent=true 1`] = `{}`;
+
+exports[`SelectableItem renders correct analytics metadata with Option component complex option 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "label": "label",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with Option component simple option 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "label": "test value",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with data-test-index 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "label": "content",
+    "position": "50",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with data-group-index 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with data-group-index and data-child-index 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+    "position": "5,2",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with data-group-index and data-in-group-index 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+    "position": "5,1",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with data-test-index 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+    "position": "50",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with parent element 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "Parent label",
+    "label": "item label",
+    "position": "6,1",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with simple content 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with isChild=true with value 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "groupLabel": "",
+    "label": "content",
+    "value": "item-value",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with simple content 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "label": "content label",
+  },
+}
+`;
+
+exports[`SelectableItem renders correct analytics metadata with value 1`] = `
+{
+  "action": "select",
+  "detail": {
+    "label": "content",
+    "value": "item-value",
+  },
+}
+`;

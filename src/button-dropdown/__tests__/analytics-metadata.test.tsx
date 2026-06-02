@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
@@ -20,25 +17,6 @@ function renderButtonDropdown(props: ButtonDropdownProps) {
   const renderResult = render(<ButtonDropdown {...props} />);
   return createWrapper(renderResult.container).findButtonDropdown()!;
 }
-
-const getMetadataContexts = (label: string, variant: string, disabled?: boolean) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.ButtonDropdown',
-          label,
-          properties: {
-            variant,
-            disabled: disabled ? 'true' : 'false',
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 const items: ButtonDropdownProps['items'] = [
   { text: 'Delete', id: 'rm', disabled: false, href: '#' },
@@ -72,11 +50,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       });
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
-        action: 'expand',
-        detail: { label },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
     });
     test('when expanded', () => {
       const label = 'Action text';
@@ -87,11 +61,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       wrapper.findTriggerButton()?.click();
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
-        action: 'collapse',
-        detail: { label },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
     });
     test('when disabled', () => {
       const label = 'Action text';
@@ -102,7 +72,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       });
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual(getMetadataContexts(label, 'normal', true));
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
     });
     test('with icon variant', () => {
       const label = 'Action text';
@@ -113,11 +83,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       });
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
-        action: 'expand',
-        detail: { label },
-        ...getMetadataContexts(label, 'icon'),
-      });
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
     });
     test('with primary variant', () => {
       const label = 'Action text';
@@ -128,11 +94,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       });
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
-        action: 'expand',
-        detail: { label },
-        ...getMetadataContexts(label, 'primary'),
-      });
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
     });
     test('with main action', () => {
       const label = 'Action text';
@@ -144,18 +106,10 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       });
       const nativeButton = wrapper.findTriggerButton()!.getElement();
       validateComponentNameAndLabels(nativeButton, labels);
-      expect(getGeneratedAnalyticsMetadata(nativeButton)).toEqual({
-        action: 'expand',
-        detail: { label },
-        ...getMetadataContexts(label, 'primary'),
-      });
+      expect(getGeneratedAnalyticsMetadata(nativeButton)).toMatchSnapshot();
       const mainAction = wrapper.findMainAction()!.getElement();
       validateComponentNameAndLabels(mainAction, labels);
-      expect(getGeneratedAnalyticsMetadata(mainAction)).toEqual({
-        action: 'click',
-        detail: { label: 'Launch instance' },
-        ...getMetadataContexts(label, 'primary'),
-      });
+      expect(getGeneratedAnalyticsMetadata(mainAction)).toMatchSnapshot();
     });
   });
   describe('in the items', () => {
@@ -168,17 +122,11 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       wrapper.openDropdown();
       const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
       validateComponentNameAndLabels(enabledSimpleItem, labels);
-      expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
-        action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toMatchSnapshot();
 
       const disabledSimpleItem = wrapper.findItemById('rn')!.getElement();
       validateComponentNameAndLabels(disabledSimpleItem, labels);
-      expect(getGeneratedAnalyticsMetadata(disabledSimpleItem)).toEqual({
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(disabledSimpleItem)).toMatchSnapshot();
     });
     test('for simple items displayed in portal', () => {
       const label = 'Action text';
@@ -190,11 +138,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       wrapper.openDropdown();
       const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
       validateComponentNameAndLabels(enabledSimpleItem, labels);
-      expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
-        action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toMatchSnapshot();
     });
     test('for nested items', () => {
       const label = 'Action text';
@@ -205,17 +149,11 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       wrapper.openDropdown();
       const enabledNestedItem = wrapper.findItemById('restart')!.getElement();
       validateComponentNameAndLabels(enabledNestedItem, labels);
-      expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
-        action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toMatchSnapshot();
 
       const disabledNestedItem = wrapper.findItemById('upload')!.getElement();
       validateComponentNameAndLabels(disabledNestedItem, labels);
-      expect(getGeneratedAnalyticsMetadata(disabledNestedItem)).toEqual({
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(disabledNestedItem)).toMatchSnapshot();
     });
     test('for expandable groups', () => {
       const label = 'Action text';
@@ -228,24 +166,14 @@ describe('Button Dropdown renders correct analytics metadata', () => {
 
       const enabledCategory = wrapper.findExpandableCategoryById('instances')!.find('svg')!.getElement();
       validateComponentNameAndLabels(enabledCategory, labels);
-      expect(getGeneratedAnalyticsMetadata(enabledCategory)).toEqual({
-        action: 'expand',
-        detail: { label: 'Instances', id: 'instances', position: '3' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledCategory)).toMatchSnapshot();
 
       wrapper.findExpandableCategoryById('instances')?.click();
-      expect(getGeneratedAnalyticsMetadata(enabledCategory)).toEqual({
-        action: 'collapse',
-        detail: { label: 'Instances', id: 'instances', position: '3' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledCategory)).toMatchSnapshot();
 
       const disabledCategory = wrapper.findExpandableCategoryById('ssh')!.find('svg')!.getElement();
       validateComponentNameAndLabels(disabledCategory, labels);
-      expect(getGeneratedAnalyticsMetadata(disabledCategory)).toEqual({
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(disabledCategory)).toMatchSnapshot();
     });
 
     test('for nested items in expandable groups', () => {
@@ -260,11 +188,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
 
       const enabledNestedItem = wrapper.findItemById('restart')!.getElement();
       validateComponentNameAndLabels(enabledNestedItem, labels);
-      expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
-        action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
-        ...getMetadataContexts(label, 'normal'),
-      });
+      expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toMatchSnapshot();
     });
   });
 });
@@ -273,12 +197,7 @@ describe('Internal Button Dropdown', () => {
   test('does not render "component" metadata', () => {
     const renderResult = render(<InternalButtonDropdown items={items}>Action text</InternalButtonDropdown>);
     const wrapper = createWrapper(renderResult.container).findButtonDropdown()!.findTriggerButton()!;
-    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-      action: 'expand',
-      detail: {
-        label: 'Action text',
-      },
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
   });
   test('accepts analyticsMetadataTransformer', () => {
     const renderResult = render(
@@ -295,10 +214,7 @@ describe('Internal Button Dropdown', () => {
     const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
     wrapper.openDropdown();
     const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
-    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
-      action: 'click',
-      detail: { label: 'Delete', position: '1', href: '#' },
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toMatchSnapshot();
   });
   test('accepts position', () => {
     const renderResult = render(
@@ -309,9 +225,6 @@ describe('Internal Button Dropdown', () => {
     const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
     wrapper.openDropdown();
     const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
-    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
-      action: 'click',
-      detail: { label: 'Delete', position: '4,1', href: '#', id: 'rm' },
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toMatchSnapshot();
   });
 });

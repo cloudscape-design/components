@@ -1,0 +1,449 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PropertyFilter renders correct analytics metadata in clear input button 1`] = `
+{
+  "action": "clearInput",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "clear",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=false 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "Properties",
+    "label": "Instance ID",
+    "position": "1,1",
+    "value": "Instance ID",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=false 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "Operators",
+    "label": "State !=",
+    "position": "1,2",
+    "value": "State != ",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=false 3`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "State values",
+    "label": "State = Pending",
+    "position": "1,3",
+    "value": "State = Pending",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=true 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "Properties",
+    "label": "Instance ID",
+    "position": "1,1",
+    "value": "Instance ID",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=true 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "Operators",
+    "label": "State !=",
+    "position": "1,2",
+    "value": "State != ",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in dropdown and expandToViewport=true 3`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "State values",
+    "label": "State = Pending",
+    "position": "1,3",
+    "value": "State = Pending",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in clear all filters button 1`] = `
+{
+  "action": "clearFilters",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Clear filters",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "tokenLabel": "Instance type != t3.small",
+    "tokenPosition": "2",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in operation select 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Boolean Operator",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in operation select 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Boolean Operator",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in operation select 3`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "or",
+    "position": "2",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+    "value": "or",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in show more 1`] = `
+{
+  "action": "showMore",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show more",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in show more 2`] = `
+{
+  "action": "showLess",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show less",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in token edit flow 1`] = `
+{
+  "action": "editStart",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in token edit flow 2`] = `
+{
+  "action": "editConfirm",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Apply",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in token edit flow 3`] = `
+{
+  "action": "editCancel",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Cancel",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata in selected filters in token edit flow 4`] = `
+{
+  "action": "editClose",
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "false",
+          "queryTokensCount": "4",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss",
+    "tokenLabel": "Average latency > 981",
+    "tokenPosition": "3",
+  },
+}
+`;
+
+exports[`PropertyFilter renders correct analytics metadata when disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "your choice",
+        "name": "awsui.PropertyFilter",
+        "properties": {
+          "disabled": "true",
+          "queryTokensCount": "0",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

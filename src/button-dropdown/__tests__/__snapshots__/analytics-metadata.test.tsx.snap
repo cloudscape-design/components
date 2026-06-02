@@ -1,0 +1,385 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Dropdown renders correct analytics metadata in the items for expandable groups 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "instances",
+    "label": "Instances",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for expandable groups 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "id": "instances",
+    "label": "Instances",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for expandable groups 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for nested items 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "",
+    "id": "restart",
+    "label": "Restart",
+    "position": "3,2",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for nested items 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for nested items in expandable groups 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "",
+    "id": "restart",
+    "label": "Restart",
+    "position": "3,2",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for simple items 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#",
+    "id": "rm",
+    "label": "Delete",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for simple items 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the items for simple items displayed in portal 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "href": "#",
+    "id": "rm",
+    "label": "Delete",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger when a label is present 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger when disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "true",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger when expanded 1`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger with icon variant 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "icon",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger with main action 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "primary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger with main action 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "primary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Launch instance",
+  },
+}
+`;
+
+exports[`Button Dropdown renders correct analytics metadata in the trigger with primary variant 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Action text",
+        "name": "awsui.ButtonDropdown",
+        "properties": {
+          "disabled": "false",
+          "variant": "primary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;
+
+exports[`Internal Button Dropdown accepts analyticsMetadataTransformer 1`] = `
+{
+  "action": "click",
+  "detail": {
+    "href": "#",
+    "label": "Delete",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Internal Button Dropdown accepts position 1`] = `
+{
+  "action": "click",
+  "detail": {
+    "href": "#",
+    "id": "rm",
+    "label": "Delete",
+    "position": "4,1",
+  },
+}
+`;
+
+exports[`Internal Button Dropdown does not render "component" metadata 1`] = `
+{
+  "action": "expand",
+  "detail": {
+    "label": "Action text",
+  },
+}
+`;

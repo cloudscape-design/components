@@ -1,0 +1,1914 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=false multiple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=false multiple 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=false multiple 3`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "2",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "2",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=false single 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=false single 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 5`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "2",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "2",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true multiple 6`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "2",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "2",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true single 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true single 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true single 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined with entireCardClickable=true single 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "1",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=undefined without selected values 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "0",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "0",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "1",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "2",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "3",
+            },
+          ],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "multi",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "0",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=false multiple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=false multiple 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=false multiple 3`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "third",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "third",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=false single 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=false single 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 5`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "third",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "third",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true multiple 6`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "third",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+            "fourth",
+          ],
+          "selectedItemsCount": "2",
+          "selectedItemsLabels": [
+            "third",
+            "fourth",
+          ],
+          "selectionType": "multi",
+          "variant": "full-page",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "third",
+    "label": "third",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true single 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true single 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true single 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value with entireCardClickable=true single 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [
+            "third",
+          ],
+          "selectedItemsCount": "1",
+          "selectedItemsLabels": [
+            "third",
+          ],
+          "selectionType": "single",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata selection with trackBy=value without selected values 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "options": [
+            {
+              "description": "DescriptionFirst choice.",
+              "label": "",
+              "value": "first",
+            },
+            {
+              "description": "DescriptionSecond choice",
+              "label": "",
+              "value": "second",
+            },
+            {
+              "description": "DescriptionThird choice",
+              "label": "",
+              "value": "third",
+            },
+            {
+              "description": "DescriptionFourth choice",
+              "label": "",
+              "value": "fourth",
+            },
+          ],
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "multi",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "item": "first",
+    "label": "first",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=false 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=false 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=false 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "third",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=true 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "first",
+          "position": "1",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=true 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "second",
+          "position": "2",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Cards renders correct analytics metadata without selection with entireCardClickable=true 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "innerContext": {
+          "item": "third",
+          "position": "3",
+        },
+        "label": "Header for cards",
+        "name": "awsui.Cards",
+        "properties": {
+          "itemsCount": "4",
+          "selectedItems": [],
+          "selectedItemsCount": "0",
+          "selectedItemsLabels": [],
+          "selectionType": "none",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

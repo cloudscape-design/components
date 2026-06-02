@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders correct analytics metadata when it has icon variant 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "button text aria",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "inline-icon",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "button text aria",
+  },
+}
+`;
+
+exports[`Button renders correct analytics metadata when it has icon variant and children 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "button text aria",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "inline-icon",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "button text aria",
+  },
+}
+`;
+
+exports[`Button renders correct analytics metadata when it has text content 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "description": "reason",
+        "label": "inline button text",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "true",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button renders correct analytics metadata when it has text content and aria label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "inline button text",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "inline button text",
+  },
+}
+`;
+
+exports[`Button renders correct analytics metadata when it is empty and has aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "button text",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "true",
+          "variant": "primary",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Button renders correct analytics metadata when it is empty and with no aria label 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "",
+  },
+}
+`;
+
+exports[`Internal Button allows to override the analytics action 1`] = `
+{
+  "action": "open",
+  "detail": {
+    "label": "inline button text",
+  },
+}
+`;
+
+exports[`Internal Button does not render "component" metadata 1`] = `
+{
+  "action": "click",
+  "detail": {
+    "label": "inline button text",
+  },
+}
+`;

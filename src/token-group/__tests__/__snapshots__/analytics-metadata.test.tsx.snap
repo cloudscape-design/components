@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Token Group does not render "component" metadata 1`] = `{}`;
+
+exports[`Token Group renders correct analytics metadata in dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss Item 1",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Token Group renders correct analytics metadata in dismiss button 2`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss Item 2",
+    "position": "2",
+  },
+}
+`;
+
+exports[`Token Group renders correct analytics metadata in dismiss button 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Token Group renders correct analytics metadata in show more 1`] = `
+{
+  "action": "showMore",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show more",
+  },
+}
+`;
+
+exports[`Token Group renders correct analytics metadata in show more 2`] = `
+{
+  "action": "showLess",
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show less",
+  },
+}
+`;
+
+exports[`Token Group renders correct analytics metadata when readonly 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "8",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Token Group renders correct analytics metadata with different items count 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "",
+        "name": "awsui.TokenGroup",
+        "properties": {
+          "itemsCount": "1",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal Pagination does not render "component" metadata 1`] = `{}`;
+
+exports[`Pagination renders correct analytics metadata disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Pagination renders correct analytics metadata disabled 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Pagination renders correct analytics metadata disabled 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Pagination renders correct analytics metadata enabled 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Next page",
+    "position": "next",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata enabled 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Previous page",
+    "position": "prev",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata enabled 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "20",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Page 19",
+    "position": "19",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata first page 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "1",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Next page",
+    "position": "next",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata first page 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "1",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Pagination renders correct analytics metadata first page 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "1",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Page 3",
+    "position": "3",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Previous page",
+    "position": "prev",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "false",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Page 295",
+    "position": "295",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page and openEnd 1`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "true",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Next page",
+    "position": "next",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page and openEnd 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "true",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Previous page",
+    "position": "prev",
+  },
+}
+`;
+
+exports[`Pagination renders correct analytics metadata last page and openEnd 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Pagination label",
+        "name": "awsui.Pagination",
+        "properties": {
+          "currentPageIndex": "300",
+          "openEnd": "true",
+          "pagesCount": "300",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Page 296",
+    "position": "296",
+  },
+}
+`;

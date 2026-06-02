@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox renders correct analytics metadata disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Checkbox",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Checkbox renders correct analytics metadata readonly 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Checkbox",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Checkbox renders correct analytics metadata simple 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "cb label",
+        "name": "awsui.Checkbox",
+        "properties": {
+          "checked": "false",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "cb label",
+  },
+}
+`;
+
+exports[`Checkbox renders correct analytics metadata with aria-label 1`] = `
+{
+  "action": "deselect",
+  "contexts": [
+    {
+      "detail": {
+        "label": "aria label",
+        "name": "awsui.Checkbox",
+        "properties": {
+          "checked": "true",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "aria label",
+  },
+}
+`;
+
+exports[`Internal Checkbox does not render "component" metadata 1`] = `
+{
+  "action": "deselect",
+  "detail": {
+    "label": "",
+  },
+}
+`;

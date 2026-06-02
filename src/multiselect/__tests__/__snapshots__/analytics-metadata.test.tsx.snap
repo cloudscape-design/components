@@ -1,0 +1,576 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Multiselect renders correct analytics metadata on the trigger button 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "multiselect with metadata",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata on the trigger button 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "multiselect with metadata",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata when disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "true",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=false 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group1",
+    "label": "value1repeated",
+    "position": "1,2",
+    "value": "value1repeated",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=false 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group3",
+    "label": "label3",
+    "position": "3,1",
+    "value": "value3",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=false 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=false 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=true 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group1",
+    "label": "value1repeated",
+    "position": "1,2",
+    "value": "value1repeated",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=true 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "groupLabel": "group3",
+    "label": "label3",
+    "position": "3,1",
+    "value": "value3",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=true 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with groups and expandToViewport=true 4`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options in dismiss button 1`] = `
+{
+  "action": "dismiss",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+            "label4",
+            "label5",
+            "label6",
+            "label7",
+          ],
+          "selectedOptionsCount": "5",
+          "selectedOptionsValues": [
+            "value1",
+            "value4",
+            "value5",
+            "value6",
+            "value7",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Dismiss label1",
+    "position": "1",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options in dismiss button 2`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+            "label4",
+            "label5",
+            "label6",
+            "label7",
+          ],
+          "selectedOptionsCount": "5",
+          "selectedOptionsValues": [
+            "value1",
+            "value4",
+            "value5",
+            "value6",
+            "value7",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "position": "3",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options in show more 1`] = `
+{
+  "action": "showMore",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+            "label4",
+            "label5",
+            "label6",
+            "label7",
+          ],
+          "selectedOptionsCount": "5",
+          "selectedOptionsValues": [
+            "value1",
+            "value4",
+            "value5",
+            "value6",
+            "value7",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show more",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options in show more 2`] = `
+{
+  "action": "showLess",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+            "label4",
+            "label5",
+            "label6",
+            "label7",
+          ],
+          "selectedOptionsCount": "5",
+          "selectedOptionsValues": [
+            "value1",
+            "value4",
+            "value5",
+            "value6",
+            "value7",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "show less",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options when readonly 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+            "label4",
+            "label5",
+            "label6",
+            "label7",
+          ],
+          "selectedOptionsCount": "5",
+          "selectedOptionsValues": [
+            "value1",
+            "value4",
+            "value5",
+            "value6",
+            "value7",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options with one selected option 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [
+            "label1",
+          ],
+          "selectedOptionsCount": "1",
+          "selectedOptionsValues": [
+            "value1",
+          ],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with selected options with selected options without value 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "1",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with simple items 1`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "value1",
+    "position": "1",
+    "value": "value1",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with simple items 2`] = `
+{
+  "action": "select",
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "label2",
+    "position": "2",
+    "value": "value2",
+  },
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata with simple items 3`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "multiselect with metadata",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`Multiselect renders correct analytics metadata within a formfield 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "formfield label",
+        "name": "awsui.Multiselect",
+        "properties": {
+          "disabled": "false",
+          "selectedOptions": [],
+          "selectedOptionsCount": "0",
+          "selectedOptionsValues": [],
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "formfield label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

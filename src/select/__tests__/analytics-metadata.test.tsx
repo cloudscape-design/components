@@ -3,18 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import FormField from '../../../lib/components/form-field';
 import Select, { SelectProps } from '../../../lib/components/select';
-import {
-  GeneratedAnalyticsMetadataSelectCollapse,
-  GeneratedAnalyticsMetadataSelectExpand,
-} from '../../../lib/components/select/analytics-metadata/interfaces';
 import InternalSelect from '../../../lib/components/select/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
@@ -31,31 +24,6 @@ function renderSelect(props: Partial<SelectProps>) {
   );
   return createWrapper(renderResult.container).findSelect()!;
 }
-
-const getMetadataContexts = (
-  label = 'select with metadata',
-  disabled: boolean = false,
-  selectedOptionValue = 'null',
-  selectedOption = 'null'
-) => {
-  const metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Select',
-          label,
-          properties: {
-            disabled: disabled ? 'true' : 'false',
-            selectedOptionValue,
-            selectedOption,
-          },
-        },
-      },
-    ],
-  };
-  return metadata;
-};
 
 const options: SelectProps['options'] = [
   { value: 'value1' },
@@ -100,56 +68,30 @@ describe('Select renders correct analytics metadata', () => {
     const wrapper = renderSelect({});
     let trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    const expandMetadata: GeneratedAnalyticsMetadataSelectExpand = {
-      action: 'expand',
-      detail: {
-        label: 'select with metadata',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      ...expandMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(trigger)).toMatchSnapshot();
 
     wrapper.openDropdown();
     trigger = wrapper.findTrigger()!.getElement();
     validateComponentNameAndLabels(trigger, labels);
-    const collapseMetadata: GeneratedAnalyticsMetadataSelectCollapse = {
-      action: 'collapse',
-      detail: {
-        label: 'select with metadata',
-      },
-    };
-    expect(getGeneratedAnalyticsMetadata(trigger)).toEqual({
-      ...collapseMetadata,
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(trigger)).toMatchSnapshot();
   });
   test('when disabled', () => {
     const wrapper = renderSelect({ disabled: true });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toEqual({
-      ...getMetadataContexts(undefined, true),
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toMatchSnapshot();
   });
   test('when readonly', () => {
     const wrapper = renderSelect({ readOnly: true });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toMatchSnapshot();
   });
 
   describe('with selectedOption', () => {
     test('and defined value', () => {
       const wrapper = renderSelect({ selectedOption: { value: 'value1' } });
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-        ...getMetadataContexts(undefined, undefined, 'value1', 'value1'),
-      });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
     });
     test('and undefined value', () => {
       const wrapper = renderSelect({ selectedOption: { label: 'label1' } });
-      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-        ...getMetadataContexts(undefined, undefined, 'null', 'label1'),
-      });
+      expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toMatchSnapshot();
     });
   });
 
@@ -159,33 +101,15 @@ describe('Select renders correct analytics metadata', () => {
 
     const simpleEnabledItemWithoutLabel = wrapper.findDropdown().findOptionByValue('value1')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'value1',
-        position: '1',
-        value: 'value1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithoutLabel)).toMatchSnapshot();
 
     const simpleEnabledItemWithLabel = wrapper.findDropdown().findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(simpleEnabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label2',
-        position: '2',
-        value: 'value2',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(simpleEnabledItemWithLabel)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown().findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test.each([false, true])('with groups and expandToViewport=%s', expandToViewport => {
     const wrapper = renderSelect({ options: optionsWithGroups, expandToViewport });
@@ -196,41 +120,19 @@ describe('Select renders correct analytics metadata', () => {
       .findOptionByValue('value1repeated')!
       .getElement();
     validateComponentNameAndLabels(enabledItemWithoutLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'value1repeated',
-        position: '1,2',
-        value: 'value1repeated',
-        groupLabel: 'group1',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithoutLabel)).toMatchSnapshot();
 
     const enabledItemWithLabel = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value3')!.getElement();
     validateComponentNameAndLabels(enabledItemWithLabel, labels);
-    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toEqual({
-      action: 'select',
-      detail: {
-        label: 'label3',
-        position: '3,1',
-        value: 'value3',
-        groupLabel: 'group3',
-      },
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(enabledItemWithLabel)).toMatchSnapshot();
 
     const inDisabledGroup = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value2')!.getElement();
     validateComponentNameAndLabels(inDisabledGroup, labels);
-    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(inDisabledGroup)).toMatchSnapshot();
 
     const disabledItem = wrapper.findDropdown({ expandToViewport }).findOptionByValue('value4')!.getElement();
     validateComponentNameAndLabels(disabledItem, labels);
-    expect(getGeneratedAnalyticsMetadata(disabledItem)).toEqual({
-      ...getMetadataContexts(),
-    });
+    expect(getGeneratedAnalyticsMetadata(disabledItem)).toMatchSnapshot();
   });
   test('within a formfield', () => {
     const renderResult = render(
@@ -239,18 +141,7 @@ describe('Select renders correct analytics metadata', () => {
       </FormField>
     );
     const element = createWrapper(renderResult.container).findSelect()!.getElement();
-    expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-      contexts: [
-        ...getMetadataContexts('formfield label').contexts!,
-        {
-          type: 'component',
-          detail: {
-            name: 'awsui.FormField',
-            label: 'formfield label',
-          },
-        },
-      ],
-    });
+    expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
   });
 });
 

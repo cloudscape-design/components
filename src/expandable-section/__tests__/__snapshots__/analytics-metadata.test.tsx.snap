@@ -1,0 +1,626 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Expandable section renders correct analytics metadata container variant with additional properties 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with additional properties 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Edit",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Edit",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with additional properties 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Info:",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "info",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "label": "Info:",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with header 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with header 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with headerText 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata container variant with headerText 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "container",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata default variant with header 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "default",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata default variant with header 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "default",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata default variant with headerText 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "default",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata default variant with headerText 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "default",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata footer variant with header 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "footer",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata footer variant with header 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "footer",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata footer variant with headerText 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "footer",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata footer variant with headerText 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "footer",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata navigation variant with header 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "navigation",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata navigation variant with header 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "navigation",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata navigation variant with headerText 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "navigation",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata navigation variant with headerText 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "navigation",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with additional properties 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with additional properties 2`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Edit",
+        "name": "awsui.Button",
+        "properties": {
+          "disabled": "false",
+          "variant": "normal",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "Edit",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with additional properties 3`] = `
+{
+  "action": "click",
+  "contexts": [
+    {
+      "detail": {
+        "label": "Info:",
+        "name": "awsui.Link",
+        "properties": {
+          "variant": "info",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "external": "false",
+    "label": "Info:",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with header 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with header 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with headerText 1`] = `
+{
+  "action": "expand",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "false",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Expandable section renders correct analytics metadata stacked variant with headerText 2`] = `
+{
+  "action": "collapse",
+  "contexts": [
+    {
+      "detail": {
+        "label": "header",
+        "name": "awsui.ExpandableSection",
+        "properties": {
+          "expanded": "true",
+          "variant": "stacked",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "header",
+  },
+}
+`;
+
+exports[`Internal ExpandableSection does not render "component" metadata 1`] = `
+{
+  "action": "expand",
+  "detail": {
+    "label": "whatever",
+  },
+}
+`;

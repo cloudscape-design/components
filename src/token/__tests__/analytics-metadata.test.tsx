@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -20,18 +17,6 @@ function renderToken(props: TokenProps) {
   return createWrapper(renderResult.container).findToken()!;
 }
 
-const tokenMetadata: GeneratedAnalyticsMetadataFragment = {
-  contexts: [
-    {
-      type: 'component',
-      detail: {
-        name: 'awsui.Token',
-        label: '',
-      },
-    },
-  ],
-};
-
 describe('Token analytics metadata', () => {
   beforeEach(() => {
     activateAnalyticsMetadata(true);
@@ -43,13 +28,13 @@ describe('Token analytics metadata', () => {
     const simpleToken = wrapper.getElement();
 
     expect(wrapper.findDismiss()).toBe(null);
-    expect(getGeneratedAnalyticsMetadata(simpleToken)).toEqual(tokenMetadata);
+    expect(getGeneratedAnalyticsMetadata(simpleToken)).toMatchSnapshot();
   });
 
   test('Internal Token does not render "component" metadata', () => {
     const renderResult = render(<InternalToken label="test" />);
     const wrapper = createWrapper(renderResult.container).findToken();
-    expect(getGeneratedAnalyticsMetadata(wrapper!.getElement())).toEqual({});
+    expect(getGeneratedAnalyticsMetadata(wrapper!.getElement())).toMatchSnapshot();
   });
 
   test('adds analytics metadata to the token', () => {

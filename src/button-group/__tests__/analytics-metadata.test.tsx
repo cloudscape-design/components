@@ -150,27 +150,27 @@ beforeAll(() => {
 describe('Button Group renders correct analytics metadata', () => {
   test('for icon-button type', () => {
     const wrapper = renderButtonGroup();
-    expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('send')?.getElement() as HTMLElement)).toEqual(
-      getClickEvent('Send', '1', 'send')
-    );
-    expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('send-disabled')?.getElement() as HTMLElement)).toEqual(
-      metadataContexts
-    );
+    expect(
+      getGeneratedAnalyticsMetadata(wrapper.findButtonById('send')?.getElement() as HTMLElement)
+    ).toMatchSnapshot();
+    expect(
+      getGeneratedAnalyticsMetadata(wrapper.findButtonById('send-disabled')?.getElement() as HTMLElement)
+    ).toMatchSnapshot();
   });
   test('for icon-toggle-button type', () => {
     const wrapper = renderButtonGroup();
-    expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('single-like')?.getElement() as HTMLElement)).toEqual(
-      getClickEvent('Like', '3', 'single-like')
-    );
+    expect(
+      getGeneratedAnalyticsMetadata(wrapper.findButtonById('single-like')?.getElement() as HTMLElement)
+    ).toMatchSnapshot();
     expect(
       getGeneratedAnalyticsMetadata(wrapper.findButtonById('single-like-disabled')?.getElement() as HTMLElement)
-    ).toEqual(metadataContexts);
+    ).toMatchSnapshot();
   });
   test('for file-input type', () => {
     const wrapper = renderButtonGroup();
     expect(
       getGeneratedAnalyticsMetadata(wrapper.findButtonById('file-input')?.find('button')?.getElement() as HTMLElement)
-    ).toEqual(getClickEvent('Choose files', '5', 'file-input'));
+    ).toMatchSnapshot();
   });
   describe('for menu-dropdown type', () => {
     [true, false].forEach(dropdownExpandToViewport => {
@@ -202,25 +202,25 @@ describe('Button Group renders correct analytics metadata', () => {
   test('for group type', () => {
     const wrapper = renderButtonGroup();
 
-    expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('send-in-group')?.getElement() as HTMLElement)).toEqual(
-      getClickEvent('Send', '8,1', 'send-in-group')
-    );
+    expect(
+      getGeneratedAnalyticsMetadata(wrapper.findButtonById('send-in-group')?.getElement() as HTMLElement)
+    ).toMatchSnapshot();
 
     expect(
       getGeneratedAnalyticsMetadata(wrapper.findButtonById('single-like-in-group')?.getElement() as HTMLElement)
-    ).toEqual(getClickEvent('Like', '8,2', 'single-like-in-group'));
+    ).toMatchSnapshot();
 
     const buttonDropdownWrapper = wrapper.findMenuById('more-actions-in-group');
     expect(
       getGeneratedAnalyticsMetadata(buttonDropdownWrapper?.findTriggerButton()?.getElement() as HTMLElement)
-    ).toEqual(getExpandEvent('More actions', '8,3'));
+    ).toMatchSnapshot();
     buttonDropdownWrapper?.openDropdown();
     expect(
       getGeneratedAnalyticsMetadata(buttonDropdownWrapper?.findTriggerButton()?.getElement() as HTMLElement)
-    ).toEqual(getExpandEvent('More actions', '8,3', true));
+    ).toMatchSnapshot();
     expect(
       getGeneratedAnalyticsMetadata(buttonDropdownWrapper?.findItemById('cut-in-group')?.getElement() as HTMLElement)
-    ).toEqual(getClickEvent('Cut', '8,3,1', 'cut-in-group', ''));
+    ).toMatchSnapshot();
   });
 });
 describe('Internal Button Group', () => {
@@ -234,9 +234,8 @@ describe('Internal Button Group', () => {
       />
     );
     const wrapper = createWrapper(renderResult.container).findButtonGroup()!;
-    expect(getGeneratedAnalyticsMetadata(wrapper.findButtonById('send')?.getElement() as HTMLElement)).toEqual({
-      action: 'click',
-      detail: { label: 'Send', position: '1', id: 'send' },
-    });
+    expect(
+      getGeneratedAnalyticsMetadata(wrapper.findButtonById('send')?.getElement() as HTMLElement)
+    ).toMatchSnapshot();
   });
 });

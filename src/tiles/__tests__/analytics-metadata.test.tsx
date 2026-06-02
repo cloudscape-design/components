@@ -3,10 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  activateAnalyticsMetadata,
-  GeneratedAnalyticsMetadataFragment,
-} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import FormField from '../../../lib/components/form-field';
@@ -30,57 +27,12 @@ const items: TilesProps['items'] = [
   { value: 'third', label: 'Third choice' },
 ];
 
-const metadataOptions = items.map(item => ({
-  label: item.label,
-  value: item.value,
-  description: item.description,
-})) as any;
-
 const componentLabel = 'radio group example';
 
 function renderTiles(props: TilesProps) {
   const renderResult = render(<Tiles {...props} items={items} ariaLabel={componentLabel} />);
   return createWrapper(renderResult.container).findTiles()!;
 }
-
-const getMetadata = (
-  label: string,
-  position: string,
-  value: string,
-  disabled: boolean = false,
-  currentValue: string | null,
-  currentValueLabel: string = ''
-) => {
-  const eventMetadata = {
-    action: 'select',
-    detail: {
-      label,
-      position,
-      value,
-    },
-  };
-
-  let metadata: GeneratedAnalyticsMetadataFragment = {
-    contexts: [
-      {
-        type: 'component',
-        detail: {
-          name: 'awsui.Tiles',
-          label: componentLabel,
-          properties: {
-            value: `${currentValue}`,
-            valueLabel: `${currentValueLabel}`,
-            options: metadataOptions,
-          },
-        },
-      },
-    ],
-  };
-  if (!disabled) {
-    metadata = { ...metadata, ...eventMetadata };
-  }
-  return metadata;
-};
 
 beforeAll(() => {
   activateAnalyticsMetadata(true);
@@ -91,28 +43,20 @@ describe('Tiles renders correct analytics metadata', () => {
 
     // in the whole tile
     validateComponentNameAndLabels(wrapper.findItemByValue('second')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, 'second', 'Second choice')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toMatchSnapshot();
     // in the radio within the tile
     validateComponentNameAndLabels(wrapper.findInputByValue('first')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toEqual(
-      getMetadata('First choice', '2', 'first', true, 'second', 'Second choice')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('first')!.getElement())).toMatchSnapshot();
   });
   test('with null value', () => {
     const wrapper = renderTiles({ value: null });
-    expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', false, null, '')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findItemByValue('second')!.getElement())).toMatchSnapshot();
   });
   test('readonly', () => {
     const wrapper = renderTiles({ value: 'second', readOnly: true });
 
     validateComponentNameAndLabels(wrapper.findInputByValue('second')!.getElement(), labels);
-    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toEqual(
-      getMetadata('Second choice', '2', 'second', true, 'second', 'Second choice')
-    );
+    expect(getGeneratedAnalyticsMetadata(wrapper.findInputByValue('second')!.getElement())).toMatchSnapshot();
   });
   describe('when rendered in a form field', () => {
     test('without aria label', () => {
@@ -122,29 +66,7 @@ describe('Tiles renders correct analytics metadata', () => {
         </FormField>
       );
       const element = createWrapper(renderResult.container).findTiles()!.getElement()!;
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.Tiles',
-              label: 'form field label',
-              properties: {
-                value: '2',
-                valueLabel: '',
-                options: metadataOptions,
-              },
-            },
-          },
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.FormField',
-              label: 'form field label',
-            },
-          },
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
     test('with aria label', () => {
       const renderResult = render(
@@ -153,29 +75,7 @@ describe('Tiles renders correct analytics metadata', () => {
         </FormField>
       );
       const element = createWrapper(renderResult.container).findTiles()!.getElement()!;
-      expect(getGeneratedAnalyticsMetadata(element)).toEqual({
-        contexts: [
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.Tiles',
-              label: 'aria label',
-              properties: {
-                value: '2',
-                valueLabel: '',
-                options: metadataOptions,
-              },
-            },
-          },
-          {
-            type: 'component',
-            detail: {
-              name: 'awsui.FormField',
-              label: 'form field label',
-            },
-          },
-        ],
-      });
+      expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
     });
   });
 });
@@ -184,5 +84,5 @@ test('Internal Tiles does not render "component" metadata', () => {
   const renderResult = render(<InternalTiles items={items} value="second" />);
   const element = createWrapper(renderResult.container).findTiles()!.findInputByValue('first')!.getElement();
   validateComponentNameAndLabels(element, labels);
-  expect(getGeneratedAnalyticsMetadata(element)).toEqual({});
+  expect(getGeneratedAnalyticsMetadata(element)).toMatchSnapshot();
 });

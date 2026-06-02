@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Internal TextFilter does not render "component" metadata 1`] = `{}`;
+
+exports[`TextFilter renders correct analytics metadata on clearInput 1`] = `
+{
+  "action": "clearInput",
+  "contexts": [
+    {
+      "detail": {
+        "label": "text filter label",
+        "name": "awsui.TextFilter",
+        "properties": {
+          "disabled": "false",
+          "filteringText": "whatever",
+        },
+      },
+      "type": "component",
+    },
+  ],
+  "detail": {
+    "label": "clear",
+  },
+}
+`;
+
+exports[`TextFilter renders correct analytics metadata when disabled 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "text filter label",
+        "name": "awsui.TextFilter",
+        "properties": {
+          "disabled": "true",
+          "filteringText": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;

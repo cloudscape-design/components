@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateInput renders correct analytics metadata on the component with aria label 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.DateInput",
+        "properties": {
+          "value": "2023-12-25",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`DateInput renders correct analytics metadata on the component with empty value 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "label",
+        "name": "awsui.DateInput",
+        "properties": {
+          "value": "",
+        },
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
+
+exports[`DateInput renders correct analytics metadata on the component within a form field 1`] = `
+{
+  "contexts": [
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.DateInput",
+        "properties": {
+          "value": "2023-12-25",
+        },
+      },
+      "type": "component",
+    },
+    {
+      "detail": {
+        "label": "form-field-label",
+        "name": "awsui.FormField",
+      },
+      "type": "component",
+    },
+  ],
+}
+`;
