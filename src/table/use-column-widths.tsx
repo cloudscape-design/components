@@ -6,6 +6,8 @@ import { useResizeObserver, useStableCallback } from '@cloudscape-design/compone
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
+import { TableProps } from './interfaces';
+import { getColumnKey } from './utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
@@ -39,7 +41,7 @@ function updateWidths(
   oldWidths: Map<PropertyKey, number>,
   newWidth: number,
   columnId: PropertyKey
-) {
+): Map<PropertyKey, number> {
   const column = visibleColumns.find(column => column.id === columnId);
   let minWidth = DEFAULT_COLUMN_WIDTH;
   if (typeof column?.width === 'number' && column.width < DEFAULT_COLUMN_WIDTH) {
@@ -61,14 +63,18 @@ interface WidthsContext {
   getColumnStyles(sticky: boolean, columnId: PropertyKey): ColumnWidthStyle;
   columnWidths: Map<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
+  updateGroup: (groupId: PropertyKey, newWidth: number) => void;
   setCell: (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => void;
+  setCol: (columnId: PropertyKey, node: null | HTMLElement) => void;
 }
 
 const WidthsContext = createContext<WidthsContext>({
   getColumnStyles: () => ({}),
   columnWidths: new Map(),
   updateColumn: () => {},
+  updateGroup: () => {},
   setCell: () => {},
+  setCol: () => {},
 });
 
 interface WidthProviderProps {
@@ -76,15 +82,24 @@ interface WidthProviderProps {
   resizableColumns: boolean | undefined;
   containerRef: React.RefObject<HTMLElement>;
   children: React.ReactNode;
+  groupLeafMap?: Map<string, string[]>;
 }
 
-export function ColumnWidthsProvider({ visibleColumns, resizableColumns, containerRef, children }: WidthProviderProps) {
+export function ColumnWidthsProvider({
+  visibleColumns,
+  resizableColumns,
+  containerRef,
+  groupLeafMap,
+  children,
+}: WidthProviderProps) {
   const visibleColumnsRef = useRef<PropertyKey[] | null>(null);
   const containerWidthRef = useRef(0);
   const [columnWidths, setColumnWidths] = useState<null | Map<PropertyKey, number>>(null);
 
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const colsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  const hasColElements = useRef(false);
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
   const setCell = (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => {
     const ref = sticky ? stickyCellsRef : cellsRef;
@@ -94,19 +109,32 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
       ref.current.delete(columnId);
     }
   };
+  const setCol = (columnId: PropertyKey, node: null | HTMLElement) => {
+    if (node) {
+      colsRef.current.set(columnId, node);
+      hasColElements.current = true;
+    } else {
+      colsRef.current.delete(columnId);
+      hasColElements.current = colsRef.current.size > 0;
+    }
+  };
 
   const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
-    const column = visibleColumns.find(column => column.id === columnId);
-    if (!column) {
-      return {};
-    }
+    const column = visibleColumns.find(col => col.id === columnId);
 
     if (sticky) {
-      return {
-        width:
-          cellsRef.current.get(column.id)?.getBoundingClientRect().width ||
-          (columnWidths?.get(column.id) ?? column.width),
-      };
+      // For sticky headers, mirror the primary cell's width.
+      // Try DOM measurement first (handles columns not in visibleColumns like selection).
+      const measured = cellsRef.current.get(columnId)?.getBoundingClientRect().width;
+      /* istanbul ignore next: getBoundingClientRect returns 0 in JSDOM */
+      if (measured) {
+        return { width: measured };
+      }
+      return { width: columnWidths?.get(columnId) ?? column?.width };
+    }
+
+    if (!column) {
+      return {};
     }
 
     if (resizableColumns && columnWidths) {
@@ -116,11 +144,11 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
         0
       );
       if (isLastColumn && containerWidthRef.current > totalWidth) {
-        return { width: 'auto', minWidth: column?.minWidth };
-      } else {
-        return { width: columnWidths.get(column.id), minWidth: column?.minWidth };
+        return { width: 'auto', minWidth: column.minWidth };
       }
+      return { width: columnWidths.get(column.id), minWidth: column.minWidth };
     }
+
     return {
       width: column.width,
       minWidth: column.minWidth,
@@ -131,13 +159,29 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // Imperatively sets width style for a cell avoiding React state.
   // This allows setting the style as soon container's size change is observed.
   const updateColumnWidths = useStableCallback(() => {
-    for (const { id } of visibleColumns) {
-      const element = cellsRef.current.get(id);
-      if (element) {
-        setElementWidths(element, getColumnStyles(false, id));
+    // When col elements exist (grouped columns), apply widths to <col> elements.
+    // With table-layout:fixed, <col> widths control the actual column widths.
+    if (hasColElements.current) {
+      for (const { id } of visibleColumns) {
+        const colElement = colsRef.current.get(id);
+        if (colElement) {
+          setElementWidths(colElement, getColumnStyles(false, id));
+        }
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
+        }
+      }
+    } else {
+      for (const { id } of visibleColumns) {
+        const element = cellsRef.current.get(id);
+        if (element) {
+          setElementWidths(element, getColumnStyles(false, id));
+        }
       }
     }
-    // Sticky column widths must be synchronized once all real column widths are assigned.
+
+    // Sticky column widths must always be synchronized regardless of columnWidths state.
     for (const { id } of visibleColumns) {
       const element = stickyCellsRef.current.get(id);
       if (element) {
@@ -195,10 +239,69 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     setColumnWidths(columnWidths => updateWidths(visibleColumns, columnWidths ?? new Map(), newWidth, columnId));
   }
 
+  function updateGroup(groupId: PropertyKey, newGroupWidth: number) {
+    if (!columnWidths || !groupLeafMap) {
+      return;
+    }
+
+    const leafIds = groupLeafMap.get(String(groupId)) ?? [];
+    const rightmostLeaf = leafIds[leafIds.length - 1];
+    if (!rightmostLeaf) {
+      return;
+    }
+
+    let currentGroupWidth = 0;
+    for (const id of leafIds) {
+      currentGroupWidth += columnWidths.get(id) || DEFAULT_COLUMN_WIDTH;
+    }
+
+    const delta = newGroupWidth - currentGroupWidth;
+    const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
+    updateColumn(rightmostLeaf, currentLeafWidth + delta);
+  }
+
   return (
-    <WidthsContext.Provider value={{ getColumnStyles, columnWidths: columnWidths ?? new Map(), updateColumn, setCell }}>
+    <WidthsContext.Provider
+      value={{ getColumnStyles, columnWidths: columnWidths ?? new Map(), updateColumn, updateGroup, setCell, setCol }}
+    >
       {children}
     </WidthsContext.Provider>
+  );
+}
+
+/*
+ * Renders a <colgroup> with <col> elements for each leaf column.
+ * With table-layout:fixed, <col> widths control actual column widths,
+ * which makes colspan headers automatically span the correct width.
+ * Must be rendered inside ColumnWidthsProvider.
+ */
+export function TableColGroup({
+  visibleColumnDefinitions,
+  hasSelection,
+  sticky = false,
+  selectionColumnId,
+}: {
+  visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
+  hasSelection: boolean;
+  sticky?: boolean;
+  selectionColumnId?: PropertyKey;
+}) {
+  const { getColumnStyles, setCol } = useColumnWidths();
+  return (
+    <colgroup>
+      {hasSelection && (
+        <col
+          style={sticky && selectionColumnId ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+        />
+      )}
+      {visibleColumnDefinitions.map((column, colIndex) => {
+        const columnId = getColumnKey(column, colIndex);
+        if (sticky) {
+          return <col key={String(columnId)} style={{ width: getColumnStyles(true, columnId).width }} />;
+        }
+        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
+      })}
+    </colgroup>
   );
 }
 

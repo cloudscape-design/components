@@ -24,6 +24,7 @@ import { getComponentAnalyticsMetadata } from './analytics-metadata/utils';
 import ContentDisplayPreference from './content-display';
 import { CollectionPreferencesProps } from './interfaces';
 import {
+  collectVisibleIds,
   ContentDensityPreference,
   copyPreferences,
   CustomPreference,
@@ -138,9 +139,10 @@ export default function CollectionPreferences({
 
       // When both are used contentDisplayPreference takes preference and so we always prefer to use this as our visible columns if available
       if (preferences?.contentDisplay) {
-        tableComponentContext.preferencesRef.current.visibleColumns = preferences?.contentDisplay
-          .filter(column => column.visible)
-          .map(column => column.id);
+        tableComponentContext.preferencesRef.current.visibleColumns = collectVisibleIds(
+          preferences.contentDisplay,
+          true
+        );
       } else if (preferences?.visibleContent) {
         tableComponentContext.preferencesRef.current.visibleColumns = [...preferences.visibleContent];
       }
