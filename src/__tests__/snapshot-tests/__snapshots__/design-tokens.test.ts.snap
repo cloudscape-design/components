@@ -169,10 +169,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -689,6 +685,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -701,6 +704,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -2299,6 +2309,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -2959,13 +2976,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
-          },
-        },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
           },
         },
         "size-vertical-input": {
@@ -3402,10 +3412,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -3922,6 +3928,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -3934,6 +3947,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -5532,6 +5552,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -6192,13 +6219,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
-          },
-        },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
           },
         },
         "size-vertical-input": {
@@ -6635,10 +6655,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -7155,6 +7171,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -7167,6 +7190,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -8765,6 +8795,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -9427,13 +9464,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -9867,10 +9897,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -10388,6 +10414,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -10400,6 +10433,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -11998,6 +12038,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -12660,13 +12707,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -13100,10 +13140,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -13621,6 +13657,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -13633,6 +13676,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#99cbe4",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#545b64",
           },
         },
         "color-board-placeholder-active": {
@@ -15231,6 +15281,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -15893,13 +15950,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -16333,10 +16383,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -16854,6 +16900,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#2a2e33",
+            "light": "#2a2e33",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -16866,6 +16919,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#0a4a74",
             "light": "#0a4a74",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#879596",
+            "light": "#879596",
           },
         },
         "color-board-placeholder-active": {
@@ -18462,6 +18522,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#1a2029",
+            "light": "#1a2029",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -19126,13 +19193,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -19566,10 +19626,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
       "$value": "2px",
-    },
-    "border-width-icon-x-small": {
-      "$description": "The visual stroke width of extra small icons.",
-      "$value": "1.5px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
@@ -20087,6 +20143,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#fffef0",
       },
     },
+    "color-background-toggle-button-normal-default": {
+      "$description": "The default background color of normal toggle buttons.",
+      "$value": {
+        "dark": "#2a2e33",
+        "light": "#ffffff",
+      },
+    },
     "color-background-toggle-button-normal-pressed": {
       "$description": "The background color of normal toggle buttons in pressed state.",
       "$value": {
@@ -20099,6 +20162,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#0a4a74",
         "light": "#99cbe4",
+      },
+    },
+    "color-background-toggle-default": {
+      "$description": "The default background color of the toggle track in its unchecked state.",
+      "$value": {
+        "dark": "#879596",
+        "light": "#545b64",
       },
     },
     "color-board-placeholder-active": {
@@ -21697,6 +21767,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
+    "color-text-calendar-date-selected": {
+      "$description": "The text color of selected dates in the calendar.",
+      "$value": {
+        "dark": "#1a2029",
+        "light": "#ffffff",
+      },
+    },
     "color-text-chat-bubble-incoming": {
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
@@ -22359,13 +22436,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
-    "size-icon-x-small": {
-      "$description": "The size of extra small icons (12×12).",
-      "$value": {
-        "comfortable": "12px",
-        "compact": "12px",
-      },
-    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -22804,10 +22874,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -23325,6 +23391,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -23337,6 +23410,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -24935,6 +25015,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -25597,13 +25684,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -26037,10 +26117,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -26558,6 +26634,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -26570,6 +26653,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -28166,6 +28256,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
           },
         },
         "color-text-chat-bubble-incoming": {
@@ -28830,13 +28927,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -29270,10 +29360,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -29791,6 +29877,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -29803,6 +29896,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -31401,6 +31501,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -32063,13 +32170,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -32503,10 +32603,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -33024,6 +33120,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -33036,6 +33139,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -34634,6 +34744,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -35296,13 +35413,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -35736,10 +35846,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -36257,6 +36363,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -36269,6 +36382,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -37867,6 +37987,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -38529,13 +38656,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -38969,10 +39089,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -39490,6 +39606,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#fffef0",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -39502,6 +39625,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#b8e7ff",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#424650",
           },
         },
         "color-board-placeholder-active": {
@@ -41100,6 +41230,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#ffffff",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -41762,13 +41899,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -42202,10 +42332,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -42723,6 +42849,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -42735,6 +42868,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -44328,6 +44468,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-button-primary-hover": {
           "$description": "The hover text color of primary buttons.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
@@ -44995,13 +45142,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -45435,10 +45575,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -45956,6 +46092,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#191100",
           },
         },
+        "color-background-toggle-button-normal-default": {
+          "$description": "The default background color of normal toggle buttons.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-background-toggle-button-normal-pressed": {
           "$description": "The background color of normal toggle buttons in pressed state.",
           "$value": {
@@ -45968,6 +46111,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#002b66",
             "light": "#002b66",
+          },
+        },
+        "color-background-toggle-default": {
+          "$description": "The default background color of the toggle track in its unchecked state.",
+          "$value": {
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-board-placeholder-active": {
@@ -47566,6 +47716,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-calendar-date-selected": {
+          "$description": "The text color of selected dates in the calendar.",
+          "$value": {
+            "dark": "#161d26",
+            "light": "#161d26",
+          },
+        },
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
@@ -48228,13 +48385,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -48668,10 +48818,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
       "$value": "2px",
-    },
-    "border-width-icon-x-small": {
-      "$description": "The visual stroke width of extra small icons.",
-      "$value": "1.5px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
@@ -49189,6 +49335,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#fffef0",
       },
     },
+    "color-background-toggle-button-normal-default": {
+      "$description": "The default background color of normal toggle buttons.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
     "color-background-toggle-button-normal-pressed": {
       "$description": "The background color of normal toggle buttons in pressed state.",
       "$value": {
@@ -49201,6 +49354,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#002b66",
         "light": "#b8e7ff",
+      },
+    },
+    "color-background-toggle-default": {
+      "$description": "The default background color of the toggle track in its unchecked state.",
+      "$value": {
+        "dark": "#8c8c94",
+        "light": "#424650",
       },
     },
     "color-board-placeholder-active": {
@@ -50799,6 +50959,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ffffff",
       },
     },
+    "color-text-calendar-date-selected": {
+      "$description": "The text color of selected dates in the calendar.",
+      "$value": {
+        "dark": "#161d26",
+        "light": "#ffffff",
+      },
+    },
     "color-text-chat-bubble-incoming": {
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
@@ -51459,13 +51626,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
-      },
-    },
-    "size-icon-x-small": {
-      "$description": "The size of extra small icons (12×12).",
-      "$value": {
-        "comfortable": "12px",
-        "compact": "12px",
       },
     },
     "size-vertical-input": {
