@@ -77,6 +77,7 @@ const getMetadata = (itemPosition?: number, stackItems = false, expanded?: boole
         detail: {
           name: 'awsui.Flashbar',
           label: 'Notifications',
+          ...(stackItems && itemsCount > 0 ? { description: 'Notifications bar11110' } : {}),
           properties: {
             stackItems: `${!!stackItems}`,
             itemsCount: `${itemsCount}`,
