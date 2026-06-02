@@ -47,6 +47,9 @@ function PageButton({
   ...rest
 }: PageButtonProps) {
   function handleClick(event: React.MouseEvent) {
+    if (disabled) {
+      return;
+    }
     event.preventDefault();
     onClick(pageIndex);
   }
@@ -61,7 +64,8 @@ function PageButton({
         )}
         type="button"
         aria-label={ariaLabel}
-        disabled={disabled}
+        aria-disabled={disabled}
+        tabIndex={disabled ? -1 : 0}
         onClick={handleClick}
         aria-current={isCurrent}
         {...(disabled
