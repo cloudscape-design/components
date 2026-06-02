@@ -8,9 +8,9 @@ import {
   Box,
   Button,
   Divider,
+  Drawer,
   FormField,
   Icon,
-  PanelLayout,
   RadioGroup,
   Slider,
   SpaceBetween,
@@ -55,7 +55,7 @@ const DEFAULTS = {
   topNavBorder: 'true',
   sideNavBorder: 'true',
   handleBg: 'side-nav',
-  toggleIcon: 'arrows',
+  toggleIcon: 'panel',
   togglePosition: 'above-list',
   toggleAlign: 'start',
 } as const;
@@ -665,7 +665,7 @@ export default function SideNavigationLayoutPage() {
 
   const onPanelResize = useCallback(
     (event: any) => {
-      const size = event.detail.panelSize;
+      const size = event.detail.size;
       if (collapsed) {
         if (size > effectiveCollapsedSize + SNAP_BUFFER) {
           setPanelSize(Math.max(size, EXPANDED_SIZE));
@@ -779,6 +779,8 @@ export default function SideNavigationLayoutPage() {
   const mainContent = (
     <div
       style={{
+        flex: 1,
+        overflow: 'auto',
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
         gridTemplateRows: '90px 200px 200px',
@@ -798,18 +800,23 @@ export default function SideNavigationLayoutPage() {
   );
 
   const navAndContent = (
-    <PanelLayout
-      panelSize={panelSize}
-      onPanelResize={onPanelResize}
-      mainFocusable={{ ariaLabel: 'Main content' }}
-      maxPanelSize={MAX_SIZE}
-      minPanelSize={effectiveCollapsedSize}
-      panelFocusable={{ ariaLabel: 'Navigation' }}
-      panelPosition="side-start"
-      resizable={resizable}
-      mainContent={mainContent}
-      panelContent={sideNavPanel}
-    />
+    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <Drawer
+        ariaLabel="Navigation"
+        placement="start"
+        resizable={resizable}
+        size={panelSize}
+        minSize={effectiveCollapsedSize}
+        maxSize={MAX_SIZE}
+        onResize={onPanelResize}
+        hideCloseAction={true}
+        disableContentPaddings={true}
+        role="presentation"
+      >
+        {sideNavPanel}
+      </Drawer>
+      {mainContent}
+    </div>
   );
 
   return (
@@ -870,7 +877,7 @@ export default function SideNavigationLayoutPage() {
             </div>
           </div>
         )}
-        <div style={{ flex: 1, overflow: 'hidden' }}>{navAndContent}</div>
+        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>{navAndContent}</div>
       </div>
 
       {/* Config drawer */}
