@@ -203,7 +203,7 @@ export function AppLayoutToolbarImplementation({
       <ToolbarContainer hasAiDrawer={!!activeAiDrawerId}>
         {hasNavigation && (
           <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
-            <AppLayoutBuiltInErrorBoundary>
+            <AppLayoutBuiltInErrorBoundary appLayoutPart="toolbar-trigger-nav">
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle ?? undefined}
                 ariaExpanded={!drawerExpandedMode && navigationOpen}
@@ -226,7 +226,7 @@ export function AppLayoutToolbarImplementation({
           </nav>
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
-          <AppLayoutBuiltInErrorBoundary>
+          <AppLayoutBuiltInErrorBoundary appLayoutPart="breadcrumbs">
             <ToolbarBreadcrumbsSection
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
@@ -239,7 +239,7 @@ export function AppLayoutToolbarImplementation({
           bottomDrawers?.length ||
           (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <div className={clsx(styles['universal-toolbar-drawers'])}>
-            <AppLayoutBuiltInErrorBoundary>
+            <AppLayoutBuiltInErrorBoundary appLayoutPart="toolbar-triggers">
               <DrawerTriggers
                 ariaLabels={ariaLabels}
                 activeDrawerId={activeDrawerId ?? null}

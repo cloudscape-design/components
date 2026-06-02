@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import ErrorBoundary from '../../../lib/components/error-boundary';
+import { metrics } from '../../../lib/components/internal/metrics';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
@@ -35,8 +36,10 @@ function renderComponent(jsx: React.ReactElement) {
   };
 }
 
+let sendPanoramaMetricSpy: jest.SpyInstance;
 beforeEach(() => {
   jest.resetAllMocks();
+  sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
 });
 
 describe('AppLayout error boundaries: errors in different areas does not crash the entire app layout', () => {
@@ -66,6 +69,10 @@ describe('AppLayout error boundaries: errors in different areas does not crash t
             expect(onError).toHaveBeenCalled();
           }
           expect(consoleSpy).toHaveBeenCalled();
+          expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-app-layout-error-boundary-fired', {
+            appLayoutPart: expect.any(String),
+            errorMessage: expect.any(String),
+          });
         };
 
         test('left drawer content', () => {

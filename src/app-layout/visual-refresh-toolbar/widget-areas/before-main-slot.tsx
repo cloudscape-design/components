@@ -123,7 +123,7 @@ export const BeforeMainSlotImplementationInternal = ({
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && styles.hidden
           )}
         >
-          <AppLayoutBuiltInErrorBoundary>
+          <AppLayoutBuiltInErrorBoundary appLayoutPart="nav">
             <AppLayoutNavigation
               appLayoutInternals={appLayoutState.appLayoutInternals}
               bottomDrawerReportedSize={bottomDrawerReportedSize}
@@ -136,7 +136,7 @@ export const BeforeMainSlotImplementationInternal = ({
 };
 
 export const BeforeMainSlotImplementation = (props: SkeletonPartProps) => (
-  <AppLayoutBuiltInErrorBoundary>
+  <AppLayoutBuiltInErrorBoundary appLayoutPart="before-main-slot">
     <BeforeMainSlotImplementationInternal {...props} />
   </AppLayoutBuiltInErrorBoundary>
 );
