@@ -184,9 +184,5 @@ const customCssPropertiesList = [
   'styleItemCardBorderRadius',
   'styleItemCardBorderWidthDefault',
   'styleItemCardBoxShadowDefault',
-  // Icon custom properties
-  'iconSizeOverride',
-  'iconStrokeWidthOverride',
-  'iconStrokeScale',
 ];
 module.exports = customCssPropertiesList;
