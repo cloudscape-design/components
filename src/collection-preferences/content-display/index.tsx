@@ -254,81 +254,80 @@ export default function ContentDisplayPreference({
         {i18n('contentDisplayPreference.description', description)}
       </p>
 
-        {/* Filter input */}
-        {enableColumnFiltering && (
-          <div className={getClassName('text-filter')}>
-            <InternalTextFilter
-              filteringText={columnFilteringText}
-              filteringPlaceholder={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
-                i18nStrings?.columnFilteringPlaceholder
+      {/* Filter input */}
+      {enableColumnFiltering && (
+        <div className={getClassName('text-filter')}>
+          <InternalTextFilter
+            filteringText={columnFilteringText}
+            filteringPlaceholder={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
+              i18nStrings?.columnFilteringPlaceholder
+            )}
+            filteringAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
+              i18nStrings?.columnFilteringAriaLabel
+            )}
+            filteringClearAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+              i18nStrings?.columnFilteringClearFilterText
+            )}
+            onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
+            countText={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringCountText',
+              i18nStrings?.columnFilteringCountText?.(filteredOptions.length),
+              format => format({ count: filteredOptions.length })
+            )}
+          />
+        </div>
+      )}
+
+      {noResults && (
+        <div className={getClassName('no-match')}>
+          <InternalSpaceBetween size="s" alignItems="center">
+            <InternalBox margin={{ top: 'm' }}>
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
+                i18nStrings?.columnFilteringNoMatchText
               )}
-              filteringAriaLabel={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
-                i18nStrings?.columnFilteringAriaLabel
-              )}
-              filteringClearAriaLabel={i18n(
+            </InternalBox>
+            <InternalButton onClick={() => setColumnFilteringText('')}>
+              {i18n(
                 'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
                 i18nStrings?.columnFilteringClearFilterText
               )}
-              onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
-              countText={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringCountText',
-                i18nStrings?.columnFilteringCountText?.(filteredOptions.length),
-                format => format({ count: filteredOptions.length })
-              )}
-            />
-          </div>
-        )}
-
-        {noResults && (
-          <div className={getClassName('no-match')}>
-            <InternalSpaceBetween size="s" alignItems="center">
-              <InternalBox margin={{ top: 'm' }}>
-                {i18n(
-                  'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
-                  i18nStrings?.columnFilteringNoMatchText
-                )}
-              </InternalBox>
-              <InternalButton onClick={() => setColumnFilteringText('')}>
-                {i18n(
-                  'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
-                  i18nStrings?.columnFilteringClearFilterText
-                )}
-              </InternalButton>
-            </InternalSpaceBetween>
-          </div>
-        )}
-
-        <div role="application" aria-labelledby={titleId}>
-          {optionTree && filteredTree ? (
-            <HierarchicalContentDisplay
-              tree={isFiltering ? filteredTree : optionTree}
-              onToggle={handleToggle}
-              onTreeChange={newTree => onChange(toContentDisplayItems(newTree))}
-              ariaLabelledby={titleId}
-              ariaDescribedby={descriptionId}
-              i18nStrings={listI18nStrings}
-              sortDisabled={isFiltering}
-            />
-          ) : (
-            <InternalList
-              items={filteredOptions}
-              sortable={true}
-              sortDisabled={isFiltering}
-              disableItemPaddings={true}
-              ariaLabelledby={titleId}
-              ariaDescribedby={descriptionId}
-              i18nStrings={listI18nStrings}
-              onSortingChange={({ detail: { items } }) => onChange(items.map(({ id, visible }) => ({ id, visible })))}
-              renderItem={item => ({
-                id: item.id,
-                announcementLabel: item.label,
-                content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
-              })}
-            />
-          )}
+            </InternalButton>
+          </InternalSpaceBetween>
         </div>
+      )}
+
+      <div role="application" aria-labelledby={titleId}>
+        {optionTree && filteredTree ? (
+          <HierarchicalContentDisplay
+            tree={isFiltering ? filteredTree : optionTree}
+            onToggle={handleToggle}
+            onTreeChange={newTree => onChange(toContentDisplayItems(newTree))}
+            ariaLabelledby={titleId}
+            ariaDescribedby={descriptionId}
+            i18nStrings={listI18nStrings}
+            sortDisabled={isFiltering}
+          />
+        ) : (
+          <InternalList
+            items={filteredOptions}
+            sortable={true}
+            sortDisabled={isFiltering}
+            disableItemPaddings={true}
+            ariaLabelledby={titleId}
+            ariaDescribedby={descriptionId}
+            i18nStrings={listI18nStrings}
+            onSortingChange={({ detail: { items } }) => onChange(items.map(({ id, visible }) => ({ id, visible })))}
+            renderItem={item => ({
+              id: item.id,
+              announcementLabel: item.label,
+              content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
+            })}
+          />
+        )}
       </div>
     </div>
   );
