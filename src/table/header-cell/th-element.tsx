@@ -38,6 +38,9 @@ export interface TableThElementProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   ariaLabel?: string;
+  colSpan?: number;
+  rowSpan?: number;
+  scope?: 'col' | 'colgroup';
 }
 
 export function TableThElement({
@@ -60,6 +63,9 @@ export function TableThElement({
   variant,
   ariaLabel,
   tableVariant,
+  colSpan,
+  rowSpan,
+  scope,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -104,6 +110,9 @@ export function TableThElement({
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+      {...(scope ? { scope } : {})}
+      {...(colSpan && colSpan > 1 ? { colSpan } : {})}
+      {...(rowSpan && rowSpan > 1 ? { rowSpan } : {})}
     >
       {children}
     </th>
