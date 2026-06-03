@@ -126,6 +126,7 @@ export type ColorPaletteTokenName =
   | 'colorNeutralGrey400'
   | 'colorNeutralGrey450'
   | 'colorNeutralGrey500'
+  | 'colorNeutralGrey550'
   | 'colorNeutralGrey600'
   | 'colorNeutralGrey650'
   | 'colorNeutralGrey700'

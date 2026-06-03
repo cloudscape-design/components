@@ -31,6 +31,7 @@ const tokens: StyleDictionary.ColorPaletteDictionary = {
     'colorNeutralGrey400',
     'colorNeutralGrey450',
     'colorNeutralGrey500',
+    'colorNeutralGrey550',
     'colorNeutralGrey600',
     'colorNeutralGrey650',
     'colorNeutralGrey700',
@@ -91,7 +92,7 @@ const referenceTokens: ReferenceTokens = {
       300: brand.colorIndigo300,
       400: brand.colorIndigo400,
       500: brand.colorIndigo500,
-      600: brand.colorIndigo600, // a11y
+      600: brand.colorIndigo600,
       700: brand.colorIndigo700,
       800: brand.colorIndigo800,
       900: brand.colorIndigo900,
@@ -107,7 +108,8 @@ const referenceTokens: ReferenceTokens = {
       350: brand.colorNeutralGrey350,
       400: brand.colorNeutralGrey400,
       450: brand.colorNeutralGrey450,
-      500: brand.colorNeutralGrey500, // a11y
+      500: brand.colorNeutralGrey500,
+      550: brand.colorNeutralGrey550,
       600: brand.colorNeutralGrey600,
       650: brand.colorNeutralGrey650,
       700: brand.colorNeutralGrey700,

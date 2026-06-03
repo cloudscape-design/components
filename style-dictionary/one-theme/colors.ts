@@ -21,17 +21,17 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Normal button ─────────────────────────────────────────────────────────
   colorBorderButtonNormalDefault: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
-  colorBorderButtonNormalHover: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey650}' },
-  colorBorderButtonNormalActive: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey600}' },
+  colorBorderButtonNormalHover: { light: '{colorNeutralGrey550}', dark: '{colorNeutralGrey500}' },
+  colorBorderButtonNormalActive: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey500}' },
   colorBorderButtonNormalDisabled: { light: '{colorNeutralGrey400}', dark: '{colorNeutralGrey700}' },
-  colorBackgroundButtonNormalDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundButtonNormalDefault: { light: '{colorNeutralGrey100}', dark: '{colorNeutralGrey850}' },
   colorBackgroundButtonNormalHover: { light: '{colorNeutralGrey150}', dark: '{colorNeutralGrey800}' },
-  colorBackgroundButtonNormalActive: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey850}' },
+  colorBackgroundButtonNormalActive: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey850}' },
   colorBackgroundButtonNormalDisabled: { light: '{colorWhite}', dark: '{colorNeutralGrey950}' },
   colorTextButtonNormalDefault: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey350}' },
-  colorTextButtonNormalHover: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey250}' },
-  colorTextButtonNormalActive: { light: '{colorNeutralGrey700}', dark: '{colorNeutralGrey300}' },
-  colorTextButtonNormalDisabled: { light: '{colorNeutralGrey500}', dark: '{colorNeutralGrey650}' },
+  colorTextButtonNormalHover: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey250}' },
+  colorTextButtonNormalActive: { light: '{colorNeutralGrey850}', dark: '{colorNeutralGrey350}' },
+  colorTextButtonNormalDisabled: { light: '{colorNeutralGrey450}', dark: '{colorNeutralGrey600}' },
 
   // ── Tertiary button ─────────────────────────────────────────────────────────
   colorBackgroundButtonLinkDefault: { light: 'transparent', dark: 'transparent' },
