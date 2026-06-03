@@ -21,6 +21,8 @@ const i18nMessages = {
       "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
     'contentDisplayPreference.liveAnnouncementDndStarted': 'Picked up item at position {position} of {total}',
     'contentDisplayPreference.liveAnnouncementDndDiscarded': 'Reordering canceled',
+    'contentDisplayPreference.liveAnnouncementDndGroupLabel':
+      '{label}, {count, plural, one {1 item} other {{count} items}}',
     'contentDisplayPreference.liveAnnouncementDndItemReordered':
       '{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}',
     'contentDisplayPreference.liveAnnouncementDndItemCommitted':
