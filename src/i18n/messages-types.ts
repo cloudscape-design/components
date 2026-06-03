@@ -143,6 +143,10 @@ export interface I18nFormatArgTypes {
       total: string | number;
     };
     'contentDisplayPreference.liveAnnouncementDndDiscarded': never;
+    'contentDisplayPreference.liveAnnouncementDndGroupLabel': {
+      label: string;
+      count: number;
+    };
     'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder': never;
     'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel': never;
     'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText': never;

@@ -119,6 +119,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `liveAnnouncementDndItemCommitted` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
    * - `dragHandleAriaDescription` (string) - (Optional) Adds an ARIA description for the drag handle.
    * - `dragHandleAriaLabel` (string) - (Optional) Adds an ARIA label for the drag handle.
+   * - `liveAnnouncementDndGroupLabel` ((label: string, count: number) => string) - (Optional) Adds a label for a group item to be announced by screen readers during drag and drop operations.
    *
    * Each option contains the following:
    * - `id` (string) - Corresponds to a table column `id`.
@@ -245,6 +246,7 @@ export namespace CollectionPreferencesProps {
     groups?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionGroup>;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
+    liveAnnouncementDndGroupLabel?: (label: string, count: number) => string;
   }
 
   export interface ContentDisplayColumn {

@@ -89,6 +89,7 @@ interface HierarchicalContentDisplayProps {
   i18nStrings: SortableAreaProps.DndAreaI18nStrings;
   sortDisabled: boolean;
   parentGroupLabel?: string;
+  groupLabelFormatter: (label: string, count: number) => string;
 }
 
 function GroupItem({
@@ -97,12 +98,14 @@ function GroupItem({
   onChildrenChange,
   i18nStrings,
   sortDisabled,
+  groupLabelFormatter,
 }: {
   node: OptionGroupNode;
   onToggle: (id: string) => void;
   onChildrenChange: (children: OptionTreeNode[]) => void;
   i18nStrings: SortableAreaProps.DndAreaI18nStrings;
   sortDisabled: boolean;
+  groupLabelFormatter: (label: string, count: number) => string;
 }) {
   return (
     <div data-item-type="group">
@@ -122,6 +125,7 @@ function GroupItem({
               sortDisabled={sortDisabled}
               ariaLabel={node.label}
               parentGroupLabel={node.label}
+              groupLabelFormatter={groupLabelFormatter}
             />
           </div>
         )}
@@ -140,6 +144,7 @@ function HierarchicalContentDisplay({
   i18nStrings,
   sortDisabled,
   parentGroupLabel,
+  groupLabelFormatter,
 }: HierarchicalContentDisplayProps) {
   return (
     <InternalList
@@ -156,7 +161,7 @@ function HierarchicalContentDisplay({
         id: node.id,
         announcementLabel:
           node.type === 'group'
-            ? `${node.label}, ${node.children.length} items`
+            ? groupLabelFormatter(node.label, node.children.length)
             : parentGroupLabel
               ? `${node.label}, ${parentGroupLabel}`
               : node.label,
@@ -172,6 +177,7 @@ function HierarchicalContentDisplay({
               }
               i18nStrings={i18nStrings}
               sortDisabled={sortDisabled}
+              groupLabelFormatter={groupLabelFormatter}
             />
           ) : (
             <ContentDisplayOption option={node} onToggle={() => onToggle(node.id)} />
@@ -203,6 +209,12 @@ export default function ContentDisplayPreference({
   const descriptionId = `${idPrefix}-description`;
 
   const listI18nStrings = getDndI18nStrings(i18n, dndProps);
+  const groupLabelFormatter = (label: string, count: number) =>
+    i18n(
+      'contentDisplayPreference.liveAnnouncementDndGroupLabel',
+      dndProps.liveAnnouncementDndGroupLabel?.(label, count) ?? `${label}, ${count} ${count === 1 ? 'item' : 'items'}`,
+      format => format({ label, count })
+    );
   const hasGroups = !!groups && groups.length > 0;
   const isFiltering = columnFilteringText.trim().length > 0;
 
@@ -254,81 +266,81 @@ export default function ContentDisplayPreference({
         {i18n('contentDisplayPreference.description', description)}
       </p>
 
-        {/* Filter input */}
-        {enableColumnFiltering && (
-          <div className={getClassName('text-filter')}>
-            <InternalTextFilter
-              filteringText={columnFilteringText}
-              filteringPlaceholder={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
-                i18nStrings?.columnFilteringPlaceholder
+      {/* Filter input */}
+      {enableColumnFiltering && (
+        <div className={getClassName('text-filter')}>
+          <InternalTextFilter
+            filteringText={columnFilteringText}
+            filteringPlaceholder={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
+              i18nStrings?.columnFilteringPlaceholder
+            )}
+            filteringAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
+              i18nStrings?.columnFilteringAriaLabel
+            )}
+            filteringClearAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+              i18nStrings?.columnFilteringClearFilterText
+            )}
+            onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
+            countText={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringCountText',
+              i18nStrings?.columnFilteringCountText?.(filteredOptions.length),
+              format => format({ count: filteredOptions.length })
+            )}
+          />
+        </div>
+      )}
+
+      {noResults && (
+        <div className={getClassName('no-match')}>
+          <InternalSpaceBetween size="s" alignItems="center">
+            <InternalBox margin={{ top: 'm' }}>
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
+                i18nStrings?.columnFilteringNoMatchText
               )}
-              filteringAriaLabel={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
-                i18nStrings?.columnFilteringAriaLabel
-              )}
-              filteringClearAriaLabel={i18n(
+            </InternalBox>
+            <InternalButton onClick={() => setColumnFilteringText('')}>
+              {i18n(
                 'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
                 i18nStrings?.columnFilteringClearFilterText
               )}
-              onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
-              countText={i18n(
-                'contentDisplayPreference.i18nStrings.columnFilteringCountText',
-                i18nStrings?.columnFilteringCountText?.(filteredOptions.length),
-                format => format({ count: filteredOptions.length })
-              )}
-            />
-          </div>
-        )}
-
-        {noResults && (
-          <div className={getClassName('no-match')}>
-            <InternalSpaceBetween size="s" alignItems="center">
-              <InternalBox margin={{ top: 'm' }}>
-                {i18n(
-                  'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
-                  i18nStrings?.columnFilteringNoMatchText
-                )}
-              </InternalBox>
-              <InternalButton onClick={() => setColumnFilteringText('')}>
-                {i18n(
-                  'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
-                  i18nStrings?.columnFilteringClearFilterText
-                )}
-              </InternalButton>
-            </InternalSpaceBetween>
-          </div>
-        )}
-
-        <div role="application" aria-labelledby={titleId}>
-          {optionTree && filteredTree ? (
-            <HierarchicalContentDisplay
-              tree={isFiltering ? filteredTree : optionTree}
-              onToggle={handleToggle}
-              onTreeChange={newTree => onChange(toContentDisplayItems(newTree))}
-              ariaLabelledby={titleId}
-              ariaDescribedby={descriptionId}
-              i18nStrings={listI18nStrings}
-              sortDisabled={isFiltering}
-            />
-          ) : (
-            <InternalList
-              items={filteredOptions}
-              sortable={true}
-              sortDisabled={isFiltering}
-              disableItemPaddings={true}
-              ariaLabelledby={titleId}
-              ariaDescribedby={descriptionId}
-              i18nStrings={listI18nStrings}
-              onSortingChange={({ detail: { items } }) => onChange(items.map(({ id, visible }) => ({ id, visible })))}
-              renderItem={item => ({
-                id: item.id,
-                announcementLabel: item.label,
-                content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
-              })}
-            />
-          )}
+            </InternalButton>
+          </InternalSpaceBetween>
         </div>
+      )}
+
+      <div role="application" aria-labelledby={titleId}>
+        {optionTree && filteredTree ? (
+          <HierarchicalContentDisplay
+            tree={isFiltering ? filteredTree : optionTree}
+            onToggle={handleToggle}
+            onTreeChange={newTree => onChange(toContentDisplayItems(newTree))}
+            ariaLabelledby={titleId}
+            ariaDescribedby={descriptionId}
+            i18nStrings={listI18nStrings}
+            sortDisabled={isFiltering}
+            groupLabelFormatter={groupLabelFormatter}
+          />
+        ) : (
+          <InternalList
+            items={filteredOptions}
+            sortable={true}
+            sortDisabled={isFiltering}
+            disableItemPaddings={true}
+            ariaLabelledby={titleId}
+            ariaDescribedby={descriptionId}
+            i18nStrings={listI18nStrings}
+            onSortingChange={({ detail: { items } }) => onChange(items.map(({ id, visible }) => ({ id, visible })))}
+            renderItem={item => ({
+              id: item.id,
+              announcementLabel: item.label,
+              content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
+            })}
+          />
+        )}
       </div>
     </div>
   );
