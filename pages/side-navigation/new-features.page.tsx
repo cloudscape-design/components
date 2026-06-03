@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, FormField, SpaceBetween } from '~components';
+import { FormField, SpaceBetween } from '~components';
 import Icon from '~components/icon';
 import RadioGroup from '~components/radio-group';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
@@ -150,7 +150,7 @@ export const omegaItems: SideNavigationProps.Item[] = [
   // { type: 'link', icon: <Icon name="gen-ai" />, text: 'Amazon Q', href: '#/q' },
 ];
 
-const courtyardItems: SideNavigationProps.Item[] = [
+export const courtyardItems: SideNavigationProps.Item[] = [
   {
     type: 'link',
     icon: (
@@ -189,7 +189,7 @@ const courtyardItems: SideNavigationProps.Item[] = [
         }
       />
     ),
-    text: 'Workspaces',
+    text: 'Projects',
     href: '#/workspaces',
   },
   {
@@ -232,9 +232,20 @@ const courtyardItems: SideNavigationProps.Item[] = [
   {
     type: 'link',
     icon: (
-      <Box fontSize="heading-s" color="inherit" fontWeight="bold">
-        $
-      </Box>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
     ),
     text: 'Billing',
     href: '#/billing',
@@ -256,6 +267,156 @@ const courtyardItems: SideNavigationProps.Item[] = [
     ),
     text: 'Support',
     href: '#/support',
+    external: true,
+  },
+];
+
+export const bedrockItems: SideNavigationProps.Item[] = [
+  {
+    type: 'link',
+    text: 'Home',
+    href: '#/home',
+    icon: (
+      <Icon
+        svg={
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path
+              d="M2 7L8 2L14 7V13C14 13.5523 13.5523 14 13 14H3C2.44772 14 2 13.5523 2 13V7Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+            <path
+              d="M6 14V9H10V14"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+        }
+      />
+    ),
+  },
+  {
+    type: 'link',
+    text: 'Models',
+    href: '#/models',
+    icon: (
+      <Icon
+        svg={
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="M3 13 Q1 13 1 9 Q1 2 8 2 Q15 2 15 9 Q15 13 13 13 L3 13Z"></path>
+            <line x1="8" y1="2" x2="8" y2="13"></line>
+            <path d="M4 6 Q5.5 5 5.5 7"></path>
+            <path d="M3.5 10 Q5 9 5.5 11"></path>
+            <path d="M12 6 Q10.5 5 10.5 7"></path>
+            <path d="M12.5 10 Q11 9 10.5 11"></path>
+          </svg>
+        }
+      />
+    ),
+  },
+  {
+    type: 'section-group',
+    title: 'Project scope',
+    items: [
+      {
+        type: 'link',
+        text: 'Dashboard',
+        href: '#/dashboard',
+        icon: (
+          <Icon
+            svg={
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="1,8 4,8 5.5,4 7,12 8.5,6 10,9 11,8 15,8"></polyline>
+              </svg>
+            }
+          />
+        ),
+      },
+      {
+        type: 'link',
+        text: 'Evaluate',
+        href: '#/evaluate',
+        icon: (
+          <Icon
+            svg={
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <path d="M3 13 Q1 13 1 9 Q1 2 8 2 Q15 2 15 9 Q15 13 13 13 L3 13Z"></path>
+                <line x1="8" y1="2" x2="8" y2="13"></line>
+                <path d="M4 6 Q5.5 5 5.5 7"></path>
+                <path d="M3.5 10 Q5 9 5.5 11"></path>
+                <path d="M12 6 Q10.5 5 10.5 7"></path>
+                <path d="M12.5 10 Q11 9 10.5 11"></path>
+              </svg>
+            }
+          />
+        ),
+      },
+      {
+        type: 'link',
+        text: 'Reservations',
+        href: '#/reservations',
+        icon: (
+          <Icon
+            svg={
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" strokeWidth="1.5"></rect>
+                <path d="M2 6H14" stroke="currentColor" strokeWidth="1.5"></path>
+                <circle cx="5" cy="9.5" r="0.75" fill="currentColor"></circle>
+                <circle cx="8" cy="9.5" r="0.75" fill="currentColor"></circle>
+                <circle cx="11" cy="9.5" r="0.75" fill="currentColor"></circle>
+              </svg>
+            }
+          />
+        ),
+      },
+      { type: 'link', text: 'Getting started', href: '#/getting-started', icon: <Icon name="status-info" /> },
+      { type: 'link', text: 'Live API docs', href: '#/live-api-docs', icon: <Icon name="file" /> },
+    ],
+  },
+  {
+    type: 'section-group',
+    title: 'Account scope',
+    items: [
+      { type: 'link', text: 'Account dashboard', href: '#/account-dashboard', icon: <Icon name="grid-view" /> },
+      { type: 'link', text: 'Projects', href: '#/projects', icon: <Icon name="folder" /> },
+      { type: 'link', text: 'API keys', href: '#/api-keys', icon: <Icon name="key" /> },
+    ],
+  },
+  { type: 'divider' },
+  {
+    type: 'link',
+    text: 'Bedrock Runtime Console',
+    href: 'https://console.aws.amazon.com/bedrock',
     external: true,
   },
 ];

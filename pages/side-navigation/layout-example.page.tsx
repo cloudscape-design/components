@@ -28,7 +28,7 @@ import {
   motionEasingResponsive,
 } from '~design-tokens';
 
-import { omegaItems } from './new-features.page';
+import { bedrockItems, courtyardItems, omegaItems } from './new-features.page';
 import { generateThemeConfigOneTheme } from './one-theme-config';
 
 // =============================================================================
@@ -59,10 +59,11 @@ const DEFAULTS = {
   qPosition: 'right',
   qOpen: 'false',
   qSize: '0',
+  itemSet: 'omega',
 } as const;
 
 const PRESETS: Record<string, Record<string, string>> = {
-  Omega: { resizable: 'false', sideNavBg: 'layout', sideNavBorder: 'false', qPosition: 'left' },
+  Omega: { resizable: 'false', sideNavBg: 'layout', sideNavBorder: 'false', qPosition: 'left', itemSet: 'omega' },
   Juice: {
     layout: 'top-full',
     resizable: 'false',
@@ -71,6 +72,8 @@ const PRESETS: Record<string, Record<string, string>> = {
     qPosition: 'right',
     alignment: 'top',
     itemHeight: '32',
+    itemSet: 'juice',
+    toggleAlign: 'start',
   },
   'AWS Settings': {
     layout: 'side-only',
@@ -79,6 +82,16 @@ const PRESETS: Record<string, Record<string, string>> = {
     toggleAlign: 'end',
     alignment: 'top',
     itemHeight: '32',
+    itemSet: 'courtyard',
+  },
+  Bedrock: {
+    layout: 'top-full',
+    resizable: 'true',
+    sideNavBg: 'container',
+    sideNavBorder: 'true',
+    alignment: 'top',
+    itemSet: 'bedrock',
+    toggleIcon: 'arrows',
   },
 };
 
@@ -193,7 +206,7 @@ function TopNav({
           d="M27.1 12c-.4-.51-2.6-.24-3.59-.12-.3 0-.34-.23-.07-.42 1.75-1.23 4.63-.88 5-.46.37.42-.09 3.3-1.74 4.68-.25.21-.49.09-.38-.18.34-.95 1.17-3.02.78-3.5z"
         />
       </svg>
-      <span style={{ blockSize: '65%' }}>
+      <span style={{ blockSize: '55%' }}>
         <Divider orientation="vertical" />
       </span>
       <button
@@ -203,17 +216,17 @@ function TopNav({
           border: 'none',
           background: 'none',
           cursor: 'pointer',
-          padding: '4px',
+          padding: '0',
           display: 'flex',
           alignItems: 'center',
           borderRadius: '4px',
         }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="24" height="24" rx="6" fill="url(#q-gradient)" />
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="26" height="26" rx="6" />
           <path
             d="M18.22 7.41L12.87 4.32C12.63 4.18 12.32 4.11 12 4.11C11.68 4.11 11.37 4.18 11.13 4.32L5.78 7.41C5.3 7.68 4.91 8.36 4.91 8.91V15.09C4.91 15.64 5.3 16.31 5.78 16.59L11.14 19.68C11.38 19.82 11.69 19.89 12.01 19.89C12.33 19.89 12.64 19.82 12.88 19.68L18.24 16.59C18.72 16.31 19.11 15.64 19.11 15.09V8.91C19.11 8.36 18.72 7.68 18.24 7.41H18.22ZM12 17.88L6.91 14.94V9.06L12 6.12L17.09 9.06V13.78L14 12V11.26C14 11 13.86 10.77 13.64 10.64L12.36 9.9C12.25 9.84 12.12 9.8 12 9.8C11.88 9.8 11.75 9.83 11.64 9.9L10.36 10.64C10.14 10.77 10 11.01 10 11.26V12.74C10 13 10.14 13.23 10.36 13.36L11.64 14.1C11.75 14.16 11.88 14.2 12 14.2C12.12 14.2 12.25 14.17 12.36 14.1L13 13.73L16.09 15.51L12 17.87V17.88Z"
-            fill="white"
+            fill="url(#q-gradient)"
           />
           <defs>
             <radialGradient
@@ -233,10 +246,13 @@ function TopNav({
           </defs>
         </svg>
       </button>
-      <span style={{ blockSize: '65%' }}>
+      {/* <span style={{ blockSize: '55%' }}>
         <Divider orientation="vertical" />
-      </span>
-      <nav aria-label="Breadcrumbs" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      </span> */}
+      <nav
+        aria-label="Breadcrumbs"
+        style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}
+      >
         <Box color="text-status-inactive">[Omega/Harbor] Projects</Box>
         <Box color="text-status-inactive">/</Box>
         <Box color="text-status-inactive">
@@ -253,7 +269,6 @@ function TopNav({
           </SpaceBetween>
         </Box>
       </nav>
-      <div style={{ flex: 1 }} />
 
       <Button iconName="notification" variant="icon" ariaLabel="Notifications" />
       <Button iconName="support" variant="icon" ariaLabel="User" />
@@ -281,6 +296,8 @@ function ConfigDrawer({
   setItemHeight,
   itemGap,
   setItemGap,
+  itemSet,
+  setItemSet,
   alignment,
   setAlignment,
   layout,
@@ -312,6 +329,8 @@ function ConfigDrawer({
   setItemHeight: (v: number) => void;
   itemGap: number;
   setItemGap: (v: number) => void;
+  itemSet: string;
+  setItemSet: (v: string) => void;
   alignment: string;
   setAlignment: (v: string) => void;
   layout: string;
@@ -426,16 +445,30 @@ function ConfigDrawer({
           <FormField label={`Item gap: ${itemGap}px`}>
             <Slider value={itemGap} min={0} max={12} onChange={({ detail }) => setItemGap(detail.value)} />
           </FormField>
-          <FormField label="Items alignment">
-            <RadioGroup
-              value={alignment}
-              onChange={({ detail }) => setAlignment(detail.value)}
-              items={[
-                { value: 'top', label: 'Top' },
-                { value: 'center', label: 'Center' },
-              ]}
-            />
-          </FormField>
+          <SpaceBetween size="s">
+            <FormField label="Items alignment">
+              <RadioGroup
+                value={alignment}
+                onChange={({ detail }) => setAlignment(detail.value)}
+                items={[
+                  { value: 'top', label: 'Top' },
+                  { value: 'center', label: 'Center' },
+                ]}
+              />
+            </FormField>
+            <FormField label="Navigation items">
+              <RadioGroup
+                value={itemSet}
+                onChange={({ detail }) => setItemSet(detail.value)}
+                items={[
+                  { value: 'omega', label: 'Omega' },
+                  { value: 'juice', label: 'Juice' },
+                  { value: 'courtyard', label: 'AWS Settings' },
+                  { value: 'bedrock', label: 'Bedrock' },
+                ]}
+              />
+            </FormField>
+          </SpaceBetween>
         </div>
 
         <SpaceBetween size="s">
@@ -500,20 +533,24 @@ function ToggleWrapper({
   position,
   collapsed,
   align,
+  headerText,
 }: {
   children: React.ReactNode;
   position: 'top' | 'above-list' | 'below-list' | 'bottom';
   collapsed: boolean;
   align: 'start' | 'center' | 'end';
+  headerText?: string;
 }) {
   const isAbsolute = position === 'top' || position === 'bottom';
-  const justifyContent = collapsed
-    ? 'center'
-    : align === 'start'
-      ? 'flex-start'
-      : align === 'end'
-        ? 'flex-end'
-        : 'center';
+  const showHeader = !collapsed && align !== 'center' && headerText;
+  const headerElement = showHeader && (
+    <div style={{ flex: 1, paddingBlockStart: '2px' }}>
+      <Box variant="h4" padding={{ bottom: 'n' }}>
+        {headerText}
+      </Box>
+      {headerText === 'Amazon Bedrock' && <Box color="text-body-secondary">Bedrock Mantle</Box>}
+    </div>
+  );
   return (
     <div
       style={{
@@ -523,13 +560,17 @@ function ToggleWrapper({
           zIndex: 1,
           ...(position === 'top' ? { insetBlockStart: 0 } : { insetBlockEnd: 0 }),
         }),
-        paddingBlock: '8px',
+        paddingBlockStart: '12px',
         paddingInline: `${collapsed ? '0px' : '20px 16px'}`,
         display: 'flex',
-        justifyContent,
+        alignItems: 'flex-start',
+        gap: '4px',
+        justifyContent: collapsed || align === 'center' ? 'center' : align === 'end' ? 'flex-end' : 'flex-start',
       }}
     >
+      {align === 'end' && headerElement}
       {children}
+      {align === 'start' && headerElement}
     </div>
   );
 }
@@ -555,6 +596,7 @@ export default function SideNavigationLayoutPage() {
   const [qOpen, setQOpen] = useState(p('qOpen') === 'true');
   const [qPosition, setQPosition] = useState<'left' | 'right'>(p('qPosition') as any);
   const [qSize, setQSize] = useState(p('qOpen') === 'true' ? Number(p('qSize')) || 300 : Number(p('qSize')));
+  const [itemSet, setItemSet] = useState(p('itemSet'));
   const [darkMode, setDarkMode] = useState(p('dark') === 'true');
   const [compact, setCompact] = useState(p('compact') === 'true');
   const [topNavBg, setTopNavBg] = useState<'container' | 'layout'>(p('topNavBg') as any);
@@ -588,6 +630,7 @@ export default function SideNavigationLayoutPage() {
         toggleAlign,
         qOpen: String(qOpen),
         qPosition,
+        itemSet,
       };
       return Object.keys(merged).every(k => !current[k] || current[k] === merged[k]);
     })?.[0] ?? null;
@@ -612,6 +655,7 @@ export default function SideNavigationLayoutPage() {
       toggleAlign,
       qOpen: String(qOpen),
       qPosition,
+      itemSet,
     };
     const q = new URLSearchParams();
     for (const [key, value] of Object.entries(current)) {
@@ -640,9 +684,8 @@ export default function SideNavigationLayoutPage() {
     toggleAlign,
     qOpen,
     qPosition,
+    itemSet,
   ]);
-
-  // Collapsed width: 75 total with handle (panel), 60 total without (content adds handle on top)
   const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + 16 : COLLAPSED_SIZE;
   const collapsed = panelSize < COLLAPSE_THRESHOLD && panelSize <= effectiveCollapsedSize + SNAP_BUFFER;
 
@@ -751,6 +794,8 @@ export default function SideNavigationLayoutPage() {
     />
   );
 
+  const headerText = itemSet === 'bedrock' ? 'Amazon Bedrock' : itemSet === 'courtyard' ? 'Settings' : undefined;
+
   const sideNavPanel = (
     <div
       style={{
@@ -762,7 +807,7 @@ export default function SideNavigationLayoutPage() {
       }}
     >
       {togglePosition === 'top' && (
-        <ToggleWrapper position="top" collapsed={collapsed} align={toggleAlign}>
+        <ToggleWrapper position="top" collapsed={collapsed} align={toggleAlign} headerText={headerText}>
           {toggleButton}
         </ToggleWrapper>
       )}
@@ -776,31 +821,30 @@ export default function SideNavigationLayoutPage() {
           paddingBlockStart: togglePosition === 'top' ? '40px' : undefined,
           paddingBlockEnd: togglePosition === 'bottom' ? '40px' : undefined,
           ...alignmentMap[alignment],
+          minInlineSize: resizable ? panelSize - 16 : panelSize,
         }}
       >
         {togglePosition === 'above-list' && (
-          <ToggleWrapper position="above-list" collapsed={collapsed} align={toggleAlign}>
+          <ToggleWrapper position="above-list" collapsed={collapsed} align={toggleAlign} headerText={headerText}>
             {toggleButton}
           </ToggleWrapper>
         )}
-        <div style={{ minInlineSize: 'max-content' }}>
-          <SideNavigation
-            activeHref={activeHref}
-            items={omegaItems}
-            expandIconPosition={expandIconPosition}
-            collapsed={collapsed}
-            variant="highlighted"
-            onFollow={onFollow}
-          />
-        </div>
+        <SideNavigation
+          activeHref={activeHref}
+          items={itemSet === 'omega' ? omegaItems : itemSet === 'bedrock' ? bedrockItems : courtyardItems}
+          expandIconPosition={expandIconPosition}
+          collapsed={collapsed}
+          variant="highlighted"
+          onFollow={onFollow}
+        />
         {togglePosition === 'below-list' && (
-          <ToggleWrapper position="below-list" collapsed={collapsed} align={toggleAlign}>
+          <ToggleWrapper position="below-list" collapsed={collapsed} align={toggleAlign} headerText={headerText}>
             {toggleButton}
           </ToggleWrapper>
         )}
       </div>
       {togglePosition === 'bottom' && (
-        <ToggleWrapper position="bottom" collapsed={collapsed} align={toggleAlign}>
+        <ToggleWrapper position="bottom" collapsed={collapsed} align={toggleAlign} headerText={headerText}>
           {toggleButton}
         </ToggleWrapper>
       )}
@@ -1051,6 +1095,13 @@ export default function SideNavigationLayoutPage() {
                 setToggleAlign(merged.toggleAlign as any);
                 setQOpen(merged.qOpen === 'true');
                 setQPosition(merged.qPosition as any);
+                setItemSet(merged.itemSet);
+                const hrefs: Record<string, string> = {
+                  omega: '#/overview',
+                  courtyard: '#/workspaces',
+                  bedrock: '#/home',
+                };
+                setActiveHref(hrefs[merged.itemSet] ?? '#/overview');
               }}
               items={Object.keys(PRESETS).map(name => ({ value: name, label: name }))}
             />
@@ -1060,6 +1111,8 @@ export default function SideNavigationLayoutPage() {
             setItemHeight={setItemHeight}
             itemGap={itemGap}
             setItemGap={setItemGap}
+            itemSet={itemSet}
+            setItemSet={setItemSet}
             alignment={alignment}
             setAlignment={setAlignment}
             layout={layout}

@@ -155,6 +155,13 @@ $expandable-icon-negative-margin: 19px;
   margin-inline: calc(-1 * #{$item-padding-inline});
   padding-block: 0;
   padding-inline: 0;
+
+  &-collapsed {
+    margin-block: awsui.$space-scaled-xxxl;
+    margin-inline: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+  }
 }
 
 // ==========================================================================
@@ -239,15 +246,27 @@ $expandable-icon-negative-margin: 19px;
 // Section groups
 // ==========================================================================
 .section-group {
-  @include styles.font-heading-m;
-  margin-block: 0;
+  @include styles.font-heading-s;
+  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
   margin-inline: 0;
+
+  .list-variant-root--first > .list-item:first-child > & {
+    margin-block-start: 0px;
+  }
 }
 
 .section-group-title {
   display: flex;
   min-block-size: $item-height;
   align-items: center;
+  margin-block: 0;
+  padding-block: awsui.$space-scaled-xxs;
+  &--eyebrow {
+    @include styles.font-body-s;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+    color: awsui.$color-text-body-secondary;
+  }
 }
 
 .section-header-text {

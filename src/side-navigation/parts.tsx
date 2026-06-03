@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalBox from '../box/internal';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -139,9 +138,34 @@ export function NavigationItemsList({
   items.forEach((item, index) => {
     const itemid = index + 1;
     const itemPosition = `${position ? `${position},` : ''}${itemid}`;
-    // In collapsed mode, only selectable items are visible (links, link-groups, ELGs).
-    // Sections and section-groups are non-selectable containers — skip them.
+    // In collapsed mode, sections/section-groups show their child items (with icons) but not headers.
     if (collapsed && (item.type === 'section' || item.type === 'section-group')) {
+      const sectionItems = (item as SideNavigationProps.Section).items ?? [];
+      const iconItems = sectionItems.filter(child => (child as SideNavigationProps.Link).icon);
+      if (iconItems.length === 0) {
+        return;
+      }
+      // Start a new list group for the section's items to get section spacing
+      currentListIndex = lists.length;
+      lists[currentListIndex] = { listVariant: 'section-group', items: [] };
+      iconItems.forEach((child, childIndex) => {
+        const childPosition = `${position ? `${position},` : ''}${index + 1},${childIndex + 1}`;
+        lists[currentListIndex].items!.push({
+          element: (
+            <li key={childPosition} className={clsx(styles['list-item'], collapsed && styles['list-item--collapsed'])}>
+              <Link
+                definition={child as any}
+                activeHref={activeHref}
+                fireFollow={fireFollow}
+                fireChange={fireChange}
+                position={childPosition}
+                collapsed={collapsed}
+                highlightVariant={highlightVariant}
+              />
+            </li>
+          ),
+        });
+      });
       return;
     }
     if (collapsed && item.type !== 'divider' && !item.icon) {
@@ -321,6 +345,7 @@ export function NavigationItemsList({
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
                 [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
                 [styles['list-variant-root--collapsed']]: list.listVariant === 'root' && collapsed,
+                [styles['list-variant-section-group-collapsed']]: list.listVariant === 'section-group' && collapsed,
                 [styles['list-variant-root--symmetric']]: list.listVariant === 'root' && expandIconPosition === 'end',
                 [styles[`expand-icon-end`]]: expandIconPosition === 'end',
               })}
@@ -449,10 +474,15 @@ function Link({ definition, activeHref, fireFollow, position, collapsed, highlig
         {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
       >
         <ItemIcon icon={definition.icon} collapsed={collapsed} />
-        {!collapsed && <span className={analyticsSelectors['link-text']}>{definition.text}</span>}
-        {!collapsed && definition.external && (
-          <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
-            <InternalIcon name="external" className={styles['external-icon']} />
+        {!collapsed && (
+          <span className={analyticsSelectors['link-text']}>
+            {definition.text}
+            {!collapsed && definition.external && (
+              <span aria-label={renderedExternalIconAriaLabel} role={renderedExternalIconAriaLabel ? 'img' : undefined}>
+                {' '}
+                <InternalIcon name="external" className={styles['external-icon']} />
+              </span>
+            )}
           </span>
         )}
       </a>
@@ -582,10 +612,10 @@ function SectionGroup({
   }
   return (
     <div className={styles['section-group']}>
-      <InternalBox className={styles['section-group-title']} variant="h3">
+      <h3 className={clsx(styles['section-group-title'], highlightVariant && styles['section-group-title--eyebrow'])}>
         <ItemIcon icon={definition.icon} />
         {definition.title}
-      </InternalBox>
+      </h3>
       <NavigationItemsList
         variant="section-group"
         items={definition.items}
