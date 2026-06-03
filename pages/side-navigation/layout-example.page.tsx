@@ -35,7 +35,6 @@ import { generateThemeConfigOneTheme } from './one-theme-config';
 // Constants
 // =============================================================================
 const COLLAPSED_SIZE = 52;
-const HANDLE_WIDTH_CONTENT = 20; // includes padding when handle is on layout bg
 const EXPANDED_SIZE = 225;
 const MAX_SIZE = 400;
 const COLLAPSE_THRESHOLD = 185;
@@ -54,11 +53,34 @@ const DEFAULTS = {
   sideNavBg: 'container',
   topNavBorder: 'true',
   sideNavBorder: 'true',
-  handleBg: 'side-nav',
   toggleIcon: 'panel',
   togglePosition: 'above-list',
   toggleAlign: 'start',
+  qPosition: 'right',
+  qOpen: 'false',
+  qSize: '0',
 } as const;
+
+const PRESETS: Record<string, Record<string, string>> = {
+  Omega: { resizable: 'false', sideNavBg: 'layout', sideNavBorder: 'false', qPosition: 'left' },
+  Juice: {
+    layout: 'top-full',
+    resizable: 'false',
+    sideNavBg: 'container',
+    sideNavBorder: 'true',
+    qPosition: 'right',
+    alignment: 'top',
+    itemHeight: '32',
+  },
+  'AWS Settings': {
+    layout: 'side-only',
+    resizable: 'true',
+    sideNavBg: 'container',
+    toggleAlign: 'end',
+    alignment: 'top',
+    itemHeight: '32',
+  },
+};
 
 // =============================================================================
 // Layout Tile Images (inline SVG thumbnails)
@@ -125,11 +147,13 @@ function LayoutSvg({ type }: { type: string }) {
 function TopNav({
   drawerOpen,
   onSettingsClick,
+  onQClick,
   bg,
   border,
 }: {
   drawerOpen: boolean;
   onSettingsClick: () => void;
+  onQClick: () => void;
   bg: 'container' | 'layout';
   border: boolean;
 }) {
@@ -137,6 +161,7 @@ function TopNav({
     <div
       style={{
         blockSize: '48px',
+        boxSizing: 'border-box',
         backgroundColor: bg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
         display: 'flex',
         alignItems: 'center',
@@ -173,6 +198,7 @@ function TopNav({
       </span>
       <button
         aria-label="Amazon Q"
+        onClick={onQClick}
         style={{
           border: 'none',
           background: 'none',
@@ -275,8 +301,6 @@ function ConfigDrawer({
   setTopNavBorder,
   sideNavBorder,
   setSideNavBorder,
-  handleBg,
-  setHandleBg,
   toggleIcon,
   setToggleIcon,
   togglePosition,
@@ -308,8 +332,6 @@ function ConfigDrawer({
   setTopNavBorder: (v: boolean) => void;
   sideNavBorder: boolean;
   setSideNavBorder: (v: boolean) => void;
-  handleBg: 'side-nav' | 'content';
-  setHandleBg: (v: 'side-nav' | 'content') => void;
   toggleIcon: 'arrows' | 'panel';
   setToggleIcon: (v: 'arrows' | 'panel') => void;
   togglePosition: 'top' | 'above-list' | 'below-list' | 'bottom';
@@ -337,7 +359,6 @@ function ConfigDrawer({
               setSideNavBg(DEFAULTS.sideNavBg as any);
               setTopNavBorder(true);
               setSideNavBorder(true);
-              setHandleBg(DEFAULTS.handleBg as any);
               setToggleIcon(DEFAULTS.toggleIcon as any);
               setTogglePosition(DEFAULTS.togglePosition as any);
               setToggleAlign(DEFAULTS.toggleAlign as any);
@@ -392,18 +413,6 @@ function ConfigDrawer({
           <Toggle checked={resizable} onChange={({ detail }) => setResizable(detail.checked)}>
             Resizable
           </Toggle>
-          {resizable && (
-            <FormField label="Resize handle background color" description="Where does resize handle appear?">
-              <RadioGroup
-                value={handleBg}
-                onChange={({ detail }) => setHandleBg(detail.value as 'side-nav' | 'content')}
-                items={[
-                  { value: 'side-nav', label: 'Side nav' },
-                  { value: 'content', label: 'Main content' },
-                ]}
-              />
-            </FormField>
-          )}
         </SpaceBetween>
 
         {/* No SpaceBetween here because sliders come with their own padding that provide enough gap */}
@@ -424,7 +433,6 @@ function ConfigDrawer({
               items={[
                 { value: 'top', label: 'Top' },
                 { value: 'center', label: 'Center' },
-                { value: 'bottom', label: 'Bottom' },
               ]}
             />
           </FormField>
@@ -515,7 +523,8 @@ function ToggleWrapper({
           zIndex: 1,
           ...(position === 'top' ? { insetBlockStart: 0 } : { insetBlockEnd: 0 }),
         }),
-        padding: `8px ${collapsed ? '0px' : '20px'}`,
+        paddingBlock: '8px',
+        paddingInline: `${collapsed ? '0px' : '20px 16px'}`,
         display: 'flex',
         justifyContent,
       }}
@@ -534,6 +543,7 @@ export default function SideNavigationLayoutPage() {
 
   const [activeHref, setActiveHref] = useState('#/overview');
   const [panelSize, setPanelSize] = useState(EXPANDED_SIZE);
+  const [isResizing, setIsResizing] = useState(false);
   const expandIconPosition: SideNavigationProps.ExpandIconPosition = 'end';
   const [itemHeight, setItemHeight] = useState(Number(p('itemHeight')));
   const [itemGap, setItemGap] = useState(Number(p('itemGap')));
@@ -542,18 +552,45 @@ export default function SideNavigationLayoutPage() {
   const [themeEnabled, setThemeEnabled] = useState(p('theme') === 'true');
   const [resizable, setResizable] = useState(p('resizable') === 'true');
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const [qOpen, setQOpen] = useState(p('qOpen') === 'true');
+  const [qPosition, setQPosition] = useState<'left' | 'right'>(p('qPosition') as any);
+  const [qSize, setQSize] = useState(p('qOpen') === 'true' ? Number(p('qSize')) || 300 : Number(p('qSize')));
   const [darkMode, setDarkMode] = useState(p('dark') === 'true');
   const [compact, setCompact] = useState(p('compact') === 'true');
   const [topNavBg, setTopNavBg] = useState<'container' | 'layout'>(p('topNavBg') as any);
   const [sideNavBg, setSideNavBg] = useState<'container' | 'layout'>(p('sideNavBg') as any);
   const [topNavBorder, setTopNavBorder] = useState(p('topNavBorder') === 'true');
   const [sideNavBorder, setSideNavBorder] = useState(p('sideNavBorder') === 'true');
-  const [handleBg, setHandleBg] = useState<'side-nav' | 'content'>(p('handleBg') as any);
   const [toggleIcon, setToggleIcon] = useState<'arrows' | 'panel'>(p('toggleIcon') as any);
   const [togglePosition, setTogglePosition] = useState<'top' | 'above-list' | 'below-list' | 'bottom'>(
     p('togglePosition') as any
   );
   const [toggleAlign, setToggleAlign] = useState<'start' | 'center' | 'end'>(p('toggleAlign') as any);
+
+  const activePreset =
+    Object.entries(PRESETS).find(([, preset]) => {
+      const merged: Record<string, string> = { ...DEFAULTS, ...preset };
+      const current: Record<string, string> = {
+        itemHeight: String(itemHeight),
+        itemGap: String(itemGap),
+        alignment,
+        layout,
+        theme: String(themeEnabled),
+        resizable: String(resizable),
+        dark: String(darkMode),
+        compact: String(compact),
+        topNavBg,
+        sideNavBg,
+        topNavBorder: String(topNavBorder),
+        sideNavBorder: String(sideNavBorder),
+        toggleIcon,
+        togglePosition,
+        toggleAlign,
+        qOpen: String(qOpen),
+        qPosition,
+      };
+      return Object.keys(merged).every(k => !current[k] || current[k] === merged[k]);
+    })?.[0] ?? null;
 
   // Sync config to URL
   useEffect(() => {
@@ -570,10 +607,11 @@ export default function SideNavigationLayoutPage() {
       sideNavBg,
       topNavBorder: String(topNavBorder),
       sideNavBorder: String(sideNavBorder),
-      handleBg,
       toggleIcon,
       togglePosition,
       toggleAlign,
+      qOpen: String(qOpen),
+      qPosition,
     };
     const q = new URLSearchParams();
     for (const [key, value] of Object.entries(current)) {
@@ -597,24 +635,18 @@ export default function SideNavigationLayoutPage() {
     sideNavBg,
     topNavBorder,
     sideNavBorder,
-    handleBg,
     toggleIcon,
     togglePosition,
     toggleAlign,
+    qOpen,
+    qPosition,
   ]);
 
   // Collapsed width: 75 total with handle (panel), 60 total without (content adds handle on top)
-  const handleWidth = handleBg === 'content' ? HANDLE_WIDTH_CONTENT : 16;
-  const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + handleWidth : COLLAPSED_SIZE;
+  const effectiveCollapsedSize = resizable ? COLLAPSED_SIZE + 16 : COLLAPSED_SIZE;
   const collapsed = panelSize < COLLAPSE_THRESHOLD && panelSize <= effectiveCollapsedSize + SNAP_BUFFER;
 
-  // Grid column width for side-full top nav (accounts for handle and border).
-  // When handleBg='content', the border is between the nav and handle, so subtract 1px + handle width.
-  // When handleBg='side-nav', the border is on the content side, so column = full panelSize.
-  const topNavColumnWidth =
-    handleBg === 'content' && resizable
-      ? (collapsed ? COLLAPSED_SIZE : panelSize - HANDLE_WIDTH_CONTENT) - 1
-      : panelSize;
+  // Grid column width for side-full top nav
 
   // Snap panel size when collapsed size changes (e.g. switching handle mode while collapsed)
   useEffect(() => {
@@ -626,17 +658,12 @@ export default function SideNavigationLayoutPage() {
 
   useEffect(() => {
     const theme = themeEnabled ? (generateThemeConfigOneTheme() as any) : { tokens: {} };
-    if (handleBg === 'content') {
-      theme.tokens.colorBackgroundLayoutPanelContent = 'transparent';
-    } else if (sideNavBg === 'layout') {
-      theme.tokens.colorBackgroundLayoutPanelContent = colorBackgroundLayoutMain;
-    }
     theme.tokens.sizeSideNavigationItemHeight = `${itemHeight}px`;
     theme.tokens.spaceSideNavigationItemGap = `${itemGap}px`;
     theme.tokens.spaceSideNavigationItemCollapsedGap = `${Math.min(Math.round(itemGap * 2), 12)}px`;
     const { reset } = applyTheme({ theme });
     return reset;
-  }, [themeEnabled, sideNavBg, handleBg, layout, itemHeight, itemGap]);
+  }, [themeEnabled, sideNavBg, layout, itemHeight, itemGap]);
 
   useEffect(() => {
     applyMode(darkMode ? Mode.Dark : Mode.Light);
@@ -665,6 +692,7 @@ export default function SideNavigationLayoutPage() {
 
   const onPanelResize = useCallback(
     (event: any) => {
+      setIsResizing(true);
       const size = event.detail.size;
       if (collapsed) {
         if (size > effectiveCollapsedSize + SNAP_BUFFER) {
@@ -680,6 +708,15 @@ export default function SideNavigationLayoutPage() {
     },
     [collapsed, effectiveCollapsedSize]
   );
+
+  useEffect(() => {
+    if (!isResizing) {
+      return;
+    }
+    const onPointerUp = () => setIsResizing(false);
+    document.addEventListener('pointerup', onPointerUp);
+    return () => document.removeEventListener('pointerup', onPointerUp);
+  }, [isResizing]);
 
   const toggleCollapse = useCallback(() => {
     setPanelSize(prev => (prev < COLLAPSE_THRESHOLD ? EXPANDED_SIZE : effectiveCollapsedSize));
@@ -718,19 +755,13 @@ export default function SideNavigationLayoutPage() {
     <div
       style={{
         display: 'flex',
+        blockSize: '100%',
         flexDirection: 'column',
-        minBlockSize: '100%',
         position: 'relative',
-        backgroundColor:
-          handleBg === 'content'
-            ? sideNavBg === 'layout'
-              ? colorBackgroundLayoutMain
-              : colorBackgroundContainerContent
-            : undefined,
-        borderInlineEnd: sideNavBorder && handleBg === 'content' ? `1px solid ${colorBorderDividerDefault}` : 'none',
+        backgroundColor: sideNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
       }}
     >
-      {togglePosition === 'top' && layout !== 'side-full' && (
+      {togglePosition === 'top' && (
         <ToggleWrapper position="top" collapsed={collapsed} align={toggleAlign}>
           {toggleButton}
         </ToggleWrapper>
@@ -742,7 +773,7 @@ export default function SideNavigationLayoutPage() {
           flexDirection: 'column',
           alignItems: collapsed ? 'center' : undefined,
           position: 'relative',
-          paddingBlockStart: togglePosition === 'top' && layout !== 'side-full' ? '40px' : undefined,
+          paddingBlockStart: togglePosition === 'top' ? '40px' : undefined,
           paddingBlockEnd: togglePosition === 'bottom' ? '40px' : undefined,
           ...alignmentMap[alignment],
         }}
@@ -779,16 +810,10 @@ export default function SideNavigationLayoutPage() {
   const mainContent = (
     <div
       style={{
-        flex: 1,
-        overflow: 'auto',
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
         gridTemplateRows: '90px 200px 200px',
         gap: '16px',
-        padding: '24px',
-        paddingInlineStart: handleBg === 'content' && resizable ? '16px' : '24px',
-        borderInlineStart: sideNavBorder && handleBg === 'side-nav' ? `1px solid ${colorBorderDividerDefault}` : 'none',
-        blockSize: '100%',
       }}
     >
       <div style={{ gridColumn: 'span 3', ...containerStyles }} />
@@ -799,85 +824,177 @@ export default function SideNavigationLayoutPage() {
     </div>
   );
 
-  const navAndContent = (
-    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-      <Drawer
-        ariaLabel="Navigation"
-        placement="start"
-        resizable={resizable}
-        size={panelSize}
-        minSize={effectiveCollapsedSize}
-        maxSize={MAX_SIZE}
-        onResize={onPanelResize}
-        hideCloseAction={true}
-        disableContentPaddings={true}
-        role="presentation"
-      >
-        {sideNavPanel}
-      </Drawer>
-      {mainContent}
-    </div>
-  );
+  // Build grid layout
+  const hasQ = true;
+  const qIsLeft = qPosition === 'left';
+  const showTopNav = layout !== 'side-only';
+  const sideFull = layout === 'side-full';
+  const qColumnSize = qOpen ? qSize : 0;
+
+  // Grid columns: [q-left?] [nav] [q-right?] [content]
+  const columns: string[] = [];
+  const areas: { top: string[]; main: string[] } = { top: [], main: [] };
+
+  if (hasQ && qIsLeft) {
+    columns.push(`${qColumnSize}px`);
+    areas.top.push(sideFull ? 'q' : 'topnav');
+    areas.main.push('q');
+  }
+  columns.push(`${panelSize}px`);
+  areas.top.push(sideFull ? 'nav' : 'topnav');
+  areas.main.push('nav');
+  if (hasQ && !qIsLeft) {
+    columns.push(`${qColumnSize}px`);
+    areas.top.push(sideFull ? 'q' : 'topnav');
+    areas.main.push('q');
+  }
+  columns.push('1fr');
+  areas.top.push('topnav');
+  areas.main.push('content');
+
+  const gridTemplateAreas = showTopNav
+    ? `"${areas.top.join(' ')}" "${areas.main.join(' ')}"`
+    : `"${areas.main.join(' ')}"`;
+  const gridTemplateRows = showTopNav ? '48px 1fr' : '1fr';
 
   return (
     <div style={{ display: 'flex', blockSize: '100vh' }}>
-      {/* Main area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        {layout === 'top-full' && (
-          <TopNav
-            drawerOpen={drawerOpen}
-            onSettingsClick={() => setDrawerOpen(prev => !prev)}
-            bg={topNavBg}
-            border={topNavBorder}
-          />
-        )}
-        {layout === 'side-full' && (
+      <div
+        style={{
+          flex: 1,
+          display: 'grid',
+          gridTemplateColumns: columns.join(' '),
+          gridTemplateRows,
+          gridTemplateAreas,
+          overflow: 'hidden',
+          transition: isResizing ? 'none' : `grid-template-columns ${motionDurationComplex} ${motionEasingResponsive}`,
+        }}
+      >
+        {/* Top Nav */}
+        {showTopNav && (
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: `${topNavColumnWidth}px 1fr`,
-              transition: `grid-template-columns ${motionDurationComplex} ${motionEasingResponsive}`,
-              backgroundColor: topNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
+              gridArea: 'topnav',
             }}
           >
-            <div
-              style={{
-                backgroundColor:
-                  sideNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
-                display: 'grid',
-                gridTemplateColumns: handleBg === 'side-nav' && resizable ? `1fr ${handleWidth}px` : '1fr',
-                alignItems: 'center',
+            <TopNav
+              drawerOpen={drawerOpen}
+              onSettingsClick={() => setDrawerOpen(prev => !prev)}
+              onQClick={() => {
+                setQOpen(prev => {
+                  if (!prev && qSize === 0) {
+                    setQSize(300);
+                  }
+                  return !prev;
+                });
               }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  paddingInlineStart: `${collapsed ? '0px' : '20px'}`,
-                  paddingInlineEnd: `${collapsed ? '0px' : '16px'}`,
-                  justifyContent: collapsed
-                    ? 'center'
-                    : { start: 'flex-start', center: 'center', end: 'flex-end' }[toggleAlign],
-                }}
+              bg={topNavBg}
+              border={topNavBorder}
+            />
+          </div>
+        )}
+
+        {/* Side-full nav header (toggle in top row) */}
+        {sideFull && (
+          <div
+            style={{
+              gridArea: 'nav',
+              gridRow: '1 / -1',
+              display: 'flex',
+              flexDirection: 'column',
+              borderInlineEnd: sideNavBorder ? `1px solid ${colorBorderDividerDefault}` : 'none',
+              backgroundColor: sideNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
+            }}
+          >
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <Drawer
+                ariaLabel="Navigation"
+                placement="start"
+                size={panelSize}
+                resizable={resizable}
+                minSize={effectiveCollapsedSize}
+                maxSize={MAX_SIZE}
+                onResize={onPanelResize}
+                hideCloseAction={true}
+                disableContentPaddings={true}
+                role="presentation"
               >
-                {togglePosition === 'top' && toggleButton}
-              </div>
-            </div>
-            <div
-              style={{
-                borderBlockEnd: topNavBorder ? `1px solid ${colorBorderDividerDefault}` : 'none',
-                borderInlineStart: sideNavBorder ? `1px solid ${colorBorderDividerDefault}` : 'none',
-              }}
-            >
-              <TopNav
-                drawerOpen={drawerOpen}
-                onSettingsClick={() => setDrawerOpen(prev => !prev)}
-                bg={topNavBg}
-                border={false}
-              />
+                {sideNavPanel}
+              </Drawer>
             </div>
           </div>
         )}
-        <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>{navAndContent}</div>
+
+        {/* Non-side-full nav (top-full or side-only) */}
+        {!sideFull && (
+          <div
+            style={{
+              gridArea: 'nav',
+              overflow: 'hidden',
+              backgroundColor: sideNavBg === 'container' ? colorBackgroundContainerContent : colorBackgroundLayoutMain,
+              borderInlineEnd: sideNavBorder || (!qIsLeft && qOpen) ? `1px solid ${colorBorderDividerDefault}` : 'none',
+            }}
+          >
+            <Drawer
+              ariaLabel="Navigation"
+              placement="start"
+              size={panelSize}
+              resizable={resizable}
+              minSize={effectiveCollapsedSize}
+              maxSize={MAX_SIZE}
+              onResize={onPanelResize}
+              hideCloseAction={true}
+              disableContentPaddings={true}
+              role="presentation"
+            >
+              {sideNavPanel}
+            </Drawer>
+          </div>
+        )}
+
+        {/* Q drawer */}
+        {hasQ && (
+          <div
+            style={{
+              gridArea: 'q',
+              gridRow: sideFull ? '1 / -1' : undefined,
+              overflow: 'hidden',
+              backgroundColor: colorBackgroundContainerContent,
+              borderInlineEnd: qOpen ? `1px solid ${colorBorderDividerDefault}` : 'none',
+            }}
+          >
+            <Drawer
+              header="Amazon Q"
+              onClose={() => {
+                setQOpen(false);
+                setQSize(0);
+              }}
+              closeAction={{ ariaLabel: 'Close Q' }}
+              placement="start"
+              resizable={true}
+              size={qSize}
+              minSize={200}
+              maxSize={500}
+              onResize={({ detail }) => {
+                setIsResizing(true);
+                setQSize(detail.size);
+              }}
+              headerActions={
+                <Button
+                  variant="inline-icon"
+                  iconName={qIsLeft ? 'angle-right' : 'angle-left'}
+                  ariaLabel={qIsLeft ? 'Move to right of nav' : 'Move to left of nav'}
+                  onClick={() => setQPosition(prev => (prev === 'left' ? 'right' : 'left'))}
+                />
+              }
+            >
+              <Box color="text-status-inactive">Q assistant content</Box>
+            </Drawer>
+          </div>
+        )}
+
+        {/* Main content */}
+        <div style={{ gridArea: 'content', overflow: 'auto', padding: '24px' }}>{mainContent}</div>
       </div>
 
       {/* Config drawer */}
@@ -905,6 +1022,39 @@ export default function SideNavigationLayoutPage() {
               <Button iconName="close" variant="icon" onClick={() => setDrawerOpen(false)} ariaLabel="Close config" />
             </div>
           </div>
+          <div
+            style={{
+              padding: '8px 16px',
+              borderBlockEnd: `1px solid ${colorBorderDividerDefault}`,
+            }}
+          >
+            <RadioGroup
+              value={activePreset}
+              onChange={({ detail }) => {
+                setIsResizing(true);
+                requestAnimationFrame(() => requestAnimationFrame(() => setIsResizing(false)));
+                const merged: Record<string, string> = { ...DEFAULTS, ...PRESETS[detail.value] };
+                setItemHeight(Number(merged.itemHeight));
+                setItemGap(Number(merged.itemGap));
+                setAlignment(merged.alignment);
+                setLayout(merged.layout);
+                setThemeEnabled(merged.theme === 'true');
+                setResizable(merged.resizable === 'true');
+                setDarkMode(merged.dark === 'true');
+                setCompact(merged.compact === 'true');
+                setTopNavBg(merged.topNavBg as any);
+                setSideNavBg(merged.sideNavBg as any);
+                setTopNavBorder(merged.topNavBorder === 'true');
+                setSideNavBorder(merged.sideNavBorder === 'true');
+                setToggleIcon(merged.toggleIcon as any);
+                setTogglePosition(merged.togglePosition as any);
+                setToggleAlign(merged.toggleAlign as any);
+                setQOpen(merged.qOpen === 'true');
+                setQPosition(merged.qPosition as any);
+              }}
+              items={Object.keys(PRESETS).map(name => ({ value: name, label: name }))}
+            />
+          </div>
           <ConfigDrawer
             itemHeight={itemHeight}
             setItemHeight={setItemHeight}
@@ -930,8 +1080,6 @@ export default function SideNavigationLayoutPage() {
             setTopNavBorder={setTopNavBorder}
             sideNavBorder={sideNavBorder}
             setSideNavBorder={setSideNavBorder}
-            handleBg={handleBg}
-            setHandleBg={setHandleBg}
             toggleIcon={toggleIcon}
             setToggleIcon={setToggleIcon}
             togglePosition={togglePosition}

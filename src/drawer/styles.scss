@@ -23,10 +23,12 @@
   word-wrap: break-word;
   display: flex;
   flex-direction: column;
-  min-block-size: 100%;
+  block-size: 100%;
+  background-color: awsui.$color-background-drawer;
 
   > .content {
     flex: 1;
+    min-block-size: 0;
   }
 
   &.has-close-action {
@@ -36,6 +38,18 @@
   &.resizable {
     flex: 1;
     overflow: hidden;
+    position: relative;
+    background-color: transparent;
+    block-size: 100%;
+
+    > .content {
+      padding-inline-end: 16px;
+    }
+
+    &.resizable-start-handle > .content {
+      padding-inline-end: 0;
+      padding-inline-start: 16px;
+    }
   }
 
   &.position-absolute,
@@ -166,11 +180,11 @@
 
 .panel-wrapper {
   display: contents;
-  background-color: awsui.$color-background-drawer;
 
   &-resizable {
     display: flex;
     flex-shrink: 0;
+    block-size: 100%;
     @include styles.with-motion {
       transition: inline-size awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
@@ -184,8 +198,20 @@
 }
 
 .handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  &-start {
+    inset-inline-end: unset;
+    inset-inline-start: 0;
+  }
 }
 
 .backdrop {

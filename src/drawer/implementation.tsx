@@ -126,6 +126,7 @@ export function DrawerImplementation({
       !!footer && styles['with-footer'],
       closeAction && !hideCloseAction && styles['has-close-action'],
       resizable && styles.resizable,
+      resizable && placement === 'end' && styles['resizable-start-handle'],
       positionStyles.className
     ),
   };
@@ -218,19 +219,6 @@ export function DrawerImplementation({
           )}
           style={sizeStyle}
         >
-          {resizable && placement === 'end' && (
-            <div className={styles.handle}>
-              <PanelResizeHandle
-                ref={resizeHandleRef}
-                position={resizeHandlePosition}
-                ariaLabel="Resize drawer"
-                ariaValuenow={resizeProps.relativeSize}
-                onKeyDown={resizeProps.onKeyDown}
-                onDirectionClick={resizeProps.onDirectionClick}
-                onPointerDown={resizeProps.onPointerDown}
-              />
-            </div>
-          )}
           <div {...containerProps}>
             {loading ? (
               <InternalStatusIndicator type="loading">
@@ -285,20 +273,20 @@ export function DrawerImplementation({
                 )}
               </>
             )}
+            {resizable && (
+              <div className={clsx(styles.handle, placement === 'end' && styles['handle-start'])}>
+                <PanelResizeHandle
+                  ref={resizeHandleRef}
+                  position={resizeHandlePosition}
+                  ariaLabel="Resize drawer"
+                  ariaValuenow={resizeProps.relativeSize}
+                  onKeyDown={resizeProps.onKeyDown}
+                  onDirectionClick={resizeProps.onDirectionClick}
+                  onPointerDown={resizeProps.onPointerDown}
+                />
+              </div>
+            )}
           </div>
-          {resizable && placement === 'start' && (
-            <div className={styles.handle}>
-              <PanelResizeHandle
-                ref={resizeHandleRef}
-                position={resizeHandlePosition}
-                ariaLabel="Resize drawer"
-                ariaValuenow={resizeProps.relativeSize}
-                onKeyDown={resizeProps.onKeyDown}
-                onDirectionClick={resizeProps.onDirectionClick}
-                onPointerDown={resizeProps.onPointerDown}
-              />
-            </div>
-          )}
         </div>
       </FocusLock>
     </div>
