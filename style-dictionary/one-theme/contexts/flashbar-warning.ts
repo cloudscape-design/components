@@ -6,8 +6,9 @@ import { expandColorDictionary } from '../../utils/index.js';
 import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
-  colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
-  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey1000}' },
+  colorTextNotificationYellow: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
+  colorTextNotificationDefault: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
+  colorTextInteractiveInvertedDefault: { light: '{colorNeutralGrey900}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));
