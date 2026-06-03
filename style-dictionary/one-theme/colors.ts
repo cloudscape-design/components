@@ -113,7 +113,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusError: { light: '{colorError600}', dark: '{colorError300}' },
   colorTextStatusInactive: { light: '{colorNeutralGrey650}', dark: '{colorNeutralGrey450}' },
 
-  // ── Dropdown ──────────────────────────────────=───────────────
+  // ── Dropdown ─────────────────────────────────────────────────
   colorTextDropdownItemFilterMatch: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
   colorBackgroundDropdownItemFilterMatch: { light: '{colorNeutralGrey200}', dark: '{colorNeutralGrey1000}' },
   colorBackgroundDropdownItemDefault: { light: '{colorWhite}', dark: '{colorNeutralGrey800}' },
