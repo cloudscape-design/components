@@ -38290,7 +38290,7 @@ Note that, despite its typings, this may return null for group items since group
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
+          "description": "Sets the value of the component and calls the \`onDelayedChange\` handler",
           "name": "setValue",
           "parameters": [
             {
