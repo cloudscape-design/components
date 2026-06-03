@@ -65,7 +65,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextFormLabel: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey300}' },
   colorTextFormSecondary: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
   colorTextLabel: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey500}' },
-  colorTextKeyValuePairsValue: { light: '{colorNeutralGrey600}', dark: '{colorNeutralGrey300}' },
+  colorTextKeyValuePairsValue: { light: '{colorNeutralGrey950}', dark: '{colorNeutralGrey350}' },
 
   // ── Controls ──────────────────────────────────────────────────────────────
   colorBackgroundControlChecked: { light: '{colorIndigo600}', dark: '{colorIndigo500}' },
