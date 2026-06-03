@@ -988,6 +988,7 @@ export type BordersTokenName =
   | 'borderWidthField'
   | 'borderWidthPopover'
   | 'borderWidthToken'
+  | 'borderWidthIconXSmall'
   | 'borderWidthIconSmall'
   | 'borderWidthIconNormal'
   | 'borderWidthIconMedium'
