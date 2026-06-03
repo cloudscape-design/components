@@ -173,10 +173,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -3117,13 +3113,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
-          },
-        },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
           },
         },
         "size-vertical-input": {
@@ -3564,10 +3553,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -6508,13 +6493,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
-          },
-        },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
           },
         },
         "size-vertical-input": {
@@ -6955,10 +6933,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
         },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
-        },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
           "$value": "1px",
@@ -9901,13 +9875,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -10345,10 +10312,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -13292,13 +13255,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -13736,10 +13692,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -16683,13 +16635,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -17127,10 +17072,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -20074,13 +20015,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -20518,10 +20452,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
       "$value": "2px",
-    },
-    "border-width-icon-x-small": {
-      "$description": "The visual stroke width of extra small icons.",
-      "$value": "1.5px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
@@ -23465,13 +23395,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
       },
     },
-    "size-icon-x-small": {
-      "$description": "The size of extra small icons (12×12).",
-      "$value": {
-        "comfortable": "12px",
-        "compact": "12px",
-      },
-    },
     "size-vertical-input": {
       "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
       "$value": {
@@ -23914,10 +23837,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -26861,13 +26780,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -27305,10 +27217,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -30252,13 +30160,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -30696,10 +30597,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -33643,13 +33540,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -34087,10 +33977,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -37034,13 +36920,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -37478,10 +37357,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -40425,13 +40300,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -40869,10 +40737,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -43816,13 +43680,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -44260,10 +44117,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -47207,13 +47060,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -47651,10 +47497,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-icon-small": {
           "$description": "The visual stroke width of small icons.",
           "$value": "2px",
-        },
-        "border-width-icon-x-small": {
-          "$description": "The visual stroke width of extra small icons.",
-          "$value": "1.5px",
         },
         "border-width-item-selected": {
           "$description": "The border width of selected items, like table rows.",
@@ -50598,13 +50440,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
           },
         },
-        "size-icon-x-small": {
-          "$description": "The size of extra small icons (12×12).",
-          "$value": {
-            "comfortable": "12px",
-            "compact": "12px",
-          },
-        },
         "size-vertical-input": {
           "$description": "The height of form input components. For example: input, select, multiselect, autosuggest, and datepicker.",
           "$value": {
@@ -51042,10 +50877,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-icon-small": {
       "$description": "The visual stroke width of small icons.",
       "$value": "2px",
-    },
-    "border-width-icon-x-small": {
-      "$description": "The visual stroke width of extra small icons.",
-      "$value": "1.5px",
     },
     "border-width-item-selected": {
       "$description": "The border width of selected items, like table rows.",
@@ -53987,13 +53818,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
-      },
-    },
-    "size-icon-x-small": {
-      "$description": "The size of extra small icons (12×12).",
-      "$value": {
-        "comfortable": "12px",
-        "compact": "12px",
       },
     },
     "size-vertical-input": {

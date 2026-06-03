@@ -48,11 +48,9 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 
 .icon-container {
   position: relative;
-  min-inline-size: $icon-width-normal;
   margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
   // For vertical alignment of text in side navigation items
   &-container {
-    min-inline-size: $icon-width-medium;
     margin-inline-end: $icon-margin-right-medium;
   }
 }

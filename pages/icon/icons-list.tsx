@@ -9,7 +9,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './icons-list.scss';
 
-const sizes = ['x-small', 'small', 'normal', 'medium', 'big', 'large'] as const;
+const sizes = ['small', 'normal', 'medium', 'big', 'large'] as const;
 
 export default function IconsList({ variant }: { variant: IconProps['variant'] }) {
   const className = variant === 'inverted' ? styles.invertedIconsScenario : undefined;

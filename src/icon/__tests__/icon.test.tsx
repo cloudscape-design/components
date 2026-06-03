@@ -31,11 +31,6 @@ describe('Icon Component', () => {
     expect(container.firstElementChild).toHaveClass(styles['size-large']);
   });
 
-  test('renders with x-small size class', () => {
-    const { container } = render(<Icon name="calendar" size="x-small" />);
-    expect(container.firstElementChild).toHaveClass(styles['size-x-small']);
-  });
-
   test('renders with proper variant class correctly', () => {
     const { container } = render(<Icon name="calendar" variant="inverted" />);
     expect(container.firstElementChild).toHaveClass(styles['variant-inverted']);
@@ -46,10 +41,19 @@ describe('Icon Component', () => {
       const { container } = render(<Icon size="inherit" name="settings" />);
       expect(container.firstElementChild).toHaveClass(styles['icon-flex-height']);
     });
+
+    test('resolves to small when line-height <= 16 and font-size > 12', () => {
+      jest
+        .spyOn(window, 'getComputedStyle')
+        .mockReturnValue({ lineHeight: '16px', fontSize: '14px' } as CSSStyleDeclaration);
+      const { container } = render(<Icon size="inherit" name="settings" />);
+      expect(container.firstElementChild).toHaveClass(styles['size-small']);
+      jest.restoreAllMocks();
+    });
   });
 
   describe('gen ai icon', () => {
-    test('filled icon renders with accessibility-related attributes for small size', () => {
+    test('filled icon renders with accessibility-related attributes', () => {
       const { container } = render(<Icon name="gen-ai" size="small" />);
       const svg = container.querySelector('svg');
       expect(svg).toHaveAttribute('data-testid', 'gen-ai-filled');
@@ -57,15 +61,7 @@ describe('Icon Component', () => {
       expect(svg).toHaveAttribute('aria-hidden', 'true');
     });
 
-    test('filled icon renders for x-small size', () => {
-      const { container } = render(<Icon name="gen-ai" size="x-small" />);
-      const svg = container.querySelector('svg');
-      expect(svg).toHaveAttribute('data-testid', 'gen-ai-filled');
-      expect(svg).toHaveAttribute('focusable', 'false');
-      expect(svg).toHaveAttribute('aria-hidden', 'true');
-    });
-
-    test('only renders filled icon for small and x-small sizes', () => {
+    test('only renders filled icon only for small size', () => {
       const sizes: IconProps.Size[] = ['normal', 'medium', 'big', 'large', 'inherit'];
 
       sizes.forEach(size => {

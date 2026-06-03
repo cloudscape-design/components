@@ -15294,7 +15294,6 @@ The icon will be vertically centered based on the height.",
           "medium",
           "inherit",
           "large",
-          "x-small",
         ],
       },
       "name": "size",
@@ -16096,102 +16095,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
-    },
-    {
-      "description": "Specifies target pixel sizes for icon size variants. Each key corresponds to a size
-variant and accepts a number representing pixels (e.g., \`12\` means 12px). When a size
-is specified, the icon's inline-size (both the wrapper span and the child SVG) is set
-to the target pixel value.
-
-Only the sizes you specify are overridden — unspecified sizes inherit from the parent
-provider or fall back to their default token-defined values.",
-      "inlineType": {
-        "name": "IconProviderProps.Sizes",
-        "properties": [
-          {
-            "name": "big",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "large",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "medium",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "normal",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "small",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "x-small",
-            "optional": true,
-            "type": "number",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "sizes",
-      "optional": true,
-      "type": "IconProviderProps.Sizes",
-    },
-    {
-      "description": "Specifies stroke-width overrides for icon size variants. Each key corresponds to a size
-variant and accepts a number representing pixels (e.g., \`1.5\` means 1.5px). When
-specified, the icon's SVG stroke-width is set directly to this value, bypassing the
-default token and any automatic compensation from size scaling.
-
-Only the sizes you specify are overridden — unspecified sizes inherit from the parent
-provider or fall back to their default token-defined stroke-widths.",
-      "inlineType": {
-        "name": "IconProviderProps.StrokeWidths",
-        "properties": [
-          {
-            "name": "big",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "large",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "medium",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "normal",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "small",
-            "optional": true,
-            "type": "number",
-          },
-          {
-            "name": "x-small",
-            "optional": true,
-            "type": "number",
-          },
-        ],
-        "type": "object",
-      },
-      "name": "strokeWidths",
-      "optional": true,
-      "type": "IconProviderProps.StrokeWidths",
     },
   ],
   "regions": [
@@ -38327,7 +38230,7 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
+          "description": "Sets the value of the component and calls the \`onDelayedChange\` handler",
           "name": "setValue",
           "parameters": [
             {
