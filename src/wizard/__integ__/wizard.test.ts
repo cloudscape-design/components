@@ -99,11 +99,9 @@ describe('Wizard keyboard navigation', () => {
 describe('Wizard narrow viewport navigation', () => {
   test(
     'shows expandable step navigation at narrow viewport',
-    useBrowser(async browser => {
-      const page = new WizardPageObject(browser);
+    setupTest(async page => {
       // Set narrow viewport first using page object with object syntax
       await page.setWindowSize({ width: 320, height: 600 });
-      await browser.url('/#/light/wizard/simple');
       await page.waitForVisible(wizardWrapper.findPrimaryButton().toSelector());
 
       // Collapsed steps container should be displayed at narrow viewport

@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { findAllPages } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
-type Theme = 'default' | 'visual-refresh';
+type Theme = 'visual-refresh';
 type Mode = 'light' | 'dark';
 
 function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>) {
