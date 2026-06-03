@@ -3,7 +3,7 @@
 
 import { useInternalI18n } from '../i18n/context';
 import { ComparisonOperator, FormattedToken, I18nStrings } from './interfaces';
-import { InternalToken, InternalTokenGroup } from './internal-interfaces';
+import { InternalFilteringProperty, InternalToken, InternalTokenGroup } from './internal-interfaces';
 import { tokenGroupToTokens } from './utils';
 
 export type I18nStringsOperators = Pick<
@@ -113,7 +113,11 @@ export function usePropertyFilterI18n(def: I18nStrings = {}): I18nStringsInterna
     ),
     formatToken: token => {
       const formattedToken = toFormatted(token);
-      return { ...formattedToken, formattedText: formatToken(toFormatted(token)) };
+      const customDescription = token.property?.getOperatorDescription(token.operator);
+      const formattedForAria = customDescription
+        ? { ...formattedToken, operator: customDescription.toLowerCase() }
+        : formattedToken;
+      return { ...formattedToken, formattedText: formatToken(formattedForAria) };
     },
     groupAriaLabel: group => {
       const tokens = tokenGroupToTokens<InternalToken>(group.tokens).map(toFormatted);
@@ -188,7 +192,16 @@ export function usePropertyFilterI18n(def: I18nStrings = {}): I18nStringsInterna
   };
 }
 
-export function operatorToDescription(operator: ComparisonOperator, i18nStrings: I18nStringsOperators) {
+export function operatorToDescription(
+  operator: ComparisonOperator,
+  i18nStrings: I18nStringsOperators,
+  property?: InternalFilteringProperty
+) {
+  const customDescription = property?.getOperatorDescription(operator);
+  if (customDescription !== undefined) {
+    return customDescription;
+  }
+
   switch (operator) {
     case '<':
       return i18nStrings.operatorLessText;
@@ -210,8 +223,6 @@ export function operatorToDescription(operator: ComparisonOperator, i18nStrings:
       return i18nStrings.operatorStartsWithText;
     case '!^':
       return i18nStrings.operatorDoesNotStartWithText;
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
     /* istanbul ignore next */
     default:
       return '';

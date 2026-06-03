@@ -89,17 +89,22 @@ export const getQueryActions = ({
   return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
 };
 
-const operatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
+const knownOperatorOrder = ['=', '!=', ':', '!:', '^', '!^', '>=', '<=', '<', '>'] as const;
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
   const operatorSet = new Set([defaultOperator, ...operators]);
-  return operatorOrder.filter(op => operatorSet.has(op));
+  const knownOperators = knownOperatorOrder.filter(op => operatorSet.has(op));
+  const customOperators = operators.filter(op => !(knownOperatorOrder as readonly string[]).includes(op));
+  return [...knownOperators, ...customOperators];
 };
 
 export const getAllowedFreeTextOperators = (freeText: InternalFreeTextFiltering): ComparisonOperator[] => {
-  const operatorSet = new Set(freeText.operators);
-  return operatorOrder.filter(op => operatorSet.has(op));
+  const operators = freeText.operators.map(op => (typeof op === 'string' ? op : op.operator));
+  const operatorSet = new Set(operators);
+  const knownOperators = knownOperatorOrder.filter(op => operatorSet.has(op));
+  const customOperators = operators.filter(op => !(knownOperatorOrder as readonly string[]).includes(op));
+  return [...knownOperators, ...customOperators];
 };
 
 /*
@@ -286,7 +291,7 @@ export const getAutosuggestOptions = (
             options: getAllowedOperators(parsedText.property).map(value => ({
               value: parsedText.property.propertyLabel + ' ' + value + ' ',
               label: parsedText.property.propertyLabel + ' ' + value,
-              description: operatorToDescription(value, i18nStrings),
+              description: operatorToDescription(value, i18nStrings, parsedText.property),
               keepOpenOnSelect: true,
             })),
             label: i18nStrings.operatorsText,

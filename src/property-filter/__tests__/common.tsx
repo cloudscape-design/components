@@ -123,18 +123,33 @@ export const createDefaultProps = (
 });
 
 export function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
-  return properties.map(property => ({
-    propertyKey: property.key,
-    propertyLabel: property.propertyLabel,
-    groupValuesLabel: property.groupValuesLabel,
-    propertyGroup: property.group,
-    operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
-    defaultOperator: property.defaultOperator ?? '=',
-    getTokenType: () => 'value',
-    getValueFormatter: () => null,
-    getValueFormRenderer: () => null,
-    externalProperty: property,
-  }));
+  return properties.map(property => {
+    const ops = property.operators ?? [];
+    const operatorStrings: string[] = [];
+    const extendedOperators = new Map<string, any>();
+    for (const op of ops) {
+      if (typeof op === 'object') {
+        operatorStrings.push(op.operator);
+        extendedOperators.set(op.operator, op);
+      } else {
+        operatorStrings.push(op);
+      }
+    }
+    return {
+      propertyKey: property.key,
+      propertyLabel: property.propertyLabel,
+      groupValuesLabel: property.groupValuesLabel,
+      propertyGroup: property.group,
+      operators: operatorStrings,
+      defaultOperator: property.defaultOperator ?? '=',
+      getTokenType: () => 'value',
+      getValueFormatter: () => null,
+      getValueFormRenderer: () => null,
+      getOperatorDescription: (operator?: string) =>
+        operator ? extendedOperators.get(operator)?.description ?? null : null,
+      externalProperty: property,
+    };
+  });
 }
 
 export function StatefulPropertyFilter(props: PropertyFilterProps) {
