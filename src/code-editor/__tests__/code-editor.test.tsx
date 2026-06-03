@@ -196,11 +196,20 @@ describe('Code editor component', () => {
   });
 
   it('sets value with test-util', () => {
+    jest.useFakeTimers();
     const ace = jest.requireActual('ace-builds');
     const { wrapper } = renderCodeEditor({ ace, value: 'value-initial' });
     expect(defaultProps.onChange).not.toHaveBeenCalled();
+    expect(defaultProps.onDelayedChange).not.toHaveBeenCalled();
     act(() => wrapper.setValue('value-final'));
     expect(defaultProps.onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: 'value-final' } }));
+    act(() => {
+      jest.advanceTimersByTime(1); // Minimal delay to let onDelayedChange fire
+    });
+    expect(defaultProps.onDelayedChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: 'value-final' } })
+    );
+    jest.useRealTimers();
   });
 
   it('fails silently while setting value on loading or error state', () => {

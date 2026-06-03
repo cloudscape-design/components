@@ -38230,7 +38230,7 @@ Returns the current value of the input.",
           },
         },
         {
-          "description": "Sets the value of the component and calls the \`onChange\` handler",
+          "description": "Sets the value of the component and calls the \`onDelayedChange\` handler",
           "name": "setValue",
           "parameters": [
             {
