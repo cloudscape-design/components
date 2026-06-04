@@ -8,3 +8,13 @@ if (typeof window !== 'undefined') {
   const { cleanup } = require('@testing-library/react');
   afterEach(cleanup);
 }
+
+// jsdom doesn't implement ResizeObserver. Provide a no-op mock so components
+// that use it (e.g. PromptInput) can render without errors in unit tests.
+if (!window.ResizeObserver) {
+  window.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}

@@ -5181,33 +5181,53 @@ describe('token mode misc', () => {
     expect(getCaretOffset()).toBe(3);
   });
 
-  test('unmounting cleans up resize listener and clears portal containers', () => {
-    const resizeSpy = jest.spyOn(window, 'removeEventListener');
+  test('unmounting cleans up ResizeObserver and clears portal containers', () => {
+    const originalResizeObserver = (window as any).ResizeObserver;
+    const disconnectSpy = jest.fn();
+    const observeSpy = jest.fn();
+    const MockResizeObserver = jest.fn(() => ({
+      observe: observeSpy,
+      unobserve: jest.fn(),
+      disconnect: disconnectSpy,
+    }));
+    (window as any).ResizeObserver = MockResizeObserver;
+
     const { wrapper, container } = renderTokenMode({
       props: { tokens: [{ type: 'reference', id: 'r1', label: 'Alice', value: 'user-1', menuId: 'mentions' }] },
     });
     // Verify reference is rendered
     expect(getValue(wrapper)).toContain('Alice');
-    // Unmount — this should clean up resize listener and clear containers
+    expect(observeSpy).toHaveBeenCalled();
+    // Unmount — this should disconnect the ResizeObserver
     const { unmount } = render(<div />, { container });
     unmount();
-    // Verify resize listener was cleaned up
-    const resizeCalls = resizeSpy.mock.calls.filter(([event]) => event === 'resize');
-    expect(resizeCalls.length).toBeGreaterThan(0);
-    resizeSpy.mockRestore();
+    expect(disconnectSpy).toHaveBeenCalled();
+    (window as any).ResizeObserver = originalResizeObserver;
   });
 
-  test('window resize triggers height adjustment without error', () => {
+  test('ResizeObserver triggers height adjustment without error', () => {
+    const originalResizeObserver = (window as any).ResizeObserver;
+    let resizeCallback: () => void = () => {};
+    const MockResizeObserver = jest.fn(cb => ({
+      observe: () => {
+        resizeCallback = cb;
+      },
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    }));
+    (window as any).ResizeObserver = MockResizeObserver;
+
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] }, ref });
     act(() => {
       ref.current!.focus();
     });
     act(() => {
-      window.dispatchEvent(new Event('resize'));
+      resizeCallback();
     });
     // The component should still render correctly and preserve content after resize
     expect(getValue(wrapper)).toBe('hello');
+    (window as any).ResizeObserver = originalResizeObserver;
   });
 
   test('Enter key fires onAction through the keyboard handler config', () => {
