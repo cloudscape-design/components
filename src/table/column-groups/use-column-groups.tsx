@@ -4,19 +4,16 @@
 import { useMemo } from 'react';
 
 import { TableProps } from '../interfaces';
-import { getColumnKey } from '../utils';
 import { calculateHierarchyTree } from './utils';
 
 export function useColumnGroups<T>(
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
+  visibleColumns: string[],
   groupDefinitions?: ReadonlyArray<TableProps.GroupDefinition>,
-  visibleColumns?: Set<string>,
   columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>
 ) {
   return useMemo(() => {
-    const visibleIds = visibleColumns
-      ? Array.from(visibleColumns)
-      : columnDefinitions.map((col, idx) => getColumnKey(col, idx).toString());
+    const layout = calculateHierarchyTree(columnDefinitions, visibleColumns, groupDefinitions ?? [], columnDisplay);
 
     const layout = calculateHierarchyTree(columnDefinitions, visibleIds, groupDefinitions ?? [], columnDisplay);
 
