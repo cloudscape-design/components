@@ -43,7 +43,7 @@ const TYPES = ['t3.medium', 't3.large', 'r5.xlarge', 'c5.large', 'p3.2xlarge'];
 const AZS = ['us-east-1a', 'us-east-1b', 'us-east-1c', 'us-east-1d'];
 const STATES = ['running', 'stopped', 'pending'];
 
-const allInstances: Instance[] = Array.from({ length: 15 }, (_, i) => ({
+const allInstances: Instance[] = Array.from({ length: 35 }, (_, i) => ({
   id: `i-${String(i + 1).padStart(3, '0')}`,
   name: `instance-${i + 1}`,
   type: TYPES[i % TYPES.length],
@@ -258,7 +258,7 @@ export default function ColumnGroupsPage() {
       empty: <Box textAlign="center">No instances</Box>,
       noMatch: <Box textAlign="center">No matches</Box>,
     },
-    pagination: { pageSize: 10 },
+    pagination: { pageSize: 25 },
     sorting: {},
     selection: {},
   });
@@ -397,7 +397,6 @@ export default function ColumnGroupsPage() {
         </SpaceBetween>
       }
     >
-      {/* Table */}
       <Table
         {...collectionProps}
         columnDefinitions={columnDefinitions}
@@ -436,8 +435,6 @@ export default function ColumnGroupsPage() {
         pagination={<Pagination {...paginationProps} />}
         empty={<Box textAlign="center">No instances</Box>}
       />
-      {/* Spacer for sticky header scroll testing */}
-      <div style={{ height: '2000px' }} />
     </SimplePage>
   );
 }
