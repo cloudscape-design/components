@@ -442,11 +442,4 @@ describe('with grouped columns', () => {
       expect(onColumnWidthsChange).toHaveBeenCalledTimes(1);
     }
   });
-
-  test('renders colgroup with selection col for grouped table', () => {
-    const wrapper = renderGroupedTable({ selectionType: 'multi' });
-    const cols = wrapper.getElement().querySelectorAll('colgroup col');
-    // 4 data columns + 1 selection col
-    expect(cols.length).toBe(5);
-  });
 });

@@ -456,6 +456,13 @@ describe('Column grouping with selection', () => {
     const rows = thead.findAll('tr');
     expect(rows).toHaveLength(2);
   });
+
+  test('renders colgroup with selection col for grouped table', () => {
+    const wrapper = renderTable({ selectionType: 'multi' });
+    const cols = wrapper.getElement().querySelectorAll('colgroup col');
+    // 4 data columns + 1 selection col
+    expect(cols.length).toBe(5);
+  });
 });
 
 describe('Column grouping with other features', () => {
