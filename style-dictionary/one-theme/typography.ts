@@ -26,6 +26,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
 
+  fontWeightDisplayL: '500',
+
   // ── Interactive elements ──────────────────────────────────────────────────
   fontWeightButton: '500',
   fontWeightTabs: '500',
@@ -39,6 +41,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontSizeFormLabel: '14px',
   lineHeightFormLabel: '20px',
   fontWeightFormLabel: '500',
+  fontDisplayLabelWeight: '500',
+  fontWeightBold: '500',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontSizeKeyValuePairsLabel: '14px',

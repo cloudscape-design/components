@@ -6,6 +6,7 @@ import {
   createAlertContext,
   createAppLayoutToolbarContext,
   createFlashbarContext,
+  createFlashbarWarningContext,
   createHeaderContext,
   createTopNavigationContext,
 } from '../utils/contexts.js';
@@ -48,6 +49,7 @@ builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-l
 builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
 builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
 builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
+builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
 builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
 
 const theme = builder.build();

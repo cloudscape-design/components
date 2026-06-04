@@ -7,6 +7,7 @@ import { StyleDictionary } from '../../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutMain: { light: '{colorNeutralGrey50}', dark: '{colorNeutralGrey1000}' },
+  colorGapGlobalDrawer: { light: '{colorNeutralGrey250}', dark: '{colorNeutralGrey1000}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(merge({}, tokens));

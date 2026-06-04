@@ -36,6 +36,7 @@ const paletteTokens: StyleDictionary.ColorPaletteDictionary = {
   colorNeutralGrey400: '#b7b7b7',
   colorNeutralGrey450: '#a9a9a9',
   colorNeutralGrey500: '#909090',
+  colorNeutralGrey550: '#808080',
   colorNeutralGrey600: '#6b6b6b',
   colorNeutralGrey650: '#494949',
   colorNeutralGrey700: '#3b3b3b',
