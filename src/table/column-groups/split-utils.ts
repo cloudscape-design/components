@@ -14,7 +14,7 @@ export interface StickyGroupSplit {
   staticColspan: number;
 }
 
-/** Returns all leaf column IDs that are descendants of the given group (including nested subgroups). */
+/** Returns all column IDs that are descendants of the given group (including nested subgroups). */
 export function getGroupColumnIds(columnGroupsLayout: ColumnGroupsLayout<any>, groupId: string): string[] {
   const columnsRow = columnGroupsLayout.rows[columnGroupsLayout.rows.length - 1];
   const childIds: string[] = [];
@@ -37,12 +37,12 @@ export function getGroupSplit({
   col,
   stickyCount,
   side,
-  totalLeafColumns,
+  totalColumns,
 }: {
   col: HeaderRowColumn<any>;
   stickyCount: number;
   side: 'first' | 'last';
-  totalLeafColumns: number;
+  totalColumns: number;
 }): StickyGroupSplit {
   if (!col.isGroup || stickyCount === 0) {
     return { stickyColspan: 0, staticColspan: 0 };
@@ -58,7 +58,7 @@ export function getGroupSplit({
       return { stickyColspan, staticColspan: col.colSpan - stickyColspan };
     }
   } else {
-    const firstStickyLast = totalLeafColumns - stickyCount;
+    const firstStickyLast = totalColumns - stickyCount;
     if (groupStart < firstStickyLast && groupEnd >= firstStickyLast) {
       const staticColspan = firstStickyLast - groupStart;
       return { stickyColspan: col.colSpan - staticColspan, staticColspan };

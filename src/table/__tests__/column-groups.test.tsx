@@ -108,16 +108,16 @@ describe('Column grouping rendering', () => {
     const wrapper = renderTable();
     const thead = wrapper.find('thead')!;
     const firstRow = thead.findAll('tr')[0];
-    const leafCells = firstRow.findAll('th[scope="col"]');
+    const columnCells = firstRow.findAll('th[scope="col"]');
 
     // id and name are ungrouped, should span both rows
-    const idCell = leafCells.find(el => el.getElement().textContent?.includes('ID'));
-    const nameCell = leafCells.find(el => el.getElement().textContent?.includes('Name'));
+    const idCell = columnCells.find(el => el.getElement().textContent?.includes('ID'));
+    const nameCell = columnCells.find(el => el.getElement().textContent?.includes('Name'));
     expect(idCell!.getElement().getAttribute('rowspan')).toBe('2');
     expect(nameCell!.getElement().getAttribute('rowspan')).toBe('2');
   });
 
-  test('leaf columns under groups appear in second row', () => {
+  test('columns under groups appear in second row', () => {
     const wrapper = renderTable();
     const thead = wrapper.find('thead')!;
     const secondRow = thead.findAll('tr')[1];
@@ -128,7 +128,7 @@ describe('Column grouping rendering', () => {
     expect(cells).toHaveLength(4);
   });
 
-  test('leaf columns under groups have data-column-group-id', () => {
+  test('columns under groups have data-column-group-id', () => {
     const wrapper = renderTable();
     const thead = wrapper.find('thead')!;
 
@@ -139,15 +139,15 @@ describe('Column grouping rendering', () => {
     expect(perfColumns).toHaveLength(2); // cpu, memory
   });
 
-  test('leaf columns have data-column-index', () => {
+  test('columns have data-column-index', () => {
     const wrapper = renderTable();
     const thead = wrapper.find('thead')!;
-    const leafCells = thead.findAll('th[data-column-index]');
+    const columnCells = thead.findAll('th[data-column-index]');
 
-    // All 6 leaf columns should have data-column-index
-    expect(leafCells).toHaveLength(6);
-    expect(leafCells[0].getElement().getAttribute('data-column-index')).toBe('1');
-    expect(leafCells[5].getElement().getAttribute('data-column-index')).toBe('6');
+    // All 6 columns should have data-column-index
+    expect(columnCells).toHaveLength(6);
+    expect(columnCells[0].getElement().getAttribute('data-column-index')).toBe('1');
+    expect(columnCells[5].getElement().getAttribute('data-column-index')).toBe('6');
   });
 
   test('group header cells do not have data-column-index', () => {
@@ -160,7 +160,7 @@ describe('Column grouping rendering', () => {
     });
   });
 
-  test('findColumnHeaders returns only leaf columns by default', () => {
+  test('findColumnHeaders returns only columns by default', () => {
     const wrapper = renderTable();
     const headers = wrapper.findColumnHeaders();
 
@@ -202,15 +202,15 @@ describe('Column grouping rendering', () => {
     const wrapper = renderTable({ resizableColumns: false });
     const thead = wrapper.find('thead')!;
 
-    // All non-rightmost leaf cells should have a divider
-    const leafCells = thead.findAll('th[scope="col"]');
-    const nonRightmost = leafCells.filter(c => !c.getElement().hasAttribute('data-rightmost'));
+    // All non-rightmost column cells should have a divider
+    const columnCells = thead.findAll('th[scope="col"]');
+    const nonRightmost = columnCells.filter(c => !c.getElement().hasAttribute('data-rightmost'));
     nonRightmost.forEach(cell => {
       expect(cell.find('[class*="divider"]')).not.toBeNull();
     });
 
     // Rightmost cell should not have a divider (CSS hides it via data-rightmost)
-    const rightmost = leafCells.find(c => c.getElement().hasAttribute('data-rightmost'));
+    const rightmost = columnCells.find(c => c.getElement().hasAttribute('data-rightmost'));
     expect(rightmost).toBeDefined();
   });
 
@@ -284,8 +284,8 @@ describe('Column grouping with sticky columns', () => {
   test('renders correctly with stickyColumns last', () => {
     const wrapper = renderTable({ stickyColumns: { last: 1 } });
     const thead = wrapper.find('thead')!;
-    const leafCells = thead.findAll('th[scope="col"]');
-    expect(leafCells.length).toBe(6);
+    const columnCells = thead.findAll('th[scope="col"]');
+    expect(columnCells.length).toBe(6);
   });
 
   test('group spanning sticky-first boundary renders split cells', () => {
@@ -356,12 +356,12 @@ describe('Column grouping with resizable columns', () => {
     });
   });
 
-  test('leaf column cells have resizers', () => {
+  test('column cells have resizers', () => {
     const wrapper = renderTable({ resizableColumns: true });
     const thead = wrapper.find('thead')!;
-    const leafCells = thead.findAll('th[scope="col"]');
+    const columnCells = thead.findAll('th[scope="col"]');
 
-    leafCells.forEach(cell => {
+    columnCells.forEach(cell => {
       const resizer = cell.find('button[class*="resizer"]');
       expect(resizer).not.toBeNull();
     });
@@ -395,10 +395,10 @@ describe('Column grouping with resizable columns', () => {
   test('columns have width styles when resizable', () => {
     const colDefs = columnDefinitions.map(col => ({ ...col, width: 150 }));
     const wrapper = renderTable({ resizableColumns: true, columnDefinitions: colDefs });
-    const leafCells = wrapper.findColumnHeaders();
+    const columnCells = wrapper.findColumnHeaders();
 
     // At least some cells should have width set
-    const hasWidth = leafCells.some(cell => cell.getElement().style.width !== '');
+    const hasWidth = columnCells.some(cell => cell.getElement().style.width !== '');
     expect(hasWidth).toBe(true);
   });
 });
@@ -560,7 +560,7 @@ describe('Column grouping divider positioning', () => {
     });
   });
 
-  test('leaf cells under groups render dividers', () => {
+  test('column cells under groups render dividers', () => {
     const wrapper = renderTable({ resizableColumns: false });
     const thead = wrapper.find('thead')!;
     const groupedLeaves = thead.findAll('th[data-column-group-id]');
@@ -606,7 +606,7 @@ describe('Column grouping with keyboard navigation', () => {
     expect(perfGroup!.getElement().getAttribute('aria-colindex')).toBeDefined();
   });
 
-  test('leaf cells have correct aria-colindex', () => {
+  test('column cells have correct aria-colindex', () => {
     const wrapper = renderTable({ enableKeyboardNavigation: true });
     const thead = wrapper.find('thead')!;
 
@@ -624,11 +624,11 @@ describe('Column grouping aria attributes', () => {
     expect(groupCells).toHaveLength(2);
   });
 
-  test('leaf cells have scope=col', () => {
+  test('column cells have scope=col', () => {
     const wrapper = renderTable();
     const thead = wrapper.find('thead')!;
-    const leafCells = thead.findAll('th[scope="col"]');
-    expect(leafCells).toHaveLength(6);
+    const columnCells = thead.findAll('th[scope="col"]');
+    expect(columnCells).toHaveLength(6);
   });
 
   test('header rows have aria-rowindex', () => {
@@ -726,16 +726,16 @@ describe('Column grouping focus handling', () => {
 });
 
 describe('Column grouping with non-resizable columns', () => {
-  test('grouped leaf cells get inline styles when not resizable', () => {
+  test('grouped column cells get inline styles when not resizable', () => {
     const colDefs = columnDefinitions.map(col => ({ ...col, width: 150, minWidth: 100 }));
     const wrapper = renderTable({ resizableColumns: false, columnDefinitions: colDefs });
     const thead = wrapper.find('thead')!;
-    const leafCells = thead.findAll('th[scope="col"]');
+    const columnCells = thead.findAll('th[scope="col"]');
     // Cells should have width styles applied directly
-    expect(leafCells.length).toBe(6);
+    expect(columnCells.length).toBe(6);
   });
 
-  test('sorting fires onSortingChange for grouped leaf columns', () => {
+  test('sorting fires onSortingChange for grouped columns', () => {
     const onSortingChange = jest.fn();
     const sortableColumns = columnDefinitions.map(col => ({ ...col, sortingField: col.id }));
     const { container } = render(
@@ -771,7 +771,7 @@ describe('Column grouping resize interactions', () => {
     const colgroup = container.querySelector('colgroup');
     expect(colgroup).not.toBeNull();
     const cols = colgroup!.querySelectorAll('col');
-    // 6 leaf columns
+    // 6 columns
     expect(cols.length).toBe(6);
   });
 
@@ -840,10 +840,10 @@ describe('Column grouping keyboard navigation', () => {
     const groupTh = thead.querySelector('th[scope="colgroup"]') as HTMLElement;
     groupTh.focus();
 
-    // Navigate down from group header to leaf row
+    // Navigate down from group header to column row
     fireEvent.keyDown(table, { key: 'ArrowDown', keyCode: 40 });
 
-    // Leaf cells exist in the second header row for navigation targets
+    // Column cells exist in the second header row for navigation targets
     const secondRow = thead.querySelectorAll('tr')[1];
     expect(secondRow.querySelector('th')).toBeTruthy();
   });
@@ -873,7 +873,7 @@ describe('Column grouping vertical navigation with rowspan', () => {
     expect(thead.querySelector('th')).toBeTruthy();
   });
 
-  test('handles arrow up from leaf header row', () => {
+  test('handles arrow up from column header row', () => {
     const { container } = render(
       <Table
         columnDefinitions={columnDefinitions.map(col => ({ ...col, sortingField: col.id }))}
@@ -886,11 +886,11 @@ describe('Column grouping vertical navigation with rowspan', () => {
     const table = container.querySelector('table')!;
     const thead = container.querySelector('thead')!;
 
-    // Focus a leaf cell in the second header row
+    // Focus a column cell in the second header row
     const secondRow = thead.querySelectorAll('tr')[1];
-    const leafTh = secondRow?.querySelector('th') as HTMLElement;
-    if (leafTh) {
-      leafTh.focus();
+    const columnTh = secondRow?.querySelector('th') as HTMLElement;
+    if (columnTh) {
+      columnTh.focus();
       // Navigate up — should go to the group header in the first row
       fireEvent.keyDown(table, { key: 'ArrowUp', keyCode: 38 });
       expect(thead.querySelector('th[scope="colgroup"]')).toBeTruthy();
@@ -992,7 +992,7 @@ describe('Column grouping group resize callbacks', () => {
     }
   });
 
-  test('leaf column resize completes pointer lifecycle in grouped table', () => {
+  test('column resize completes pointer lifecycle in grouped table', () => {
     const wrapper = renderResizableGroupedTable();
     const resizer = wrapper.findColumnResizer(3, { grouped: true });
     expect(resizer).not.toBeNull();
@@ -1001,7 +1001,7 @@ describe('Column grouping group resize callbacks', () => {
     document.body.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'mouse', clientX: 100, bubbles: true }));
     document.body.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'mouse', bubbles: true }));
 
-    // Leaf columns and group structure remain intact after resize
+    // Columns and group structure remain intact after resize
     const thead = wrapper.find('thead')!;
     expect(thead.findAll('th[scope="col"]')).toHaveLength(6);
     expect(thead.findAll('th[scope="colgroup"]')).toHaveLength(2);

@@ -63,7 +63,7 @@ test('useColumnWidths returns safe defaults without provider', () => {
   render(<Bare />);
 });
 
-test('updateGroup does not crash without groupLeafMap', () => {
+test('updateGroup does not crash without groupColumnMap', () => {
   let updateGroup: (groupId: PropertyKey, width: number) => void;
   function Consumer() {
     ({ updateGroup } = useColumnWidths());
@@ -75,7 +75,7 @@ test('updateGroup does not crash without groupLeafMap', () => {
       <Consumer />
     </ColumnWidthsProvider>
   );
-  // No groupLeafMap passed → guard returns early
+  // No groupColumnMap passed → guard returns early
   expect(() => updateGroup!('any', 200)).not.toThrow();
 });
 
@@ -91,12 +91,12 @@ test('updateGroup does not crash for unknown groupId', () => {
       visibleColumns={[]}
       resizableColumns={true}
       containerRef={containerRef}
-      groupLeafMap={new Map([['g1', ['a', 'b']]])}
+      groupColumnMap={new Map([['g1', ['a', 'b']]])}
     >
       <Consumer />
     </ColumnWidthsProvider>
   );
-  // groupLeafMap exists but 'unknown' not in it → leafIds=[], rightmostLeaf undefined → guard returns
+  // groupColumnMap exists but 'unknown' not in it → columnIds=[], rightmostColumn undefined → guard returns
   expect(() => updateGroup!('unknown', 200)).not.toThrow();
 });
 
@@ -377,13 +377,13 @@ describe('with grouped columns', () => {
     expect(cols.length).toBe(4);
   });
 
-  test('assigns widths to leaf columns in grouped table', () => {
+  test('assigns widths to columns in grouped table', () => {
     const wrapper = renderGroupedTable();
-    const leafCells = wrapper.findAll('thead th[scope="col"]');
-    expect(leafCells[0].getElement().style.width).toBe('150px');
-    expect(leafCells[1].getElement().style.width).toBe('150px');
-    expect(leafCells[2].getElement().style.width).toBe('200px');
-    expect(leafCells[3].getElement().style.width).toBe('200px');
+    const columnCells = wrapper.findAll('thead th[scope="col"]');
+    expect(columnCells[0].getElement().style.width).toBe('150px');
+    expect(columnCells[1].getElement().style.width).toBe('150px');
+    expect(columnCells[2].getElement().style.width).toBe('200px');
+    expect(columnCells[3].getElement().style.width).toBe('200px');
   });
 
   test('resizing a group applies the width delta to the last column in the group', () => {
@@ -397,7 +397,7 @@ describe('with grouped columns', () => {
     firePointerup(500);
 
     expect(onColumnWidthsChange).toHaveBeenCalledTimes(1);
-    // Group total was 400 (200+200), resized to 500 → delta 100 applied to last leaf 'az'
+    // Group total was 400 (200+200), resized to 500 → delta 100 applied to last column 'az'
     expect(onColumnWidthsChange.mock.calls[0][0].detail).toEqual({ widths: [150, 150, 200, 300] });
   });
 
@@ -411,7 +411,7 @@ describe('with grouped columns', () => {
     firePointermove(350);
     firePointerup(350);
 
-    // Group shrunk from 400 to 350 → delta -50 applied to last leaf 'az' (200→150)
+    // Group shrunk from 400 to 350 → delta -50 applied to last column 'az' (200→150)
     expect(onColumnWidthsChange.mock.calls[0][0].detail).toEqual({ widths: [150, 150, 200, 150] });
   });
 

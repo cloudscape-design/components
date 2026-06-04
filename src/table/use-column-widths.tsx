@@ -82,14 +82,14 @@ interface WidthProviderProps {
   resizableColumns: boolean | undefined;
   containerRef: React.RefObject<HTMLElement>;
   children: React.ReactNode;
-  groupLeafMap?: Map<string, string[]>;
+  groupColumnMap?: Map<string, string[]>;
 }
 
 export function ColumnWidthsProvider({
   visibleColumns,
   resizableColumns,
   containerRef,
-  groupLeafMap,
+  groupColumnMap,
   children,
 }: WidthProviderProps) {
   const visibleColumnsRef = useRef<PropertyKey[] | null>(null);
@@ -240,24 +240,24 @@ export function ColumnWidthsProvider({
   }
 
   function updateGroup(groupId: PropertyKey, newGroupWidth: number) {
-    if (!columnWidths || !groupLeafMap) {
+    if (!columnWidths || !groupColumnMap) {
       return;
     }
 
-    const leafIds = groupLeafMap.get(String(groupId)) ?? [];
-    const rightmostLeaf = leafIds[leafIds.length - 1];
-    if (!rightmostLeaf) {
+    const columnIds = groupColumnMap.get(String(groupId)) ?? [];
+    const rightmostColumn = columnIds[columnIds.length - 1];
+    if (!rightmostColumn) {
       return;
     }
 
     let currentGroupWidth = 0;
-    for (const id of leafIds) {
+    for (const id of columnIds) {
       currentGroupWidth += columnWidths.get(id) || DEFAULT_COLUMN_WIDTH;
     }
 
     const delta = newGroupWidth - currentGroupWidth;
-    const currentLeafWidth = columnWidths.get(rightmostLeaf) || DEFAULT_COLUMN_WIDTH;
-    updateColumn(rightmostLeaf, currentLeafWidth + delta);
+    const currentColumnWidth = columnWidths.get(rightmostColumn) || DEFAULT_COLUMN_WIDTH;
+    updateColumn(rightmostColumn, currentColumnWidth + delta);
   }
 
   return (
@@ -270,7 +270,7 @@ export function ColumnWidthsProvider({
 }
 
 /*
- * Renders a <colgroup> with <col> elements for each leaf column.
+ * Renders a <colgroup> with <col> elements for each column.
  * With table-layout:fixed, <col> widths control actual column widths,
  * which makes colspan headers automatically span the correct width.
  * Must be rendered inside ColumnWidthsProvider.

@@ -50,7 +50,7 @@ th:not([data-rightmost]) > .divider,
   box-sizing: border-box;
 
   // Position variants for grouped column headers.
-  // All leaf dividers maintain the same bottom gap ($block-gap / 2) as the default.
+  // All Column dividers maintain the same bottom gap ($block-gap / 2) as the default.
   &.divider-position-top {
     // Leaf column under a group: extends upward, same bottom gap as default.
     margin-block-start: 0;

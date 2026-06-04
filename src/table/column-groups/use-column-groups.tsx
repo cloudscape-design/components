@@ -15,24 +15,22 @@ export function useColumnGroups<T>(
   return useMemo(() => {
     const layout = calculateHierarchyTree(columnDefinitions, visibleColumns, groupDefinitions ?? [], columnDisplay);
 
-    const layout = calculateHierarchyTree(columnDefinitions, visibleIds, groupDefinitions ?? [], columnDisplay);
-
-    let groupLeafMap: Map<string, string[]> | undefined;
+    let groupColumnMap: Map<string, string[]> | undefined;
     if (layout.rows.length > 1) {
-      groupLeafMap = new Map();
+      groupColumnMap = new Map();
       const columnsRow = layout.rows[layout.rows.length - 1];
       for (const row of layout.rows) {
         for (const col of row.columns) {
           if (col.isGroup) {
-            const leafIds = columnsRow.columns
+            const childColumnIds = columnsRow.columns
               .filter(l => !l.isGroup && l.parentGroupIds.includes(col.id))
               .map(l => l.id);
-            groupLeafMap.set(col.id, leafIds);
+            groupColumnMap.set(col.id, childColumnIds);
           }
         }
       }
     }
 
-    return { ...layout, groupLeafMap };
+    return { ...layout, groupColumnMap };
   }, [columnDefinitions, groupDefinitions, visibleColumns, columnDisplay]);
 }

@@ -100,8 +100,8 @@ const Thead = React.forwardRef(
           0
         );
         const delta = newWidth - currentGroupWidth;
-        const currentLeafWidth = columnWidths.get(lastColumn) || DEFAULT_COLUMN_WIDTH;
-        updateColumn(lastColumn, currentLeafWidth + delta);
+        const currentColumnWidth = columnWidths.get(lastColumn) || DEFAULT_COLUMN_WIDTH;
+        updateColumn(lastColumn, currentColumnWidth + delta);
       }
     };
 
@@ -185,7 +185,7 @@ const Thead = React.forwardRef(
     }
 
     // Grouped columns
-    const totalLeafColumns = columnDefinitions.length;
+    const totalColumns = columnDefinitions.length;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         {columnGroupsLayout.rows.map((row, rowIndex) => (
@@ -223,24 +223,24 @@ const Thead = React.forwardRef(
               const nextCol = row.columns[colIndexInRow + 1];
               const thisParent = col.parentGroupIds[col.parentGroupIds.length - 1] ?? null;
               const nextParent = nextCol ? (nextCol.parentGroupIds[nextCol.parentGroupIds.length - 1] ?? null) : null;
-              // A leaf is also considered last-child-of-group when the sticky boundary
-              // bisects its parent group just after this leaf — visually it's the rightmost
-              // leaf of the sticky half, so its resizer should span full-height like a
+              // A column is also considered last-child-of-group when the sticky boundary
+              // bisects its parent group just after this column — visually it's the rightmost
+              // column of the sticky half, so its resizer should span full-height like a
               // normal last-child-of-group.
-              const isLeafAtStickyFirstBoundary =
+              const isColumnAtStickyFirstBoundary =
                 !col.isGroup &&
                 thisParent !== null &&
                 stickyColumnsFirst > 0 &&
                 col.colIndex === stickyColumnsFirst - 1;
-              const isLeafAtStickyLastBoundary =
+              const isColumnAtStickyLastBoundary =
                 !col.isGroup &&
                 thisParent !== null &&
                 stickyColumnsLast > 0 &&
                 col.colIndex === columnDefinitions.length - stickyColumnsLast - 1;
               const isLastChildOfGroup =
                 (thisParent !== null && thisParent !== nextParent) ||
-                isLeafAtStickyFirstBoundary ||
-                isLeafAtStickyLastBoundary;
+                isColumnAtStickyFirstBoundary ||
+                isColumnAtStickyLastBoundary;
 
               if (col.isGroup) {
                 // Group header cell
@@ -250,13 +250,13 @@ const Thead = React.forwardRef(
                   col,
                   stickyCount: stickyColumnsFirst,
                   side: 'first',
-                  totalLeafColumns,
+                  totalColumns,
                 });
                 const splitLast = getGroupSplit({
                   col,
                   stickyCount: stickyColumnsLast,
                   side: 'last',
-                  totalLeafColumns,
+                  totalColumns,
                 });
                 const split = splitFirst.stickyColspan > 0 ? splitFirst : splitLast;
                 const isSplit = split.stickyColspan > 0;
@@ -387,7 +387,7 @@ const Thead = React.forwardRef(
                     cellRef={node => setCell(sticky, col.id, node)}
                     resizerRoleDescription={resizerRoleDescription}
                     resizerTooltipText={resizerTooltipText}
-                    isLast={col.colIndex + col.colSpan === totalLeafColumns}
+                    isLast={col.colIndex + col.colSpan === totalColumns}
                     stickyColumnId={fullyStickyColumnId}
                     stickyBoundaryColumnId={fullyStickyBoundaryColumnId}
                     columnGroupId={
@@ -434,7 +434,7 @@ const Thead = React.forwardRef(
                     colSpan={col.colSpan}
                     rowSpan={col.rowSpan}
                     isLastChildOfGroup={isLastChildOfGroup}
-                    isLast={col.colIndex + col.colSpan === totalLeafColumns}
+                    isLast={col.colIndex + col.colSpan === totalColumns}
                     columnGroupId={
                       col.parentGroupIds.length > 0 ? col.parentGroupIds[col.parentGroupIds.length - 1] : undefined
                     }

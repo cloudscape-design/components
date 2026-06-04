@@ -14,7 +14,7 @@ describe('TableHeaderNode', () => {
     expect(node.rowIndex).toBe(-1);
     expect(node.colIndex).toBe(-1);
     expect(node.isRoot).toBe(false);
-    expect(node.isLeaf).toBe(true);
+    expect(node.isColumn).toBe(true);
     expect(node.isGroup).toBe(false);
   });
 
@@ -38,7 +38,7 @@ describe('TableHeaderNode', () => {
     expect(colNode.isGroup).toBe(false);
     expect(groupNode.isGroup).toBe(true);
     expect(rootNode.isRoot).toBe(true);
-    expect(rootNode.isLeaf).toBe(false);
+    expect(rootNode.isColumn).toBe(false);
   });
 
   test('manages parent/child relationships', () => {
@@ -52,8 +52,8 @@ describe('TableHeaderNode', () => {
     expect(parent.children).toHaveLength(2);
     expect(child1.parent).toBe(parent);
     expect(child2.parent).toBe(parent);
-    expect(parent.isLeaf).toBe(false);
-    expect(child1.isLeaf).toBe(true);
+    expect(parent.isColumn).toBe(false);
+    expect(child1.isColumn).toBe(true);
   });
 });
 
@@ -91,7 +91,7 @@ describe('calculateHierarchyTree', () => {
       expect(row0.find(c => c.id === 'config')).toMatchObject({ isGroup: true, colSpan: 2 });
       expect(row0.find(c => c.id === 'pricing')).toMatchObject({ isGroup: true, colSpan: 1 });
 
-      // Row 1: leaf columns under groups
+      // Row 1: columns under groups
       const row1 = result.rows[1].columns;
       expect(row1.map(c => c.id)).toEqual(['cpu', 'memory', 'networkIn', 'type', 'az', 'cost']);
       expect(row1.every(c => !c.isGroup && c.rowSpan === 1 && c.colSpan === 1)).toBe(true);
