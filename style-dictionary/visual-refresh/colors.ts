@@ -254,6 +254,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextExpandableSectionDefault: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
   colorTextExpandableSectionHover: '{colorTextAccent}',
   colorTextExpandableSectionNavigationIconDefault: '{colorTextInteractiveDefault}',
+  colorBorderExpandableSectionDefault: '{colorBorderDividerDefault}',
   colorTextFormDefault: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
   colorTextFormLabel: '{colorTextFormDefault}',
   colorTextFormSecondary: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
@@ -337,6 +338,15 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
   colorBackgroundSkeleton: { light: '{colorNeutral250}', dark: '{colorNeutral750}' },
   colorBackgroundSkeletonWave: { light: '{colorNeutral150}', dark: '{colorNeutral700}' },
+  colorBorderBadge: 'transparent',
+  colorBorderBadgeGrey: 'transparent',
+  colorBorderBadgeGreen: 'transparent',
+  colorBorderBadgeBlue: 'transparent',
+  colorBorderBadgeRed: 'transparent',
+  colorTextBadgeGrey: '{colorTextNotificationDefault}',
+  colorTextBadgeGreen: '{colorTextNotificationDefault}',
+  colorTextBadgeBlue: '{colorTextNotificationDefault}',
+  colorTextBadgeRed: '{colorTextNotificationDefault}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

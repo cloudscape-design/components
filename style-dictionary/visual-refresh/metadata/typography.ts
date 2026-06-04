@@ -252,6 +252,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: false,
   },
+  fontSizeExpandableHeading: {
+    description: 'The font size for expandable section headings.',
+    themeable: true,
+    public: false,
+  },
   fontSizeFormLabel: {
     description: 'The font size for form field labels.',
     themeable: true,

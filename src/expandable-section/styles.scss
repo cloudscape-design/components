@@ -93,7 +93,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   &-inline,
   &-navigation,
   &-footer {
-    font-size: awsui.$font-expandable-heading-size;
+    font-size: awsui.$font-size-expandable-heading;
     letter-spacing: awsui.$letter-spacing-heading-s;
   }
 
@@ -111,7 +111,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     }
     &.wrapper-expanded {
       padding-block-end: awsui.$space-scaled-xxs;
-      border-block-end-color: awsui.$color-border-divider-default;
+      border-block-end-color: awsui.$color-border-expandable-section-default;
     }
   }
 

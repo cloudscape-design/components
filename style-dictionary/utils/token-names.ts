@@ -506,7 +506,17 @@ export type ColorSeverityTokenName =
   | 'colorTextNotificationSeverityHigh'
   | 'colorTextNotificationSeverityMedium'
   | 'colorTextNotificationSeverityLow'
-  | 'colorTextNotificationSeverityNeutral';
+  | 'colorTextNotificationSeverityNeutral'
+  | 'colorBorderBadgeSeverityCritical'
+  | 'colorBorderBadgeSeverityHigh'
+  | 'colorBorderBadgeSeverityMedium'
+  | 'colorBorderBadgeSeverityLow'
+  | 'colorBorderBadgeSeverityNeutral'
+  | 'colorTextBadgeSeverityCritical'
+  | 'colorTextBadgeSeverityHigh'
+  | 'colorTextBadgeSeverityMedium'
+  | 'colorTextBadgeSeverityLow'
+  | 'colorTextBadgeSeverityNeutral';
 export type ColorsTokenName =
   | 'colorGreyOpaque10'
   | 'colorGreyOpaque25'
@@ -752,6 +762,7 @@ export type ColorsTokenName =
   | 'colorTextExpandableSectionDefault'
   | 'colorTextExpandableSectionHover'
   | 'colorTextExpandableSectionNavigationIconDefault'
+  | 'colorBorderExpandableSectionDefault'
   | 'colorTextFormDefault'
   | 'colorTextFormLabel'
   | 'colorTextFormSecondary'
@@ -838,13 +849,22 @@ export type ColorsTokenName =
   | 'colorIconActionCardDefault'
   | 'colorIconActionCardHover'
   | 'colorIconActionCardActive'
-  | 'colorIconActionCardDisabled';
+  | 'colorIconActionCardDisabled'
+  | 'colorBorderBadgeGrey'
+  | 'colorBorderBadgeGreen'
+  | 'colorBorderBadgeBlue'
+  | 'colorBorderBadgeRed'
+  | 'colorTextBadgeGrey'
+  | 'colorTextBadgeGreen'
+  | 'colorTextBadgeBlue'
+  | 'colorTextBadgeRed'
+  | 'colorBorderBadge';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
   | 'fontChartDetailSize'
   | 'fontDisplayLabelWeight'
-  | 'fontExpandableHeadingSize'
+  | 'fontSizeExpandableHeading'
   | 'fontFamilyBase'
   | 'fontFamilyDisplay'
   | 'fontFamilyHeading'
@@ -978,7 +998,8 @@ export type BordersTokenName =
   | 'borderWidthActionCardDefault'
   | 'borderWidthActionCardHover'
   | 'borderWidthActionCardActive'
-  | 'borderWidthActionCardDisabled';
+  | 'borderWidthActionCardDisabled'
+  | 'borderWidthBadge';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

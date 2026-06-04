@@ -129,6 +129,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -753,6 +757,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -2167,6 +2241,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-body-default": {
@@ -3372,6 +3509,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -3996,6 +4137,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -5410,6 +5621,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-body-default": {
@@ -6615,6 +6889,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -7239,6 +7517,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -8653,6 +9001,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-body-default": {
@@ -9858,6 +10269,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -10482,6 +10897,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -11896,6 +12381,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-body-default": {
@@ -13101,6 +13649,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -13725,6 +14277,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -15139,6 +15761,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-body-default": {
@@ -16344,6 +17029,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The inline-start border width of alerts.",
           "$value": "1px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "1px",
@@ -16968,6 +17657,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#44b9d6",
             "light": "#44b9d6",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -18384,6 +19143,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-text-body-default": {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": {
@@ -19587,6 +20409,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The inline-start border width of alerts.",
       "$value": "1px",
     },
+    "border-width-badge": {
+      "$description": "The border width of badges.",
+      "$value": "0px",
+    },
     "border-width-button": {
       "$description": "The border width of buttons.",
       "$value": "1px",
@@ -20211,6 +21037,76 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#44b9d6",
         "light": "#002b66",
+      },
+    },
+    "color-border-badge": {
+      "$description": "The default border color of badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-blue": {
+      "$description": "The border color of blue badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-green": {
+      "$description": "The border color of green badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-grey": {
+      "$description": "The border color of grey badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-red": {
+      "$description": "The border color of red badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-critical": {
+      "$description": "The border color of badges representing a critical severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-high": {
+      "$description": "The border color of badges representing a high severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-low": {
+      "$description": "The border color of badges representing a low severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-medium": {
+      "$description": "The border color of badges representing a medium severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-neutral": {
+      "$description": "The border color of badges representing a neutral severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-button-link-disabled": {
@@ -21627,6 +22523,69 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
+    "color-text-badge-blue": {
+      "$description": "The text color of blue badges.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-green": {
+      "$description": "The text color of green badges.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-grey": {
+      "$description": "The text color of grey badges.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-red": {
+      "$description": "The text color of red badges.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-severity-critical": {
+      "$description": "The text color of badges representing a critical severity level.",
+      "$value": {
+        "dark": "#000000",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-severity-high": {
+      "$description": "The text color of badges representing a high severity level.",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-badge-severity-low": {
+      "$description": "The text color of badges representing a low severity level.",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#16191f",
+      },
+    },
+    "color-text-badge-severity-medium": {
+      "$description": "The text color of badges representing a medium severity level.",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#000000",
+      },
+    },
+    "color-text-badge-severity-neutral": {
+      "$description": "The text color of badges representing a neutral severity level.",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
     "color-text-body-default": {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": {
@@ -22835,6 +23794,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -23459,6 +24422,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -24873,6 +25906,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -26078,6 +27174,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -26702,6 +27802,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -28116,6 +29286,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -29321,6 +30554,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -29945,6 +31182,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -31359,6 +32666,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -32564,6 +33934,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -33188,6 +34562,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -34602,6 +36046,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -35807,6 +37314,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -36431,6 +37942,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -37845,6 +39426,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -39050,6 +40694,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -39674,6 +41322,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#002b66",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -41088,6 +42806,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -42293,6 +44074,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -42917,6 +44702,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -44331,6 +46186,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#ffffff",
             "light": "#ffffff",
+          },
+        },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-body-default": {
@@ -45536,6 +47454,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The inline-start border width of alerts.",
           "$value": "2px",
         },
+        "border-width-badge": {
+          "$description": "The border width of badges.",
+          "$value": "0px",
+        },
         "border-width-button": {
           "$description": "The border width of buttons.",
           "$value": "2px",
@@ -46160,6 +48082,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#75cfff",
             "light": "#75cfff",
+          },
+        },
+        "color-border-badge": {
+          "$description": "The default border color of badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-blue": {
+          "$description": "The border color of blue badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-green": {
+          "$description": "The border color of green badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-grey": {
+          "$description": "The border color of grey badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-red": {
+          "$description": "The border color of red badges.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-critical": {
+          "$description": "The border color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-high": {
+          "$description": "The border color of badges representing a high severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-low": {
+          "$description": "The border color of badges representing a low severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-medium": {
+          "$description": "The border color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
+        "color-border-badge-severity-neutral": {
+          "$description": "The border color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-button-link-disabled": {
@@ -47576,6 +49568,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
+        "color-text-badge-blue": {
+          "$description": "The text color of blue badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-green": {
+          "$description": "The text color of green badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-grey": {
+          "$description": "The text color of grey badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-red": {
+          "$description": "The text color of red badges.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-critical": {
+          "$description": "The text color of badges representing a critical severity level.",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-high": {
+          "$description": "The text color of badges representing a high severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-badge-severity-low": {
+          "$description": "The text color of badges representing a low severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-medium": {
+          "$description": "The text color of badges representing a medium severity level.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-badge-severity-neutral": {
+          "$description": "The text color of badges representing a neutral severity level.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
         "color-text-body-default": {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": {
@@ -48779,6 +50834,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The inline-start border width of alerts.",
       "$value": "2px",
     },
+    "border-width-badge": {
+      "$description": "The border width of badges.",
+      "$value": "0px",
+    },
     "border-width-button": {
       "$description": "The border width of buttons.",
       "$value": "2px",
@@ -49403,6 +51462,76 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#75cfff",
         "light": "#002b66",
+      },
+    },
+    "color-border-badge": {
+      "$description": "The default border color of badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-blue": {
+      "$description": "The border color of blue badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-green": {
+      "$description": "The border color of green badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-grey": {
+      "$description": "The border color of grey badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-red": {
+      "$description": "The border color of red badges.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-critical": {
+      "$description": "The border color of badges representing a critical severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-high": {
+      "$description": "The border color of badges representing a high severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-low": {
+      "$description": "The border color of badges representing a low severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-medium": {
+      "$description": "The border color of badges representing a medium severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
+      },
+    },
+    "color-border-badge-severity-neutral": {
+      "$description": "The border color of badges representing a neutral severity level.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-button-link-disabled": {
@@ -50817,6 +52946,69 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#ffffff",
         "light": "#ffffff",
+      },
+    },
+    "color-text-badge-blue": {
+      "$description": "The text color of blue badges.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-green": {
+      "$description": "The text color of green badges.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-grey": {
+      "$description": "The text color of grey badges.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-red": {
+      "$description": "The text color of red badges.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-severity-critical": {
+      "$description": "The text color of badges representing a critical severity level.",
+      "$value": {
+        "dark": "#000000",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-severity-high": {
+      "$description": "The text color of badges representing a high severity level.",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-badge-severity-low": {
+      "$description": "The text color of badges representing a low severity level.",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-badge-severity-medium": {
+      "$description": "The text color of badges representing a medium severity level.",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-badge-severity-neutral": {
+      "$description": "The text color of badges representing a neutral severity level.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
       },
     },
     "color-text-body-default": {

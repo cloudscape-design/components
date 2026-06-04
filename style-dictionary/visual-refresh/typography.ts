@@ -10,7 +10,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontDecorationThicknessLink: '1px',
   fontDecorationThicknessLinkDisplayL: '2px',
   fontDisplayLabelWeight: '700',
-  fontExpandableHeadingSize: '{fontSizeHeadingS}',
+  fontSizeExpandableHeading: '{fontSizeHeadingS}',
   fontFamilyBase: "'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
   fontFamilyDisplay: '{fontFamilyBase}',
   fontFamilyHeading: '{fontFamilyBase}',
