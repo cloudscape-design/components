@@ -628,9 +628,7 @@ describe('Content Display preference with groups', () => {
   it('renders options with correct visibility state', () => {
     const wrapper = renderGroupedContentDisplay();
     const options = wrapper.findOptions();
-    const toggleStates = options
-      .map(opt => opt.findVisibilityToggle()?.findNativeInput()?.getElement()?.checked)
-      .filter(state => state !== undefined);
+    const toggleStates = options.map(opt => opt.findVisibilityToggle().findNativeInput().getElement().checked);
     // All items with visibility toggles in DOM order: id1, g1, id2, id3, g2, id4
     expect(toggleStates).toEqual([true, true, true, false, true, true]);
   });
@@ -638,11 +636,10 @@ describe('Content Display preference with groups', () => {
   it('renders nested lists with aria-label for groups', () => {
     const wrapper = renderGroupedContentDisplay();
     const lists = wrapper.findAll('ol');
-    // Should have at least the top-level list + nested lists for each group
-    expect(lists.length).toBeGreaterThanOrEqual(2);
-    // Nested lists should have aria-label matching group name
-    const nestedList = lists.find(l => l.getElement().getAttribute('aria-label') === 'Group 1');
-    expect(nestedList).toBeDefined();
+    // Top-level list + 2 nested lists (one per group)
+    expect(lists).toHaveLength(3);
+    const ariaLabels = lists.map(l => l.getElement().getAttribute('aria-label')).filter(Boolean);
+    expect(ariaLabels).toEqual(['Group 1', 'Group 2']);
   });
 
   it('filters options within groups', () => {
