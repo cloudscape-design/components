@@ -1109,6 +1109,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: false,
     themeable: true,
   },
+  colorBorderButtonGroupDivider: {
+    description: 'The border color of the button group divider.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;

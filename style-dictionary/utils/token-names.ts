@@ -655,6 +655,7 @@ export type ColorsTokenName =
   | 'colorBorderControlDefault'
   | 'colorBorderControlDisabled'
   | 'colorBorderDividerActive'
+  | 'colorBorderButtonGroupDivider'
   | 'colorBorderDividerDefault'
   | 'colorBorderDividerSecondary'
   | 'colorBorderDividerPanelBottom'
@@ -838,7 +839,8 @@ export type ColorsTokenName =
   | 'colorIconActionCardDefault'
   | 'colorIconActionCardHover'
   | 'colorIconActionCardActive'
-  | 'colorIconActionCardDisabled';
+  | 'colorIconActionCardDisabled'
+  | 'colorBorderButtonGroupDivider';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'

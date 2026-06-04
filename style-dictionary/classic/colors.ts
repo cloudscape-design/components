@@ -170,6 +170,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorIconActionCardHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorIconActionCardActive: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
   colorIconActionCardDisabled: { light: '{colorNeutral400}', dark: '{colorNeutral600}' },
+  colorBorderButtonGroupDivider: '{colorBorderDividerDefault}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
